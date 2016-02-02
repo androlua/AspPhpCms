@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>event.pageX demo</title>
+<link href="/jquery/contextmenu.css" rel="stylesheet" type="text/css" />
+<script src="/Jquery/Jquery-1.11.0.Min.Js"></script>
+</head>
+<body>
+
+<div class="sysmenuwrap"><a href="#">编辑内容</a><a href="#">删除内容</a><a href="javascript:;" onClick="$(this).parent().hide()">关闭菜单</a></div>
+
+<div oncontextmenu="CommonMenu(this,1)">测试</div><br>
+<div oncontextmenu="CommonMenu(this,1)">测试1</div><br>
+<div oncontextmenu="CommonMenu(this,1)">测试2</div><br>
+<div oncontextmenu="CommonMenu(this,1)">测试3</div><br>
+
+
+<script>
+document.oncontextmenu=new Function("event.returnValue=false;");
+//document.onselectstart=new Function("event.returnValue=false;");
+var nPageX=0,nPageY=0
+$( document ).on( "mousemove", function( event ) {
+	nPageX=event.pageX
+	nPageY=event.pageY
+	$( "#log" ).text( "pageX: " + event.pageX + ", pageY: " + event.pageY );
+})
+function CommonMenu(e,id){
+	if($("").length==0){
+		var c="<div class=\"sysmenuwrap\"><a href=\"#\">编辑内容</a><a href=\"#\">删除内容</a><a href=\"javascript:;\" onClick=\"$(this).parent().hide()\">关闭菜单</a></div>"
+		$("body").prepend(c)	
+	}
+	$(".sysmenuwrap").hide().show('fast').css("left",nPageX).css("top",nPageY)
+}
+
+
+</script>
+</body>
+</html>

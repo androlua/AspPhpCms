@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>栏目管理</title> 
+<script language="javascript" src="context_menu.js"></script> 
+<script language="javascript">
+//普通栏目
+function CommonMenu(eobj,EditUrl,DelUrl)
+{
+  var popupoptions
+  popupoptions = [
+    new ContextItem("修改内容",function(){EditUrl}),
+    new ContextSeperator(),
+    new ContextItem("删除内容",function(){alert('aa'+DelUrl)}), 
+    new ContextSeperator(), 
+    new ContextItem("关闭菜单(<u>C</u>)",function(){})
+  ]
+  ContextMenu.display(eobj,popupoptions)
+}
+ 
+</script>
+<style> 
+a{width:150px;height:80px;
+background-color:#CCCCCC;
+display:block;}
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+
+
+<div oncontextmenu="CommonMenu(event,'111','222')">
+<a href='catalog_do.php?cid=4&dopost=listArchives' >产品展示[ID:4]</a>
+ </div>
+</body>
+</html>

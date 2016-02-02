@@ -1,0 +1,44 @@
+<!DOCTYPE>
+<html>
+<head>
+<style type="text/css">		  
+#list1 table{border:solid 1px black; background-color:#E0E0E0;}
+.placeHolder div { background-color:white !important; border:dashed 1px gray !important; }
+</style>
+</head>
+<body>
+	<script type="text/javascript" src="/Jquery/Jquery.Min.js"></script>
+	<script type="text/javascript" src="jquery.dragsort-0.5.1.min.js"></script>
+	<script type="text/javascript">$("ul:first").dragsort();</script> 
+	
+	<ul id="list1">
+		<li><table title="aaa"><a href="javascript:alert('aa');">sadfasdf</a></table></li>
+		<li><table>2<div>sdsss</div></table></li>
+		<li><table>3</table></li>
+		<li><table>4</table></li>
+		<li><table>5</table></li>
+		<li><table>6</table></li>
+		<li><table>7</table></li>
+		<li><table>8</table></li>
+		<li><table>9</table></li>
+	</ul>  
+	<a href="javascript:DivList();">µã»÷</a>
+<script type="text/javascript">
+$("#list1").dragsort({ dragSelector: "table", dragBetween: true, dragEnd: saveOrder, placeHolderTemplate: "<li class='placeHolder'><div></div></li>" });
+
+function saveOrder() {
+	var data = $("#list1 li").map(function() { return $(this).children().html(); }).get();
+	$("input[name=list1SortOrder]").val(data.join("|"));
+};
+
+//È«Ñ¡
+function DivList(){
+var a = document.getElementsByTagName("div");
+	for(var i=0; i<a.length; i++){
+		alert(a[i].title);	
+	}
+}
+</script>
+    
+    </body>
+</html>

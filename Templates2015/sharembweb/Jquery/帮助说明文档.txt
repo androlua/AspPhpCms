@@ -1,0 +1,21 @@
+jquery-1.11.0.js    jquery官方网站下载的 Production version - 用于实际的网站中，已被精简和压缩。
+jquery-1.11.0.min.js jquery官方网站下载的 用于测试和开发（未压缩，是可读的代码）
+jquery.min.js        之前别人用的，挺好用的
+
+jquery.lazyload.js 图片缓冲
+jquery.lazyload.mini.js 图片缓冲
+Jquery.TableColor.Js    Table移动离开变色
+Jquery.Timers-1.2.Js    定时器
+Alt.Js			Alt提示
+
+
+
+
+
+Microsoft CDN:网站中调用
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.js">
+
+
+
+
+http://www.popub.net/script/MSClass.html                    滚动演示网址，非常好的网站20141124
