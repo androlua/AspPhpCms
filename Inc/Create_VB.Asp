@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-15
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -123,12 +123,12 @@ fRMlIStSTr = "MDIForm1|Notepad|FrmHide|Login|IE|AutoAddTable|WebLog|WebIP|Eval|S
 fRMlIStSTr="MDIForm1|Notepad|FrmHide|Login|IE|Share|ShareEdition2|QQShareConfig|QQShareUrl|QQShareSendUrl|FrmEdit"
 fRMlIStSTr="MDIForm1|FrmHide|FrmEdit|Login|TableDialog|Notepad|IE|-|ShareEdition2|QQShareConfig|QQShareUrl|QQShareSendUrl|-|FrmCai|CaiManage|UpDateWebConfig|-|XiCiWebDialog|XiCiWebMDB|-|CaiBaiduUrl|BaiduCai|-|#SortPlug|WebCrack|Test|DownList|IEDebug|-|AutoAddTable|Ying|-|SortPlug|PseudoOriginal|-|Scan|WebShell|Eval|WebServer|-|QQ|Qzone|-|"
 fRMlIStSTr=      "MDIForm1|FrmHide|FrmEdit|Login|TableDialog|Notepad|IE|InputLocalFile|InputSqlTable|-|FrmCrateNewWeb|WebUrlScan|FrmCreateFunction|WebIeBox|-|Test|IEDebug|IEAutomatic|IEAutoHandle|-|Eval|-|FrmCai|CaiManage|-|WebAdminScan|ExcellentUrl|SmallTool|ColorPicker|TxtEdit|-|FrmSortPlug|AskDa|ZNRobot|JobWeb|JobCompany|FormJobCai|ComputerDir|analogBatchUP|"
-fRMlIStSTr=fRMlIStSTr & "|FrmCrateNewHtmlPage|SinglePage|FrameLayout|FrmWebTemplateView|FrmCreateWebLable|UserMakeNav|--2|FileScan2015|HTML5CSS2|XyWebUp|MYProgram|--2|FrmAutoAddWebDefaultInfo|--2|FrmControlDialog|FrmSqlIn|FrmProgrameTransformation|IMitationWebInGoogleSEO|WebShell|jiayuan|FrmEvScan|FrmTestDialog1|FrmTestDialog2|FrmDown|"
+fRMlIStSTr=fRMlIStSTr & "|FrmCrateNewHtmlPage|SinglePage|FrameLayout|FrmWebTemplateView|FrmCreateWebLable|UserMakeNav|--2|FileScan2015|HTML5CSS2|XyWebUp|MYProgram|--2|FrmAutoAddWebDefaultInfo|--2|FrmControlDialog|FrmSqlIn|FrmProgrameTransformation|IMitationWebInGoogleSEO|WebShell|FrmEvScan|FrmTestDialog1|FrmTestDialog2|FrmDown|FrmCrateNewHtmlPageOLD|"
 nTOoLS = 0	
 sPLsTR=sPLiT(fRMlIStSTr,"|")
 fOR eACh s iN sPLsTR
 iF s <> "" aND lEFt(s,1)<>"#" tHEn
-iF iNStR("|-|IE|AutoAddTable|WebLog|WebIP|WebSite|Eval|SortPlug|Test|Share|QQShareConfig|QQShareUrl|QQShareSendUrl|ShareEdition2|FrmCai|CaiManage|UpDateWebConfig|XiCiWebDialog|XiCiWebMDB|IEDebug|IEAutomatic|IEAutoHandle|BaiduCai|CaiBaiduUrl|Ying|PseudoOriginal|Scan|WebShell|WebServer|WebCrack|DownList|QQ|QQName|QQVisitors|Qzone|BaiduZhidao|BaiduZhidaoWords|StatisticalData|BaiduZhidaoData|BaiduZhidaoWordsData|BaiduZhidaoMain|SearchEngine|SearchEngineInfoList|WebAdminScan|WebManage|WebIeBox|SinglePage|FrmSMS|SMSInfo|LocaDir|MYProgram|SmallTool|HTML5CSS2|FrmCrateNewWeb|TemplateCodeCreate|WebSiteList|SqlServerWebUrl|ShieldWebSiteList|AsynchDown|WebSiteInfo|FrmSortPlug|ExcellentUrl|WebUrlScan|FrmHangUp|XyWebUp|FrameLayout|FrmCreateFunction|QQJournal|AskDa|ZNRobot|JobWeb|FormJobCai|UserMakeNav|JobCompany|IMitationWebInGoogleSEO|FrmCrateNewHtmlPage|FileScan2015|FrmCreateWebLable||FrmWebTemplateView|ComputerDir|FrmAutoAddWebDefaultInfo|FrmControlDialog|FrmSqlIn|FrmProgrameTransformation|analogBatchUP|jiayuan|FrmEvScan|FrmTestDialog1|FrmTestDialog2|FrmDown|","|"& s &"|") > 0 oR lEFt(s,2)="--" tHEn
+iF iNStR("|-|IE|AutoAddTable|WebLog|WebIP|WebSite|Eval|SortPlug|Test|Share|QQShareConfig|QQShareUrl|QQShareSendUrl|ShareEdition2|FrmCai|CaiManage|UpDateWebConfig|XiCiWebDialog|XiCiWebMDB|IEDebug|IEAutomatic|IEAutoHandle|BaiduCai|CaiBaiduUrl|Ying|PseudoOriginal|Scan|WebShell|WebServer|WebCrack|DownList|QQ|QQName|QQVisitors|Qzone|BaiduZhidao|BaiduZhidaoWords|StatisticalData|BaiduZhidaoData|BaiduZhidaoWordsData|BaiduZhidaoMain|SearchEngine|SearchEngineInfoList|WebAdminScan|WebManage|WebIeBox|SinglePage|FrmSMS|SMSInfo|LocaDir|MYProgram|SmallTool|HTML5CSS2|FrmCrateNewWeb|FrmCrateNewHtmlPageOLD|TemplateCodeCreate|WebSiteList|SqlServerWebUrl|ShieldWebSiteList|AsynchDown|WebSiteInfo|FrmSortPlug|ExcellentUrl|WebUrlScan|FrmHangUp|XyWebUp|FrameLayout|FrmCreateFunction|QQJournal|AskDa|ZNRobot|JobWeb|FormJobCai|UserMakeNav|JobCompany|IMitationWebInGoogleSEO|FrmCrateNewHtmlPage|FileScan2015|FrmCreateWebLable||FrmWebTemplateView|ComputerDir|FrmAutoAddWebDefaultInfo|FrmControlDialog|FrmSqlIn|FrmProgrameTransformation|analogBatchUP|jiayuan|FrmEvScan|FrmTestDialog1|FrmTestDialog2|FrmDown|","|"& s &"|") > 0 oR lEFt(s,2)="--" tHEn
 mENuTItLE="" : tABlECoNFiG="" : tABlENaME="" : tHIsACcESsPAsS="" : tHIsMDbPAtH=""
 iF s = "SortPlug" tHEn
 mENuTItLE = "模拟点击"
@@ -179,6 +179,8 @@ cALl cOPyFIlE("\DataDir\VB模块\ControlDialog.ctl", zFOrMFoLDeR & "ControlDialog.
 cALl cOPyFIlE("\DataDir\VB模块\ControlDialog.ctx", zFOrMFoLDeR & "ControlDialog.ctx")	
 eLSeIF s = "FrmCrateNewWeb" tHEn
 mENuTItLE = "创建新网页"	
+eLSeIF s = "FrmCrateNewHtmlPageOLD" tHEn
+mENuTItLE = "创建新网页(旧版)"	
 eLSeIF s = "FrmCreateWebLable" tHEn
 mENuTItLE = "生成网站嵌套标签"	
 eLSeIF s = "FrmCrateNewHtmlPage" tHEn
@@ -645,7 +647,7 @@ eND iF
 nTOoLS = nTOoLS + 1
 eND iF
 eND iF
-iF iNStR("|WebManage|HTML5CSS2|FrmCrateNewWeb|","|"& s &"|")>0 tHEn
+iF iNStR("|WebManage|HTML5CSS2|FrmCrateNewWeb|FrmCrateNewHtmlPageOLD|","|"& s &"|")>0 tHEn
 cALl cOPyFOlDEr("\DataDir\VB模块\Template", rOOtFOlDEr & "/Template")	
 eND iF
 iF s <> "MDIForm1" aND s <> "-"  aND lEFt(s,2) <> "--" tHEn
@@ -721,3 +723,4 @@ cALl cOPyFIlE("/DataDir/VB模块/Desk.jpg", dATaFOlDEr & "Desk.jpg")
 eND iF
 eND sUB
 %>
+

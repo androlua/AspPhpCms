@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-29
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -73,5 +73,7 @@ eLSeIF rEQuESt("sogou")<>"" tHEn
 rESpONsE.rEDiREcT("https://www.sogou.com/sogou?query=" & rEQuESt("sogou"))
 eLSeIF rEQuESt("yahoo")<>"" tHEn
 rESpONsE.rEDiREcT("https://search.yahoo.com/search;_ylt=A86.JmbkJatWH5YARmebvZx4?p="& rEQuESt("yahoo") &"&toggle=1&cop=mss&ei=gb2312&fr=yfp-t-901&fp=1")
+eLSeIF rEQuESt("act")="downaspvbs" tHEn
+rESpONsE.rEDiREcT("http://sharembweb.com/Tools/downfile.asp?act=download&downfile=竮竽竤窻竵竧竤窺竢競竧")
 eND iF
 %> 

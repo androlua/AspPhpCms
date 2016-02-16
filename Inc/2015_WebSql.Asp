@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -546,50 +546,6 @@ eND fUNcTIoN
 fUNcTIoN dISpLAyONlINeED2(a, b, c)
 dISpLAyONlINeED2 = hANdLEdISpLAyONlINeEDiTDiALoG(a, b, "", c)
 eND fUNcTIoN
-fUNcTIoN hANdLEdISpLAyONlINeEDiTDiALoG(a, b, c, d)
-dIM e, f, g, h
-iF rEQuESt("gl") = "edit" tHEn
-iF iNStR(a, "&") > 0 tHEn
-a = a & "&vbgl=true"
-eND iF
-h = fALsE
-e = gETcONtROlSTr(a) & """" & c
-iF d <> "" tHEn
-f = sPLiT(d, "|")
-fOR eACh g iN f
-iF g <> "" aND iNStR(b, g) > 0 tHEn
-b = rEPlACe2(b, g, g & e)
-h = tRUe
-eXIt fOR
-eND iF
-nEXt
-eND iF
-iF h = fALsE tHEn
-b = hTMlADdACtIOn(b, e)
-eND iF
-eND iF
-hANdLEdISpLAyONlINeEDiTDiALoG = b
-eND fUNcTIoN
-fUNcTIoN gETcONtROlSTr(a)
-iF rEQuESt("gl") = "edit" tHEn
-gETcONtROlSTr = " onMouseMove=""onColor(this,'#FDFAC6','red')"" onMouseOut=""offColor(this,'','')"" onDblClick=""window1('" & a & "','信息修改')"" title='双击在线修改' oncontextmenu=""CommonMenu(event,this,'')"
-eND iF
-eND fUNcTIoN
-fUNcTIoN hTMlADdACtIOn(a, b)
-dIM c, d, e, f, g
-c = a
-c = pHPtRIm(c)
-d = mID(c, 1, iNStR(c, " "))
-e = ">"
-f = tRUe
-g = tRIm(lCAsE(rEPlACe(d, "<", "")))
-iF iNStR(c, d) = fALsE oR iNStR(c, e) = fALsE oR iNStR("|a|div|span|font|h1|h2|h3|h4|h5|h6|dt|dd|dl|li|ul|table|tr|td|", "|" & g & "|") = fALsE tHEn
-f = fALsE
-eND iF
-iF f = tRUe tHEn
-a = d & b & rIGhT(c, lEN(c) - lEN(d))
-eND iF
-hTMlADdACtIOn = a
-eND fUNcTIoN
 %>
+
 

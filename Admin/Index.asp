@@ -2,7 +2,7 @@
 '************************************************************
 '◊˜’ﬂ£∫‘∆∂À (æ´Õ®ASP/VB/PHP/JS/Flash£¨Ωª¡˜∫œ◊˜ø…¡™œµ±æ»À)
 '∞Ê»®£∫‘¥¥˙¬Îπ´ø™£¨∏˜÷÷”√Õææ˘ø…√‚∑— π”√°£ 
-'¥¥Ω®£∫2016-02-02
+'¥¥Ω®£∫2016-02-16
 '¡™œµ£∫QQ313801120  Ωª¡˜»∫35915100(»∫¿Ô“—”–º∏∞Ÿ»À)    ” œ‰313801120@qq.com   ∏ˆ»À÷˜“≥ sharembweb.com
 '∏¸∂‡∞Ô÷˙£¨Œƒµµ£¨∏¸–¬°°«Îº”»∫(35915100)ªÚ‰Ø¿¿(sharembweb.com)ªÒµ√
 '*                                    Powered By ‘∆∂À 
@@ -15,19 +15,19 @@ dIM wEBcOLuMNtYPe : wEBcOLuMNtYPe = " ◊“≥|Œƒ±æ|≤˙∆∑|–¬Œ≈| ”∆µ|œ¬‘ÿ|∞∏¿˝|¡Ù—‘|∑¥¿
 dIM eDItORtYPe : eDItORtYPe = "asp"
 dIM wEBvERsIOn
 %>
-<!--#Include File = "function.Asp"-->
-<!--#Include File = "setAccess.Asp"-->
+<!--#Include File = "../Inc/admin_function.asp"-->
+<!--#Include File = "../Inc/admin_setAccess.asp"-->
 <%
 sUB hANdLErESeTAcCEsSDaTA()
 cALl rESeTAcCEsSDaTA()
 eND sUB
 dIM dB_pREfIX
-dB_pREfIX="xy_"	
+dB_pREfIX = "xy_"
 wEBvERsIOn = "v1.0011"
-dIM cFG_WEbSItEUrL, cFG_WEbTItLE, cFG_FLaGS,cFG_WEbTEmPLaTE
+dIM cFG_WEbSItEUrL, cFG_WEbTItLE, cFG_FLaGS, cFG_WEbTEmPLaTE
 sUB lOAdWEbCOnFIg()
 cALl oPEnCOnN()
-rS.oPEn "select * from "& dB_pREfIX &"website", cONn, 1, 1
+rS.oPEn "select * from " & dB_pREfIX & "website", cONn, 1, 1
 iF nOT rS.eOF tHEn
 cFG_WEbSItEUrL = rS("webSiteUrl") & ""
 cFG_WEbTItLE = rS("webTitle") & ""
@@ -59,7 +59,7 @@ c = rEPlACe(rEQuESt.fORm("password"), "'", "")
 c = mYMd5(c)
 dIM e
 cALl oPEnCOnN()
-rS.oPEn "Select * From "& dB_pREfIX &"admin Where username='" & b & "' And pwd='" & c & "'", cONn, 1, 1
+rS.oPEn "Select * From " & dB_pREfIX & "admin Where username='" & b & "' And pwd='" & c & "'", cONn, 1, 1
 iF rS.eOF tHEn
 iF rEQuESt.cOOkIEs("nLogin") = "" tHEn
 cALl sETcOOkIE("nLogin", "1", tIMe() + 3600)
@@ -74,7 +74,7 @@ sESsIOn("adminusername") = b
 sESsIOn("adminId") = rS("Id")
 sESsIOn("DB_PREFIX") = dB_pREfIX
 d = "addDateTime='" & rS("UpDateTime") & "',UpDateTime='" & nOW() & "',RegIP='" & nOW() & "',UpIP='" & gETiP() & "'"
-cONn.eXEcUTe("update "& dB_pREfIX &"admin set " & d & " where id=" & rS("id"))
+cONn.eXEcUTe("update " & dB_pREfIX & "admin set " & d & " where id=" & rS("id"))
 cALl rW(gETmSG1("µ«¬º≥…π¶£¨’˝‘⁄Ω¯»Î∫ÛÃ®...", "?act=adminIndex"))
 eND iF : rS.cLOsE
 eND sUB
@@ -89,8 +89,9 @@ dIM b
 b = gETfTExT(rOOt_PaTH & "adminIndex.html")
 b = rEPlACe(b, "{$adminusername$}", sESsIOn("adminusername"))
 b = rEPlACe(b, "{$frontView$}", "../" & eDItORtYPe & "web." & eDItORtYPe)
+b = rEPlACe(b, "{$EDITORTYPE$}", eDItORtYPe)
 b = rEPlACe(b, "{$Web_Title$}", cFG_WEbTItLE)
-b = rEPlACe(b, "{$DB_PREFIX$}", dB_pREfIX) 	
+b = rEPlACe(b, "{$DB_PREFIX$}", dB_pREfIX)
 cALl rW(b)
 eND sUB
 sUB dISpALyMAnAGeHAnDLe(a)
@@ -103,119 +104,74 @@ c = rEQuESt("lableTitle")
 d = "order by sortrank asc"
 iF a = "Bidding" tHEn
 d = "order by nComputerSearch desc"
-eLSeIF iNStR("|TableComment|","|"& a &"|")>0 tHEn
+eLSeIF iNStR("|TableComment|", "|" & a & "|") > 0 tHEn
 d = " order by adddatetime desc"
-eLSeIF iNStR("|Admin|","|"& a &"|")>0 tHEn
+eLSeIF iNStR("|WebsiteStat|", "|" & a & "|") > 0 tHEn
+d = " order by viewdatetime desc"
+eLSeIF iNStR("|Admin|", "|" & a & "|") > 0 tHEn
 d = ""
 eND iF
 cALl dISpALyMAnAGe(a, c, "*", b, d)
 eND sUB
-sUB aDDeDItHAnDLe(a)
+sUB aDDeDItHAnDLe(a, b)
 iF a = "Admin" tHEn
-cALl aDDeDItDIsPLaY(a, "π‹¿Ì‘±", "")
+cALl aDDeDItDIsPLaY(a, b, "")
 eLSeIF a = "WebSite" tHEn
-cALl aDDeDItDIsPLaY(a, "’æµ„≈‰÷√", "webdescription,websitebottom|textarea2")
+cALl aDDeDItDIsPLaY(a, b, "webdescription,websitebottom|textarea2")
 eLSeIF a = "ArticleDetail" tHEn
-cALl aDDeDItDIsPLaY(a, "∑÷¿‡–≈œ¢", "sortrank||0,simpleintroduction|textarea1,bodycontent|textarea2")
+cALl aDDeDItDIsPLaY(a, b, "sortrank||0,simpleintroduction|textarea1,bodycontent|textarea2")
 eLSeIF a = "WebColumn" tHEn
-cALl aDDeDItDIsPLaY(a, "Õ¯’æ¿∏ƒø", "npagesize|numb|10,sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2")
+cALl aDDeDItDIsPLaY(a, b, "npagesize|numb|10,sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2")
 eLSeIF a = "OnePage" tHEn
-cALl aDDeDItDIsPLaY(a, "µ•“≥", "sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2")
+cALl aDDeDItDIsPLaY(a, b, "sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2")
 eLSeIF a = "TableComment" tHEn
-cALl aDDeDItDIsPLaY(a, "∆¿¬€", "reply|textarea2,bodycontent|textarea2")
+cALl aDDeDItDIsPLaY(a, b, "reply|textarea2,bodycontent|textarea2")
 eLSeIF a = "WebLayout" tHEn
-cALl aDDeDItDIsPLaY(a, "Õ¯’æ≤ºæ÷", "sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2,actioncontent|textarea2")
+cALl aDDeDItDIsPLaY(a, b, "sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2,actioncontent|textarea2")
 eLSeIF a = "WebModule" tHEn
-cALl aDDeDItDIsPLaY(a, "Õ¯’æƒ£øÈ", "sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2")
+cALl aDDeDItDIsPLaY(a, b, "sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2")
+eLSe
+cALl aDDeDItDIsPLaY(a, b, "")
 eND iF
 eND sUB
-sUB sAVeADdEDiTHaNDlE(a)
+sUB sAVeADdEDiTHaNDlE(a, b)
 iF a = "Admin" tHEn
-cALl sAVeADdEDiT(a, "Õ¯’æƒ£øÈ", "username,pseudonym,pwd|md5")
+cALl sAVeADdEDiT(a, b, "username,pseudonym,pwd|md5")
 eLSeIF a = "WebSite" tHEn
-cALl sAVeADdEDiT(a, "’æµ„≈‰÷√", "flags,websiteurl,webtemplate,webimages,webcss,webjs,webtitle,webkeywords,webdescription,websitebottom")
+cALl sAVeADdEDiT(a, b, "flags,websiteurl,webtemplate,webimages,webcss,webjs,webtitle,webkeywords,webdescription,websitebottom")
 eLSeIF a = "ArticleDetail" tHEn
-cALl sAVeADdEDiT(a, "∑÷¿‡–≈œ¢", "relatedtags,labletitle,target,nofollow|numb|0,isonhtml|numb|0,parentid,title,foldername,filename,customaurl,smallimage,bigimage,author,sortrank||0,flags,webtitle,webkeywords,webdescription,bannerimage,simpleintroduction,bodycontent,titlecolor")
+cALl sAVeADdEDiT(a, b, "relatedtags,labletitle,target,nofollow|numb|0,isonhtml|numb|0,parentid,title,foldername,filename,customaurl,smallimage,bigimage,author,sortrank||0,flags,webtitle,webkeywords,webdescription,bannerimage,simpleintroduction,bodycontent,titlecolor,noteinfo")
 eLSeIF a = "WebColumn" tHEn
-cALl sAVeADdEDiT(a, "Õ¯’æ¿∏ƒø", "npagesize|numb|10,labletitle,target,nofollow|numb|0,isonhtml|numb|0,columntype,parentid,columnname,columnenname,foldername,filename,customaurl,sortrank||0,webtitle,webkeywords,webdescription,showtitle,flags,simpleintroduction,bodycontent")
+cALl sAVeADdEDiT(a, b, "npagesize|numb|10,labletitle,target,nofollow|numb|0,isonhtml|numb|0,columntype,parentid,columnname,columnenname,foldername,filename,customaurl,sortrank||0,webtitle,webkeywords,webdescription,showtitle,flags,simpleintroduction,bodycontent,noteinfo")
 eLSeIF a = "OnePage" tHEn
-cALl sAVeADdEDiT(a, "µ•“≥", "labletitle,target,nofollow|numb|0,isonhtml|numb|0,title,displaytitle,foldername,filename,customaurl,webtitle,webkeywords,webdescription,simpleintroduction,bodycontent")
+cALl sAVeADdEDiT(a, b, "labletitle,target,nofollow|numb|0,isonhtml|numb|0,title,displaytitle,foldername,filename,customaurl,webtitle,webkeywords,webdescription,simpleintroduction,bodycontent,noteinfo")
 eLSeIF a = "TableComment" tHEn
-cALl sAVeADdEDiT(a, "∆¿¬€", "through|numb|0,reply,bodycontent")
+cALl sAVeADdEDiT(a, b, "through|numb|0,reply,bodycontent")
 eLSeIF a = "WebLayout" tHEn
-cALl sAVeADdEDiT(a, "Õ¯’æ≤ºæ÷", "layoutlist,layoutname,sortrank|numb,isdisplay|yesno,simpleintroduction,bodycontent,actioncontent,replacestyle")
+cALl sAVeADdEDiT(a, b, "layoutlist,layoutname,sortrank|numb,isdisplay|yesno,simpleintroduction,bodycontent,actioncontent,replacestyle")
 eLSeIF a = "WebModule" tHEn
-cALl sAVeADdEDiT(a, "Õ¯’æƒ£øÈ", "modulename,moduletype,sortrank|numb,simpleintroduction,bodycontent")
+cALl sAVeADdEDiT(a, b, "modulename,moduletype,sortrank|numb,simpleintroduction,bodycontent")
+eLSeIF a = "WebsiteStat" tHEn
+cALl sAVeADdEDiT(a, b, "visiturl,viewurl,browser,operatingsystem,screenwh,moreinfo,viewdatetime|date,ip,dateclass,noteinfo")
 eND iF
 eND sUB
-sUB dISpLAyLAyOUt()
-dIM b, c
-c = rEQuESt("lableTitle")
-cALl lOAdWEbCOnFIg()
-b = gETfTExT(rOOt_PaTH & rEQuESt("templateFile"))
-b = rEPlACe(b, "{$Web_Title$}", cFG_WEbTItLE)
-b = rEPlACe(b, "{$position$}", rEQuESt("lableTitle"))
-iF c = "…˙≥…Robots" tHEn
-b = rEPlACe(b, "[$bodycontent$]", gETfTExT("/robots.txt"))
-eLSeIF c = "ƒ£∞Âπ‹¿Ì" tHEn
-b=dISpLAyTEmPLaTEsLIsT(b)
-eND iF
-cALl rW(b)
-eND sUB
-fUNcTIoN dISpLAyTEmPLaTEsLIsT(a)
-dIM b,c,d,e,f,g,h,i
-dIM j
-cALl lOAdWEbCOnFIg()
-e = gETsTRcUT(a, "[list]", "[/list]", 2)
-j=sPLiT("/Templates/|/Templates2015/|/Templates2016/","|")
-fOR eACh b iN j
-iF b<>"" tHEn
-f=gETdIRfOLdERnAMeLIsT(b)
-g=sPLiT(f,vBCrLF)
-fOR eACh d iN g
-iF d <>"" aND iNStR("#_",lEFt(d,1))=fALsE tHEn
-c=b & d & "/"
-h=e
-iF cFG_WEbTEmPLaTE=c tHEn
-d=rEPlACe(d,d, "<font color=red>"& d &"</font>")
-h=rEPlACe(h,"∆Ù”√</a>","</a>")	
-eND iF
-h = rEPlACeVAlUEpARaM(h, "templatepath", c)
-h = rEPlACeVAlUEpARaM(h, "templatename", d)
-i=i & h & vBCrLF
-eND iF
-nEXt
-eND iF
-nEXt
-a = rEPlACe(a, "[list]" & e & "[/list]", i)
-dISpLAyTEmPLaTEsLIsT=a
-eND fUNcTIoN
-fUNcTIoN iSOpENtEMpLAtE()
-dIM b,c,d,e
-b=rEQuESt("templatePath")
-c=rEQuESt("templateName")
-d="webtemplate='"& b &"',webimages='"& b &"Images/'"
-d=d & ",webcss='"& b &"css/',webjs='"& b &"Js/'"
-cONn.eXEcUTe("update "& dB_pREfIX &"website set " & d)
-e = "?act=displayLayout&templateFile=manageTemplates.html&lableTitle=ƒ£∞Âπ‹¿Ì"
-cALl rW(gETmSG1("∆Ù”√ƒ£∞Â≥…π¶£¨’˝‘⁄Ω¯»Îƒ£∞Âπ‹¿ÌΩÁ√Ê...", e))
-eND fUNcTIoN
 cALl oPEnCOnN()
 sELeCT cASe rEQuESt("act")
-cASe "dispalyManageHandle" : dISpALyMAnAGeHAnDLe(rEQuESt("actionType"))
-cASe "addEditHandle" : aDDeDItHAnDLe(rEQuESt("actionType"))
-cASe "saveAddEditHandle" : sAVeADdEDiTHaNDlE(rEQuESt("actionType"))
+cASe "dispalyManageHandle" : cALl dISpALyMAnAGeHAnDLe(rEQuESt("actionType"))
+cASe "addEditHandle" : cALl aDDeDItHAnDLe(rEQuESt("actionType"), rEQuESt("lableTitle"))
+cASe "saveAddEditHandle" : cALl sAVeADdEDiTHaNDlE(rEQuESt("actionType"), rEQuESt("lableTitle"))
 cASe "delHandle" : cALl dEL(rEQuESt("actionType"), rEQuESt("lableTitle"))
-cASe "sortHandle" : sORtHAnDLe(rEQuESt("actionType"))
+cASe "sortHandle" : cALl sORtHAnDLe(rEQuESt("actionType"))
 cASe "displayLayout" : dISpLAyLAyOUt()
 cASe "saveRobots" : sAVeRObOTs()
 cASe "saveSiteMap" : sAVeSItEMaP()
 cASe "isOpenTemplate" : iSOpENtEMpLAtE()
+cASe "updateWebsiteStat" : uPDaTEwEBsITeSTaT()
 cASe "setAccess" : hANdLErESeTAcCEsSDaTA()
 cASe "login" : lOGiN()
 cASe "adminOut" : aDMiNOuT()
 cASe "adminIndex" : aDMiNInDEx()
 cASe eLSe : dISpLAyADmINlOGiN()
 eND sELeCT
-%>
+%>         
 

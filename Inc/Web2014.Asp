@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-01
+'创建：2016-02-03
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -419,7 +419,7 @@ cALl eCHo("sitemap.xml文档","<a href='/sitemap.xml' target='_blank'>sitemap.xml<
 eND sUB
 fUNcTIoN wEBsTAt(a)
 dIM b, c, d
-dIM e, f, g, h, i, j, k, l, m, n
+dIM e, f, g, h, i, j, k, l, m, n ,o
 f = rEQuESt.sERvERvARiABlES("HTTP_REFERER")
 e = "http://" & rEQuESt.sERvERvARiABlES("HTTP_HOST") & rEQuESt.sERvERvARiABlES("SCRIPT_NAME")
 g = rEQuESt.sERvERvARiABlES("QUERY_STRING")
@@ -443,7 +443,7 @@ h = "来访" & f & vBCrLF
 h = h & "当前：" & e & vBCrLF
 h = h & "时间：" & b & vBCrLF
 h = h & "IP:" & gETiP() & vBCrLF
-h = h & "IE:" & m & vBCrLF
+h = h & "IE:" & gETbRTyPE("") & vBCrLF
 h = h & "Cookies=" & l & vBCrLF
 h = h & "XP=" & n & vBCrLF
 h = h & "Screen=" & rEQuESt("screen") & vBCrLF
@@ -457,4 +457,5 @@ h = rEPlACe(h, """", "\""")
 wEBsTAt = h
 eND fUNcTIoN
 %>
+
 

@@ -99,7 +99,7 @@
                <ul class="list">
                 <sPAn class="testhidde">{$DetailList columnname='作品欣赏'  topnumb='8' addsql=' order by id asc' default='[_2016年01月15日 作品欣赏]'$}</sPAn>
                 <!--#[_2016年01月15日 作品欣赏]
-                [list]<li><a href="[$url$]" title="[$title$]" target="[$target$]">[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                [list]<li><a href="[$url$]" title="[$title$]" target="[$target$]" [$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
                 [/list]
                 #-->
               </ul>
@@ -120,7 +120,7 @@
         <ul class="columnbox">
             <li class="title">最新下载</li>
             <li class="content">
-                <a class="corepackage" href="https://github.com/313801120/AspToPhp" target="_blank">Github下载AspToPhp</a> 
+<sPAn class="testhidde">{$MainInfo title='最新下载' default='没有最新公告' fieldname='bodycontent' $}</sPAn>
             </li>
         </ul>
         <ul class="columnbox">

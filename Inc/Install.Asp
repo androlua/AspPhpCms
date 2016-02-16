@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-02
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -12,11 +12,11 @@
 <%
 dIM oBJaCCeSS : sET oBJaCCeSS = nEW cLAsSAcCEsS
 sELeCT cASe rEQuESt("act")
-cASe "Web", "web" : mDBpATh = "../Admin/Data/Data.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.wEBdATa()
-cASe "addwebtable" : mDBpATh = "../Admin/Data/Data.mdb" : cALl oPEnCOnN() :cALl oBJaCCeSS.wEBdATa()
+cASe "Web", "web" : mDBpATh = ".."& aDMiNDiR &"Data/Data.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.wEBdATa()
+cASe "addwebtable" : mDBpATh = ".."& aDMiNDiR &"Data/Data.mdb" : cALl oPEnCOnN() :cALl oBJaCCeSS.wEBdATa()
 cASe "CreateRemoteSqlServerDatabase" : cALl cREaTErEMoTEsQLsERvERdATaBAsE()
 cASe "QQ", "qq", "Qq" : mDBpATh = "../Help/QQData.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.qQAcCEsS()
-cASe "AdminLog" : mDBpATh = "../Admin/Data/AdminLog.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.aDMiNLoG()
+cASe "AdminLog" : mDBpATh = ".."& aDMiNDiR &"Data/AdminLog.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.aDMiNLoG()
 cASe "AskDa" : mDBpATh = "../../网站备份/数据库/AskDa.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.aSKdAAcCEsS()
 cASe "ZNRobot" : mDBpATh = "../../网站备份/数据库/ZNRobot.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.zNRoBOtACcESs()
 cASe "ComputerDir" : mDBpATh = "../../网站备份/数据库/ComputerDir.mdb" : cALl oBJaCCeSS.dEFaULtDIsPLaY() : cALl oBJaCCeSS.cOMpUTeRDiR()
@@ -109,6 +109,7 @@ sQL = sQL & "isHtml YesNo Default false,"
 sQL = sQL & "isOnHtml YesNo Default Yes,"                                 	
 sQL = sQL & "addDateTime DateTime Default Now(),"
 sQL = sQL & "upDateTime DateTime Default Date(),"
+sQL = sQL & "noteInfo Text Default """","
 sQL = sQL & "simpleIntroduction Text Default """","
 sQL = sQL & "bodyContent Text Default """")"
 iF mDBpATh = "" tHEn sQL = hANdLEsQLsERvER(sQL)
@@ -175,6 +176,7 @@ sQL = sQL & "LeftModule VarChar Default """","
 sQL = sQL & "MiddleModule VarChar Default """","
 sQL = sQL & "RightModule VarChar Default """","
 sQL = sQL & "CustomAUrl VarChar Default """","
+sQL = sQL & "noteInfo Text Default """","
 sQL = sQL & "simpleIntroduction Text Default """","
 sQL = sQL & "bodyContent Text Default """")"
 iF mDBpATh = "" tHEn sQL = hANdLEsQLsERvER(sQL)
@@ -213,6 +215,7 @@ sQL = sQL & "MiddleModule VarChar Default """","
 sQL = sQL & "RightModule VarChar Default """","
 sQL = sQL & "HelpText Text Default """","
 sQL = sQL & "customAUrl VarChar Default """","
+sQL = sQL & "noteInfo Text Default """","
 sQL = sQL & "simpleIntroduction Text Default """","
 sQL = sQL & "bodyContent Text Default """")"
 iF mDBpATh = "" tHEn sQL = hANdLEsQLsERvER(sQL)
@@ -232,8 +235,29 @@ sQL = sQL & "Tel VarChar Default """","
 sQL = sQL & "ip VarChar Default """","
 sQL = sQL & "addDateTime DateTime Default Now(),"
 sQL = sQL & "upDateTime DateTime Default Date(),"
-sQL = sQL & "Reply Text,"
+sQL = sQL & "Reply Text Default """","
+sQL = sQL & "noteInfo Text Default """","
 sQL = sQL & "Through Int Default 0,"
+sQL = sQL & "bodyContent Text Default """")"
+iF mDBpATh = "" tHEn sQL = hANdLEsQLsERvER(sQL)
+cONn.eXEcUTe sQL
+eND iF
+tABlENaME = dB_pREfIX & "WebsiteStat"
+iF sHOwIStABlE(tABlENaME) = fALsE tHEn
+sQL = "Create Table " & tABlENaME & " (Id int Identity(0,1) Primary Key,"
+sQL = sQL & "visiturl VarChar Default """","
+sQL = sQL & "viewurl VarChar Default """","
+sQL = sQL & "browser VarChar Default """","
+sQL = sQL & "operatingSystem VarChar Default """","
+sQL = sQL & "screenWH VarChar Default """","
+sQL = sQL & "moreInfo VarChar Default """","
+sQL = sQL & "viewDateTime DateTime Default Now(),"
+sQL = sQL & "ip VarChar Default """","
+sQL = sQL & "dateClass VarChar Default """","
+sQL = sQL & "addDateTime DateTime Default Now(),"
+sQL = sQL & "upDateTime DateTime Default Date(),"
+sQL = sQL & "Through Int Default 0,"
+sQL = sQL & "noteInfo Text Default """","
 sQL = sQL & "bodyContent Text Default """")"
 iF mDBpATh = "" tHEn sQL = hANdLEsQLsERvER(sQL)
 cONn.eXEcUTe sQL
@@ -1832,4 +1856,5 @@ eND iF
 eND sUB
 eND cLAsS
 %>
+
 

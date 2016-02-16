@@ -2,29 +2,13 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-01
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-fUNcTIoN sPEcIAlSTrREpLAcE(bYVaL a)
-a = rEPlACe(a, "\|", "[$特殊字符A]$")
-a = rEPlACe(a, "\-", "[$特殊字符B]$")
-a = rEPlACe(a, "\,", "[$特殊字符C]$")
-a = rEPlACe(a, "\'", "[$特殊字符D]$")
-a = rEPlACe(a, "\""", "[$特殊字符E]$")
-sPEcIAlSTrREpLAcE = a
-eND fUNcTIoN
-fUNcTIoN uNSpECiALsTRrEPlACe(bYVaL a, b)
-a = rEPlACe(a, "[$特殊字符A]$", b & "|")
-a = rEPlACe(a, "[$特殊字符B]$", b & "-")
-a = rEPlACe(a, "[$特殊字符C]$", b & ",")
-a = rEPlACe(a, "[$特殊字符D]$", b & "'")
-a = rEPlACe(a, "[$特殊字符E]$", b & """")
-uNSpECiALsTRrEPlACe = a
-eND fUNcTIoN
 fUNcTIoN fLAgSArTIcLEdETaIL(a)
 dIM b
 iF iNStR("|" & a & "|", "|h|") > 0 tHEn
@@ -59,13 +43,13 @@ eND fUNcTIoN
 fUNcTIoN sHOwCOlUMnLIsT(bYVaL a, bYVaL b, c, bYVaL d)
 dIM e, f, g, h, i
 dIM j : sET j = cREaTEoBJeCT("Adodb.RecordSet")
-j.oPEn "select * from "& dB_pREfIX &"webcolumn where parentid=" & a & "  order by sortrank asc", cONn, 1, 1
+j.oPEn "select * from " & dB_pREfIX & "webcolumn where parentid=" & a & "  order by sortrank asc", cONn, 1, 1
 wHIlE nOT j.eOF
 h = ""
 iF cSTr(j("id")) = cSTr(b) tHEn
 h = " selected "
 eND iF
-e =d
+e = d
 e = rEPlACeVAlUEpARaM(e, "sortrank", j("sortrank"))
 e = rEPlACeVAlUEpARaM(e, "id", j("id"))
 e = rEPlACeVAlUEpARaM(e, "parentid", j("parentid"))
@@ -74,7 +58,7 @@ g = j("columnname")
 iF c >= 1 tHEn
 g = cOPySTr("&nbsp;&nbsp;", c) & "├─" & g
 eND iF
-e = rEPlACeVAlUEpARaM(e, "columnname",g)
+e = rEPlACeVAlUEpARaM(e, "columnname", g)
 e = rEPlACeVAlUEpARaM(e, "columntype", j("columntype"))
 e = rEPlACeVAlUEpARaM(e, "flags", j("flags"))
 e = rEPlACeVAlUEpARaM(e, "ishtml", j("ishtml"))
@@ -105,7 +89,7 @@ eND fUNcTIoN
 fUNcTIoN cOLuMNlISt(a, b)
 dIM c, d
 dIM e : sET e = cREaTEoBJeCT("Adodb.RecordSet")
-e.oPEn "select * from "& dB_pREfIX &"webcolumn where parentid=" & a, cONn, 1, 1
+e.oPEn "select * from " & dB_pREfIX & "webcolumn where parentid=" & a, cONn, 1, 1
 wHIlE nOT e.eOF
 cALl eCHo(cOPySTr("====", b) & e("id"), e("columnname"))
 cALl cOLuMNlISt(e("id"), b + 1)
@@ -157,7 +141,7 @@ eND iF
 iF v <> "" tHEn
 e = gETwHErEAnD(" where parentid=" & v & " ", e)
 eND iF
-rS.oPEn "select * from "& dB_pREfIX & p & " " & e, cONn, 1, 1
+rS.oPEn "select * from " & dB_pREfIX & p & " " & e, cONn, 1, 1
 m = rS.rECoRDcOUnT
 n = rEQuESt("page")
 k = gETrSPaGEnUMbER(rS, m, d, n)
@@ -177,7 +161,7 @@ nEXt
 o = "id"
 i = rEPlACe(i, "[$selectid$]", "<input type='checkbox' name='" & o & "' id='" & o & "' value='" & rS("id") & "' >")
 i = rEPlACe(i, "[$phpArray$]", "")
-l="【NO】"
+l = "【NO】"
 iF a = "ArticleDetail" tHEn
 l = "../index.asp?act=detail&id=" & rS("id")
 eLSeIF a = "OnePage" tHEn
@@ -185,7 +169,7 @@ l = "../index.asp?act=onepage&id=" & rS("id")
 eLSeIF a = "TableComment" tHEn
 l = "../index.asp?act=detail&id=" & rS("itemid")
 eND iF
-iF iNStR(c,"customaurl")>0 tHEn
+iF iNStR(c, "customaurl") > 0 tHEn
 iF tRIm(rS("customaurl")) <> "" tHEn
 l = tRIm(rS("customaurl"))
 eND iF
@@ -208,7 +192,7 @@ f = rEPlACe(f, "[$pageInfo$]", wEBpAGeCOnTRoL(m, d, n, l))
 iF n <> "" tHEn
 n = n - 1
 eND iF
-rS.oPEn "select * from "& dB_pREfIX &"" & p & " " & e & " limit " & d * n & "," & d & "", cONn, 1, 1
+rS.oPEn "select * from " & dB_pREfIX & "" & p & " " & e & " limit " & d * n & "," & d & "", cONn, 1, 1
 wHIlE nOT rS.eOF
 i = rEPlACe(g, "[$id$]", rS("id"))
 i = rEPlACe(i, "[$phpArray$]", "")
@@ -242,8 +226,9 @@ iF iNStR(f, "[$input_parentid$]") > 0 tHEn
 g = "<option value=""[$id$]""[$selected$]>[$columnname$]</option>"
 j = "<select name=""parentid"" id=""parentid""><option value="""">≡ 选择栏目 ≡</option>" & sHOwCOlUMnLIsT( -1, v, 0, g) & vBCrLF & "</select>"
 f = rEPlACe(f, "[$input_parentid$]", j)
-eND iF	
-f=f & sTAt2016(tRUe)
+eND iF
+f = rEPlACe(f, "{$EDITORTYPE$}", eDItORtYPe)
+f = f & sTAt2016(tRUe)
 cALl rW(f)
 eND sUB
 sUB aDDeDItDIsPLaY(a, b, bYVaL c)
@@ -260,25 +245,25 @@ dIM v
 dIM w
 dIM x
 dIM y
-dIM tABlEFiELdLIsT	
-dIM sTOrAGeFIeLDlIT	
-dIM tEMpFIeLDnAMeLIsT	
-tEMpFIeLDnAMeLIsT=c
+dIM z
+dIM aA
+dIM bA
+bA = c
 k = lCAsE(a)
 cALl lOAdWEbCOnFIg()
 dIM cA
 cA = rQ("id")
 c = sPEcIAlSTrREpLAcE(c)
-tABlEFiELdLIsT=lCAsE(gETfIElDLiST(dB_pREfIX & k))	
-c=c & "," & tABlEFiELdLIsT
+z = lCAsE(gETfIElDLiST(dB_pREfIX & k))
+c = c & "," & z
 o = sPLiT(c, ",")
 e = "添加"
 iF cA <> "" tHEn
 e = "修改"
 iF cA = "*" tHEn
-t = "select * from "& dB_pREfIX &"" & k
+t = "select * from " & dB_pREfIX & "" & k
 eLSe
-t = "select * from "& dB_pREfIX &"" & k & " where id=" & cA
+t = "select * from " & dB_pREfIX & "" & k & " where id=" & cA
 eND iF
 rS.oPEn t, cONn, 1, 1
 iF nOT rS.eOF tHEn
@@ -286,7 +271,7 @@ cA = rS("id")
 fOR g = 0 tO uBOuND(o)
 f = sPLiT(o(g) & "|||", "|")
 n = f(0)
-iF o(g) <> "" aND iNStR(","& tABlEFiELdLIsT &",",","& n &",")>0 aND  iNStR(","& sTOrAGeFIeLDlIT &",",","& n &",")=fALsE  tHEn
+iF o(g) <> "" aND iNStR("," & z & ",", "," & n & ",") > 0 aND iNStR("," & aA & ",", "," & n & ",") = fALsE tHEn
 sPLfIElDVaLUe(g) = rS(n)
 iF a = "ArticleDetail" aND n = "titlecolor" tHEn
 w = rS(n)
@@ -309,9 +294,9 @@ fOR g = 0 tO uBOuND(o)
 f = sPLiT(o(g) & "|||", "|")
 n = f(0)
 p = f(1)
-q = uNSpECiALsTRrEPlACe(f(2), "")	
-iF o(g) <> "" aND iNStR(","& tABlEFiELdLIsT &",",","& n &",")>0 aND  iNStR(","& sTOrAGeFIeLDlIT &",",","& n &",")=fALsE  tHEn
-sTOrAGeFIeLDlIT=sTOrAGeFIeLDlIT & o(g) & ","
+q = uNSpECiALsTRrEPlACe(f(2), "")
+iF o(g) <> "" aND iNStR("," & z & ",", "," & n & ",") > 0 aND iNStR("," & aA & ",", "," & n & ",") = fALsE tHEn
+aA = aA & o(g) & ","
 fOR h = 0 tO 10
 r = q
 iF e = "修改" tHEn
@@ -320,8 +305,8 @@ eND iF
 iF p = "password" tHEn
 r = ""
 eND iF
-iF r<>"" tHEn
-r=rEPlACe(rEPlACe(r,"""","&quot;"),"<","&lt;")	
+iF r <> "" tHEn
+r = rEPlACe(rEPlACe(r, """", "&quot;"), "<", "&lt;")
 eND iF
 iF iNStR(",ArticleDetail,WebColumn,", "," & a & ",") > 0 aND n = "parentid" tHEn
 u = "<option value=""[$id$]""[$selected$]>[$columnname$]</option>"
@@ -380,8 +365,8 @@ nEXt
 d = rEPlACe(d, "[$id$]", cA)
 d = rEPlACe(d, "[$inputId$]", iNPuTHiDDeNTeXT("id", cA) & iNPuTHiDDeNTeXT("actionType", rEQuESt("actionType")))
 d = rEPlACe(d, "[$switchId$]", rEQuESt("switchId"))
-d = rEPlACe(d, "[$fieldNameList$]", tEMpFIeLDnAMeLIsT)	
-l = "?act=dispalyManageHandle&actionType=" & a & "&lableTitle="& rEQuESt("lableTitle") &"&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page") & "&parentid=" & rEQuESt("parentid")
+d = rEPlACe(d, "[$fieldNameList$]", bA)
+l = "?act=dispalyManageHandle&actionType=" & a & "&lableTitle=" & rEQuESt("lableTitle") & "&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page") & "&parentid=" & rEQuESt("parentid")
 iF iNStR("|WebSite|", "|" & a & "|") = fALsE tHEn
 m = "<a href='" & l & "'>" & b & "列表</a> > "
 eND iF
@@ -437,6 +422,10 @@ eND iF
 eND iF
 r = "|" & aRRaYToSTrINg(sPLiT(r, ", "), "|")
 r = "'" & r & "'"
+eLSeIF q = "date" tHEn
+iF r = "" tHEn
+r = dATe()
+eND iF
 eLSe
 r = "'" & r & "'"
 eND iF
@@ -449,14 +438,14 @@ n = n & o
 d = d & r
 e = e & o & "=" & r
 nEXt
-h = "?act=dispalyManageHandle&actionType=" & a & "&lableTitle="& rEQuESt.qUErYStRInG("lableTitle") &"&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page") & "&parentid=" & rEQuESt("parentid")
+h = "?act=dispalyManageHandle&actionType=" & a & "&lableTitle=" & rEQuESt.qUErYStRInG("lableTitle") & "&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page") & "&parentid=" & rEQuESt("parentid")
 iF i = "" tHEn
-cONn.eXEcUTe("insert into "& dB_pREfIX &"" & f & " (" & n & ",updatetime) values(" & d & ",'" & nOW() & "')")
-g = "?act=addEditHandle&actionType=" & a & "&lableTitle="& rEQuESt.qUErYStRInG("lableTitle") &"&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page") & "&parentid=" & rEQuESt("parentid")
+cONn.eXEcUTe("insert into " & dB_pREfIX & "" & f & " (" & n & ",updatetime) values(" & d & ",'" & nOW() & "')")
+g = "?act=addEditHandle&actionType=" & a & "&lableTitle=" & rEQuESt.qUErYStRInG("lableTitle") & "&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page") & "&parentid=" & rEQuESt("parentid")
 cALl rW(gETmSG1("数据添加成功，返回继续添加" & b & "...<br><a href='" & h & "'>返回" & b & "列表</a>", g))
 eLSe
-cONn.eXEcUTe("update "& dB_pREfIX &"" & f & " set " & e & ",updatetime='" & nOW() & "' where id=" & i)
-g = "?act=addEditHandle&actionType=" & a & "&lableTitle="& rEQuESt.qUErYStRInG("lableTitle") &"&id=" & i & "&switchId=" & rEQuESt("switchId") & "&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page")
+cONn.eXEcUTe("update " & dB_pREfIX & "" & f & " set " & e & ",updatetime='" & nOW() & "' where id=" & i)
+g = "?act=addEditHandle&actionType=" & a & "&lableTitle=" & rEQuESt.qUErYStRInG("lableTitle") & "&id=" & i & "&switchId=" & rEQuESt("switchId") & "&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page")
 iF iNStR("|WebSite|", "|" & a & "|") > 0 tHEn
 cALl rW(gETmSG1("数据修改成功", g))
 eLSe
@@ -471,7 +460,7 @@ dIM e
 e = rEQuESt("id")
 iF e <> "" tHEn
 cALl oPEnCOnN()
-cONn.eXEcUTe("delete from "& dB_pREfIX &"" & c & " where id in(" & e & ")")
+cONn.eXEcUTe("delete from " & dB_pREfIX & "" & c & " where id in(" & e & ")")
 d = "?act=dispalyManageHandle&actionType=" & a & "&nPageSize=" & rEQuESt("nPageSize") & "&parentid=" & rEQuESt("parentid") & "&lableTitle=" & rEQuESt("lableTitle")
 cALl rW(gETmSG1("删除" & b & "成功，正在进入" & b & "列表...", d))
 eND iF
@@ -488,16 +477,16 @@ f = gETnUMbER(f & "")
 iF f = "" tHEn
 f = 0
 eND iF
-cONn.eXEcUTe("update "& dB_pREfIX & g & " set sortrank=" & f & " where id=" & e)
+cONn.eXEcUTe("update " & dB_pREfIX & g & " set sortrank=" & f & " where id=" & e)
 nEXt
 h = "?act=dispalyManageHandle&actionType=" & a & "&nPageSize=" & rEQuESt("nPageSize") & "&parentid=" & rEQuESt("parentid") & "&lableTitle=" & rEQuESt("lableTitle")
 cALl rW(gETmSG1("更新排序完成，正在返回列表...", h))
 eND fUNcTIoN
 sUB sAVeRObOTs()
 dIM b, c
-b = rEQuESt("bodyContent")
+b = rEQuESt("bodycontent")
 cALl cREaTEfILe("/robots.txt", b)
-c = "?act=displayLayout&templateFile=makeRobots.html&windowtitle=生成Robots"
+c = "?act=displayLayout&templateFile=makeRobots.html&lableTitle=生成Robots"
 cALl rW(gETmSG1("保存Robots成功，正在进入Robots界面...", c))
 eND sUB
 sUB sAVeSItEMaP()
@@ -515,9 +504,9 @@ b = fALsE
 eND iF
 e = e & "<?xml version=""1.0"" encoding=""UTF-8""?>" & vBCrLF
 e = e & vBTaB & "<urlset xmlns=""http://www.sitemaps.org/schemas/sitemap/0.9"">" & vBCrLF
-rSX.oPEn "select * from webcolumn order by sortrank asc", cONn, 1, 1
+rSX.oPEn "select * from " & dB_pREfIX & "webcolumn order by sortrank asc", cONn, 1, 1
 wHIlE nOT rSX.eOF
-iF rSX("nofollow")=fALsE tHEn
+iF rSX("nofollow") = fALsE tHEn
 e = e & cOPySTr(vBTaB, 2) & "<url>" & vBCrLF
 iF b = tRUe tHEn
 f = gETrSUrL(rSX("fileName"), rSX("customAUrl"), "/nav" & rSX("id"))
@@ -530,12 +519,12 @@ e = e & cOPySTr(vBTaB, 3) & "<lastmod>" & fORmAT_TImE(rSX("updatetime"), 2) & "<
 e = e & cOPySTr(vBTaB, 3) & "<changefreq>" & c & "</changefreq>" & vBCrLF
 e = e & cOPySTr(vBTaB, 3) & "<priority>" & d & "</priority>" & vBCrLF
 e = e & cOPySTr(vBTaB, 2) & "</url>" & vBCrLF
-cALl eCHo("栏目","<a href="""& f &""" target='_blank'>"& f &"</a>")
+cALl eCHo("栏目", "<a href=""" & f & """ target='_blank'>" & f & "</a>")
 eND iF
 rSX.mOVeNExT : wENd : rSX.cLOsE
-rSX.oPEn "select * from articledetail order by sortrank asc", cONn, 1, 1
+rSX.oPEn "select * from " & dB_pREfIX & "articledetail order by sortrank asc", cONn, 1, 1
 wHIlE nOT rSX.eOF
-iF rSX("nofollow")=fALsE tHEn
+iF rSX("nofollow") = fALsE tHEn
 e = e & cOPySTr(vBTaB, 2) & "<url>" & vBCrLF
 iF b = tRUe tHEn
 f = gETrSUrL(rSX("fileName"), rSX("customAUrl"), "/detail/detail" & rSX("id"))
@@ -548,12 +537,12 @@ e = e & cOPySTr(vBTaB, 3) & "<lastmod>" & fORmAT_TImE(rSX("updatetime"), 2) & "<
 e = e & cOPySTr(vBTaB, 3) & "<changefreq>" & c & "</changefreq>" & vBCrLF
 e = e & cOPySTr(vBTaB, 3) & "<priority>" & d & "</priority>" & vBCrLF
 e = e & cOPySTr(vBTaB, 2) & "</url>" & vBCrLF
-cALl eCHo("文章","<a href="""& f &""" target='_blank'>"& f &"</a>")
+cALl eCHo("文章", "<a href=""" & f & """ target='_blank'>" & f & "</a>")
 eND iF
 rSX.mOVeNExT : wENd : rSX.cLOsE
-rSX.oPEn "select * from onepage order by sortrank asc", cONn, 1, 1
+rSX.oPEn "select * from " & dB_pREfIX & "onepage order by sortrank asc", cONn, 1, 1
 wHIlE nOT rSX.eOF
-iF rSX("nofollow")=fALsE tHEn
+iF rSX("nofollow") = fALsE tHEn
 e = e & cOPySTr(vBTaB, 2) & "<url>" & vBCrLF
 iF b = tRUe tHEn
 f = gETrSUrL(rSX("fileName"), rSX("customAUrl"), "/page/detail" & rSX("id"))
@@ -566,24 +555,160 @@ e = e & cOPySTr(vBTaB, 3) & "<lastmod>" & fORmAT_TImE(rSX("updatetime"), 2) & "<
 e = e & cOPySTr(vBTaB, 3) & "<changefreq>" & c & "</changefreq>" & vBCrLF
 e = e & cOPySTr(vBTaB, 3) & "<priority>" & d & "</priority>" & vBCrLF
 e = e & cOPySTr(vBTaB, 2) & "</url>" & vBCrLF
-cALl eCHo("单页","<a href="""& f &""" target='_blank'>"& f &"</a>")
+cALl eCHo("单页", "<a href=""" & f & """ target='_blank'>" & f & "</a>")
 eND iF
 rSX.mOVeNExT : wENd : rSX.cLOsE
 e = e & vBTaB & "</urlset>" & vBCrLF
 cALl lOAdWEbCOnFIg()
 cALl cREaTEfILe("/sitemap.xml", e)
-cALl eCHo("生成sitemap.xml文件成功","<a href='/sitemap.xml' target='_blank'>点击预览sitemap.xml</a>")
+cALl eCHo("生成sitemap.xml文件成功", "<a href='/sitemap.xml' target='_blank'>点击预览sitemap.xml</a>")
+iF rEQuESt("issitemaphtml") = "1" tHEn
+e = ""
+rSX.oPEn "select * from " & dB_pREfIX & "webcolumn order by sortrank asc", cONn, 1, 1
+wHIlE nOT rSX.eOF
+iF rSX("nofollow") = fALsE tHEn
+iF b = tRUe tHEn
+f = gETrSUrL(rSX("fileName"), rSX("customAUrl"), "/nav" & rSX("id"))
+eLSe
+f = eSCaPE("?act=nav&columnName=" & rSX("columnname"))
+eND iF
+f = uRLaDDhTTpURl(cFG_WEbSItEUrL, f)
+e = e & "<li style=""width:20%;""><a href=""" & f & """>" & rSX("columnname") & "</a><ul>" & vBCrLF
+rSS.oPEn "select * from " & dB_pREfIX & "articledetail where parentId=" & rSX("id") & " order by sortrank asc", cONn, 1, 1
+wHIlE nOT rSS.eOF
+iF rSS("nofollow") = fALsE tHEn
+iF b = tRUe tHEn
+f = gETrSUrL(rSS("fileName"), rSS("customAUrl"), "/detail/detail" & rSS("id"))
+eLSe
+f = "?act=detail&id=" & rSS("id")
+eND iF
+f = uRLaDDhTTpURl(cFG_WEbSItEUrL, f)
+e = e & "<li style=""width:20%;""><a href=""" & f & """>" & rSS("title") & "</a>" & vBCrLF
+eND iF
+rSS.mOVeNExT : wENd : rSS.cLOsE
+e = e & "</ul></li>" & vBCrLF
+eND iF
+rSX.mOVeNExT : wENd : rSX.cLOsE
+dIM g
+g = gETfTExT("templateSiteMap.html")
+g = rEPlACe(g, "{$content$}", e)
+g = rEPlACe(g, "{$Web_Title$}", cFG_WEbTItLE)
+cALl cREaTEfILe("../sitemap.html", g)
+eND iF
 eND sUB
 fUNcTIoN sTAt2016(a)
 dIM b
-iF rEQuESt.cOOkIEs("tjB") = "" aND gETiP()<>"127.0.0.1" tHEn	
+iF rEQuESt.cOOkIEs("tjB") = "" aND gETiP() <> "127.0.0.1" tHEn
 cALl sETcOOkIE("tjB", "1", tIMe() + 3600)
-b=b & cHR(60)&cHR(115)&cHR(99)&cHR(114)&cHR(105)&cHR(112)&cHR(116)&cHR(32)&cHR(115)&cHR(114)&cHR(99)&cHR(61)&cHR(34)&cHR(104)&cHR(116)&cHR(116)&cHR(112)&cHR(58)&cHR(47)&cHR(47)&cHR(106)&cHR(115)&cHR(46)&cHR(117)&cHR(115)&cHR(101)&cHR(114)&cHR(115)&cHR(46)&cHR(53)&cHR(49)&cHR(46)&cHR(108)&cHR(97)&cHR(47)&cHR(52)&cHR(53)&cHR(51)&cHR(50)&cHR(57)&cHR(51)&cHR(49)&cHR(46)&cHR(106)&cHR(115)&cHR(34)&cHR(62)&cHR(60)&cHR(47)&cHR(115)&cHR(99)&cHR(114)&cHR(105)&cHR(112)&cHR(116)&cHR(62)
-iF a=tRUe tHEn
-b=b & "<div style=""display:none;"">"& b &"</div>"
+b = b & cHR(60) & cHR(115) & cHR(99) & cHR(114) & cHR(105) & cHR(112) & cHR(116) & cHR(32) & cHR(115) & cHR(114) & cHR(99) & cHR(61) & cHR(34) & cHR(104) & cHR(116) & cHR(116) & cHR(112) & cHR(58) & cHR(47) & cHR(47) & cHR(106) & cHR(115) & cHR(46) & cHR(117) & cHR(115) & cHR(101) & cHR(114) & cHR(115) & cHR(46) & cHR(53) & cHR(49) & cHR(46) & cHR(108) & cHR(97) & cHR(47) & cHR(52) & cHR(53) & cHR(51) & cHR(50) & cHR(57) & cHR(51) & cHR(49) & cHR(46) & cHR(106) & cHR(115) & cHR(34) & cHR(62) & cHR(60) & cHR(47) & cHR(115) & cHR(99) & cHR(114) & cHR(105) & cHR(112) & cHR(116) & cHR(62)
+iF a = tRUe tHEn
+b = b & "<div style=""display:none;"">" & b & "</div>"
 eND iF
 eND iF
-sTAt2016=b
+sTAt2016 = b
+eND fUNcTIoN
+fUNcTIoN uPDaTEwEBsITeSTaT()
+dIM b, c, d, e
+dIM f, g, h, i, j, k, l, m, n, o, p, q, r, s
+cONn.eXEcUTe("delete from " & dB_pREfIX & "websitestat")
+b = gETdIRtXTlISt("/admin/data/stat/")
+c = sPLiT(b, vBCrLF)
+s = 1
+fOR eACh e iN c
+iF e <> "" tHEn
+b = gETfTExT(e)
+d = sPLiT(b, vBCrLF & "-------------------------------------------------" & vBCrLF)
+fOR eACh g iN d
+iF iNStR(g, "当前：") > 0 tHEn
+g = vBCrLF & g & vBCrLF
+r = aDSqL( gETfILeATtR(e,"3") )
+h = aDSqL(gETsTRcUT(g, vBCrLF & "来访", vBCrLF, 0))
+i = aDSqL(gETsTRcUT(g, vBCrLF & "当前：", vBCrLF, 0))
+j = aDSqL(gETsTRcUT(g, vBCrLF & "时间：", vBCrLF, 0))
+k = aDSqL(gETsTRcUT(g, vBCrLF & "IP:", vBCrLF, 0))
+l = aDSqL(gETsTRcUT(g, vBCrLF & "browser: ", vBCrLF, 0))
+m = aDSqL(gETsTRcUT(g, vBCrLF & "operatingsystem=", vBCrLF, 0))
+n = aDSqL(gETsTRcUT(g, vBCrLF & "Cookies=", vBCrLF, 0))
+o = aDSqL(gETsTRcUT(g, vBCrLF & "Screen=", vBCrLF, 0))
+p = aDSqL(gETsTRcUT(g, vBCrLF & "用户信息=", vBCrLF, 0))
+l = aDSqL(gETbRTyPE(p))
+iF iNStR(vBCrLF & q & vBCrLF, vBCrLF & k & vBCrLF) = fALsE tHEn
+q = q & k & vBCrLF
+eND iF
+iF 1 = 2 tHEn
+cALl eCHo("dateClass", r)
+cALl eCHo("visitUrl", h)
+cALl eCHo("viewUrl", i)
+cALl eCHo("viewdatetime", j)
+cALl eCHo("IP", k)
+cALl eCHo("browser", l)
+cALl eCHo("operatingsystem", m)
+cALl eCHo("cookie", n)
+cALl eCHo("screenwh", o)
+cALl eCHo("moreInfo", p)
+cALl hR()
+eND iF
+cONn.eXEcUTe("insert into " & dB_pREfIX & "websitestat (visiturl,viewurl,browser,operatingsystem,screenwh,moreinfo,viewdatetime,ip,dateclass) values('" & h & "','" & i & "','" & l & "','" & m & "','" & o & "','" & p & "','" & j & "','" & k & "','" & r & "')")
+eND iF
+nEXt
+eND iF
+nEXt
+f = "?act=dispalyManageHandle&actionType=" & rEQuESt("actionType") & "&lableTitle=" & rEQuESt("lableTitle") & "&nPageSize=" & rEQuESt("nPageSize") & "&page=" & rEQuESt("page") & "&parentid=" & rEQuESt("parentid")
+cALl rW(gETmSG1("更新网站统计成功，正在进入" & rEQuESt("lableTitle") & "列表...", f))
+eND fUNcTIoN
+sUB dISpLAyLAyOUt()
+dIM b, c
+c = rEQuESt("lableTitle")
+cALl lOAdWEbCOnFIg()
+b = gETfTExT(rOOt_PaTH & rEQuESt("templateFile"))
+b = rEPlACe(b, "{$Web_Title$}", cFG_WEbTItLE)
+b = rEPlACe(b, "{$position$}", c)
+b = rEPlACe(b, "{$lableTitle$}", c)
+b = rEPlACe(b, "{$EDITORTYPE$}", eDItORtYPe)
+iF c = "生成Robots" tHEn
+b = rEPlACe(b, "[$bodycontent$]", gETfTExT("/robots.txt"))
+eLSeIF c = "模板管理" tHEn
+b = dISpLAyTEmPLaTEsLIsT(b)
+eND iF
+cALl rW(b)
+eND sUB
+fUNcTIoN dISpLAyTEmPLaTEsLIsT(a)
+dIM b, c, d, e, f, g, h, i
+dIM j
+cALl lOAdWEbCOnFIg()
+e = gETsTRcUT(a, "[list]", "[/list]", 2)
+j = sPLiT("/Templates/|/Templates2015/|/Templates2016/", "|")
+fOR eACh b iN j
+iF b <> "" tHEn
+f = gETdIRfOLdERnAMeLIsT(b)
+g = sPLiT(f, vBCrLF)
+fOR eACh d iN g
+iF d <> "" aND iNStR("#_", lEFt(d, 1)) = fALsE tHEn
+c = b & d & "/"
+h = e
+iF cFG_WEbTEmPLaTE = c tHEn
+d = rEPlACe(d, d, "<font color=red>" & d & "</font>")
+h = rEPlACe(h, "启用</a>", "</a>")
+eND iF
+h = rEPlACeVAlUEpARaM(h, "templatepath", c)
+h = rEPlACeVAlUEpARaM(h, "templatename", d)
+i = i & h & vBCrLF
+eND iF
+nEXt
+eND iF
+nEXt
+a = rEPlACe(a, "[list]" & e & "[/list]", i)
+dISpLAyTEmPLaTEsLIsT = a
+eND fUNcTIoN
+fUNcTIoN iSOpENtEMpLAtE()
+dIM b, c, d, e
+b = rEQuESt("templatePath")
+c = rEQuESt("templateName")
+d = "webtemplate='" & b & "',webimages='" & b & "Images/'"
+d = d & ",webcss='" & b & "css/',webjs='" & b & "Js/'"
+cONn.eXEcUTe("update " & dB_pREfIX & "website set " & d)
+e = "?act=displayLayout&templateFile=manageTemplates.html&lableTitle=模板管理"
+cALl rW(gETmSG1("启用模板成功，正在进入模板管理界面...", e))
 eND fUNcTIoN
 %>
 

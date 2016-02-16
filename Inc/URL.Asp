@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-26
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -137,26 +137,31 @@ fUNcTIoN gEThOSt()
 gEThOSt = hOSt()
 eND fUNcTIoN
 fUNcTIoN gETuRL()
-gETuRL = gETtHIsURl
+gETuRL = gETtHIsURl()
 eND fUNcTIoN
 fUNcTIoN gETtHIsURl()
-dIM b
-b = "http://" & rEQuESt.sERvERvARiABlES("server_name") & rEQuESt.sERvERvARiABlES("script_name")
+dIM b, c
+b = "http://" & rEQuESt.sERvERvARiABlES("server_name")
+c = rEQuESt.sERvERvARiABlES("SERVER_PORT")
+iF c <> 80 tHEn
+b = b & ":" & c
+eND iF
+b = b & rEQuESt.sERvERvARiABlES("script_name")
 iF rEQuESt.sERvERvARiABlES("QUERY_STRING") <> "" tHEn b = b & "?" & rEQuESt.sERvERvARiABlES("QUERY_STRING")
 gETtHIsURl = b
 eND fUNcTIoN
 fUNcTIoN gETtHIsURlNOfILeNAmE()
 dIM b
-b=gETtHIsURl()
+b = gETtHIsURl()
 iF rIGhT(b, 1) <> "/" tHEn
 iF iNStRReV(b, "/") > 0 tHEn
 b = mID(b, 1, iNStRReV(b, "/"))
 eND iF
 eND iF
-gETtHIsURlNOfILeNAmE=b
+gETtHIsURlNOfILeNAmE = b
 eND fUNcTIoN
 fUNcTIoN gETwEBsITe(bYVaL a)
-dIM b, c,d
+dIM b, c, d
 c = a
 b = tRIm(lCAsE(rEPlACe(a, "?", "/")))
 b = rEPlACe(rEPlACe(b, "\", "/"), "http://", "")
@@ -188,21 +193,21 @@ eLSe
 a = ""
 eND iF
 eND iF
-d=fALsE	
+d = fALsE
 g = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn"
 g = g & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in"
 e = sPLiT(g, "|")
 fOR eACh f iN e
 iF f <> "" tHEn
 iF iNStR(a, f) > 0 tHEn
-a = "http://" & lEFt(a, iNStR(a, f) + lEN(f) - 1) & "/" : d=tRUe:eXIt fOR
+a = "http://" & lEFt(a, iNStR(a, f) + lEN(f) - 1) & "/" : d = tRUe : eXIt fOR
 eND iF
 eND iF
 nEXt
 gETwEBsITe = lEFt(a, 255)
 iF gETwEBsITe = "http:///" tHEn gETwEBsITe = ""
-iF d=fALsE tHEn
-gETwEBsITe=""
+iF d = fALsE tHEn
+gETwEBsITe = ""
 eND iF
 eND fUNcTIoN
 fUNcTIoN cHEcKUrL(a)
@@ -1181,4 +1186,5 @@ iF b <> "" tHEn b = lEFt(b, lEN(b) - 2)
 gETiNChAIn = b
 eND fUNcTIoN
 %>
+
 

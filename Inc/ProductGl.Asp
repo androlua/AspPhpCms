@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -185,7 +185,7 @@ rA = rEPlACeVAlUEpARaM(rA,"price",hBB("Price"))
 rA = rEPlACeVAlUEpARaM(rA,"author",hBB("Author"))
 rA = rEPlACeVAlUEpARaM(rA,"articledescription",aRTiCLeDEsCRiPTiON)
 nEXt
-rA = dISpLAyONlINeEDiTDiALoG("/admin/Product.Asp?act=ShowEditProduct&id=" & hBB("Id") & "&n=" & gETrND(11), rA)
+rA = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"Product.Asp?act=ShowEditProduct&id=" & hBB("Id") & "&n=" & gETrND(11), rA)
 p = p & rA
 hBB.mOVeNExT : nEXt
 eND iF : hBB.cLOsE
@@ -356,4 +356,5 @@ cALl eCHo("Sql",g)
 eND iF
 eND fUNcTIoN
 %>
+
 

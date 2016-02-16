@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -1129,14 +1129,22 @@ eND fUNcTIoN
 fUNcTIoN gETsTRfILeNAmE(bYVaL a)
 gETsTRfILeNAmE = hANdLEfILePAtHArRAy(a)(2)
 eND fUNcTIoN
-fUNcTIoN gETfILeATtR(bYVaL a, b)
-gETfILeATtR = ""
-iF b = "name" tHEn
-gETfILeATtR = hANdLEfILePAtHArRAy(a)(2)
-eND iF
-eND fUNcTIoN
 fUNcTIoN gETfILeNAmE(bYVaL a)
 gETfILeNAmE=hANdLEfILePAtHArRAy(a)(2)
+eND fUNcTIoN
+fUNcTIoN gETfILeATtR(bYVaL a, b)
+gETfILeATtR = ""
+iF b = "0" tHEn
+gETfILeATtR = hANdLEfILePAtHArRAy(a)(0)
+eLSeIF b = "1" tHEn
+gETfILeATtR = hANdLEfILePAtHArRAy(a)(1)
+eLSeIF b = "name" oR "2" tHEn
+gETfILeATtR = hANdLEfILePAtHArRAy(a)(2)
+eLSeIF b = "3" tHEn
+gETfILeATtR = hANdLEfILePAtHArRAy(a)(3)
+eLSeIF b = "4" tHEn
+gETfILeATtR = hANdLEfILePAtHArRAy(a)(4)
+eND iF
 eND fUNcTIoN
 fUNcTIoN gETfILeEXt(a)
 dIM b : b = sPLiT(a, ".")
@@ -1153,4 +1161,5 @@ gETpAReNTpATh = mID(a, 1, iNStRReV(a, "\"))
 eND iF
 eND fUNcTIoN
 %>
+
 

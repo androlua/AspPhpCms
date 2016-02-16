@@ -11,7 +11,8 @@ ASPPHPCMS v1.0 ÊÇÒ»¸öÃâ·Ñ¿ªÔ´µÄ£¬¿ìËÙ¡¢¼òµ¥µÄÍøÕ¾¹ÜÀíÏµÍ³£¬ÓÐASPºÍPHPÁ½ÖÖ°æ±¾£¬²
 
 
 
-ASPPHPCMS v1.0
+
+ASPPHPCMS v1.1
 
 1¡¢Ä£°åÔ¤ÀÀ£¨sharembweb£©
 
@@ -26,3 +27,12 @@ ASPPHPCMS¹ÜÍø
 ×÷ÕßÅ»ÐÄÁ¤Ñª»¨ÁË´ó°ëÄêÊ±¼ä²Å¿ª·¢³öÀ´£¬ÏÖÔÚ·ÖÏí¸ø´ó¼Ò¡£³ÌÐò²»Ãâ»áÓÐBUG,¿É
 Ïë»ñµÃ¸ü¶à°ïÖúºÍÏÂÔØ×îÐÂ°æ¡¡Çëä¯ÀÀ(http://sharembweb.com)
 ÔÚÏßÑÝÊ¾£ºhttp://sharembweb.com/
+
+
+
+ASPPHPCMS Éý¼¶µ½ v1.1
+¸üÐÂÊ±¼ä£º20160216
+1¡¢Ôö¼ÓÁËPHP°æ±¾
+2¡¢ºóÌ¨Ôö¼Ó robotes.txtÉú³É
+3¡¢ºóÌ¨Ôö¼Ósitemap.xmlÓësitemap.htmlÉú³É 
+4¡¢Ç°¶ËÌí¼ÓÔÚÏßÐÞ¸ÄÍøÕ¾¹¦ÄÜ

@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-01
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -75,6 +75,7 @@
 <!--#Include File = "2015_Editor.Asp"-->
 <!--#Include File = "ASPPHPAccess.Asp"-->
 <!--#Include File = "2015_NewWebFunction.Asp"-->
+<!--#Include File = "IE.Asp"-->
 <!--#Include File = "ZClass_YouKou.Asp"-->
 <!--#Include File = "ZClass_Maiside.Asp"-->
 <!--#Include File = "SystemInfo.Asp"-->
@@ -93,6 +94,7 @@ pUBlIC eXEcUTeREsUT
 dIM mAKeHTmLFiLEtOLcASe	 : mAKeHTmLFiLEtOLcASe=tRUe	
 dIM iSWeBLaBElCLoSE : iSWeBLaBElCLoSE=tRUe	
 dIM hANdLEiSCaCHe : hANdLEiSCaCHe=fALsE	
+dIM aDMiNDiR :aDMiNDiR="/admin/"
 sYSsTYlE(0) = "#999999"
 rESpONsE.aDDhEAdER "Content-Type","text/html; charset=gb2312"
 rESpONsE.bUFfER = tRUe
@@ -119,4 +121,5 @@ cALl eCHo("把数据库中\改成/","完成")
 rESpONsE.eND()
 eND sELeCT
 %>
+
 

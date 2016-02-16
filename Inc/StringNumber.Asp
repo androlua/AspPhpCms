@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -217,8 +217,7 @@ iF eRR tHEn dOErROr eRR.dEScRIpTIoN, "HandleZipSize 处理Zip大小 函数出错，ZipSiz
 eND fUNcTIoN
 fUNcTIoN gETrND(bYVaL a)
 rANdOMiZE
-dIM b, c
-gETrND = ""
+dIM b, c, d
 fOR c = 1 tO a
 iF c mOD 2 = 0 tHEn
 b = cHRw((57 - 48) * rND + 48)
@@ -227,8 +226,9 @@ b = cHRw((90 - 65) * rND + 65)
 eLSe
 b = cHRw((122 - 97) * rND + 97)
 eND iF
-gETrND = gETrND & b
+d=d & b
 nEXt
+gETrND=d
 eND fUNcTIoN
 fUNcTIoN mAThRAnDOm()
 dIM b, c
@@ -389,10 +389,12 @@ iF iNStR(a / b, ".") > 0 tHEn c = c + 1
 gETcOUnTPaGE=c
 eND fUNcTIoN
 fUNcTIoN gETpAGeNUmB(a, b)
-gETpAGeNUmB = iNT(a / b)
+dIM c
+c = iNT(a / b)
 iF a mOD b > 0 tHEn
-gETpAGeNUmB = gETpAGeNUmB + 1
+c=c + 1
 eND iF
+gETpAGeNUmB=c
 eND fUNcTIoN
 fUNcTIoN gETcAIhANdLEcOUnTPaGE(a)
 a = dELhTMl(a)
@@ -597,4 +599,5 @@ eND iF
 nEXt
 eND fUNcTIoN
 %>
+
 

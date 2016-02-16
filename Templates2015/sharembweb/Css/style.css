@@ -111,8 +111,8 @@ a.red:hover{color:#FF0000}
 .pagewrap{text-align:center}
 .pagewrap a{border:1px solid #E3E2E2;padding:10px;color:#999999}
 .pagewrap a:hover{color:#999999;background-color:#F0F0F0}
-.pagewrap a.left{background-image:url(/Templates2015/sharembweb/Images/leftico.png);background-repeat:no-repeat;margin-right:20px;margin-left:40%;width:20px;height:20px;float:left;display:block;background-position:center center}
-.pagewrap a.right{background-image:url(/Templates2015/sharembweb/Images/rightico.png);background-repeat:no-repeat;margin-right:10px;width:20px;height:20px;float:left;display:block;background-position:center center}
+.pagewrap a.left{background-image:url(../Images/leftico.png);background-repeat:no-repeat;margin-right:20px;margin-left:40%;width:20px;height:20px;float:left;display:block;background-position:center center}
+.pagewrap a.right{background-image:url(../Images/rightico.png);background-repeat:no-repeat;margin-right:10px;width:20px;height:20px;float:left;display:block;background-position:center center}
 /****************************************** ĞÂÎÅÁĞ±í ******************************************/
 .newsgl{padding:10px 20px 30px 20px}
 .newsgl .title{color:#666666;font-size:22px;font-family:"Î¢ÈíÑÅºÚ","ºÚÌå","ËÎÌå";padding:0 0 10px 0}
@@ -157,7 +157,7 @@ a.red:hover{color:#FF0000}
 .rowwrap2{margin:0 0 10px 0px}
 .rowwrap2 div{float:left;color:#a1a1a1;font-size:14px;font-family:"Î¢ÈíÑÅºÚ","ºÚÌå","ËÎÌå";line-height:28px;margin:0px}
 /*inputÊäÈë¿ò¼Ó±³¾°*/
-.inputstyle{color:#929292;border:1px solid #DEDEDE;padding:6px;font-family:"Î¢ÈíÑÅºÚ","ºÚÌå","ËÎÌå";font-size:14px;line-height:22px;background-image:url(/Templates2015/sharembweb/Images/inputbg.gif);background-repeat:repeat-x;background-color:#FFFFFF}
+.inputstyle{color:#929292;border:1px solid #DEDEDE;padding:6px;font-family:"Î¢ÈíÑÅºÚ","ºÚÌå","ËÎÌå";font-size:14px;line-height:22px;background-image:url(../Images/inputbg.gif);background-repeat:repeat-x;background-color:#FFFFFF}
 /*inputÊäÈë¿ò²»¼Ó±³¾°*/
 .inputstyle2{padding:6px;border:1px solid #FFF;border-bottom:1px solid #B4B4B4;color:#666666;font-size:16px;line-height:32px}
 /****************************************** Ò³¿Ø¼ş£¨20151110£© ******************************************/
@@ -514,3 +514,7 @@ body{background-color:#F9F9F9}
 	-khtml-user-select:none;/*ÔçÆÚä¯ÀÀÆ÷*/
 	user-select:none}
 /*in footer end*/
+
+
+
+

@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -99,7 +99,7 @@ eND iF
 eLSe
 e = cOPySTr(" ", 8) & "<li><a " & aHReF(f, k, l) & ">" & k & "</a>"
 eND iF
-e = dISpLAyONlINeED2("/admin/NavManage.Asp?act=EditNavBig&Id=" & rS("Id") & "&n=" & gETrND(11), e, "<li")
+e = dISpLAyONlINeED2(""& aDMiNDiR &"NavManage.Asp?act=EditNavBig&Id=" & rS("Id") & "&n=" & gETrND(11), e, "<li")
 d = d & e
 p = ""
 iF rS("NavType") = "文本" aND n = "true" tHEn
@@ -120,7 +120,7 @@ eND iF
 r = fONtCOlORfONtB(j, rSS("FontB"), rSS("FontColor"))
 l = rSS("Target") : l = "_blank"
 e = "<a " & aHReF(f, r, l) & ">" & r & "</a>"
-e = dISpLAyONlINeEDiTDiALoG("/admin/NavManage.Asp?act=EditNavSmall&Id=" & rSS("Id") & "&n=" & gETrND(11), e)
+e = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"NavManage.Asp?act=EditNavSmall&Id=" & rSS("Id") & "&n=" & gETrND(11), e)
 p = p & cOPySTr(" ", 8) & "<li>" & e & "</li>" & vBCrLF
 rSS.mOVeNExT : nEXt
 eND iF : rSS.cLOsE
@@ -142,7 +142,7 @@ eND iF
 r = fONtCOlORfONtB(j, rSS("FontB"), rSS("FontColor"))
 l = rSS("Target") : l = "_blank"
 e = "<a " & aHReF(f, r, l) & ">" & r & "</a>"
-e = dISpLAyONlINeEDiTDiALoG("/admin/ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rSS("Id") & "&n=" & gETrND(11), e)
+e = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rSS("Id") & "&n=" & gETrND(11), e)
 p = rTRiMVbCRlF(p) & vBCrLF & cOPySTr(" ", 12) & "<li>" & e & "</li>" & vBCrLF
 rSS.mOVeNExT : nEXt
 eND iF : rSS.cLOsE
@@ -313,8 +313,8 @@ l = rEPlACeVAlUEpARaM(l, "url", p)
 l = rEPlACeVAlUEpARaM(l, "aurl", q)
 l = rEPlACeVAlUEpARaM(l, "astr", r)
 nEXt
-p = "/admin/Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11)
-l = dISpLAyONlINeEDiTDiALoG("/admin/NavManage.Asp?act=EditNavBig&Id=" & rS("Id") & "&n=" & gETrND(11), l)
+p = ""& aDMiNDiR &"Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11)
+l = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"NavManage.Asp?act=EditNavBig&Id=" & rS("Id") & "&n=" & gETrND(11), l)
 n = "[list-" & j & " startdialog]" : o = "[/list-" & j & " startdialog]"
 iF iNStR(i, n) > 0 aND iNStR(i, o) > 0 tHEn
 l = sTRcUT(i, n, o, 2) & l
@@ -337,4 +337,5 @@ eND iF
 xY_cUStOMnAVlISt = m
 eND fUNcTIoN
 %>
+
 

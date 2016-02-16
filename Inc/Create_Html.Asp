@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-01
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -73,7 +73,7 @@ cASe "AddProduct" : aDDpROdUCt()
 cASe "DeleteProduct" : dELeTEpROdUCt("Where Id=" & rEQuESt("Id"))	
 cASe "AotuAddKeyWord" : aOTuADdKEyWOrD()	
 cASe "WebNavigationUsrList" : wEBnAViGAtIOnUSrLIsT()	
-cASe "WebStat" : wEBsTAt("/Admin/Data/Stat/")	
+cASe "WebStat" : wEBsTAt(""& aDMiNDiR &"Data/Stat/")	
 cASe "FormSubmit" : fORmSUbMIt()	
 cASe "RunFile" : rUNfILe()	
 cASe "showweb" : rESpONsE.rEDiREcT("/Inc/Create_Html.Asp?act=Nav&NavDidType=首页&MackHtml=False&Debug=True" & iIF(rEQuESt("gl")<>"","&gl=" & rEQuESt("gl"),""))	
@@ -938,7 +938,7 @@ iF iNStR(mAInCOnTEnT,h)>0 aND iNStR(mAInCOnTEnT,i)>0 tHEn
 e = sTRcUT(mAInCOnTEnT,h,i,2)
 eND iF
 eND iF
-mAInCOnTEnT = dISpLAyONlINeEDiTDiALoG("/admin/Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11), mAInCOnTEnT)
+mAInCOnTEnT = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11), mAInCOnTEnT)
 aRTiCLeDId=rS("BigClassName")	
 aRTiCLeSId=rS("SmallClassName")	
 aRTiCLeTId=rS("ThreeClassName")	
@@ -971,7 +971,7 @@ dIM b,c
 rS.oPEn"Select * From [MainInfo] Where Id=" & a,cONn,1,1
 iF nOT rS.eOF tHEn
 mAInCOnTEnT = rS("Content")
-mAInCOnTEnT = dISpLAyONlINeEDiTDiALoG("/admin/MainInfo.Asp?act=ShowEdit&Id=" & rS("Id") & "&n=" & gETrND(11), mAInCOnTEnT)	
+mAInCOnTEnT = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"MainInfo.Asp?act=ShowEdit&Id=" & rS("Id") & "&n=" & gETrND(11), mAInCOnTEnT)	
 mAInTItLE = rS("ShowTitle")
 iF tRIm(rS("TemplatePath"))<>"" tHEn
 tEMpLAtEPaTH = wEBtEMpLAtE & rS("TemplatePath")
@@ -1057,7 +1057,7 @@ wEBcODeREpLAcETpL = rS("WebCodeReplaceTpl")
 iF iSNuL(wEBcODeFInDTpL) tHEn wEBcODeFInDTpL=""
 iF iSNuL(wEBcODeREpLAcETpL) tHEn wEBcODeREpLAcETpL=""
 c=rS("Id")
-b = "/admin/WebSiteConfig.Asp?n=" & gETrND(11)	
+b = ""& aDMiNDiR &"WebSiteConfig.Asp?n=" & gETrND(11)	
 wEBbOTtOM = dISpLAyONlINeEDiTDiALoG(b, wEBbOTtOM)
 eND iF : rS.cLOsE
 eND sUB
@@ -1608,4 +1608,5 @@ c=c & "<script>document.getElementById(""t""+""e""+""s""+""i"").style.display='n
 cALl rW(c)
 eND fUNcTIoN
 %>
+
 

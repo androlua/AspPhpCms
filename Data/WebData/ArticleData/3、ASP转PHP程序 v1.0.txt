@@ -1,0 +1,88 @@
+【parentid】ASP
+【title】ASP转PHP程序 v1.0
+【webtitle】ASP转PHP程序 v1.0 - 分享模板网站
+【webkeywords】ASP转PHP程序 v1.0 - 分享模板网站
+【webdescription】ASP转PHP程序 v1.0 - 分享模板网站
+【sortrank】900
+【author】sharembweb
+【adddatetime】2016-01-11 10:14:10
+【filename】/asp/asptophpv1down.html
+【flags】|c|
+【relatedtags】ASP,PHP,在线ASP转PHP
+【bodycontent】
+
+
+<strong>ASP转PHP程序 v1.0</strong>，
+这是我2016年1月份发布的一个ASP类源码程序，之前我是一个ASP程序员，在开发一些网站时需要用到PHP程序，ASP程序与PHP程序它们的逻辑还是有很大不同的，这样我在用ASP同时再去做PHP会给我带来很大的不方便，所以当时自己做有没有可以把ASP程序一下转成PHP程序，然后自己从起法开始着手，慢慢的去尝试着去写，经过长达几月的不屑努力终于写出来了，代码有几千行。我给它整理了之后发布到网上了，一开始我只是发布了几个主要大网站上面，没有想到其它很多下载类网站也把我的源码收录了，收录我的这个<strong>ASP转PHP程序 v1.0</strong>大概有几十家之多，看着我的源码被收录了，心理挺开心的。
+<br>
+<br>
+
+
+
+<br>
+<p>本文版权归作者所有，转摘请注明作者和出处！<br />
+作者：云端<br />
+首发：<a href="http://sharembweb.com/" target="_blank" class="ablue">http://sharembweb.com</a></p>
+<br>
+
+<img src="http://down.chinaz.com/upload/thumbnail/2016/1/11/YREX2GNGYCJXPK9J47A2.jpg" title="ASP转PHP程序 v1.0" alt="ASP转PHP程序 v1.0" width="100%">
+<pre>
+ASP转PHP程序 v1.0
+1、非常方便的就可以把asp代码转成php代码，操作及其简单
+2、Public\ASP.php 为asp函数转换文件，集成了大量asp里的内置函数
+3、MySqlClass.php 为操作mysql文件
+4、sharembweb.com.asp 为要转换的asp文件 代码就写在这里。
+交流学习可联系QQ（313801120） 群（35915100）(群里已有几百人)    邮箱313801120@qq.com
+想获得更多帮助和下载最新版　请浏览(sharembweb.com)
+在线演示：<a href="http://sharembweb.com/asptophp/" target="_blank" title="在线asp转php" class="ablue">http://sharembweb.com/asptophp/</a>
+</pre>
+<br>
+
+
+<b>下面是作者在各大源码下载类网站发布本作品的链接：</b><br>
+<ul class="list">
+
+<li><a href="https://github.com/313801120/AspToPhp" target="_blank">【Github下载】ASP转PHP程序 最新版本</a></li>
+
+<li><a href="http://down.chinaz.com/soft/37718.htm" target="_blank">【chinaz下载】ASP转PHP程序 v1.0(ASP源码) 里面有本站的浏览地址</a></li>
+
+<li><a href="http://member.down.admin5.com/asp/130795.html" rel="nofollow" target="_blank">【admin5下载】ASP转PHP程序 v1.0(ASP源码) 改了里面演示网站，等显示</a></li> 
+
+<li><a href="/url.asp?down=codedown_asptophpv1" target="_blank">【codesky下载】ASP转PHP程序 v1.0 (ASP源码 等待)</a></li>
+ 
+<li><a href="/url.asp?down=csdn_asptophpv1" target="_blank">【csdn下载】ASP转PHP程序 v1.0(ASP源码)</a></li>
+<li><a href="/url.asp?down=jb51_asptophpv1" target="_blank">【jb51下载】ASP转PHP程序 v1.0(ASP源码)</a></li>
+
+ 
+</ul>
+<br>
+<b>下面这些下载地址我没有发布过，可能是从上面引用过来，链接：</b><br>
+ 
+<ul class="list">
+<li><a href="/url.asp?down=codesc_asptophpv1" target="_blank">【codesc下载】ASP转PHP程序 v1.0(ASP源码)</a></li>
+
+<li><a href="/url.asp?down=asp300_asptophpv1" target="_blank">【asp300下载】ASP转PHP程序 v1.0(ASP源码) 演示地址 他给弄错了，为什么？有可能是故意的，我要和他们联系</a></li> 
+
+<li><a href="/url.asp?down=gpxz_asptophpv1" target="_blank">【gpxz下载】ASP转PHP程序 v1.0 (ASP源码)</a></li>
+ 
+<li><a href="/url.asp?down=662p_asptophpv1" target="_blank">【662p下载】ASP转PHP程序 v1.0(ASP源码)</a></li>
+
+<li><a href="/url.asp?down=wei2008_asptophpv1" target="_blank">【wei2008下载】ASP转PHP程序 v1.0(ASP源码)</a></li>
+</ul>
+ 
+ <br>
+<b>下面为在各大搜索引擎中的搜索结果：</b><br>
+<ul class="list"> 
+<li><a href="/url.asp?baidu=ASP转PHP 程序 v1.0" rel="nofollow" target="_blank">【baidu搜索】在百度里搜索(ASP转PHP 程序 v1.0)</a></li>
+<li><a href="/url.asp?haosou=ASP转PHP 程序 v1.0" rel="nofollow" target="_blank">【haosou搜索】在好搜里搜索(ASP转PHP 程序 v1.0)</a></li>
+<li><a href="/url.asp?sogou=ASP转PHP 程序 v1.0" rel="nofollow" target="_blank">【sogou搜索】在搜狗里搜索(ASP转PHP 程序 v1.0)</a></li>
+<li><a href="/url.asp?yahoo=ASP转PHP 程序 v1.0" rel="nofollow" target="_blank">【yahoo搜索】在搜狗里搜索(ASP转PHP 程序 v1.0)</a></li>
+ 
+</ul>
+
+<br>
+
+【/bodycontent】
+
+
+

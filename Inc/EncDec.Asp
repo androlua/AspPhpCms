@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-28
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -161,6 +161,197 @@ nEXt
 e = rEPlACe(e, "＠", vBCrLF)
 lCAsEDeC = e
 eND fUNcTIoN
+fUNcTIoN hTMlTOjS(bYVaL a)
+a = rEPlACe("" & a, "\", "\\")
+a = rEPlACe(a, "/", "\/")
+a = rEPlACe(a, "'", "\'")
+a = rEPlACe(a, """", "\""")
+a = jOIn(sPLiT(a, vBCrLF), """);" & vBCrLF & "document.write(""")
+a = "document.write(""" & a & """);"
+hTMlTOjS = a
+eND fUNcTIoN
+fUNcTIoN jSToHTmL(bYVaL a)
+a = rEPlACe(a, "document.write(""", "")
+a = rEPlACe(a, """);", "")
+a = rEPlACe(a, "\""", """")
+a = rEPlACe(a, "\'", "'")
+a = rEPlACe(a, "\/", "/")
+a = rEPlACe(a, "\\", "\")
+jSToHTmL = a
+eND fUNcTIoN
+fUNcTIoN hTMlTOaSP(bYVaL a)
+a = rEPlACe(a, """", """""")
+a = jOIn(sPLiT(a, vBCrLF), """)" & vBCrLF & "Response.Write(""")
+a = "Response.Write(""" & a & """)"
+hTMlTOaSP = a
+eND fUNcTIoN
+fUNcTIoN hTMlTOaSPdIM(bYVaL a)
+a = rEPlACe(a, """", """""")
+a = jOIn(sPLiT(a, vBCrLF), """" & vBCrLF & "C=C & """)
+a = "C=C & """ & a & """"
+hTMlTOaSPdIM = a
+eND fUNcTIoN
+fUNcTIoN aSPtOHtML(bYVaL a)
+a = rEPlACe(a, "Response.Write(""", "")
+a = rEPlACe(a, """""", """")
+aSPtOHtML = a
+eND fUNcTIoN
+fUNcTIoN sETfILeNAmE(bYVaL a)
+dIM b, c, d, e, f
+d = "\/:*?""<>|.,"
+f = "撇揦：星？“左右横。，"
+fOR b = 1 tO lEN(d)
+c = mID(d, b, 1)
+e = mID(f, b, 1)
+a = rEPlACe(a, c, e)
+nEXt
+a = rEPlACe(a, "&nbsp;", " ")
+a = rEPlACe(a, "&quot;", "双")
+a = rEPlACe(a, vBCrLF, "")
+sETfILeNAmE = a
+eND fUNcTIoN
+fUNcTIoN uNSeTFiLEnAMe(bYVaL a)
+dIM b, c, d, e, f
+d = "\/:*?""<>|."
+f = "撇揦：星？“左右横。，"
+fOR b = 1 tO lEN(d)
+c = mID(f, b, 1)
+e = mID(d, b, 1)
+a = rEPlACe(a, c, e)
+nEXt
+uNSeTFiLEnAMe = a
+eND fUNcTIoN
+fUNcTIoN hTMlTOaSCcHR(a)
+dIM b, c, d
+d = ""
+fOR b = 1 tO lEN(a)
+c = mID(a, b, 1)
+d = d & "Chr(" & aSC(c) & ")&"
+nEXt
+iF d <> "" tHEn d = lEFt(d, lEN(d) - 1)
+hTMlTOaSCcHR = d
+eND fUNcTIoN
+fUNcTIoN uNHtMLtOAsCChR(a)
+dIM b, c, d, e, f
+d = a : f = ""
+d = rEPlACe(d, "Chr(", "")
+d = rEPlACe(d, ")&", " ")
+d = rEPlACe(d, ")", " ")
+e = sPLiT(d, " ")
+fOR b = 0 tO uBOuND(e) - 1
+c = e(b)
+f = f & cHR(c)
+nEXt
+uNHtMLtOAsCChR = f
+eND fUNcTIoN
+fUNcTIoN vARiABlEDiSPlACeMEnT(a, b)
+dIM c, d, e, f, g, h, i, j, k, l
+f = "yzoehijklmfgqrstuvpabnwxcd"
+h = lEN(f)
+g = "4539671820"
+i = lEN(g)
+c = ""
+fOR d = 1 tO lEN(a)
+e = mID(a, d, 1)
+j = iNStR(f, e)
+k = iNStR(g, e)
+iF j > 0 tHEn
+l = j + b
+iF l > h tHEn
+l = l - h
+eLSeIF l <= 0 tHEn
+l = l + h
+eND iF
+e = mID(f, l, 1)
+eLSeIF k > 0 tHEn
+l = k + b
+iF l > i tHEn
+l = l - i
+eLSeIF l <= 0 tHEn
+l = l + i
+eND iF
+e = mID(g, l, 1)
+eND iF
+c = c & e
+nEXt
+vARiABlEDiSPlACeMEnT = c
+eND fUNcTIoN
+fUNcTIoN xOReNC(a, b)
+dIM c, d, e, f, g
+c = a
+d = lEN(c) : f = ""
+fOR g = 0 tO d - 1
+e = aSCw(rIGhT(c, d - g)) xOR b
+f = f & cHRw(iNT(e))
+nEXt
+f = rEPlACe(f, cHRw(34), "ㄨ")
+xOReNC = f
+eND fUNcTIoN
+fUNcTIoN xORdEC(a, b)
+dIM c, d, e, f, g
+c = a : f = ""
+c = rEPlACe(c, "ㄨ", cHRw(34))
+d = lEN(c)
+fOR g = 0 tO d - 1
+e = aSCw(rIGhT(c, d - g)) xOR b
+f = f & cHRw(iNT(e))
+nEXt
+f = rEPlACe(f, "＠", vBCrLF)
+xORdEC = f
+eND fUNcTIoN
+fUNcTIoN hANdLEeVAlADdDEc(bYVaL a, b)
+dIM c
+c = b & "Execute unDec_log(""" & eNCcODe(a) & """)" & b
+c = c & "Function unDec_log(ByVal Content)" & b
+c = c & "    Dim I, C, SplStr " & b
+c = c & "    SplStr = Split(Content, ""%"") " & b
+c = c & "    For I = 1 To UBound(SplStr)" & b
+c = c & "        C = C & Chr(CInt(""&H"" & SplStr(I))) " & b
+c = c & "    Next " & b
+c = c & "    unDec_log = C " & b
+c = c & "End Function " & b
+hANdLEeVAlADdDEc = c
+eND fUNcTIoN
+fUNcTIoN eVAlADdDEc(bYVaL a)
+eVAlADdDEc = hANdLEeVAlADdDEc(a, vBCrLF)
+eND fUNcTIoN
+fUNcTIoN vBEvALaDDdEC(bYVaL a)
+vBEvALaDDdEC = eSCaPE(hANdLEeVAlADdDEc(a, ":"))
+eND fUNcTIoN
+fUNcTIoN xDEc(a)
+dIM b, c, d, e, f
+b = a
+b = rEPlACe(b, "ㄨ", cHR(34))
+c = lEN(b) : d = "" : e = ""
+fOR f = 0 tO c - 1
+d = aSC(rIGhT(b, c - f)) xOR 20
+e = e & cHR(iNT(d))
+nEXt
+e = rEPlACe(e, "＠", vBCrLF)
+xDEc = e
+eND fUNcTIoN
+pUBlIC fUNcTIoN tOHeXCoLOr(a)
+dIM b
+tOHeXCoLOr = ""
+b = cSTr(hEX(a))
+sELeCT cASe lEN(b)
+cASe 1 : tOHeXCoLOr = "&H00000" & b
+cASe 2 : tOHeXCoLOr = "&H0000" & b
+cASe 3 : tOHeXCoLOr = "&H000" & b
+cASe 4 : tOHeXCoLOr = "&H00" & b
+cASe 5 : tOHeXCoLOr = "&H0" & b
+cASe 6 : tOHeXCoLOr = "&H" & b
+eND sELeCT
+eND fUNcTIoN
+pUBlIC fUNcTIoN cOLoRRgB(a)
+dIM b, c
+b = "" : c = ""
+dIM aRRaYStR(2)
+aRRaYStR(0) =(a mOD b)
+aRRaYStR(1) =((a mOD c) \ b)
+aRRaYStR(2) =(a \ c)
+cOLoRRgB = aRRaYStR
+eND fUNcTIoN
 fUNcTIoN sIMpLEeNC(a)
 a = rEPlACe(a, "x", "輕")
 a = rEPlACe(a, "f", "蚛")
@@ -222,196 +413,6 @@ d = d & vBTaB & "MyEval=Replace(MyEval,""療"",""e"")" & vBCrLF
 d = d & "End Function" & vBCrLF
 eNCaSPeVAlRUn = "<" & "%" & vBCrLF & d & "%" & ">"
 eND fUNcTIoN
-fUNcTIoN hTMlTOjS(bYVaL a)
-a = rEPlACe("" & a, "\", "\\")
-a = rEPlACe(a, "/", "\/")
-a = rEPlACe(a, "'", "\'")
-a = rEPlACe(a, """", "\""")
-a = jOIn(sPLiT(a, vBCrLF), """);" & vBCrLF & "document.write(""")
-a = "document.write(""" & a & """);"
-hTMlTOjS = a
-eND fUNcTIoN
-fUNcTIoN jSToHTmL(bYVaL a)
-a = rEPlACe(a, "document.write(""", "")
-a = rEPlACe(a, """);", "")
-a = rEPlACe(a, "\""", """")
-a = rEPlACe(a, "\'", "'")
-a = rEPlACe(a, "\/", "/")
-a = rEPlACe(a, "\\", "\")
-jSToHTmL = a
-eND fUNcTIoN
-fUNcTIoN hTMlTOaSP(bYVaL a)
-a = rEPlACe(a, """", """""")
-a = jOIn(sPLiT(a, vBCrLF), """)" & vBCrLF & "Response.Write(""")
-a = "Response.Write(""" & a & """)"
-hTMlTOaSP = a
-eND fUNcTIoN
-fUNcTIoN hTMlTOaSPdIM(bYVaL a)
-a = rEPlACe(a, """", """""")
-a = jOIn(sPLiT(a, vBCrLF), """" & vBCrLF & "C=C & """)
-a = "C=C & """ & a & """"
-hTMlTOaSPdIM = a
-eND fUNcTIoN
-fUNcTIoN aSPtOHtML(bYVaL a)
-a = rEPlACe(a, "Response.Write(""", "")
-a = rEPlACe(a, """""", """")
-aSPtOHtML = a
-eND fUNcTIoN
-fUNcTIoN sETfILeNAmE(bYVaL a)
-dIM b, c, d, e, f
-d = "\/:*?""<>|.,"
-f = "撇揦：星？“左右横。，"
-fOR b = 1 tO lEN(d)
-c = mID(d, b, 1)
-e = mID(f, b, 1)
-a = rEPlACe(a, c, e)
-nEXt
-a = rEPlACe(a, "&nbsp;", " ")
-a = rEPlACe(a, "&quot;", "双")
-a = rEPlACe(a, vBCrLF, "")
-sETfILeNAmE = a
-eND fUNcTIoN
-fUNcTIoN uNSeTFiLEnAMe(bYVaL a)
-dIM b, c, d, e, f
-d = "\/:*?""<>|."
-f = "撇揦：星？“左右横。，"
-fOR b = 1 tO lEN(d)
-c = mID(f, b, 1)
-e = mID(d, b, 1)
-a = rEPlACe(a, c, e)
-nEXt
-uNSeTFiLEnAMe = a
-eND fUNcTIoN
-fUNcTIoN xOReNC(a, b)
-dIM c, d, e, f, g
-c = a
-d = lEN(c) : f = ""
-fOR g = 0 tO d - 1
-e = aSCw(rIGhT(c, d - g)) xOR b
-f = f & cHRw(iNT(e))
-nEXt
-f = rEPlACe(f, cHRw(34), "ㄨ")
-xOReNC = f
-eND fUNcTIoN
-fUNcTIoN xORdEC(a, b)
-dIM c, d, e, f, g
-c = a : f = ""
-c = rEPlACe(c, "ㄨ", cHRw(34))
-d = lEN(c)
-fOR g = 0 tO d - 1
-e = aSCw(rIGhT(c, d - g)) xOR b
-f = f & cHRw(iNT(e))
-nEXt
-f = rEPlACe(f, "＠", vBCrLF)
-xORdEC = f
-eND fUNcTIoN
-fUNcTIoN hTMlTOaSCcHR(a)
-dIM b, c, d
-d = ""
-fOR b = 1 tO lEN(a)
-c = mID(a, b, 1)
-d = d & "Chr(" & aSC(c) & ")&"
-nEXt
-iF d <> "" tHEn d = lEFt(d, lEN(d) - 1)
-hTMlTOaSCcHR = d
-eND fUNcTIoN
-fUNcTIoN uNHtMLtOAsCChR(a)
-dIM b, c, d, e, f
-d = a : f = ""
-d = rEPlACe(d, "Chr(", "")
-d = rEPlACe(d, ")&", " ")
-d = rEPlACe(d, ")", " ")
-e = sPLiT(d, " ")
-fOR b = 0 tO uBOuND(e) - 1
-c = e(b)
-f = f & cHR(c)
-nEXt
-uNHtMLtOAsCChR = f
-eND fUNcTIoN
-fUNcTIoN hANdLEeVAlADdDEc(bYVaL a, b)
-dIM c
-c = b & "Execute unDec_log(""" & eNCcODe(a) & """)" & b
-c = c & "Function unDec_log(ByVal Content)" & b
-c = c & "    Dim I, C, SplStr " & b
-c = c & "    SplStr = Split(Content, ""%"") " & b
-c = c & "    For I = 1 To UBound(SplStr)" & b
-c = c & "        C = C & Chr(CInt(""&H"" & SplStr(I))) " & b
-c = c & "    Next " & b
-c = c & "    unDec_log = C " & b
-c = c & "End Function " & b
-hANdLEeVAlADdDEc = c
-eND fUNcTIoN
-fUNcTIoN eVAlADdDEc(bYVaL a)
-eVAlADdDEc = hANdLEeVAlADdDEc(a, vBCrLF)
-eND fUNcTIoN
-fUNcTIoN vBEvALaDDdEC(bYVaL a)
-vBEvALaDDdEC = eSCaPE(hANdLEeVAlADdDEc(a, ":"))
-eND fUNcTIoN
-pUBlIC fUNcTIoN tOHeXCoLOr(a)
-dIM b
-tOHeXCoLOr = ""
-b = cSTr(hEX(a))
-sELeCT cASe lEN(b)
-cASe 1 : tOHeXCoLOr = "&H00000" & b
-cASe 2 : tOHeXCoLOr = "&H0000" & b
-cASe 3 : tOHeXCoLOr = "&H000" & b
-cASe 4 : tOHeXCoLOr = "&H00" & b
-cASe 5 : tOHeXCoLOr = "&H0" & b
-cASe 6 : tOHeXCoLOr = "&H" & b
-eND sELeCT
-eND fUNcTIoN
-pUBlIC fUNcTIoN cOLoRRgB(a)
-dIM b, c
-b = "" : c = ""
-dIM aRRaYStR(2)
-aRRaYStR(0) =(a mOD b)
-aRRaYStR(1) =((a mOD c) \ b)
-aRRaYStR(2) =(a \ c)
-cOLoRRgB = aRRaYStR
-eND fUNcTIoN
-fUNcTIoN xDEc(a)
-dIM b, c, d, e, f
-b = a
-b = rEPlACe(b, "ㄨ", cHR(34))
-c = lEN(b) : d = "" : e = ""
-fOR f = 0 tO c - 1
-d = aSC(rIGhT(b, c - f)) xOR 20
-e = e & cHR(iNT(d))
-nEXt
-e = rEPlACe(e, "＠", vBCrLF)
-xDEc = e
-eND fUNcTIoN
-fUNcTIoN vARiABlEDiSPlACeMEnT(a, b)
-dIM c, d, e, f, g, h, i, j, k, l
-f = "yzoehijklmfgqrstuvpabnwxcd"
-h = lEN(f)
-g = "4539671820"
-i = lEN(g)
-c = ""
-fOR d = 1 tO lEN(a)
-e = mID(a, d, 1)
-j = iNStR(f, e)
-k = iNStR(g, e)
-iF j > 0 tHEn
-l = j + b
-iF l > h tHEn
-l = l - h
-eLSeIF l <= 0 tHEn
-l = l + h
-eND iF
-e = mID(f, l, 1)
-eLSeIF k > 0 tHEn
-l = k + b
-iF l > i tHEn
-l = l - i
-eLSeIF l <= 0 tHEn
-l = l + i
-eND iF
-e = mID(g, l, 1)
-eND iF
-c = c & e
-nEXt
-vARiABlEDiSPlACeMEnT = c
-eND fUNcTIoN
 %>
+
 

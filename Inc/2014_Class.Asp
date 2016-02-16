@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -22,7 +22,7 @@ l = gETsMAlLClASsFIlENaME( rS("BigClassName"), rS("SmallClassName") )
 cALl wEBdEBuG(l,"act=CreateClass&ProDid=" & a & "&ProSid=" & rS("SmallClassName"))
 k = aTArGEt(rS("Target"))
 g = "        <li"& e &"><a "& aHReF(l,i,k) & sTYlEClASs(c) &">"& i &"</a></li>" & vBCrLF
-g = dISpLAyONlINeED2("/admin/ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rS("Id") & "&n=" & gETrND(11), g, "<a ")
+g = dISpLAyONlINeED2(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rS("Id") & "&n=" & gETrND(11), g, "<a ")
 f=f & g
 rS.mOVeNExT:wENd:rS.cLOsE
 sMAlLClASsLIsT = f
@@ -43,7 +43,7 @@ m = "{$GetProductUrl did='"& rS("BigClassName") &"' sid='"& rS("SmallClassName")
 eND iF
 l = aTArGEt(rS("Target"))	
 h = "        <li"& f &"><a "& aHReF(m,j,l) & sTYlEClASs(c) &">"& j &"</a></li>" & vBCrLF	
-h = dISpLAyONlINeED2("/admin/ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & rS("Id") & "&n=" & gETrND(11), h, "<a ")
+h = dISpLAyONlINeED2(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & rS("Id") & "&n=" & gETrND(11), h, "<a ")
 g=g & h
 rS.mOVeNExT:wENd:rS.cLOsE
 tHReEClASsLIsT = g
@@ -73,3 +73,4 @@ eND iF
 eND iF:tEMpRS2.cLOsE
 eND fUNcTIoN
 %>
+

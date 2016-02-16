@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -317,7 +317,7 @@ sET c = cREaTEoBJeCT("Adodb.Connection")
 c.oPEn "Provider=Microsoft.Jet.OLEDB.4.0;Extended Properties=Excel 8.0;Data Source=" & b
 sET d = cREaTEoBJeCT("Adodb.RecordSet")
 dIM e, f, g
-e = sERvER.mAPpATh("/Admin/Data/Data.mdb")
+e = sERvER.mAPpATh(""& aDMiNDiR &"Data/Data.mdb")
 sET f = cREaTEoBJeCT("Adodb.Connection")
 f.oPEn "Provider = Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database PassWord = '';Data Source = " & e
 sET g = cREaTEoBJeCT("Adodb.RecordSet")
@@ -521,4 +521,5 @@ rESpONsE.bINaRYwRItE g(c).gETcHUnK(7500000)
 eND iF : g.cLOsE
 eND fUNcTIoN
 %>
+
 

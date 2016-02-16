@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-01
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -590,7 +590,7 @@ iF rS("TipsText")<>"" tHEn
 iNFoS = iNFoS & "    <dt>"& rS("TipsText") &"</dt>" & vBCrLF
 eND iF
 iNFoS = iNFoS & "</dl>" & vBCrLF
-iNFoS = dISpLAyONlINeED2("/admin/TableManage.Asp?act=ShowEdit&Id=" & rS(0) & "&TableName=InputConfig"& "&n=" & gETrND(11), iNFoS, "<li|<a ")
+iNFoS = dISpLAyONlINeED2(""& aDMiNDiR &"TableManage.Asp?act=ShowEdit&Id=" & rS(0) & "&TableName=InputConfig"& "&n=" & gETrND(11), iNFoS, "<li|<a ")
 b=b & iNFoS
 rS.mOVeNExT:wENd:rS.cLOsE
 b=b & iNPuTHiDDeNTeXT("DialogTitle",k)
@@ -668,9 +668,9 @@ b = "<a "& aHReF(i, rSS("SmallClassName"), rSS("Target")) &">"& q &"</a>"
 eND iF
 eND iF
 iF p = "nav" tHEn
-b = dISpLAyONlINeEDiTDiALoG("/admin/NavManage.Asp?act=EditNavSmall&Id=" & rSS("Id") & "&n=" & gETrND(11), b)
+b = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"NavManage.Asp?act=EditNavSmall&Id=" & rSS("Id") & "&n=" & gETrND(11), b)
 eLSe
-b = dISpLAyONlINeEDiTDiALoG("/admin/ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rSS("Id") & "&n=" & gETrND(11), b)
+b = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rSS("Id") & "&n=" & gETrND(11), b)
 eND iF
 iF d<>"" oR  e<>"" tHEn
 iF e<>"" aND e<>"#" tHEn
@@ -721,7 +721,7 @@ b = gETnAVuRL(tEMpRS("BigClassName"),"")
 cALl wEBdEBuG(b,"act=Nav&NavDid=" & tEMpRS("BigClassName"))
 d = "/" & gETwEBfOLdERnAMe() & tEMpRS("FolderName") & "/"
 j = "<a " & aHReF(b, tEMpRS("BigClassName"), tEMpRS("Target")) & ">" & tEMpRS("BigClassName") & "</a>" 	
-j = dISpLAyONlINeED2("/admin/NavManage.Asp?act=EditNavBig&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), j, "<li|<a ")
+j = dISpLAyONlINeED2(""& aDMiNDiR &"NavManage.Asp?act=EditNavBig&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), j, "<li|<a ")
 eND iF : tEMpRS.cLOsE
 eND iF
 iF pUBnAVsID <> "" tHEn
@@ -730,7 +730,7 @@ iF nOT tEMpRS.eOF tHEn
 b = gETnAVuRL(tEMpRS("BigClassName"),tEMpRS("SmallClassName"))
 cALl wEBdEBuG(b,"act=Nav&NavDid=" & tEMpRS("BigClassName") & "&NavSid=" & tEMpRS("SmallClassName"))
 k = "<a " & aHReF(b, tEMpRS("SmallClassName"), tEMpRS("Target")) & ">" & tEMpRS("SmallClassName") & "</a>"
-k = dISpLAyONlINeED2("/admin/NavManage.Asp?act=EditNavSmall&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), k, "<li|<a ")
+k = dISpLAyONlINeED2(""& aDMiNDiR &"NavManage.Asp?act=EditNavSmall&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), k, "<li|<a ")
 eND iF : tEMpRS.cLOsE
 eND iF
 d = "/" & gETwEBfOLdERnAMe()
@@ -741,7 +741,7 @@ b = gETcLAsSUrL(tEMpRS("BigClassName"),"","")
 cALl wEBdEBuG(b,"act=CreateClass&ProDid=" & tEMpRS("BigClassName"))
 d = "/" & gETwEBfOLdERnAMe() & tEMpRS("FolderName") & "/"
 l = "<a " & aHReF(b, tEMpRS("BigClassName"), tEMpRS("Target")) & ">" & tEMpRS("BigClassName") & "</a>"
-l = dISpLAyONlINeED2("/admin/ProductClassManage.Asp?act=ShowEditBigClass&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), l, "<li|<a ")
+l = dISpLAyONlINeED2(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditBigClass&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), l, "<li|<a ")
 eND iF : tEMpRS.cLOsE
 eND iF
 iF pUBpROsID <> "" tHEn
@@ -751,7 +751,7 @@ b = gETcLAsSUrL(tEMpRS("BigClassName"), tEMpRS("SmallClassName"), "")
 cALl wEBdEBuG(b,"act=CreateClass&ProDid=" & tEMpRS("BigClassName") & "&ProSid=" & tEMpRS("SmallClassName"))
 e = "/" & tEMpRS("FolderName") & "/"
 m = "<a " & aHReF(b, tEMpRS("SmallClassName"), tEMpRS("Target")) & ">" & tEMpRS("SmallClassName") & "</a>"
-m = dISpLAyONlINeED2("/admin/ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), m, "<li|<a ")
+m = dISpLAyONlINeED2(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), m, "<li|<a ")
 eND iF : tEMpRS.cLOsE
 eND iF
 iF pUBpROtID <> "" tHEn
@@ -759,7 +759,7 @@ tEMpRS.oPEn "Select * From [ThreeClass] Where BigClassName='" & pUBpROdID & "' A
 iF nOT tEMpRS.eOF tHEn
 cALl wEBdEBuG(b,"act=CreateClass&ProDid=" & tEMpRS("BigClassName") & "&ProSid=" & tEMpRS("SmallClassName") & "&ProTid=" & tEMpRS("ThreeClassName"))
 n = "<a " & aHReF(b, tEMpRS("ThreeClassName"), tEMpRS("Target")) & ">" & tEMpRS("ThreeClassName") & "</a>"
-n = dISpLAyONlINeED2("/admin/ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), n, "<li|<a ")
+n = dISpLAyONlINeED2(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), n, "<li|<a ")
 eND iF : tEMpRS.cLOsE
 eND iF
 iF pUBiD <>"" tHEn
@@ -771,7 +771,7 @@ b = gEThANdLEuRL(tEMpRS("FileName"))
 cALl wEBdEBuG(b, "act=CreateArticle&ID=" & tEMpRS("Id"))
 eND iF
 o =  "<a " & aHReF(b, tEMpRS("Title"), tEMpRS("Target")) & ">" & tEMpRS("Title") & "</a>"
-o = dISpLAyONlINeED2("/admin/Product.Asp?act=ShowEditProduct&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), o, "<li|<a ")
+o = dISpLAyONlINeED2(""& aDMiNDiR &"Product.Asp?act=ShowEditProduct&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), o, "<li|<a ")
 eND iF : tEMpRS.cLOsE
 eND iF
 iF mAInTItLE<>"" tHEn
@@ -783,7 +783,7 @@ b = gEThANdLEuRL(tEMpRS("FileName"))
 cALl wEBdEBuG(b, "act=MainInfo&ID=" & tEMpRS("Id"))
 eND iF
 q =   "[-|_]" & "<a " & aHReF(b, tEMpRS("ShowTitle"), tEMpRS("Target")) & ">" & tEMpRS("ShowTitle") & "</a>"
-q = dISpLAyONlINeED2("/admin/MainInfo.Asp?act=ShowEdit&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), q, "<li|<a ")
+q = dISpLAyONlINeED2(""& aDMiNDiR &"MainInfo.Asp?act=ShowEdit&Id=" & tEMpRS("Id") & "&n=" & gETrND(11), q, "<li|<a ")
 eND iF : tEMpRS.cLOsE
 eND iF
 c = j & "[-|_]" & k & "[-|_]" & l & "[-|_]" & m & "[-|_]" & n & "[-|_]" & o & q
@@ -888,19 +888,6 @@ d = rPArAM(a,"ClassAddSql")
 b = rPArAM(a,"class")
 xY_sITeMAp = sITeMAp(a)	
 eND fUNcTIoN
-fUNcTIoN xY_jSWeBStAT(a)
-dIM b,c
-c = tRIm(rPArAM(a,"fileName"))
-iF c="" tHEn
-c="/inc/Create_Html.Asp"
-eND iF
-c=rEPlACe(c,"/","\/")
-b = "<script>document.writeln(""<script src=\'"& c &"?act=WebStat&GoToUrl="""
-b = b & "+escape(document.referrer)+""&ThisUrl=""+escape(window.location.href)+""&screen=""+escape(window.screen.width+""x""+window.screen.height)"
-b = b & "+""&co=""+escape(document.cookie)"	
-b = b & "+"" \'><\/script>"");</script>"
-xY_jSWeBStAT = b
-eND fUNcTIoN
 fUNcTIoN xY_qQLiSTyLElIStSHoW(a)
 dIM b,c,d,e,f,g,h,i,j
 i = rPArAM(a,"ShowQQPhoto")
@@ -973,7 +960,7 @@ rS("IsAddFriend") = iIF(f="true",tRUe,fALsE)
 rS.uPDaTE
 xY_gEToNLiNEqQUrL = "javascript:OnLineQQ('"& c &"',"& e &", "& f &");"
 eND iF:rS.cLOsE
-xY_gEToNLiNEqQUrL = xY_gEToNLiNEqQUrL & """" & gETcONtROlSTr("/admin/OnLineQQManage.Asp") & """"
+xY_gEToNLiNEqQUrL = xY_gEToNLiNEqQUrL & """" & gETcONtROlSTr(""& aDMiNDiR &"OnLineQQManage.Asp") & """"
 eND fUNcTIoN
 fUNcTIoN xY_sHOwPHoTOlISt(a)
 dIM b,c,d,e,f,g,h
@@ -1026,7 +1013,7 @@ n = rEPlACeVAlUEpARaM(n,"content",rS("Content"))
 n = rEPlACeVAlUEpARaM(n,"price",rS("Price"))
 n = rEPlACeVAlUEpARaM(n,"author",rS("Author"))
 nEXt
-n = dISpLAyONlINeEDiTDiALoG("/admin/Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11), n)
+n = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11), n)
 o=o & n
 rS.mOVeNExT:nEXt:rS.cLOsE
 xY_sHOwPHoTOlISt=o
@@ -1244,7 +1231,7 @@ nEXt
 eND iF
 b = rEAdMAiNId("推荐导航")
 iF b<>"" aND rEQuESt("gl") = "edit" tHEn
-g = dISpLAyONlINeEDiTDiALoG("/admin/MainInfo.Asp?act=ShowEdit&Id=" & b & "&n=" & gETrND(11), g)
+g = dISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"MainInfo.Asp?act=ShowEdit&Id=" & b & "&n=" & gETrND(11), g)
 eND iF
 g= "<ul"& k &">"& g &"</ul>"
 xY_rECoMMeNDnAViGAtIOn = g
@@ -1295,7 +1282,7 @@ eND iF
 l = rEPlACe(l, "[$smallname$]", rSX("SmallClassName"))
 l = rEPlACe(l, "[$threename$]", rSX("ThreeClassName"))
 l = rEPlACe(l, "[$threeurl$]", p)
-l = dISpLAyONlINeED2("/admin/ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & rSX("Id") & "&n=" & gETrND(11), l, "<li|<a ")
+l = dISpLAyONlINeED2(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & rSX("Id") & "&n=" & gETrND(11), l, "<li|<a ")
 w=w & l & vBCrLF
 eND iF
 rSX.mOVeNExT:nEXt:rSX.cLOsE
@@ -1308,7 +1295,7 @@ n="[smalldialog end]" : o="[/smalldialog end]"
 iF iNStR(i,n)>0 aND iNStR(i,o)>0 tHEn
 w = w & vBCrLF & sTRcUT(i,n,o,2)
 eND iF
-x = dISpLAyONlINeED2("/admin/ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rS("Id") & "&n=" & gETrND(11), x, "<li|<a ")
+x = dISpLAyONlINeED2(""& aDMiNDiR &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & rS("Id") & "&n=" & gETrND(11), x, "<li|<a ")
 m=m & x & w & vBCrLF	
 rS.mOVeNExT:nEXt:rS.cLOsE
 n="[dialog start]" : o="[/dialog start]"
@@ -1563,7 +1550,7 @@ m = rEPlACeVAlUEpARaM(m,"author",rS("Author"))
 m = rEPlACeVAlUEpARaM(m,"productabout",rS("WebDescription"))
 m = rEPlACeVAlUEpARaM(m,"articledescription",aRTiCLeDEsCRiPTiON)
 nEXt
-q = "/admin/Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11)
+q = ""& aDMiNDiR &"Product.Asp?act=ShowEditProduct&Id=" & rS("Id") & "&n=" & gETrND(11)
 m = dISpLAyONlINeEDiTDiALoG(q, m)
 o="[list-"& k &" startdialog]" : p="[/list-"& k &" startdialog]"
 iF iNStR(j,o)>0 aND iNStR(j,p)>0 tHEn
@@ -1850,7 +1837,7 @@ h = aREl(rSX("NoFollow"))
 f = rSX("Title")
 i = rSX("ImgPath")
 d = "<a href='"& e &"'"& g &""&h & sEThTMlPArAM(a,"class")&" title="""& f &""">"& fONtCOlORfONtB(f,rSX("FontB"),rSX("FontColor")) &"</a>" & c
-d = dISpLAyONlINeED2("/admin/FriendLink.Asp?act=ShowEdit&Id=" & rSX("Id") & "&n=" & gETrND(11), d, "<li|<a ")
+d = dISpLAyONlINeED2(""& aDMiNDiR &"FriendLink.Asp?act=ShowEdit&Id=" & rSX("Id") & "&n=" & gETrND(11), d, "<li|<a ")
 k=k & d & vBCrLF	
 rSX.mOVeNExT:nEXt:rSX.cLOsE
 xY_lINkS = k
@@ -1869,7 +1856,7 @@ f = aREl(rSX("NoFollow"))
 d = rSX("Title")
 g = rSX("ImgPath")
 k = "<a href='"& c &"'"& e &""&f & sEThTMlPArAM(a,"class")&" >" & fONtCOlORfONtB(d,rSX("FontB"),rSX("FontColor")) &"</a>"
-k = hANdLEdISpLAyONlINeEDiTDiALoG("/admin/FriendLink.Asp?act=ShowEdit&Id=" & rS("Id") & "&n=" & gETrND(11), k,"style='float:right;padding:0 4px;'","")
+k = hANdLEdISpLAyONlINeEDiTDiALoG(""& aDMiNDiR &"FriendLink.Asp?act=ShowEdit&Id=" & rS("Id") & "&n=" & gETrND(11), k,"style='float:right;padding:0 4px;'","")
 i=i & "<li"& sEThTMlPArAM(a,"liclass") &">" & k & "</li>"
 rSX.mOVeNExT:nEXt:rSX.cLOsE
 xY_fRIeNDlINkLI = i
@@ -1927,7 +1914,7 @@ eND iF
 eND iF
 f = rEAdMAiNId(b)
 iF f<>"" aND rEQuESt("gl") = "edit" tHEn
-g = "/admin/MainInfo.Asp?act=ShowEdit&Id=" & f & "&n=" & gETrND(11)
+g = ""& aDMiNDiR &"MainInfo.Asp?act=ShowEdit&Id=" & f & "&n=" & gETrND(11)
 e = dISpLAyONlINeED2(g, e, "<span |<div ")
 eND iF
 e = hANdLEcONtENtPArAMlABeL(a,e)
@@ -1987,7 +1974,7 @@ g = c
 eND iF
 h = rEAdMAiNId(b)
 iF h<>"" aND rEQuESt("gl") = "edit" tHEn
-f = "/admin/MainInfo.Asp?act=ShowEdit&Id=" & h & "&n=" & gETrND(11)
+f = ""& aDMiNDiR &"MainInfo.Asp?act=ShowEdit&Id=" & h & "&n=" & gETrND(11)
 g = dISpLAyONlINeED2(f, g, "<span |<div ")
 eND iF
 xY_mAInINfO_gETsHOwTItLE = g
@@ -2069,7 +2056,7 @@ cALl wEBdEBuG(l,"act=Nav&NavDid=" & b & "&Page=1")
 eND iF	
 j = "<a " & aHReF(l, o, p) & sEThTMlPArAM(a,"aclass|class|style") & ">" & o & "</a>"
 iF i <> rS.rECoRDcOUnT aND r<>"" tHEn j = j & r
-j = dISpLAyONlINeED2("/admin/NavManage.Asp?act=EditNavBig&Id=" & rS("Id") & "&n=" & gETrND(11), j, "<li|<a ")
+j = dISpLAyONlINeED2(""& aDMiNDiR &"NavManage.Asp?act=EditNavBig&Id=" & rS("Id") & "&n=" & gETrND(11), j, "<li|<a ")
 k = k & j
 rS.mOVeNExT : nEXt : rS.cLOsE
 xY_wEBbOTtOMnAV = k
@@ -2827,4 +2814,5 @@ fUNcTIoN pINgBIlABlE(a)
 pINgBIlABlE = fALsE
 eND fUNcTIoN
 %>
+
 

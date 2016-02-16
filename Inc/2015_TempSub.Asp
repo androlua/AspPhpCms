@@ -57,3 +57,4 @@ cALl rWEnD(d)
 cALl eCHo("ÏÔÊ¾",b)
 eND sUB
 %>
+

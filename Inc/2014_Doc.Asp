@@ -19,3 +19,4 @@ gETdOCtEXt = e.gETdOCcONtENt(a)
 iF eRR tHEn dOErROr eRR.dEScRIpTIoN, "GetDocText 读取文件内容 函数出错，FileName=" & a
 eND fUNcTIoN
 %>
+

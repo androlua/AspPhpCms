@@ -225,6 +225,7 @@
             <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=OnePage','单页管理');">单页管理</li>    
             <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=Admin','系统用户管理');">系统用户管理</li>  
             
+            <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=WebsiteStat','网站统计');">网站统计</li> 
             <li class="item" onClick="window1('?act=displayLayout&templateFile=manageMakeHtml.html','生成HTML');">生成HTML</li> 
             <li class="item" onClick="window1('?act=displayLayout&templateFile=makeSiteMap.html','生成SiteMap');">生成SiteMap</li> 
             <li class="item" onClick="window1('?act=displayLayout&templateFile=makeRobots.html','生成Robots');">生成Robots</li> 
@@ -267,8 +268,10 @@
             用 户 名：  {$adminusername$}<br>
             权限权限：   超级管理员<br>
             表前缀：   {$DB_PREFIX$}<br>
+            <!--
             <a href="/Inc/Create_Html.Asp?act=showweb&gl=edit" target="_blank">进入在线修改模式(旧版)</a><br>
-            <a href="../index.asp?gl=edit" target="_blank">进入在线修改模式</a><br>
+            -->
+            <a href="../index.{$EDITORTYPE$}?gl=edit" target="_blank">进入在线修改模式</a><br>
             
 	   </div>
 	</div>

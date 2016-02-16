@@ -15,7 +15,7 @@
 	</div>
 </div>
 <div class="mg10">
-	<div class="atitleleft">模板信息</div>
+	<div class="atitleleft">{$lableTitle$}信息</div>
  
 	<div class="clear">
 	</div>
@@ -37,9 +37,9 @@
         [list]
 		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 		  <td>[$templatename$] </td>
-		  <td nowrap="">[$templatepath$] </td>
+		  <td nowrap=""><a href="../inc/admin_template.asp?act=templateFileList&dir=[$templatepath$]">[$templatepath$]</a></td>
 		  <td><a href="?act=isOpenTemplate&templatepath=[$templatepath$]&templatename=[$templatename$]">启用</a> 
-          <a href="../index.asp?templatedir=[$templatepath$]" target="_blank"><img src="images/icon/part-list.gif" title="预览" alt="预览" onClick="viewArc(106);" style="cursor:pointer" border="0" width="16" height="16"></a>
+          <a href="../index.{$EDITORTYPE$}?templatedir=[$templatepath$]" target="_blank"><img src="images/icon/part-list.gif" title="预览" alt="预览" onClick="viewArc(106);" style="cursor:pointer" border="0" width="16" height="16"></a>
           
           </td>
 		  </tr>

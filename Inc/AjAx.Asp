@@ -210,3 +210,4 @@ b = sTRcUT(b,"Function " & a,"End Function",1)
 cALl rW(sHOwASpCOdECoLOr(b))
 eND sUB
 %>
+

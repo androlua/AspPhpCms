@@ -101,3 +101,4 @@ uRL = "<a "& aHReF(wEB_URl & "/Rss/Feed.Xml","µã»÷´ò¿ª","_blank") &">"& wEB_URl 
 cALl eCHo("Create Rss/Feed.Xml OK", uRL)
 %>
 
+

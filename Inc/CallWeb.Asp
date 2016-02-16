@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-16
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -128,9 +128,9 @@ fUNcTIoN aRTiCLeLIsT()
 <title>文章列表</title>
 </head>
 <body>
-<script language="javascript" src="/Admin/Images/Function.Js"></script>
-<link href="/Admin/Css/Main.Css" rel="stylesheet"  type="text/css">
-<link href="/Admin/Css/BodyCss.Css" rel="stylesheet"  type="text/css">
+<script language="javascript" src=""& adminDir &"Images/Function.Js"></script>
+<link href=""& adminDir &"Css/Main.Css" rel="stylesheet"  type="text/css">
+<link href=""& adminDir &"Css/BodyCss.Css" rel="stylesheet"  type="text/css">
 <div class="ClickYes">
 <div class="Div800Center">
 <%
@@ -250,3 +250,4 @@ rW("<option value=""?act=AllDel"&tEMp&""">删除选择</option>")
 </div>
 </body></html>
 <%eND fUNcTIoN%>
+
