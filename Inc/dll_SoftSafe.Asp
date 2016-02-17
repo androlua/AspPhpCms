@@ -2,237 +2,280 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-cLAsS dLLsOFtSAfE
-pRIvATe fRMnAMe	
-pRIvATe sUB cLAsS_iNItIAlIZe()
-eND sUB
-pRIvATe sUB cLAsS_tERmINaTE()
-eND sUB
-pUBlIC pROpERtY lET sETfRMnAMe(sTR)
-fRMnAMe=sTR
-eND pROpERtY
-pUBlIC pROpERtY gET gETfRMnAMe()
-gETfRMnAMe = fRMnAMe
-eND pROpERtY
-fUNcTIoN iSAcCEsSPaSS(bYVaL a,b)
-iSAcCEsSPaSS=fALsE
-iF cHEcKFiLE(a) = fALsE tHEn
-cALl mBInFO("出错", "没有数据库"): eXIt fUNcTIoN
-eND iF
-b = fILeCReATeDAtE(a)
-b = fORmAT_TImE(b, 4) & "313801120"
-iF (cHEcKAcCEsSPaSS(a, b)) = fALsE tHEn
-cALl mBInFO("出错", "数据库密码错误" & b): eXIt fUNcTIoN
-eND iF
-iSAcCEsSPaSS=tRUe
-eND fUNcTIoN
-fUNcTIoN cHEcKFiLE(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b
-cALl hANdLEpATh(a)
-sET b = cREaTEoBJeCT("Scripting.FileSystemObject")
-cHEcKFiLE = b.fILeEXiSTs(a)
-sET b = nOThINg
-iF eRR tHEn dOErROr eRR.dEScRIpTIoN, "CheckFile 检查文件 函数出错，FileName=" & a
-eND fUNcTIoN
-fUNcTIoN fILeCReATeDAtE(a)
-fILeCReATeDAtE = gETfILeCReATeDAtE(a)
-eND fUNcTIoN
-fUNcTIoN fORmAT_TImE(a, b)
-dIM c, d, e, f, g, h
-fORmAT_TImE = ""
-iF iSDaTE(a) = fALsE tHEn eXIt fUNcTIoN
-c = cSTr(yEAr(a))
-d = cSTr(mONtH(a))
-iF lEN(d) = 1 tHEn d = "0" & d
-e = cSTr(dAY(a))
-iF lEN(e) = 1 tHEn e = "0" & e
-f = cSTr(hOUr(a))
-iF lEN(f) = 1 tHEn f = "0" & f
-g = cSTr(mINuTE(a))
-iF lEN(g) = 1 tHEn g = "0" & g
-h = cSTr(sECoND(a))
-iF lEN(h) = 1 tHEn h = "0" & h
-sELeCT cASe b
-cASe 1
-fORmAT_TImE = c & "-" & d & "-" & e & " " & f & ":" & g & ":" & h
-cASe 2
-fORmAT_TImE = c & "-" & d & "-" & e
-cASe 3
-fORmAT_TImE = f & ":" & g & ":" & h
-cASe 4
-fORmAT_TImE = c & "年" & d & "月" & e & "日"
-cASe 5
-fORmAT_TImE = c & d & e
-cASe 6
-fORmAT_TImE = c & d & e & f & g & h
-cASe 7
-fORmAT_TImE = d & "-" & e
-cASe 8
-fORmAT_TImE = c & "年" & d & "月" & e & "日" & " " & f & ":" & g & ":" & h
-cASe 9
-fORmAT_TImE = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒，" & gETdAYsTAtUS(f, 1)
-cASe 10
-fORmAT_TImE = c & "年" & d & "月" & e & "日" & f & "时"
-cASe 11
-fORmAT_TImE = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒"
-cASe 12
-fORmAT_TImE = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分"
-cASe 13
-fORmAT_TImE = d & "月" & e & "日" & " " & f & ":" & g & " " & gETdAYsTAtUS(f, 0)
-cASe 14
-fORmAT_TImE = c & "/" & d & "/" & e
-cASe 15
-fORmAT_TImE = c & "年" & d & "月 第" & gETcOUnTPaGE(e, 7) & "周"
-eND sELeCT
-eND fUNcTIoN
-fUNcTIoN cHEcKAcCEsSPaSS(a, b)
-oN eRRoR rESuME nEXt
-dIM c
-cHEcKAcCEsSPaSS = tRUe
-sET c = cREaTEoBJeCT("Adodb.Connection")
-c.oPEn "Provider = Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database PassWord = '" & b & "';Data Source = " & a
-c.cLOsE
-iF eRR <> 0 tHEn
-eRR.cLSoE
-cHEcKAcCEsSPaSS = fALsE
-eND iF
-eND fUNcTIoN
-fUNcTIoN hANdLEpATh(a)
-a = rEPlACe(a, "/", "\")
-a = rEPlACe(a, "\\", "\")
-a = rEPlACe(a, "\\", "\")
-dIM b
-b = fALsE
-iF rIGhT(a, 1) = "\" tHEn
-b = tRUe
-eND iF
-iF iNStR(a, ":") = 0 tHEn
-iF lEFt(a, 1) = "\" tHEn
-a = sERvER.mAPpATh("\") & "\" & a
-eLSe
-a = sERvER.mAPpATh(".\") & "\" & a
-eND iF
-eND iF
-a = rEPlACe(a, "/", "\")
-a = rEPlACe(a, "\\", "\")
-a = rEPlACe(a, "\\", "\")
-a = fULlPAtH(a)
-iF b = tRUe tHEn
-a = a & "\"
-eND iF
-hANdLEpATh = a
-eND fUNcTIoN
-fUNcTIoN gETfILeCReATeDAtE(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c
-cALl hANdLEpATh(a)
-sET b = cREaTEoBJeCT("Scripting.FileSystemObject")
-iF b.fILeEXiSTs(a) = tRUe tHEn
-sET c = b.gETfILe(a)
-gETfILeCReATeDAtE = c.dATeCReATeD
-sET c = nOThINg
-eND iF
-sET b = nOThINg
-iF eRR tHEn dOErROr eRR.dEScRIpTIoN, "GetFileCreateDate 获得文件创建时间 函数出错，FileName=" & a
-eND fUNcTIoN
-fUNcTIoN gETdAYsTAtUS(a, b)
-dIM c
-iF lEFt(a, 1) = "0" tHEn
-a = rIGhT(a, 1)
-eND iF
-a = cINt(a)
-iF a >= 0 aND a <= 5 tHEn
-c = "凌晨"
-eLSeIF a >= 6 aND a <= 8 tHEn
-c = "早上"
-eLSeIF a >= 9 aND a <= 12 tHEn
-c = "上午"
-eLSeIF a >= 13 aND a <= 18 tHEn
-c = "下午"
-eLSeIF a >= 19 aND a <= 24 tHEn
-c = "晚上"
-eLSe
-c = "深夜"
-eND iF
-iF b = 1 tHEn c = "<b>" & c & "</b>"
-gETdAYsTAtUS = c
-eND fUNcTIoN
-fUNcTIoN gETcOUnTPaGE(a, b)
-iF a < 0 tHEn
-a = a * - 1
-eND iF
-iF b < 0 tHEn
-b = b * - 1
-eND iF
-gETcOUnTPaGE = fIX(a / b)
-iF iNStR(a / b, ".") > 0 tHEn gETcOUnTPaGE = gETcOUnTPaGE + 1
-eND fUNcTIoN
-fUNcTIoN fULlPAtH(bYVaL a)
-dIM b, c, d
-a = rEPlACe(a, "/", "\")
-b = sPLiT(a, "\")
-fOR eACh c iN b
-c = tRIm(c)
-iF c <> "" aND c <> "." tHEn
-iF iNStR(d, "\") > 0 aND c = ".." tHEn
-d = mID(d, 1, iNStRReV(d, "\") - 1)
-eLSe
-iF d <> "" aND rIGhT(d, 1) <> "\" tHEn d = d & "\"
-d = d & c
-eND iF
-eND iF
-nEXt
-fULlPAtH = d
-eND fUNcTIoN
-sUB dOErROr(a, b)
-dIM c, d
-rANdOMiZE
-c = cLNg(rND() * 29252888)
-d = "<br />"
-d = d & "<div style=""width:100%; font-size:12px;;line-height:150%"">"
-d = d & "  <label onClick=""ERRORDIV" & c & ".style.display=(ERRORDIV" & c & ".style.display=='none'?'':'none')"">"
-d = d & "  <span style=""background-color:#820222;color:#FFFFFF;height:23px;font-size:14px;cursor:pointer"">〖 出错 提示信息 ERROR 〗</span><br />"
-d = d & "  </label>"
-d = d & "  <div id=""ERRORDIV" & c & """ style=""width:100%;border:1px solid #820222;padding:5px;overflow:hidden;"">"
-d = d & " <span style=""color:#FF0000;"">出错描述</span> " & a & "<br />"
-d = d & " <span style=""color:#FF0000;"">回显信息</span> " & b & "<br />"
-d = d & "  </div>"
-d = d & "</div>"
-d = d & "<br />"
-rESpONsE.wRItE(d)
-rESpONsE.eND()
-eND sUB	
-fUNcTIoN rW(a)
-rESpONsE.wRItE(a)
-eND fUNcTIoN
-fUNcTIoN mSGbOX(bYVaL a)
-a = rEPlACe(rEPlACe(a, cHR(10), "\n"), cHR(13), "\n")
-rESpONsE.wRItE("<script>alert('" & a & "');</script>")
-eND fUNcTIoN
-fUNcTIoN mBInFO(a, b)
-mBInFO = mSGbOX(a)
-eND fUNcTIoN
-eND cLAsS
-dIM tEStOBj : sET tEStOBj = nEW dLLsOFtSAfE	
-dIM aCCeSSpASs
-sELeCT cASe rEQuESt("act")
-cASe "handle" : cALl tEStOBj.rW(tEStOBj.iSAcCEsSPaSS(rEQuESt("MDBPath"),aCCeSSpASs))
-cASe eLSe:dEFaULt()
-eND sELeCT
-sUB dEFaULt()
+
+Class dllSoftSafe
+
+
+
+	private FrmName						
+	
+	
+	Private Sub Class_Initialize()
+		
+	End Sub
+	
+	Private Sub Class_Terminate()
+	
+	End Sub
+	
+	Public Property Let setFrmName(Str)
+		 FrmName=Str
+	End Property
+	
+	Public Property Get getFrmName()
+		getFrmName = FrmName
+	End Property
+	
+	
+	function isAccessPass(byval a,b)
+		isAccessPass=false
+        If CheckFile(a) = False Then
+            Call MBInfo("出错", "没有数据库"): Exit function
+        End If
+
+        b = FileCreateDate(a)
+        b = Format_Time(b, 4) & "313801120"
+        If (CheckAccessPass(a, b)) = False Then
+            Call MBInfo("出错", "数据库密码错误" & b): Exit function
+        End If
+		isAccessPass=true
+	end function
+
+
+	Function CheckFile(ByVal a)
+		On Error Resume Next
+		Dim b
+		Call HandlePath(a)
+		Set b = CreateObject("Scripting.FileSystemObject")
+			CheckFile = b.FileExists(a)
+		Set b = Nothing
+		If Err Then doError Err.Description, "CheckFile 检查文件 函数出错，FileName=" & a
+	End Function
+	Function FileCreateDate(a)
+		FileCreateDate = GetFileCreateDate(a)
+	End Function
+	Function Format_Time(a, b)
+		Dim c, d, e, f, g, h
+		Format_Time = ""
+		If IsDate(a) = False Then Exit Function
+		c = Cstr(Year(a))
+		d = Cstr(Month(a))
+		If Len(d) = 1 Then d = "0" & d
+		e = Cstr(Day(a))
+		If Len(e) = 1 Then e = "0" & e
+		f = Cstr(Hour(a))
+		If Len(f) = 1 Then f = "0" & f
+		g = Cstr(Minute(a))
+		If Len(g) = 1 Then g = "0" & g
+		h = Cstr(Second(a))
+		If Len(h) = 1 Then h = "0" & h
+		Select Case b
+			Case 1
+						
+				Format_Time = c & "-" & d & "-" & e & " " & f & ":" & g & ":" & h
+			Case 2
+						
+				Format_Time = c & "-" & d & "-" & e
+			Case 3
+						
+				Format_Time = f & ":" & g & ":" & h
+			Case 4
+						
+				Format_Time = c & "年" & d & "月" & e & "日"
+			Case 5
+						
+				Format_Time = c & d & e
+			Case 6
+						
+				Format_Time = c & d & e & f & g & h
+			Case 7
+						
+				Format_Time = d & "-" & e
+			Case 8
+						
+				Format_Time = c & "年" & d & "月" & e & "日" & " " & f & ":" & g & ":" & h
+			Case 9
+						
+				Format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒，" & GetDayStatus(f, 1)
+			Case 10
+						
+				Format_Time = c & "年" & d & "月" & e & "日" & f & "时"
+			Case 11
+						
+				Format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒"
+			Case 12
+						
+				Format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分"
+			Case 13
+						
+				Format_Time = d & "月" & e & "日" & " " & f & ":" & g & " " & GetDayStatus(f, 0)
+			Case 14
+						
+				Format_Time = c & "/" & d & "/" & e
+			Case 15
+						
+				Format_Time = c & "年" & d & "月 第" & GetCountPage(e, 7) & "周"
+		End Select
+	End Function
+	Function CheckAccessPass(a, b)
+		On Error Resume Next
+		Dim c
+		CheckAccessPass = True
+		Set c = CreateObject("Adodb.Connection")
+			c.Open "Provider = Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database PassWord = '" & b & "';Data Source = " & a
+			c.Close
+			If Err <> 0 Then
+				Err.Clsoe
+				CheckAccessPass = False
+			End If
+	End Function
+	Function HandlePath(a)
+		a = Replace(a, "/", "\")
+		a = Replace(a, "\\", "\")
+		a = Replace(a, "\\", "\")
+		dim b
+		b = false
+		if right(a, 1) = "\" then
+			b = true
+		end if
+		If InStr(a, ":") = 0 Then
+			If Left(a, 1) = "\" Then
+				a = Server.MapPath("\") & "\" & a
+			Else
+				a = Server.MapPath(".\") & "\" & a
+			End If
+		End If
+		a = Replace(a, "/", "\")
+		a = Replace(a, "\\", "\")
+		a = Replace(a, "\\", "\")
+		a = FullPath(a)
+		if b = true then
+			a = a & "\"
+		end if
+		HandlePath = a
+	End Function
+	Function GetFileCreateDate(ByVal a)
+		On Error Resume Next
+		Dim b, c
+		Call HandlePath(a)
+		Set b = CreateObject("Scripting.FileSystemObject")
+			If b.FileExists(a) = True Then
+				Set c = b.GetFile(a)
+					GetFileCreateDate = c.DateCreated
+				Set c = Nothing
+			End If
+		Set b = Nothing
+		If Err Then doError Err.Description, "GetFileCreateDate 获得文件创建时间 函数出错，FileName=" & a
+	End Function
+	Function GetDayStatus(a, b)
+		Dim c
+		If Left(a, 1) = "0" Then
+			a = Right(a, 1)
+		End If
+		a = CInt(a)
+		If a >= 0 And a <= 5 Then
+			c = "凌晨"
+		ElseIf a >= 6 And a <= 8 Then
+			c = "早上"
+		ElseIf a >= 9 And a <= 12 Then
+			c = "上午"
+		ElseIf a >= 13 And a <= 18 Then
+			c = "下午"
+		ElseIf a >= 19 And a <= 24 Then
+			c = "晚上"
+		Else
+			c = "深夜"
+		End If
+		If b = 1 Then c = "<b>" & c & "</b>"
+		GetDayStatus = c
+	End Function
+	Function GetCountPage(a, b)
+		
+		if a < 0 then
+			a = a * - 1
+		end if
+		if b < 0 then
+			b = b * - 1
+		end if
+		GetCountPage = Fix(a / b)
+		If InStr(a / b, ".") > 0 Then GetCountPage = GetCountPage + 1
+	End Function
+	Function FullPath(ByVal a)
+		Dim b, c, d
+		a = Replace(a, "/", "\")
+		b = Split(a, "\")
+		For Each c In b
+			c = Trim(c)
+			If c <> "" And c <> "." Then
+				If InStr(d, "\") > 0 And c = ".." Then
+					d = Mid(d, 1, InStrRev(d, "\") - 1)
+				Else
+					If d <> "" And Right(d, 1) <> "\" Then d = d & "\"
+					d = d & c
+				End If
+			End If
+		Next
+		FullPath = d
+	End Function
+	
+	
+	
+	Sub DoError(a, b)
+		
+		Dim c, d
+		Randomize
+		c = CLng(Rnd() * 29252888)
+		d = "<br />"
+		d = d & "<div style=""width:100%; font-size:12px;;line-height:150%"">"
+		d = d & "  <label onClick=""ERRORDIV" & c & ".style.display=(ERRORDIV" & c & ".style.display=='none'?'':'none')"">"
+		d = d & "  <span style=""background-color:#820222;color:#FFFFFF;height:23px;font-size:14px;cursor:pointer"">〖 出错 提示信息 ERROR 〗</span><br />"
+		d = d & "  </label>"
+		d = d & "  <div id=""ERRORDIV" & c & """ style=""width:100%;border:1px solid #820222;padding:5px;overflow:hidden;"">"
+		d = d & " <span style=""color:#FF0000;"">出错描述</span> " & a & "<br />"
+		d = d & " <span style=""color:#FF0000;"">回显信息</span> " & b & "<br />"
+		d = d & "  </div>"
+		d = d & "</div>"
+		d = d & "<br />"
+		Response.Write(d)
+		Response.End()
+	End Sub	
+	Function Rw(a)
+		Response.Write(a)
+	End Function
+	Function MsgBox(ByVal a)
+		a = Replace(Replace(a, Chr(10), "\n"), Chr(13), "\n")
+		Response.Write("<script>alert('" & a & "');</script>")
+	End Function
+	function MBInfo(a, b)
+		MBInfo = MsgBox(a)
+	End function
+End Class
+
+
+Dim testOBJ : Set testOBJ = New dllSoftSafe	
+dim AccessPass
+
+
+
+select case request("act")
+	case "handle" : call testOBJ.rw(testOBJ.isAccessPass(request("MDBPath"),AccessPass))
+	case else:Default()
+end select
+
+
+sub Default()
 %>
 <form id="form1" name="form1" method="post" action="?act=handle">
-发送内容
-<input name="MDBPath" type="text" id="MDBPath" value="<%="\VB工程\Data\Access.Mdb"%>" />
-<input type="submit" name="button" id="button" value="提交" />
+  发送内容
+  <input name="MDBPath" type="text" id="MDBPath" value="<%="\VB工程\Data\Access.Mdb"%>" />
+  <input type="submit" name="button" id="button" value="提交" />
 </form>
-<%eND sUB%>
+<%end sub%>
 

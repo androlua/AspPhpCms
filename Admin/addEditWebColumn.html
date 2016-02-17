@@ -94,9 +94,7 @@ KindEditor.ready(function(K) {
 <option value="_blank"[$target if='_blank' value=' selected' else='' $]>新页打开</option>
 <option value="Index"[$target if='Index' value=' selected' else='' $]>Index页打开</option>
 <option value="Main"[$target if='Main' value=' selected' else='' $]>Main页打开</option>
-</select>
-
-                        </td>
+</select>                        </td>
                         <td>filename / target</td>
                     </tr> 
                     <tr align="center" height="25" bgcolor="#ffffff">
@@ -105,16 +103,20 @@ KindEditor.ready(function(K) {
                         <td>customaurl</td>
                     </tr>   
                     <tr align="center" height="25" bgcolor="#F9FCEF">
+                      <td>自定义模板</td>
+                      <td align="left" style="padding:3px;">[$input_templatepath$]</td>
+                      <td>templatepath</td>
+                    </tr>
+                    <tr align="center" height="25" bgcolor="#ffffff">
                         <td>排序</td>
                         <td align="left" style="padding:3px;"><input name="sortrank" type="text" id="sortrank" value="[$sortrank$]" style="width:80px; text-align:center;" class="input-text"></td>
                         <td>sortrank</td>
                     </tr> 
-                    <tr align="center" height="25" bgcolor="#ffffff">
+                    <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>导航位置</td>
                         <td align="left" style="padding:3px;">[$input_flags$]</td>
                         <td>flags</td>
                     </tr>     
-                     
                 </tbody>            
                 <tbody class="tbodybox">
                     <tr align="center" height="25" bgcolor="#ffffff">
@@ -164,8 +166,7 @@ KindEditor.ready(function(K) {
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>生成静态文件</td>
                         <td align="left" style="padding:3px;">
-                        <label for='isonhtml'><input type='checkbox' name='isonhtml' id='isonhtml' [$isonhtml if='False' elseif='0' value='' else=' checked'$]  value='1'>生成静态网页</label>                          
-                        </td>
+                        <label for='isonhtml'><input type='checkbox' name='isonhtml' id='isonhtml' [$isonhtml if='False' elseif='0' value='' else=' checked'$]  value='1'>生成静态网页</label>                        </td>
                         <td>isonhtml</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
@@ -173,10 +174,7 @@ KindEditor.ready(function(K) {
                         <td align="left" style="padding:3px;"><input name="npagesize" type="text" id="npagesize" value="[$npagesize$]" style="width:80px; text-align:center;" class="input-text"></td>
                         <td>npagesize</td>
                     </tr> 
-                    
-                    
                 </tbody>
-             
         </table>
     </div>
 </div>

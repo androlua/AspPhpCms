@@ -70,7 +70,7 @@ function showColumnList( $parentid, $thisPId, $nCount, $defaultList){
         $s = replaceValueParam($s, 'isonhtml', $rs['isonhtml']) ;
 
 
-        $url = '../../index.php?act=nav&columnName=' . $columnname ;
+        $url = WEB_VIEWURL . '?act=nav&columnName=' . $columnname ;
         //自定义网址
         if( AspTrim($rs['customaurl']) <> '' ){
             $url = AspTrim($rs['customaurl']) ;
@@ -166,7 +166,7 @@ function dispalyManage($actionName, $lableTitle, $fieldNameList, $nPageSize, $ad
             $addSql = ' where title like \'%' . $keyWord . '%\'' . $addSql ;
         }
         $rsObj=$GLOBALS['conn']->query( 'select * from ' . $tableName . ' ' . $addSql);
-        $nCount = @mysql_num_rows($rsObj) ;
+        $nCount = @mysql_num_rows($rsObj);
         //nPageSize = 10         '上面设定
         $page = @$_REQUEST['page'] ;
         $url = getUrlAddToParam(getUrl(), '?page=[id]', 'replace') ;
@@ -197,7 +197,7 @@ function dispalyManage($actionName, $lableTitle, $fieldNameList, $nPageSize, $ad
             $s = Replace($s, '[$phpArray$]', '') ;
 
             if( $actionName == 'ArticleDetail' ){
-                $url = '../phpweb.php?act=detail&id=' . $rs['id'] ;
+                $url = WEB_VIEWURL . '?act=detail&id=' . $rs['id'] ;
                 //自定义网址
                 if( AspTrim($rs['customaurl']) <> '' ){
                     $url = AspTrim($rs['customaurl']) ;
@@ -419,6 +419,13 @@ function saveAddEdit($actionName, $lableTitle, $fieldNameList){
     $fieldNameList = specialStrReplace($fieldNameList) ;//特殊字符处理
     $splFieldName = aspSplit($fieldNameList, ',') ;//字段分割成数组
     $tableName = LCase($actionName) ;//表名称
+
+    //对网站配置单独处理，为动态运行时删除，index.html     动，静，切换20160216
+    if( lcase($actionName)=='website' ){
+        if( instr('','htmlrun')==false ){
+            deleteFile('../index.html');
+        }
+    }
 
     $id = rf('id') ;
     $GLOBALS['conn=']=OpenConn() ;
@@ -761,6 +768,7 @@ function displayLayout(){
     $content = Replace($content, '{$position$}', $lableTitle) ;
     $content = Replace($content, '{$lableTitle$}', $lableTitle) ;
     $content = Replace($content, '{$EDITORTYPE$}', EDITORTYPE) ;
+    $content = Replace($content, '{$WEB_VIEWURL$}', WEB_VIEWURL) ;
 
     if( $lableTitle == '生成Robots' ){
         $content = Replace($content, '[$bodycontent$]', getftext('/robots.txt')) ;
@@ -790,6 +798,8 @@ function displayTemplatesList($content){
                     if( $GLOBALS['cfg_webtemplate'] == $templatePath ){
                         $templateName = Replace($templateName, $templateName, '<font color=red>' . $templateName . '</font>') ;
                         $s = Replace($s, '启用</a>', '</a>') ;
+                    }else{
+                        $s = Replace($s, '恢复数据</a>', '</a>') ;
                     }
                     $s = replaceValueParam($s, 'templatepath', $templatePath) ;
                     $s = replaceValueParam($s, 'templatename', $templateName) ;
@@ -805,8 +815,8 @@ function displayTemplatesList($content){
 //应用模板
 function isOpenTemplate(){
     $templatePath=''; $templateName=''; $editValueStr=''; $url ='';
-    $templatePath = @$_REQUEST['templatePath'] ;
-    $templateName = @$_REQUEST['templateName'] ;
+    $templatePath = @$_REQUEST['templatepath'] ;
+    $templateName = @$_REQUEST['templatename'] ;
     //call echo(templatePath,templateName)
     $editValueStr = 'webtemplate=\'' . $templatePath . '\',webimages=\'' . $templatePath . 'Images/\'' ;
     $editValueStr = $editValueStr . ',webcss=\'' . $templatePath . 'css/\',webjs=\'' . $templatePath . 'Js/\'' ;

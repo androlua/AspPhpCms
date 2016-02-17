@@ -1,43 +1,17 @@
 <?php 
 
-//缁崵绮?
+
+define('WEBPATH', $_SERVER ['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR);				//网站主目录
+ 
+
+//系统核心程序
 require_once './phpInc/ASP.php';
 require_once './phpInc/sys_FSO.php';
 require_once './phpInc/Conn.php';
 require_once './phpInc/MySqlClass.php';
 
-// 閺囧瓨鏌婂鏇犳暏闁劌鍨?   http://127.0.0.1/php2/admin/%E8%8E%B7%E5%BE%97inc%E5%BC%95%E7%94%A8%E5%86%85%E5%AE%B9.asp
 
-//閻㈢喐鍨?
-/*
-require_once './phpInc/testInc/Common.php';
-require_once './phpInc/testInc/StringNumber.php';
-require_once './phpInc/testInc/Print.php';
-require_once './phpInc/testInc/Time.php';
-require_once './phpInc/testInc/2014_Array.php';
-require_once './phpInc/testInc/Cai.php';
-require_once './phpInc/testInc/Check.php';
-require_once './phpInc/testInc/Incpage.php';
-require_once './phpInc/testInc/2015_Param.php';
-require_once './phpInc/testInc/2014_Action.php';
-require_once './phpInc/testInc/2014_Author.php';
-require_once './phpInc/testInc/2014_Class.php';
-require_once './phpInc/testInc/2014_Css.php';
-require_once './phpInc/testInc/2014_Js.php';
-require_once './phpInc/testInc/2014_MainInfo.php';
-require_once './phpInc/testInc/2014_Nav.php';
-require_once './phpInc/testInc/2014_News.php';
-require_once './phpInc/testInc/2014_Search.php';
-require_once './phpInc/testInc/2014_SiteMap.php';
-require_once './phpInc/testInc/2014_Template.php';
-require_once './phpInc/testInc/2015_Color.php';
-require_once './phpInc/testInc/2015_Formatting.php';
-require_once './phpInc/testInc/Access.php';
-require_once './phpInc/testInc/AjAx.php';
-require_once './phpInc/testInc/AutoAdd.php';
-require_once './phpInc/testInc/Check.php';
-*/
-//瀵洜鏁?
+//引用inc
 require_once './phpInc/2014_Array.php';
 require_once './phpInc/2014_Author.php';
 require_once './phpInc/2014_Css.php';
@@ -64,25 +38,24 @@ require_once './phpInc/EncDec.php';
 require_once './phpInc/admin_setAccess.php';
 
 
-//end 瀵洜鏁?
+//end 引用inc
 $PubProDid='';$PubProSid='';$PubProTid='';
 $PubNavDid='';$PubNavSid='';$PubNavTid='';
 $ReadBlockList='';
 $ModuleReplaceArray=''; //替换模块数组，暂时没用，但是要留着，要不出错了
-
  
+define('WEBTEMPLATE',WEBPATH . '\\Templates2015\\test\\');						//模板路径
+define('WEBIMAGES','http://127.0.0.1\\Templates2015\\test\\Images\\');			// 网站图片目录 用得着？
 
 
-define('WEBPATH', $_SERVER ['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR);				//瑜版挸澧犻惄顔肩秿鐠侯垰绶?
-define('WEBTEMPLATE',WEBPATH . '\\Templates2015\\test\\');						//缂冩垹鐝Ο鈩冩緲閻╊喖缍?
-define('WEBIMAGES','http://127.0.0.1\\Templates2015\\test\\Images\\');						//缂冩垹鐝槐鐘虫綏閻╊喖缍?
-
-
-define('WEBURLPREFIX', '/webphp/');												//缂冩垹鐝純鎴濇絻閸撳秶绱?
+define('WEBURLPREFIX', '/webphp/');												//网站网址后缀，用得到吗？
 $tempPath=$_SERVER['REQUEST_URI'];
 $tempPath=mid($tempPath,strlen(WEBURLPREFIX)+1,-1);
 define('WEBURLFILEPATH', $tempPath);											//缂冩垹鐝純鎴濇絻閺傚洣娆㈢捄顖氱窞 
 define('EDITORTYPE','php'); 		//编辑器类型，是ASP,或PHP,或jSP,或.NET
+define('WEB_ADMINURL','/admin/1.php'); 		//后端网站，在线编辑用到20160216
+
+
 
 
 //=========
@@ -98,10 +71,17 @@ $gbl_url=''; $gbl_filePath ='';//当前链接网址,和文件路径
 $gbl_isonhtml ='';//是否生成静态网页
 
 $gbl_bodyContent ='';//主体内容
+$gbl_artitleAuthor														='';//文章作者
+$gbl_artitleAdddatetime													='';//文章添加时间
+$gbl_upArticle															='';//上一篇文章
+$gbl_downArticle															='';//下一篇文章
+$gbl_aritcleRelatedTags													='';//文章标签组
+$gbl_aritcleSmallImage='';$gbl_aritcleBigImage										='';//文章小图与文章大图
+
 $isMakeHtml ='';//是否生成网页
 //处理动作   ReplaceValueParam为控制字符显示方式
 function handleAction($content){
-    $startStr=''; $endStr=''; $ActionList=''; $splStr=''; $action=''; $s=''; $HandYes ='';
+    $startStr=''; $endStr=''; $ActionList=''; $splStr=''; $action=''; $s=''; $HandYes='';
     $startStr = '{$' ; $endStr = '$}' ;
     $ActionList = GetArray($content, $startStr, $endStr, true, true) ;
     //Call echo("ActionList ", ActionList)
@@ -129,13 +109,12 @@ function handleAction($content){
                 $action = XY_PHP_NavList($action) ;
 
                 //文章列表
-            }else if( CheckFunValue($action, 'DetailList ') == true ){
+            }else if( CheckFunValue($action, 'DetailList ') == true || CheckFunValue($action, 'CustomInfoList ') == true ){
                 $action = XY_PHP_DetailList($action) ;
 
                 //评论列表
             }else if( CheckFunValue($action, 'CommentList ') == true ){
                 $action = XY_PHP_CommentList($action) ;
-
 
 
                 //显示单页内容
@@ -175,9 +154,6 @@ function handleAction($content){
                 //Js版网站统计
             }else if( CheckFunValue($action, 'JsWebStat ') == true ){
                 $action = XY_JsWebStat($action) ;
-                //加密
-            }else if( CheckFunValue($action, 'XorEnc ') == true ){
-                $action = XorEnc(Now(), 31380) ;
 
 
 
@@ -275,6 +251,15 @@ function replaceGlobleVariable( $content){
     $content = handleRGV($content, '{$Web_KeyWords$}', $GLOBALS['cfg_webKeywords']) ;
     $content = handleRGV($content, '{$Web_Description$}', $GLOBALS['cfg_webDescription']) ;
     $content = handleRGV($content, '{$EDITORTYPE$}', EDITORTYPE) ;//后缀
+
+    //文章用到
+    $content = handleRGV($content, '{$gbl_artitleAuthor$}', $GLOBALS['gbl_artitleAuthor']) ;//文章作者
+    $content = handleRGV($content, '{$gbl_artitleAdddatetime$}', $GLOBALS['gbl_artitleAdddatetime']) ;//文章添加时间
+    $content = handleRGV($content, '{$gbl_upArticle$}', $GLOBALS['gbl_upArticle']) ;//上一篇文章
+    $content = handleRGV($content, '{$gbl_downArticle$}', $GLOBALS['gbl_downArticle']) ;//下一篇文章
+    $content = handleRGV($content, '{$gbl_aritcleRelatedTags$}', $GLOBALS['gbl_aritcleRelatedTags']) ;//文章标签组
+    $content = handleRGV($content, '{$gbl_aritcleBigImage$}', $GLOBALS['gbl_aritcleBigImage']) ;//文章大图
+    $content = handleRGV($content, '{$gbl_aritcleSmallImage$}', $GLOBALS['gbl_aritcleSmallImage']) ;//文章小图
 
 
     $replaceGlobleVariable = $content ;
@@ -431,11 +416,11 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
 //****************************************************
 //默认列表模板
 function defaultListTemplate(){
-    $c=''; $templateHtml=''; $listTemplate=''; $lableName=''; $startStr=''; $endStr ='';
+    $c=''; $templateHtml=''; $listTemplate=''; $lableName=''; $startStr=''; $endStr='';
 
     $templateHtml = getFText($GLOBALS['cfg_webTemplate'] . '/' . $GLOBALS['templateName']) ;
 
-    $lableName = '[list]' ;
+    $lableName = 'list' ;
     $startStr = '<!--#' . $lableName . ' start#-->' ;
     $endStr = '<!--#' . $lableName . ' end#-->' ;
     if( instr($templateHtml, $startStr) > 0 && instr($templateHtml, $endStr) > 0 ){
@@ -444,7 +429,7 @@ function defaultListTemplate(){
         $startStr = '<!--#' . $lableName ;
         $endStr = '#-->' ;
         if( instr($templateHtml, $startStr) > 0 && instr($templateHtml, $endStr) > 0 ){
-            $GLOBALS['defaultStr'] = StrCut($templateHtml, $startStr, $endStr, 2) ;
+            $listTemplate = StrCut($templateHtml, $startStr, $endStr, 2) ;
         }
     }
     if( $listTemplate == '' ){
@@ -519,7 +504,7 @@ if( @$_REQUEST['act'] == 'makehtml' ){
     }
     //文件不为空  并且开启生成html
     if( $gbl_filePath <> '' && $gbl_isonhtml == true ){
-        createDirFolder($gbl_filePath) ;
+        createDirFolder(getFileAttr($gbl_filePath,'1')) ;
         createfile($gbl_filePath, $code) ;
         if( @$_REQUEST['act'] == 'detail' ){
             connExecute('update ' . $db_PREFIX . 'ArticleDetail set ishtml=true where id=' . @$_REQUEST['id']) ;
@@ -531,6 +516,12 @@ if( @$_REQUEST['act'] == 'makehtml' ){
             }
         }
         ASPEcho('生成文件路径', '<a href="' . $gbl_filePath . '" target=\'_blank\'>' . $gbl_filePath . '</a>') ;
+
+        //新闻则批量生成 20160216
+        if( $gbl_columnType=='新闻' ){
+            makeAllHtml('', '', $gbl_columnId);
+        }
+
     }
 }else{
     if( LCase(@$_REQUEST['issave']) == '1' ){
@@ -554,7 +545,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
         $addSql = getWhereAnd($addSql, 'where columnName=\'' . $columnName . '\'') ;
     }
     if( $columnId <> '' ){
-        $addSql = getWhereAnd($addSql, 'where id=\'' . $columnId . '\'') ;
+        $addSql = getWhereAnd($addSql, 'where id=' . $columnId . '') ;
     }
     $rssObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn ' . $addSql . ' order by sortrank asc');
     while( $rss= $GLOBALS['conn']->fetch_array($rssObj)){
@@ -581,7 +572,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
                     $s = '<a href="' . $GLOBALS['gbl_filePath'] . '" target=\'_blank\'>' . $GLOBALS['gbl_filePath'] . '</a>(' . $rss['isonhtml'] . ')' ;
                     ASPEcho($action, $s) ;
                     if( $GLOBALS['gbl_filePath'] <> '' ){
-                        createDirFolder($GLOBALS['gbl_filePath']) ;
+                        createDirFolder(getFileAttr($GLOBALS['gbl_filePath'],'1')) ;
                         createfile($GLOBALS['gbl_filePath'], $GLOBALS['code']) ;
                     }
                     doevents() ;
@@ -597,7 +588,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
                 $s = '<a href="' . $GLOBALS['gbl_filePath'] . '" target=\'_blank\'>' . $GLOBALS['gbl_filePath'] . '</a>(' . $rss['isonhtml'] . ')' ;
                 ASPEcho($action, $s) ;
                 if( $GLOBALS['gbl_filePath'] <> '' ){
-                    createDirFolder($GLOBALS['gbl_filePath']) ;
+                    createDirFolder( getFileAttr($GLOBALS['gbl_filePath'],'1')) ;
                     createfile($GLOBALS['gbl_filePath'], $GLOBALS['code']) ;
                 }
                 doevents() ;
@@ -623,7 +614,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
             ASPEcho($action, $s) ;
             //文件不为空  并且开启生成html
             if( $GLOBALS['gbl_filePath'] <> '' && $rss['isonhtml'] == true ){
-                createDirFolder($GLOBALS['gbl_filePath']) ;
+                createDirFolder(getFileAttr($GLOBALS['gbl_filePath'],'1')) ;
                 createfile($GLOBALS['gbl_filePath'], $GLOBALS['code']) ;
                 connExecute('update ' . $GLOBALS['db_PREFIX'] . 'ArticleDetail set ishtml=true where id=' . $rss['id']) ;//更新文章为生成状态
             }
@@ -646,7 +637,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
             ASPEcho($action, $s) ;
             //文件不为空  并且开启生成html
             if( $GLOBALS['gbl_filePath'] <> '' && $rss['isonhtml'] == true ){
-                createDirFolder($GLOBALS['gbl_filePath']) ;
+                createDirFolder(getFileAttr($GLOBALS['gbl_filePath'],'1')) ;
                 createfile($GLOBALS['gbl_filePath'], $GLOBALS['code']) ;
                 connExecute('update ' . $GLOBALS['db_PREFIX'] . 'onepage set ishtml=true where id=' . $rss['id']) ;//更新单页为生成状态
             }
@@ -659,7 +650,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
 }
 //复制html到网站
 function copyHtmlToWeb(){
-    $webDir=''; $toFilePath=''; $filePath=''; $fileName=''; $fileList=''; $cssFileList=''; $splStr=''; $content=''; $s=''; $c=''; $webImages=''; $webCss=''; $webJs=''; $splJs ='';
+    $webDir=''; $toFilePath=''; $filePath=''; $fileName=''; $fileList=''; $cssFileList=''; $splStr=''; $content=''; $s=''; $s1='';$c=''; $webImages=''; $webCss=''; $webJs=''; $splJs ='';
     $GLOBALS['WebFolderName'] = $GLOBALS['cfg_webTemplate'] ;
     if( substr($GLOBALS['WebFolderName'], 0 , 1) == '/' ){
         $GLOBALS['WebFolderName'] = mid($GLOBALS['WebFolderName'], 2,-1) ;
@@ -672,33 +663,33 @@ function copyHtmlToWeb(){
     }
     $webDir = '/htmladmin/' . $GLOBALS['WebFolderName'] . '/' ;
     deleteFolder($webDir) ;
-    createDirFolder($webDir) ;
+    createDirFolder($webDir);
     $webImages = $webDir . 'Images/' ;
     $webCss = $webDir . 'Css/' ;
     $webJs = $webDir . 'Js/' ;
     copyFolder($GLOBALS['cfg_webImages'], $webImages) ;
-    copyFolder($GLOBALS['cfg_webCss'], $webCss) ;
+    copyFolder($GLOBALS['cfg_webCss'], $webCss);
     createFolder($webJs) ;//创建Js文件夹
+	
 
-    //处理Css文件夹
-    $content = getFileFolderList($GLOBALS['cfg_webCss'], true, 'css', '', '', '', '') ;
-    $splStr = aspSplit($content, "\n") ;
-    foreach( $splStr as $filePath){
-        if( $filePath <> '' ){
-            ASPEcho('css', $filePath) ;
-            $content = getftext($filePath) ;
-            $content = Replace($content, $GLOBALS['cfg_webImages'], '../') ;//删除模板路径
-            createfile($filePath, $content) ;
-        }
-    }
+
     //处理Js文件夹
-    $content = getFileFolderList($webImages, true, 'js', '', '', '', '') ;
-    $splJs = aspSplit($content, "\n") ;
+    $splJs = aspSplit(getDirJsList($webJs), "\n") ;
     foreach( $splJs as $filePath){
         if( $filePath <> '' ){
             $toFilePath = $webJs . getFileName($filePath) ;
             ASPEcho('js', $filePath) ;
             moveFile($filePath, $toFilePath) ;
+        }
+    }
+    //处理Css文件夹
+    $splstr = aspSplit(getDirCssList($webCss), "\n") ;
+    foreach( $splstr as $filePath){
+        if( $filePath <> '' ){
+            $content=getftext($filePath);
+            $content=replace($content,$GLOBALS['cfg_webImages'], '../images/');
+            createfile($filePath,$content);
+            ASPEcho('css',$GLOBALS['cfg_webImages']);
         }
     }
 
@@ -748,7 +739,7 @@ function copyHtmlToWeb(){
             ASPEcho('单页' . $rss['title'], $GLOBALS['gbl_filePath']) ;
         }
     }
-
+    //批量处理html文件列表
     $splStr = aspSplit($fileList, "\n") ;
     foreach( $splStr as $filePath){
         if( $filePath <> '' ){
@@ -758,7 +749,11 @@ function copyHtmlToWeb(){
             $content = Replace($content, $GLOBALS['cfg_webSiteUrl'], '') ;//删除网址
             $content = Replace($content, $GLOBALS['cfg_webTemplate'], '') ;//删除模板路径
             foreach( $splStr as $s){
-                $content = Replace($content, $s, Replace($s, '/', '_')) ;
+                $s1=$s;
+                if( substr($s1, -11)=='/index.html' ){
+                    $s1=substr($s1, 0 ,strlen($s1)-11) . '/';
+                }
+                $content = Replace($content, $s1, Replace($s, '/', '_')) ;
             }
 
             foreach( $splJs as $s){
@@ -771,10 +766,13 @@ function copyHtmlToWeb(){
                 $content = Replace($content, '/Jquery/Jquery.Min.js', 'js/Jquery.Min.js') ;
                 copyfile('/Jquery/Jquery.Min.js', $webJs . '/Jquery.Min.js') ;
             }
-
             createfile($filePath, $content) ;
         }
     }
+
+
+
+
     ASPEcho('webFolderName', $GLOBALS['WebFolderName']) ;
     makeHtmlWebToZip($webDir) ;
 }
@@ -873,10 +871,10 @@ function makeWebHtml($action){
         $GLOBALS['gbl_columnENType'] = handleColumnType($GLOBALS['gbl_columnType']) ;
         $GLOBALS['gbl_url'] = getColumnUrl($GLOBALS['gbl_columnName'], 'name') ;
 
-        if( $GLOBALS['gbl_columnType'] == '新闻' ){
+        //列表
+        if( instr('|新闻|产品|下载|视频|','|'. $GLOBALS['gbl_columnType'] .'|')>0 ){
             $GLOBALS['gbl_bodyContent'] = getDetailList($action, defaultListTemplate(), 'ArticleDetail', '网站栏目', '*', $npagesize, $npage, 'where parentid=' . $GLOBALS['gbl_columnId'] . ' order by sortrank asc') ;
         }else if( $GLOBALS['gbl_columnType'] == '文本' ){
-
             //航行栏目加管理
             if( @$_REQUEST['gl'] == 'edit' ){
                 $GLOBALS['gbl_bodyContent'] = '<span>' . $GLOBALS['gbl_bodyContent'] . '</span>' ;
@@ -910,12 +908,23 @@ function makeWebHtml($action){
             if( $rs['webdescription'] <> '' ){
                 $GLOBALS['cfg_webDescription'] = $rs['webdescription'] ;//网站描述
             }
+
+            $GLOBALS['gbl_artitleAuthor']=$rs['author']			;
+            $GLOBALS['gbl_artitleAdddatetime']=$rs['adddatetime'];
+            $GLOBALS['gbl_upArticle']=upArticle($rs['parentid'], 'sortrank', $rs['sortrank']);
+            $GLOBALS['gbl_downArticle']=downArticle($rs['parentid'], 'sortrank', $rs['sortrank']);
+            $GLOBALS['gbl_aritcleRelatedTags']=aritcleRelatedTags($rs['relatedtags']);
+            $GLOBALS['gbl_aritcleSmallImage']=$rs['smallimage'];
+            $GLOBALS['gbl_aritcleBigImage']=$rs['bigimage'];
+
             //文章内容
-            $GLOBALS['gbl_bodyContent'] = '<div class="articleinfowrap">[$articleinfowrap$]</div>' . $rs['bodycontent'] . '[$relatedtags$]<ul class="updownarticlewrap">[$updownArticle$]</ul>' ;
+            //gbl_bodyContent = "<div class=""articleinfowrap"">[$articleinfowrap$]</div>" & rs("bodycontent") & "[$relatedtags$]<ul class=""updownarticlewrap"">[$updownArticle$]</ul>"
             //上一篇文章，下一篇文章
-            $GLOBALS['gbl_bodyContent'] = Replace($GLOBALS['gbl_bodyContent'], '[$updownArticle$]', upArticle($rs['parentid'], 'sortrank', $rs['sortrank']) . downArticle($rs['parentid'], 'sortrank', $rs['sortrank'])) ;
-            $GLOBALS['gbl_bodyContent'] = Replace($GLOBALS['gbl_bodyContent'], '[$articleinfowrap$]', '来源：' . $rs['author'] . ' &nbsp; 发布时间：' . format_Time($rs['adddatetime'], 1)) ;
-            $GLOBALS['gbl_bodyContent'] = Replace($GLOBALS['gbl_bodyContent'], '[$relatedtags$]', aritcleRelatedTags($rs['relatedtags'])) ;
+            //gbl_bodyContent = Replace(gbl_bodyContent, "[$updownArticle$]", upArticle(rs("parentid"), "sortrank", rs("sortrank")) & downArticle(rs("parentid"), "sortrank", rs("sortrank")))
+            //gbl_bodyContent = Replace(gbl_bodyContent, "[$articleinfowrap$]", "来源：" & rs("author") & " &nbsp; 发布时间：" & format_Time(rs("adddatetime"), 1))
+            //gbl_bodyContent = Replace(gbl_bodyContent, "[$relatedtags$]", aritcleRelatedTags(rs("relatedtags")))
+
+            $GLOBALS['gbl_bodyContent']=$rs['bodycontent'];
 
             //文章详细加控制
             if( @$_REQUEST['gl'] == 'edit' ){
@@ -985,33 +994,7 @@ function makeWebHtml($action){
             }
 
         }
-        //视频详细
-    }else if( $actionType == 'video' ){
-        $GLOBALS['gbl_id'] = RParam($action, 'id') ;
 
-        if( $GLOBALS['templateName'] == '' ){
-            $GLOBALS['templateName'] = 'videoDetail.html' ;
-        }
-        //视频详细
-    }else if( $actionType == 'news' ){
-        $GLOBALS['gbl_id'] = RParam($action, 'id') ;
-
-        if( $GLOBALS['templateName'] == '' ){
-            $GLOBALS['templateName'] = 'newsDetail.html' ;
-        }
-        //文本详细
-    }else if( $actionType == 'text' ){
-        $GLOBALS['gbl_columnName'] = RParam($action, 'columnName') ;
-        $GLOBALS['gbl_columnId'] = getColumnId($GLOBALS['gbl_columnName']) ;
-        $GLOBALS['gbl_columnType'] = getColumnType($GLOBALS['gbl_columnId']) ;
-        $GLOBALS['gbl_columnENType'] = handleColumnType($GLOBALS['gbl_columnType']) ;
-
-        if( $GLOBALS['templateName'] == '' ){
-            $GLOBALS['templateName'] = 'textDetail.html' ;
-        }
-        //文本详细
-    }else if( $actionType == 'test' ){
-        $GLOBALS['templateName'] = 'test.html' ;
         //加载等待
     }else if( $actionType == 'loading' ){
         rwend('页面正在加载中。。。') ;
@@ -1035,15 +1018,18 @@ function makeWebHtml($action){
     $GLOBALS['code'] = handleAction($GLOBALS['code']) ;//处理动作
     $GLOBALS['code'] = replaceGlobleVariable($GLOBALS['code']) ;//替换全局标签
     $GLOBALS['code'] = thisPosition($GLOBALS['code']) ;
-    $GLOBALS['code'] = delTemplateMyNote($GLOBALS['code']) ;
+
     $GLOBALS['code'] = handleAction($GLOBALS['code']) ;//处理动作  再次处理
     $GLOBALS['code'] = replaceGlobleVariable($GLOBALS['code']) ;//替换全局标签
 
 
     $GLOBALS['code'] = handleAction($GLOBALS['code']) ;//处理动作
     $GLOBALS['code'] = handleAction($GLOBALS['code']) ;//处理动作
+    $GLOBALS['code'] = handleAction($GLOBALS['code']) ;//处理动作          php版这个处理有问题，待解决
     $GLOBALS['code'] = replaceGlobleVariable($GLOBALS['code']) ;//替换全局标签
 
+
+    $GLOBALS['code'] = delTemplateMyNote($GLOBALS['code']) 														;//删除无用内容
 
     //格式化
     if( instr($GLOBALS['cfg_flags'], '|formattinghtml|') > 0 ){
@@ -1051,7 +1037,6 @@ function makeWebHtml($action){
         $GLOBALS['code'] = HandleHtmlFormatting($GLOBALS['code'], false, 0, '删除空行') ;//自定义
     }
     //闭合标签
-
     if( instr($GLOBALS['cfg_flags'], '|labelclose|') > 0 ){
         $GLOBALS['code'] = handleCloseHtml($GLOBALS['code'], true, '') ;//图片自动加alt  "|*|",
     }

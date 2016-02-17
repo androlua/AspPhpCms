@@ -2,566 +2,999 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-26
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-cLAsS cLS_AB_JSoN
-pUBlIC cOLlECtIOn, cOUnT, qUOtEDvARs, kINd, sTReNCoDE
-pRIvATe s_ChARsET
-pRIvATe sUB cLAsS_iNItIAlIZe
-eND sUB
-pRIvATe sUB cLAsS_tERmINaTE
-sET cOLlECtIOn = nOThINg
-eND sUB
-pUBlIC pROpERtY lET cHArSEt(bYVaL s)
-s_ChARsET = uCAsE(s)
-eND pROpERtY
-pUBlIC pROpERtY gET cHArSEt()
-cHArSEt = s_ChARsET
-eND pROpERtY
-pUBlIC fUNcTIoN [nEW](bYVaL a)
-sET [nEW] = nEW cLS_AB_JSoN
-sELeCT cASe lCAsE(a)
-cASe "0", "object" [nEW].kINd = 0
-cASe "1", "array"  [nEW].kINd = 1
-eND sELeCT
-eND fUNcTIoN
-pRIvATe pROpERtY gET cOUnTEr
-cOUnTEr = cOUnT
-cOUnT = cOUnT + 1
-eND pROpERtY
-pUBlIC pROpERtY lET pAIr(bYVaL p, bYVaL v)
-iF iSNuLL(p) tHEn p = cOUnTEr
-iF vARtYPe(v) = 9 tHEn
-iF tYPeNAmE(v) = "Cls_AB_JSON" tHEn
-sET cOLlECtIOn(p) = v
-eLSe
-cOLlECtIOn(p) = v
-eND iF
-eLSe
-cOLlECtIOn(p) = v
-eND iF
-eND pROpERtY
-pUBlIC dEFaULt pROpERtY gET pAIr(bYVaL p)
-iF iSNuLL(p) tHEn p = cOUnT - 1
-iF iSObJEcT(cOLlECtIOn(p)) tHEn
-sET pAIr = cOLlECtIOn(p)
-eLSe
-pAIr = cOLlECtIOn(p)
-eND iF
-eND pROpERtY
-pUBlIC sUB cLEaN
-cOLlECtIOn.rEMoVEaLL
-eND sUB
-pUBlIC sUB rEMoVE(bYVaL a)
-iF cOLlECtIOn.eXIsTS(a) tHEn cOLlECtIOn.rEMoVE a
-eND sUB
-pUBlIC fUNcTIoN tOJsON(bYVaL a)
-dIM b,c,d : c = 0 : d = 0
-dIM e, f, g, h, i
-dIM j : j = "/"
-dIM k : k = "json2.js"	
-dIM l : l = j&k
-sELeCT cASe vARtYPe(a)
-cASe 1
-tOJsON = "null"
-cASe 7
-tOJsON = """" & jSEnCOdE__(cSTr(a)) & """"
-cASe 8
-sELeCT cASe tYPeNAmE(a)
-cASe "IRequest", "IRequestDictionary"
-iF a = rEQuESt.qUErYStRInG oR a = rEQuESt.fORm oR a = rEQuESt.cOOkIEs tHEn
-e = tRUe
-tOJsON = tOJsON & "{"
-fOR eACh c iN a
-iF e tHEn e = fALsE eLSe tOJsON = tOJsON & ","
-tOJsON = tOJsON & iIF(qUOtEDvARs, """" & iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c)) & """", jSEnCOdE__(c)) & ":" & tOJsON(a(c))
-nEXt
-tOJsON = tOJsON & "}"
-eND iF
-cASe "JScriptTypeInfo"
-iF iSFiLE(l) tHEn
-aB.uSE "jsLib"
-sET h = aB.h.nEW
-h.bASePAtH = j
-h.iNC(k)
-sET i = h.oBJeCT
-tOJsON = i.tOStRInG(a)
-sET i = nOThINg
-sET h = nOThINg
-eLSe
-tOJsON = a
-eND iF
-cASe eLSe
-iF a="" tHEn
-tOJsON = """"""
-eLSe
-tOJsON = """" & iIF(sTReNCoDE,jSEnCOdE(a),jSEnCOdE__(a)) & """"
-eND iF
-eND sELeCT
-cASe 9
-sELeCT cASe tYPeNAmE(a)
-cASe "Nothing","Empty"
-tOJsON = "{}"
-cASe "Recordset"
-iF a.sTAtE = 0 tHEn
-tOJsON = "[]"
-eLSe
-iF iSNuL(a) tHEn
-tOJsON = "[]"
-eLSe
-oN eRRoR rESuME nEXt
-sET a = a.cLOnE
-oN eRRoR gOTo 0
-iF a.rECoRDcOUnT = 1 tHEn
-e = tRUe
-tOJsON = tOJsON & "[{"
-fOR d = 0 tO a.fIElDS.cOUnT-1
-iF e tHEn e = fALsE eLSe tOJsON = tOJsON & ","
-iF qUOtEDvARs tHEn
-tOJsON = tOJsON & """" & iIF(sTReNCoDE,jSEnCOdE(lCAsE(a.fIElDS(d).nAMe)),jSEnCOdE__(lCAsE(a.fIElDS(d).nAMe))) & """:" & tOJsON(a.fIElDS(d).vALuE)
-eLSe
-tOJsON = tOJsON & iIF(sTReNCoDE,jSEnCOdE(lCAsE(a.fIElDS(d).nAMe)),jSEnCOdE__(lCAsE(a.fIElDS(d).nAMe))) & ":" & tOJsON(a.fIElDS(d).vALuE)
-eND iF
-nEXt
-tOJsON = tOJsON & "}]"
-eLSe
-f = tRUe
-tOJsON = tOJsON & "["
-a.mOVeFIrST
-dO wHIlE nOT a.eOF
-iF f tHEn f = fALsE eLSe tOJsON = tOJsON & ","
-e = tRUe
-tOJsON = tOJsON & "{"
-fOR d = 0 tO a.fIElDS.cOUnT-1
-iF e tHEn e = fALsE eLSe tOJsON = tOJsON & ","
-iF qUOtEDvARs tHEn
-tOJsON = tOJsON & """" & iIF(sTReNCoDE,jSEnCOdE(lCAsE(a.fIElDS(d).nAMe)),jSEnCOdE__(lCAsE(a.fIElDS(d).nAMe))) & """:" & tOJsON(a.fIElDS(d).vALuE)
-eLSe
-tOJsON = tOJsON & iIF(sTReNCoDE,jSEnCOdE(lCAsE(a.fIElDS(d).nAMe)),jSEnCOdE__(lCAsE(a.fIElDS(d).nAMe))) & ":" & tOJsON(a.fIElDS(d).vALuE)
-eND iF
-nEXt
-tOJsON = tOJsON & "}"
-c = c + 1
-a.mOVeNExT
-lOOp
-tOJsON = tOJsON & "]"
-eND iF
-eND iF
-eND iF
-cASe "Dictionary", "IRequest", "IRequestDictionary", "IApplicationObject", "ISessionObject"
-iF tYPeNAmE(a) = "IRequest" tHEn
-dIM m : sET m = sERvER.cREaTEoBJeCT(aB.dICtNAmE)
-m.aDD "clientcertificate", a.cLIeNTcERtIFiCAtE
-m.aDD "cookies", a.cOOkIEs
-m.aDD "form", a.fORm
-m.aDD "querystring", a.qUErYStRInG
-m.aDD "servervariables", a.sERvERvARiABlES
-m.aDD "totalbytes", a.tOTaLByTEs
-tOJsON = tOJsON(m)
-eLSeIF tYPeNAmE(a) = "IApplicationObject" oR tYPeNAmE(a) = "ISessionObject" tHEn
-g = a.cONtENtS.cOUnT
-iF g = 0 tHEn
-tOJsON = "{}"
-eLSe
-e = tRUe
-tOJsON = tOJsON & "{"
-fOR eACh c iN a.cONtENtS
-iF e tHEn e = fALsE eLSe tOJsON = tOJsON & ","
-tOJsON = tOJsON & iIF(qUOtEDvARs, """" & iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c)) & """", iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c))) & ":" & tOJsON(a(c))
-nEXt
-tOJsON = tOJsON & "}"
-eND iF
-eLSeIF tYPeNAmE(a) = "Dictionary" tHEn
-g = a.cOUnT
-iF g = 0 tHEn
-tOJsON = "{}"
-eLSe
-e = tRUe
-tOJsON = tOJsON & "{"
-fOR eACh c iN a
-iF e tHEn e = fALsE eLSe tOJsON = tOJsON & ","
-tOJsON = tOJsON & iIF(qUOtEDvARs, """" & iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c)) & """", iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c))) & ":" & tOJsON(a(c))
-nEXt
-tOJsON = tOJsON & "}"
-eND iF
-eLSe
-e = tRUe
-tOJsON = tOJsON & "{"
-fOR eACh c iN a
-iF e tHEn e = fALsE eLSe tOJsON = tOJsON & ","
-tOJsON = tOJsON & iIF(qUOtEDvARs, """" & iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c)) & """", iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c))) & ":" & tOJsON(a(c))
-nEXt
-tOJsON = tOJsON & "}"
-eND iF
-cASe "Cls_AB_JSON"
-e = tRUe
-tOJsON = tOJsON & iIF(a.kINd, "[", "{")
-fOR eACh c iN a.cOLlECtIOn
-iF e tHEn e = fALsE eLSe tOJsON = tOJsON & ","
-tOJsON = tOJsON & iFThEN(a.kINd=0, iIF(qUOtEDvARs, """" & iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c)) & """", iIF(sTReNCoDE,jSEnCOdE(c),jSEnCOdE__(c))) & ":") & tOJsON(a(c))
-nEXt
-tOJsON = tOJsON & iIF(a.kINd, "]", "}")
-cASe "JScriptTypeInfo"
-iF iSFiLE(l) tHEn
-aB.uSE "jsLib"
-sET h = aB.h.nEW
-h.bASePAtH = j
-h.iNC(k)
-sET i = h.oBJeCT
-tOJsON = i.tOStRInG(a)
-sET i = nOThINg
-sET h = nOThINg
-eLSe
-tOJsON = "{}"
-eND iF
-cASe "VBScriptTypeInfo"
-tOJsON = "{}"
-cASe eLSe
-tOJsON = "{}"
-eND sELeCT
-cASe 11
-tOJsON = iIF(a, "true", "false")
-cASe 12, 8192, 8204, 8209
-tOJsON = rENdERaRRaY(a, 1, "")
-cASe 2, 3, 17, 19
-tOJsON = cLNg(a)
-cASe 4, 5, 6, 14
-tOJsON = rEPlACe(cDBl(a), ",", ".")
-cASe eLSe
-tOJsON = """" & iIF(sTReNCoDE,jSEnCOdE(cSTr(a)),jSEnCOdE__(cSTr(a))) & """"
-eND sELeCT
-eND fUNcTIoN
-fUNcTIoN fIElDToJSoN(a,bYVaL b)
-dIM c, d,e,f,g
-b = "|" & lCAsE(b) & "|"
-c = tRUe
-d = d & "{"
-wHIlE nOT a.eOF
-fOR g = 0 tO a.fIElDS.cOUnT-1
-e = a.fIElDS(g).nAMe
-f = a.fIElDS(g).vALuE
-iF iNStR(b,"|"& lCAsE(e) &"|")>0 tHEn
-iF c tHEn c = fALsE eLSe d = d & ","
-iF qUOtEDvARs tHEn
-d = d & """" & iIF(sTReNCoDE,jSEnCOdE(e),jSEnCOdE__(e)) & """:" & tOJsON(f)
-eLSe
-d = d & iIF(sTReNCoDE,jSEnCOdE(e),jSEnCOdE__(e)) & ":" & tOJsON(f)
-eND iF
-eND iF
-nEXt
-d = d & "}"
-a.mOVeNExT:wENd:a.cLOsE
-d= "["& d &"]"	
-fIElDToJSoN = d
-eND fUNcTIoN
-pRIvATe fUNcTIoN rENdERaRRaY(bYVaL a, bYVaL b, bYVaL c)
-dIM d : d = lBOuND(a, b)
-dIM e : e = uBOuND(a, b)
-dIM f, g
-dIM h : h = ","
-rENdERaRRaY = "["
-fOR f = d tO e
-iF f = e tHEn
-h = ""
-eND iF
-oN eRRoR rESuME nEXt
-g = rENdERaRRaY(a, b + 1, c & f & "," )
-iF eRR = 9 tHEn
-oN eRRoR gOTo 0
-rENdERaRRaY = rENdERaRRaY & tOJsON(eVAl("arr(" & c & f & ")")) & h
-eLSe
-rENdERaRRaY = rENdERaRRaY & g & "" & h
-eND iF
-nEXt
-rENdERaRRaY = rENdERaRRaY & "]"
-eND fUNcTIoN
-pUBlIC fUNcTIoN jSEnCOdE(bYVaL a)
-iF iSNuL(a) tHEn jSEnCOdE = "" : eXIt fUNcTIoN
-dIM b, c, d, e, f, g, h
-b = aRRaY(&h27,&h22,&h5C,&h2F,&h08,&h0C,&h0A,&h0D,&h09)
-c = aRRaY(&h27,&h22,&h5C,&h2F,&h62,&h66,&h6E,&h72,&h749)
-fOR d = 1 tO lEN(a)
-g = tRUe
-f = mID(a, d, 1)
-fOR e = 0 tO uBOuND(b)
-iF f = cHR(b(e)) tHEn
-h = h & "\" & cHR(c(e))
-g = fALsE
-eXIt fOR
-eND iF
-nEXt
-iF g tHEn
-dIM i
-i = aSCw(f)
-iF i > 31 aND i < 127 tHEn
-h = h & f
-eLSeIF i > -1 oR i < 65535 tHEn
-h = h & "\u" & sTRiNG(4 - lEN(hEX(i)), "0") & hEX(i)
-eND iF
-eND iF
-nEXt
-jSEnCOdE = h
-eND fUNcTIoN
-pRIvATe fUNcTIoN jSEnCOdE__(bYVaL a)
-iF iSNuL(a) tHEn jSEnCOdE__ = "" : eXIt fUNcTIoN
-dIM b, c, d, e, f, g, h
-b = aRRaY(&h27,&h22,&h5C,&h2F,&h08,&h0C,&h0A,&h0D,&h09)
-c = aRRaY(&h27,&h22,&h5C,&h2F,&h62,&h66,&h6E,&h72,&h749)
-fOR d = 1 tO lEN(a)
-g = tRUe
-f = mID(a, d, 1)
-fOR e = 0 tO uBOuND(b)
-iF f = cHR(b(e)) tHEn
-h = h & "\" & cHR(c(e))
-g = fALsE
-eXIt fOR
-eND iF
-nEXt
-iF g tHEn h = h & f
-nEXt
-jSEnCOdE__ = h
-eND fUNcTIoN
-pUBlIC fUNcTIoN sTRiNGiFY(bYVaL a)
-sTRiNGiFY = tOJsON(a)
-eND fUNcTIoN
-pUBlIC pROpERtY gET jSStRInG
-jSStRInG = tOJsON(mE)
-eND pROpERtY
-pUBlIC fUNcTIoN tOObJEcT(bYVaL a)
-oN eRRoR rESuME nEXt
-iF eRR tHEn eRR.cLEaR
-dIM b,c : b = 0 : c = 0
-dIM d, e, f, g
-dIM h : h = aB.bASePAtH & "jsLib/core/"
-dIM i : i = "json2.js"
-dIM j : j = h&i
-sELeCT cASe vARtYPe(a)
-cASe 9
-sET tOObJEcT = a
-cASe 8
-sELeCT cASe tYPeNAmE(a)
-cASe "JScriptTypeInfo"
-iF iSFiLE(j) tHEn
-aB.uSE "jsLib"
-sET e = aB.e.nEW
-e.bASePAtH = h
-e.iNC(i)
-sET f = e.oBJeCT
-iF iSObJEcT(f.tOObJEcT(a)) tHEn sET tOObJEcT = f.tOObJEcT(a) eLSe tOObJEcT = f.tOObJEcT(a)
-sET f = nOThINg
-sET e = nOThINg
-eLSe
-tOObJEcT = a
-eND iF
-cASe "String"
-iF lCAsE(a) = "null" tHEn
-tOObJEcT = nULl
-eLSeIF lCAsE(a) = "empty" tHEn
-tOObJEcT = eMPtY
-eLSeIF a = "" oR a = """""" tHEn
-tOObJEcT = ""
-eLSeIF lCAsE(a) = "nothing" tHEn
-sET tOObJEcT = nOThINg
-eLSeIF lCAsE(a) = "true" oR lCAsE(a) = "false" tHEn
-tOObJEcT = cBOoL(a)
-eLSeIF iSInT(a) tHEn
-tOObJEcT = cLNg(a)
-eLSeIF tESt(a,"double") tHEn
-tOObJEcT = cDBl(a)
-eLSeIF tESt(a,"date") tHEn
-tOObJEcT = cDAtE(a)
-eLSe
-aB.uSE "Sc"
-sET d = aB.d.nEW
-d.lANg = "js"
-d.aDD "var jsonObject = " & a & ";"
-iF iSObJEcT(d.cODeOBjECt.jSOnOBjECt) tHEn sET tOObJEcT = d.cODeOBjECt.jSOnOBjECt eLSe sET tOObJEcT = nOThINg
-eND iF
-cASe eLSe
-iF iSObJEcT(mE.jSEvAL(a)) tHEn sET g = mE.jSEvAL(a) eLSe g = mE.jSEvAL(a)
-iF iSObJEcT(g) tHEn sET tOObJEcT = g eLSe tOObJEcT = g
-eND sELeCT
-cASe eLSe
-iF iSObJEcT(mE.jSEvAL(a)) tHEn sET g = mE.jSEvAL(a) eLSe g = mE.jSEvAL(a)
-iF iSObJEcT(g) tHEn sET tOObJEcT = g eLSe tOObJEcT = g
-eND sELeCT
-iF eRR tHEn : tOObJEcT = a : eRR.cLEaR : eND iF
-oN eRRoR gOTo 0
-eND fUNcTIoN
-pUBlIC fUNcTIoN pARsE(bYVaL a)
-iF iSObJEcT(tOObJEcT(a)) tHEn sET pARsE = tOObJEcT(a) eLSe pARsE = tOObJEcT(a)
-eND fUNcTIoN
-pUBlIC sUB sETjSArRAyITeM(bYReF a, bYVaL b, bYVaL c)
-oN eRRoR rESuME nEXt
-aB.uSE "Sc"
-dIM d : sET d = aB.d.nEW
-d.lANg = "js"
-d.aDD "var itemTemp=null; function setJSArray(arr, index){try { itemTemp = arr[index]; } catch(e) { itemTemp = null; }}"
-d.rUN "setJSArray", aRRaY(b, c)
-sET a = d.cODeOBjECt.iTEmTEmP
-iF eRR.nUMbER=0 tHEn
-eXIt sUB
-eND iF
-a = d.cODeOBjECt.iTEmTEmP
-oN eRRoR gOTo 0
-eND sUB
-pUBlIC fUNcTIoN gETjSArRAyITeM(bYVaL a, bYVaL b)
-oN eRRoR rESuME nEXt
-aB.uSE "Sc"
-dIM c : sET c = aB.c.nEW
-c.lANg = "js"
-c.aDD "function getJSArray(arr, index){var temp=null; try { temp = arr[index]; } catch(e) {} return temp;}"
-iF iSObJEcT(c.rUN("getJSArray", aRRaY(a, b))) tHEn
-sET gETjSArRAyITeM = c.rUN("getJSArray", aRRaY(a, b))
-eLSe
-gETjSArRAyITeM = c.rUN("getJSArray", aRRaY(a, b))
-eND iF
-oN eRRoR gOTo 0
-eND fUNcTIoN
-pUBlIC fUNcTIoN jSEvAL(bYVaL a)
-oN eRRoR rESuME nEXt
-iF eRR tHEn eRR.cLEaR
-dIM b, c, d, e
-aB.uSE "Sc"
-sET b = aB.b.nEW
-b.lANg = "js"
-b.aDD "function toEval(str) { var _temp = null; try { eval('_temp = (' + str + ');'); } catch(e) { _temp = null; } return (_temp);}"
-sET d = b.oBJeCT
-iF iSObJEcT(d.tOEvAL(a)) tHEn sET jSEvAL = d.tOEvAL(a) eLSe jSEvAL = d.tOEvAL(a)
-sET d = nOThINg
-sET b = nOThINg
-iF eRR.nUMbER <> 0 tHEn : eRR.cLEaR : jSEvAL = a : eND iF
-oN eRRoR gOTo 0
-eND fUNcTIoN
-pUBlIC fUNcTIoN vBEvAL(bYVaL a)
-oN eRRoR rESuME nEXt
-iF eRR tHEn eRR.cLEaR
-iF iSObJEcT(eVAl(a)) tHEn sET vBEvAL = eVAl(a) eLSe vBEvAL = eVAl(a)
-iF eRR.nUMbER <> 0 tHEn : eRR.cLEaR : vBEvAL = a : eND iF
-oN eRRoR gOTo 0
-eND fUNcTIoN
-pUBlIC fUNcTIoN jSArRAyTOvBArRAy(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c
-iF tYPeNAmE(a) = "JScriptTypeInfo" tHEn
-b = a.jOIn("{@Lx.Split@}")
-c = sPLiT(b, "{@Lx.Split@}")
-eND iF
-jSArRAyTOvBArRAy = c
-oN eRRoR gOTo 0
-eND fUNcTIoN
-pUBlIC fUNcTIoN vBArRAyTOjSArRAy(bYVaL a)
-oN eRRoR rESuME nEXt
-aB.uSE "Sc"
-dIM b : sET b = aB.sC.nEW
-b.lANg = "js"
-dIM c : sET c = b.mODuLEs.aDD("NewModule")
-c.aDDcODe "function jsVBArrayToJSArray(vbArr){ var temp = new VBArray(vbArr); return temp.toArray(); }"
-dIM d : sET d = c.cODeOBjECt
-iF iSObJEcT(d.jSVbARrAYtOJsARrAY(a)) tHEn
-sET vBArRAyTOjSArRAy = d.jSVbARrAYtOJsARrAY(a)
-eLSe
-vBArRAyTOjSArRAy = d.jSVbARrAYtOJsARrAY(a)
-eND iF
-oN eRRoR gOTo 0
-eND fUNcTIoN
-pUBlIC sUB fLUsH
-rESpONsE.cLEaR()
-rESpONsE.cHArSEt = s_ChARsET
-rESpONsE.cONtENtTYpE = "application/json"
-nOCaCHe()
-iF tYPeNAmE(rESpONsE) <> "Empty" tHEn
-pUT jSStRInG
-eLSeIF wSCrIPt <> eMPtY tHEn
-wSCrIPt.eCHo(jSStRInG)
-eND iF
-eND sUB
-pUBlIC fUNcTIoN cLOnE
-sET a = cOLcLOnE(mE)
-eND fUNcTIoN
-pUBlIC fUNcTIoN jSObJEcT
-sET a = aB.jSOn.nEW(0)
-eND fUNcTIoN
-pUBlIC fUNcTIoN jSArRAy
-sET a = aB.jSOn.nEW(1)
-eND fUNcTIoN
-pUBlIC fUNcTIoN tOStR(bYVaL a)
-tOStR = aB.jSOn.tOJsON(a)
-eND fUNcTIoN
-pUBlIC fUNcTIoN qUErYToJSoN(bYVaL a, bYVaL b)
-oN eRRoR rESuME nEXt
-dIM c, d, e, f
-sET d = jSArRAy()
-iF nOT iSObJEcT(a) oR tYPeNAmE(a)<>"Connection" tHEn:eRR.cLEaR:sET qUErYToJSoN=d:eXIt fUNcTIoN:eND iF
-sET c = a.eXEcUTe(b)
-iF eRR.nUMbER<>0 tHEn : eRR.cLEaR : sET qUErYToJSoN = d : eXIt fUNcTIoN : eND iF
-dIM g : g = 0
-dO wHIlE nOT (c.eOF oR c.bOF)
-sET f = jSObJEcT()
-d(g) = f
-fOR eACh e iN c.fIElDS
-d(g)(e.nAMe) = e.vALuE
-nEXt
-g = g + 1
-sET f = nOThINg
-c.mOVeNExT
-lOOp
-c.cLOsE : sET c = nOThINg
-sET qUErYToJSoN = d
-oN eRRoR gOTo 0
-eND fUNcTIoN
-pRIvATe fUNcTIoN cOLcLOnE(bYVaL a)
-dIM b, c
-sET b = nEW cLS_AB_JSoN
-b.kINd = a.kINd
-fOR eACh c iN a.cOLlECtIOn
-iF iSObJEcT(a(c)) tHEn
-sET b(c) = cOLcLOnE(a(c))
-eLSe
-b(c) = a(c)
-eND iF
-nEXt
-sET cOLcLOnE = b
-eND fUNcTIoN
-pRIvATe fUNcTIoN eSCaPE__(bYVaL a)
-dIM b, c, d
-b = &h22
-c = &h5C
-d = &h2F
-dIM e, f, g
-fOR e = 1 tO (lEN(a))
-f = mID(a, e, 1)
-iF aSCw(f) > &h00 aND aSCw(f) < &h1F tHEn
-f = eSCaPEqUEnCE(f)
-eLSeIF aSCw(f) >= &hC280 aND aSCw(f) <= &hC2bF tHEn
-f = "\u00" + rIGhT(pADlEFt(hEX(aSCw(f) - &hC200), 2, 0), 2)
-eLSeIF aSCw(f) >= &hC380 aND aSCw(f) <= &hC3bF tHEn
-f = "\u00" + rIGhT(pADlEFt(hEX(aSCw(f) - &hC2c0), 2, 0), 2)
-eLSe
-sELeCT cASe aSCw(f)
-cASe b: f = eSCaPEqUEnCE(f)
-cASe c: f = eSCaPEqUEnCE(f)
-cASe d: f = eSCaPEqUEnCE(f)
-eND sELeCT
-eND iF
-g = g & f
-nEXt
-eSCaPE__ = g
-eND fUNcTIoN
-pRIvATe fUNcTIoN eSCaPEqUEnCE(bYVaL a)
-eSCaPEqUEnCE = "\u00" + rIGhT(pADlEFt(hEX(aSCw(a)), 2, 0), 2)
-eND fUNcTIoN
-pRIvATe fUNcTIoN pADlEFt(bYVaL a, bYVaL b, bYVaL c)
-pADlEFt = rIGhT(cLOnEIt(c, b) & a, b)
-eND fUNcTIoN
-pRIvATe fUNcTIoN cLOnEIt(bYVaL a, bYVaL b)
-dIM c:fOR c = 1 tO b : cLOnEIt = cLOnEIt & a : nEXt
-eND fUNcTIoN
-eND cLAsS
+
+
+
+
+Class Cls_AB_JSON
+	Public Collection, Count, QuotedVars, Kind, StrEncode
+	Private s_charset
+
+	Private Sub Class_Initialize
+		
+	End Sub
+
+	Private Sub Class_Terminate
+		Set Collection = Nothing
+	End Sub
+
+	Public Property Let CharSet(ByVal s)
+		s_charset = Ucase(s)
+	End Property
+	Public Property Get CharSet()
+		CharSet = s_charset
+	End Property
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function [New](ByVal a)
+		Set [New] = New Cls_AB_JSON
+		Select Case LCase(a)
+			Case "0", "object" [New].Kind = 0
+			Case "1", "array"  [New].Kind = 1
+		End Select
+	End Function
+
+	Private Property Get Counter
+		Counter = Count
+		Count = Count + 1
+	End Property
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Property Let Pair(Byval p, Byval v)
+		If IsNull(p) Then p = Counter
+		If vartype(v) = 9 Then
+			If TypeName(v) = "Cls_AB_JSON" Then
+				Set Collection(p) = v
+			Else
+				Collection(p) = v
+			End If
+		Else
+			Collection(p) = v
+		End If
+	End Property
+
+	Public Default Property Get Pair(Byval p)
+		If IsNull(p) Then p = Count - 1
+		If IsObject(Collection(p)) Then
+			Set Pair = Collection(p)
+		Else
+			Pair = Collection(p)
+		End If
+	End Property
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Sub Clean
+		Collection.RemoveAll
+	End Sub
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Sub Remove(Byval a)
+		If Collection.Exists(a) Then Collection.Remove a
+	End Sub
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function toJSON(Byval a)
+		
+		Dim b,c,d : c = 0 : d = 0
+		Dim e, f, g, h, i
+		Dim j : j = "/"
+		Dim k : k = "json2.js"			
+		Dim l : l = j&k
+		
+		Select Case VarType(a)
+			Case 1
+				toJSON = "null"
+			Case 7
+				toJSON = """" & JsEncode__(CStr(a)) & """"
+			Case 8
+				Select Case TypeName(a)
+					Case "IRequest", "IRequestDictionary"
+						If a = Request.QueryString Or a = Request.Form Or a = Request.Cookies Then
+							e = True
+							toJSON = toJSON & "{"
+							For Each c In a
+								If e Then e = False Else toJSON = toJSON & ","
+								toJSON = toJSON & IIF(QuotedVars, """" & IIF(StrEncode,JSEncode(c),JSEncode__(c)) & """", JsEncode__(c)) & ":" & toJSON(a(c))
+							Next
+							toJSON = toJSON & "}"
+						End If
+					Case "JScriptTypeInfo"
+						If isFile(l) Then
+							AB.Use "jsLib"
+							Set h = AB.h.New
+							h.BasePath = j
+							h.Inc(k)
+							Set i = h.Object
+							toJSON = i.toString(a)
+							Set i = Nothing
+							Set h = Nothing
+						Else
+							toJSON = a
+						End If
+					Case Else
+						If a="" Then
+							toJSON = """"""
+						Else
+							toJSON = """" & IIF(StrEncode,JSEncode(a),JSEncode__(a)) & """"
+						End If
+				End Select
+			Case 9
+				Select Case TypeName(a)
+					Case "Nothing","Empty"
+						toJSON = "{}"
+					Case "Recordset"
+						If a.State = 0 Then
+							toJSON = "[]"
+						Else
+							If IsNul(a) Then
+								toJSON = "[]"
+							Else
+								On Error Resume Next
+								Set a = a.Clone
+								On Error Goto 0
+								If a.RecordCount = 1 Then
+									e = True
+									toJSON = toJSON & "[{"
+									For d = 0 To a.Fields.Count-1
+										If e Then e = False Else toJSON = toJSON & ","
+										If QuotedVars Then
+											toJSON = toJSON & """" & IIF(StrEncode,JSEncode(lcase(a.Fields(d).Name)),JSEncode__(lcase(a.Fields(d).Name))) & """:" & toJSON(a.Fields(d).Value)
+										Else
+											toJSON = toJSON & IIF(StrEncode,JSEncode(lcase(a.Fields(d).Name)),JSEncode__(lcase(a.Fields(d).Name))) & ":" & toJSON(a.Fields(d).Value)
+										End If
+									Next
+									toJSON = toJSON & "}]"
+								Else
+									f = True
+									toJSON = toJSON & "["
+									a.MoveFirst
+									Do While Not a.Eof
+										If f Then f = False Else toJSON = toJSON & ","
+										e = True
+										toJSON = toJSON & "{"
+										For d = 0 To a.Fields.Count-1
+											If e Then e = False Else toJSON = toJSON & ","
+											If QuotedVars Then
+												toJSON = toJSON & """" & IIF(StrEncode,JSEncode(lcase(a.Fields(d).Name)),JSEncode__(lcase(a.Fields(d).Name))) & """:" & toJSON(a.Fields(d).Value)
+											Else
+												toJSON = toJSON & IIF(StrEncode,JSEncode(lcase(a.Fields(d).Name)),JSEncode__(lcase(a.Fields(d).Name))) & ":" & toJSON(a.Fields(d).Value)
+											End If
+										Next
+										toJSON = toJSON & "}"
+										c = c + 1
+										a.MoveNext
+									Loop
+									toJSON = toJSON & "]"
+								End If
+							End If
+						End If
+					Case "Dictionary", "IRequest", "IRequestDictionary", "IApplicationObject", "ISessionObject"
+						If TypeName(a) = "IRequest" Then
+							Dim m : Set m = Server.CreateObject(AB.dictName)
+							m.add "clientcertificate", a.ClientCertificate
+							m.add "cookies", a.cookies
+							m.add "form", a.form
+							m.add "querystring", a.queryString
+							m.add "servervariables", a.serverVariables
+							m.add "totalbytes", a.totalBytes
+							toJSON = toJSON(m)
+						ElseIf TypeName(a) = "IApplicationObject" Or TypeName(a) = "ISessionObject" Then
+							g = a.Contents.Count
+							If g = 0 Then
+								toJSON = "{}"
+							Else
+								e = True
+								toJSON = toJSON & "{"
+								For Each c In a.Contents
+									If e Then e = False Else toJSON = toJSON & ","
+									toJSON = toJSON & IIF(QuotedVars, """" & IIF(StrEncode,JSEncode(c),JSEncode__(c)) & """", IIF(StrEncode,JSEncode(c),JSEncode__(c))) & ":" & toJSON(a(c))
+								Next
+								toJSON = toJSON & "}"
+							End If
+						ElseIf TypeName(a) = "Dictionary" Then
+							g = a.Count
+							If g = 0 Then
+								toJSON = "{}"
+							Else
+								e = True
+								toJSON = toJSON & "{"
+								For Each c In a
+									If e Then e = False Else toJSON = toJSON & ","
+									toJSON = toJSON & IIF(QuotedVars, """" & IIF(StrEncode,JSEncode(c),JSEncode__(c)) & """", IIF(StrEncode,JSEncode(c),JSEncode__(c))) & ":" & toJSON(a(c))
+								Next
+								toJSON = toJSON & "}"
+							End If
+						Else
+							e = True
+							toJSON = toJSON & "{"
+							For Each c In a
+								If e Then e = False Else toJSON = toJSON & ","
+								toJSON = toJSON & IIF(QuotedVars, """" & IIF(StrEncode,JSEncode(c),JSEncode__(c)) & """", IIF(StrEncode,JSEncode(c),JSEncode__(c))) & ":" & toJSON(a(c))
+							Next
+							toJSON = toJSON & "}"
+						End If
+					Case "Cls_AB_JSON"
+						e = True
+						toJSON = toJSON & IIF(a.Kind, "[", "{")
+						For Each c In a.Collection
+							If e Then e = False Else toJSON = toJSON & ","
+							toJSON = toJSON & IfThen(a.Kind=0, IIF(QuotedVars, """" & IIF(StrEncode,JSEncode(c),JSEncode__(c)) & """", IIF(StrEncode,JSEncode(c),JSEncode__(c))) & ":") & toJSON(a(c))
+						Next
+						toJSON = toJSON & IIF(a.Kind, "]", "}")
+					Case "JScriptTypeInfo"
+						If isFile(l) Then
+							AB.Use "jsLib"
+							Set h = AB.h.New
+							h.BasePath = j
+							h.Inc(k)
+							Set i = h.Object
+							toJSON = i.toString(a)
+							Set i = Nothing
+							Set h = Nothing
+						Else
+							toJSON = "{}"
+						End If
+					Case "VBScriptTypeInfo"
+						toJSON = "{}"
+					Case Else
+						toJSON = "{}"
+				End Select
+			Case 11
+				toJSON = IIF(a, "true", "false")
+			Case 12, 8192, 8204, 8209
+				toJSON = RenderArray(a, 1, "")
+			Case 2, 3, 17, 19
+				toJSON = CLng(a)
+			Case 4, 5, 6, 14
+				toJSON = Replace(CDbl(a), ",", ".")
+			Case Else
+				toJSON = """" & IIF(StrEncode,JSEncode(Cstr(a)),JSEncode__(Cstr(a))) & """"
+		End select
+		
+	End Function
+	
+	
+	function fieldToJson(a,byval b)
+		dim c, d,e,f,g
+		b = "|" & LCase(b) & "|"
+		c = True
+		d = d & "{"
+		while not a.eof
+		For g = 0 To a.Fields.Count-1
+			e = a.Fields(g).Name
+			f = a.Fields(g).Value
+			
+			if instr(b,"|"& LCase(e) &"|")>0 then
+				If c Then c = False Else d = d & ","
+				If QuotedVars Then
+					d = d & """" & IIF(StrEncode,JSEncode(e),JSEncode__(e)) & """:" & toJSON(f)
+				Else
+					d = d & IIF(StrEncode,JSEncode(e),JSEncode__(e)) & ":" & toJSON(f)
+				End If
+			end if
+		Next
+		d = d & "}"
+		a.movenext:wend:a.close
+		d= "["& d &"]"		
+		fieldToJson = d
+	end function
+	
+	
+	Private Function RenderArray(Byval a, Byval b, Byval c)
+		
+		Dim d : d = LBound(a, b)
+		Dim e : e = UBound(a, b)
+		Dim f, g
+		Dim h : h = ","
+		RenderArray = "["
+		For f = d To e
+			If f = e Then
+				h = ""
+			End If
+			On Error Resume Next
+			g = RenderArray(a, b + 1, c & f & "," )
+			If Err = 9 Then
+				On Error GoTo 0
+				RenderArray = RenderArray & toJSON(Eval("arr(" & c & f & ")")) & h
+			Else
+				RenderArray = RenderArray & g & "" & h
+			End If
+		Next
+		RenderArray = RenderArray & "]"
+	End Function
+	
+	Public Function JsEncode(ByVal a)
+		If isNul(a) Then JsEncode = "" : Exit Function
+		Dim b, c, d, e, f, g, h
+		b = Array(&h27,&h22,&h5C,&h2F,&h08,&h0C,&h0A,&h0D,&h09)
+		c = Array(&h27,&h22,&h5C,&h2F,&h62,&h66,&h6E,&h72,&h749)
+		For d = 1 To Len(a)
+			g = True
+			f = Mid(a, d, 1)
+			For e = 0 To Ubound(b)
+				If f = Chr(b(e)) Then
+					h = h & "\" & Chr(c(e))
+					g = False
+					Exit For
+				End If
+			Next
+			If g Then
+				Dim i
+				i = AscW(f)
+				If i > 31 And i < 127 Then
+					h = h & f
+				ElseIf i > -1 Or i < 65535 Then
+					h = h & "\u" & String(4 - Len(Hex(i)), "0") & Hex(i)
+				End If
+			End If
+		Next
+		JsEncode = h
+		
+	End Function
+	Private Function JsEncode__(ByVal a)
+		
+		If isNul(a) Then JsEncode__ = "" : Exit Function
+		Dim b, c, d, e, f, g, h
+		b = Array(&h27,&h22,&h5C,&h2F,&h08,&h0C,&h0A,&h0D,&h09)
+		c = Array(&h27,&h22,&h5C,&h2F,&h62,&h66,&h6E,&h72,&h749)
+		For d = 1 To Len(a)
+			g = True
+			f = Mid(a, d, 1)
+			For e = 0 To Ubound(b)
+				If f = Chr(b(e)) Then
+					h = h & "\" & Chr(c(e))
+					g = False
+					Exit For
+				End If
+			Next
+			If g Then h = h & f
+		Next
+		JsEncode__ = h
+	End Function
+	
+	Public Function Stringify(Byval a)
+		Stringify = toJSON(a)
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Property Get jsString
+		jsString = toJSON(Me)
+	End Property
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function toObject(Byval a)
+		On Error Resume Next
+		If Err Then Err.Clear
+		Dim b,c : b = 0 : c = 0
+		Dim d, e, f, g
+		Dim h : h = AB.BasePath & "jsLib/core/"
+		Dim i : i = "json2.js"
+		Dim j : j = h&i
+		Select Case VarType(a)
+			Case 9
+				Set toObject = a
+			Case 8
+				Select Case TypeName(a)
+					Case "JScriptTypeInfo"
+						If isFile(j) Then
+							AB.Use "jsLib"
+							Set e = AB.e.New
+							e.BasePath = h
+							e.Inc(i)
+							Set f = e.Object
+							If IsObject(f.toObject(a)) Then Set toObject = f.toObject(a) Else toObject = f.toObject(a)
+							Set f = Nothing
+							Set e = Nothing
+						Else
+							toObject = a
+						End If
+					Case "String"
+						If LCase(a) = "null" Then
+							toObject = Null
+						ElseIf LCase(a) = "empty" Then
+							toObject = Empty
+						ElseIf a = "" Or a = """""" Then
+							toObject = ""
+						ElseIf LCase(a) = "nothing" Then
+							Set toObject = Nothing
+						ElseIf LCase(a) = "true" Or LCase(a) = "false" Then
+							toObject = CBool(a)
+						ElseIf isInt(a) Then
+							toObject = CLng(a)
+						ElseIf Test(a,"double") Then
+							toObject = CDbl(a)
+						ElseIf Test(a,"date") Then
+							toObject = CDate(a)
+						Else
+							
+								
+								
+								
+									
+									
+									
+									
+									
+									
+									
+									
+								
+									
+								
+								
+							
+							
+							
+							AB.Use "Sc"
+							Set d = AB.d.New
+							d.Lang = "js"
+							d.Add "var jsonObject = " & a & ";"
+							If IsObject(d.CodeObject.jsonObject) Then Set toObject = d.CodeObject.jsonObject Else Set toObject = Nothing
+						End If
+					Case Else
+						
+						If IsObject(Me.jsEval(a)) Then Set g = Me.jsEval(a) Else g = Me.jsEval(a)
+						If IsObject(g) Then Set toObject = g Else toObject = g
+				End Select
+			Case Else
+				
+				If IsObject(Me.jsEval(a)) Then Set g = Me.jsEval(a) Else g = Me.jsEval(a)
+				If IsObject(g) Then Set toObject = g Else toObject = g
+		End select
+		If Err Then : toObject = a : Err.Clear : End If
+		On Error Goto 0
+	End Function
+
+
+	Public Function Parse(Byval a)
+		If IsObject(toObject(a)) Then Set Parse = toObject(a) Else Parse = toObject(a)
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Sub setJSArrayItem(ByRef a, ByVal b, ByVal c)
+		On Error Resume Next
+		AB.Use "Sc"
+		Dim d : Set d = AB.d.New
+		d.Lang = "js"
+		d.Add "var itemTemp=null; function setJSArray(arr, index){try { itemTemp = arr[index]; } catch(e) { itemTemp = null; }}"
+		d.Run "setJSArray", Array(b, c)
+		Set a = d.CodeObject.itemTemp
+		If Err.number=0 Then
+			Exit Sub
+		End If
+		a = d.CodeObject.itemTemp
+		On Error Goto 0
+	End Sub
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function getJSArrayItem(ByVal a, ByVal b)
+		On Error Resume Next
+		AB.Use "Sc"
+		Dim c : Set c = AB.c.New
+		c.Lang = "js"
+		c.Add "function getJSArray(arr, index){var temp=null; try { temp = arr[index]; } catch(e) {} return temp;}"
+		If IsObject(c.Run("getJSArray", Array(a, b))) Then
+			Set getJSArrayItem = c.Run("getJSArray", Array(a, b))
+		Else
+			getJSArrayItem = c.Run("getJSArray", Array(a, b))
+		End If
+		On Error Goto 0
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function jsEval(Byval a)
+		On Error Resume Next
+		If Err Then Err.Clear
+		Dim b, c, d, e
+		AB.Use "Sc"
+		Set b = AB.b.New
+		b.Lang = "js"
+		b.Add "function toEval(str) { var _temp = null; try { eval('_temp = (' + str + ');'); } catch(e) { _temp = null; } return (_temp);}"
+		Set d = b.Object
+		If IsObject(d.toEval(a)) Then Set jsEval = d.toEval(a) Else jsEval = d.toEval(a)
+		Set d = Nothing
+		Set b = Nothing
+		If Err.Number <> 0 Then : Err.Clear : jsEval = a : End If
+		On Error Goto 0
+	End Function
+
+	Public Function vbEval(Byval a)
+		On Error Resume Next
+		If Err Then Err.Clear
+		If IsObject(Eval(a)) Then Set vbEval = Eval(a) Else vbEval = Eval(a)
+		If Err.Number <> 0 Then : Err.Clear : vbEval = a : End If
+		On Error Goto 0
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function JSArrayToVBArray(ByVal a)
+		On Error Resume Next
+		Dim b, c
+		If TypeName(a) = "JScriptTypeInfo" Then
+			b = a.join("{@Lx.Split@}")
+			c = Split(b, "{@Lx.Split@}")
+		End If
+		JSArrayToVBArray = c
+		On Error Goto 0
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function VBArrayToJSArray(ByVal a)
+		On Error Resume Next
+		AB.Use "Sc"
+		Dim b : Set b = AB.Sc.New
+		b.Lang = "js"
+		Dim c : Set c = b.Modules.Add("NewModule")
+		c.AddCode "function jsVBArrayToJSArray(vbArr){ var temp = new VBArray(vbArr); return temp.toArray(); }"
+		Dim d : Set d = c.CodeObject
+		If IsObject(d.jsVBArrayToJSArray(a)) Then
+			Set VBArrayToJSArray = d.jsVBArrayToJSArray(a)
+		Else
+			VBArrayToJSArray = d.jsVBArrayToJSArray(a)
+		End If
+		On Error Goto 0
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Sub Flush
+		Response.Clear()
+		Response.Charset = s_charset
+		Response.ContentType = "application/json"
+		NoCache()
+		If TypeName(Response) <> "Empty" Then
+			Put jsString
+		ElseIf WScript <> Empty Then
+			WScript.Echo(jsString)
+		End If
+	End Sub
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function Clone
+		Set a = ColClone(Me)
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function jsObject
+		Set a = AB.Json.New(0)
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function jsArray
+		Set a = AB.Json.New(1)
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function toStr(Byval a)
+		toStr = AB.Json.toJSON(a)
+	End Function
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	Public Function QueryToJSON(Byval a, Byval b)
+		On Error Resume Next
+		Dim c, d, e, f
+		Set d = jsArray()
+		If Not IsObject(a) Or TypeName(a)<>"Connection" Then:Err.Clear:Set QueryToJSON=d:Exit Function:End If
+		Set c = a.Execute(b)
+		If Err.Number<>0 Then : Err.Clear : Set QueryToJSON = d : Exit Function : End If
+		Dim g : g = 0
+		Do While Not (c.EOF Or c.BOF)
+			Set f = jsObject()
+			d(g) = f
+			For Each e In c.Fields
+				d(g)(e.Name) = e.Value
+			Next
+			g = g + 1
+			Set f = Nothing
+			c.MoveNext
+		Loop
+		c.Close : Set c = Nothing
+		Set QueryToJSON = d
+		On Error Goto 0
+	End Function
+
+
+
+	Private Function ColClone(Byval a)
+		Dim b, c
+		Set b = new Cls_AB_JSON
+		b.Kind = a.Kind
+		For Each c In a.Collection
+			If IsObject(a(c)) Then
+				Set b(c) = ColClone(a(c))
+			Else
+				b(c) = a(c)
+			End If
+		Next
+		Set ColClone = b
+	End Function
+
+
+
+	Private Function Escape__(Byval a)
+		Dim b, c, d
+		b = &h22
+		c = &h5C
+		d = &h2F
+		Dim e, f, g
+		For e = 1 To (Len(a))
+			f = Mid(a, e, 1)
+			If AscW(f) > &h00 and AscW(f) < &h1F Then
+				f = EscapeQuence(f)
+			ElseIf AscW(f) >= &hC280 and AscW(f) <= &hC2BF Then
+				f = "\u00" + Right(padLeft(hex(AscW(f) - &hC200), 2, 0), 2)
+			ElseIf AscW(f) >= &hC380 and AscW(f) <= &hC3BF Then
+				f = "\u00" + Right(padLeft(hex(AscW(f) - &hC2C0), 2, 0), 2)
+			Else
+				Select Case AscW(f)
+					Case b: f = EscapeQuence(f)
+					Case c: f = EscapeQuence(f)
+					Case d: f = EscapeQuence(f)
+				End Select
+			End If
+			g = g & f
+		Next
+		Escape__ = g
+	End Function
+	Private Function EscapeQuence(Byval a)
+		EscapeQuence = "\u00" + Right(padLeft(hex(AscW(a)), 2, 0), 2)
+	End Function
+	Private Function padLeft(Byval a, Byval b, Byval c)
+		padLeft = Right(cloneIt(c, b) & a, b)
+	End Function
+	private Function cloneIt(Byval a, Byval b)
+		Dim c:For c = 1 To b : cloneIt = cloneIt & a : Next
+	End Function
+
+End Class
 %>
 

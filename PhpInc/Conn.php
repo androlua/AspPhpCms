@@ -8,12 +8,13 @@ function openConn() {
 	$dbhost='localhost';$dbuser='root';$dbpwd='root';$dbname='phpwebdata'; 
 	
 	
+	
 	$conna = @mysql_connect($dbhost,$dbuser,$dbpwd);
     if(!$conna){
-		exit('<a href="/phpinc/startInstall.php" target="_blank">连接服务器失败，点击配置</a>');
+		exit('<a href="//phpinc/startInstall.php" target="_blank">连接服务器失败，点击配置</a>');
 	}
     if(!mysql_select_db($dbname,$conna)){
-		exit('<a href="/phpinc/startInstall.php" target="_blank">连接数据库失败，点击配置</a>');	
+		exit('<a href="//phpinc/startInstall.php" target="_blank">连接数据库失败，点击配置</a>');	
 	}
 	
 	mysql_query("set names 'gb2312'"); //数据库输出编码

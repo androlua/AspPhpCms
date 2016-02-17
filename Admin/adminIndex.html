@@ -211,7 +211,7 @@
 </div> 
 <div class="mainleft">
 	<ul class="shortcutmenu">
-    	<li class="mleft" onClick="javascript:window.open('{$frontView$}');"></li>
+    	<li class="mleft" onClick="javascript:window.open('{$WEB_VIEWURL$}');"></li>
         <li class="mright"></li>
     </ul>
 	<div class="menubody">
@@ -264,14 +264,13 @@
     <div class="mg10">
 	   <div class="lbtop"><div class="lbsub">管理员信息</div></div>
 	   <div class="lbbody">
-            进入在线修改模式  进入首页<br>
             用 户 名：  {$adminusername$}<br>
             权限权限：   超级管理员<br>
             表前缀：   {$DB_PREFIX$}<br>
             <!--
             <a href="/Inc/Create_Html.Asp?act=showweb&gl=edit" target="_blank">进入在线修改模式(旧版)</a><br>
             -->
-            <a href="../index.{$EDITORTYPE$}?gl=edit" target="_blank">进入在线修改模式</a><br>
+            <a href="{$WEB_VIEWURL$}?gl=edit" target="_blank">进入在线修改模式</a><br>
             
 	   </div>
 	</div>

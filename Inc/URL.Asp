@@ -2,1189 +2,1463 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-16
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-fUNcTIoN gETtHIsURlNOpARaM()
-dIM b
-iF lCAsE(rEQuESt.sERvERvARiABlES("HTTPS")) = "off" tHEn
-b = "http://"
-eLSe
-b = "https://"
-eND iF
-gETtHIsURlNOpARaM = b & rEQuESt.sERvERvARiABlES("HTTP_HOST") & rEQuESt.sERvERvARiABlES("SCRIPT_NAME")
-eND fUNcTIoN
-fUNcTIoN gETgOToURl()
-gETgOToURl = rEQuESt.sERvERvARiABlES("HTTP_REFERER")
-eND fUNcTIoN
-fUNcTIoN gETgOToURlNOpARaM()
-gETgOToURlNOpARaM = gETgOToURl()
-iF iNStR(gETgOToURlNOpARaM, "?") > 0 tHEn
-gETgOToURlNOpARaM = mID(gETgOToURlNOpARaM, 1, iNStR(gETgOToURlNOpARaM, "?") - 1)
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETgOToURlNOfILeNAmE()
-gETgOToURlNOfILeNAmE = gETgOToURl()
-iF rIGhT(gETgOToURlNOfILeNAmE, 1) <> "/" tHEn
-iF iNStRReV(gETgOToURlNOfILeNAmE, "/") > 0 tHEn
-gETgOToURlNOfILeNAmE = mID(gETgOToURlNOpARaM, 1, iNStRReV(gETgOToURlNOpARaM, "/"))
-eND iF
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETiP2()
-oN eRRoR rESuME nEXt
-dIM b, c, d
-b = rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR")
-c = rEQuESt.sERvERvARiABlES("REMOTE_ADDR")
-d = iIF(iSNuL(b) oR lCAsE(b) = "unknown", c, b)
-iF iNStR(d, ".") = 0 tHEn d = "0.0.0.0"
-gETiP2 = d
-eND fUNcTIoN
-fUNcTIoN gETiP()
-oN eRRoR rESuME nEXt
-dIM b
-iF rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR") = "" oR iNStR(rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR"), "unknown") > 0 tHEn
-b = rEQuESt.sERvERvARiABlES("REMOTE_ADDR")
-eLSeIF iNStR(rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR"), ",") > 0 tHEn
-b = mID(rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR"), 1, iNStR(rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR"), ",") - 1)
-eLSeIF iNStR(rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR"), ";") > 0 tHEn
-b = mID(rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR"), 1, iNStR(rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR"), ";") - 1)
-eLSe
-b = rEQuESt.sERvERvARiABlES("HTTP_X_FORWARDED_FOR")
-eND iF
-gETiP = tRIm(mID(b, 1, 30))
-eND fUNcTIoN
-fUNcTIoN gETsERvICeRIp()
-gETsERvICeRIp = rEQuESt.sERvERvARiABlES("LOCAL_ADDR")
-eND fUNcTIoN
-fUNcTIoN gETrEMoTEiP()
-gETrEMoTEiP = gETsERvICeRIp()
-eND fUNcTIoN
-fUNcTIoN hANdLEhTTpURl(a)
-dIM b
-iF iSNuL(a) tHEn eXIt fUNcTIoN
-a = rEPlACe(tRIm(a), "\", "/")
-b = mID(a, 1, iNStR(a, ":") + 2)
-a = mID(a, iNStR(a, ":") + 3)
-a = rEPlACe(a, "http://", "【|http|】")
-a = rEPlACe(a, "https://", "【|https|】")
-a = rEPlACe(a, "ftp://", "【|ftp|】")
-wHIlE iNStR(a, "//") > 0
-a = rEPlACe(a, "//", "/")
-wENd
-a = rEPlACe(a, "【|http|】", "http://")
-a = rEPlACe(a, "【|https|】", "https://")
-a = rEPlACe(a, "【|ftp|】", "ftp://")
-hANdLEhTTpURl = b & a
-eND fUNcTIoN
-fUNcTIoN hANdLEfILeURl(a)
-a = rEPlACe(a, "/", "\")
-dIM b
-fOR b = 1 tO 99
-a = rEPlACe(a, "\\", "\")
-iF iNStR(a, "\\") = fALsE tHEn
-eXIt fOR
-eND iF
-nEXt
-hANdLEfILeURl = a
-eND fUNcTIoN
-fUNcTIoN hANdLEuRLcOMpLEtE(a)
-dIM b
-hANdLEuRLcOMpLEtE = a
-iF iNStR(a, "?") > 0 tHEn eXIt fUNcTIoN
-iF rIGhT(a, 1) <> "/" tHEn
-iF a & "/" = gETwEBsITe(a) tHEn
-hANdLEuRLcOMpLEtE = a & "/"
-eXIt fUNcTIoN
-eND iF
-eND iF
-b = mID(a, iNStRReV(a, "/") + 1)
-iF b <> "" aND iNStR(b, ".") = fALsE tHEn
-hANdLEuRLcOMpLEtE = a & "/"
-eND iF
-eND fUNcTIoN
-fUNcTIoN uRLaDDhTTpURl(a, b)
-a = rEPlACe(a, "\", "/")
-b = hANdLEhTTpURl(b)
-iF iNStR(lCAsE(b), "http://") = 0 aND iNStR(lCAsE(b), "www.") = 0 tHEn
-iF rIGhT(a, 1) = "/" aND lEFt(b, 1) = "/" tHEn
-b = a & mID(b, 2)
-eLSeIF rIGhT(a, 1) <> "/" aND lEFt(b, 1) <> "/" tHEn
-b = a & "/" & b
-eLSe
-b = a & b
-eND iF
-eND iF
-uRLaDDhTTpURl = b
-eND fUNcTIoN
-fUNcTIoN wEBdOMaIN()
-dIM b, c
-b = rEQuESt.sERvERvARiABlES("SERVER_PORT")
-iF b <> 80 tHEn b = ":" & b eLSe b = ""
-wEBdOMaIN = "http://" & rEQuESt.sERvERvARiABlES("SERVER_NAME") & b
-eND fUNcTIoN
-fUNcTIoN hOSt()
-hOSt = "http://" & rEQuESt.sERvERvARiABlES("HTTP_HOST") & "/"
-eND fUNcTIoN
-fUNcTIoN hTTpHOsT()
-hTTpHOsT = hOSt()
-eND fUNcTIoN
-fUNcTIoN gEThOSt()
-gEThOSt = hOSt()
-eND fUNcTIoN
-fUNcTIoN gETuRL()
-gETuRL = gETtHIsURl()
-eND fUNcTIoN
-fUNcTIoN gETtHIsURl()
-dIM b, c
-b = "http://" & rEQuESt.sERvERvARiABlES("server_name")
-c = rEQuESt.sERvERvARiABlES("SERVER_PORT")
-iF c <> 80 tHEn
-b = b & ":" & c
-eND iF
-b = b & rEQuESt.sERvERvARiABlES("script_name")
-iF rEQuESt.sERvERvARiABlES("QUERY_STRING") <> "" tHEn b = b & "?" & rEQuESt.sERvERvARiABlES("QUERY_STRING")
-gETtHIsURl = b
-eND fUNcTIoN
-fUNcTIoN gETtHIsURlNOfILeNAmE()
-dIM b
-b = gETtHIsURl()
-iF rIGhT(b, 1) <> "/" tHEn
-iF iNStRReV(b, "/") > 0 tHEn
-b = mID(b, 1, iNStRReV(b, "/"))
-eND iF
-eND iF
-gETtHIsURlNOfILeNAmE = b
-eND fUNcTIoN
-fUNcTIoN gETwEBsITe(bYVaL a)
-dIM b, c, d
-c = a
-b = tRIm(lCAsE(rEPlACe(a, "?", "/")))
-b = rEPlACe(rEPlACe(b, "\", "/"), "http://", "")
-iF iNStR(b, "/") > 0 tHEn b = mID(b, 1, iNStR(b, "/") - 1)
-b = "http://" & b & "/"
-dIM e, f, g
-a = rEPlACe(lCAsE(a), "http://", "")
-iF iNStR(a, "?") > 0 tHEn a = mID(a, 1, iNStR(a, "?") - 1)
-iF lEFt(a, 9) = "localhost" tHEn
-iF iNStR(a, "/") > 0 tHEn
-a = mID(a, 1, iNStR(a, "/") - 1)
-eLSe
-a = "localhost"
-eND iF
-eLSeIF lEFt(a, 8) = "192.168." oR lEFt(a, 9) = "127.0.0.1" tHEn
-a = a & "/"
-a = "http://" & mID(a, 1, iNStR(a, "/") - 1) & "/"
-gETwEBsITe = a : eXIt fUNcTIoN
-eLSe
-e = sPLiT(a, ".")
-iF(iNStR(a, "www.") > 0 aND uBOuND(e) >= 2) oR uBOuND(e) >= 1 tHEn
-iF iNStR(a, "/") > 0 tHEn
-f = mID(a, 1, iNStR(a, "/") - 1)
-iF f = gETdIAnNUmB(f) tHEn
-a = f
-eND iF
-eND iF
-eLSe
-a = ""
-eND iF
-eND iF
-d = fALsE
-g = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn"
-g = g & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in"
-e = sPLiT(g, "|")
-fOR eACh f iN e
-iF f <> "" tHEn
-iF iNStR(a, f) > 0 tHEn
-a = "http://" & lEFt(a, iNStR(a, f) + lEN(f) - 1) & "/" : d = tRUe : eXIt fOR
-eND iF
-eND iF
-nEXt
-gETwEBsITe = lEFt(a, 255)
-iF gETwEBsITe = "http:///" tHEn gETwEBsITe = ""
-iF d = fALsE tHEn
-gETwEBsITe = ""
-eND iF
-eND fUNcTIoN
-fUNcTIoN cHEcKUrL(a)
-cHEcKUrL = iIF(gETwEBsITe(a) = "", fALsE, tRUe)
-eND fUNcTIoN
-fUNcTIoN cHEcKHtTPuRL(a)
-cHEcKHtTPuRL = cHEcKUrL(a)
-eND fUNcTIoN
-fUNcTIoN iSUrL(a)
-iSUrL = cHEcKUrL(a)
-eND fUNcTIoN
-fUNcTIoN iSHtTPuRL(a)
-iSHtTPuRL = cHEcKUrL(a)
-eND fUNcTIoN
-fUNcTIoN fULlHTtPUrL(bYVaL a, bYVaL b)
-eRR.cLEaR
-dIM c, d, e, f, g, h, i, j, k, l, m, n
-a = pHPtRIm(a)
-b = pHPtRIm(b)
-iF b = "" tHEn fULlHTtPUrL = "" : eXIt fUNcTIoN
-iF tRIm(a) = "" tHEn fULlHTtPUrL = b : eXIt fUNcTIoN
-a = rEPlACe(a, "\", "/")
-b = rEPlACe(b, "\", "/")
-iF lEFt(b, 2) = "//" tHEn
-fULlHTtPUrL = "http:" & b
-eXIt fUNcTIoN
-eND iF
-c = gETwEBsITe(a)
-l = c
-m = gETwEBsITe(b)
-iF rIGhT(c, 1) = "/" tHEn c = lEFt(c, lEN(c) - 1)
-d = lEFt(a, iNStRReV(a, "/"))
-e = sPLiT(a, "/")
-fOR f = 0 tO uBOuND(e)
-iF f + 1 = uBOuND(e) tHEn i = h
-iF f + 2 = uBOuND(e) tHEn j = h
-iF f + 3 = uBOuND(e) tHEn k = h
-g = e(f)
-h = h & g & "/"
-nEXt
-b = tRIm(b)
-n = fALsE
-iF b <> "" aND iNStR(lEFt(b, 10), "www.") = fALsE aND iNStR(lEFt(b, 10), "http://") = fALsE aND iNStR(lEFt(b, 10), "https://") = fALsE tHEn
-n = tRUe
-iF l <> m tHEn
-iF l = rEPlACe(m, "http://", "http://www.") tHEn
-n = fALsE
-iF iNStR(lCAsE(b), "http://") > 0 tHEn
-b = "http://www." & rIGhT(b, lEN(b) - 7)
-eLSe
-b = "http://www." & b
-eND iF
-eND iF
-eND iF
-eND iF
-iF n = tRUe tHEn
-iF lEFt(b, 1) = "/" tHEn
-b = c & b
-eLSeIF lEFt(b, 9) = "../../../" tHEn
-b = k & rIGhT(b, lEN(b) - 9)
-eLSeIF lEFt(b, 6) = "../../" tHEn
-b = j & rIGhT(b, lEN(b) - 6)
-eLSeIF lEFt(b, 3) = "../" tHEn
-b = i & rIGhT(b, lEN(b) - 3)
-eLSeIF lEFt(b, 2) = "./" tHEn
-b = d & mID(b, 3)
-eLSe
-b = d & b
-eND iF
-eND iF
-iF iNStR(lCAsE(a), "http://") > 0 aND iNStR(lCAsE(b), "http://") = 0 tHEn
-b = "http://" & b
-eLSeIF iNStR(lCAsE(a), "https://") > 0 aND iNStR(lCAsE(b), "https://") = 0 tHEn
-b = "https://" & b
-eND iF
-fULlHTtPUrL = b
-iF eRR tHEn dOErROr eRR.dEScRIpTIoN, "FullHttpUrl 获得域名 完整网址，HttpUrl=" & a & "<hr>Url=" & b
-eND fUNcTIoN
-fUNcTIoN bATcHFuLLhTTpURl(a, b)
-dIM c, d, e
-c = sPLiT(b, vBCrLF)
-fOR eACh d iN c
-iF lEN(d) > 3 tHEn
-iF e <> "" tHEn e = e & vBCrLF
-e = e & fULlHTtPUrL(a, d)
-eND iF
-nEXt
-bATcHFuLLhTTpURl = e
-eND fUNcTIoN
-fUNcTIoN uRLjIAnJIeHAnDLe(bYVaL a)
-a = rEPlACe(a, "&amp;", "&")
-uRLjIAnJIeHAnDLe = a
-eND fUNcTIoN
-fUNcTIoN uRLtOAsC(a)
-dIM b
-fOR b = 1 tO lEN(a)
-uRLtOAsC = uRLtOAsC & "%" & hEX(aSCw(mID(a, b, 1)))
-nEXt
-eND fUNcTIoN
-fUNcTIoN gETwEBtITlE(a)
-gETwEBtITlE = mYStRCuT(a, "<title>", "</title>", 0)
-eND fUNcTIoN
-fUNcTIoN mYStRCuT(a, b, c, d)
-dIM e, f, g
-e = lCAsE(a)
-iF iNStR(e, b) > 0 aND iNStR(e, c) > 0 tHEn
-f = iNStR(e, b) + lEN(b)
-g = iNStR(e, c) - f
-mYStRCuT = mID(a, f, g)
-iF d = 1 oR d = 3 tHEn mYStRCuT = b & mYStRCuT
-iF d = 2 oR d = 3 tHEn mYStRCuT = mYStRCuT & c
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETcONtENtAHrEF(a, b, c, d)
-dIM e, f, g, h, i, j, k
-fOR e = 1 tO lEN(b)
-f = mID(b, e, 1)
-iF f = "<" tHEn
-g = lCAsE(mID(b, e))
-h = lCAsE(mID(g, 1, iNStR(g, " ")))
-iF h = "<a " tHEn
-j = mID(g, 1, iNStR(g, "</") + 2)
-i = lEN(j) - 1
-k = k & hANdLElINk(a, j, "href", "", "url", c, d) & vBCrLF
-e = e + i
-eND iF
-eND iF
-dOEvENtS
-nEXt
-iF k <> "" tHEn k = lEFt(k, lEN(k) - 2)
-gETcONtENtAHrEF = k
-eND fUNcTIoN
-fUNcTIoN gETcONtENtIMgSRc(a, b, c, d)
-dIM e, f, g, h, i, j, k
-fOR e = 1 tO lEN(b)
-f = mID(b, e, 1)
-iF f = "<" tHEn
-g = lCAsE(mID(b, e))
-h = lCAsE(mID(g, 1, iNStR(g, " ")))
-iF h = "<img " tHEn
-j = mID(g, 1, iNStR(g, ">"))
-i = lEN(j) - 1
-k = k & hANdLElINk(a, j, "src", "", "url", c, d) & vBCrLF
-e = e + i
-eND iF
-eND iF
-dOEvENtS
-nEXt
-iF k <> "" tHEn k = lEFt(k, lEN(k) - 2)
-gETcONtENtIMgSRc = k
-eND fUNcTIoN
-fUNcTIoN hANdLEcONeNTuRL(a, b, c, d)
-dIM e, f, g, h, i, j, k, l
-fOR e = 1 tO lEN(b)
-f = mID(b, e, 1)
-iF f = "<" tHEn
-g = mID(b, e)
-h = lCAsE(g)
-h = rEPlACe(rEPlACe(h, cHR(10), " " & vBCrLF), cHR(13), " " & vBCrLF)
-k = mID(g, 1, iNStR(g, ">"))
-i = lCAsE(mID(h, 1, iNStR(h, " ")))
-iF i = "<link " tHEn
-j = lEN(k) - 1
-l = l & hANdLElINk(a, k, "href", "", "", c, d)
-e = e + j
-eLSeIF i = "<img " tHEn
-j = lEN(k) - 1
-l = l & hANdLElINk(a, k, "src", "", "", c, d)
-e = e + j
-eLSeIF i = "<a " tHEn
-j = lEN(k) - 1
-iF iNStR(lCAsE(k), "javascript:") = 0 tHEn
-l = l & hANdLElINk(a, k, "href", "", "", c, d)
-eLSe
-l = l & k
-eND iF
-e = e + j
-eLSeIF i = "<script " tHEn
-j = lEN(k) - 1
-iF iNStR(lCAsE(k), "src") > 0 tHEn
-l = l & hANdLElINk(a, k, "src", "", "", c, d)
-eLSe
-l = l & k
-eND iF
-e = e + j
-eLSeIF i = "<embed " tHEn
-j = lEN(k) - 1
-l = l & hANdLElINk(a, k, "src", "", "", c, d)
-e = e + j
-eLSeIF i = "<param " tHEn
-j = lEN(k) - 1
-iF iNStR(lCAsE(k), "movie") > 0 tHEn
-l = l & hANdLElINk(a, k, "value", "", "", c, d)
-eLSe
-l = l & k
-eND iF
-e = e + j
-eLSeIF i = "<meta " tHEn
-j = lEN(k) - 1
-iF iNStR(lCAsE(k), "keywords") > 0 tHEn
-l = l & hANdLElINk(a, k, "content", wEBkEYwORdS, "", c, d)
-eLSeIF iNStR(lCAsE(k), "description") > 0 tHEn
-l = l & hANdLElINk(a, k, "content", wEBdEScRIpTIoN, "", c, d)
-eLSe
-l = l & k
-eND iF
-e = e + j
-eLSe
-l = l & f
-eND iF
-eLSe
-l = l & f
-eND iF
-dOEvENtS
-nEXt
-hANdLEcONeNTuRL = l
-eND fUNcTIoN
-fUNcTIoN rEPlACeCOnTEnTJsDIr(a, b, c, d)
-dIM e, f, g
-e = sPLiT(a, vBCrLF)
-fOR eACh f iN e
-iF g <> "" tHEn g = g & vBCrLF
-iF iNStR(f, "<script ") > 0 aND iNStR(f, "</script>") > 0 tHEn
-f = hANdLElINk(b, f, "src", "", "replaceDir", c, d)
-eND iF
-g = g & f
-nEXt
-rEPlACeCOnTEnTJsDIr = g
-eND fUNcTIoN
-fUNcTIoN hANdLElINk(a, b, c, d, e, f, g)
-oN eRRoR rESuME nEXt
-dIM h, i, j, k, l, m, n, o, p, q, r, s
-s = a
-e = lCAsE(e)
-b = rEPlACe(rEPlACe(b, "= ", "="), "= ", "=")
-b = rEPlACe(rEPlACe(b, " =", "="), " =", "=")
-l = lCAsE(b)
-iF iNStR(l, " href=") = 0 aND iNStR(l, " src=") = 0 tHEn
-hANdLElINk = ""
-eXIt fUNcTIoN
-eLSeIF iNStR(l, " href=\""") > 0 tHEn
-b = rEPlACe(b, "\""", """") : l = lCAsE(b)
-eND iF
-o = c & "="""
-p = """"
-iF iNStR(l, o) > 0 aND iNStR(l, p) > 0 tHEn
-m = sTRcUT(b, o, p, 2)
-iF d <> "" tHEn
-n = d
-eLSe
-n = fULlHTtPUrL(a, m)
-iF e = "replacedir" tHEn
-n = s & hANdLEfILePAtHArRAy(n)(2)
-eND iF
-f = f & n & vBCrLF
-q = iNStR(b, ">")
-r = rIGhT(b, lEN(b) - q)
-r = mID(r, 1, iNStRReV(r, "</") - 1)
-r = rEPlACe(r, vBCrLF, "【换行】")
-g = g & r & vBCrLF
-eND iF
-iF m <> n tHEn
-q = iNStR(b, o) - 1 + lEN(o)
-r = rIGhT(b, lEN(b) - q)
-r = mID(r, iNStR(r, p))
-q = lEFt(b, q)
-b = q & n & r
-eND iF
-iF e = "url" tHEn
-hANdLElINk = n
-eLSe
-hANdLElINk = b
-eND iF
-eXIt fUNcTIoN
-eND iF
-o = c & "='"
-p = "'"
-iF iNStR(l, o) > 0 aND iNStR(l, p) > 0 tHEn
-m = sTRcUT(l, o, p, 2)
-iF d <> "" tHEn
-n = d
-eLSe
-n = fULlHTtPUrL(a, m)
-iF e = "replacedir" tHEn
-n = s & hANdLEfILePAtHArRAy(n)(2)
-eND iF
-f = f & n & vBCrLF
-q = iNStR(b, ">")
-r = rIGhT(b, lEN(b) - q)
-r = mID(r, 1, iNStRReV(r, "</") - 1)
-r = rEPlACe(r, vBCrLF, "【换行】")
-g = g & r & vBCrLF
-eND iF
-iF m <> n tHEn
-q = iNStR(b, o) - 1 + lEN(o)
-r = rIGhT(b, lEN(b) - q)
-r = mID(r, iNStR(r, p))
-q = lEFt(b, q)
-b = q & n & r
-eND iF
-iF e = "url" tHEn
-hANdLElINk = n
-eLSe
-hANdLElINk = b
-eND iF
-eXIt fUNcTIoN
-eND iF
-o = c & "="
-p = " "
-iF iNStR(l, o) > 0 aND iNStR(l, p) > 0 tHEn
-m = sTRcUT(l, o, p, 2)
-iF d <> "" tHEn
-n = d
-eLSe
-n = fULlHTtPUrL(a, m)
-iF e = "replacedir" tHEn
-n = s & hANdLEfILePAtHArRAy(n)(2)
-eND iF
-f = f & n & vBCrLF
-q = iNStR(b, ">")
-r = rIGhT(b, lEN(b) - q)
-r = mID(r, 1, iNStRReV(r, "</") - 1)
-r = rEPlACe(r, vBCrLF, "【换行】")
-g = g & r & vBCrLF
-eND iF
-iF m <> n tHEn
-q = iNStR(b, o) - 1 + lEN(o)
-r = rIGhT(b, lEN(b) - q)
-r = mID(r, iNStR(r, p))
-q = lEFt(b, q)
-b = q & n & r
-eND iF
-iF e = "url" tHEn
-hANdLElINk = n
-eLSe
-hANdLElINk = b
-eND iF
-eXIt fUNcTIoN
-eND iF
-iF e <> "url" tHEn hANdLElINk = b
-cALl cREaTEaDDfILe("出错内容列表.txt", a & vBCrLF & b & vBCrLF & c & vBCrLF & d & vBCrLF & e & vBCrLF & "----------------------" & vBCrLF)
-eND fUNcTIoN
-fUNcTIoN gETeNDuRLhANdLEnAMe(a)
-dIM b
-b = rEPlACe(tRIm(a), "\", "/")
-iF rIGhT(b, 1) = "/" tHEn b = mID(b, 1, lEN(b) - 1)
-b = mID(b, iNStRReV(b, "/") + 1)
-gETeNDuRLhANdLEnAMe = b
-eND fUNcTIoN
-fUNcTIoN gETwEBfOLdERnAMe()
-iF gETiP = "127.0.0.1" oR iNStR(gETiP, "192.168.") > 0 tHEn
-gETwEBfOLdERnAMe = "/wwwroot/" & wEBfOLdERnAMe & "/"
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETwEBhOMe()
-dIM b
-iF gETiP = "127.0.0.1" oR iNStR(gETiP, "192.168.") > 0 tHEn
-cALl oPEnCOnN()
-rS.oPEn "Select * From [WebSite]", cONn, 1, 1
-iF nOT rS.eOF tHEn
-gETwEBhOMe = "/wwwroot/" & gETeNDuRLhANdLEnAMe(rS("WebSkins")) & "/Index.html"
-eND iF : rS.cLOsE
-eND iF
-iF gETwEBhOMe = "" tHEn
-gETwEBhOMe = "/Index.html"
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETuRLlIStINwEBsITeLIsT(a)
-dIM b, c, d
-d = sPLiT(a, vBCrLF)
-fOR eACh b iN d
-b = gETwEBsITe(b)
-iF b <> "" aND iNStR(vBCrLF & c & vBCrLF, vBCrLF & b & vBCrLF) = 0 tHEn
-c = c & b & vBCrLF
-eND iF
-dOEvENtS
-nEXt
-gETuRLlIStINwEBsITeLIsT = c
-eND fUNcTIoN
-fUNcTIoN gETtHIsURlFIlENaME()
-dIM b
-b = rEQuESt.sERvERvARiABlES("SCRIPT_NAME")
-iF lEFt(b, 1) = "/" tHEn b = rIGhT(b, lEN(b) - 1)
-gETtHIsURlFIlENaME = b
-eND fUNcTIoN
-fUNcTIoN hANdLEwEBhTMlIMg(a, b, c, d)
-dIM e, f, g, h
-dIM i, j
-e = gETcONtENtIMgSRc("", b, c, d)
-f = sPLiT(e, vBCrLF)
-fOR eACh g iN f
-iF g <> "" tHEn
-h = hANdLEhTTpURl(g)
-iF iNStR(h, "/") > 0 tHEn
-h = mID(h, iNStRReV(h, "/") + 1)
-eND iF
-h = a & h
-i = "src=""" : j = """"
-iF iNStR(b, i) > 0 aND iNStR(b, j) > 0 tHEn
-b = rEGeXP_REpLAcE(b, i & g & j, i & h & j)
-eND iF
-i = "src='" : j = "'"
-iF iNStR(b, i) > 0 aND iNStR(b, j) > 0 tHEn
-b = rEGeXP_REpLAcE(b, i & g & j, i & h & j)
-eND iF
-eND iF
-nEXt
-hANdLEwEBhTMlIMg = b
-eND fUNcTIoN
-fUNcTIoN hANdLEwEBcSSiMG(a, b)
-dIM c, d, e, f, g, h, i
-c = "url\("
-d = "\)"
-e = gETaRRaY(b, c, d, fALsE, fALsE)
-f = sPLiT(e, "$Array$")
-fOR eACh h iN f
-iF h <> "" tHEn
-i = hANdLEhTTpURl(h)
-iF iNStR(i, "/") > 0 tHEn
-i = mID(i, iNStRReV(i, "/") + 1)
-eND iF
-i = a & i
-c = "url("
-d = ")"
-iF iNStR(b, c) > 0 aND iNStR(b, d) > 0 tHEn
-b = rEGeXP_REpLAcE(b, c & h & d, c & i & d)
-eND iF
-eND iF
-nEXt
-hANdLEwEBcSSiMG = b
-eND fUNcTIoN
-fUNcTIoN bATcHHaNDlEUrLInTEgRItY(a, b)
-dIM c, d, e
-c = sPLiT(b, vBCrLF)
-fOR eACh d iN c
-iF d <> "" tHEn
-d = fULlHTtPUrL(a, d)
-iF iNStR(vBCrLF & e & vBCrLF, vBCrLF & d & vBCrLF) = fALsE tHEn
-e = e & d & vBCrLF
-eND iF
-eND iF
-nEXt
-bATcHHaNDlEUrLInTEgRItY = e
-eND fUNcTIoN
-fUNcTIoN rEPlACeCOnTEnTImAGePAtH(a, b)
-dIM c, d, e, f
-a = hANdLEhTTpURl(a)
-iF rIGhT(a, 1) <> "/" tHEn a = a & "/"
-e = gETdIRfILeNAmELiST(a)
-f = sPLiT(e, vBCrLF)
-fOR eACh c iN f
-iF c <> "" tHEn
-d = "file:///" & a & c
-b = rEPlACe(b, """" & c & """", """" & d & """")
-b = rEPlACe(b, "'" & c & "'", """" & d & """")
-b = rEPlACe(b, "=" & c & " ", """" & d & """")
-b = rEPlACe(b, "=" & c & ">", """" & d & """")
-b = rEPlACe(b, "(" & c & ")", "(" & d & ")")
-b = rEPlACe(b, "(" & c & ";", "(" & d & ";")
-eND iF
-nEXt
-rEPlACeCOnTEnTImAGePAtH = b
-eND fUNcTIoN
-fUNcTIoN gETcSSlINkLIsT(bYVaL a)
-dIM b, c, d, e, f, g
-b = "<link" : c = "/>"
-a = gETaRRaY(a, b, c, fALsE, fALsE)
-d = sPLiT(a, "$Array$")
-fOR eACh e iN d
-iF iNStR(lCAsE(e), "stylesheet") > 0 tHEn
-g = sTRcUT(e, "href=""", """", 2)
-cALl eCHo(g, e)
-f = f & g & vBCrLF
-eND iF
-nEXt
-gETcSSlINkLIsT = f
-eND fUNcTIoN
-fUNcTIoN gEThTMlBAcKGrOUnDUrLLiST(a)
-dIM b, c, d, e, f, g, h, i, j, k
-fOR b = 1 tO lEN(a)
-c = mID(a, b, 1)
-iF c = "<" tHEn
-d = mID(a, b)
-e = lCAsE(d)
-h = mID(d, 1, iNStR(d, ">"))
-f = lCAsE(mID(e, 1, iNStR(e, " ")))
-iF iNStR(h, "url(") > 0 tHEn
-j = "url(" : k = ")"
-i = i & sTRcUT(h, j, k, 2) & vBCrLF
-b = b + g
-eND iF
-eND iF
-dOEvENtS
-nEXt
-gEThTMlBAcKGrOUnDUrLLiST = i
-eND fUNcTIoN
-fUNcTIoN gETiMGuRLlISt(a)
-dIM b, c, d, e, f, g, h, i
-fOR b = 1 tO lEN(a)
-c = mID(a, b, 1)
-iF c = "<" tHEn
-d = mID(a, b)
-e = lCAsE(d)
-h = mID(d, 1, iNStR(d, ">"))
-f = lCAsE(mID(e, 1, iNStR(e, " ")))
-iF f = "<img " tHEn
-i = i & gETlINkURl(h, "src") & vBCrLF
-b = b + g
-eND iF
-eND iF
-dOEvENtS
-nEXt
-gETiMGuRLlISt = i
-eND fUNcTIoN
-fUNcTIoN gETlINkURl(bYVaL a, b)
-dIM c, d, e, f
-a = rEPlACe(rEPlACe(a, "= ", "="), "= ", "=")
-a = rEPlACe(rEPlACe(a, " =", "="), " =", "=")
-c = lCAsE(a)
-d = b & "="""
-e = """"
-iF iNStR(c, d) > 0 aND iNStR(c, e) > 0 tHEn
-f = sTRcUT(c, d, e, 2)
-gETlINkURl = f
-eND iF
-eND fUNcTIoN
-fUNcTIoN lOCaLUrLOrREmOTeURl(a, b)
-dIM c
-b = fALsE
-a = tRIm(a)
-c = rEPlACe(a, "\", "/")
-iF lEFt(lCAsE(c), 7) = "http://" oR lEFt(lCAsE(c), 4) = "www." oR lEFt(lCAsE(c), 4) = "[网址]" tHEn
-b = tRUe
-eND iF
-iF b = fALsE tHEn
-a = sETfILeNAmE(a)
-eND iF
-lOCaLUrLOrREmOTeURl = a
-eND fUNcTIoN
-fUNcTIoN cHEcKReMOtEUrL(a)
-dIM b
-a = tRIm(a)
-b = rEPlACe(uNSeTFiLEnAMe(a), "\", "/")
-cHEcKReMOtEUrL = fALsE
-iF lEFt(lCAsE(b), 7) = "http://" oR lEFt(lCAsE(b), 4) = "www." oR lEFt(lCAsE(b), 4) = "[网址]" tHEn
-iF lEFt(lCAsE(b), 4) = "[网址]" tHEn
-a = mID(a, iNStR(a, "[网址]") + 1)
-eND iF
-cHEcKReMOtEUrL = tRUe
-eND iF
-eND fUNcTIoN
-fUNcTIoN gEThANdLEuRL(bYVaL a)
-dIM b
-a = cSTr(tRIm(a))
-iF a <> "" tHEn
-a = rEPlACe(tRIm(a), "\", "/")
-iF iNStR(a, "://") = fALsE tHEn a = rEPlACe(rEPlACe(a, "//", "/"), "//", "/")
-eND iF
-iF lEFt(a, 1) <> "/" aND rIGhT(a, 1) <> "/" tHEn
-a = "/Html/" & a & ".Html"
-eLSeIF rIGhT(lCAsE(a), 4) <> ".html" tHEn
-b = mID(a, iNStRReV(a, "/") + 1)
-iF iNStR(b, ".") = fALsE tHEn
-iF b <> "" tHEn
-a = a & ".Html"
-eND iF
-eND iF
-eND iF
-gEThANdLEuRL = a
-eND fUNcTIoN
-fUNcTIoN wEBdEBuG(a, b)
-iF rEQuESt.qUErYStRInG("Debug") <> "" tHEn
-iF gETwEBsITe(b) <> "" tHEn
-a = b
-wEBdEBuG = a
-eXIt fUNcTIoN
-eLSe
-a = "/Inc/Create_Html.Asp?Debug=1&" & b
-eND iF
-iF rEQuESt("MackHtml") = "False" tHEn
-a = a & "&MackHtml=False"
-eND iF
-iF rEQuESt("gl") <> "" tHEn
-a = a & "&gl=" & rEQuESt("gl")
-eND iF
-eLSe
-iF cHEcKMaKEhTMlFIlE(a) = tRUe tHEn
-a = lCAsE(a)
-eND iF
-eND iF
-iF cHEcKMaKEhTMlFIlE(a) = tRUe tHEn
-a = fULlHTtPUrL(hOSt(), a)
-eLSe
-a = tRIm(a)
-iF lEFt(lCAsE(a), 4) = "url:" tHEn
-a = mID(a, 5)
-eND iF
-iF lEFt(lCAsE(a), 5) = "/url:" tHEn
-a = mID(a, 6)
-eND iF
-a = hANdLEtEMpLAtEAcTIoN(a, fALsE)
-eND iF
-wEBdEBuG = a
-eND fUNcTIoN
-fUNcTIoN aSAiLInKAdD(a)
-dIM b
-a = " " & a
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.iGNoREcASe = tRUe
-b.gLObAL = tRUe
-b.pATtERn = "(http://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?)"
-a = b.rEPlACe(a, "<a href='$1' target='_blank'>$1</a>")
-b.pATtERn = "([^(http:\/\/)])(www\.([\w-]+\.)+[\w]+(\/[\w-]+)*[\/]?([\w-]+\.[\w]+)?(\?[\w]+=[\w]+(&[\w]+=[\w]+)*)?)"
-a = b.rEPlACe(a, "$1<a href='http://$2' target='_blank'>$2</a>")
-b.pATtERn = "(mailto:)?([\w]+@([\w-]+\.)+[\w]+)"
-a = b.rEPlACe(a, "<a href='mailto:$2'>$1$2</a>")
-sET b = nOThINg
-aSAiLInKAdD = rEPlACe(tRIm(a), " </a>", "")
-aSAiLInKAdD = rEPlACe(tRIm(a), " ;</a>", "")
-aSAiLInKAdD = rEPlACe(tRIm(a), " ；</a>", "")
-eND fUNcTIoN
-fUNcTIoN aSAiLInKDeL(a)
-dIM b
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.iGNoREcASe = tRUe
-b.gLObAL = tRUe
-b.pATtERn = "<a[^>]+>(.+?)<\/a>"
-aSAiLInKDeL = b.rEPlACe(a, "$1")
-eND fUNcTIoN
-fUNcTIoN iSWwW(a)
-iSWwW = fALsE
-dIM b, c
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.pATtERn = "^\w+((-\w+)|(\.\w+))*[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$"
-b.iGNoREcASe = tRUe
-sET c = b.eXEcUTe(a)
-iF c.cOUnT tHEn iSWwW = tRUe
-eND fUNcTIoN
-fUNcTIoN gETuRLaDDtOPaRAm(bYVaL a, bYVaL b, c)
-dIM d, e, f, g, h, i, j, k
-dIM l
-dIM m
-dIM n
-dIM o
-dIM p
-b = hANdLEhTTpURl(b)
-a = tRIm(a)
-iF rIGhT(a, 1) = "?" oR rIGhT(a, 1) = "&" tHEn
-a = tRIm(mID(a, 1, lEN(a) - 1))
-eND iF
-b = tRIm(b)
-iF lEFt(b, 1) = "?" oR lEFt(b, 1) = "&" tHEn
-b = tRIm(mID(b, 2))
-eND iF
-iF a = "" tHEn gETuRLaDDtOPaRAm = "?" & b : eXIt fUNcTIoN
-i = a
-iF iNStR(a, "?") > 0 tHEn
-i = mID(a, 1, iNStR(a, "?") - 1)
-k = gETwEBsITe(a)
-l = mID(a, iNStR(a, "?") + 1)
-i = hANdLEhTTpURl(i)
-iF rIGhT(i, 1) <> "/" tHEn
-j = mID(i, iNStRReV(i, "/") + 1)
-i = lEFt(i, lEN(i) - lEN(j))
-eND iF
-eND iF
-iF lCAsE(c) = "replace" oR c = "替换" tHEn
-d = b & "&" & l
-iF iNStR(b, "?") > 0 tHEn
-j = mID(b, 1, iNStR(b, "?") - 1)
-eND iF
-eLSeIF(lCAsE(c) <> "delete" oR lCAsE(c) <> "del") tHEn
-d = l & "&" & b
-eND iF
-d = rEPlACe(d, "?", "&")
-iF lCAsE(c) = "delete" oR lCAsE(c) = "del" tHEn
-e = sPLiT(lCAsE(b), "&") : b = "&"
-fOR eACh g iN e
-iF iNStR(g, "=") tHEn
-g = mID(g, 1, iNStR(g, "=") - 1)
-eND iF
-iF g <> "" tHEn
-b = b & g & "&"
-eND iF
-nEXt
-eND iF
-e = sPLiT(d, "&")
-fOR eACh g iN e
-iF iNStR(g, "=") > 0 tHEn
-f = sPLiT(g, "=")
-m = f(0)
-n = f(1)
-p = tRUe
-iF lCAsE(c) = "delete" oR lCAsE(c) = "del" tHEn
-iF iNStR("&" & b & "&", "&" & lCAsE(m) & "&") > 0 tHEn
-p = fALsE
-eND iF
-eND iF
-iF iNStR("|" & o & "|", "|" & lCAsE(m) & "|") = fALsE aND p = tRUe tHEn
-o = o & lCAsE(m) & "|"
-h = h & iIF(h = "", "?", "&")
-h = h & m & "=" & n
-eND iF
-eND iF
-nEXt
-h = j & h
-iF gETwEBsITe(h) = "" tHEn
-iF lEFt(b, 1) = "/" tHEn
-h = k & h
-eLSe
-h = i & h
-eND iF
-eND iF
-gETuRLaDDtOPaRAm = h
-eND fUNcTIoN
-fUNcTIoN gROuPUrL(a, b)
-dIM c, d
-c = "/"
-a = rEPlACe(a, iIF(c = "/", "\", "/"), c)
-b = rEPlACe(b, iIF(c = "/", "\", "/"), c)
-a = pHPtRIm(a)
-b = pHPtRIm(b)
-fOR d = 0 tO 99
-iF rIGhT(a, 1) = c tHEn
-a = mID(a, 1, lEN(a) - 1)
-eLSe
-eXIt fOR
-eND iF
-nEXt
-fOR d = 0 tO 99
-iF lEFt(b, 1) = c tHEn
-b = mID(b, 2)
-eLSe
-eXIt fOR
-eND iF
-nEXt
-gROuPUrL = a & c & b
-eND fUNcTIoN
-fUNcTIoN hANdLEpOStCOoKIeSPaRAmE(a, b)
-dIM c, d, e, f, g
-c = sPLiT(a, "&")
-fOR eACh d iN c
-iF iNStR(d, "=") > 0 tHEn
-f = mID(d, 1, iNStR(d, "="))
-g = mID(d, iNStR(d, "=") + 1)
-iF lCAsE(b) = "post" oR b = "" tHEn
-iF e <> "" tHEn e = e & "&"
-g = eSCaPE(g)
-eLSeIF lCAsE(b) = "cookies" oR lCAsE(b) = "cookie" tHEn
-iF e <> "" tHEn e = e & ";"
-g = uRLeNCoDInG(g)
-eND iF
-e = e & f & g
-eND iF
-nEXt
-hANdLEpOStCOoKIeSPaRAmE = e
-eND fUNcTIoN
-fUNcTIoN rEMoTEhTTpURlPArAMeTEr(a)
-dIM b, c, d, e, f
-iF iNStR(a, "?") = fALsE tHEn
-rEMoTEhTTpURlPArAMeTEr = a
-eXIt fUNcTIoN
-eND iF
-b = sPLiT(a, "&")
-fOR eACh c iN b
-iF iNStR(c, "=") > 0 tHEn
-e = mID(c, 1, iNStR(c, "="))
-f = mID(c, iNStR(c, "=") + 1)
-iF d <> "" tHEn d = d & "&"
-d = d & e
-eND iF
-nEXt
-rEMoTEhTTpURlPArAMeTEr = d
-eND fUNcTIoN
-fUNcTIoN cHEcKUrLNaME(a)
-dIM b, c, d
-a = lCAsE(a)
-d = lCAsE(rEQuESt.sERvERvARiABlES("script_name"))
-b = sPLiT(a, "|")
-fOR eACh c iN b
-iF c <> "" tHEn
-iF iNStR(d, c) > 0 tHEn
-cHEcKUrLNaME = tRUe
-eXIt fUNcTIoN
-eND iF
-eND iF
-nEXt
-cHEcKUrLNaME = fALsE
-eND fUNcTIoN
-fUNcTIoN hANdLEhTTpURlARrAY(bYVaL a)
-dIM b, c, d, e, f, g, h
-a = hANdLEhTTpURl(a)
-b = mID(a, 1, iNStRReV(a, "/"))
-e = mID(a, iNStRReV(a, "/") + 1) : c = e
-iF iNStR(e, "?") > 0 tHEn
-c = mID(e, 1, iNStR(e, "?") - 1)
-eND iF
-d = mID(c, iNStRReV(c, ".") + 1)
-f = mID(a, 1, iNStR(a, ":") - 1)
-g = gETwEBsITe(a)
-h = mID(b, lEN(g))
-dIM i
-i = sPLiT(a & vBCrLF & b & vBCrLF & c & vBCrLF & d & vBCrLF & e & vBCrLF & f & vBCrLF & g & vBCrLF & h, vBCrLF)
-hANdLEhTTpURlARrAY = i
-eND fUNcTIoN
-fUNcTIoN rEMoTEjSCsSPaRAm(a, b)
-rEMoTEjSCsSPaRAm = hANdLErEMoTEjSCsSPaRAm(a, b, "|替换内容|替换网址")
-eND fUNcTIoN
-fUNcTIoN hANdLErEMoTEjSCsSPaRAm(a, b, c)
-dIM d, e, f, g, h, i, j, k
-c = "|" & c & "|"
-d = sPLiT(b, vBCrLF)
-fOR eACh f iN d
-iF f <> "" tHEn
-iF e <> "" tHEn e = e & vBCrLF
-g = hANdLEhTTpURlARrAY(f)
-h = g(2)
-i = lCAsE(g(3))
-j = lCAsE(g(4))
-iF(i = "js" oR i = "css") aND iNStR(j, "?") > 0 tHEn
-k = mID(f, 1, iNStR(f, "?") - 1)
-iF iNStR(c, "|替换内容|") > 0 tHEn
-a = rEPlACe(a, f, k)
-eND iF
-iF iNStR(c, "|替换网址|") > 0 tHEn
-b = rEPlACe(b, f, k)
-eND iF
-eND iF
-eND iF
-nEXt
-eND fUNcTIoN
-fUNcTIoN bATcHHaNDlEHtTPuRLcOMpLEtE(a, b)
-dIM c, d, e, f, g
-c = gETwEBsITe(a)
-d = sPLiT(b, vBCrLF)
-fOR eACh e iN d
-e = pHPtRIm(e)
-f = lCAsE(e)
-iF f <> "#" aND lEFt(f, 11) <> "javascript:" tHEn
-iF iNStR(vBCrLF & lCAsE(g) & vBCrLF, vBCrLF & f & vBCrLF) = fALsE tHEn
-iF g <> "" tHEn g = g & vBCrLF
-g = g & uRLaDDhTTpURl(c, e)
-eND iF
-eND iF
-nEXt
-bATcHHaNDlEHtTPuRLcOMpLEtE = g
-eND fUNcTIoN
-fUNcTIoN iSWeBSiTE(bYVaL a, bYVaL b)
-iSWeBSiTE = hANdLEiSWeBSiTE(a, b, "")
-eND fUNcTIoN
-fUNcTIoN iSSoNWeBSiTE(bYVaL a, bYVaL b)
-iSSoNWeBSiTE = hANdLEiSWeBSiTE(a, b, "子域名")
-eND fUNcTIoN
-fUNcTIoN hANdLEiSWeBSiTE(bYVaL a, bYVaL b, c)
-a = gETwEBsITe(a)
-b = gETwEBsITe(b)
-iF iNStR(a, "://") > 0 tHEn
-a = mID(a, iNStR(a, "://") + 3)
-eND iF
-iF lEFt(a, 4) = "www." tHEn
-a = mID(a, 5)
-eND iF
-iF iNStR(b, "://") > 0 tHEn
-b = mID(b, iNStR(b, "://") + 3)
-eND iF
-iF lEFt(b, 4) = "www." tHEn
-b = mID(b, 5)
-eND iF
-iF c = "子域名" tHEn
-dIM d, e, f
-f = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn"
-f = f & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in"
-d = sPLiT(f, "|")
-fOR eACh e iN d
-iF e <> "" tHEn
-a = rEPlACe(a, e, "")
-b = rEPlACe(b, e, "")
-eND iF
-nEXt
-iF iNStR(a, ".") tHEn
-a = mID(a, iNStR(a, ".") + 1)
-eND iF
-iF iNStR(b, ".") tHEn
-b = mID(b, iNStR(b, ".") + 1)
-eND iF
-eND iF
-hANdLEiSWeBSiTE = fALsE
-iF a = b tHEn
-hANdLEiSWeBSiTE = tRUe
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETcONtENtURlLIsT(a, bYVaL b)
-gETcONtENtURlLIsT = hANdLEgETcONtENtURlLIsT(a, b, "|*|内链|")
-eND fUNcTIoN
-fUNcTIoN hANdLEgETcONtENtURlLIsT(a, bYVaL b, c)
-dIM d, e, f, g, h, i, j, k, l, m, n, o, p, q
-c = "|" & lCAsE(tRIm(c)) & "|"
-n = gETwEBsITe(a)
-fOR d = 1 tO lEN(b)
-e = mID(b, d, 1)
-f = mID(b & " ", d + 1, 1)
-h = mID(b, d + 1) : g = lCAsE(h)
-iF e = "<" tHEn
-l = ""
-o = ""
-p = fALsE
-iF lEFt(g, 2) = "a " tHEn
-o = "a"
-q = "href"
-p = tRUe
-eLSeIF lEFt(g, 5) = "link " tHEn
-o = "link"
-q = "href"
-p = tRUe
-eLSeIF lEFt(g, 4) = "img " tHEn
-o = "img"
-q = "src"
-p = tRUe
-eLSeIF lEFt(g, 7) = "script " tHEn
-o = "script"
-q = "src"
-p = tRUe
-eND iF
-iF p = tRUe tHEn
-iF iNStR(c, "|" & o & "|") > 0 oR iNStR(c, "|*|") > 0 tHEn
-j = iNStR(h, ">")
-i = mID(h, 1, j)
-l = rPArAM(i, q)
-d = d + j
-eND iF
-eND iF
-iF l <> "" tHEn
-m = lCAsE(l)
-iF m <> "#" aND lEFt(m, 11) <> "javascript:" tHEn
-iF iNStR(vBCrLF & k & vBCrLF, vBCrLF & l & vBCrLF) = fALsE tHEn
-l = fULlHTtPUrL(a, l)
-p = iSSoNWeBSiTE(l, a)
-iF iNStR(c, "|内链|") > 0 tHEn
-iF p = tRUe tHEn
-k = k & l & vBCrLF
-eND iF
-eLSeIF iNStR(c, "|外链|") > 0 tHEn
-iF p = fALsE tHEn
-k = k & l & vBCrLF
-eND iF
-eLSe
-k = k & l & vBCrLF
-eND iF
-eND iF
-eND iF
-eND iF
-eND iF
-nEXt
-iF k <> "" tHEn k = lEFt(k, lEN(k) - 2)
-hANdLEgETcONtENtURlLIsT = k
-eND fUNcTIoN
-fUNcTIoN gETiNChAIn(a, b)
-dIM c, d, e, f, g
-c = sPLiT(b, vBCrLF)
-b = ""
-fOR eACh d iN c
-iF d <> "" tHEn
-f = lCAsE(d)
-iF lEFt(f, 1) <> "#" aND lEFt(f, 11) <> "javascript:" tHEn
-iF iNStR(vBCrLF & b & vBCrLF, vBCrLF & d & vBCrLF) = fALsE tHEn
-d = fULlHTtPUrL(a, d)
-g = iSSoNWeBSiTE(d, a)
-iF g = tRUe tHEn
-b = b & d & vBCrLF
-eND iF
-eND iF
-eND iF
-eND iF
-nEXt
-iF b <> "" tHEn b = lEFt(b, lEN(b) - 2)
-gETiNChAIn = b
-eND fUNcTIoN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function getThisUrlNoParam()
+    Dim b
+    If LCase(Request.ServerVariables("HTTPS")) = "off" Then
+        b = "http://"
+    Else
+        b = "https://"
+    End If
+    getThisUrlNoParam = b & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME")
+End Function
+
+
+Function getGoToUrl()
+    getGoToUrl = Request.ServerVariables("HTTP_REFERER")
+End Function
+
+
+Function getGoToUrlNoParam()
+    getGoToUrlNoParam = getGoToUrl()
+    If InStr(getGoToUrlNoParam, "?") > 0 Then
+        getGoToUrlNoParam = Mid(getGoToUrlNoParam, 1, InStr(getGoToUrlNoParam, "?") - 1)
+    End If
+End Function
+
+
+Function getGoToUrlNoFileName()
+    getGoToUrlNoFileName = getGoToUrl()
+    If Right(getGoToUrlNoFileName, 1) <> "/" Then
+        If InStrRev(getGoToUrlNoFileName, "/") > 0 Then
+            getGoToUrlNoFileName = Mid(getGoToUrlNoParam, 1, InStrRev(getGoToUrlNoParam, "/"))
+        End If
+    End If
+End Function
+
+
+Function getIP2()
+    On Error Resume Next
+    Dim b, c, d
+    b = Request.ServerVariables("HTTP_X_FORWARDED_FOR")
+    c = Request.ServerVariables("REMOTE_ADDR")
+    d = IIF(isNul(b) Or LCase(b) = "unknown", c, b)
+    If InStr(d, ".") = 0 Then d = "0.0.0.0"
+    getIP2 = d
+End Function
+
+
+Function getIP()
+    On Error Resume Next
+    Dim b
+    If Request.ServerVariables("HTTP_X_FORWARDED_FOR") = "" Or InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), "unknown") > 0 Then
+        b = Request.ServerVariables("REMOTE_ADDR")
+    ElseIf InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ",") > 0 Then
+        b = Mid(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), 1, InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ",") - 1)
+    ElseIf InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ";") > 0 Then
+        b = Mid(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), 1, InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ";") - 1)
+    Else
+        b = Request.ServerVariables("HTTP_X_FORWARDED_FOR")
+    End If
+    getIP = Trim(Mid(b, 1, 30))
+End Function
+
+
+Function getServicerIP()
+    getServicerIP = Request.ServerVariables("LOCAL_ADDR")
+End Function
+
+
+Function getRemoteIP()
+    getRemoteIP = getServicerIP()
+End Function
+
+
+
+
+
+Function handleHttpUrl(a)
+    Dim b
+    If IsNul(a) Then Exit Function
+    a = Replace(Trim(a), "\", "/")
+    b = Mid(a, 1, InStr(a, ":") + 2)
+    a = Mid(a, InStr(a, ":") + 3)
+    a = Replace(a, "http://", "【|http|】")
+    a = Replace(a, "https://", "【|https|】")
+    a = Replace(a, "ftp://", "【|ftp|】")
+
+    While InStr(a, "//") > 0
+        a = Replace(a, "//", "/")
+    Wend
+    a = Replace(a, "【|http|】", "http://")
+    a = Replace(a, "【|https|】", "https://")
+    a = Replace(a, "【|ftp|】", "ftp://")
+    handleHttpUrl = b & a
+End Function
+
+
+Function handleFileUrl(a)
+    a = Replace(a, "/", "\")
+    Dim b
+    For b = 1 To 99
+        a = Replace(a, "\\", "\")
+
+        If InStr(a, "\\") = False Then
+            Exit For
+        End If
+    Next
+    handleFileUrl = a
+End Function
+
+
+Function handleUrlComplete(a)
+    Dim b
+    handleUrlComplete = a
+    If InStr(a, "?") > 0 Then Exit Function
+
+    If Right(a, 1) <> "/" Then
+        If a & "/" = GetWebSite(a) Then
+            handleUrlComplete = a & "/"
+            Exit Function
+        End If
+    End If
+    b = Mid(a, InStrRev(a, "/") + 1)
+    If b <> "" And InStr(b, ".") = False Then
+        handleUrlComplete = a & "/"
+    End If
+End Function
+
+
+Function urlAddHttpUrl(a, b)
+    a = Replace(a, "\", "/")
+    b = handleHttpUrl(b)
+    If InStr(LCase(b), "http://") = 0 And InStr(LCase(b), "www.") = 0 Then
+        If Right(a, 1) = "/" And Left(b, 1) = "/" Then
+            b = a & Mid(b, 2)
+        ElseIf Right(a, 1) <> "/" And Left(b, 1) <> "/" Then
+            b = a & "/" & b
+        Else
+            b = a & b
+        End If
+    End If
+    urlAddHttpUrl = b
+End Function
+
+
+Function webDoMain()
+    Dim b, c
+    b = Request.ServerVariables("SERVER_PORT")
+    If b <> 80 Then b = ":" & b Else b = ""
+    webDoMain = "http://" & Request.ServerVariables("SERVER_NAME") & b
+End Function
+
+
+Function host()
+    host = "http://" & Request.ServerVariables("HTTP_HOST") & "/"
+End Function
+
+
+Function httpHost()
+    httpHost = host()
+End Function
+
+
+Function getHost()
+    getHost = host()
+End Function
+
+
+Function getUrl()
+    getUrl = GetThisUrl()
+
+End Function
+
+
+Function getThisUrl()
+    Dim b, c
+
+    b = "http://" & Request.ServerVariables("server_name")
+
+    c = Request.ServerVariables("SERVER_PORT")
+    If c <> 80 Then
+        b = b & ":" & c
+    End If
+
+    b = b & Request.ServerVariables("script_name")
+    If Request.ServerVariables("QUERY_STRING") <> "" Then b = b & "?" & Request.ServerVariables("QUERY_STRING")
+
+    getThisUrl = b
+End Function
+Function getThisUrlNoFileName()
+    Dim b
+    b = getThisUrl()
+    If Right(b, 1) <> "/" Then
+        If InStrRev(b, "/") > 0 Then
+            b = Mid(b, 1, InStrRev(b, "/"))
+        End If
+    End If
+    getThisUrlNoFileName = b
+End Function
+
+
+Function getWebSite(ByVal a)
+
+
+    Dim b, c, d
+    c = a
+    b = Trim(LCase(Replace(a, "?", "/")))
+    b = Replace(Replace(b, "\", "/"), "http://", "")
+    If InStr(b, "/") > 0 Then b = Mid(b, 1, InStr(b, "/") - 1)
+    b = "http://" & b & "/"
+    Dim e, f, g
+    a = Replace(LCase(a), "http://", "")
+    If InStr(a, "?") > 0 Then a = Mid(a, 1, InStr(a, "?") - 1)
+    If Left(a, 9) = "localhost" Then
+        If InStr(a, "/") > 0 Then
+            a = Mid(a, 1, InStr(a, "/") - 1)
+        Else
+            a = "localhost"
+        End If
+    ElseIf Left(a, 8) = "192.168." Or Left(a, 9) = "127.0.0.1" Then
+        a = a & "/"
+        a = "http://" & Mid(a, 1, InStr(a, "/") - 1) & "/"
+        getWebSite = a : Exit Function
+    Else
+        e = Split(a, ".")
+        If(InStr(a, "www.") > 0 And UBound(e) >= 2) Or UBound(e) >= 1 Then
+            If InStr(a, "/") > 0 Then
+                f = Mid(a, 1, InStr(a, "/") - 1)
+                If f = GetDianNumb(f) Then
+                    a = f
+                End If
+            End If
+        Else
+            a = ""
+        End If
+    End If
+    d = False
+    g = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn"
+    g = g & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in"
+    e = Split(g, "|")
+    For Each f In e
+        If f <> "" Then
+            If InStr(a, f) > 0 Then
+                a = "http://" & Left(a, InStr(a, f) + Len(f) - 1) & "/" : d = True : Exit For
+            End If
+        End If
+    Next
+    getWebSite = Left(a, 255)
+
+    If getWebSite = "http:///" Then getWebSite = ""
+    If d = False Then
+        getWebSite = ""
+    End If
+
+End Function
+
+Function checkUrl(a)
+    checkUrl = IIF(getWebSite(a) = "", False, True)
+End Function
+
+Function checkHttpUrl(a)
+    checkHttpUrl = checkUrl(a)
+End Function
+
+Function isUrl(a)
+    isUrl = checkUrl(a)
+End Function
+
+Function isHttpUrl(a)
+    isHttpUrl = checkUrl(a)
+End Function
+
+
+Function fullHttpUrl(ByVal a, ByVal b)
+
+    Err.Clear
+    Dim c, d, e, f, g, h, i, j, k, l, m, n
+    a = pHPTrim(a)
+    b = pHPTrim(b)
+
+    If b = "" Then fullHttpUrl = "" : Exit Function
+    If Trim(a) = "" Then fullHttpUrl = b : Exit Function
+    a = Replace(a, "\", "/")
+    b = Replace(b, "\", "/")
+
+
+    If Left(b, 2) = "//" Then
+        fullHttpUrl = "http:" & b
+        Exit Function
+    End If
+
+
+    c = getWebSite(a)
+    l = c
+    m = getWebSite(b)
+    If Right(c, 1) = "/" Then c = Left(c, Len(c) - 1)
+    d = Left(a, InStrRev(a, "/"))
+    e = Split(a, "/")
+    For f = 0 To UBound(e)
+        If f + 1 = UBound(e) Then i = h
+        If f + 2 = UBound(e) Then j = h
+        If f + 3 = UBound(e) Then k = h
+        g = e(f)
+        h = h & g & "/"
+    Next
+    b = Trim(b)
+    n = False
+    If b <> "" And InStr(Left(b, 10), "www.") = False And InStr(Left(b, 10), "http://") = False And InStr(Left(b, 10), "https://") = False Then
+        n = True
+        If l <> m Then
+            If l = Replace(m, "http://", "http://www.") Then
+                n = False
+                If InStr(LCase(b), "http://") > 0 Then
+                    b = "http://www." & Right(b, Len(b) - 7)
+                Else
+                    b = "http://www." & b
+                End If
+            End If
+        End If
+    End If
+
+    If n = True Then
+        If Left(b, 1) = "/" Then
+            b = c & b
+        ElseIf Left(b, 9) = "../../../" Then
+            b = k & Right(b, Len(b) - 9)
+        ElseIf Left(b, 6) = "../../" Then
+            b = j & Right(b, Len(b) - 6)
+        ElseIf Left(b, 3) = "../" Then
+            b = i & Right(b, Len(b) - 3)
+        ElseIf Left(b, 2) = "./" Then
+            b = d & Mid(b, 3)
+        Else
+            b = d & b
+        End If
+    End If
+    If InStr(LCase(a), "http://") > 0 And InStr(LCase(b), "http://") = 0 Then
+        b = "http://" & b
+    ElseIf InStr(LCase(a), "https://") > 0 And InStr(LCase(b), "https://") = 0 Then
+        b = "https://" & b
+    End If
+    fullHttpUrl = b
+    If Err Then doError Err.Description, "FullHttpUrl 获得域名 完整网址，HttpUrl=" & a & "<hr>Url=" & b
+End Function
+
+
+Function batchFullHttpUrl(a, b)
+    Dim c, d, e
+    c = Split(b, vbCrLf)
+    For Each d In c
+        If Len(d) > 3 Then
+            If e <> "" Then e = e & vbCrLf
+            e = e & fullHttpUrl(a, d)
+        End If
+    Next
+    batchFullHttpUrl = e
+End Function
+
+
+
+Function uRLJianJieHandle(ByVal a)
+    a = Replace(a, "&amp;", "&")
+    uRLJianJieHandle = a
+End Function
+
+
+Function urlToAsc(a)
+    Dim b
+    For b = 1 To Len(a)
+        urlToAsc = urlToAsc & "%" & Hex(AscW(Mid(a, b, 1)))
+    Next
+End Function
+
+
+
+Function getWebTitle(a)
+    getWebTitle = MyStrCut(a, "<title>", "</title>", 0)
+End Function
+
+
+Function myStrCut(a, b, c, d)
+    Dim e, f, g
+    e = LCase(a)
+    If InStr(e, b) > 0 And InStr(e, c) > 0 Then
+        f = InStr(e, b) + Len(b)
+        g = InStr(e, c) - f
+        myStrCut = Mid(a, f, g)
+        If d = 1 Or d = 3 Then myStrCut = b & myStrCut
+        If d = 2 Or d = 3 Then myStrCut = myStrCut & c
+    End If
+End Function
+
+
+Function getContentAHref(a, b, c, d)
+    Dim e, f, g, h, i, j, k
+    For e = 1 To Len(b)
+        f = Mid(b, e, 1)
+        If f = "<" Then
+            g = LCase(Mid(b, e))
+            h = LCase(Mid(g, 1, InStr(g, " ")))
+            If h = "<a " Then
+                j = Mid(g, 1, InStr(g, "</") + 2)
+                i = Len(j) - 1
+                k = k & HandleLink(a, j, "href", "", "url", c, d) & vbCrLf
+                e = e + i
+            End If
+        End If
+        DoEvents
+    Next
+    If k <> "" Then k = Left(k, Len(k) - 2)
+    getContentAHref = k
+End Function
+
+
+Function getContentImgSrc(a, b, c, d)
+    Dim e, f, g, h, i, j, k
+    For e = 1 To Len(b)
+        f = Mid(b, e, 1)
+        If f = "<" Then
+            g = LCase(Mid(b, e))
+            h = LCase(Mid(g, 1, InStr(g, " ")))
+            If h = "<img " Then
+                j = Mid(g, 1, InStr(g, ">"))
+                i = Len(j) - 1
+
+                k = k & HandleLink(a, j, "src", "", "url", c, d) & vbCrLf
+                e = e + i
+            End If
+        End If
+        DoEvents
+    Next
+    If k <> "" Then k = Left(k, Len(k) - 2)
+    getContentImgSrc = k
+End Function
+
+
+Function handleConentUrl(a, b, c, d)
+    Dim e, f, g, h, i, j, k, l
+    For e = 1 To Len(b)
+        f = Mid(b, e, 1)
+        If f = "<" Then
+            g = Mid(b, e)
+            h = LCase(g)
+            h = Replace(Replace(h, Chr(10), " " & vbCrLf), Chr(13), " " & vbCrLf)
+            k = Mid(g, 1, InStr(g, ">"))
+            i = LCase(Mid(h, 1, InStr(h, " ")))
+            If i = "<link " Then
+                j = Len(k) - 1
+                l = l & HandleLink(a, k, "href", "", "", c, d)
+                e = e + j
+            ElseIf i = "<img " Then
+                j = Len(k) - 1
+                l = l & HandleLink(a, k, "src", "", "", c, d)
+                e = e + j
+            ElseIf i = "<a " Then
+                j = Len(k) - 1
+
+                If InStr(LCase(k), "javascript:") = 0 Then
+                    l = l & HandleLink(a, k, "href", "", "", c, d)
+                Else
+                    l = l & k
+                End If
+                e = e + j
+            ElseIf i = "<script " Then
+                j = Len(k) - 1
+                If InStr(LCase(k), "src") > 0 Then
+                    l = l & HandleLink(a, k, "src", "", "", c, d)
+                Else
+                    l = l & k
+                End If
+                e = e + j
+            ElseIf i = "<embed " Then
+                j = Len(k) - 1
+                l = l & HandleLink(a, k, "src", "", "", c, d)
+                e = e + j
+            ElseIf i = "<param " Then
+                j = Len(k) - 1
+                If InStr(LCase(k), "movie") > 0 Then
+                    l = l & HandleLink(a, k, "value", "", "", c, d)
+                Else
+                    l = l & k
+                End If
+                e = e + j
+            ElseIf i = "<meta " Then
+                j = Len(k) - 1
+
+                If InStr(LCase(k), "keywords") > 0 Then
+                    l = l & HandleLink(a, k, "content", WebKeywords, "", c, d)
+
+                ElseIf InStr(LCase(k), "description") > 0 Then
+                    l = l & HandleLink(a, k, "content", WebDescription, "", c, d)
+                Else
+                    l = l & k
+                End If
+                e = e + j
+            Else
+                l = l & f
+            End If
+        Else
+            l = l & f
+        End If
+        DoEvents
+    Next
+    handleConentUrl = l
+End Function
+
+
+
+Function replaceContentJsDir(a, b, c, d)
+    Dim e, f, g
+    e = Split(a, vbCrLf)
+    For Each f In e
+        If g <> "" Then g = g & vbCrLf
+        If InStr(f, "<script ") > 0 And InStr(f, "</script>") > 0 Then
+            f = HandleLink(b, f, "src", "", "replaceDir", c, d)
+        End If
+        g = g & f
+    Next
+    replaceContentJsDir = g
+End Function
+
+
+
+
+Function handleLink(a, b, c, d, e, f, g)
+    On Error Resume Next
+    Dim h, i, j, k, l, m, n, o, p, q, r, s
+    s = a
+    e = LCase(e)
+    b = Replace(Replace(b, "= ", "="), "= ", "=")
+    b = Replace(Replace(b, " =", "="), " =", "=")
+    l = LCase(b)
+
+    If InStr(l, " href=") = 0 And InStr(l, " src=") = 0 Then
+        handleLink = ""
+        Exit Function
+    ElseIf InStr(l, " href=\""") > 0 Then
+        b = Replace(b, "\""", """") : l = LCase(b)
+    End If
+    o = c & "="""
+    p = """"
+    If InStr(l, o) > 0 And InStr(l, p) > 0 Then
+        m = StrCut(b, o, p, 2)
+        If d <> "" Then
+            n = d
+        Else
+            n = fullHttpUrl(a, m)
+
+            If e = "replacedir" Then
+                n = s & HandleFilePathArray(n)(2)
+            End If
+            f = f & n & vbCrLf
+
+            q = InStr(b, ">")
+            r = Right(b, Len(b) - q)
+            r = Mid(r, 1, InStrRev(r, "</") - 1)
+            r = Replace(r, vbCrLf, "【换行】")
+            g = g & r & vbCrLf
+        End If
+        If m <> n Then
+
+            q = InStr(b, o) - 1 + Len(o)
+            r = Right(b, Len(b) - q)
+            r = Mid(r, InStr(r, p))
+            q = Left(b, q)
+            b = q & n & r
+        End If
+        If e = "url" Then
+            handleLink = n
+        Else
+            handleLink = b
+        End If
+        Exit Function
+    End If
+    o = c & "='"
+    p = "'"
+    If InStr(l, o) > 0 And InStr(l, p) > 0 Then
+        m = StrCut(l, o, p, 2)
+        If d <> "" Then
+            n = d
+        Else
+            n = fullHttpUrl(a, m)
+
+            If e = "replacedir" Then
+                n = s & HandleFilePathArray(n)(2)
+            End If
+            f = f & n & vbCrLf
+
+            q = InStr(b, ">")
+            r = Right(b, Len(b) - q)
+            r = Mid(r, 1, InStrRev(r, "</") - 1)
+            r = Replace(r, vbCrLf, "【换行】")
+            g = g & r & vbCrLf
+        End If
+        If m <> n Then
+
+            q = InStr(b, o) - 1 + Len(o)
+            r = Right(b, Len(b) - q)
+            r = Mid(r, InStr(r, p))
+            q = Left(b, q)
+            b = q & n & r
+        End If
+        If e = "url" Then
+            handleLink = n
+        Else
+            handleLink = b
+        End If
+        Exit Function
+    End If
+    o = c & "="
+    p = " "
+    If InStr(l, o) > 0 And InStr(l, p) > 0 Then
+        m = StrCut(l, o, p, 2)
+        If d <> "" Then
+            n = d
+        Else
+            n = fullHttpUrl(a, m)
+
+            If e = "replacedir" Then
+                n = s & HandleFilePathArray(n)(2)
+            End If
+            f = f & n & vbCrLf
+
+            q = InStr(b, ">")
+            r = Right(b, Len(b) - q)
+            r = Mid(r, 1, InStrRev(r, "</") - 1)
+            r = Replace(r, vbCrLf, "【换行】")
+            g = g & r & vbCrLf
+        End If
+        If m <> n Then
+
+            q = InStr(b, o) - 1 + Len(o)
+            r = Right(b, Len(b) - q)
+            r = Mid(r, InStr(r, p))
+            q = Left(b, q)
+            b = q & n & r
+        End If
+        If e = "url" Then
+            handleLink = n
+        Else
+            handleLink = b
+        End If
+        Exit Function
+    End If
+    If e <> "url" Then handleLink = b
+    Call CreateAddFile("出错内容列表.txt", a & vbCrLf & b & vbCrLf & c & vbCrLf & d & vbCrLf & e & vbCrLf & "----------------------" & vbCrLf)
+End Function
+
+
+Function getEndUrlHandleName(a)
+    Dim b
+    b = Replace(Trim(a), "\", "/")
+    If Right(b, 1) = "/" Then b = Mid(b, 1, Len(b) - 1)
+    b = Mid(b, InStrRev(b, "/") + 1)
+    getEndUrlHandleName = b
+End Function
+
+
+Function getWebFolderName()
+    If getIP = "127.0.0.1" Or InStr(getIP, "192.168.") > 0 Then
+        getWebFolderName = "/wwwroot/" & WebFolderName & "/"
+    End If
+End Function
+
+
+Function getWebHome()
+    Dim b
+    If getIP = "127.0.0.1" Or InStr(getIP, "192.168.") > 0 Then
+        Call OpenConn()
+        rs.Open "Select * From [WebSite]", conn, 1, 1
+        If Not rs.EOF Then
+            getWebHome = "/wwwroot/" & getEndUrlHandleName(rs("WebSkins")) & "/Index.html"
+        End If : rs.Close
+    End If
+    If getWebHome = "" Then
+        getWebHome = "/Index.html"
+    End If
+End Function
+
+
+Function getUrlListInWebSiteList(a)
+    Dim b, c, d
+    d = Split(a, vbCrLf)
+    For Each b In d
+        b = getWebSite(b)
+        If b <> "" And InStr(vbCrLf & c & vbCrLf, vbCrLf & b & vbCrLf) = 0 Then
+            c = c & b & vbCrLf
+        End If
+        Doevents
+    Next
+    getUrlListInWebSiteList = c
+End Function
+
+
+Function getThisUrlFileName()
+    Dim b
+    b = Request.ServerVariables("SCRIPT_NAME")
+    If Left(b, 1) = "/" Then b = Right(b, Len(b) - 1)
+    getThisUrlFileName = b
+End Function
+
+
+Function handleWebHtmlImg(a, b, c, d)
+    Dim e, f, g, h
+    Dim i, j
+    e = getContentImgSrc("", b, c, d)
+    f = Split(e, vbCrLf)
+    For Each g In f
+        If g <> "" Then
+            h = handleHttpUrl(g)
+            If InStr(h, "/") > 0 Then
+                h = Mid(h, InStrRev(h, "/") + 1)
+            End If
+            h = a & h
+
+            i = "src=""" : j = """"
+            If InStr(b, i) > 0 And InStr(b, j) > 0 Then
+                b = RegExp_Replace(b, i & g & j, i & h & j)
+            End If
+            i = "src='" : j = "'"
+            If InStr(b, i) > 0 And InStr(b, j) > 0 Then
+                b = RegExp_Replace(b, i & g & j, i & h & j)
+            End If
+        End If
+    Next
+    handleWebHtmlImg = b
+End Function
+
+
+Function handleWebCssImg(a, b)
+    Dim c, d, e, f, g, h, i
+    c = "url\("
+    d = "\)"
+    e = GetArray(b, c, d, False, False)
+
+    f = Split(e, "$Array$")
+    For Each h In f
+        If h <> "" Then
+            i = handleHttpUrl(h)
+            If InStr(i, "/") > 0 Then
+                i = Mid(i, InStrRev(i, "/") + 1)
+            End If
+            i = a & i
+            c = "url("
+            d = ")"
+            If InStr(b, c) > 0 And InStr(b, d) > 0 Then
+
+                b = RegExp_Replace(b, c & h & d, c & i & d)
+            End If
+        End If
+    Next
+    handleWebCssImg = b
+End Function
+
+
+Function batchHandleUrlIntegrity(a, b)
+    Dim c, d, e
+    c = Split(b, vbCrLf)
+    For Each d In c
+        If d <> "" Then
+            d = fullHttpUrl(a, d)
+            If InStr(vbCrLf & e & vbCrLf, vbCrLf & d & vbCrLf) = False Then
+                e = e & d & vbCrLf
+            End If
+        End If
+    Next
+    batchHandleUrlIntegrity = e
+End Function
+
+
+Function replaceContentImagePath(a, b)
+    Dim c, d, e, f
+    a = handleHttpUrl(a)
+    If Right(a, 1) <> "/" Then a = a & "/"
+    e = GetDirFileNameList(a)
+    f = Split(e, vbCrLf)
+    For Each c In f
+        If c <> "" Then
+            d = "file:///" & a & c
+
+            b = Replace(b, """" & c & """", """" & d & """")
+            b = Replace(b, "'" & c & "'", """" & d & """")
+            b = Replace(b, "=" & c & " ", """" & d & """")
+            b = Replace(b, "=" & c & ">", """" & d & """")
+
+            b = Replace(b, "(" & c & ")", "(" & d & ")")
+            b = Replace(b, "(" & c & ";", "(" & d & ";")
+        End If
+    Next
+    replaceContentImagePath = b
+End Function
+
+
+Function getCssLinkList(ByVal a)
+    Dim b, c, d, e, f, g
+    b = "<link" : c = "/>"
+    a = GetArray(a, b, c, False, False)
+    d = Split(a, "$Array$")
+    For Each e In d
+        If InStr(LCase(e), "stylesheet") > 0 Then
+            g = StrCut(e, "href=""", """", 2)
+            Call echo(g, e)
+            f = f & g & vbCrLf
+        End If
+    Next
+    getCssLinkList = f
+End Function
+
+
+Function getHtmlBackGroundUrlList(a)
+    Dim b, c, d, e, f, g, h, i, j, k
+    For b = 1 To Len(a)
+        c = Mid(a, b, 1)
+        If c = "<" Then
+            d = Mid(a, b)
+            e = LCase(d)
+            h = Mid(d, 1, InStr(d, ">"))
+            f = LCase(Mid(e, 1, InStr(e, " ")))
+            If InStr(h, "url(") > 0 Then
+                j = "url(" : k = ")"
+                i = i & StrCut(h, j, k, 2) & vbCrLf
+                b = b + g
+            End If
+        End If
+        DoEvents
+    Next
+    getHtmlBackGroundUrlList = i
+End Function
+
+
+Function getImgUrlList(a)
+    Dim b, c, d, e, f, g, h, i
+    For b = 1 To Len(a)
+        c = Mid(a, b, 1)
+        If c = "<" Then
+            d = Mid(a, b)
+            e = LCase(d)
+            h = Mid(d, 1, InStr(d, ">"))
+            f = LCase(Mid(e, 1, InStr(e, " ")))
+            If f = "<img " Then
+                i = i & GetLinkUrl(h, "src") & vbCrLf
+                b = b + g
+
+            End If
+        End If
+        DoEvents
+    Next
+    getImgUrlList = i
+End Function
+
+
+Function getLinkUrl(ByVal a, b)
+    Dim c, d, e, f
+    a = Replace(Replace(a, "= ", "="), "= ", "=")
+    a = Replace(Replace(a, " =", "="), " =", "=")
+    c = LCase(a)
+
+    d = b & "="""
+    e = """"
+    If InStr(c, d) > 0 And InStr(c, e) > 0 Then
+        f = StrCut(c, d, e, 2)
+        getLinkUrl = f
+    End If
+End Function
+
+
+Function localUrlOrRemoteUrl(a, b)
+    Dim c
+    b = False
+    a = Trim(a)
+    c = Replace(a, "\", "/")
+    If Left(LCase(c), 7) = "http://" Or Left(LCase(c), 4) = "www." Or Left(LCase(c), 4) = "[网址]" Then
+        b = True
+    End If
+    If b = False Then
+        a = SetFileName(a)
+    End If
+    localUrlOrRemoteUrl = a
+End Function
+
+
+Function checkRemoteUrl(a)
+    Dim b
+    a = Trim(a)
+    b = Replace(UnSetFileName(a), "\", "/")
+    checkRemoteUrl = False
+    If Left(LCase(b), 7) = "http://" Or Left(LCase(b), 4) = "www." Or Left(LCase(b), 4) = "[网址]" Then
+        If Left(LCase(b), 4) = "[网址]" Then
+            a = Mid(a, InStr(a, "[网址]") + 1)
+        End If
+        checkRemoteUrl = True
+    End If
+End Function
+
+
+Function getHandleUrl(ByVal a)
+    Dim b
+    a = CStr(Trim(a))
+    If a <> "" Then
+        a = Replace(Trim(a), "\", "/")
+        If InStr(a, "://") = False Then a = Replace(Replace(a, "//", "/"), "//", "/")
+    End If
+    If Left(a, 1) <> "/" And Right(a, 1) <> "/" Then
+        a = "/Html/" & a & ".Html"
+    ElseIf Right(LCase(a), 4) <> ".html" Then
+        b = Mid(a, InStrRev(a, "/") + 1)
+        If InStr(b, ".") = False Then
+            If b <> "" Then
+                a = a & ".Html"
+            End If
+        End If
+    End If
+    getHandleUrl = a
+End Function
+
+
+Function webDebug(a, b)
+    If Request.QueryString("Debug") <> "" Then
+        If getwebsite(b) <> "" Then
+            a = b
+            webDebug = a
+            Exit Function
+        Else
+            a = "/Inc/Create_Html.Asp?Debug=1&" & b
+        End If
+        If Request("MackHtml") = "False" Then
+            a = a & "&MackHtml=False"
+        End If
+        If Request("gl") <> "" Then
+            a = a & "&gl=" & Request("gl")
+        End If
+    Else
+        If CheckMakeHtmlFile(a) = True Then
+            a = LCase(a)
+        End If
+    End If
+    If CheckMakeHtmlFile(a) = True Then
+        a = fullHttpUrl(host(), a)
+    Else
+
+        a = Trim(a)
+        If Left(LCase(a), 4) = "url:" Then
+            a = Mid(a, 5)
+        End If
+        If Left(LCase(a), 5) = "/url:" Then
+            a = Mid(a, 6)
+        End If
+        a = HandleTemplateAction(a, False)
+
+    End If
+
+    webDebug = a
+End Function
+
+
+
+
+Function asaiLinkAdd(a)
+    Dim b
+    a = " " & a
+    Set b = CreateObject("VBscript.RegExp")
+        b.IgnoreCase = True
+        b.Global = True
+
+        b.pattern = "(http://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?)"
+        a = b.Replace(a, "<a href='$1' target='_blank'>$1</a>")
+
+        b.pattern = "([^(http:\/\/)])(www\.([\w-]+\.)+[\w]+(\/[\w-]+)*[\/]?([\w-]+\.[\w]+)?(\?[\w]+=[\w]+(&[\w]+=[\w]+)*)?)"
+        a = b.Replace(a, "$1<a href='http://$2' target='_blank'>$2</a>")
+
+        b.pattern = "(mailto:)?([\w]+@([\w-]+\.)+[\w]+)"
+        a = b.Replace(a, "<a href='mailto:$2'>$1$2</a>")
+    Set b = Nothing
+    asaiLinkAdd = Replace(Trim(a), " </a>", "")
+    asaiLinkAdd = Replace(Trim(a), " ;</a>", "")
+    asaiLinkAdd = Replace(Trim(a), " ；</a>", "")
+End Function
+
+
+
+
+Function asaiLinkDel(a)
+    Dim b
+    Set b = CreateObject("VBscript.RegExp")
+        b.IgnoreCase = True
+        b.Global = True
+        b.pattern = "<a[^>]+>(.+?)<\/a>"
+        asaiLinkDel = b.Replace(a, "$1")
+End Function
+
+
+Function iswww(a)
+    iswww = False
+    Dim b, c
+    Set b = CreateObject("VBscript.RegExp")
+        b.pattern = "^\w+((-\w+)|(\.\w+))*[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$"
+        b.IgnoreCase = True
+        Set c = b.Execute(a)
+            If c.Count Then iswww = True
+End Function
+
+
+
+
+
+
+
+
+Function getUrlAddToParam(ByVal a, ByVal b, c)
+    Dim d, e, f, g, h, i, j, k
+    Dim l
+    Dim m
+    Dim n
+    Dim o
+    Dim p
+
+    b = handleHttpUrl(b)
+
+
+    a = Trim(a)
+
+    If Right(a, 1) = "?" Or Right(a, 1) = "&" Then
+        a = Trim(Mid(a, 1, Len(a) - 1))
+    End If
+
+    b = Trim(b)
+
+    If Left(b, 1) = "?" Or Left(b, 1) = "&" Then
+        b = Trim(Mid(b, 2))
+    End If
+
+    If a = "" Then getUrlAddToParam = "?" & b : Exit Function
+
+    i = a
+    If InStr(a, "?") > 0 Then
+        i = Mid(a, 1, InStr(a, "?") - 1)
+        k = getWebSite(a)
+        l = Mid(a, InStr(a, "?") + 1)
+
+        i = handleHttpUrl(i)
+        If Right(i, 1) <> "/" Then
+            j = Mid(i, InStrRev(i, "/") + 1)
+            i = Left(i, Len(i) - Len(j))
+
+        End If
+    End If
+
+
+    If LCase(c) = "replace" Or c = "替换" Then
+        d = b & "&" & l
+
+        If InStr(b, "?") > 0 Then
+            j = Mid(b, 1, InStr(b, "?") - 1)
+
+        End If
+    ElseIf(LCase(c) <> "delete" Or LCase(c) <> "del") Then
+        d = l & "&" & b
+    End If
+
+    d = Replace(d, "?", "&")
+
+
+    If LCase(c) = "delete" Or LCase(c) = "del" Then
+        e = Split(LCase(b), "&") : b = "&"
+        For Each g In e
+            If InStr(g, "=") Then
+                g = Mid(g, 1, InStr(g, "=") - 1)
+            End If
+            If g <> "" Then
+                b = b & g & "&"
+            End If
+        Next
+
+    End If
+
+
+    e = Split(d, "&")
+    For Each g In e
+        If InStr(g, "=") > 0 Then
+            f = Split(g, "=")
+            m = f(0)
+            n = f(1)
+
+            p = True
+
+            If LCase(c) = "delete" Or LCase(c) = "del" Then
+                If InStr("&" & b & "&", "&" & LCase(m) & "&") > 0 Then
+                    p = False
+                End If
+            End If
+
+            If InStr("|" & o & "|", "|" & LCase(m) & "|") = False And p = True Then
+                o = o & LCase(m) & "|"
+                h = h & IIF(h = "", "?", "&")
+                h = h & m & "=" & n
+            End If
+        End If
+    Next
+
+
+
+    h = j & h
+    If getWebSite(h) = "" Then
+        If Left(b, 1) = "/" Then
+            h = k & h
+        Else
+            h = i & h
+        End If
+
+    End If
+
+
+    getUrlAddToParam = h
+End Function
+
+
+
+
+
+Function groupUrl(a, b)
+    Dim c, d
+    c = "/"
+    a = Replace(a, IIF(c = "/", "\", "/"), c)
+    b = Replace(b, IIF(c = "/", "\", "/"), c)
+    a = phptrim(a)
+    b = phptrim(b)
+    For d = 0 To 99
+        If Right(a, 1) = c Then
+            a = Mid(a, 1, Len(a) - 1)
+        Else
+            Exit For
+        End If
+    Next
+    For d = 0 To 99
+        If Left(b, 1) = c Then
+            b = Mid(b, 2)
+        Else
+            Exit For
+        End If
+    Next
+    groupUrl = a & c & b
+End Function
+
+
+
+
+Function handlePostCookiesParame(a, b)
+    Dim c, d, e, f, g
+    c = Split(a, "&")
+    For Each d In c
+        If InStr(d, "=") > 0 Then
+            f = Mid(d, 1, InStr(d, "="))
+            g = Mid(d, InStr(d, "=") + 1)
+            If LCase(b) = "post" Or b = "" Then
+                If e <> "" Then e = e & "&"
+                g = escape(g)
+            ElseIf LCase(b) = "cookies" Or LCase(b) = "cookie" Then
+                If e <> "" Then e = e & ";"
+                g = URLEncoding(g)
+            End If
+            e = e & f & g
+
+        End If
+    Next
+    handlePostCookiesParame = e
+End Function
+
+
+
+Function remoteHttpUrlParameter(a)
+    Dim b, c, d, e, f
+
+    If InStr(a, "?") = False Then
+        remoteHttpUrlParameter = a
+        Exit Function
+    End If
+    b = Split(a, "&")
+    For Each c In b
+        If InStr(c, "=") > 0 Then
+            e = Mid(c, 1, InStr(c, "="))
+            f = Mid(c, InStr(c, "=") + 1)
+            If d <> "" Then d = d & "&"
+            d = d & e
+        End If
+    Next
+    remoteHttpUrlParameter = d
+End Function
+
+
+
+
+Function checkUrlName(a)
+    Dim b, c, d
+    a = LCase(a)
+    d = LCase(Request.ServerVariables("script_name"))
+    b = Split(a, "|")
+    For Each c In b
+        If c <> "" Then
+            If InStr(d, c) > 0 Then
+                checkUrlName = True
+                Exit Function
+            End If
+        End If
+    Next
+    checkUrlName = False
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function handleHttpUrlArray(ByVal a)
+    Dim b, c, d, e, f, g, h
+    a = handleHttpUrl(a)
+
+    b = Mid(a, 1, InStrRev(a, "/"))
+    e = Mid(a, InStrRev(a, "/") + 1) : c = e
+    If InStr(e, "?") > 0 Then
+        c = Mid(e, 1, InStr(e, "?") - 1)
+    End If
+    d = Mid(c, InStrRev(c, ".") + 1)
+    f = Mid(a, 1, InStr(a, ":") - 1)
+    g = getWebSite(a)
+    h = Mid(b, Len(g))
+
+    Dim i
+    i = Split(a & vbCrLf & b & vbCrLf & c & vbCrLf & d & vbCrLf & e & vbCrLf & f & vbCrLf & g & vbCrLf & h, vbCrLf)
+    handleHttpUrlArray = i
+End Function
+
+
+
+Function remoteJsCssParam(a, b)
+    remoteJsCssParam = handleRemoteJsCssParam(a, b, "|替换内容|替换网址")
+End Function
+
+
+Function handleRemoteJsCssParam(a, b, c)
+    Dim d, e, f, g, h, i, j, k
+    c = "|" & c & "|"
+    d = Split(b, vbCrLf)
+    For Each f In d
+        If f <> "" Then
+            If e <> "" Then e = e & vbCrLf
+            g = handleHttpUrlArray(f)
+            h = g(2)
+            i = LCase(g(3))
+            j = LCase(g(4))
+            If(i = "js" Or i = "css") And InStr(j, "?") > 0 Then
+                k = Mid(f, 1, InStr(f, "?") - 1)
+
+
+                If InStr(c, "|替换内容|") > 0 Then
+                    a = Replace(a, f, k)
+                End If
+                If InStr(c, "|替换网址|") > 0 Then
+                    b = Replace(b, f, k)
+                End If
+            End If
+        End If
+    Next
+End Function
+
+
+
+Function batchHandleHttpUrlComplete(a, b)
+    Dim c, d, e, f, g
+    c = getwebsite(a)
+    d = Split(b, vbCrLf)
+    For Each e In d
+        e = phptrim(e)
+        f = LCase(e)
+        If f <> "#" And Left(f, 11) <> "javascript:" Then
+            If InStr(vbCrLf & LCase(g) & vbCrLf, vbCrLf & f & vbCrLf) = False Then
+                If g <> "" Then g = g & vbCrLf
+                g = g & urlAddHttpUrl(c, e)
+            End If
+        End If
+    Next
+    batchHandleHttpUrlComplete = g
+End Function
+
+
+
+Function isWebSite(ByVal a, ByVal b)
+    isWebSite = handleIsWebSite(a, b, "")
+End Function
+
+Function isSonWebSite(ByVal a, ByVal b)
+    isSonWebSite = handleIsWebSite(a, b, "子域名")
+End Function
+
+
+Function handleIsWebSite(ByVal a, ByVal b, c)
+    a = getwebsite(a)
+    b = getwebsite(b)
+    If InStr(a, "://") > 0 Then
+        a = Mid(a, InStr(a, "://") + 3)
+    End If
+    If Left(a, 4) = "www." Then
+        a = Mid(a, 5)
+    End If
+    If InStr(b, "://") > 0 Then
+        b = Mid(b, InStr(b, "://") + 3)
+    End If
+    If Left(b, 4) = "www." Then
+        b = Mid(b, 5)
+    End If
+
+    If c = "子域名" Then
+        Dim d, e, f
+        f = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn"
+        f = f & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in"
+        d = Split(f, "|")
+        For Each e In d
+            If e <> "" Then
+                a = Replace(a, e, "")
+                b = Replace(b, e, "")
+            End If
+        Next
+
+        If InStr(a, ".") Then
+            a = Mid(a, InStr(a, ".") + 1)
+        End If
+        If InStr(b, ".") Then
+            b = Mid(b, InStr(b, ".") + 1)
+        End If
+
+
+    End If
+    handleIsWebSite = False
+    If a = b Then
+        handleIsWebSite = True
+    End If
+End Function
+
+
+
+Function getContentUrlList(a, ByVal b)
+    getContentUrlList = HandleGetContentUrlList(a, b, "|*|内链|")
+End Function
+
+Function handleGetContentUrlList(a, ByVal b, c)
+    Dim d, e, f, g, h, i, j, k, l, m, n, o, p, q
+    c = "|" & LCase(Trim(c)) & "|"
+    n = getwebsite(a)
+    For d = 1 To Len(b)
+        e = Mid(b, d, 1)
+        f = Mid(b & " ", d + 1, 1)
+        h = Mid(b, d + 1) : g = LCase(h)
+        If e = "<" Then
+            l = ""
+            o = ""
+            p = False
+            If Left(g, 2) = "a " Then
+                o = "a"
+                q = "href"
+                p = True
+            ElseIf Left(g, 5) = "link " Then
+                o = "link"
+                q = "href"
+                p = True
+            ElseIf Left(g, 4) = "img " Then
+                o = "img"
+                q = "src"
+                p = True
+            ElseIf Left(g, 7) = "script " Then
+                o = "script"
+                q = "src"
+                p = True
+            End If
+            If p = True Then
+                If InStr(c, "|" & o & "|") > 0 Or InStr(c, "|*|") > 0 Then
+                    j = InStr(h, ">")
+                    i = Mid(h, 1, j)
+                    l = RParam(i, q)
+                    d = d + j
+                End If
+            End If
+            If l <> "" Then
+                m = LCase(l)
+                If m <> "#" And Left(m, 11) <> "javascript:" Then
+                    If InStr(vbCrLf & k & vbCrLf, vbCrLf & l & vbCrLf) = False Then
+                        l = fullHttpUrl(a, l)
+                        p = isSonWebSite(l, a)
+                        If InStr(c, "|内链|") > 0 Then
+                            If p = True Then
+                                k = k & l & vbCrLf
+                            End If
+                        ElseIf InStr(c, "|外链|") > 0 Then
+                            If p = False Then
+                                k = k & l & vbCrLf
+                            End If
+                        Else
+                            k = k & l & vbCrLf
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    Next
+    If k <> "" Then k = Left(k, Len(k) - 2)
+    handleGetContentUrlList = k
+End Function
+
+Function getInChain(a, b)
+    Dim c, d, e, f, g
+    c = Split(b, vbCrLf)
+    b = ""
+    For Each d In c
+        If d <> "" Then
+            f = LCase(d)
+            If Left(f, 1) <> "#" And Left(f, 11) <> "javascript:" Then
+                If InStr(vbCrLf & b & vbCrLf, vbCrLf & d & vbCrLf) = False Then
+                    d = fullHttpUrl(a, d)
+                    g = isSonWebSite(d, a)
+                    If g = True Then
+                        b = b & d & vbCrLf
+                    End If
+                End If
+            End If
+        End If
+    Next
+    If b <> "" Then b = Left(b, Len(b) - 2)
+    getInChain = b
+End Function
 %>
 
 

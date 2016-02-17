@@ -471,7 +471,7 @@ function aspMD5($str,$sType){
 }
 //我的md5加密
 function myMD5($str){
-	return md5($str);
+	return md5(md5($str));
 }
 
 //asp里用到，php里不需要处理
@@ -533,9 +533,29 @@ function getFieldList($tableName){
 	}
 	return $c;
 }
+//url加密    //url解码  unescape  待添加
+function escape($str){
+    $sublen=strlen($str);
+    $retrunString="";
+    for ($i=0;$i<$sublen;$i++){
+        if(ord($str[$i])>=127)
+            {
+            $tmpString=bin2hex(iconv("gb2312","ucs-2",substr($str,$i,2)));
+            //$tmpString=substr($tmpString,2,2).substr($tmpString,0,2);window下可能要打开此项
+            $retrunString.="%u".$tmpString;
+            $i++;
+        } else
+            {
+            $retrunString.="%".dechex(ord($str[$i]));
+        }
+    }
+    return $retrunString;
+}
 
-
-
+//删除Html
+function delHtml($str){
+	return strip_tags($str);
+}
 
 function XY_AutoAddHandle($Action){
 	return "";

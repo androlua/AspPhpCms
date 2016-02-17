@@ -271,10 +271,10 @@ function XY_PHP_GeneralList($action, $tableName, $sql){
             //加控制
             //【导航】
             if( $tableName == 'WebColumn' ){
-                $url = '/admin/index.php?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=' . $rs['id'] . '&n=' . getRnd(11) ;
+                $url = WEB_ADMINURL . '?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=' . $rs['id'] . '&n=' . getRnd(11) ;
                 //【文章】
             }else if( $tableName == 'ArticleDetail' ){
-                $url = '/admin/index.php?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11) ;
+                $url = WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11) ;
             }
             $s = HandleDisplayOnlineEditDialog($url, $s, '', 'div|li|span') ;
             $c = $c . $s ;
@@ -354,7 +354,7 @@ function XY_PHP_SinglePage($action){
     if( $id == '' ){
         $id = XY_PHP_GetFieldValue('', $sql, 'id') ;
     }
-    $url = '/admin/index.php?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&id=' . $id . '&n=' . getRnd(11) ;
+    $url = WEB_ADMINURL . '?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&switchId=2&id=' . $id . '&n=' . getRnd(11) ;
     if( @$_REQUEST['gl'] == 'edit' ){
         $content = '<span>' . $content . '</span>' ;
     }
@@ -382,10 +382,12 @@ function XY_PHP_GetColumnContent($action){
     if( $id == '' ){
         $id = XY_PHP_GetFieldValue('', $sql, 'id') ;
     }
-    $url = '/admin/index.php?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&id=' . $id . '&n=' . getRnd(11) ;
+    $url = WEB_ADMINURL . '?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&switchId=2&id=' . $id . '&n=' . getRnd(11) ;
     if( @$_REQUEST['gl'] == 'edit' ){
         $content = '<span>' . $content . '</span>' ;
     }
+
+
 
     $content = HandleDisplayOnlineEditDialog($url, $content, '', 'span') ;
     $XY_PHP_GetColumnContent = $content ;

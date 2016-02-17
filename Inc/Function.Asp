@@ -2,1206 +2,1348 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-fUNcTIoN sENd_EmAIl(a, b, c, d)
-dIM e, f, g
-rESpONsE.aDDhEAdER "Content-Type", "text/html; charset=gb2312"
-sET e = cREaTEoBJeCT("JMail.Message")
-e.cONtENtTRaNSfEReNCoDInG = "base64"
-e.eNCoDInG = "base64"
-e.cONtENtTYpE = "text/html"
-e.sILeNT = tRUe
-e.lOGgINg = tRUe
-e.cHArSEt = "gb2312"
-e.mAIlSErVErUSeRNaME = "m18251922007"
-e.mAIlSErVErPAsSWoRD = "mydd3a"
-e.fROm = "m18251922007@163.com"
-e.fROmNAmE = c
-e.aDDrECiPIeNT a
-e.sUBjECt = b
-g = g & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>"
-g = g & d
-g = g & "</body></html>"
-e.bODy = g
-sENd_EmAIl = e.sENd("smtp.163.com")
-e.cLOsE
-sET e = nOThINg
-eND fUNcTIoN
-fUNcTIoN sERvERsENd_EmAIl(a, b, c, d, e, f)
-dIM g, h, i
-rESpONsE.aDDhEAdER "Content-Type", "text/html; charset=gb2312"
-sET g = cREaTEoBJeCT("JMail.Message")
-g.cONtENtTRaNSfEReNCoDInG = "base64"
-g.eNCoDInG = "base64"
-g.cONtENtTYpE = "text/html"
-g.sILeNT = tRUe
-g.lOGgINg = tRUe
-g.cHArSEt = "gb2312"
-g.mAIlSErVErUSeRNaME = a
-g.mAIlSErVErPAsSWoRD = b
-g.fROm = "m18251922007@163.com"
-g.fROmNAmE = e
-g.aDDrECiPIeNT c
-g.sUBjECt = d
-i = i & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>"
-i = i & f
-i = i & "</body></html>"
-g.bODy = i
-sERvERsENd_EmAIl = g.sENd("smtp.163.com")
-g.cLOsE
-sET g = nOThINg
-eND fUNcTIoN
-fUNcTIoN fINdASpCOdE(bYVaL a)
-a = gETaSPcODe(a)
-a = gETaSPfUNcTIoNLiST(a)
-fINdASpCOdE =a
-eND fUNcTIoN
-fUNcTIoN fINdASpFUnLIsT(bYVaL a)
-dIM b,c,d,e,f,g
-a = fINdASpCOdE(a)	
-b=sPLiT(a,vBCrLF)
-fOR eACh e iN b
-f = e : e = lCAsE(e)
-iF e <>"" tHEn
-c=0
-iF iNStR(e,"function ")>0 tHEn
-c=iNStR(e,"function ")+8
-eLSeIF iNStR(e,"sub ")>0 tHEn
-c=iNStR(e,"sub ")+3
-eND iF
-iF c > 0 tHEn
-f = mID(f,c)
-iF iNStR(f,"(")>0 tHEn
-f=mID(f,1,iNStR(f,"(")-1)
-eLSe
-f=mID(f,1,iNStR(f & " "," ")-1)
-eND iF	
-g = g & tRIm(f) & vBCrLF
-eND iF
-eND iF	
-dOEvENtS
-nEXt
-fINdASpFUnLIsT=g
-eND fUNcTIoN
-fUNcTIoN fINdASpFUnCTiONcODe(bYVaL a, bYVaL b)
-dIM c, d, e, f
-iF cHEcKStR(b, "sub ") tHEn
-c = "end sub"
-eLSe
-c = "end function"
-eND iF
-a = rIGhT(a, lEN(a) - iNStR(lCAsE(a), lCAsE(b)) + 1)
-d = sPLiT(a, vBCrLF)
-fOR eACh e iN d
-f = f & e & vBCrLF
-iF cHEcKStR(e, c) = tRUe tHEn eXIt fOR
-nEXt
-fINdASpFUnCTiONcODe = f
-eND fUNcTIoN
-fUNcTIoN hANdLErEPlACeLIsT(bYVaL a, b, c)
-dIM d, e, f, g
-d = sPLiT(b, "|")
-e = sPLiT(c & "||||||||||||||||||||||||||||||||", "|")
-fOR f = 0 tO uBOuND(d)
-g = d(f)
-iF g <> "" tHEn
-a = rEPlACe(a, g, e(f))
-eND iF
-nEXt
-hANdLErEPlACeLIsT = a
-eND fUNcTIoN
-fUNcTIoN gETfUNnAMeDIm(bYVaL a, b, c)
-dIM d, e, f, g
-a = tRIm(a)
-iF iNStR(lCAsE(a), "sub ") > 0 tHEn
-d = "sub"
-eLSeIF iNStR(lCAsE(a), "function ") > 0 tHEn
-d = "function"
-eLSe
-eXIt fUNcTIoN
-eND iF
-a = rEPlACe(a, ":", ")") & ")"
-e = iNStR(a, d & " ") + lEN(d & " ")
-f = iNStR(e, a, ")")
-a = mID(a, e, f - e)
-g = d & " " & a
-iF iNStR(a, "(") > 0 tHEn
-b = lEFt(a, iNStR(a, "(") - 1)
-iF iNStR(b, " ") tHEn
-b = mID(b, iNStR(b, " "))
-eND iF
-g = g & ")"
-e = iNStR(g, "(") + 1
-f = iNStR(e, g, ")")
-c = mID(g, e, f - e)
-c = rEGeXP_REpLAcE(c, "ByVal ", "")
-c = rEGeXP_REpLAcE(c, "ByRef ", "")
-c = rEPlACe(c, " ", "")
-eLSe
-b = a
-eND iF
-gETfUNnAMeDIm = g
-eND fUNcTIoN
-fUNcTIoN lEFtSPaCE(bYVaL a, bYVaL b)
-dIM c, d
-d = 0
-fOR c = lEN(a) tO 1 sTEp - 1
-iF mID(a, c, 1) <> " " tHEn eXIt fOR
-d = d + 1
-nEXt
-iF d > b aND rEPlACe(a, " ", "") <> "" tHEn
-a = lEFt(a, lEN(a) - d + b)
-eLSeIF d < b aND 1 = 1 tHEn
-fOR c = d tO b - 1
-a = a & " "
-nEXt
-eND iF
-lEFtSPaCE = a
-eND fUNcTIoN
-fUNcTIoN rIGhTSpACe(bYVaL a, bYVaL b)
-dIM c, d
-d = 0
-fOR c = 1 tO lEN(a)
-iF mID(a, c, 1) <> " " tHEn eXIt fOR
-d = d + 1
-nEXt
-iF d > b tHEn
-a = rIGhT(a, lEN(a) - d + b)
-eLSeIF d < b tHEn
-fOR c = d tO b - 1
-a = " " & a
-nEXt
-eND iF
-rIGhTSpACe = a
-eND fUNcTIoN
-fUNcTIoN iNFuNAdDDiM(bYVaL a)
-dIM b, c, d, e, f, g, h, i, j, k
-c = sPLiT("A_p,B_p,C_4,D_2,E_4,F_9,G_1,H_2,I_2,J_3,K_1,L_o,M_m,N_u,O_o,P_n,Q_o,R_l,S_i,T_2,U_2,V_2,W_2,X_2,Y_2,Z_2", ",")
-b = sPLiT(a, vBCrLF)
-g = uBOuND(b) - 1
-e = sTRcUT(a, "(", ")", 2)
-d = sPLiT(e, ",")
-h = uBOuND(d) + 1
-iF h = 0 tHEn
-iNFuNAdDDiM = a
-eXIt fUNcTIoN
-eND iF
-i = cINt(g / h)
-k = 0
-fOR f = 0 tO uBOuND(b)
-e = b(f)
-iF tRIm(e) <> "" tHEn
-j = j & b(f) & vBCrLF
-eND iF
-iF i <> 0 tHEn
-iF f mOD i = 0 aND uBOuND(d) >= k aND f <> uBOuND(b) tHEn
-j = j & "dIm " & c(k) & vBCrLF
-k = k + 1
-eND iF
-eND iF
-nEXt
-iF j <> "" tHEn j = lEFt(j, lEN(j) - 2)
-iNFuNAdDDiM = j
-eND fUNcTIoN
-fUNcTIoN gETqQ(bYVaL a, b)
-dIM c, d, e, f, g, h, i, j
-a = rEPlACe(rEPlACe(lCAsE(a), "&nbsp;", ""), " ", "")
-b = 0
-iF iNStR(a, "qq") > 0 tHEn
-c = sPLiT(a, "qq")
-fOR d = 1 tO uBOuND(c)
-f = c(d)
-h = "" : i = 14 : j = fALsE
-fOR e = 1 tO lEN(f)
-iF iNStR("0123456789", mID(f, e, 1)) = fALsE tHEn
-iF j = tRUe tHEn eXIt fOR
-iF i = 0 tHEn eXIt fOR
-i = i - 1
-iF mID(f, e, 1) = "群" tHEn eXIt fOR
-eLSe
-j = tRUe
-h = h & mID(f, e, 1)
-eND iF
-iF e > 30 tHEn eXIt fOR
-nEXt
-iF lEN(h) >= 6 aND lEN(h) <= 10 aND iNStR(vBCrLF & g, vBCrLF & h & vBCrLF) = fALsE tHEn
-iF iNStR(vBCrLF & g, vBCrLF & h & vBCrLF) = fALsE tHEn
-g = g & h & vBCrLF
-b = b + 1
-eND iF
-eND iF
-nEXt
-eND iF
-gETqQ = g
-eND fUNcTIoN
-fUNcTIoN gETtEL(bYVaL a, b)
-dIM c, d, e, f, g, h, i, j
-a = rEPlACe(rEPlACe(lCAsE(a), "&nbsp;", ""), "手机", "tel")
-b = 0
-iF iNStR(a, "tel") > 0 tHEn
-c = sPLiT(a, "tel")
-fOR d = 1 tO uBOuND(c)
-f = c(d)
-h = "" : i = 14 : j = fALsE
-fOR e = 1 tO lEN(f)
-iF iNStR("0123456789", mID(f, e, 1)) = fALsE tHEn
-iF j = tRUe tHEn eXIt fOR
-iF i = 0 tHEn eXIt fOR
-i = i - 1
-eLSe
-j = tRUe
-h = h & mID(f, e, 1)
-eND iF
-iF e > 30 tHEn eXIt fOR
-nEXt
-iF lEN(h) = 11 tHEn
-iF iNStR(vBCrLF & g, vBCrLF & h & vBCrLF) = fALsE tHEn
-g = g & h & vBCrLF
-b = b + 1
-eND iF
-eND iF
-nEXt
-eND iF
-gETtEL = g
-eND fUNcTIoN
-fUNcTIoN gETmAIl(bYVaL a, b)
-dIM c, d, e, f, g, h, i, j
-a = rEPlACe(rEPlACe(lCAsE(a), "&nbsp;", ""), "邮箱", "mail")
-b = 0
-iF iNStR(a, "mail") > 0 tHEn
-c = sPLiT(a, "mail")
-fOR d = 1 tO uBOuND(c)
-f = c(d)
-h = "" : i = 14 : j = fALsE
-fOR e = 1 tO lEN(f)
-iF iNStR("0123456789abcdefghijklmnopqrstuvwxyz.@", mID(f, e, 1)) = fALsE tHEn
-iF j = tRUe tHEn eXIt fOR
-iF i = 0 tHEn eXIt fOR
-i = i - 1
-eLSe
-j = tRUe
-h = h & mID(f, e, 1)
-eND iF
-iF e > 30 tHEn eXIt fOR
-nEXt
-iF iNStR(h, ".") > 0 aND iNStR(h, "@") > 0 tHEn
-iF iNStR(vBCrLF & g, vBCrLF & h & vBCrLF) = fALsE tHEn
-g = g & h & vBCrLF
-b = b + 1
-eND iF
-eND iF
-nEXt
-eND iF
-gETmAIl = g
-eND fUNcTIoN
-fUNcTIoN gETiMGsTR(a, b, c)
-dIM d, e, f, g, h
-b = gETiMG(b)
-d = sPLiT(b, vBCrLF)
-c = 0
-fOR eACh g iN d
-iF iNStR("|" & h & "|", "|" & g & "|") = fALsE tHEn
-iF lEFt(g, 1) = "/" oR(iNStR(g, "http://") = fALsE aND iNStR(g, "www.") = fALsE) tHEn
-g = fULlHTtPUrL(a, g)
-eND iF
-c = c + 1
-f = f & g & "<br>"
-eND iF
-nEXt
-gETiMGsTR = f
-eND fUNcTIoN
-fUNcTIoN gETcSSsTR(a, b, c)
-dIM d, e, f, g, h
-b = gETcSShREf(b)
-d = sPLiT(b, vBCrLF)
-c = 0
-fOR eACh g iN d
-iF iNStR("|" & h & "|", "|" & g & "|") = fALsE tHEn
-iF lEFt(g, 1) = "/" oR(iNStR(g, "http://") = fALsE aND iNStR(g, "www.") = fALsE) tHEn
-g = fULlHTtPUrL(a, g)
-eND iF
-c = c + 1
-f = f & g & "<br>"
-eND iF
-nEXt
-gETcSSsTR = f
-eND fUNcTIoN
-fUNcTIoN gETjSStR(a, b, c)
-dIM d, e, f, g, h
-b = gETjSSrC(b)
-d = sPLiT(b, vBCrLF)
-c = 0
-fOR eACh g iN d
-iF iNStR("|" & h & "|", "|" & g & "|") = fALsE tHEn
-iF lEFt(g, 1) = "/" oR(iNStR(g, "http://") = fALsE aND iNStR(g, "www.") = fALsE) tHEn
-g = fULlHTtPUrL(a, g)
-eND iF
-c = c + 1
-f = f & g & "<br>"
-eND iF
-nEXt
-gETjSStR = f
-eND fUNcTIoN
-fUNcTIoN hANdLEaSPeXEcUTe(bYVaL a)
-dIM b,c,d
-iF lEFt(a,2)="<" & "%" tHEn
-a = rIGhT(a,lEN(a)-2)
-eND iF	
-iF rIGhT(a,2)="%" & ">" tHEn
-a = lEFt(a, lEN(a)-2)
-eND iF
-b=sPLiT(a,vBCrLF)
-fOR eACh c iN b
-c = tRImVBcRLf(c)
-iF c <> "" tHEn
-d=d & c & ":"
-eND iF
-nEXt
-iF d <>"" tHEn d=lEFt(d, lEN(d)-1)
-iF lEFt(d,1)="=" tHEn d = "Response.Write " & rIGhT(d,lEN(d)-1)
-hANdLEaSPeXEcUTe = d
-eND fUNcTIoN
-fUNcTIoN gETuRLsTR(a, b, c, d, e)
-dIM f, g, h, i, j, k, l, m, n, o, p
-iF b = "链接" tHEn
-f = gETaURl(c)
-eLSeIF b = "链接标题" tHEn
-f = gETaTItLE(c)
-eLSe
-f = gETaURlTItLE(c)
-eND iF
-g = sPLiT(f, vBCrLF)
-e = 0
-fOR eACh k iN g
-iF k <> "" tHEn
-iF b = "链接" tHEn
-i = tRIm(k)
-iF iNStR(lCAsE(i), "javascript:") = fALsE aND i <> "#" aND i <> "" tHEn
-iF iNStR("|" & m & "|", "|" & i & "|") = fALsE tHEn
-iF lEFt(i, 1) = "/" oR(iNStR(i, "http://") = fALsE aND iNStR(i, "www.") = fALsE) tHEn
-i = fULlHTtPUrL(a, i)
-eND iF
-e = e + 1
-j = j & i & vBCrLF
-eND iF
-eND iF
-eLSeIF b = "链接标题" tHEn
-iF iNStR("|" & n & "|", "|" & k & "|") = fALsE tHEn
-n = n & k & "|"
-e = e + 1
-j = j & k & vBCrLF
-eND iF
-eLSe
-iF iNStR(k, "【_|-】") > 0 tHEn
-i = mID(k, 1, iNStR(k, "【_|-】") - 1) : l = i
-h = mID(k, lEN(i) + 6)
-iF iNStR(lCAsE(l), "javascript:") = fALsE aND i <> "#" aND i <> "" tHEn
-iF iNStR("|" & m & "|", "|" & i & "|") = fALsE tHEn
-iF lEFt(i, 1) = "/" oR(iNStR(l, "http://") = fALsE aND iNStR(l, "www.") = fALsE) tHEn
-i = fULlHTtPUrL(a, i)
-eND iF
-e = e + 1
-j = j & i & "   &nbsp;  " & h & vBCrLF
-eND iF
-eND iF
-eND iF
-eND iF
-eND iF
-nEXt
-iF d <> "" tHEn
-d = rEPlACe(d, " and ", " And ")
-g = sPLiT(d, " And ")
-o = g(0)
-iF uBOuND(g) > 0 tHEn p = g(1)
-g = sPLiT(j, vBCrLF) : e = 0 : j = ""
-fOR eACh k iN g
-iF p <> "" tHEn
-iF iNStR(k, o) > 0 aND iNStR(k, p) > 0 tHEn
-iF iNStR(vBCrLF & j & vBCrLF, vBCrLF & k & vBCrLF) = fALsE tHEn
-e = e + 1
-j = j & k & "<br>"
-eND iF
-eND iF
-eLSe
-iF iNStR(k, o) > 0 tHEn
-iF iNStR(vBCrLF & j & vBCrLF, vBCrLF & k & vBCrLF) = fALsE tHEn
-e = e + 1
-j = j & k & "<br>"
-eND iF
-eND iF
-eND iF
-nEXt
-eND iF
-gETuRLsTR = j
-eND fUNcTIoN
-fUNcTIoN gETpAGeCOnFIg(a, b, c)
-dIM d, e, f, g, h, i, j, k, aRRuRL(99), m, n, o, p
-b = gETaURl(b)
-d = sPLiT(b, vBCrLF)
-fOR eACh j iN d
-iF j <> "" tHEn
-k = j
-iF iNStR(lCAsE(j), "javascript:") = fALsE aND j <> "#" tHEn
-j = rEPlACe(rEPlACe(rEPlACe(rEPlACe(rEPlACe(j, "0", ""), "1", ""), "2", ""), "3", ""), "4", "")
-j = rEPlACe(rEPlACe(rEPlACe(rEPlACe(rEPlACe(j, "5", ""), "6", ""), "7", ""), "8", ""), "9", "")
-iF c = "注入" aND iNStR(j, "?") > 0 tHEn j = hANdLSqLInURl(j)
-i = i & j & vBCrLF
-o = iNStR(vBCrLF & m, vBCrLF & j & "【】")
-iF o > 0 tHEn
-f = mID(m, o)
-f = mID(f, 1, iNStR(f, vBCrLF) - 1)
-p = sPLiT(f, "【】")
-g = p(0)
-h = p(1) + 1
-m = rEPlACe(m, f, g & "【】" & h & "【】" & p(2))
-n = j
-eLSe
-m = m & j & "【】0【】" & fULlHTtPUrL(a, k) & vBCrLF
-eND iF
-eND iF
-eND iF
-nEXt
-d = sPLiT(m, vBCrLF) : i = ""
-iF c = "注入" tHEn
-fOR eACh f iN d
-iF iNStR(f, "【】") > 0 tHEn
-p = sPLiT(f, "【】")
-j = tRIm(p(2))
-iF iNStR(j, a) > 0 tHEn
-iF iNStR(vBCrLF & i, vBCrLF & j & vBCrLF) = fALsE tHEn
-i = i & j & vBCrLF
-eND iF
-eND iF
-eND iF
-nEXt
-gETpAGeCOnFIg = i : eXIt fUNcTIoN
-eND iF
-fOR eACh f iN d
-iF iNStR(f, "【】") > 0 tHEn
-p = sPLiT(f, "【】")
-iF p(1) > 0 tHEn aRRuRL(p(1)) = p(0) & "  &nbsp; | &nbsp; " & p(2)
-eND iF
-nEXt
-fOR e = 99 tO 0 sTEp - 1
-iF aRRuRL(e) <> "" tHEn
-iF iNStR(aRRuRL(e), a) > 0 tHEn
-i = i & aRRuRL(e) & "，   出现[" & e & "]次<br>"
-eND iF
-eND iF
-nEXt
-gETpAGeCOnFIg = i
-eND fUNcTIoN
-fUNcTIoN gETsQLiNUrL(a, b, c)
-dIM d, e, f, g, h, i, j, k, aRRuRL(99), m, n, o, p
-b = gETaURl(b)
-d = sPLiT(b, vBCrLF)
-fOR eACh j iN d
-iF j <> "" tHEn
-k = j
-iF iNStR(j, "?") > 0 tHEn
-i = i & j & vBCrLF
-j = hANdLSqLInURl(j)
-o = iNStR(vBCrLF & m, vBCrLF & j & "【】")
-iF o > 0 tHEn
-f = mID(m, o)
-f = mID(f, 1, iNStR(f, vBCrLF) - 1)
-p = sPLiT(f, "【】")
-g = p(0)
-h = p(1) + 1
-m = rEPlACe(m, f, g & "【】" & h & "【】" & p(2))
-n = j
-eLSe
-m = m & j & "【】0【】" & fULlHTtPUrL(a, k) & vBCrLF
-eND iF
-eND iF
-eND iF
-nEXt
-d = sPLiT(m, vBCrLF)
-fOR eACh f iN d
-iF iNStR(f, "【】") > 0 tHEn
-p = sPLiT(f, "【】")
-iF h > 0 tHEn
-iF c = "注入" tHEn
-aRRuRL(p(1)) = p(2)
-eLSe
-aRRuRL(p(1)) = p(0) & "  &nbsp; | &nbsp; " & p(2)
-eND iF
-eND iF
-eND iF
-nEXt
-i = ""
-fOR e = 99 tO 0 sTEp - 1
-iF aRRuRL(e) <> "" tHEn
-iF c = "注入" tHEn
-i = i & aRRuRL(e) & vBCrLF
-eLSe
-i = i & aRRuRL(e) & "，   出现[" & e & "]次<br>"
-eND iF
-eND iF
-nEXt
-gETsQLiNUrL = i
-eND fUNcTIoN
-fUNcTIoN hANdLSqLInURl(a)
-dIM b, c, d, e
-c = sPLiT(a, "=")
-fOR d = 0 tO uBOuND(c)
-iF d = uBOuND(c) tHEn b = b & "=" : eXIt fOR
-e = c(d)
-iF d mOD 2 = 0 tHEn
-b = b & c(d)
-eLSe
-iF iNStR(e, "&") > 0 tHEn
-b = b & "=" & mID(e, iNStR(e, "&"))
-eND iF
-eND iF
-nEXt
-hANdLSqLInURl = b
-eND fUNcTIoN
-fUNcTIoN gETsCAnFUnCTiONnAMeLIsT(a)
-oN eRRoR rESuME nEXt
-dIM b, c, d, e, f, g, h, i, j, k, l, m,n,o
-dIM p ,q,r
-dIM yESfUNcTIoN	
-d = fALsE
-yESfUNcTIoN = fALsE
-e = fALsE
-l = 0
-b = sPLiT(a, vBCrLF)
-fOR eACh g iN b
-fOR c = 1 tO lEN(g)
-f = mID(g, c, 1)
-iF f = "<" aND h = "" tHEn
-iF mID(g, c + 1, 1) = "%" tHEn
-d = tRUe
-c = c + 1
-eND iF
-eLSeIF f = "%" aND mID(g, c + 1, 1) = ">" aND h = "" tHEn	
-d = fALsE
-c = c + 1
-eND iF
-iF d = tRUe tHEn
-iF(f = """" oR h <> "") tHEn
-iF f = """" tHEn l = l + 1
-iF l mOD 2 = 0 tHEn
-iF mID(g, c + 1, 1) <> """" tHEn
-h = h & f
-j = rIGhT(rEPlACe(mID(g, 1, c - lEN(h)), " ", ""), 1)
-iF yESfUNcTIoN = tRUe tHEn k = k & h 	
-l = 0 : h = ""
-eLSe
-h = h & f
-eND iF
-eLSe
-h = h & f
-eND iF
-eLSeIF f = "'" tHEn
-iF yESfUNcTIoN = tRUe tHEn k = k & mID(g, c)
-eXIt fOR
-eLSeIF cHEcKAbC(f) = tRUe oR (f = "_" aND i<>"") oR i <> "" tHEn
-i = i & f
-j = lCAsE(mID(g & " ", c + 1, 1))
-iF iNStR("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 aND nOT(j = "_" aND i <> "") tHEn
-q = mID(g,c+1)
-iF iNStR("|function|sub|", "|" & lCAsE(i) & "|") tHEn	
-iF yESfUNcTIoN = fALsE aND lCAsE(m) <> "end" tHEn
-yESfUNcTIoN = tRUe
-o = mID(g,c+2)
-o = mID(o,1,iNStR(o,"(")-1)
-n = n & o & vBCrLF
-eLSeIF yESfUNcTIoN = tRUe aND lCAsE(m) = "end" tHEn
-k = k & i & vBCrLF
-yESfUNcTIoN = fALsE
-eND iF
-eND iF
-m = i
-iF yESfUNcTIoN = tRUe tHEn k = k & i
-i = ""
-eND iF
-eND iF
-eND iF	
-dOEvENtS
-nEXt	
-nEXt
-gETsCAnFUnCTiONnAMeLIsT = n
-eND fUNcTIoN
-fUNcTIoN gETfUNnAMe(bYVaL a)
-iF iNStR(a,"(")>0 tHEn
-a=mID(a,1,iNStR(a,"(")-1)
-a=pHPtRIm(a)
-eND iF
-gETfUNnAMe = a
-eND fUNcTIoN
-fUNcTIoN gETfUNdIMnAMe(bYVaL a)
-dIM b,c,d
-a = lCAsE(a)
-b = "("
-c = ")"
-iF iNStR(a, b)>0 aND iNStR(a, c)>0 tHEn
-a = sTRcUT(a,b,c,2)
-eND iF
-iF a <> "" tHEn
-a=rEPlACe(rEPlACe(a,"byref ",""),"byref,","")
-a=rEPlACe(rEPlACe(a,"byval ",""),"byval,","")
-a=rEPlACe(a," ","")
-eND iF
-gETfUNdIMnAMe = a
-eND fUNcTIoN
-fUNcTIoN gETdIMnAMe(bYVaL a)
-dIM b,c,d
-a = lCAsE(a)
-b = ":"
-iF iNStR(a, b)>0 tHEn
-a = mID(a,1,iNStR(a,":")-1)
-eND iF
-iF a <> "" tHEn
-a=rEPlACe(rEPlACe(a,"byref ",""),"byref,","")
-a=rEPlACe(rEPlACe(a,"byval ",""),"byval,","")
-a=rEPlACe(a," ","")
-eND iF
-iF iNStR(a,"'")>0 tHEn
-a= pHPtRIm(mID(a,1,iNStR(a,"'")-1))	
-eND iF
-gETdIMnAMe = a
-eND fUNcTIoN
-fUNcTIoN gETsETnAMe(bYVaL a)
-a = pHPtRIm(lCAsE(a))
-a=mID(a, 1,iNStR(a,"=")-1)
-gETsETnAMe=tRIm(a)
-eND fUNcTIoN
-fUNcTIoN rEPlACeDIm(bYVaL a)
-dIM b, c, d, e, f, g
-b = sPLiT(a, ",")
-fOR eACh c iN b
-c = tRIm(c)
-f = lCAsE(c)
-iF c <> "" tHEn
-iF iNStR(c, "(") > 0 tHEn
-c = mID(c, 1, iNStR(c, "(") - 1)
-eND iF
-g = iNStR(lCAsE(rEPlACeDImLIsT), "," & f & "=")
-iF g > 0 tHEn
-d = mID(rEPlACeDImLIsT, g + 1)
-d = mID(d, 1, iNStR(d, ",") - 1)
-d = mID(d, iNStR(d, "=") + 1)
-iF iNStR(fUNdIM & rOOtFUnDIm, "," & d & ",") = fALsE tHEn
-c = d
-eND iF
-eND iF
-e = e & c & ","
-eND iF
-nEXt
-iF e <> "" tHEn e = lEFt(e, lEN(e) - 1)
-rEPlACeDIm = e
-eND fUNcTIoN
-fUNcTIoN rEPlACeDIm2(bYVaL a,b)
-dIM c,d,e,f,g,h,i
-rEPlACeDIm2  = b
-c="abcdefghijklmnopqrstuvwxyz"
-b=lCAsE(b)
-d=sPLiT(a,",")
-fOR e=0 tO uBOuND(d)
-f = d(e)
-iF f = b tHEn
-g = (e) mOD lEN(c)+1
-h = fIX((e)/lEN(c))
-iF g<>0 tHEn
-i=i & mID(c,g,1)
-eND iF
-iF h<>0 tHEn
-i=i & cOPySTr(mID(c,h,1),h)
-eND iF
-rEPlACeDIm2 = i
-eXIt fUNcTIoN
-eND iF
-nEXt
-eND fUNcTIoN
-fUNcTIoN fINdFOlDErREpEAtFUnCTiON(a)
-dIM b, c, d, e, f, g, h, i, j, k, l, m, n, o
-dIM p,q
-cALl hANdLEpATh(a)
-d = "操作文件夹" & a & vBCrLF
-e = gETdIRfILeLIsT(a)
-k = sPLiT(e, vBCrLF) : o = 0
-fOR eACh b iN k
-o = o + 1
-c = o & "、" & b
-e = gETfTExT(b)
-e = gETsCAnFUnCTiONnAMeLIsT(e)	
-i = 0 : j = 0 : m = 0 : n = 0 : g = "" : p = "" : q=""
-l = sPLiT(e, vBCrLF)
-fOR eACh f iN l
-iF f <> "" tHEn
-iF iNStR("|" & g & "|", "|" & f & "|") = 0 tHEn
-g = g & f & "|"
-i = i + 1
-eLSe
-p=p & f & "|"
-j = j + 1
-eND iF
-iF iNStR("|" & h & "|", "|" & f & "|") = 0 tHEn
-h = h & f & "|"
-m = m + 1
-eLSe
-q=q & f & "|"
-n = n + 1
-eND iF
-eND iF
-dOEvENtS
-nEXt
-d = d & c & "，函数（" & uBOuND(k) + 1 & "），重复(" & j & "["& p &"])全部函数重复(" & n & "["& q &"])" & vBCrLF
-dOEvENtS
-nEXt
-fINdFOlDErREpEAtFUnCTiON = d
-eND fUNcTIoN
-fUNcTIoN fINdFIlERePEaTFuNCtIOn(a)
-fINdFIlERePEaTFuNCtIOn = hANdLEcONtENtREpEAtFUnCTiON(gETfTExT("FilePath"), 2)
-eND fUNcTIoN
-fUNcTIoN fINdCOnTEnTRePEaTFuNCtIOn(a)
-fINdCOnTEnTRePEaTFuNCtIOn = hANdLEcONtENtREpEAtFUnCTiON(cONtNEt, 2)
-eND fUNcTIoN
-fUNcTIoN hANdLEcONtENtREpEAtFUnCTiON(a, b)
-dIM c, d, e, f, g, h, i
-b = cSTr(b)
-a = gETsCAnFUnCTiONnAMeLIsT(a)
-f = 0 : g = 0
-h = sPLiT(a, vBCrLF)
-fOR eACh d iN h
-iF d <> "" tHEn
-iF iNStR("|" & e & "|", "|" & d & "|") = 0 tHEn
-e = e & d & "|"
-f = f + 1
-eLSe
-i = i & d & vBCrLF
-g = g + 1
-eND iF
-eND iF
-dOEvENtS
-nEXt
-c = "找到函数共（" & uBOuND(h) + 1 & "），重复(" & g & ")" & vBCrLF
-iF b = "1" oR b="3" tHEn
-c = c & vBCrLF & "函数列表" & vBCrLF & e
-eND iF
-iF i <> "" aND (b = "1" oR b="3") tHEn
-c = c & vBCrLF & "重复函数列表" & vBCrLF & i
-eND iF
-hANdLEcONtENtREpEAtFUnCTiON = c
-eND fUNcTIoN
-fUNcTIoN rEPlACe2(a,b,c)
-dIM d,e
-iF iNStR(a,b) > 0 tHEn
-d = mID(a, 1, iNStR(a,b)-1)
-e = mID(a, lEN(d)+lEN(b)+1)
-a = d & c & e
-eND iF
-rEPlACe2 = a
-eND fUNcTIoN
-fUNcTIoN aLLrEPlACe(a,b,c)
-dIM d,e,f
-fOR f = 1 tO 99
-iF iNStR(a,b) > 0 tHEn
-d = mID(a, 1, iNStR(a,b)-1)
-e = mID(a, lEN(d)+lEN(b)+1)
-a = d & c & e
-eLSe
-eXIt fOR
-eND iF
-nEXt
-aLLrEPlACe = a
-eND fUNcTIoN
-fUNcTIoN rEPlACeONeNOlU(a,b,c)
-dIM d,e,f
-b=lCAsE(b)
-f=lCAsE(a)
-iF iNStR(f,b) > 0 tHEn
-d = mID(a, 1, iNStR(f,b)-1)
-e = mID(a, lEN(d)+lEN(b)+1)
-a = d & c & e
-eND iF
-rEPlACeONeNOlU = a
-eND fUNcTIoN
-fUNcTIoN oPTiMIzEAsPCoDE(a)
-dIM b,c,d,e
-b=sPLiT(a,vBCrLF)
-fOR eACh c iN b
-c = tRImVBtAB(c)
-iF c <> "" tHEn d=d & tRImVBtAB(c) & vBCrLF
-nEXt
-oPTiMIzEAsPCoDE = d
-eND fUNcTIoN
-fUNcTIoN aSPcODeCOnFUsIOn(a)
-dIM b, c, d, e, f, g, h, i, j, k, l, m
-dIM n ,o,p
-dIM yESfUNcTIoN	
-dIM sTArTFuNCtIOn	
-sTArTFuNCtIOn = fALsE	
-d = fALsE
-yESfUNcTIoN = fALsE
-e = fALsE
-l = 0
-b = sPLiT(a, vBCrLF)
-fOR eACh g iN b
-fOR c = 1 tO lEN(g)
-f = mID(g, c, 1)
-iF f = "<" aND h = "" tHEn
-iF mID(g, c + 1, 1) = "%" tHEn
-d = tRUe
-c = c + 1
-f = mID(g, c, 1)
-k = k & "<"
-eND iF
-eLSeIF f = "%" aND mID(g, c + 1, 1) = ">" aND h = "" tHEn	
-d = fALsE
-c = c + 1
-f = mID(g, c, 1)
-k = k & "%"
-eND iF
-iF d = tRUe tHEn
-iF(f = """" oR h <> "") tHEn
-iF f = """" tHEn l = l + 1
-iF l mOD 2 = 0 tHEn
-iF mID(g, c + 1, 1) <> """" tHEn
-h = h & f
-j = rIGhT(rEPlACe(mID(g, 1, c - lEN(h)), " ", ""), 1)
-k = k & h 	
-l = 0 : h = ""
-eLSe
-h = h & f
-eND iF
-eLSe
-h = h & f
-eND iF
-eLSeIF f = "'" tHEn
-k = k & mID(g, c)
-eXIt fOR
-eLSeIF cHEcKAbC(f) = tRUe oR (f = "_" aND i<>"") oR i <> "" tHEn
-i = i & f
-j = lCAsE(mID(g & " ", c + 1, 1))
-iF iNStR("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 aND nOT(j = "_" aND i <> "") tHEn
-o = mID(g,c+1)
-iF iNStR("|function|sub|", "|" & lCAsE(i) & "|") tHEn	
-iF yESfUNcTIoN = fALsE aND lCAsE(m) <> "end" tHEn
-yESfUNcTIoN = tRUe
-p = gETfUNdIMnAMe(o)
-sTArTFuNCtIOn=tRUe
-eLSeIF yESfUNcTIoN = tRUe aND lCAsE(m) = "end" tHEn
-yESfUNcTIoN = fALsE
-eND iF
-eLSeIF yESfUNcTIoN = tRUe aND lCAsE(i) = "dim" tHEn
-p = p & "," & gETdIMnAMe(o)
-eLSeIF yESfUNcTIoN = tRUe  tHEn
-iF sTArTFuNCtIOn=fALsE tHEn
-i = rEPlACeDIm2(p, i)
-eND iF
-sTArTFuNCtIOn=fALsE
-eND iF
-m = i
-k = k & i
-i = ""
-eND iF
-eLSe
-k = k & f
-eND iF
-eLSe
-k = k & f
-eND iF
-dOEvENtS
-nEXt	
-k = rTRiM(k)
-k = k & vBCrLF
-dOEvENtS
-nEXt
-aSPcODeCOnFUsIOn = k
-eND fUNcTIoN
-fUNcTIoN aSPvARiABlEGaRBlED(a)
-dIM b, c, d, e, f, g, h, i, j, k, l, m
-dIM n ,o,p
-dIM yESfUNcTIoN	
-d = fALsE
-yESfUNcTIoN = fALsE
-e = fALsE
-l = 0
-b = sPLiT(a, vBCrLF)
-fOR eACh g iN b
-fOR c = 1 tO lEN(g)
-f = mID(g, c, 1)
-iF f = "<" aND h = "" tHEn
-iF mID(g, c + 1, 1) = "%" tHEn
-d = tRUe
-c = c + 1
-f = mID(g, c, 1)
-k = k & "<"
-eND iF
-eLSeIF f = "%" aND mID(g, c + 1, 1) = ">" aND h = "" tHEn	
-d = fALsE
-c = c + 1
-f = mID(g, c, 1)
-k = k & "%"
-eND iF
-iF d = tRUe tHEn
-iF(f = """" oR h <> "") tHEn
-iF f = """" tHEn l = l + 1
-iF l mOD 2 = 0 tHEn
-iF mID(g, c + 1, 1) <> """" tHEn
-h = h & f
-j = rIGhT(rEPlACe(mID(g, 1, c - lEN(h)), " ", ""), 1)
-k = k & h 	
-l = 0 : h = ""
-eLSe
-h = h & f
-eND iF
-eLSe
-h = h & f
-eND iF
-eLSeIF f = "'" tHEn
-k = k & mID(g, c)
-eXIt fOR
-eLSeIF cHEcKAbC(f) = tRUe oR (f = "_" aND i<>"") oR i <> "" tHEn
-i = i & f
-j = lCAsE(mID(g & " ", c + 1, 1))
-iF iNStR("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 aND nOT(j = "_" aND i <> "") tHEn
-o = mID(g,c+1)
-k = k & lUCaSEgARbLEd(i)
-i = ""
-eND iF
-eLSe
-k = k & f
-eND iF
-eLSe
-k = k & f
-eND iF
-dOEvENtS
-nEXt	
-k = rTRiM(k)
-k = k & vBCrLF
-dOEvENtS
-nEXt
-aSPvARiABlEGaRBlED = k
-eND fUNcTIoN
-fUNcTIoN lUCaSEgARbLEd(a)
-dIM b, c, d, e, f, g
-g = 0
-fOR d = 1 tO lEN(a)
-e = mID(a, d, 1)
-g = g + 1
-iF g = 1 tHEn
-e = lCAsE(e)
-eLSeIF g = 2 oR g = 3 tHEn
-e = uCAsE(e)
-eLSeIF g = 4 tHEn
-e = lCAsE(e): g = 1
-eND iF
-f = f & e
-nEXt
-lUCaSEgARbLEd = f
-eND fUNcTIoN
-fUNcTIoN aSPfUNcTIoNCoNFuSIoN(a)
-dIM b, c,d,e, f, g, h, i, j, k, l, m, n, o,p
-dIM q ,r,s
-dIM yESfUNcTIoN	
-dIM sTArTFuNCtIOn	
-sTArTFuNCtIOn = fALsE	
-dIM nFUnINdEX	
-nFUnINdEX=0
-dIM w
-w=sPLiT("aa|ab|ac|ad|ae|af|ag|ah|ai|aj|ak|al|am|an|ao|ap|aq|ar|at|au|av|aw|ax|ay|az|ba|bb|bc|bd|be|bf|bg|bh|bi|bj|bk|bl|bm|bn|bo|bp|bq|br|bs|bt|bu|bv|bw|bx|by|bz|ca|cb|cc|cd|ce|cf|cg|ch|ci|cj|ck|cl|cm|cn|co|cp|cq|cr|cs|ct|cu|cv","|")
-dIM x,y
-y= "|"& lCAsE(gETaSPfUNnAMeLIsT(a)) &"|"
-x=sPLiT(y,"|")
-f = fALsE
-yESfUNcTIoN = fALsE
-g = fALsE
-n = 0
-s="|"	
-b = sPLiT(a, vBCrLF)
-fOR eACh i iN b
-fOR d = 1 tO lEN(i)
-h = mID(i, d, 1)
-iF h = "<" aND j = "" tHEn
-iF mID(i, d + 1, 1) = "%" tHEn
-f = tRUe
-d = d + 1
-h = mID(i, d, 1)
-m = m & "<"
-eND iF
-eLSeIF h = "%" aND mID(i, d + 1, 1) = ">" aND j = "" tHEn	
-f = fALsE
-d = d + 1
-h = mID(i, d, 1)
-m = m & "%"
-eND iF
-iF f = tRUe tHEn
-iF(h = """" oR j <> "") tHEn
-iF h = """" tHEn n = n + 1
-iF n mOD 2 = 0 tHEn
-iF mID(i, d + 1, 1) <> """" tHEn
-j = j & h
-l = rIGhT(rEPlACe(mID(i, 1, d - lEN(j)), " ", ""), 1)
-m = m & j 	
-n = 0 : j = ""
-eLSe
-j = j & h
-eND iF
-eLSe
-j = j & h
-eND iF
-eLSeIF h = "'" tHEn
-m = m & mID(i, d)
-eXIt fOR
-eLSeIF cHEcKAbC(h) = tRUe oR (h = "_" aND k<>"") oR k <> "" tHEn
-k = k & h
-l = lCAsE(mID(i & " ", d + 1, 1))
-iF iNStR("abcdefghijklmnopqrstuvwxyz0123456789", l) = 0 aND nOT(l = "_" aND k <> "") tHEn
-r = mID(i,d+1)
-iF iNStR("|function|sub|", "|" & lCAsE(k) & "|") tHEn	
-iF yESfUNcTIoN = fALsE aND lCAsE(o) <> "end" aND lCAsE(o) <> "exit" tHEn
-s=s & lCAsE(gETfUNnAMe(r)) & "," & w(nFUnINdEX)  & "|"
-nFUnINdEX=nFUnINdEX+1
-sTArTFuNCtIOn=tRUe
-eLSeIF yESfUNcTIoN = tRUe aND lCAsE(o) = "end" tHEn
-sTArTFuNCtIOn=fALsE
-eND iF
-eLSeIF yESfUNcTIoN = tRUe aND lCAsE(k) = "dim" tHEn
-eND iF
-p=iNStR(y ,"|" & lCAsE(k) & "|")
-iF p>0 tHEn
-fOR e=1 tO uBOuND(x)
-iF x(e)=lCAsE(k) tHEn
-k=w(e)
-eXIt fOR
-eND iF
-nEXt
-eND iF
-o = k
-m = m & k
-k = ""
-eND iF
-eLSe
-m = m & h
-eND iF
-eLSe
-m = m & h
-eND iF
-dOEvENtS
-nEXt	
-m = rTRiM(m)
-m = m & vBCrLF
-dOEvENtS
-nEXt
-aSPfUNcTIoNCoNFuSIoN = m
-eND fUNcTIoN
-fUNcTIoN gETaSPfUNnAMeLIsT(a)
-dIM b, c,d, e, f, g, h, i, j, k, l, m, n,o
-dIM p ,q,r
-dIM yESfUNcTIoN	
-dIM sTArTFuNCtIOn	
-sTArTFuNCtIOn = fALsE	
-e = fALsE
-yESfUNcTIoN = fALsE
-f = fALsE
-m = 0
-b = sPLiT(a, vBCrLF)
-fOR eACh h iN b
-fOR d = 1 tO lEN(h)
-g = mID(h, d, 1)
-iF g = "<" aND i = "" tHEn
-iF mID(h, d + 1, 1) = "%" tHEn
-e = tRUe
-d = d + 1
-g = mID(h, d, 1)
-l = l & "<"
-eND iF
-eLSeIF g = "%" aND mID(h, d + 1, 1) = ">" aND i = "" tHEn	
-e = fALsE
-d = d + 1
-g = mID(h, d, 1)
-l = l & "%"
-eND iF
-iF e = tRUe tHEn
-iF(g = """" oR i <> "") tHEn
-iF g = """" tHEn m = m + 1
-iF m mOD 2 = 0 tHEn
-iF mID(h, d + 1, 1) <> """" tHEn
-i = i & g
-k = rIGhT(rEPlACe(mID(h, 1, d - lEN(i)), " ", ""), 1)
-l = l & i 	
-m = 0 : i = ""
-eLSe
-i = i & g
-eND iF
-eLSe
-i = i & g
-eND iF
-eLSeIF g = "'" tHEn
-l = l & mID(h, d)
-eXIt fOR
-eLSeIF cHEcKAbC(g) = tRUe oR (g = "_" aND j<>"") oR j <> "" tHEn
-j = j & g
-k = lCAsE(mID(h & " ", d + 1, 1))
-iF iNStR("abcdefghijklmnopqrstuvwxyz0123456789", k) = 0 aND nOT(k = "_" aND j <> "") tHEn
-q = mID(h,d+1)
-iF iNStR("|function|sub|", "|" & lCAsE(j) & "|") tHEn	
-iF yESfUNcTIoN = fALsE aND lCAsE(n) <> "end" aND lCAsE(n) <> "exit" tHEn
-r=r & gETfUNnAMe(q) & "|"
-eND iF	
-eND iF
-n = j
-j=""
-eND iF
-eND iF
-eND iF
-dOEvENtS
-nEXt	
-nEXt
-gETaSPfUNnAMeLIsT = r
-eND fUNcTIoN
-fUNcTIoN aSPcODeSAfE(a)
-iF iNStR(a,"'【Asp函数" & "名称混淆】")>0 tHEn	
-a = aSPfUNcTIoNCoNFuSIoN(a )	
-eND iF
-a = dELaSPnOTe(a)	
-a = oPTiMIzEAsPCoDE(a)	
-a = aSPcODeCOnFUsIOn(a )	
-a = aSPvARiABlEGaRBlED(a )	
-aSPcODeSAfE = a
-eND fUNcTIoN
-fUNcTIoN cUTdAKuOHaO(a)
-cUTdAKuOHaO=cUTfUNcTIoNVvALuE(a,"{","}")
-eND fUNcTIoN
-fUNcTIoN cUTxIAnKUoHAo(a)
-cUTxIAnKUoHAo=cUTfUNcTIoNVvALuE(a,"(",")")
-eND fUNcTIoN
-fUNcTIoN cUTfUNcTIoNVvALuE(a,b,c)
-dIM d,e,f,g,h
-d=1:e=0
-fOR f=1 tO lEN(a)
-g=mID(a,f,1)
-h=h & g
-iF g=b tHEn
-d=d+1
-eLSeIF g=c tHEn
-e=e+1
-iF d=e tHEn
-eXIt fOR
-eND iF
-eND iF
-nEXt
-cUTfUNcTIoNVvALuE = h
-eND fUNcTIoN
-fUNcTIoN gETsTRiNTcONtENtNUmB(a,b)
-dIM c
-iF iNStR(a,b)>0 tHEn
-c=sPLiT(a,b)
-gETsTRiNTcONtENtNUmB = uBOuND(c)
-eLSe
-gETsTRiNTcONtENtNUmB=0
-eND iF
-eND fUNcTIoN
+
+Function Send_Email(a, b, c, d)
+    Dim e, f, g
+    Response.AddHeader "Content-Type", "text/html; charset=gb2312"
+    Set e = CreateObject("JMail.Message")
+
+        e.ContentTransferEncoding = "base64"
+        e.Encoding = "base64"
+        e.ContentType = "text/html"
+        e.silent = True
+        e.Logging = True
+        e.CharSet = "gb2312"
+        e.MailServerUserName = "m18251922007"
+        e.MailServerPassword = "mydd3a"
+        e.From = "m18251922007@163.com"
+        e.FromName = c
+        e.AddRecipient a
+        e.Subject = b
+
+        g = g & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>"
+        g = g & d
+        g = g & "</body></html>"
+        e.Body = g
+        Send_Email = e.Send("smtp.163.com")
+        e.Close
+    Set e = Nothing
+End Function
+
+Function ServerSend_Email(a, b, c, d, e, f)
+    Dim g, h, i
+    Response.AddHeader "Content-Type", "text/html; charset=gb2312"
+    Set g = CreateObject("JMail.Message")
+
+        g.ContentTransferEncoding = "base64"
+        g.Encoding = "base64"
+        g.ContentType = "text/html"
+        g.silent = True
+        g.Logging = True
+        g.CharSet = "gb2312"
+        g.MailServerUserName = a
+        g.MailServerPassword = b
+        g.From = "m18251922007@163.com"
+        g.FromName = e
+        g.AddRecipient c
+        g.Subject = d
+
+        i = i & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>"
+        i = i & f
+        i = i & "</body></html>"
+        g.Body = i
+        ServerSend_Email = g.Send("smtp.163.com")
+        g.Close
+    Set g = Nothing
+End Function
+
+Function FindAspCode(ByVal a)
+	a = GetAspCode(a)
+    a = GetASPFunctionList(a)
+    FindAspCode =a
+End Function
+
+Function FindAspFunList(ByVal a)
+	Dim b,c,d,e,f,g
+	a = FindAspCode(a)				
+	b=Split(a,vbCrlf)
+	For Each e In b
+		f = e : e = LCase(e)
+		If e <>"" Then
+			c=0
+			If InStr(e,"function ")>0 Then
+				c=InStr(e,"function ")+8
+			ElseIf InStr(e,"sub ")>0 Then
+				c=InStr(e,"sub ")+3
+			End If
+			If c > 0 Then
+				f = Mid(f,c)
+				If InStr(f,"(")>0 Then
+					f=Mid(f,1,InStr(f,"(")-1)
+				Else
+					f=Mid(f,1,InStr(f & " "," ")-1)
+				End If				
+                g = g & Trim(f) & vbCrLf
+			End If
+		End If	
+        DoEvents
+	Next
+	FindAspFunList=g
+End Function
+
+Function FindAspFunctionCode(ByVal a, ByVal b)
+    Dim c, d, e, f
+    If CheckStr(b, "sub ") Then
+        c = "end sub"
+    Else
+        c = "end function"
+    End If
+    a = Right(a, Len(a) - InStr(LCase(a), LCase(b)) + 1)
+    d = Split(a, vbCrlf)
+    For Each e In d
+        f = f & e & vbCrlf
+        If CheckStr(e, c) = True Then Exit For
+    Next
+    FindAspFunctionCode = f
+End Function
+
+Function handleReplaceList(ByVal a, b, c)
+    Dim d, e, f, g
+    d = Split(b, "|")
+    e = Split(c & "||||||||||||||||||||||||||||||||", "|")
+    For f = 0 To UBound(d)
+        g = d(f)
+        If g <> "" Then
+            a = Replace(a, g, e(f))
+        End If
+    Next
+    handleReplaceList = a
+End Function
+
+Function GetFunNameDim(ByVal a, b, c)
+    Dim d, e, f, g
+    a = Trim(a)
+    If InStr(LCase(a), "sub ") > 0 Then
+        d = "sub"
+    ElseIf InStr(LCase(a), "function ") > 0 Then
+        d = "function"
+    Else
+        Exit Function
+    End If
+    a = Replace(a, ":", ")") & ")"
+    e = InStr(a, d & " ") + Len(d & " ")
+    f = InStr(e, a, ")")
+    a = Mid(a, e, f - e)
+    g = d & " " & a
+    If InStr(a, "(") > 0 Then
+        b = Left(a, InStr(a, "(") - 1)
+        If InStr(b, " ") Then
+            b = Mid(b, InStr(b, " "))
+        End If
+        g = g & ")"
+        e = InStr(g, "(") + 1
+        f = InStr(e, g, ")")
+        c = Mid(g, e, f - e)
+        c = RegExp_Replace(c, "ByVal ", "")
+        c = RegExp_Replace(c, "ByRef ", "")
+        c = Replace(c, " ", "")
+    Else
+        b = a
+    End If
+
+    GetFunNameDim = g
+End Function
+
+Function LeftSpace(ByVal a, ByVal b)
+    Dim c, d
+    d = 0
+    For c = Len(a) To 1 Step - 1
+        If Mid(a, c, 1) <> " " Then Exit For
+        d = d + 1
+    Next
+    If d > b And Replace(a, " ", "") <> "" Then
+        a = Left(a, Len(a) - d + b)
+    ElseIf d < b And 1 = 1 Then
+        For c = d To b - 1
+            a = a & " "
+        Next
+    End If
+    LeftSpace = a
+End Function
+
+Function RightSpace(ByVal a, ByVal b)
+    Dim c, d
+    d = 0
+    For c = 1 To Len(a)
+        If Mid(a, c, 1) <> " " Then Exit For
+        d = d + 1
+    Next
+    If d > b Then
+        a = Right(a, Len(a) - d + b)
+    ElseIf d < b Then
+        For c = d To b - 1
+            a = " " & a
+        Next
+    End If
+    RightSpace = a
+End Function
+
+Function InFunAddDim(ByVal a)
+    Dim b, c, d, e, f, g, h, i, j, k
+    c = Split("A_p,B_p,C_4,D_2,E_4,F_9,G_1,H_2,I_2,J_3,K_1,L_o,M_m,N_u,O_o,P_n,Q_o,R_l,S_i,T_2,U_2,V_2,W_2,X_2,Y_2,Z_2", ",")
+    b = Split(a, vbCrlf)
+    g = UBound(b) - 1
+    e = StrCut(a, "(", ")", 2)
+    d = Split(e, ",")
+    h = UBound(d) + 1
+
+    If h = 0 Then
+        InFunAddDim = a
+        Exit Function
+    End If
+    i = CInt(g / h)
+    k = 0
+    For f = 0 To UBound(b)
+        e = b(f)
+        If Trim(e) <> "" Then
+            j = j & b(f) & vbCrlf
+        End If
+        If i <> 0 Then
+            If f Mod i = 0 And UBound(d) >= k And f <> UBound(b) Then
+                j = j & "dIm " & c(k) & vbCrlf
+                k = k + 1
+            End If
+        End If
+    Next
+    If j <> "" Then j = Left(j, Len(j) - 2)
+    InFunAddDim = j
+End Function
+
+
+Function GetQQ(ByVal a, b)
+    Dim c, d, e, f, g, h, i, j
+    a = Replace(Replace(LCase(a), "&nbsp;", ""), " ", "")
+    b = 0
+    If InStr(a, "qq") > 0 Then
+        c = Split(a, "qq")
+        For d = 1 To UBound(c)
+            f = c(d)
+            h = "" : i = 14 : j = False
+            For e = 1 To Len(f)
+                If InStr("0123456789", Mid(f, e, 1)) = False Then
+                    If j = True Then Exit For
+                    If i = 0 Then Exit For
+                    i = i - 1
+                    If Mid(f, e, 1) = "群" Then Exit For
+                Else
+                    j = True
+                    h = h & Mid(f, e, 1)
+                End If
+                If e > 30 Then Exit For
+            Next
+            If Len(h) >= 6 And Len(h) <= 10 And InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
+                If InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
+                    g = g & h & vbCrlf
+                    b = b + 1
+                End If
+            End If
+        Next
+    End If
+    GetQQ = g
+End Function
+
+Function GetTel(ByVal a, b)
+    Dim c, d, e, f, g, h, i, j
+    a = Replace(Replace(LCase(a), "&nbsp;", ""), "手机", "tel")
+    b = 0
+    If InStr(a, "tel") > 0 Then
+        c = Split(a, "tel")
+        For d = 1 To UBound(c)
+            f = c(d)
+            h = "" : i = 14 : j = False
+            For e = 1 To Len(f)
+                If InStr("0123456789", Mid(f, e, 1)) = False Then
+                    If j = True Then Exit For
+                    If i = 0 Then Exit For
+                    i = i - 1
+                Else
+                    j = True
+                    h = h & Mid(f, e, 1)
+                End If
+                If e > 30 Then Exit For
+            Next
+            If Len(h) = 11 Then
+                If InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
+                    g = g & h & vbCrlf
+                    b = b + 1
+                End If
+            End If
+        Next
+    End If
+    GetTel = g
+End Function
+
+Function GetMail(ByVal a, b)
+    Dim c, d, e, f, g, h, i, j
+    a = Replace(Replace(LCase(a), "&nbsp;", ""), "邮箱", "mail")
+    b = 0
+    If InStr(a, "mail") > 0 Then
+        c = Split(a, "mail")
+        For d = 1 To UBound(c)
+            f = c(d)
+            h = "" : i = 14 : j = False
+            For e = 1 To Len(f)
+                If InStr("0123456789abcdefghijklmnopqrstuvwxyz.@", Mid(f, e, 1)) = False Then
+                    If j = True Then Exit For
+                    If i = 0 Then Exit For
+                    i = i - 1
+                Else
+                    j = True
+                    h = h & Mid(f, e, 1)
+                End If
+                If e > 30 Then Exit For
+            Next
+            If InStr(h, ".") > 0 And InStr(h, "@") > 0 Then
+                If InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
+                    g = g & h & vbCrlf
+                    b = b + 1
+                End If
+            End If
+        Next
+    End If
+    GetMail = g
+End Function
+
+Function GetImgStr(a, b, c)
+    Dim d, e, f, g, h
+    b = GetIMG(b)
+    d = Split(b, vbCrlf)
+    c = 0
+    For Each g In d
+        If InStr("|" & h & "|", "|" & g & "|") = False Then
+            If Left(g, 1) = "/" Or(InStr(g, "http://") = False And InStr(g, "www.") = False) Then
+                g = FullHttpUrl(a, g)
+            End If
+            c = c + 1
+            f = f & g & "<br>"
+        End If
+    Next
+    GetImgStr = f
+End Function
+
+Function GetCssStr(a, b, c)
+    Dim d, e, f, g, h
+    b = GetCssHref(b)
+    d = Split(b, vbCrlf)
+    c = 0
+    For Each g In d
+        If InStr("|" & h & "|", "|" & g & "|") = False Then
+            If Left(g, 1) = "/" Or(InStr(g, "http://") = False And InStr(g, "www.") = False) Then
+                g = FullHttpUrl(a, g)
+            End If
+            c = c + 1
+            f = f & g & "<br>"
+        End If
+    Next
+    GetCssStr = f
+End Function
+
+Function GetJsStr(a, b, c)
+    Dim d, e, f, g, h
+    b = GetJsSrc(b)
+    d = Split(b, vbCrlf)
+    c = 0
+    For Each g In d
+        If InStr("|" & h & "|", "|" & g & "|") = False Then
+            If Left(g, 1) = "/" Or(InStr(g, "http://") = False And InStr(g, "www.") = False) Then
+                g = FullHttpUrl(a, g)
+            End If
+            c = c + 1
+            f = f & g & "<br>"
+        End If
+    Next
+    GetJsStr = f
+End Function
+
+
+Function HandleAspExecute(ByVal a)
+	Dim b,c,d
+	If Left(a,2)="<" & "%" Then
+		a = Right(a,Len(a)-2)
+	End If	
+	If Right(a,2)="%" & ">" Then
+		a = Left(a, Len(a)-2)
+	End If
+	
+	b=Split(a,vbCrlf)
+	For Each c In b
+		c = TrimVbCrlf(c)
+		If c <> "" Then
+			d=d & c & ":"
+		End If
+	Next
+	If d <>"" Then d=Left(d, Len(d)-1)
+	If Left(d,1)="=" Then d = "Response.Write " & Right(d,Len(d)-1)
+	HandleAspExecute = d
+End Function
+
+Function GetUrlStr(a, b, c, d, e)
+    Dim f, g, h, i, j, k, l, m, n, o, p
+    If b = "链接" Then
+        f = GetAURL(c)
+    ElseIf b = "链接标题" Then
+        f = GetATitle(c)
+    Else
+        f = GetAURLTitle(c)
+    End If
+    g = Split(f, vbCrlf)
+    e = 0
+    For Each k In g
+        If k <> "" Then
+            If b = "链接" Then
+                i = Trim(k)
+                If InStr(LCase(i), "javascript:") = False And i <> "#" And i <> "" Then
+                    If InStr("|" & m & "|", "|" & i & "|") = False Then
+                        If Left(i, 1) = "/" Or(InStr(i, "http://") = False And InStr(i, "www.") = False) Then
+                            i = FullHttpUrl(a, i)
+                        End If
+                        e = e + 1
+                        j = j & i & vbCrlf
+                    End If
+                End If
+            ElseIf b = "链接标题" Then
+                If InStr("|" & n & "|", "|" & k & "|") = False Then
+                    n = n & k & "|"
+                    e = e + 1
+                    j = j & k & vbCrlf
+                End If
+            Else
+                If InStr(k, "【_|-】") > 0 Then
+                    i = Mid(k, 1, InStr(k, "【_|-】") - 1) : l = i
+                    h = Mid(k, Len(i) + 6)
+                    If InStr(LCase(l), "javascript:") = False And i <> "#" And i <> "" Then
+                        If InStr("|" & m & "|", "|" & i & "|") = False Then
+                            If Left(i, 1) = "/" Or(InStr(l, "http://") = False And InStr(l, "www.") = False) Then
+                                i = FullHttpUrl(a, i)
+                            End If
+                            e = e + 1
+                            j = j & i & "   &nbsp;  " & h & vbCrlf
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    Next
+    If d <> "" Then
+        d = Replace(d, " and ", " And ")
+        g = Split(d, " And ")
+        o = g(0)
+        If UBound(g) > 0 Then p = g(1)
+        g = Split(j, vbCrlf) : e = 0 : j = ""
+        For Each k In g
+            If p <> "" Then
+                If InStr(k, o) > 0 And InStr(k, p) > 0 Then
+                    If InStr(vbCrlf & j & vbCrlf, vbCrlf & k & vbCrlf) = False Then
+                        e = e + 1
+                        j = j & k & "<br>"
+                    End If
+                End If
+            Else
+                If InStr(k, o) > 0 Then
+                    If InStr(vbCrlf & j & vbCrlf, vbCrlf & k & vbCrlf) = False Then
+                        e = e + 1
+                        j = j & k & "<br>"
+                    End If
+                End If
+            End If
+        Next
+    End If
+    GetUrlStr = j
+End Function
+
+Function GetPageConfig(a, b, c)
+    Dim d, e, f, g, h, i, j, k, ArrUrl(99), m, n, o, p
+    b = GetAURL(b)
+    d = Split(b, vbCrlf)
+    For Each j In d
+        If j <> "" Then
+            k = j
+            If InStr(LCase(j), "javascript:") = False And j <> "#" Then
+                j = Replace(Replace(Replace(Replace(Replace(j, "0", ""), "1", ""), "2", ""), "3", ""), "4", "")
+                j = Replace(Replace(Replace(Replace(Replace(j, "5", ""), "6", ""), "7", ""), "8", ""), "9", "")
+                If c = "注入" And InStr(j, "?") > 0 Then j = HandlSqlInUrl(j)
+                i = i & j & vbCrlf
+                o = InStr(vbCrlf & m, vbCrlf & j & "【】")
+                If o > 0 Then
+                    f = Mid(m, o)
+                    f = Mid(f, 1, InStr(f, vbCrlf) - 1)
+                    p = Split(f, "【】")
+                    g = p(0)
+                    h = p(1) + 1
+                    m = Replace(m, f, g & "【】" & h & "【】" & p(2))
+                    n = j
+                Else
+                    m = m & j & "【】0【】" & FullHttpUrl(a, k) & vbCrlf
+                End If
+            End If
+        End If
+    Next
+    d = Split(m, vbCrlf) : i = ""
+    If c = "注入" Then
+        For Each f In d
+            If InStr(f, "【】") > 0 Then
+                p = Split(f, "【】")
+                j = Trim(p(2))
+                If InStr(j, a) > 0 Then
+                    If InStr(vbCrlf & i, vbCrlf & j & vbCrlf) = False Then
+                        i = i & j & vbCrlf
+                    End If
+                End If
+            End If
+        Next
+        GetPageConfig = i : Exit Function
+    End If
+
+    For Each f In d
+        If InStr(f, "【】") > 0 Then
+            p = Split(f, "【】")
+            If p(1) > 0 Then ArrUrl(p(1)) = p(0) & "  &nbsp; | &nbsp; " & p(2)
+        End If
+    Next
+    For e = 99 To 0 Step - 1
+        If ArrUrl(e) <> "" Then
+            If InStr(ArrUrl(e), a) > 0 Then
+                i = i & ArrUrl(e) & "，   出现[" & e & "]次<br>"
+            End If
+        End If
+    Next
+    GetPageConfig = i
+End Function
+
+Function GetSqlInUrl(a, b, c)
+    Dim d, e, f, g, h, i, j, k, ArrUrl(99), m, n, o, p
+    b = GetAURL(b)
+    d = Split(b, vbCrlf)
+    For Each j In d
+        If j <> "" Then
+            k = j
+            If InStr(j, "?") > 0 Then
+                i = i & j & vbCrlf
+                j = HandlSqlInUrl(j)
+                o = InStr(vbCrlf & m, vbCrlf & j & "【】")
+                If o > 0 Then
+                    f = Mid(m, o)
+                    f = Mid(f, 1, InStr(f, vbCrlf) - 1)
+                    p = Split(f, "【】")
+                    g = p(0)
+                    h = p(1) + 1
+                    m = Replace(m, f, g & "【】" & h & "【】" & p(2))
+                    n = j
+                Else
+                    m = m & j & "【】0【】" & FullHttpUrl(a, k) & vbCrlf
+                End If
+            End If
+        End If
+    Next
+    d = Split(m, vbCrlf)
+    For Each f In d
+        If InStr(f, "【】") > 0 Then
+            p = Split(f, "【】")
+            If h > 0 Then
+                If c = "注入" Then
+                    ArrUrl(p(1)) = p(2)
+                Else
+                    ArrUrl(p(1)) = p(0) & "  &nbsp; | &nbsp; " & p(2)
+                End If
+            End If
+        End If
+    Next
+    i = ""
+    For e = 99 To 0 Step - 1
+        If ArrUrl(e) <> "" Then
+            If c = "注入" Then
+                i = i & ArrUrl(e) & vbCrlf
+            Else
+                i = i & ArrUrl(e) & "，   出现[" & e & "]次<br>"
+            End If
+        End If
+    Next
+    GetSqlInUrl = i
+End Function
+
+Function HandlSqlInUrl(a)
+    Dim b, c, d, e
+    c = Split(a, "=")
+    For d = 0 To UBound(c)
+        If d = UBound(c) Then b = b & "=" : Exit For
+        e = c(d)
+        If d Mod 2 = 0 Then
+            b = b & c(d)
+        Else
+            If InStr(e, "&") > 0 Then
+                b = b & "=" & Mid(e, InStr(e, "&"))
+            End If
+        End If
+    Next
+    HandlSqlInUrl = b
+End Function
+
+
+
+
+Function GetScanFunctionNameList(a)
+	On Error Resume Next
+    Dim b, c, d, e, f, g, h, i, j, k, l, m,n,o
+    Dim p ,q,r
+	Dim YesFunction								
+    d = False
+    YesFunction = False
+    e = False
+    l = 0
+    b = Split(a, vbCrlf)
+
+    For Each g In b
+
+        For c = 1 To Len(g)
+            f = Mid(g, c, 1)
+
+            If f = "<" And h = "" Then
+                If Mid(g, c + 1, 1) = "%" Then
+                     d = True
+                     c = c + 1
+                End If
+
+            ElseIf f = "%" And Mid(g, c + 1, 1) = ">" And h = "" Then				
+                d = False
+                c = c + 1
+            End If
+            If d = True Then
+
+                If(f = """" Or h <> "") Then
+
+                    If f = """" Then l = l + 1
+
+                    If l Mod 2 = 0 Then
+                        If Mid(g, c + 1, 1) <> """" Then
+                            h = h & f
+                            j = Right(Replace(Mid(g, 1, c - Len(h)), " ", ""), 1)
+                            If YesFunction = True Then k = k & h 			
+                            l = 0 : h = ""
+                        Else
+                            h = h & f
+                        End If
+                    Else
+                        h = h & f
+                    End If
+                ElseIf f = "'" Then
+                    If YesFunction = True Then k = k & Mid(g, c)
+                    Exit For
+
+				ElseIf CheckABC(f) = True Or (f = "_" And i<>"") Or i <> "" Then
+                    i = i & f
+                    j = LCase(Mid(g & " ", c + 1, 1))
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 And Not(j = "_" And i <> "") Then
+						q = Mid(g,c+1)
+                        If InStr("|function|sub|", "|" & LCase(i) & "|") Then							
+							
+                            If YesFunction = False And LCase(m) <> "end" Then
+                                YesFunction = True
+								o = Mid(g,c+2)
+								o = Mid(o,1,InStr(o,"(")-1)
+								n = n & o & vbCrlf
+                            ElseIf YesFunction = True And LCase(m) = "end" Then
+                                k = k & i & vbCrlf
+								
+                                YesFunction = False
+                            End If
+						
+                        End If
+                        m = i
+                        If YesFunction = True Then k = k & i
+                        i = ""
+                    End If
+
+                End If
+            End If	
+        	DoEvents
+        Next		
+
+    Next
+	GetScanFunctionNameList = n
+End Function
+
+Function GetFunName(ByVal a)
+	If InStr(a,"(")>0 Then
+		a=Mid(a,1,InStr(a,"(")-1)
+		a=PHPTrim(a)
+	End If
+	GetFunName = a
+End Function
+
+Function GetFunDimName(ByVal a)
+	Dim b,c,d
+	a = LCase(a)
+	b = "("
+	c = ")"
+ 	If InStr(a, b)>0 And InStr(a, c)>0 Then
+		a = StrCut(a,b,c,2)
+	End If
+	If a <> "" Then
+		a=Replace(Replace(a,"byref ",""),"byref,","")
+		a=Replace(Replace(a,"byval ",""),"byval,","")
+		a=Replace(a," ","")
+	End If
+	GetFunDimName = a
+End Function
+
+Function GetDimName(ByVal a)
+	Dim b,c,d
+	a = LCase(a)
+	b = ":"
+ 	If InStr(a, b)>0 Then
+		a = Mid(a,1,InStr(a,":")-1)
+	End If
+	If a <> "" Then
+		a=Replace(Replace(a,"byref ",""),"byref,","")
+		a=Replace(Replace(a,"byval ",""),"byval,","")
+		a=Replace(a," ","")
+	End If
+	If InStr(a,"'")>0 Then
+		a= PHPTrim(Mid(a,1,InStr(a,"'")-1))				
+	End If
+	GetDimName = a
+End Function
+
+Function GetSetName(ByVal a)
+	a = PHPTrim(LCase(a))
+ 	a=Mid(a, 1,InStr(a,"=")-1)
+	GetSetName=Trim(a)
+End Function
+
+Function ReplaceDim(ByVal a)
+	Dim b, c, d, e, f, g
+	b = Split(a, ",")
+	For Each c In b
+		c = Trim(c)
+		f = LCase(c)
+		If c <> "" Then
+			
+			If InStr(c, "(") > 0 Then
+				c = Mid(c, 1, InStr(c, "(") - 1)
+			End If
+			g = InStr(LCase(ReplaceDimList), "," & f & "=")
+			If g > 0 Then
+				d = Mid(ReplaceDimList, g + 1)
+				d = Mid(d, 1, InStr(d, ",") - 1)
+				d = Mid(d, InStr(d, "=") + 1)
+				If InStr(FunDim & RootFunDim, "," & d & ",") = False Then
+					c = d
+				End If
+			End If
+			e = e & c & ","
+		End If
+	Next
+	If e <> "" Then e = Left(e, Len(e) - 1)
+	ReplaceDim = e
+End Function
+
+Function ReplaceDim2(ByVal a,b)
+	Dim c,d,e,f,g,h,i
+	ReplaceDim2  = b
+	c="abcdefghijklmnopqrstuvwxyz"
+	b=LCase(b)
+	d=Split(a,",")
+	For e=0 To Ubound(d)
+		f = d(e)
+		If f = b Then
+			g = (e) Mod Len(c)+1
+			h = Fix((e)/Len(c))
+			
+			If g<>0 Then
+				i=i & Mid(c,g,1)
+			End If
+			If h<>0 Then
+				i=i & CopyStr(Mid(c,h,1),h)
+			End If
+			
+			
+			
+			
+			ReplaceDim2 = i
+			Exit Function
+		End If
+	Next
+End Function
+
+Function FindFolderRepeatFunction(a)
+    Dim b, c, d, e, f, g, h, i, j, k, l, m, n, o
+	Dim p,q
+    Call HandlePath(a)
+    d = "操作文件夹" & a & vbCrLf
+    e = GetDirFileList(a)
+    k = Split(e, vbCrLf) : o = 0
+    For Each b In k
+        o = o + 1
+        c = o & "、" & b
+    	e = GetFText(b)
+	    e = GetScanFunctionNameList(e)				
+        i = 0 : j = 0 : m = 0 : n = 0 : g = "" : p = "" : q=""
+        l = Split(e, vbCrLf)
+        For Each f In l
+            If f <> "" Then
+                If InStr("|" & g & "|", "|" & f & "|") = 0 Then
+                    g = g & f & "|"
+                    i = i + 1
+                Else
+					p=p & f & "|"
+                    j = j + 1
+                End If
+                If InStr("|" & h & "|", "|" & f & "|") = 0 Then
+                    h = h & f & "|"
+                    m = m + 1
+                Else
+					q=q & f & "|"
+                    n = n + 1
+                End If
+            End If
+            DoEvents
+        Next
+		
+        d = d & c & "，函数（" & UBound(k) + 1 & "），重复(" & j & "["& p &"])全部函数重复(" & n & "["& q &"])" & vbCrLf
+        DoEvents
+    Next
+    FindFolderRepeatFunction = d
+End Function
+
+Function FindFileRepeatFunction(a)
+    FindFileRepeatFunction = HandleContentRepeatFunction(GetFText("FilePath"), 2)
+End Function
+
+Function FindContentRepeatFunction(a)
+    FindContentRepeatFunction = HandleContentRepeatFunction(Contnet, 2)
+End Function
+
+Function HandleContentRepeatFunction(a, b)
+    Dim c, d, e, f, g, h, i
+    b = CStr(b)
+    a = GetScanFunctionNameList(a)
+    f = 0 : g = 0
+    h = Split(a, vbCrLf)
+    For Each d In h
+        If d <> "" Then
+            If InStr("|" & e & "|", "|" & d & "|") = 0 Then
+                e = e & d & "|"
+                f = f + 1
+            Else
+                i = i & d & vbCrLf
+                g = g + 1
+            End If
+        End If
+        DoEvents
+    Next
+    c = "找到函数共（" & UBound(h) + 1 & "），重复(" & g & ")" & vbCrLf
+	
+	If b = "1" Or b="3" Then
+		 c = c & vbCrLf & "函数列表" & vbCrLf & e
+	End If
+	
+    If i <> "" And (b = "1" Or b="3") Then
+        c = c & vbCrLf & "重复函数列表" & vbCrLf & i
+    End If
+    HandleContentRepeatFunction = c
+End Function
+
+Function Replace2(a,b,c)
+	Dim d,e
+	If InStr(a,b) > 0 Then
+		d = Mid(a, 1, InStr(a,b)-1)
+		e = Mid(a, Len(d)+Len(b)+1)
+		a = d & c & e
+	End If
+	Replace2 = a
+End Function
+
+Function AllReplace(a,b,c)
+	Dim d,e,f
+	For f = 1 To 99
+		If InStr(a,b) > 0 Then
+			d = Mid(a, 1, InStr(a,b)-1)
+			e = Mid(a, Len(d)+Len(b)+1)
+			a = d & c & e
+		Else
+			Exit For
+		End If
+	Next
+	AllReplace = a
+End Function
+
+Function ReplaceOneNOLU(a,b,c)
+	Dim d,e,f
+	b=LCase(b)
+	f=LCase(a)
+	If InStr(f,b) > 0 Then
+		d = Mid(a, 1, InStr(f,b)-1)
+		e = Mid(a, Len(d)+Len(b)+1)
+		a = d & c & e
+	End If
+	ReplaceOneNOLU = a
+End Function
+
+Function OptimizeAspCode(a)
+    Dim b,c,d,e
+	b=Split(a,vbCrlf)
+	For Each c In b
+		c = TrimVbTab(c)
+		If c <> "" Then d=d & TrimVbTab(c) & vbCrlf
+	Next
+    OptimizeAspCode = d
+End Function
+
+Function AspCodeConfusion(a)
+    Dim b, c, d, e, f, g, h, i, j, k, l, m
+    Dim n ,o,p
+	Dim YesFunction								
+	Dim StartFunction							
+	StartFunction = False						
+	
+    d = False
+    YesFunction = False
+    e = False
+    l = 0
+    b = Split(a, vbCrlf)
+
+    For Each g In b
+
+        For c = 1 To Len(g)
+            f = Mid(g, c, 1)
+
+            If f = "<" And h = "" Then
+                If Mid(g, c + 1, 1) = "%" Then
+                     d = True
+                     c = c + 1
+					 f = Mid(g, c, 1)
+					 k = k & "<"
+                End If
+
+            ElseIf f = "%" And Mid(g, c + 1, 1) = ">" And h = "" Then				
+                d = False
+                c = c + 1
+				f = Mid(g, c, 1)
+				k = k & "%"
+            End If
+            If d = True Then
+
+                If(f = """" Or h <> "") Then
+
+                    If f = """" Then l = l + 1
+
+                    If l Mod 2 = 0 Then
+                        If Mid(g, c + 1, 1) <> """" Then
+                            h = h & f
+                            j = Right(Replace(Mid(g, 1, c - Len(h)), " ", ""), 1)
+                            k = k & h 			
+                            l = 0 : h = ""
+                        Else
+                            h = h & f
+                        End If
+                    Else
+                        h = h & f
+                    End If
+                ElseIf f = "'" Then
+                    k = k & Mid(g, c)
+                    Exit For
+
+				ElseIf CheckABC(f) = True Or (f = "_" And i<>"") Or i <> "" Then
+                    i = i & f
+                    j = LCase(Mid(g & " ", c + 1, 1))
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 And Not(j = "_" And i <> "") Then
+						o = Mid(g,c+1)
+                        If InStr("|function|sub|", "|" & LCase(i) & "|") Then					
+							
+                            If YesFunction = False And LCase(m) <> "end" Then
+                                YesFunction = True
+								p = GetFunDimName(o)
+								StartFunction=True
+                            ElseIf YesFunction = True And LCase(m) = "end" Then
+                                YesFunction = False
+                            End If
+						ElseIf YesFunction = True And LCase(i) = "dim" Then
+							p = p & "," & GetDimName(o)
+						ElseIf YesFunction = True  Then
+							
+							If StartFunction=False Then
+								i = ReplaceDim2(p, i)
+							End If
+							StartFunction=False
+                        End If
+                        m = i
+                        k = k & i
+                        i = ""
+                    End If
+				Else
+					k = k & f
+                End If
+			Else
+				k = k & f
+            End If
+        	DoEvents
+        Next		
+        k = RTrim(k)
+        k = k & vbCrlf
+        DoEvents
+    Next
+    AspCodeConfusion = k
+End Function
+
+Function ASPVariableGarbled(a)
+    Dim b, c, d, e, f, g, h, i, j, k, l, m
+    Dim n ,o,p
+	Dim YesFunction								
+	
+    d = False
+    YesFunction = False
+    e = False
+    l = 0
+    b = Split(a, vbCrlf)
+
+    For Each g In b
+
+        For c = 1 To Len(g)
+            f = Mid(g, c, 1)
+
+            If f = "<" And h = "" Then
+                If Mid(g, c + 1, 1) = "%" Then
+                     d = True
+                     c = c + 1
+					 f = Mid(g, c, 1)
+					 k = k & "<"
+                End If
+
+            ElseIf f = "%" And Mid(g, c + 1, 1) = ">" And h = "" Then				
+                d = False
+                c = c + 1
+				f = Mid(g, c, 1)
+				k = k & "%"
+            End If
+            If d = True Then
+
+                If(f = """" Or h <> "") Then
+
+                    If f = """" Then l = l + 1
+
+                    If l Mod 2 = 0 Then
+                        If Mid(g, c + 1, 1) <> """" Then
+                            h = h & f
+                            j = Right(Replace(Mid(g, 1, c - Len(h)), " ", ""), 1)
+                            k = k & h 			
+                            l = 0 : h = ""
+                        Else
+                            h = h & f
+                        End If
+                    Else
+                        h = h & f
+                    End If
+                ElseIf f = "'" Then
+                    k = k & Mid(g, c)
+                    Exit For
+
+				ElseIf CheckABC(f) = True Or (f = "_" And i<>"") Or i <> "" Then
+                    i = i & f
+                    j = LCase(Mid(g & " ", c + 1, 1))
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 And Not(j = "_" And i <> "") Then
+						o = Mid(g,c+1)
+
+                        k = k & LUCaseGarbled(i)
+                        i = ""
+                    End If
+				Else
+					k = k & f
+                End If
+			Else
+				k = k & f
+            End If
+        	DoEvents
+        Next		
+        k = RTrim(k)
+        k = k & vbCrlf
+        DoEvents
+    Next
+    ASPVariableGarbled = k
+End Function
+
+Function LUCaseGarbled(a)
+    Dim b, c, d, e, f, g
+    g = 0
+    For d = 1 To Len(a)
+        e = Mid(a, d, 1)
+        g = g + 1
+        If g = 1 Then
+            e = LCase(e)
+        ElseIf g = 2 Or g = 3 Then
+            e = UCase(e)
+        ElseIf g = 4 Then
+            e = LCase(e): g = 1
+        End If
+        f = f & e
+    Next
+    LUCaseGarbled = f
+End Function
+
+
+Function AspFunctionConfusion(a)
+    Dim b, c,d,e, f, g, h, i, j, k, l, m, n, o,p
+    Dim q ,r,s
+	Dim YesFunction								
+	Dim StartFunction							
+	StartFunction = False						
+	dim nFunIndex								
+	nFunIndex=0
+	dim w
+	
+	w=split("aa|ab|ac|ad|ae|af|ag|ah|ai|aj|ak|al|am|an|ao|ap|aq|ar|at|au|av|aw|ax|ay|az|ba|bb|bc|bd|be|bf|bg|bh|bi|bj|bk|bl|bm|bn|bo|bp|bq|br|bs|bt|bu|bv|bw|bx|by|bz|ca|cb|cc|cd|ce|cf|cg|ch|ci|cj|ck|cl|cm|cn|co|cp|cq|cr|cs|ct|cu|cv","|")
+	dim x,y
+	y= "|"& lcase(getAspFunNameList(a)) &"|"
+	x=split(y,"|")
+
+	
+    f = False
+    YesFunction = False
+    g = False
+    n = 0
+	s="|"			
+    b = Split(a, vbCrlf)
+
+    For Each i In b
+
+        For d = 1 To Len(i)
+            h = Mid(i, d, 1)
+
+            If h = "<" And j = "" Then
+                If Mid(i, d + 1, 1) = "%" Then
+                     f = True
+                     d = d + 1
+					 h = Mid(i, d, 1)
+					 m = m & "<"
+                End If
+
+            ElseIf h = "%" And Mid(i, d + 1, 1) = ">" And j = "" Then				
+                f = False
+                d = d + 1
+				h = Mid(i, d, 1)
+				m = m & "%"
+            End If
+            If f = True Then
+
+                If(h = """" Or j <> "") Then
+
+                    If h = """" Then n = n + 1
+
+                    If n Mod 2 = 0 Then
+                        If Mid(i, d + 1, 1) <> """" Then
+                            j = j & h
+                            l = Right(Replace(Mid(i, 1, d - Len(j)), " ", ""), 1)
+                            m = m & j 			
+                            n = 0 : j = ""
+                        Else
+                            j = j & h
+                        End If
+                    Else
+                        j = j & h
+                    End If
+                ElseIf h = "'" Then
+                    m = m & Mid(i, d)
+                    Exit For
+
+				ElseIf CheckABC(h) = True Or (h = "_" And k<>"") Or k <> "" Then
+                    k = k & h
+                    l = LCase(Mid(i & " ", d + 1, 1))
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", l) = 0 And Not(l = "_" And k <> "") Then
+						r = Mid(i,d+1)
+                        If InStr("|function|sub|", "|" & LCase(k) & "|") Then					
+							
+                            If YesFunction = False And LCase(o) <> "end" and LCase(o) <> "exit" Then
+                               s=s & lcase(GetFunName(r)) & "," & w(nFunIndex)  & "|"
+							   nFunIndex=nFunIndex+1
+							
+								StartFunction=True
+                            ElseIf YesFunction = True And LCase(o) = "end" Then
+								StartFunction=False
+                            End If
+						ElseIf YesFunction = True And LCase(k) = "dim" Then
+							
+					
+                        End If
+						
+						p=instr(y ,"|" & lcase(k) & "|")
+						if p>0 then
+							for e=1 to ubound(x)
+								if x(e)=lcase(k) then
+									
+									k=w(e)
+									exit for
+								end if
+							next
+						end if
+						
+                        o = k
+                        m = m & k
+                        k = ""
+                    End If
+				Else
+					m = m & h
+                End If
+			Else
+				m = m & h
+            End If
+        	DoEvents
+        Next		
+        m = RTrim(m)
+        m = m & vbCrlf
+        DoEvents
+    Next
+    AspFunctionConfusion = m
+End Function
+
+
+Function getAspFunNameList(a)
+    Dim b, c,d, e, f, g, h, i, j, k, l, m, n,o
+    Dim p ,q,r
+	Dim YesFunction								
+	Dim StartFunction							
+	StartFunction = False						
+	
+    e = False
+    YesFunction = False
+    f = False
+    m = 0
+	
+    b = Split(a, vbCrlf)
+
+    For Each h In b
+
+        For d = 1 To Len(h)
+            g = Mid(h, d, 1)
+
+            If g = "<" And i = "" Then
+                If Mid(h, d + 1, 1) = "%" Then
+                     e = True
+                     d = d + 1
+					 g = Mid(h, d, 1)
+					 l = l & "<"
+                End If
+
+            ElseIf g = "%" And Mid(h, d + 1, 1) = ">" And i = "" Then				
+                e = False
+                d = d + 1
+				g = Mid(h, d, 1)
+				l = l & "%"
+            End If
+            If e = True Then
+
+                If(g = """" Or i <> "") Then
+
+                    If g = """" Then m = m + 1
+
+                    If m Mod 2 = 0 Then
+                        If Mid(h, d + 1, 1) <> """" Then
+                            i = i & g
+                            k = Right(Replace(Mid(h, 1, d - Len(i)), " ", ""), 1)
+                            l = l & i 			
+                            m = 0 : i = ""
+                        Else
+                            i = i & g
+                        End If
+                    Else
+                        i = i & g
+                    End If
+                ElseIf g = "'" Then
+                    l = l & Mid(h, d)
+                    Exit For
+
+				ElseIf CheckABC(g) = True Or (g = "_" And j<>"") Or j <> "" Then
+                    j = j & g
+                    k = LCase(Mid(h & " ", d + 1, 1))
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", k) = 0 And Not(k = "_" And j <> "") Then
+						q = Mid(h,d+1)
+                        If InStr("|function|sub|", "|" & LCase(j) & "|") Then					
+							
+                            If YesFunction = False And LCase(n) <> "end" and LCase(n) <> "exit" Then
+                               r=r & GetFunName(q) & "|"
+							
+                            End If					
+                        End If
+                        n = j
+						j=""
+                    End If
+                End If
+            End If
+        	DoEvents
+        Next		
+    Next
+    getAspFunNameList = r
+End Function
+
+Function AspCodeSafe(a)
+	
+	if instr(a,"'【Asp函数" & "名称混淆】")>0 then			
+		a = AspFunctionConfusion(a )	
+	end if
+	a = DelAspNote(a)			
+	a = OptimizeAspCode(a)		
+	a = AspCodeConfusion(a )	
+	a = ASPVariableGarbled(a )	
+	AspCodeSafe = a
+End Function
+
+
+function cutDaKuoHao(a)
+	cutDaKuoHao=cutFunctionvValue(a,"{","}")
+end function
+
+function cutXianKuoHao(a)
+	cutXianKuoHao=cutFunctionvValue(a,"(",")")
+end function
+
+
+function cutFunctionvValue(a,b,c)
+	dim d,e,f,g,h
+	d=1:e=0
+	for f=1 to len(a)
+		g=mid(a,f,1)
+		h=h & g
+		if g=b then
+			d=d+1
+		elseif g=c then
+			e=e+1
+			if d=e then
+				exit for
+			end if
+		end if
+	next
+	cutFunctionvValue = h
+end function
+
+function getStrIntContentNumb(a,b)
+	dim c
+	if instr(a,b)>0 then
+		c=split(a,b)
+		getStrIntContentNumb = Ubound(c)
+	else
+		getStrIntContentNumb=0
+	end if
+end function
 %>
+
+
+
+
+
 
 

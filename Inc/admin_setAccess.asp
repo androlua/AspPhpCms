@@ -2,300 +2,335 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-16
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-sUB rESeTAcCEsSDaTA()
-cALl oPEnCOnN()
-dIM b, c, d, e, f, g
-cALl oPEnCOnN()
-cONn.eXEcUTe("delete from " & dB_pREfIX & "webcolumn")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,parentid) values('首推产品','Recommend','首页',0,'|top|',-1)")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid,showtitle,bodycontent) values('关于安颐','About','文本',1,'|top|','关于我们您可以知道很多',-1,'天津华林园科技发展有限公司','公司拥有资深的国内外专家、教授、博士、硕士等专业的研发队伍，开发具有世界领先水平的新型材料和产品。 多年来公司立足品牌的战略和人才的战略，在激烈的市场竞争中迅速发展和壮大，形成了以科研、开发、生产、复合营销为一体的多元化、多领域的专业科技公司。 公司实行外联内合的战略，与日本科研机构合作，研究开发出具有世界尖端水平的生物保健品和化妆品； 与国内具有研究实力的功能纤维研究所合作，开发研制出了国内先进高端的纳米光能微粉材料及纤维系列健康产品，以及现已完成研制的软体面控发射体材料的制作。华林公司是我们实实在在的民族企业，她在多项领域和多项科研中是领头羊佼佼者，是天津的重点保护企业、诚信企业。她现在拥有科技发明及新型实用专利11项，企业获得了ISO9000与ISO14000认证,被天津市政府评为“明星企业”和“五星级企业”。 ')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid) values('安颐产品','Product','产品',2,'|top|','尽心尽力为你你制作更好的产品',-1)")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid) values('新闻视频','News','产品',3,'|top|','公司信息一手知道',-1)")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid) values('联系我们','Contact us','文本',4,'|top|','我们可有意思了欢迎来联系',-1)")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid) values('细胞生态学','Contact us','新闻',4,'||','',-1)")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid) values('美容常识','Contact us','新闻',4,'||','',-1)")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid) values('新闻资讯','Contact us','新闻',4,'||','',-1)")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (columnname,columnenname,columntype,sortrank,flags,simpleintroduction,parentid) values('精彩视频','Contact us','视频',4,'||','',-1)")
-cONn.eXEcUTe("delete from " & dB_pREfIX & "articledetail")
-b = sPLiT("细胞生态学|美容常识|新闻资讯|安颐产品", "|")
-fOR eACh e iN b
-iF e = "安颐产品" tHEn
-g = 12
-eLSe
-g = 6
-eND iF
-fOR c = 1 tO g
-f = e & c
-cONn.eXEcUTe("insert into " & dB_pREfIX & "articledetail(title,parentid,smallimage,bigImage,bannerimage,flags,simpleintroduction,bodycontent) values('" & f & "'," & gETcOLuMNiD(e) & ",'[$WebImages$]testproduct.jpg','[$WebImages$]biglimage.jpg','[$WebImages$]banner" & c & ".jpg','||','产品柔顺绵爽、透气透湿、防臭去味，防御病菌与螨虫的侵袭，<br>够通过其产生的生物波效应来畅通气血、平衡阴阳，" & f & "，以增加深度睡眠时间4','" & f & "更多内容在这里写')")
-nEXt
-nEXt
-cONn.eXEcUTe("insert into " & dB_pREfIX & "articledetail(title,parentid,smallimage,bigImage,bannerimage,flags,simpleintroduction) values('视频1'," & gETcOLuMNiD("精彩视频") & ",'[$WebImages$]testproduct.jpg','[$WebImages$]1.flv','','||','产品柔顺绵爽、透气透湿、防臭去味，防御病菌与螨虫的侵袭，<br>够通过其产生的生物波效应来畅通气血、平衡阴阳，并能对周身穴位产生静态按摩作用，以增加深度睡眠时间4')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "articledetail(title,parentid,smallimage,bigImage,bannerimage,flags,simpleintroduction) values('视频2'," & gETcOLuMNiD("精彩视频") & ",'[$WebImages$]banner1.jpg','[$WebImages$]1.flv','','||','产品柔顺绵爽、透气透湿、防臭去味，防御病菌与螨虫的侵袭，<br>够通过其产生的生物波效应来畅通气血、平衡阴阳，并能对周身穴位产生静态按摩作用，以增加深度睡眠时间4')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "articledetail(title,parentid,smallimage,bigImage,bannerimage,flags,simpleintroduction) values('视频3'," & gETcOLuMNiD("精彩视频") & ",'[$WebImages$]testproduct.jpg','[$WebImages$]1.flv','','||','产品柔顺绵爽、透气透湿、防臭去味，防御病菌与螨虫的侵袭，<br>够通过其产生的生物波效应来畅通气血、平衡阴阳，并能对周身穴位产生静态按摩作用，以增加深度睡眠时间4')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "articledetail(title,parentid,smallimage,bigImage,bannerimage,flags,simpleintroduction) values('视频4'," & gETcOLuMNiD("精彩视频") & ",'[$WebImages$]banner1.jpg','[$WebImages$]1.flv','','||','产品柔顺绵爽、透气透湿、防臭去味，防御病菌与螨虫的侵袭，<br>够通过其产生的生物波效应来畅通气血、平衡阴阳，并能对周身穴位产生静态按摩作用，以增加深度睡眠时间4')")
-rS.oPEn "select * from  " & dB_pREfIX & "website ", cONn, 1, 1
-iF rS.eOF tHEn
-cONn.eXEcUTe("insert into " & dB_pREfIX & "website (webtitle) values('网站标题')")
-eND iF : rS.cLOsE
-cONn.eXEcUTe("update  " & dB_pREfIX & "website  set webtitle='安颐官网',webkeywords='安颐关键词',webdescription='安颐描述',websitebottom='Copyright @ 2014 东方紫官方网站 All Rights Reserved<br>苏ICP备09092049号-2',webtemplate='/Templates2015/安颐/',webimages='/Templates2015/安颐/Images/',webcss='/Templates2015/安颐/Css/',webjs='/Templates2015/安颐/Js/'")
-cALl eCHo("提示", "恢复数据完成")
-cALl rW("<hr><a href='../" & eDItORtYPe & "web." & eDItORtYPe & "' target='_blank'>进入首页</a> | <a href=""?"" target='_blank'>进入后台</a>")
-cONn.eXEcUTe("delete from " & dB_pREfIX & "onePage ")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "onePage (title) values('安颐，第1条单页面')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "onePage (title) values('安颐，第2条单页面')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "onePage (title) values('安颐，第3条单页面')")
-cONn.eXEcUTe("delete from " & dB_pREfIX & "admin ")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "admin (username,pwd) values('aa','" & mYMd5("aa") & "')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "admin (username,pwd) values('admin','" & mYMd5("admin") & "')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "admin (username,pwd) values('11','" & mYMd5("11") & "')")
-iF 1 = 1 tHEn
-fOR c = 1 tO 320
-cONn.eXEcUTe("insert into " & dB_pREfIX & "articledetail(title,parentid,smallimage,bigImage,bannerimage,flags,simpleintroduction,bodycontent) values('" & c & "'," & gETcOLuMNiD("细胞生态学") & ",'[$WebImages$]testproduct.jpg','[$WebImages$]biglimage.jpg','[$WebImages$]banner" & c & ".jpg','||','产品柔顺绵爽、透气透湿、防臭去味，防御病菌与螨虫的侵袭，<br>够通过其产生的生物波效应来畅通气血、平衡阴阳，" & c & "，以增加深度睡眠时间4','" & c & "更多内容在这里写')")
-nEXt
-cONn.eXEcUTe("delete from " & dB_pREfIX & "weblayout")
-d = gETfTExT("zcase_layout.txt")
-d = aDSqL(d)
-cONn.eXEcUTe("insert into " & dB_pREfIX & "weblayout(layoutname,layoutlist,bodycontent) values('蓝色', '网站公告|新闻中心|产品展示|案例展示','" & d & "')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "weblayout(layoutname,layoutlist,bodycontent) values('绿色', '网站公告|新闻中心|产品展示|案例展示','" & d & "')")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "weblayout(layoutname,layoutlist,bodycontent) values('红色', '网站公告|新闻中心|产品展示|案例展示','" & d & "')")
-cONn.eXEcUTe("delete from " & dB_pREfIX & "webmodule")
-b = sPLiT("网站公告|新闻中心|产品展示|案例展示", "|")
-fOR eACh f iN b
-d = "{$ReadColumeSetTitle title='" & f & "' style='312' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName\' file=\'\'$]'$}<!--#读出内容BlockName" & f & " 这里面放内容, 第一种调用方法#-->"
-d = aDSqL(d)
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webmodule(moduletype,modulename,bodycontent) values('红色','" & f & "','" & d & "')")
-nEXt
-eND iF
-dIM h, i, j, k, l, m, n, o, p, q, r, s, t
-dIM u, v, w, x, y, z, aA, bA, cA, dA, eA, fA, gA
-dIM hA, iA, jA, kA, lA
-dIM mA, nA, oA
-fOR c = 1 tO 20
-cONn.eXEcUTe("insert into " & dB_pREfIX & "Bidding(nComputerSearch) values(2" & c & ")")
-cONn.eXEcUTe("insert into " & dB_pREfIX & "Bidding(nComputerSearch) values(1" & c & ")")
-nEXt
-h = gETfTExT("/Data/WebData/website.ini")
-iF h <> "" tHEn
-o = pHPtRIm(gETsTRcUT(h, "【webtitle】", vBCrLF, 0) )
-p = pHPtRIm(gETsTRcUT(h, "【webkeywords】", vBCrLF, 0) )
-q = pHPtRIm(gETsTRcUT(h, "【webdescription】", vBCrLF, 0) )
-u = pHPtRIm(gETsTRcUT(h, "【websitebottom】", vBCrLF, 0) )
-v = pHPtRIm(gETsTRcUT(h, "【webtemplate】", vBCrLF, 0) )
-w = pHPtRIm(gETsTRcUT(h, "【webimages】", vBCrLF, 0) )
-x = pHPtRIm(gETsTRcUT(h, "【webcss】", vBCrLF, 0))
-y = pHPtRIm(gETsTRcUT(h, "【webjs】", vBCrLF, 0) )
-z = pHPtRIm(gETsTRcUT(h, "【flags】", vBCrLF, 0) )
-aA = pHPtRIm(gETsTRcUT(h, "【websiteurl】", vBCrLF, 0))
-cONn.eXEcUTe("update " & dB_pREfIX & "website  set webtitle='" & o & "',webkeywords='" & p & "',webdescription='" & q & "',websitebottom='" & u & "',webtemplate='" & v & "',webimages='" & w & "',webcss='" & x & "',webjs='" & y & "',flags='" & z & "',websiteurl='" & aA & "'")
-eND iF
-cONn.eXEcUTe("delete from " & dB_pREfIX & "webcolumn")
-h = gETdIRtXTlISt("/Data/WebData/NavData/")
-b = sPLiT(h, vBCrLF)
-cALl hR()
-fOR eACh i iN b
-m = gETfILeNAmE(i)
-iF i <> "" aND iNStR("_#", lEFt(m, 1)) = fALsE tHEn
-cALl eCHo("导航", i)
-h = gETfTExT(i)
-bA = sPLiT(h, vBCrLF & "-------------------------------")
-fOR eACh d iN bA
-iF iNStR(d, "【webtitle】") > 0 tHEn
-o = pHPtRIm(gETsTRcUT(d, "【webtitle】", vBCrLF, 0) )
-p = pHPtRIm(gETsTRcUT(d, "【webkeywords】", vBCrLF, 0) )
-q = pHPtRIm(gETsTRcUT(d, "【webdescription】", vBCrLF, 0) )
-r = pHPtRIm(gETsTRcUT(d, "【sortrank】", vBCrLF, 0) )
-iF r = "" tHEn r = 0
-m = pHPtRIm(gETsTRcUT(d, "【filename】", vBCrLF, 0) )
-e = pHPtRIm(gETsTRcUT(d, "【columnname】", vBCrLF, 0) )
-cA = pHPtRIm(gETsTRcUT(d, "【columntype】", vBCrLF, 0) )
-z = pHPtRIm(gETsTRcUT(d, "【flags】", vBCrLF, 0) )
-j = pHPtRIm(gETsTRcUT(d, "【parentid】", vBCrLF, 0) )
-j = pHPtRIm(gETcOLuMNiD(j) )
-s = pHPtRIm(gETsTRcUT(d, "【labletitle】", vBCrLF, 0))
-eA = pHPtRIm(gETsTRcUT(d, "【npagesize】", vBCrLF, 0) )
-iF eA = "" tHEn eA = 10
-t = pHPtRIm(gETsTRcUT(d, "【target】", vBCrLF, 0) )
-n = aDSqL(pHPtRIm(gETsTRcUT(d, "【bodycontent】", "【/bodycontent】", 0)) )
-n = cONtENtTRaNScODiNG(n)
-oA = pHPtRIm(pHPtRIm(gETsTRcUT(d, "【isonhtml】", vBCrLF, 0)) )
-iF oA = "0" oR lCAsE(oA) = "false" tHEn
-oA = 0
-eLSe
-oA = 1
-eND iF
-gA = pHPtRIm(pHPtRIm(gETsTRcUT(d, "【nofollow】", vBCrLF, 0)) )
-iF gA = "1" oR lCAsE(gA) = "true" tHEn
-gA = 1
-eLSe
-gA = 0
-eND iF
-nA = aDSqL(pHPtRIm(gETsTRcUT(d, "【simpleintroduction】", "【/simpleintroduction】", 0)) )
-nA = cONtENtTRaNScODiNG(nA)
-n = aDSqL(pHPtRIm(gETsTRcUT(d, "【bodycontent】", "【/bodycontent】", 0)))
-n = cONtENtTRaNScODiNG(n)
-cONn.eXEcUTe("insert into " & dB_pREfIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columntype,sortrank,filename,flags,parentid,labletitle,simpleintroduction,bodycontent,npagesize,isonhtml,nofollow,target) values('" & o & "','" & p & "','" & q & "','" & e & "','" & cA & "'," & r & ",'" & m & "','" & z & "'," & j & ",'" & s & "','" & nA & "','" & n & "'," & eA & "," & oA & "," & gA & ",'" & t & "')")
-eND iF
-nEXt
-eND iF
-nEXt
-cONn.eXEcUTe("delete from " & dB_pREfIX & "articledetail")
-h = gETdIRtXTlISt("/Data/WebData/ArticleData/")
-b = sPLiT(h, vBCrLF)
-cALl hR()
-fOR eACh i iN b
-m = gETfILeNAmE(i)
-iF i <> "" aND iNStR("_#", lEFt(m, 1)) = fALsE tHEn
-cALl eCHo("文章", i)
-h = gETfTExT(i)
-bA = sPLiT(h, vBCrLF & "-------------------------------")
-fOR eACh d iN bA
-iF iNStR(d, "【title】") > 0 tHEn
-d = d & vBCrLF
-j = pHPtRIm(gETsTRcUT(d, "【parentid】", vBCrLF, 0))
-j = gETcOLuMNiD(j)
-f = aDSqL(pHPtRIm(gETsTRcUT(d, "【title】", vBCrLF, 0)) )
-o = pHPtRIm(gETsTRcUT(d, "【webtitle】", vBCrLF, 0) )
-p = pHPtRIm(gETsTRcUT(d, "【webkeywords】", vBCrLF, 0) )
-q = pHPtRIm(gETsTRcUT(d, "【webdescription】", vBCrLF, 0) )
-k = pHPtRIm(gETsTRcUT(d, "【author】", vBCrLF, 0) )
-r = pHPtRIm(gETsTRcUT(d, "【sortrank】", vBCrLF, 0) )
-iF r = "" tHEn r = 0
-l = pHPtRIm(gETsTRcUT(d, "【adddatetime】", vBCrLF, 0) )
-m = pHPtRIm(gETsTRcUT(d, "【filename】", vBCrLF, 0) )
-z = pHPtRIm(gETsTRcUT(d, "【flags】", vBCrLF, 0) )
-dA = pHPtRIm(gETsTRcUT(d, "【relatedtags】", vBCrLF, 0) )
-fA = aDSqL(pHPtRIm(gETsTRcUT(d, "【customaurl】", vBCrLF, 0)) )
-t = pHPtRIm(gETsTRcUT(d, "【target】", vBCrLF, 0) )
-n = aDSqL(pHPtRIm(gETsTRcUT(d, "【bodycontent】", "【/bodycontent】", 0)) )
-n = cONtENtTRaNScODiNG(n)
-oA = pHPtRIm(gETsTRcUT(d, "【isonhtml】", vBCrLF, 0))
-iF oA = "0" oR lCAsE(oA) = "false" tHEn
-oA = 0
-eLSe
-oA = 1
-eND iF
-gA = pHPtRIm(gETsTRcUT(d, "【nofollow】", vBCrLF, 0))
-iF gA = "1" oR lCAsE(gA) = "true" tHEn
-gA = 1
-eLSe
-gA = 0
-eND iF
-cONn.eXEcUTe("insert into " & dB_pREfIX & "articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,bodycontent,updatetime,isonhtml,customaurl,nofollow,target) values(" & j & ",'" & f & "','" & o & "','" & p & "','" & q & "','" & k & "'," & r & ",'" & l & "','" & m & "','" & z & "','" & dA & "','" & n & "','" & nOW() & "'," & oA & ",'" & fA & "'," & gA & ",'" & t & "')")
-eND iF
-nEXt
-eND iF
-nEXt
-cONn.eXEcUTe("delete from " & dB_pREfIX & "OnePage")
-h = gETdIRtXTlISt("/Data/WebData/OnePageData/")
-b = sPLiT(h, vBCrLF)
-cALl hR()
-fOR eACh i iN b
-m = gETfILeNAmE(i)
-iF i <> "" aND iNStR("_#", lEFt(m, 1)) = fALsE tHEn
-cALl eCHo("单页", i)
-h = gETfTExT(i)
-bA = sPLiT(h, vBCrLF & "-------------------------------")
-fOR eACh d iN bA
-iF iNStR(d, "【webkeywords】") > 0 tHEn
-d = d & vBCrLF
-f = aDSqL(pHPtRIm(gETsTRcUT(d, "【title】", vBCrLF, 0)) )
-mA = aDSqL(pHPtRIm(gETsTRcUT(d, "【displaytitle】", vBCrLF, 0)) )
-o = pHPtRIm(gETsTRcUT(d, "【webtitle】", vBCrLF, 0) )
-p = pHPtRIm(gETsTRcUT(d, "【webkeywords】", vBCrLF, 0) )
-q = pHPtRIm(gETsTRcUT(d, "【webdescription】", vBCrLF, 0) )
-l = pHPtRIm(gETsTRcUT(d, "【adddatetime】", vBCrLF, 0) )
-m = pHPtRIm(gETsTRcUT(d, "【filename】", vBCrLF, 0) )
-nA = aDSqL(pHPtRIm(gETsTRcUT(d, "【simpleintroduction】", "【/simpleintroduction】", 0)) )
-nA = cONtENtTRaNScODiNG(nA)
-t = pHPtRIm(gETsTRcUT(d, "【target】", vBCrLF, 0) )
-n = aDSqL(pHPtRIm(gETsTRcUT(d, "【bodycontent】", "【/bodycontent】", 0)) )
-n = cONtENtTRaNScODiNG(n)
-oA = pHPtRIm(gETsTRcUT(d, "【isonhtml】", vBCrLF, 0))
-iF oA = "0" oR lCAsE(oA) = "false" tHEn
-oA = 0
-eLSe
-oA = 1
-eND iF
-gA = pHPtRIm(gETsTRcUT(d, "【nofollow】", vBCrLF, 0))
-iF gA = "1" oR lCAsE(gA) = "true" tHEn
-gA = 1
-eLSe
-gA = 0
-eND iF
-cONn.eXEcUTe("insert into " & dB_pREfIX & "onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,simpleintroduction,bodycontent,nofollow,target) values('" & f & "','" & mA & "','" & o & "','" & p & "','" & q & "','" & l & "','" & m & "'," & oA & ",'" & nA & "','" & n & "'," & gA & ",'" & t & "')")
-eND iF
-nEXt
-eND iF
-nEXt
-cONn.eXEcUTe("delete from " & dB_pREfIX & "Bidding")
-h = gETdIRtXTlISt("/Data/WebData/BiddingData/")
-b = sPLiT(h, vBCrLF)
-cALl hR()
-fOR eACh i iN b
-m = gETfILeNAmE(i)
-iF i <> "" aND iNStR("_#", lEFt(m, 1)) = fALsE tHEn
-cALl eCHo("竞价", i)
-h = gETfTExT(i)
-bA = sPLiT(h, vBCrLF & "-------------------------------")
-fOR eACh d iN bA
-iF iNStR(d, "【webkeywords】") > 0 tHEn
-p = pHPtRIm(gETsTRcUT(d, "【webkeywords】", vBCrLF, 0) )
-hA = pHPtRIm(gETsTRcUT(d, "【showreason】", vBCrLF, 0) )
-iA = pHPtRIm(gETsTRcUT(d, "【ncomputersearch】", vBCrLF, 0) )
-jA = pHPtRIm(gETsTRcUT(d, "【nmobliesearch】", vBCrLF, 0) )
-kA = pHPtRIm(gETsTRcUT(d, "【ncountsearch】", vBCrLF, 0) )
-lA = pHPtRIm(gETsTRcUT(d, "【ndegree】", vBCrLF, 0))
-lA = gETnUMbER(lA)
-iF lA = "" tHEn
-lA = 0
-eND iF
-cONn.eXEcUTe("insert into " & dB_pREfIX & "Bidding (webkeywords,showreason,ncomputersearch,nmobliesearch,ndegree) values('" & p & "','" & hA & "'," & iA & "," & jA & "," & lA & ")")
-eND iF
-nEXt
-eND iF
-nEXt
-cONn.eXEcUTe("delete from " & dB_pREfIX & "TableComment")
-eND sUB
-fUNcTIoN cONtENtTRaNScODiNG(bYVaL a)
-a = rEPlACe(rEPlACe(rEPlACe(rEPlACe(a, "<?", "&lt;?"), "?>", "?&gt;"), "<" & "%", "&lt;%"), "?>", "%&gt;")
-dIM b, c, d, e, f, g
-f = fALsE
-g = fALsE
-b = sPLiT(a, vBCrLF)
-fOR eACh d iN b
-iF iNStR(d, "[&html转码&]") > 0 tHEn
-f = tRUe
-eND iF
-iF iNStR(d, "[&html转码end&]") > 0 tHEn
-f = fALsE
-eND iF
-iF iNStR(d, "[&全部换行&]") > 0 tHEn
-g = tRUe
-eND iF
-iF iNStR(d, "[&全部换行end&]") > 0 tHEn
-g = fALsE
-eND iF
-iF f = tRUe tHEn
-d = rEPlACe(rEPlACe(d, "[&html转码&]", ""), "<", "&lt;")
-eLSe
-d = rEPlACe(d, "[&html转码end&]", "")
-eND iF
-iF g = tRUe tHEn
-d = rEPlACe(d, "[&全部换行&]", "") & "<br>"
-eLSe
-d = rEPlACe(d, "[&全部换行end&]", "")
-eND iF
-e = e & d & vBCrLF
-nEXt
-cONtENtTRaNScODiNG = e
-eND fUNcTIoN
+
+
+function newGetStrCut(a,b)
+	dim c
+	if instr(a,"【/"& b &"】")>0 then
+		c = ADSql(phptrim(getStrCut(a, "【"& b &"】", "【/"& b &"】", 0)) )
+	else
+		c = ADSql(phptrim(getStrCut(a, "【"& b &"】", vbCrLf, 0) ))
+	end if
+	newGetStrCut=c
+end function
+
+
+
+Sub resetAccessData()
+    Call OpenConn()
+    Dim b, c, d, e, f, g,h
+	h=request("webdataDir")
+	if h<>"" then
+		if checkFolder(h)=false then
+			call eerr("网站数据目录不存在，恢复默认数据未成功", h)
+		end if
+	else
+		h="/Data/WebData/"
+	end if
+	
+    Call echo("提示", "恢复数据完成")
+    Call rw("<hr><a href='../index.asp' target='_blank'>进入首页</a> | <a href=""?"" target='_blank'>进入后台</a>")
+
+    Dim i, j, k, l, m, n, o, p, q, r, s, t, u
+    Dim v, w, x, y, z, aa, ba, ca, da, ea, fa, ga, ha
+	dim ia
+    Dim ja, ka, la, ma, na
+    Dim oa, pa, qa
+	dim columnenname																
+	dim sa,ta,bannerimage												
+	
+	
+
+
+	
+    i = getftext(h & "/website.ini")
+    If i <> "" Then
+        p =  newGetStrCut(i,"webtitle")
+        q = newGetStrCut(i,"webkeywords")
+        r = newGetStrCut(i,"webdescription")
+        v = newGetStrCut(i,"websitebottom")
+        w = newGetStrCut(i,"webtemplate")
+        x = newGetStrCut(i,"webimages")
+        y =newGetStrCut(i,"webcss")
+        z =newGetStrCut(i,"webjs")
+        aa = newGetStrCut(i,"flags")
+        ba = newGetStrCut(i,"websiteurl")
+		
+		if getRecordCount(db_PREFIX & "website", "")=0 then
+			conn.execute("insert into " & db_PREFIX & "website(webtitle) values('测试')")
+		end if
+		
+    conn.Execute("update " & db_PREFIX & "website  set webtitle='" & p & "',webkeywords='" & q & "',webdescription='" & r & "',websitebottom='" & v & "',webtemplate='" & w & "',webimages='" & x & "',webcss='" & y & "',webjs='" & z & "',flags='" & aa & "',websiteurl='" & ba & "'")
+	End If
+
+
+    conn.Execute("delete from " & db_PREFIX & "webcolumn")
+    i = getDirTxtList(h & "/NavData/")
+    b = Split(i, vbCrLf)
+    Call hr()
+    For Each j In b
+        n = getfilename(j)
+        If j <> "" And InStr("_#", Left(n, 1)) = False Then
+            Call echo("导航", j)
+            i = getftext(j)
+            ca = Split(i, vbCrLf & "-------------------------------")
+            For Each d In ca
+                If InStr(d, "【webtitle】") > 0 Then
+					p =  newGetStrCut(d,"webtitle")
+					q = newGetStrCut(d,"webkeywords")
+					r = newGetStrCut(d,"webdescription")
+
+                    s = newGetStrCut(d,"sortrank")
+                    If s = "" Then s = 0
+                    n =newGetStrCut(d,"filename")
+                    e =newGetStrCut(d,"columnname")
+					columnenname=newGetStrCut(d,"columnenname")
+                    da = newGetStrCut(d,"columntype")
+                    aa =newGetStrCut(d,"flags")
+                    k = newGetStrCut(d,"parentid")
+                    k = phptrim(getColumnId(k) )
+                    t = newGetStrCut(d,"labletitle")
+
+                    fa =newGetStrCut(d,"npagesize")
+                    If fa = "" Then fa = 10
+
+                    u = newGetStrCut(d,"target")
+					
+                    sa = newGetStrCut(d,"smallimage")
+                    ta = newGetStrCut(d,"bigImage")
+                    bannerimage = newGetStrCut(d,"bannerimage")
+					
+                    ia = newGetStrCut(d,"templatepath")
+					
+
+                    o = newGetStrCut(d,"bodycontent")
+                    o = contentTranscoding(o)
+
+                    qa = newGetStrCut(d,"isonhtml")
+                    If qa = "0" Or LCase(qa) = "false" Then
+                        qa = 0
+                    Else
+                        qa = 1
+                    End If
+
+                    ha = newGetStrCut(d,"nofollow")
+                    If ha = "1" Or LCase(ha) = "true" Then
+                        ha = 1
+                    Else
+                        ha = 0
+                    End If
+
+
+                    pa = newGetStrCut(d,"simpleintroduction")
+                    pa = contentTranscoding(pa)
+
+                    o = newGetStrCut(d,"bodycontent")
+                    o = contentTranscoding(o)
+
+                    conn.Execute("insert into " & db_PREFIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,simpleintroduction,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values('" & p & "','" & q & "','" & r & "','" & e & "','" & columnenname & "','" & da & "'," & s & ",'" & n & "','" & aa & "'," & k & ",'" & t & "','" & pa & "','" & o & "'," & fa & "," & qa & "," & ha & ",'" & u & "','" & sa & "','" & ta & "','" & bannerimage & "','" & ia & "')")
+                End If
+            Next
+        End If
+    Next
+
+
+    conn.Execute("delete from " & db_PREFIX & "articledetail")
+    i = getDirTxtList(h & "/ArticleData/")
+    b = Split(i, vbCrLf)
+    Call hr()
+    For Each j In b
+        n = getfilename(j)
+        If j <> "" And InStr("_#", Left(n, 1)) = False Then
+            Call echo("文章", j)
+            i = getftext(j)
+            ca = Split(i, vbCrLf & "-------------------------------")
+            For Each d In ca
+                If InStr(d, "【title】") > 0 Then
+                    d = d & vbCrLf
+                    k = newGetStrCut(d,"parentid")
+                    k = getColumnId(k)
+                    f = newGetStrCut(d,"title")
+					p =  newGetStrCut(d,"webtitle")
+					q = newGetStrCut(d,"webkeywords")
+					r = newGetStrCut(d,"webdescription")
+
+
+                    l = newGetStrCut(d,"author")
+                    s =newGetStrCut(d,"sortrank")
+                    If s = "" Then s = 0
+                    m = newGetStrCut(d,"adddatetime")
+                    n =newGetStrCut(d,"filename")
+                    aa = newGetStrCut(d,"flags")
+                    ea =newGetStrCut(d,"relatedtags")
+
+                    ga = newGetStrCut(d,"customaurl")
+                    u = newGetStrCut(d,"target")
+
+					
+                    sa = newGetStrCut(d,"smallimage")
+                    ta = newGetStrCut(d,"bigImage")
+                    bannerimage = newGetStrCut(d,"bannerimage")
+                    ia = newGetStrCut(d,"templatepath")
+
+
+                    o =newGetStrCut(d,"bodycontent")
+                    o = contentTranscoding(o)
+
+                    qa =newGetStrCut(d,"isonhtml")
+                    If qa = "0" Or LCase(qa) = "false" Then
+                        qa = 0
+                    Else
+                        qa = 1
+                    End If
+
+                    ha = newGetStrCut(d,"nofollow")
+                    If ha = "1" Or LCase(ha) = "true" Then
+                        ha = 1
+                    Else
+                        ha = 0
+                    End If
+                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & k & ",'" & f & "','" & p & "','" & q & "','" & r & "','" & l & "'," & s & ",'" & m & "','" & n & "','" & aa & "','" & ea & "','" & o & "','" & Now() & "'," & qa & ",'" & ga & "'," & ha & ",'" & u & "','" & sa & "','" & ta & "','" & bannerimage & "','" & ia & "')")
+                End If
+            Next
+        End If
+    Next
+
+
+    conn.Execute("delete from " & db_PREFIX & "OnePage")
+    i = getDirTxtList(h & "/OnePageData/")
+    b = Split(i, vbCrLf)
+    Call hr()
+    For Each j In b
+        n = getfilename(j)
+        If j <> "" And InStr("_#", Left(n, 1)) = False Then
+            Call echo("单页", j)
+            i = getftext(j)
+            ca = Split(i, vbCrLf & "-------------------------------")
+            For Each d In ca
+                If InStr(d, "【webkeywords】") > 0 Then
+                    d = d & vbCrLf
+                    f =newGetStrCut(d,"title")
+                    oa = newGetStrCut(d,"displaytitle")
+					p =  newGetStrCut(d,"webtitle")
+					q = newGetStrCut(d,"webkeywords")
+					r = newGetStrCut(d,"webdescription")
+
+
+
+                    m = newGetStrCut(d,"adddatetime")
+                    n = newGetStrCut(d,"filename")
+
+                    pa =newGetStrCut(d,"simpleintroduction")
+					
+                    pa = contentTranscoding(pa)
+                    u = newGetStrCut(d,"target")
+                    ia = newGetStrCut(d,"templatepath")
+
+                    o = newGetStrCut(d,"bodycontent")
+                    o = contentTranscoding(o)
+
+                    qa =newGetStrCut(d,"isonhtml")
+                    If qa = "0" Or LCase(qa) = "false" Then
+                        qa = 0
+                    Else
+                        qa = 1
+                    End If
+
+                    ha =newGetStrCut(d,"nofollow")
+                    If ha = "1" Or LCase(ha) = "true" Then
+                        ha = 1
+                    Else
+                        ha = 0
+                    End If
+
+
+                    conn.Execute("insert into " & db_PREFIX & "onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,simpleintroduction,bodycontent,nofollow,target,templatepath) values('" & f & "','" & oa & "','" & p & "','" & q & "','" & r & "','" & m & "','" & n & "'," & qa & ",'" & pa & "','" & o & "'," & ha & ",'" & u & "','" & ia & "')")
+                End If
+            Next
+        End If
+    Next
+
+
+    conn.Execute("delete from " & db_PREFIX & "Bidding")
+    i = getDirTxtList(h & "/BiddingData/")
+    b = Split(i, vbCrLf)
+    Call hr()
+    For Each j In b
+        n = getfilename(j)
+        If j <> "" And InStr("_#", Left(n, 1)) = False Then
+            Call echo("竞价", j)
+            i = getftext(j)
+            ca = Split(i, vbCrLf & "-------------------------------")
+            For Each d In ca
+                If InStr(d, "【webkeywords】") > 0 Then
+                    q =newGetStrCut(d,"webkeywords")
+                    ja = newGetStrCut(d,"showreason")
+                    ka =newGetStrCut(d,"ncomputersearch")
+                    la = newGetStrCut(d,"nmobliesearch")
+                    ma = newGetStrCut(d,"ncountsearch")
+                    na =newGetStrCut(d,"ndegree")
+                    na = getnumber(na)
+                    If na = "" Then
+                        na = 0
+                    End If
+                    conn.Execute("insert into " & db_PREFIX & "Bidding (webkeywords,showreason,ncomputersearch,nmobliesearch,ndegree) values('" & q & "','" & ja & "'," & ka & "," & la & "," & na & ")")
+                End If
+            Next
+        End If
+    Next
+
+
+
+    conn.Execute("delete from " & db_PREFIX & "TableComment")
+
+
+
+End Sub
+
+
+Function contentTranscoding(ByVal a)
+    a = Replace(Replace(Replace(Replace(a, "<?", "&lt;?"), "?>", "?&gt;"), "<" & "%", "&lt;%"), "?>", "%&gt;")
+
+
+    Dim b, c, d, e, f, g
+    f = False
+    g = False
+    b = Split(a, vbCrLf)
+    For Each d In b
+        If InStr(d, "[&html转码&]") > 0 Then
+            f = True
+        End If
+        If InStr(d, "[&html转码end&]") > 0 Then
+            f = False
+        End If
+        If InStr(d, "[&全部换行&]") > 0 Then
+            g = True
+        End If
+        If InStr(d, "[&全部换行end&]") > 0 Then
+            g = False
+        End If
+
+        If f = True Then
+            d = Replace(Replace(d, "[&html转码&]", ""), "<", "&lt;")
+        Else
+            d = Replace(d, "[&html转码end&]", "")
+        End If
+        If g = True Then
+            d = Replace(d, "[&全部换行&]", "") & "<br>"
+        Else
+            d = Replace(d, "[&全部换行end&]", "")
+        End If
+        e = e & d & vbCrLf
+    Next
+    contentTranscoding = e
+End Function
 %>
 
 

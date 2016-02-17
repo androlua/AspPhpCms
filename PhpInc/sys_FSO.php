@@ -21,10 +21,12 @@ function reaFile($file) {
 }
 // &&&读出文件（辅助上面）
 function getFText($file) {
+	$file = handlePath ( $file );
 	return reaFile ( $file );
 }
 // &&&读出文件（辅助上面）
 function getFileText($file) {
+	$file = handlePath ( $file );
 	return reaFile ( $file );
 }
 //以UTF-8方式打开文件（20151201）
@@ -39,7 +41,7 @@ function AspSaveFile($fileName, $text) {
 		return false;
 	}
 	if (makeDir ( dirname ( $fileName ) )) {
-		if ($fp = fopen ( $fileName, "w" )) {
+		if ($fp = @fopen ( $fileName, "w" )) {
 			if (@fwrite ( $fp, $text )) {
 				fclose ( $fp );
 				return true;
@@ -57,8 +59,9 @@ function createFile($fileName, $text) {
 }
 // 保存累加文件
 function addToFile($file, $text) {
+	$file = handlePath ( $file );
 	if (file_exists ( $file ) == true) {
-		$text = file_get_contents ( $file ) . $text;
+		$text = @file_get_contents ( $file ) . $text;
 	}
 	aspSaveFile ( $file, $text );
 }
@@ -88,8 +91,9 @@ function createFileUTF($fileName,$content){
 
 
 //删除utf-8中BOM
-function delFileBOM($fileName,$content="") {
-	$contents = file_get_contents($fileName);
+function delFileBOM($file,$content="") {
+	$file = handlePath ( $file );
+	$contents = file_get_contents($file);
 	$charset[1] = substr($contents, 0, 1);
 	$charset[2] = substr($contents, 1, 1);
 	$charset[3] = substr($contents, 2, 1);
@@ -97,7 +101,7 @@ function delFileBOM($fileName,$content="") {
 		if($content==""){
 			$content=substr($contents, 3);
 		} 
-		rewrite ($fileName, $content);
+		rewrite ($file, $content);
 		return true;
 	
 	}else{
@@ -105,8 +109,9 @@ function delFileBOM($fileName,$content="") {
 	}
 }
 //重写
-function rewrite($filename, $data) {
-	$filenum = fopen($filename, "w");
+function rewrite($file, $data) {
+	$file = handlePath ( $file );
+	$filenum = fopen($file, "w");
 	flock($filenum, LOCK_EX);
 	fwrite($filenum, $data);
 	fclose($filenum);
@@ -147,7 +152,7 @@ function moveFile($file, $newfile) {
 function copyFile($file, $newfile) {
 	$file = handlePath ( $file );
 	$newfile = handlePath ( $newfile );
-//	die($file.'<hr>'.$newfile);
+	aspecho($file, $newfile);
 	return copy ( $file, $newfile );
 }
 // 获得文件大小
@@ -167,6 +172,7 @@ function createFolder($folderPath) {
 }
 // 连续创建目录
 function makeDir($dir, $mode = "0777") {
+	$dir = handlePath ( $dir );
 	if (!$dir) {
 		return false;
 	}
@@ -187,20 +193,33 @@ function checkFolder($dir) {
 }
 // 移动文件夹 (直接用移动文件动作就可以了)
 function moveFolder($file, $newfile) {
-	$file = handlePath ( $file );
+	$file = handlePath ( $file ); 
 	$newfile = handlePath ( $newfile );
 	return rename ( $file, $newfile );
 }
-// 复制文件夹 (直接用复制文件动作就可以了)
-function copyFolder($file, $newfile) {
-	copyFile ( $file, $newfile );
-}
+// 复制文件夹 引用别人
+function copyFolder($src,$des) {	
+	$src = handlePath ( $src ); 
+	$des = handlePath ( $des ); 
+    $dir = opendir($src);
+    @mkdir($des);
+    while(false !== ( $file = readdir($dir)) ) {
+        if (( $file != '.' ) && ( $file != '..' )) {
+            if ( is_dir($src . '/' . $file) ) {
+                copyFolder($src . '/' . $file,$des . '/' . $file);
+            } else {
+                copy($src . '/' . $file,$des . '/' . $file);
+            }
+        }
+    }
+} 
 // 删除文件夹
 // 说明：只能删除非空的目录，否则必须先删除目录下的子目录和文件，再删除总目录
 function deleteFolder($dir) {
-	$dir = handlePath ( $dir );
-	// echoPrompt ( "文件夹存在", is_dir ( $dir ) );
-	return rmdir ( $dir );
+	$dir = handlePath ( $dir ); 
+	if(is_dir($dir)){
+		return @rmdir ( $dir );
+	}
 }
 
 // 《文件文件夹》
@@ -273,10 +292,26 @@ function getThisHtmlFileList($folderPath){
 function getAllHtmlFileList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|循环文件夹|','|html|htm|');
 }
+//获得当前文件夹下html，以名称方式显示     以ASP匹配
+function getDirHtmlListName($folderPath){
+	return getFileFolderList($folderPath,'','|处理文件|文件名称|','|html|');
+}
+
 //获得当前Php文件列表
 function getThisPhpFileList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|','|php|');
 }
+
+//获得当前Js文件列表
+function getDirJsList($folderPath){
+	return getFileFolderList($folderPath,'','|处理文件|','|js|');
+}
+//获得当前Css文件列表
+function getDirCssList($folderPath){
+	return getFileFolderList($folderPath,'','|处理文件|','|css|');
+}
+ 
+
 //获得全部Php文件列表
 function getAllPhpFileList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|循环文件夹|','|php|');
@@ -285,29 +320,6 @@ function getAllPhpFileList($folderPath){
 function getDirTxtList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|','|txt|');
 }
-//文件列表PHP
-function PHPFileList($fileName){
-    $c='';
-    $fileName = handlePath ( $fileName );
-    $fso = opendir ( $fileName );
-    if ($fso) {
-        while (($file = readdir($fso)) !== false) {
-            if ($file != '.' && $file != '..'){
-                $filePath=$fileName."\\".$file;
-                if (!is_dir($filePath)) {
-					$fileType=strtolower(substr(strrchr($file, '.'), 1));
-					if($fileType=="php"){
-                    	$c=$c . $filePath. "\n";
-						delFileBOM($filePath);			//删除BOM
-					}
-                }else{
-                }
-            }
-        }
-        closedir($fso);
-    }
-    return $c;
-} 
  
 
 
@@ -388,8 +400,12 @@ function handlePath($path) {
 			//自定义当前目录
 			if(isset($GLOBALS['ThisDirName'])){
 				$path = $GLOBALS['ThisDirName']. "\\" . $path;
-			}else{
-				$path = dirname ( __FILE__ ) . "\\" . $path;
+			}else{			
+				if (defined('WEBPATH')) {
+					$path = WEBPATH . "\\" . $path; 
+				}else{				
+					$path = dirname ( __FILE__ ) . "\\" . $path;	 
+				}
 			} 
 		} else {
 			$path = $_SERVER ['DOCUMENT_ROOT'] . "\\" . $path; 

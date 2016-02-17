@@ -2,212 +2,247 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<!--#iNClUDe fILe = "Config.Asp"-->
+<!--#Include File = "Config.Asp"-->
 <%
-sELeCT cASe rEQuESt("act")
-cASe "SaveFile" : sAVeFIlE( rEQuESt("FilePath"))	
-cASe "GetFunctionCode" : gETfUNcTIoNCoDE(rEQuESt("Lable"))	
-cASe "SaveQQDialogue" : cALl sAVeQQdIAlOGuE()	
-cASe "UserLogin" : cALl uSErLOgIN()						 	
-cASe "UserReg" : cALl uSErREg()	
-cASe "MobileArticleList" : cALl mOBiLEaRTiCLeLIsT()	
-cASe "ShowArticleNumb" : cALl sHOwARtIClENuMB()	
-cASe "SaveAJAXEdit" : cALl sAVeAJaXEdIT()	
-cASe "SaveAJAXTEXTEdit" : cALl sAVeAJaXTeXTeDIt()	
-cASe "DeleteAction" : cALl dELeTEaCTiON()	
-cASe "showArticleList" : cALl sHOwARtIClELiST()	
-eND sELeCT
-fUNcTIoN sHOwARtIClELiST()
-cALl oPEnCOnN()
-dIM b,c,d,e
-b=rQ("did")
-e=hANdLEnUMbER(rQ("Numb")) 	
-iF e<>"" tHEn
-c = "select top "& e &" * from [product]"
-eLSe	
-c = "select * from [product]"
-eND iF
-iF b<>"" tHEn
-c=c & " where BigClassName='"& b &"'"
-eND iF
-rS.oPEn c,cONn,1,1
-dIM f : sET f = nEW cLS_AB_JSoN
-cALl rW(f.tOJsON(rS))
-rS.cLOsE
-eND fUNcTIoN
-fUNcTIoN sHOwARtIClELiST2()
-cALl oPEnCOnN()
-dIM b,c,d,e
-b=rQ("did")
-e=hANdLEnUMbER(rQ("Numb")) 	
-iF e<>"" tHEn
-c = "select top "& e &" * from [product]"
-eLSe	
-c = "select * from [product]"
-eND iF
-iF b<>"" tHEn
-c=c & " where BigClassName='"& b &"'"
-eND iF
-rS.oPEn c,cONn,1,1
-dIM f : sET f = nEW cLS_AB_JSoN
-cALl rW(f.tOJsON(rS))
-rS.cLOsE
-eND fUNcTIoN
-fUNcTIoN dELeTEaCTiON()
-dIM c	
-c=c & "MDBPath=" & rQ("MDBPath") & vBCrLF
-c=c & "TableName=" & rQ("TableName") & vBCrLF
-c=c & "FieldName=" & rQ("FieldName") & vBCrLF
-c=c & "ID=" & rQ("ID") & vBCrLF
-mDBpATh=rEQuESt("MDBPath")
-cALl oPEnCOnN()
-dIM c
-c = "Select * From ["& rEQuESt("TableName") &"] Where Id=" & rEQuESt("Id")
-rS.oPEn c,cONn,1,3
-iF nOT rS.eOF tHEn
-rS.dELeTE
-rS.uPDaTE
-cALl rW("删除ID【"& rEQuESt("Id") &"】成功")
-eLSe	
-cALl rW("ID【"& rEQuESt("Id") &"】不存在，删除失败")
-eND iF:rS.cLOsE
-eND fUNcTIoN
-fUNcTIoN sAVeAJaXEdIT()
-dIM b
-b=b & "MDBPath=" & rQ("MDBPath") & "("& iSNuL(rQ("MDBPath")) &")" & vBCrLF
-b=b & "MDBPath=" & hANdLEpATh(rQ("MDBPath")) & vBCrLF
-b=b & "TableName=" & rQ("TableName") & vBCrLF
-b=b & "FieldName=" & rQ("FieldName") & vBCrLF
-b=b & "Content=" & rQ("Content") & vBCrLF
-b=b & "ID=" & rQ("ID") & vBCrLF
-cALl rW("<pre>"& b &"</pre>"):dOEvENtS
-cALl oPEnCOnN()
-dIM c
-c = "Select * From ["& rEQuESt("TableName") &"] Where Id=" & rEQuESt("Id")
-rS.oPEn c,cONn,1,3
-iF nOT rS.eOF tHEn
-rS(rQ("FieldName")) = rEQuESt("Content")
-rS.uPDaTE
-eND iF:rS.cLOsE
-eND fUNcTIoN
-fUNcTIoN sAVeAJaXTeXTeDIt()
-dIM c	
-c=c & "FilePath=" & rQ("FilePath") & vBCrLF
-c=c & "content=" & rEQuESt.fORm("content") & vBCrLF
-c=c & "count=" & rEQuESt.fORm("count") & vBCrLF
-cALl rW("<pre>"& c &"</pre>"):dOEvENtS
-cALl cREaTEfILe(rEQuESt("FilePath"),rEQuESt("content"))
-eND fUNcTIoN
-sUB sHOwARtIClENuMB()
-dIM b
-b = rEQuESt("Id")
-cALl oPEnCOnN()
-rS.oPEn"Select * From [Product] Where Id=" & b,cONn,1,3
-iF nOT rS.eOF tHEn
-rS("Hits") = rS("Hits")+1
-rS.uPDaTE
-cALl rW(rS("Hits"))
-eND iF:rS.cLOsE
-eND sUB
-sUB mOBiLEaRTiCLeLIsT()
-dIM b,c,d,e
-cALl oPEnCOnN()
-iF sESsIOn("ShowMobileArticleNumb") = "" tHEn sESsIOn("ShowMobileArticleNumb")=12
-d = 0
-b=b & "<?xml version=""1.0"" encoding=""gb2312"" ?> " & vBCrLF
-b=b & "<clists> " & vBCrLF
-c = "Select * From [Product] Where BigClassName='信息中心' Order By Id Desc"
-rS.oPEn c,cONn,1,1
-fOR e =1 tO rS.rECoRDcOUnT
-iF d>10 tHEn eXIt fOR
-iF e > sESsIOn("ShowMobileArticleNumb") tHEn
-d=d+1
-b=b & "<clist id="""& rS("ID") &""" title="""& rS("Title") &""" image=""0"" time="""& rS("AddDateTime") &"""/>" & vBCrLF
-eND iF
-rS.mOVeNExT:nEXt:rS.cLOsE
-sESsIOn("ShowMobileArticleNumb")=sESsIOn("ShowMobileArticleNumb")+d
-b=b & "</clists>" & vBCrLF
-cALl rW(b)
-eND sUB
-sUB uSErREg()
-dIM b,c,d
-b=rEPlACe(rEQuESt("UserName"),"'","")
-c=rEPlACe(rEQuESt("PassWord"),"'","")
-iF rEQuESt("P")="" tHEn
-c = mD5(c,2) & mD5(c,4)
-eND iF
-d=rEPlACe(rEQuESt("Email"),"'","")	
-rESpONsE.cOOkIEs("UserName")=b
-rESpONsE.cOOkIEs("UserName").eXPiREs=dATe+10	
-cALl oPEnCOnN()
-rS.oPEn"Select * From [Member] Where UserName='"& b &"'",cONn,1,3
-iF nOT rS.eOF tHEn
-cALl rW("用户名已被注册")
-eLSe
-rS.cLOsE
-rS.oPEn"Select * From [Member] Where Email='"& d &"'",cONn,1,3
-iF nOT rS.eOF tHEn
-cALl rW("邮箱已被注册")
-eLSe
-rS.aDDnEW
-rS("UserName")=b
-rS("Pwd")=c
-rS("Email")=d
-rS("MyMoney") = 100000
-rS.uPDaTE
-rESpONsE.cOOkIEs("PassWord")=c
-rESpONsE.cOOkIEs("PassWord").eXPiREs=dATe+10
-sESsIOn("Email")=rS("Email")
-sESsIOn("MyMoney")=cLNg(rS("MyMoney"))
-cALl rW("OK")
-eND iF
-rESpONsE.eND()
-eND iF:rS.cLOsE
-eND sUB
-sUB uSErLOgIN()
-dIM b,c,d
-b=rEPlACe(rEQuESt("UserName"),"'","")
-c=rEPlACe(rEQuESt("PassWord"),"'","")
-iF rEQuESt("P")="" tHEn
-c = mD5(c,2) & mD5(c,4)
-eND iF
-d=rEPlACe(rEQuESt("autologin"),"'","")
-rESpONsE.cOOkIEs("UserName")=b
-rESpONsE.cOOkIEs("UserName").eXPiREs=dATe+10
-cALl oPEnCOnN()
-rS.oPEn"Select * From [Member] Where UserName='"& b &"' Or Email='"& b &"'",cONn,1,3
-iF rS.eOF tHEn
-cALl rW("用户名不存在")
-eLSe
-iF rS("Pwd")<>c tHEn
-cALl rW("密码不正确")
-eLSe
-rESpONsE.cOOkIEs("PassWord")=c
-rESpONsE.cOOkIEs("PassWord").eXPiREs=dATe+10
-sESsIOn("Email")=rS("Email")
-sESsIOn("MyMoney")=cLNg(rS("MyMoney"))
-cALl rW("OK")
-eND iF
-eND iF:rS.cLOsE
-eND sUB
-sUB sAVeQQdIAlOGuE()
-dIM b,c
-b = rEQuESt("QQ")
-c = rEQuESt("ClickStyle")
-cALl cREaTEaDDfILe("/QQ/QQ.txt","聊天QQ=" & b & "，样式=" & c & "，时间=" & fORmAT_TImE(nOW(),8))
-cALl rW("保存QQ对话成功")
-eND sUB
-sUB gETfUNcTIoNCoDE(a)
-dIM b
-b = gETfTExT("FSO.Asp")
-b = sTRcUT(b,"Function " & a,"End Function",1)
-cALl rW(sHOwASpCOdECoLOr(b))
-eND sUB
+
+Select Case Request("act")
+	Case "SaveFile" : SaveFile( Request("FilePath"))			
+	Case "GetFunctionCode" : GetFunctionCode(Request("Lable"))	
+	Case "SaveQQDialogue" : Call SaveQQDialogue()				
+	Case "UserLogin" : Call UserLogin()						 	
+	Case "UserReg" : Call UserReg()								
+	Case "MobileArticleList" : Call MobileArticleList()			
+	Case "ShowArticleNumb" : Call ShowArticleNumb()				
+	Case "SaveAJAXEdit" : Call SaveAJAXEdit()					
+	Case "SaveAJAXTEXTEdit" : Call SaveAJAXTEXTEdit()					
+	
+	Case "DeleteAction" : Call DeleteAction()					
+	
+	Case "showArticleList" : Call showArticleList()					
+End Select
+
+
+function showArticleList()
+	call openconn()
+	dim b,c,d,e
+	b=Rq("did")
+	e=HandleNumber(Rq("Numb")) 	
+	if e<>"" then
+		c = "select top "& e &" * from [product]"
+	else	
+		c = "select * from [product]"
+	end if
+	if b<>"" then
+		c=c & " where BigClassName='"& b &"'"
+	end if
+	rs.open c,conn,1,1
+	Dim f : Set f = New Cls_AB_JSON
+	
+	call rw(f.toJSON(rs))
+	
+	rs.close
+end function
+
+function showArticleList2()
+	call openconn()
+	dim b,c,d,e
+	b=Rq("did")
+	e=HandleNumber(Rq("Numb")) 	
+	if e<>"" then
+		c = "select top "& e &" * from [product]"
+	else	
+		c = "select * from [product]"
+	end if
+	if b<>"" then
+		c=c & " where BigClassName='"& b &"'"
+	end if
+	rs.open c,conn,1,1
+	Dim f : Set f = New Cls_AB_JSON
+	
+	call rw(f.toJSON(rs))
+	rs.close
+end function
+
+
+Function DeleteAction()
+	Dim C	
+	C=C & "MDBPath=" & Rq("MDBPath") & vbCrlf
+	C=C & "TableName=" & Rq("TableName") & vbCrlf
+	C=C & "FieldName=" & Rq("FieldName") & vbCrlf
+	C=C & "ID=" & Rq("ID") & vbCrlf
+	
+	MdbPath=Request("MDBPath")
+	Call OpenConn()
+	Dim c
+	c = "Select * From ["& Request("TableName") &"] Where Id=" & Request("Id")
+	
+	Rs.Open c,Conn,1,3
+	If Not Rs.Eof Then
+		Rs.Delete
+		Rs.Update
+		Call Rw("删除ID【"& Request("Id") &"】成功")
+	Else		
+		Call Rw("ID【"& Request("Id") &"】不存在，删除失败")
+	End If:Rs.Close
+End Function
+
+Function SaveAJAXEdit()
+	Dim b
+	
+	b=b & "MDBPath=" & Rq("MDBPath") & "("& IsNul(Rq("MDBPath")) &")" & vbCrlf
+	b=b & "MDBPath=" & HandlePath(Rq("MDBPath")) & vbCrlf
+	b=b & "TableName=" & Rq("TableName") & vbCrlf
+	b=b & "FieldName=" & Rq("FieldName") & vbCrlf
+	b=b & "Content=" & Rq("Content") & vbCrlf
+	b=b & "ID=" & Rq("ID") & vbCrlf
+	Call Rw("<pre>"& b &"</pre>"):Doevents
+	
+	Call OpenConn()
+	Dim c
+	c = "Select * From ["& Request("TableName") &"] Where Id=" & Request("Id")
+	
+	Rs.Open c,Conn,1,3
+	If Not Rs.Eof Then
+		Rs(Rq("FieldName")) = Request("Content")
+		Rs.Update
+	End If:Rs.Close
+End Function
+
+Function SaveAJAXTEXTEdit()
+	Dim C	
+	C=C & "FilePath=" & Rq("FilePath") & vbCrlf
+	
+	
+	C=C & "content=" & Request.Form("content") & vbCrlf
+	C=C & "count=" & Request.Form("count") & vbCrlf
+	Call Rw("<pre>"& C &"</pre>"):Doevents
+	Call CreateFile(Request("FilePath"),Request("content"))
+End Function
+
+
+Sub ShowArticleNumb()
+	Dim b
+	b = Request("Id")
+	Call OpenConn()
+	Rs.Open"Select * From [Product] Where Id=" & b,Conn,1,3
+	If Not Rs.Eof Then
+		Rs("Hits") = Rs("Hits")+1
+		Rs.Update
+		Call Rw(Rs("Hits"))
+	End If:Rs.Close
+End Sub
+
+
+Sub MobileArticleList()
+	
+	Dim b,c,d,e
+	Call OpenConn()
+	If Session("ShowMobileArticleNumb") = "" Then Session("ShowMobileArticleNumb")=12
+	d = 0
+    b=b & "<?xml version=""1.0"" encoding=""gb2312"" ?> " & vbCrlf
+    b=b & "<clists> " & vbCrlf
+	c = "Select * From [Product] Where BigClassName='信息中心' Order By Id Desc"
+	Rs.Open c,Conn,1,1
+	For e =1 To Rs.RecordCount
+		If d>10 Then Exit For
+		If e > Session("ShowMobileArticleNumb") then
+			d=d+1
+		    b=b & "<clist id="""& Rs("ID") &""" title="""& Rs("Title") &""" image=""0"" time="""& Rs("AddDateTime") &"""/>" & vbCrlf
+		End If
+	Rs.MoveNext:Next:Rs.Close
+	Session("ShowMobileArticleNumb")=Session("ShowMobileArticleNumb")+d
+    b=b & "</clists>" & vbCrlf
+	Call Rw(b)
+End Sub
+
+Sub UserReg()
+	Dim b,c,d
+	b=Replace(Request("UserName"),"'","")
+	c=Replace(Request("PassWord"),"'","")
+	If Request("P")="" Then
+		c = MD5(c,2) & MD5(c,4)
+	End If
+	d=Replace(Request("Email"),"'","")	
+	Response.Cookies("UserName")=b
+	Response.Cookies("UserName").Expires=Date+10	
+	Call OpenConn()
+	Rs.Open"Select * From [Member] Where UserName='"& b &"'",Conn,1,3
+	If Not Rs.Eof Then
+		Call Rw("用户名已被注册")
+	Else
+		Rs.Close
+		Rs.Open"Select * From [Member] Where Email='"& d &"'",Conn,1,3
+		If Not Rs.Eof Then
+			Call Rw("邮箱已被注册")
+		Else
+			Rs.AddNew
+			Rs("UserName")=b
+			Rs("Pwd")=c
+			Rs("Email")=d
+			Rs("MyMoney") = 100000
+			Rs.Update
+			Response.Cookies("PassWord")=c
+			Response.Cookies("PassWord").Expires=date+10
+			Session("Email")=Rs("Email")
+			Session("MyMoney")=CLng(Rs("MyMoney"))
+			Call Rw("OK")
+		End If
+		Response.End()
+	End If:Rs.Close
+End Sub
+
+Sub UserLogin()
+	Dim b,c,d
+	b=Replace(Request("UserName"),"'","")
+	c=Replace(Request("PassWord"),"'","")
+	If Request("P")="" Then
+		c = MD5(c,2) & MD5(c,4)
+	End If
+	d=Replace(Request("autologin"),"'","")
+	
+	Response.Cookies("UserName")=b
+	Response.Cookies("UserName").Expires=date+10
+	
+	Call OpenConn()
+
+	Rs.Open"Select * From [Member] Where UserName='"& b &"' Or Email='"& b &"'",Conn,1,3
+	If Rs.Eof Then
+		Call Rw("用户名不存在")
+	Else
+		If Rs("Pwd")<>c Then
+			Call Rw("密码不正确")
+		Else
+			Response.Cookies("PassWord")=c
+			Response.Cookies("PassWord").Expires=date+10
+			Session("Email")=Rs("Email")
+			Session("MyMoney")=CLng(Rs("MyMoney"))
+			Call Rw("OK")
+		End If
+	End If:Rs.Close
+End Sub
+
+
+Sub SaveQQDialogue()
+	Dim b,c
+	b = Request("QQ")
+	c = Request("ClickStyle")
+	Call CreateAddFile("/QQ/QQ.txt","聊天QQ=" & b & "，样式=" & c & "，时间=" & Format_Time(Now(),8))
+	Call Rw("保存QQ对话成功")
+End Sub
+
+
+Sub GetFunctionCode(a)
+	Dim b
+	b = GetFText("FSO.Asp")
+	b = StrCut(b,"Function " & a,"End Function",1)
+	
+	Call Rw(ShowAspCodeColor(b))
+End Sub
 %>
 

@@ -37,10 +37,11 @@
         [list]
 		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 		  <td>[$templatename$] </td>
-		  <td nowrap=""><a href="../inc/admin_template.asp?act=templateFileList&dir=[$templatepath$]">[$templatepath$]</a></td>
+		  <td nowrap=""><a href="template.{$EDITORTYPE$}?act=templateFileList&dir=[$templatepath$]">[$templatepath$]</a></td>
 		  <td><a href="?act=isOpenTemplate&templatepath=[$templatepath$]&templatename=[$templatename$]">启用</a> 
-          <a href="../index.{$EDITORTYPE$}?templatedir=[$templatepath$]" target="_blank"><img src="images/icon/part-list.gif" title="预览" alt="预览" onClick="viewArc(106);" style="cursor:pointer" border="0" width="16" height="16"></a>
-          
+          <a href="{$WEB_VIEWURL$}?templatedir=[$templatepath$]" target="_blank"><img src="images/icon/part-list.gif" title="预览" alt="预览" onClick="viewArc(106);" style="cursor:pointer" border="0" width="16" height="16"></a>
+          <a href="?act=setAccess&webdataDir=[$templatepath$]WebData"  onClick="return new xyClass().myConfirm('你确定要恢复默认数据吗？\n操作后将不可恢复')">恢复数据</a> 
+           
           </td>
 		  </tr>
 		[/list] 

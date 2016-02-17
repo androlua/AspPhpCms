@@ -2,216 +2,245 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-fUNcTIoN sITeMAp(a)
-dIM b, c, d, e, f, g, h, i, j, k, l, m, n
-dIM o, p
-dIM q, r, s, t, u
-q = rPArAM(a, "ShieldNavDidList")
-r = rPArAM(a, "ShieldNavSidList")
-s = rPArAM(a, "ShieldDidList")
-t = rPArAM(a, "ShieldSidList")
-u = rPArAM(a, "ShieldTidList")
-e = e & vBCrLF & "<!--SiteMap start-->" & vBCrLF
-e = e & "<div class=""sitemap_con"">" & vBCrLF
-rS.oPEn "Select * From [NavBigClass] Order By Sort", cONn, 1, 1
-fOR b = 1 tO rS.rECoRDcOUnT
-h = rS("BigClassName")
-iF iNStR("|" & q & "|", "|" & h & "|") = fALsE tHEn
-f = gETnAVuRL(rS("BigClassName"), "")
-i = fONtCOlORfONtB(h, rS("FontB"), rS("FontColor"))
-g = rS("Target") : g = "_blank"
-e = e & "    <h4><a " & aHReF(f, h, g) & ">" & i & "</a></h4>" & vBCrLF
-iF rS("NavType") = "文本" tHEn
-rSS.oPEn "Select * From [NavSmallClass] Where BigClassName='" & rS("BigClassName") & "' Order By Sort", cONn, 1, 1
-iF nOT rSS.eOF tHEn
-p = ""
-fOR c = 1 tO rSS.rECoRDcOUnT
-j = rSS("SmallClassName")
-iF iNStR("|" & r & "|", "|" & j & "|") = fALsE tHEn
-f = gETnAVuRL(rSS("BigClassName"), rSS("SmallClassName"))
-k = fONtCOlORfONtB(j, rSS("FontB"), rSS("FontColor"))
-g = rSS("Target") : g = "_blank"
-p = p & cOPySTr(" ", 16) & "<li><a " & aHReF(f, "", g) & ">" & k & "</a></li>" & vBCrLF
-eND iF
-rSS.mOVeNExT : nEXt
-iF p <> "" tHEn
-e = e & cOPySTr(" ", 8) & "<div class=""group"">" & vBCrLF & cOPySTr(" ", 12) & "<ul>" & vBCrLF
-e = e & p
-e = e & cOPySTr(" ", 12) & "</ul>" & vBCrLF & cOPySTr(" ", 12) & "<div class=""clear""></div>" & vBCrLF
-e = e & cOPySTr(" ", 8) & "</div>" & vBCrLF
-eND iF
-eND iF : rSS.cLOsE
-eND iF
-eND iF
-rS.mOVeNExT : nEXt : rS.cLOsE
-rS.oPEn "Select * From [BigClass] Order By Sort", cONn, 1, 1
-fOR b = 1 tO rS.rECoRDcOUnT
-h = rS("BigClassName")
-iF iNStR("|" & s & "|", "|" & h & "|") = fALsE tHEn
-f = gETbIGcLAsSUrL(rS("BigClassName"))
-i = fONtCOlORfONtB(h, rS("FontB"), rS("FontColor"))
-g = rS("Target") : g = "_blank"
-e = e & "    <h4><a " & aHReF(f, h, g) & ">" & i & "</a></h4>" & vBCrLF
-rSS.oPEn "Select * From [SmallClass] Where BigClassName='" & rS("BigClassName") & "' Order By Sort", cONn, 1, 1
-iF nOT rSS.eOF tHEn
-e = e & cOPySTr(" ", 8) & "<div class=""group"">" & vBCrLF & cOPySTr(" ", 12) & "<ul>" & vBCrLF
-fOR c = 1 tO rSS.rECoRDcOUnT
-j = rSS("SmallClassName")
-iF iNStR("|" & t & "|", "|" & j & "|") = fALsE tHEn
-f = gETsMAlLClASsURl(rSS("BigClassName"), rSS("SmallClassName"))
-k = fONtCOlORfONtB(j, rSS("FontB"), rSS("FontColor"))
-g = rSS("Target") : g = "_blank"
-e = e & cOPySTr(" ", 16) & "<li><a " & aHReF(f, "", g) & ">" & k & "</a>"
-n = " Where BigClassName='" & rSS("BigClassName") & "' And  SmallClassName='" & rSS("SmallClassName") & "'"
-rSX.oPEn "Select * From [ThreeClass]" & n & " Order By Sort", cONn, 1, 1
-o = ""
-fOR d = 1 tO rSX.rECoRDcOUnT
-l = rSX("ThreeClassName")
-iF iNStR("|" & u & "|", "|" & l & "|") = fALsE tHEn
-f = gETtHReEClASsURl(h, j, l)
-m = fONtCOlORfONtB(l, rSX("FontB"), rSX("FontColor"))
-g = rSX("Target") : g = "_blank"
-o = o & cOPySTr(" ", 16) & "<li><a " & aHReF(f, "", g) & ">" & m & "</a></li>" & vBCrLF
-eND iF
-rSX.mOVeNExT : nEXt : rSX.cLOsE
-iF o = "" tHEn
-e = e & "</li>" & vBCrLF
-eLSe
-o = vBCrLF & cOPySTr(" ", 16) & "<ul>" & vBCrLF & o & cOPySTr(" ", 16) & "</ul>"
-e = e & o & cOPySTr(" ", 16) & "</li>" & vBCrLF
-eND iF
-eND iF
-rSS.mOVeNExT : nEXt
-e = e & cOPySTr(" ", 12) & "</ul>" & vBCrLF & cOPySTr(" ", 12) & "<div class=""clear""></div>" & vBCrLF
-e = e & cOPySTr(" ", 8) & "</div>" & vBCrLF
-eND iF : rSS.cLOsE
-eND iF
-rS.mOVeNExT : nEXt : rS.cLOsE
-e = e & "</div>" & vBCrLF & "<!--SiteMap end-->" & vBCrLF & vBCrLF
-sITeMAp = e
-eND fUNcTIoN
-fUNcTIoN sITeMAp2(a,b, c)
-dIM d, e, f, g,h, i,j, k,l,m,n,o,p,q,r,s,t,u,v
-i=i & vBCrLF & "<!--SiteMap start-->" & vBCrLF
-i=i & "<div class="""& a &""">" & vBCrLF	
-i=i & "<ul>" & vBCrLF	
-rS.oPEn "Select * From [NavBigClass] " & b, cONn, 1, 1
-fOR e = 1 tO rS.rECoRDcOUnT
-k = rS("FileName")
-iF k <> "" tHEn k = k & ".html"
-l = "/" & rS("FolderName") & "/"
-o = rS("BigClassName")
-j = rS("FileName")
-iF cHEcKReMOtEUrL(j)=fALsE tHEn	
-j = l & k
-j = rEPlACe(rEPlACe(j, "//", "/"), "//", "/")
-cALl wEBdEBuG(j,"act=Nav&NavDid=" & o)
-eND iF
-p = fONtCOlORfONtB(o,rS("FontB"),rS("FontColor"))
-n = rS("Target") : n="_blank"
-u = fALsE
-i=i & "	<li><a "& aHReF(j,o,n) &">"& p &"</a>"
-iF rS("NavType") = "文本" tHEn
-rSS.oPEn "Select * From [NavSmallClass] Where BigClassName='"& rS("BigClassName") &"'", cONn, 1, 1
-iF nOT rSS.eOF tHEn
-i=i & vBCrLF & cOPySTr(" ",8) & "<ul>"& vBCrLF & cOPySTr(" ",12) & "<li>"
-fOR f = 1 tO rSS.rECoRDcOUnT
-k = rSS("FileName")
-iF k <> "" tHEn k = k & ".html"
-q = rSS("SmallClassName")
-j = rSS("FileName")
-iF cHEcKReMOtEUrL(j)=fALsE tHEn	
-j = l & k
-j = l & "/" & rSS("FolderName") & "/" & k
-j = rEPlACe(rEPlACe(j, "//", "/"), "//", "/")
-cALl wEBdEBuG(j,"act=Nav&NavDid=" & o & "&NavSid=" & q)
-eND iF
-r = fONtCOlORfONtB(q,rSS("FontB"),rSS("FontColor"))
-n = rSS("Target") : n="_blank"
-i = i & "<a "& aHReF(j,"",n) &">" & r & "</a>" & vBCrLF
-rSS.mOVeNExT: nEXt
-i=i & cOPySTr(" ",12) & "</li>"& vBCrLF & cOPySTr(" ",8) &"</ul>" & vBCrLF
-u = tRUe
-eND iF : rSS.cLOsE
-eND iF
-iF u=tRUe tHEn
-i=i & cOPySTr(" ",4) & "</li><div class=""clear""></div>" & vBCrLF
-eLSe
-i=i & "</li>" & vBCrLF
-eND iF
-rS.mOVeNExT : nEXt : rS.cLOsE
-rS.oPEn "Select * From [BigClass] " & c, cONn, 1, 1
-fOR e = 1 tO rS.rECoRDcOUnT
-k = rS("FileName")
-iF k <> "" tHEn k = k & ".html"
-l = "/" & rS("FolderName") & "/"
-o = rS("BigClassName")
-j = rS("FileName")
-iF cHEcKReMOtEUrL(j)=fALsE tHEn
-j = l & k
-j = rEPlACe(rEPlACe(j, "//", "/"), "//", "/")
-cALl wEBdEBuG(j,"act=CreateClass&ProDid=" & o)
-eND iF
-p = fONtCOlORfONtB(o,rS("FontB"),rS("FontColor"))
-n = rS("Target") : n="_blank"
-u = fALsE
-i=i & cOPySTr(" ",4) & "<li><a "& aHReF(j,o,n) &">"& p &"</a>"
-rSS.oPEn "Select * From [SmallClass] Where BigClassName='"& rS("BigClassName") &"'", cONn, 1, 1
-iF nOT rSS.eOF tHEn	
-i=i & vBCrLF & cOPySTr(" ",8) & "<ul>" & vBCrLF
-fOR f = 1 tO rSS.rECoRDcOUnT
-k = rSS("FileName")
-iF k <> "" tHEn k = k & ".html"
-m = "/" & rSS("FolderName") & "/"
-q = rSS("SmallClassName")
-j = rSS("FileName")
-iF cHEcKReMOtEUrL(j)=fALsE tHEn
-j = l & "/" & rSS("FolderName") & "/" & k
-j = rEPlACe(rEPlACe(j, "//", "/"), "//", "/")
-cALl wEBdEBuG(j,"act=CreateClass&ProDid=" & o & "&ProSid=" &q)
-eND iF
-r = fONtCOlORfONtB(q,rSS("FontB"),rSS("FontColor"))
-n = rSS("Target") : n="_blank"
-i = i & cOPySTr(" ",12) & "<li><a "& aHReF(j,"",n) &">" & r & "</a>"
-rSX.oPEn"Select * From [ThreeClass] Where BigClassName='"& o &"' And SmallClassName='"& q &"' Order By Sort,ID Asc",cONn,1,1
-v = ""
-fOR g = 1 tO rSX.rECoRDcOUnT	
-k = rSX("FileName")
-iF k <> "" tHEn k = k & ".html"
-s = rSX("ThreeClassName")
-j = rSX("FileName")
-iF cHEcKReMOtEUrL(j)=fALsE tHEn
-j = l & m & "/" & rSX("FolderName") & "/" & k
-j = rEPlACe(rEPlACe(j, "//", "/"), "//", "/")
-cALl wEBdEBuG(j,"act=CreateClass&ProDid=" & o & "&ProSid=" & q & "&ProTid=" & s)
-eND iF
-t = fONtCOlORfONtB(s,rSX("FontB"),rSX("FontColor"))
-n = rSX("Target") : n="_blank"
-v = v & "<a "& aHReF(j,"",n) &">" & t & "</a>"	
-rSX.mOVeNExT : nEXt : rSX.cLOsE
-iF v <> "" tHEn i=i & "("& v &")"
-i=i & "</li>" & vBCrLF
-rSS.mOVeNExT: nEXt
-i=i & cOPySTr(" ",8) & "</ul>" & vBCrLF
-u=tRUe
-eND iF : rSS.cLOsE
-iF u=tRUe tHEn
-i=i & cOPySTr(" ",4) & "</li><div class=""clear""></div>" & vBCrLF
-eLSe
-i=i & "</li>" & vBCrLF
-eND iF
-rS.mOVeNExT : nEXt : rS.cLOsE
-i=i & "</ul>" & vBCrLF	
-i=i & "</div>" & vBCrLF
-i=i & "<!--SiteMap end-->" & vBCrLF & vBCrLF
-sITeMAp2=i
-eND fUNcTIoN
+
+
+
+Function SiteMap(a)
+    Dim b, c, d, e, f, g, h, i, j, k, l, m, n
+    Dim o, p
+    Dim q, r, s, t, u
+    q = RParam(a, "ShieldNavDidList")
+    r = RParam(a, "ShieldNavSidList")
+    s = RParam(a, "ShieldDidList")
+    t = RParam(a, "ShieldSidList")
+    u = RParam(a, "ShieldTidList")
+
+    e = e & vbCrLf & "<!--SiteMap start-->" & vbCrLf
+    e = e & "<div class=""sitemap_con"">" & vbCrLf
+
+    Rs.Open "Select * From [NavBigClass] Order By Sort", Conn, 1, 1
+    For b = 1 To Rs.RecordCount
+        h = Rs("BigClassName")
+        If InStr("|" & q & "|", "|" & h & "|") = False Then
+            f = GetNavUrl(Rs("BigClassName"), "")
+            i = FontColorFontB(h, Rs("FontB"), Rs("FontColor"))
+            g = Rs("Target") : g = "_blank"
+
+            e = e & "    <h4><a " & AHref(f, h, g) & ">" & i & "</a></h4>" & vbCrLf
+            If Rs("NavType") = "文本" Then
+                Rss.Open "Select * From [NavSmallClass] Where BigClassName='" & Rs("BigClassName") & "' Order By Sort", Conn, 1, 1
+                If Not Rss.EOF Then
+                    p = ""
+                    For c = 1 To Rss.RecordCount
+                        j = Rss("SmallClassName")
+                        If InStr("|" & r & "|", "|" & j & "|") = False Then
+                            f = GetNavUrl(Rss("BigClassName"), Rss("SmallClassName"))
+                            k = FontColorFontB(j, Rss("FontB"), Rss("FontColor"))
+                            g = Rss("Target") : g = "_blank"
+                            p = p & CopyStr(" ", 16) & "<li><a " & AHref(f, "", g) & ">" & k & "</a></li>" & vbCrLf
+                        End If
+                    Rss.MoveNext : Next
+
+                    If p <> "" Then
+                        e = e & CopyStr(" ", 8) & "<div class=""group"">" & vbCrLf & CopyStr(" ", 12) & "<ul>" & vbCrLf
+                        e = e & p
+                        e = e & CopyStr(" ", 12) & "</ul>" & vbCrLf & CopyStr(" ", 12) & "<div class=""clear""></div>" & vbCrLf
+                        e = e & CopyStr(" ", 8) & "</div>" & vbCrLf
+                    End If
+
+                End If : Rss.Close
+            End If
+        End If
+    Rs.MoveNext : Next : Rs.Close
+
+    Rs.Open "Select * From [BigClass] Order By Sort", Conn, 1, 1
+    For b = 1 To Rs.RecordCount
+        h = Rs("BigClassName")
+        If InStr("|" & s & "|", "|" & h & "|") = False Then
+            f = GetBigClassUrl(Rs("BigClassName"))
+            i = FontColorFontB(h, Rs("FontB"), Rs("FontColor"))
+            g = Rs("Target") : g = "_blank"
+
+            e = e & "    <h4><a " & AHref(f, h, g) & ">" & i & "</a></h4>" & vbCrLf
+            Rss.Open "Select * From [SmallClass] Where BigClassName='" & Rs("BigClassName") & "' Order By Sort", Conn, 1, 1
+            If Not Rss.EOF Then
+                e = e & CopyStr(" ", 8) & "<div class=""group"">" & vbCrLf & CopyStr(" ", 12) & "<ul>" & vbCrLf
+                For c = 1 To Rss.RecordCount
+                    j = Rss("SmallClassName")
+                    If InStr("|" & t & "|", "|" & j & "|") = False Then
+                        f = GetSmallClassUrl(Rss("BigClassName"), Rss("SmallClassName"))
+                        k = FontColorFontB(j, Rss("FontB"), Rss("FontColor"))
+                        g = Rss("Target") : g = "_blank"
+
+                        e = e & CopyStr(" ", 16) & "<li><a " & AHref(f, "", g) & ">" & k & "</a>"
+
+                        n = " Where BigClassName='" & Rss("BigClassName") & "' And  SmallClassName='" & Rss("SmallClassName") & "'"
+                        Rsx.Open "Select * From [ThreeClass]" & n & " Order By Sort", Conn, 1, 1
+                        o = ""
+                        For d = 1 To Rsx.RecordCount
+                            l = Rsx("ThreeClassName")
+
+                            If InStr("|" & u & "|", "|" & l & "|") = False Then
+                                f = GetThreeClassUrl(h, j, l)
+                                m = FontColorFontB(l, Rsx("FontB"), Rsx("FontColor"))
+                                g = Rsx("Target") : g = "_blank"
+                                o = o & CopyStr(" ", 16) & "<li><a " & AHref(f, "", g) & ">" & m & "</a></li>" & vbCrLf
+                            End If
+                        Rsx.MoveNext : Next : Rsx.Close
+                        If o = "" Then
+                            e = e & "</li>" & vbCrLf
+                        Else
+                            o = vbCrLf & CopyStr(" ", 16) & "<ul>" & vbCrLf & o & CopyStr(" ", 16) & "</ul>"
+                            e = e & o & CopyStr(" ", 16) & "</li>" & vbCrLf
+                        End If
+                    End If
+                Rss.MoveNext : Next
+                e = e & CopyStr(" ", 12) & "</ul>" & vbCrLf & CopyStr(" ", 12) & "<div class=""clear""></div>" & vbCrLf
+                e = e & CopyStr(" ", 8) & "</div>" & vbCrLf
+            End If : Rss.Close
+        End If
+    Rs.MoveNext : Next : Rs.Close
+    e = e & "</div>" & vbCrLf & "<!--SiteMap end-->" & vbCrLf & vbCrLf
+    SiteMap = e
+End Function
+
+
+Function SiteMap2(a,b, c)
+    Dim d, e, f, g,h, i,j, k,l,m,n,o,p,q,r,s,t,u,v
+    i=i & vbCrlf & "<!--SiteMap start-->" & vbCrlf
+    i=i & "<div class="""& a &""">" & vbCrlf		
+    i=i & "<ul>" & vbCrlf	
+    Rs.Open "Select * From [NavBigClass] " & b, Conn, 1, 1
+	For e = 1 To Rs.RecordCount
+        k = Rs("FileName")
+        If k <> "" Then k = k & ".html"
+		l = "/" & Rs("FolderName") & "/"
+		o = Rs("BigClassName")
+		
+		j = Rs("FileName")
+		If CheckRemoteUrl(j)=False Then			
+			j = l & k
+			j = Replace(Replace(j, "//", "/"), "//", "/")
+			Call WebDebug(j,"act=Nav&NavDid=" & o)
+		End If
+		
+		p = FontColorFontB(o,Rs("FontB"),Rs("FontColor"))
+		n = Rs("Target") : n="_blank"
+		
+		u = False
+		i=i & "	<li><a "& AHref(j,o,n) &">"& p &"</a>"
+		If Rs("NavType") = "文本" Then
+			Rss.Open "Select * From [NavSmallClass] Where BigClassName='"& Rs("BigClassName") &"'", Conn, 1, 1
+			If Not Rss.Eof Then
+				i=i & vbCrlf & CopyStr(" ",8) & "<ul>"& vbCrlf & CopyStr(" ",12) & "<li>"
+				For f = 1 To Rss.RecordCount
+					k = Rss("FileName")
+					If k <> "" Then k = k & ".html"
+					q = Rss("SmallClassName")
+					
+					
+					j = Rss("FileName")
+					If CheckRemoteUrl(j)=False Then	
+						j = l & k
+						j = l & "/" & Rss("FolderName") & "/" & k
+						j = Replace(Replace(j, "//", "/"), "//", "/")
+						Call WebDebug(j,"act=Nav&NavDid=" & o & "&NavSid=" & q)
+					End If
+					
+					r = FontColorFontB(q,Rss("FontB"),Rss("FontColor"))
+					n = Rss("Target") : n="_blank"
+					i = i & "<a "& AHref(j,"",n) &">" & r & "</a>" & vbCrlf
+				Rss.MoveNext: Next
+				i=i & CopyStr(" ",12) & "</li>"& vbCrlf & CopyStr(" ",8) &"</ul>" & vbCrlf
+				u = True
+			End If : Rss.Close
+		End If
+		If u=True Then
+			i=i & CopyStr(" ",4) & "</li><div class=""clear""></div>" & vbCrlf
+		Else
+			i=i & "</li>" & vbCrlf
+		End If
+	Rs.MoveNext : Next : Rs.Close
+	
+    Rs.Open "Select * From [BigClass] " & c, Conn, 1, 1
+	For e = 1 To Rs.RecordCount
+        k = Rs("FileName")
+        If k <> "" Then k = k & ".html"
+		l = "/" & Rs("FolderName") & "/"
+		o = Rs("BigClassName")
+
+		j = Rs("FileName")
+		If CheckRemoteUrl(j)=False Then
+			j = l & k
+			j = Replace(Replace(j, "//", "/"), "//", "/")
+			Call WebDebug(j,"act=CreateClass&ProDid=" & o)
+		End If
+		
+		p = FontColorFontB(o,Rs("FontB"),Rs("FontColor"))
+		n = Rs("Target") : n="_blank"
+		u = False
+		i=i & CopyStr(" ",4) & "<li><a "& AHref(j,o,n) &">"& p &"</a>"
+		Rss.Open "Select * From [SmallClass] Where BigClassName='"& Rs("BigClassName") &"'", Conn, 1, 1
+		If Not Rss.Eof Then			
+			i=i & vbCrlf & CopyStr(" ",8) & "<ul>" & vbCrlf
+			For f = 1 To Rss.RecordCount
+				k = Rss("FileName")
+				If k <> "" Then k = k & ".html"
+				m = "/" & Rss("FolderName") & "/"
+				q = Rss("SmallClassName")
+
+				j = Rss("FileName")
+				If CheckRemoteUrl(j)=False Then
+					j = l & "/" & Rss("FolderName") & "/" & k
+					j = Replace(Replace(j, "//", "/"), "//", "/")
+					Call WebDebug(j,"act=CreateClass&ProDid=" & o & "&ProSid=" &q)
+				End If
+				
+				r = FontColorFontB(q,Rss("FontB"),Rss("FontColor"))
+				n = Rss("Target") : n="_blank"
+				i = i & CopyStr(" ",12) & "<li><a "& AHref(j,"",n) &">" & r & "</a>"
+				Rsx.Open"Select * From [ThreeClass] Where BigClassName='"& o &"' And SmallClassName='"& q &"' Order By Sort,ID Asc",Conn,1,1
+				v = ""
+				For g = 1 To Rsx.RecordCount				
+					k = Rsx("FileName")
+					If k <> "" Then k = k & ".html"
+					s = Rsx("ThreeClassName")
+
+					j = Rsx("FileName")
+					If CheckRemoteUrl(j)=False Then
+						j = l & m & "/" & Rsx("FolderName") & "/" & k
+						j = Replace(Replace(j, "//", "/"), "//", "/")
+						Call WebDebug(j,"act=CreateClass&ProDid=" & o & "&ProSid=" & q & "&ProTid=" & s)
+					End If
+					
+					t = FontColorFontB(s,Rsx("FontB"),Rsx("FontColor"))
+					n = Rsx("Target") : n="_blank"
+					v = v & "<a "& AHref(j,"",n) &">" & t & "</a>"					
+				Rsx.MoveNext : Next : Rsx.Close
+				If v <> "" Then i=i & "("& v &")"
+				i=i & "</li>" & vbCrlf
+			Rss.MoveNext: Next
+			i=i & CopyStr(" ",8) & "</ul>" & vbCrlf
+			u=True
+		End If : Rss.Close
+		If u=True Then
+			i=i & CopyStr(" ",4) & "</li><div class=""clear""></div>" & vbCrlf
+		Else
+			i=i & "</li>" & vbCrlf
+		End If
+	Rs.MoveNext : Next : Rs.Close
+		
+    i=i & "</ul>" & vbCrlf	
+    i=i & "</div>" & vbCrlf
+    i=i & "<!--SiteMap end-->" & vbCrlf & vbCrlf
+    SiteMap2=i
+End Function
 %>
 

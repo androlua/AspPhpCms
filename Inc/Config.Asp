@@ -2,13 +2,13 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-16
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%oPTiON eXPlICiT%>
+<%Option Explicit%>
 <!--#Include File = "Common.Asp"-->
 <!--#Include File = "Function.Asp"-->
 <!--#Include File = "FSO.Asp"-->
@@ -76,50 +76,65 @@
 <!--#Include File = "ASPPHPAccess.Asp"-->
 <!--#Include File = "2015_NewWebFunction.Asp"-->
 <!--#Include File = "IE.Asp"-->
+
 <!--#Include File = "ZClass_YouKou.Asp"-->
 <!--#Include File = "ZClass_Maiside.Asp"-->
 <!--#Include File = "SystemInfo.Asp"-->
 <%
-sERvER.sCRiPTtIMeOUt = 9999	
-pUBlIC dB, cONn, rS, rSX, rSS, rST, rSD, tEMpRS, tEMpRS2, rSTeMP
-pUBlIC nCOuNT, nPAgESiZE, mAXpAGe, pAGe
-pUBlIC wEBtITlE, wEBuRL, wEBkEYwORdS, wEBdEScRIpTIoN, tEMpLAtEPaTH, tEMpLAtECoNTeNT, cREaTEhTMlPAtH, cLAsSStR, cREaTEpAGe
-dIM mAInNAv,mAInTItLE,mAInCOnTEnT
-pUBlIC sYSsTYlE(9)
-pUBlIC pUBtIMeR : pUBtIMeR = nOW()	
-pUBlIC pUBnAVdID,pUBnAVsID,pUBpROdID,pUBpROsID,pUBpROtID,pUBaCTiONtYPe,pUBiD,pUBcLAsSNaME,pUBwD
-dIM pUBnAVtYPe	
-pUBlIC rEAdBLoCKlISt	
-pUBlIC eXEcUTeREsUT	
-dIM mAKeHTmLFiLEtOLcASe	 : mAKeHTmLFiLEtOLcASe=tRUe	
-dIM iSWeBLaBElCLoSE : iSWeBLaBElCLoSE=tRUe	
-dIM hANdLEiSCaCHe : hANdLEiSCaCHe=fALsE	
-dIM aDMiNDiR :aDMiNDiR="/admin/"
-sYSsTYlE(0) = "#999999"
-rESpONsE.aDDhEAdER "Content-Type","text/html; charset=gb2312"
-rESpONsE.bUFfER = tRUe
-rESpONsE.eXPiREs = 0
-rESpONsE.eXPiREsABsOLuTE = nOW() - 1
-rESpONsE.cAChECoNTrOL = "no-cache"
-rESpONsE.aDDhEAdER "Expires",dATe()
-rESpONsE.aDDhEAdER "Pragma","no-cache"
-rESpONsE.aDDhEAdER "Cache-Control","private, no-cache, must-revalidate"
-sELeCT cASe rEQuESt("A")
-cASe "HandWebImgPath" : 	
-cALl oPEnCOnN()
-rS.oPEn"Select * From [Product]",cONn,1,3
-cALl eCHo("表[Product]", "共有数据["& rS.rECoRDcOUnT &"]条")
-dOEvENtS
-wHIlE nOT rS.eOF
-rS("Banner") = hANdLEhTTpURl(rS("Banner"))
-rS("BigFiles") = hANdLEhTTpURl(rS("BigFiles"))
-rS("SmallFiles") = hANdLEhTTpURl(rS("SmallFiles"))
-rS.uPDaTE
-dOEvENtS
-rS.mOVeNExT:wENd:rS.cLOsE
-cALl eCHo("把数据库中\改成/","完成")
-rESpONsE.eND()
-eND sELeCT
+
+
+
+Server.ScriptTimeOut = 9999	
+Public db, Conn, Rs, Rsx, Rss, Rst, Rsd, TempRs, TempRs2, RsTemp
+Public nCount, nPageSize, MaxPage, Page
+
+Public WebTitle, WebUrl, WebKeywords, WebDescription, TemplatePath, TemplateContent, CreateHtmlPath, ClassStr, CreatePage
+Dim MainNav,MainTitle,MainContent
+Public SysStyle(9)
+Public PubTimer : PubTimer = now()		
+
+Public PubNavDid,PubNavSid,PubProDid,PubProSid,PubProTid,PubActionType,PubID,PubClassName,PubWD
+Dim PubNavType				
+Public ReadBlockList			
+Public ExecuteResut				
+
+dim makeHtmlFileToLCase	 : makeHtmlFileToLCase=true		
+dim isWebLabelClose : isWebLabelClose=true					
+
+dim HandleisCache : HandleisCache=false						
+dim adminDir :adminDir="/admin/"
+dim WEB_ADMINURL : WEB_ADMINURL ="/admin/index.asp"
+
+SysStyle(0) = "#999999"
+Response.Addheader "Content-Type","text/html; charset=gb2312"
+	
+	Response.Buffer = True
+	Response.Expires = 0
+	Response.ExpiresAbsolute = Now() - 1
+	Response.CacheControl = "no-cache"
+	Response.AddHeader "Expires",Date()
+	Response.AddHeader "Pragma","no-cache"
+	Response.AddHeader "Cache-Control","private, no-cache, must-revalidate"
+Select Case Request("A")
+	Case "HandWebImgPath" : 	
+	Call OpenConn()
+	Rs.Open"Select * From [Product]",Conn,1,3
+	Call Echo("表[Product]", "共有数据["& Rs.RecordCount &"]条")
+	doEvents
+	While Not Rs.Eof
+		Rs("Banner") = HandleHttpUrl(Rs("Banner"))
+		Rs("BigFiles") = HandleHttpUrl(Rs("BigFiles"))
+		Rs("SmallFiles") = HandleHttpUrl(Rs("SmallFiles"))
+		Rs.Update
+		doEvents
+	Rs.MoveNext:Wend:Rs.Close
+	Call Echo("把数据库中\改成/","完成")
+	Response.End()
+End Select
+
+
+
 %>
+
 
 

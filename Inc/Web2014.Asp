@@ -2,460 +2,558 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-03
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-fUNcTIoN sCRoLLpHOtO(a,b,c,d,e,f)
-dIM g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v
-q = 22
-g=g & "<div id="""& e &""">" & vBCrLF
-g=g & "<table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"">" & vBCrLF
-g=g & "  <tr>" & vBCrLF
-h="Select * From [Product] Where BigClassName='" & a &"'"&f
-rS.oPEn h,cONn,1,1
-fOR o=1 tO b
-iF rS.eOF tHEn eXIt fOR
-i = rS("FileName")
-iF cHEcKReMOtEUrL(i)=fALsE tHEn
-i = gEThANdLEuRL( rS("FileName") )	
-cALl wEBdEBuG(i,"act=CreateArticle&ID=" & rS("Id") )
-eND iF
-k = "_top"
-j = rS("Title")
-u = iIF(rS("TitleAlt")="",j,rS("TitleAlt"))
-t = 20
-s = cUTsTR(j,t,"... ")
-s = fONtCOlORfONtB(s,rS("FontB"),rS("FontColor"))
-l = "<a "& aHReF(i,u,k) &">"
-iF iSNuL(rS("SmallFiles")) tHEn	
-iF iSNuL(rS("BigFiles")) tHEn p="Images/error.gif" eLSe p=rS("BigFiles")
-eLSe
-iF iSNuL(rS("SmallFiles")) tHEn p="Images/error.gif" eLSe p=rS("SmallFiles")
-eND iF
-r = iIF(rS("BigFilesAlt")="",j,rS("BigFilesAlt"))
-iF m = "nonehref" tHEn
-l = "<a href=""#"" " & v & ">"
-eND iF
-g=g & "    <td width=""200"" height=""170"" valign=""middle""><table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"">" & vBCrLF
-g=g & "      <tr>" & vBCrLF
-g=g & "        <td align=""center"">" & l & "<img src=""" & p & """ width=""" & c & """ height=""" & d & """ border=""0"" "& iMGtITlEAlT(r) &" class=""idimg""></a></td>" & vBCrLF
-g=g & "      </tr>" & vBCrLF
-g=g & "      <tr>" & vBCrLF
-g=g & "        <td height=""30"" align=""center"">" & vBCrLF
-g=g & l & s &"</a>" & vBCrLF
-iF n tHEn
-g=g & "<br>价格:<font color=red>"&rS("Price")&"￥</font>" & vBCrLF
-g=g & "&nbsp;&nbsp;<a href=""Shop.Asp?Id="&rS(0)&""" class=Price>购买</a>" & vBCrLF
-eND iF	
-g=g & "                  </td>" & vBCrLF
-g=g & "      </tr>" & vBCrLF
-g=g & "    </table></td>" & vBCrLF
-g=g & "    <td width=""15"">&nbsp;</td>" & vBCrLF
-rS.mOVeNExT:nEXt:rS.cLOsE
-g=g & "    <td>&nbsp;</td>" & vBCrLF
-g=g & "  </tr>" & vBCrLF
-g=g & "</table>" & vBCrLF
-g=g & "</div>" & vBCrLF
-sCRoLLpHOtO = g
-eND fUNcTIoN
-fUNcTIoN fRIeNDlINk()
-dIM b, c, d, e, f, g, h
-rSX.oPEn "Select * From [FriendLink] Where Through=True Order By Sort", cONn, 1, 1
-fOR g = 1 tO rSX.rECoRDcOUnT
-b = rSX("Url")
-d = aTArGEt(rSX("Target"))
-e = aREl(rSX("NoFollow"))
-c = rSX("Title")
-f = rSX("ImgPath")
-h = h & "<div class='LinkBlock'><a href='" & b & "'" & d & "" & e & "><img src=" & f & "></a><br>"
-h = h & "<a href='" & b & "'" & d & "" & e & ">" & fONtCOlORfONtB(c, rSX("FontB"), rSX("FontColor")) & "</a></div>" & vBCrLF
-rSX.mOVeNExT : nEXt : rSX.cLOsE
-fRIeNDlINk = h
-eND fUNcTIoN
-fUNcTIoN rEAdNEwLIsT(a, b, c, d)
-dIM e,f
-iF c = "" tHEn c = 28
-dIM g,h,i,j,k
-iF a <> "" tHEn
-i = "Where BigClassName='"& a &"'"
-eND iF
-i = "Select Top "& b &" * From [Product] " & i & d
-rS.oPEn i,cONn,1,1
-fOR k=1 tO b
-iF rS.eOF tHEn eXIt fOR	
-g = rS("FileName")
-iF cHEcKReMOtEUrL(g)=fALsE tHEn
-g = gEThANdLEuRL( rS("FileName") )	
-cALl wEBdEBuG(g,"act=CreateArticle&ID=" & rS("Id") )
-eND iF
-e = rS("Title")
-f = iIF(rS("TitleAlt")="",e,rS("TitleAlt"))	
-j = cUTsTR(e,c,"... ")
-j = fONtCOlORfONtB(j,rS("FontB"),rS("FontColor"))
-h=h & "<div class='News'><a "& aHReF(g,f,rS("Target")) &">"& j &"</a></div>" & vBCrLF
-rS.mOVeNExT : nEXt : rS.cLOsE
-rEAdNEwLIsT = h
-eND fUNcTIoN
-fUNcTIoN lITyPEnEWlISt(a, b, c, d)
-iF c = "" tHEn c = 28
-dIM e,f,g,h,i
-iF a <> "" tHEn
-g = "Where BigClassName='"& a &"'"
-eND iF
-g = "Select Top "& b &" * From [Product] " & g & d
-rS.oPEn g,cONn,1,1
-fOR i=1 tO b
-iF rS.eOF tHEn eXIt fOR	
-e = rS("FileName")
-iF cHEcKReMOtEUrL(e)=fALsE tHEn
-e = gEThANdLEuRL( rS("FileName") )	
-cALl wEBdEBuG(e,"act=CreateArticle&ID=" & rS("Id") )
-eND iF
-h = cUTsTR(rS("Title"),c,"... ")
-h = fONtCOlORfONtB(h,rS("FontB"),rS("FontColor"))
-f=f & "<li><a "& aHReF(e,rS("Title"),rS("Target")) &">"& h &"</a></li>" & vBCrLF
-rS.mOVeNExT : nEXt : rS.cLOsE
-lITyPEnEWlISt = f
-eND fUNcTIoN
-fUNcTIoN cASeLIsT(a,b,c)
-dIM d,e,f,g,h,i,j,k,l
-d = "Select * From [Product] Where BigClassName='"& a &"' And (len(BigFiles)>3 Or len(SmallFiles)>3) Order By Id Desc"
-rS.oPEn d, cONn, 1, 1
-fOR e=1 tO b
-iF rS.eOF tHEn eXIt fOR	
-f = gEThANdLEuRL( rS("FileName") )
-g = rS("Title")
-h = g
-iF i <> "" tHEn
-h = rEPlACe(h, i, "<font color=red><b>"& i &"</b></font>")
-eND iF	
-h = cUTsTR(h,28,"... ")	
-iF iSNuL(rS("SmallFiles")) tHEn	
-iF iSNuL(rS("BigFiles")) tHEn l="Images/error.gif" eLSe l=rS("BigFiles")
-eLSe
-iF iSNuL(rS("SmallFiles")) tHEn l="Images/error.gif" eLSe l=rS("SmallFiles")
-eND iF
-h = fONtCOlORfONtB(h,rS("FontB"),rS("FontColor"))
-j = rS("Target")	
-k=k & "<div class='ImageBlock'><a "& aHReF(f,g,j) &"><img "& iMGsRC(l,g,j) &"/></a><p><a "& aHReF(f,rS("Title"),rS("Target")) &">"& h &"</a></p></div>"
-rS.mOVeNExT : nEXt :rS.cLOsE
-cASeLIsT = k
-eND fUNcTIoN
-fUNcTIoN rEAdSCrOLlMEmBErLIsT(a, b)
-dIM c, d, e, f
-f = "Select * From [Member] Order By Id Desc"
-rS.oPEn f, cONn, 1, 1
-fOR d = 1 tO rS.rECoRDcOUnT
-iF rS.eOF oR d > a tHEn eXIt fOR
-e = e & "<li>" & rS("UserName") & "</li>"
-rS.mOVeNExT : nEXt : rS.cLOsE
-rEAdSCrOLlMEmBErLIsT = e
-eND fUNcTIoN
-fUNcTIoN rEAdCLaSSlISt(a, b, c, d, e)
-dIM f, g, h, i,j,k,l,m,n,o,p,q,r,s
-rS.oPEn"Select * From [SmallClass] Where BigClassName='"& a &"' Order By Sort",cONn,1,1
-r=0
-wHIlE nOT rS.eOF
-j = rS("SmallClassName")
-k = fONtCOlORfONtB(j,rS("FontB"),rS("FontColor")) 	
-l = gETsMAlLClASsFIlENaME( rS("BigClassName"), rS("SmallClassName") )
-cALl wEBdEBuG(l,"act=CreateClass&ProDid=" & a & "&ProSid=" & rS("SmallClassName"))
-m = aTArGEt(rS("Target"))
-iF e<>"" tHEn
-r=r+1
-s = " onmousemove=""ShowHideDiv('ProList"& r &"');"""
-eND iF
-i=i & "        <div class='ClassSmall'"& s &"><A "& aHReF(l,"",m) & sTYlEClASs("ClassSid") &">"& k &"</A></div>" & vBCrLF
-iF e<>"" tHEn
-i=i & "<div id=""ProList"& r &""" style=""display:none"">" & vBCrLF
-eND iF
-rSX.oPEn"Select * From [ThreeClass] Where BigClassName='"& a &"' And SmallClassName='"& rS("SmallClassName") &"' Order By Sort,ID Asc",cONn,1,1
-iF nOT rSX.eOF tHEn	
-fOR g=1 tO rSX.rECoRDcOUnT
-iF tABlECoUNt("Product","Where BigClassName='"& a &"' And SmallClassName='"& rSX("SmallClassName") &"' And ThreeClassName='"& rSX("ThreeClassName") &"'" )>1 tHEn
-n =  gETtHReEClASsFIlENaME(rSX("BigClassName"),rSX("SmallClassName"),rSX("ThreeClassName"))
-eLSe
-n = gETpROdUCtURl("Where BigClassName='"& rSX("BigClassName") &"' And SmallClassName='"& rSX("SmallClassName") &"' And ThreeClassName='"& rSX("ThreeClassName") &"'")
-eND iF
-m = aTArGEt(rSX("Target"))
-q = rSX("ThreeClassName")
-p = fONtCOlORfONtB(q,rSX("FontB"),rSX("FontColor")) 	
-iF q = c tHEn
-p="<font color=red>"& p  &"</font>"
-eND iF
-i=i & "                <div class='ClassThree'><a "& aHReF(n,"",m) & sTYlEClASs("ClassTid") &">"& p &"</a></div>" & vBCrLF
-rSX.mOVeNExT:nEXt
-eND iF:rSX.cLOsE
-iF e<>"" tHEn
-i=i & "</div>" & vBCrLF
-eND iF
-i=i & "<div class='clear10'></div>"
-rS.mOVeNExT:wENd:rS.cLOsE
-rEAdCLaSSlISt = i
-eND fUNcTIoN
-fUNcTIoN hOTsEArCH(a)
-dIM b, c, d, e,f,g,h,i,j
-iF a = "" tHEn a = " Where Through=True Order By Sort Desc"
-rS.oPEn"Select * From [SearchCount] " & a,cONn,1,1
-fOR c=1 tO 10
-iF rS.eOF tHEn eXIt fOR	
-h = rS("Title")
-g = "/Inc/Create_Html.Asp?act=Search&MackHtml=False&wd=" & h
-i = h
-i = fONtCOlORfONtB(i,rS("FontB"),rS("FontColor")) 	
-iF h = j tHEn	
-e=e & "            "& tEXtFOnTB(h,tRUe) &"&nbsp;" & vBCrLF
-eLSe
-e=e & "            <a "& aHReF(g,h,rS("Target")) &">"& i &"</a>&nbsp;" & vBCrLF
-eND iF
-rS.mOVeNExT:nEXt:rS.cLOsE
-hOTsEArCH=e
-eND fUNcTIoN
-fUNcTIoN jSBaNNeR2011(a, b, c, d, e, f)
-dIM g, h, i, j
-g = ""
-g = g & "<SCRIPT language=JavaScript type=text/javascript> " & vBCrLF
-g = g & "var bannerAD=new Array(); " & vBCrLF
-g = g & "var bannerADlink=new Array(); " & vBCrLF
-g = g & "var adNum=0; " & vBCrLF
-rS.oPEn "Select Top " & b & " * From[Product] Where BigClassName='" & a & "'", cONn, 1, 1
-iF rS.eOF aND e tHEn
-rSS.oPEn "Select BigClassName From [BigClass] Where BigClassName='" & a & "'", cONn, 1, 3
-iF rSS.eOF tHEn
-rSS.aDDnEW
-rSS("BigClassName") = a
-rSS.uPDaTE
-eND iF : rSS.cLOsE
-fOR j = 1 tO b
-cONn.eXEcUTe("Insert Into[Product](BigClassName,Title,BigFiles) Values('" & a & "','" & a & j & "','UpLoadFiles/Pic/" & j & ".jpg')")
-nEXt
-eND iF
-fOR h = 1 tO rS.rECoRDcOUnT
-iF h = 1 tHEn i = rS("BigFiles")
-g = g & "bannerAD[" & h - 1 & "]=""" & rEPlACe(rS("BigFiles"), vBCrLF, "") & """; " & vBCrLF
-g = g & "bannerADlink[" & h - 1 & "]=""#""" & vBCrLF
-g = g & "" & vBCrLF
-rS.mOVeNExT : nEXt : rS.cLOsE
-g = g & "var preloadedimages=new Array(); " & vBCrLF
-g = g & "for(i=1;i<bannerAD.length;i++){ " & vBCrLF
-g = g & "preloadedimages[i]=new Image(); " & vBCrLF
-g = g & "preloadedimages[i].src=bannerAD[i]; " & vBCrLF
-g = g & "} " & vBCrLF
-g = g & "" & vBCrLF
-g = g & "function setTransition(){ " & vBCrLF
-g = g & "if(document.all){ " & vBCrLF
-g = g & "bannerADrotator.filters.revealTrans.Transition=Math.floor(Math.random()*23); " & vBCrLF
-g = g & "bannerADrotator.filters.revealTrans.apply(); " & vBCrLF
-g = g & "} " & vBCrLF
-g = g & "} " & vBCrLF
-g = g & "" & vBCrLF
-g = g & "function playTransition(){ " & vBCrLF
-g = g & "if(document.all) " & vBCrLF
-g = g & "bannerADrotator.filters.revealTrans.play() " & vBCrLF
-g = g & "} " & vBCrLF
-g = g & "" & vBCrLF
-g = g & "function nextAd(){ " & vBCrLF
-g = g & "if(adNum<bannerAD.length-1)adNum++ ; " & vBCrLF
-g = g & "else adNum=0; " & vBCrLF
-g = g & "setTransition(); " & vBCrLF
-g = g & "document.images.bannerADrotator.src=bannerAD[adNum]; " & vBCrLF
-g = g & "playTransition(); " & vBCrLF
-g = g & "theTimer=setTimeout(""nextAd()"", 4000); " & vBCrLF
-g = g & "} " & vBCrLF
-g = g & "" & vBCrLF
-g = g & "function jump2url(){ " & vBCrLF
-g = g & "jumpUrl=bannerADlink[adNum]; " & vBCrLF
-g = g & "jumpTarget='_self'; " & vBCrLF
-g = g & "if(jumpUrl != ''){ " & vBCrLF
-g = g & "} " & vBCrLF
-g = g & "} " & vBCrLF
-g = g & "function displayStatusMsg() { " & vBCrLF
-g = g & "status=bannerADlink[adNum]; " & vBCrLF
-g = g & "document.returnValue = true; " & vBCrLF
-g = g & "}" & vBCrLF
-g = g & "</SCRIPT>" & vBCrLF
-g = g & "<A onmouseover=""displayStatusMsg();return document.returnValue"" href=""javascript:jump2url()"">" & vBCrLF
-g = g & "<IMG id=bannerADrotator style=""FILTER: revealTrans(duration=2,transition=40)"" height=" & d & " src=""" & i & """ width=" & c & " align=middle name=bannerADrotator></A>" & vBCrLF
-g = g & "<SCRIPT language=JavaScript type=text/javascript>nextAd()</SCRIPT>" & vBCrLF
-jSBaNNeR2011 = g
-eND fUNcTIoN
-sUB mAKeSItEMaP()
-dIM b, c, d, e,f, g,h,i,j,k,l,m,n,o,p,q,r,s,t
-dIM u,v
-p = gEThOSt()
-s = fORmAT_TImE(nOW(),2)
-t = 0
-rS.oPEn "Select * From [WebSite]", cONn, 1, 1
-iF nOT rS.eOF tHEn
-q = rS("WebTitle")
-eND iF : rS.cLOsE
-u=u & "<?xml version=""1.0"" encoding=""gb2312""?>" & vBCrLF
-u=u & "<urlset" & vBCrLF
-u=u & "    xmlns=""http://www.sitemaps.org/schemas/sitemap/0.9""" & vBCrLF
-u=u & "    xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""" & vBCrLF
-u=u & "    xsi:schemaLocation=""http://www.sitemaps.org/schemas/sitemap/0.9" & vBCrLF
-u=u & "       http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"">" & vBCrLF
-v=v & "<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">" & vBCrLF
-v=v & "<head>" & vBCrLF
-v=v & "<title>网站地图-"& q &"</title>" & vBCrLF
-v=v & "<meta http-equiv=""Content-type"" content=""text/html;"" charset=""gb2312"" />" & vBCrLF
-v=v & "<style type=""text/css"">" & vBCrLF
-v=v & "A{" & vBCrLF
-v=v & "font-size: 14px;text-decoration:none;" & vBCrLF
-v=v & "color: #000000;" & vBCrLF
-v=v & "line-height:30px;" & vBCrLF
-v=v & "}</style>" & vBCrLF
-v=v & "</head>" & vBCrLF
-v=v & "<body>" & vBCrLF
-rS.oPEn "Select * From [NavBigClass] Where OnHtml=True Order By Sort", cONn, 1, 1
-fOR b = 1 tO rS.rECoRDcOUnT
-g = rS("FileName")
-iF g <> "" tHEn g = g & ".html"
-h = "/" & rS("FolderName") & "/"
-f = h & g
-f = rEPlACe(rEPlACe(f, "//", "/"), "//", "/")
-f = uRLaDDhTTpURl(p,f)
-k = rS("BigClassName")
-r = iIF(rS("WebTitle")="",q,rS("WebTitle"))
-cALl eCHo(r,f)
-u=u & "<url>" & vBCrLF & "<loc>"& f &"</loc>" & vBCrLF & "<priority>0.5</priority>" & vBCrLF
-u=u & "<lastmod>"& s &"</lastmod>" & vBCrLF & "<changefreq>weekly</changefreq>" & vBCrLF & "</url>" & vBCrLF
-t = t + 1
-v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
-iF rS("NavType") = "文本" tHEn
-rSS.oPEn "Select * From [NavSmallClass] Where BigClassName='"& rS("BigClassName") &"' And OnHtml=True Order By Sort", cONn, 1, 1
-iF nOT rSS.eOF tHEn
-fOR c = 1 tO rSS.rECoRDcOUnT
-g = rSS("FileName")
-iF g <> "" tHEn g = g & ".html"
-f = h & g
-f = h & "/" & rSS("FolderName") & "/" & g
-f = rEPlACe(rEPlACe(f, "//", "/"), "//", "/")
-f = uRLaDDhTTpURl(p,f)
-m = rSS("SmallClassName")
-r = iIF(rSS("WebTitle")="",q,rSS("WebTitle"))	
-cALl eCHo(r,f)
-u=u & "<url>" & vBCrLF & "<loc>"& f &"</loc>" & vBCrLF & "<priority>0.5</priority>" & vBCrLF
-u=u & "<lastmod>"& s &"</lastmod>" & vBCrLF & "<changefreq>weekly</changefreq>" & vBCrLF & "</url>" & vBCrLF
-t = t + 1
-v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
-rSS.mOVeNExT: nEXt 	
-eND iF : rSS.cLOsE	
-eND iF
-rS.mOVeNExT : nEXt : rS.cLOsE
-rS.oPEn "Select * From [BigClass] Where OnHtml=True Order By Sort", cONn, 1, 1
-fOR b = 1 tO rS.rECoRDcOUnT
-g = rS("FileName")
-iF g <> "" tHEn g = g & ".html"
-h = "/" & rS("FolderName") & "/"
-f = h & g
-f = rEPlACe(rEPlACe(f, "//", "/"), "//", "/")
-f = uRLaDDhTTpURl(p,f)
-k = rS("BigClassName")
-r = iIF(rS("WebTitle")="",q,rS("WebTitle"))
-cALl eCHo(r,f)
-u=u & "<url>" & vBCrLF & "<loc>"& f &"</loc>" & vBCrLF & "<priority>0.5</priority>" & vBCrLF
-u=u & "<lastmod>"& s &"</lastmod>" & vBCrLF & "<changefreq>weekly</changefreq>" & vBCrLF & "</url>" & vBCrLF
-t = t + 1
-v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
-rSS.oPEn "Select * From [SmallClass] Where BigClassName='"& rS("BigClassName") &"' And  OnHtml=True Order By Sort", cONn, 1, 1
-iF nOT rSS.eOF tHEn	
-fOR c = 1 tO rSS.rECoRDcOUnT
-g = rSS("FileName")
-iF g <> "" tHEn g = g & ".html"
-i = "/" & rSS("FolderName") & "/"
-f = h & "/" & rSS("FolderName") & "/" & g
-f = rEPlACe(rEPlACe(f, "//", "/"), "//", "/")
-f = uRLaDDhTTpURl(p,f)
-m = rSS("SmallClassName")
-r = iIF(rSS("WebTitle")="",q,rSS("WebTitle"))
-cALl eCHo(r,f)
-u=u & "<url>" & vBCrLF & "<loc>"& f &"</loc>" & vBCrLF & "<priority>0.5</priority>" & vBCrLF
-u=u & "<lastmod>"& s &"</lastmod>" & vBCrLF & "<changefreq>weekly</changefreq>" & vBCrLF & "</url>" & vBCrLF
-t = t + 1
-v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
-rSX.oPEn"Select * From [ThreeClass] Where BigClassName='"& k &"' And SmallClassName='"& m &"' And  OnHtml=True Order By Sort",cONn,1,1
-fOR d = 1 tO rSX.rECoRDcOUnT
-g = rSX("FileName")
-iF g <> "" tHEn g = g & ".html"
-f = h & i & "/" & rSX("FolderName") & "/" & g
-f = rEPlACe(rEPlACe(f, "//", "/"), "//", "/")
-f = uRLaDDhTTpURl(p,f)
-n = rSX("SmallClassName")
-r = iIF(rSX("WebTitle")="",q,rSX("WebTitle"))
-cALl eCHo(r,f)
-u=u & "<url>" & vBCrLF & "<loc>"& f &"</loc>" & vBCrLF & "<priority>0.5</priority>" & vBCrLF
-u=u & "<lastmod>"& s &"</lastmod>" & vBCrLF & "<changefreq>weekly</changefreq>" & vBCrLF & "</url>" & vBCrLF
-t = t + 1
-v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
-rSX.mOVeNExT : nEXt : rSX.cLOsE	
-rSS.mOVeNExT: nEXt
-eND iF : rSS.cLOsE
-rS.mOVeNExT : nEXt : rS.cLOsE	
-rS.oPEn "Select * From [Product] Where OnHtml=True Order By Sort", cONn, 1, 1
-fOR b = 1 tO rS.rECoRDcOUnT
-g = rS("FileName")
-iF g <> "" tHEn g = g & ".html"
-h = "/Html/" & rS("FolderName") & "/"
-f = h & g
-f = rEPlACe(rEPlACe(f, "//", "/"), "//", "/")
-f = uRLaDDhTTpURl(p,f)
-k = rS("BigClassName")
-r = iIF(rS("WebTitle")="",q,rS("WebTitle"))
-cALl eCHo(r,f)
-u=u & "<url>" & vBCrLF & "<loc>"& f &"</loc>" & vBCrLF & "<priority>0.5</priority>" & vBCrLF
-u=u & "<lastmod>"& s &"</lastmod>" & vBCrLF & "<changefreq>weekly</changefreq>" & vBCrLF & "</url>" & vBCrLF
-t = t + 1
-v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
-rS.mOVeNExT : nEXt : rS.cLOsE	
-cALl cREaTEfILe("/sitemap.xml", u & "</urlset>")
-cALl cREaTEfILe("/sitemap.html", v & "</body></html>")
-cALl eCHo("sitemap.html文档","<a href='/sitemap.html' target='_blank'>sitemap.html</a><br>")
-cALl eCHo("sitemap.xml文档","<a href='/sitemap.xml' target='_blank'>sitemap.xml</a>")
-eND sUB
-fUNcTIoN wEBsTAt(a)
-dIM b, c, d
-dIM e, f, g, h, i, j, k, l, m, n ,o
-f = rEQuESt.sERvERvARiABlES("HTTP_REFERER")
-e = "http://" & rEQuESt.sERvERvARiABlES("HTTP_HOST") & rEQuESt.sERvERvARiABlES("SCRIPT_NAME")
-g = rEQuESt.sERvERvARiABlES("QUERY_STRING")
-iF g <> "" tHEn
-e = e & "?" & g
-eND iF
-f = rEQuESt("GoToUrl")
-e = rEQuESt("ThisUrl")
-l = rEQuESt.qUErYStRInG("co")
-b = nOW()
-c = rEQuESt.sERvERvARiABlES("HTTP_USER_AGENT")
-c=rEPlACe(c,"MSIE","Internet Explorer")
-c=rEPlACe(c,"NT 5.0","2000")
-c=rEPlACe(c,"NT 5.1","XP")
-c=rEPlACe(c,"NT 5.2","2003")
-d = sPLiT(c & ";;;;", ";")
-m = d(1)
-n = tRIm(d(2))
-iF rIGhT(n,1)=")" tHEn n=mID(n,1,lEN(n)-1)
-h = "来访" & f & vBCrLF
-h = h & "当前：" & e & vBCrLF
-h = h & "时间：" & b & vBCrLF
-h = h & "IP:" & gETiP() & vBCrLF
-h = h & "IE:" & gETbRTyPE("") & vBCrLF
-h = h & "Cookies=" & l & vBCrLF
-h = h & "XP=" & n & vBCrLF
-h = h & "Screen=" & rEQuESt("screen") & vBCrLF
-h = h & "用户信息=" &rEQuESt.sERvERvARiABlES("HTTP_USER_AGENT")  & vBCrLF
-h = h & "-------------------------------------------------" & vBCrLF
-i = a & fORmAT_TImE(nOW(), 2) & ".txt"
-cALl cREaTEaDDfILe(i, h)
-h = h & vBCrLF & i
-h = rEPlACe(h, vBCrLF, "\n")
-h = rEPlACe(h, """", "\""")
-wEBsTAt = h
-eND fUNcTIoN
+
+
+
+
+Function ScrollPhoto(a,b,c,d,e,f)
+	Dim g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v
+	q = 22
+    g=g & "<div id="""& e &""">" & vbCrlf
+    g=g & "<table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"">" & vbCrlf
+    g=g & "  <tr>" & vbCrlf
+	
+	h="Select * From [Product] Where BigClassName='" & a &"'"&f
+	Rs.Open h,Conn,1,1
+		For o=1 To b
+		If Rs.Eof Then Exit For
+		
+		
+		i = Rs("FileName")
+		If CheckRemoteUrl(i)=False Then
+			i = GetHandleUrl( Rs("FileName") )		
+			Call WebDebug(i,"act=CreateArticle&ID=" & Rs("Id") )
+		End If
+		
+		k = "_top"
+		j = Rs("Title")
+		u = IIF(Rs("TitleAlt")="",j,Rs("TitleAlt"))
+		
+		t = 20
+		s = CutStr(j,t,"... ")
+		s = FontColorFontB(s,Rs("FontB"),Rs("FontColor"))
+		
+		l = "<a "& AHref(i,u,k) &">"
+		
+		If IsNul(Rs("SmallFiles")) Then		
+	    	If IsNul(Rs("BigFiles")) Then p="Images/error.gif" Else p=Rs("BigFiles")
+		Else
+	    	If IsNul(Rs("SmallFiles")) Then p="Images/error.gif" Else p=Rs("SmallFiles")
+		End If
+		r = IIF(Rs("BigFilesAlt")="",j,Rs("BigFilesAlt"))
+		
+		
+		If m = "nonehref" Then
+			l = "<a href=""#"" " & v & ">"
+		End If
+	
+		
+		g=g & "    <td width=""200"" height=""170"" valign=""middle""><table width=""100%"" border=""0"" cellspacing=""0"" cellpadding=""0"">" & vbCrlf
+		g=g & "      <tr>" & vbCrlf
+		g=g & "        <td align=""center"">" & l & "<img src=""" & p & """ width=""" & c & """ height=""" & d & """ border=""0"" "& ImgTitleAlt(r) &" class=""idimg""></a></td>" & vbCrlf
+		g=g & "      </tr>" & vbCrlf
+		g=g & "      <tr>" & vbCrlf
+		g=g & "        <td height=""30"" align=""center"">" & vbCrlf
+		g=g & l & s &"</a>" & vbCrlf
+		If n Then
+			g=g & "<br>价格:<font color=red>"&Rs("Price")&"￥</font>" & vbCrlf
+			g=g & "&nbsp;&nbsp;<a href=""Shop.Asp?Id="&Rs(0)&""" class=Price>购买</a>" & vbCrlf
+		End If	
+				
+		g=g & "                  </td>" & vbCrlf
+		g=g & "      </tr>" & vbCrlf
+		g=g & "    </table></td>" & vbCrlf
+		g=g & "    <td width=""15"">&nbsp;</td>" & vbCrlf
+	Rs.MoveNext:Next:Rs.Close
+    g=g & "    <td>&nbsp;</td>" & vbCrlf
+    g=g & "  </tr>" & vbCrlf
+    g=g & "</table>" & vbCrlf
+    g=g & "</div>" & vbCrlf
+	ScrollPhoto = g
+End Function
+
+
+function FriendLink()
+    dim b, c, d, e, f, g, h
+    rsx.open "Select * From [FriendLink] Where Through=True Order By Sort", conn, 1, 1
+    for g = 1 to rsx.recordCount
+        b = rsx("Url")
+        d = ATarget(rsx("Target"))
+        e = ARel(rsx("NoFollow"))
+        c = rsx("Title")
+        f = rsx("ImgPath")
+        h = h & "<div class='LinkBlock'><a href='" & b & "'" & d & "" & e & "><img src=" & f & "></a><br>"
+        h = h & "<a href='" & b & "'" & d & "" & e & ">" & FontColorFontB(c, rsx("FontB"), rsx("FontColor")) & "</a></div>" & vbCrLf
+    rsx.moveNext : next : rsx.close
+    FriendLink = h
+end function
+
+
+Function ReadNewList(a, b, c, d)
+	Dim e,f
+	If c = "" Then c = 28
+	Dim g,h,i,j,k
+	
+	If a <> "" Then
+		i = "Where BigClassName='"& a &"'"
+	End If
+	i = "Select Top "& b &" * From [Product] " & i & d
+	Rs.Open i,Conn,1,1
+	For k=1 To b
+		If Rs.Eof Then Exit For		
+		
+		g = Rs("FileName")
+		If CheckRemoteUrl(g)=False Then
+			g = GetHandleUrl( Rs("FileName") )		
+			Call WebDebug(g,"act=CreateArticle&ID=" & Rs("Id") )
+		End If
+		
+
+		e = Rs("Title")
+		f = IIF(Rs("TitleAlt")="",e,Rs("TitleAlt"))		
+		j = CutStr(e,c,"... ")
+		j = FontColorFontB(j,Rs("FontB"),Rs("FontColor"))
+		h=h & "<div class='News'><a "& AHref(g,f,Rs("Target")) &">"& j &"</a></div>" & vbCrlf
+		
+	Rs.MoveNext : Next : Rs.Close
+	ReadNewList = h
+End Function
+
+
+Function LiTypeNewList(a, b, c, d)
+	If c = "" Then c = 28
+	Dim e,f,g,h,i
+	If a <> "" Then
+		g = "Where BigClassName='"& a &"'"
+	End If
+	g = "Select Top "& b &" * From [Product] " & g & d
+	Rs.Open g,Conn,1,1
+	For i=1 To b
+		If Rs.Eof Then Exit For		
+		
+		e = Rs("FileName")
+		If CheckRemoteUrl(e)=False Then
+			e = GetHandleUrl( Rs("FileName") )		
+			Call WebDebug(e,"act=CreateArticle&ID=" & Rs("Id") )
+		End If
+		
+		h = CutStr(Rs("Title"),c,"... ")
+		h = FontColorFontB(h,Rs("FontB"),Rs("FontColor"))
+		f=f & "<li><a "& AHref(e,Rs("Title"),Rs("Target")) &">"& h &"</a></li>" & vbCrlf
+		
+	Rs.MoveNext : Next : Rs.Close
+	LiTypeNewList = f
+End Function
+
+
+Function CaseList(a,b,c)
+	Dim d,e,f,g,h,i,j,k,l
+    d = "Select * From [Product] Where BigClassName='"& a &"' And (len(BigFiles)>3 Or len(SmallFiles)>3) Order By Id Desc"
+    Rs.Open d, Conn, 1, 1
+	For e=1 To b
+		If Rs.Eof Then Exit For		
+		f = GetHandleUrl( Rs("FileName") )
+		g = Rs("Title")
+		h = g
+		If i <> "" Then
+			h = Replace(h, i, "<font color=red><b>"& i &"</b></font>")
+		End If		
+		h = CutStr(h,28,"... ")			
+
+		If IsNul(Rs("SmallFiles")) Then		
+	    	If IsNul(Rs("BigFiles")) Then l="Images/error.gif" Else l=Rs("BigFiles")
+		Else
+	    	If IsNul(Rs("SmallFiles")) Then l="Images/error.gif" Else l=Rs("SmallFiles")
+		End If
+		h = FontColorFontB(h,Rs("FontB"),Rs("FontColor"))
+		j = Rs("Target")		
+			
+			k=k & "<div class='ImageBlock'><a "& AHref(f,g,j) &"><img "& ImgSrc(l,g,j) &"/></a><p><a "& AHref(f,Rs("Title"),Rs("Target")) &">"& h &"</a></p></div>"
+	Rs.MoveNext : Next :Rs.Close
+		
+	CaseList = k
+End Function
+
+
+Function ReadScrollMemberList(a, b)
+    Dim c, d, e, f
+    f = "Select * From [Member] Order By Id Desc"
+    Rs.Open f, Conn, 1, 1
+    For d = 1 To Rs.RecordCount
+        If Rs.Eof Or d > a Then Exit For
+        e = e & "<li>" & Rs("UserName") & "</li>"
+    Rs.MoveNext : Next : Rs.Close
+    ReadScrollMemberList = e
+End Function
+
+
+
+Function ReadClassList(a, b, c, d, e)
+    Dim f, g, h, i,j,k,l,m,n,o,p,q,r,s
+	Rs.Open"Select * From [SmallClass] Where BigClassName='"& a &"' Order By Sort",Conn,1,1
+	r=0
+	While Not Rs.Eof
+		j = Rs("SmallClassName")
+		k = FontColorFontB(j,Rs("FontB"),Rs("FontColor")) 	
+		l = GetSmallClassFileName( Rs("BigClassName"), Rs("SmallClassName") )
+		Call WebDebug(l,"act=CreateClass&ProDid=" & a & "&ProSid=" & Rs("SmallClassName"))
+		m = ATarget(Rs("Target"))
+		If e<>"" Then
+			r=r+1
+			s = " onmousemove=""ShowHideDiv('ProList"& r &"');"""
+		End If
+		
+		i=i & "        <div class='ClassSmall'"& s &"><A "& AHref(l,"",m) & StyleClass("ClassSid") &">"& k &"</A></div>" & vbCrlf
+		If e<>"" Then
+			i=i & "<div id=""ProList"& r &""" style=""display:none"">" & vbCrlf
+		End If
+		Rsx.Open"Select * From [ThreeClass] Where BigClassName='"& a &"' And SmallClassName='"& Rs("SmallClassName") &"' Order By Sort,ID Asc",Conn,1,1
+		If Not Rsx.Eof Then				
+			For g=1 To Rsx.RecordCount
+				If TableCount("Product","Where BigClassName='"& a &"' And SmallClassName='"& Rsx("SmallClassName") &"' And ThreeClassName='"& Rsx("ThreeClassName") &"'" )>1 Then
+					
+					n =  GetThreeClassFileName(Rsx("BigClassName"),Rsx("SmallClassName"),Rsx("ThreeClassName"))
+				Else
+					
+					n = GetProductUrl("Where BigClassName='"& Rsx("BigClassName") &"' And SmallClassName='"& Rsx("SmallClassName") &"' And ThreeClassName='"& Rsx("ThreeClassName") &"'")
+				End If
+				
+				
+				
+				m = ATarget(Rsx("Target"))
+				q = Rsx("ThreeClassName")
+				p = FontColorFontB(q,Rsx("FontB"),Rsx("FontColor")) 	
+				If q = c Then
+					p="<font color=red>"& p  &"</font>"
+				End If
+				i=i & "                <div class='ClassThree'><a "& AHref(n,"",m) & StyleClass("ClassTid") &">"& p &"</a></div>" & vbCrlf
+			Rsx.MoveNext:Next
+		End If:Rsx.Close
+		If e<>"" Then
+			i=i & "</div>" & vbCrlf
+		End If
+		i=i & "<div class='clear10'></div>"
+	Rs.MoveNext:Wend:Rs.Close
+	ReadClassList = i
+End Function
+
+
+Function HotSearch(a)
+    Dim b, c, d, e,f,g,h,i,j
+  	If a = "" Then a = " Where Through=True Order By Sort Desc"
+	Rs.Open"Select * From [SearchCount] " & a,Conn,1,1
+	For c=1 To 10
+		If Rs.Eof Then Exit For			
+			h = Rs("Title")
+			g = "/Inc/Create_Html.Asp?act=Search&MackHtml=False&wd=" & h
+			i = h
+			i = FontColorFontB(i,Rs("FontB"),Rs("FontColor")) 	
+			If h = j Then				
+				e=e & "            "& TextFontB(h,True) &"&nbsp;" & vbCrlf
+			Else
+				e=e & "            <a "& AHref(g,h,Rs("Target")) &">"& i &"</a>&nbsp;" & vbCrlf
+			End If
+	Rs.MoveNext:Next:Rs.Close
+    HotSearch=e
+End Function
+
+
+Function JsBanner2011(a, b, c, d, e, f)
+    Dim g, h, i, j
+    g = ""
+    g = g & "<SCRIPT language=JavaScript type=text/javascript> " & vbCrlf
+    g = g & "var bannerAD=new Array(); " & vbCrlf
+    g = g & "var bannerADlink=new Array(); " & vbCrlf
+    g = g & "var adNum=0; " & vbCrlf
+    Rs.Open "Select Top " & b & " * From[Product] Where BigClassName='" & a & "'", Conn, 1, 1
+
+    If Rs.Eof And e Then
+        Rss.Open "Select BigClassName From [BigClass] Where BigClassName='" & a & "'", Conn, 1, 3
+        If Rss.Eof Then
+            Rss.AddNew
+            Rss("BigClassName") = a
+            Rss.Update
+        End If : Rss.Close
+        For j = 1 To b
+            Conn.Execute("Insert Into[Product](BigClassName,Title,BigFiles) Values('" & a & "','" & a & j & "','UpLoadFiles/Pic/" & j & ".jpg')")
+        Next
+    End If
+    For h = 1 To Rs.RecordCount
+        If h = 1 Then i = Rs("BigFiles")
+        g = g & "bannerAD[" & h - 1 & "]=""" & Replace(Rs("BigFiles"), vbCrlf, "") & """; " & vbCrlf
+        g = g & "bannerADlink[" & h - 1 & "]=""#""" & vbCrlf
+        g = g & "" & vbCrlf
+    Rs.MoveNext : Next : Rs.Close
+    g = g & "var preloadedimages=new Array(); " & vbCrlf
+    g = g & "for(i=1;i<bannerAD.length;i++){ " & vbCrlf
+    g = g & "preloadedimages[i]=new Image(); " & vbCrlf
+    g = g & "preloadedimages[i].src=bannerAD[i]; " & vbCrlf
+    g = g & "} " & vbCrlf
+    g = g & "" & vbCrlf
+    g = g & "function setTransition(){ " & vbCrlf
+    g = g & "if(document.all){ " & vbCrlf
+    g = g & "bannerADrotator.filters.revealTrans.Transition=Math.floor(Math.random()*23); " & vbCrlf
+    g = g & "bannerADrotator.filters.revealTrans.apply(); " & vbCrlf
+    g = g & "} " & vbCrlf
+    g = g & "} " & vbCrlf
+    g = g & "" & vbCrlf
+    g = g & "function playTransition(){ " & vbCrlf
+    g = g & "if(document.all) " & vbCrlf
+    g = g & "bannerADrotator.filters.revealTrans.play() " & vbCrlf
+    g = g & "} " & vbCrlf
+    g = g & "" & vbCrlf
+    g = g & "function nextAd(){ " & vbCrlf
+    g = g & "if(adNum<bannerAD.length-1)adNum++ ; " & vbCrlf
+    g = g & "else adNum=0; " & vbCrlf
+    g = g & "setTransition(); " & vbCrlf
+    g = g & "document.images.bannerADrotator.src=bannerAD[adNum]; " & vbCrlf
+    g = g & "playTransition(); " & vbCrlf
+    g = g & "theTimer=setTimeout(""nextAd()"", 4000); " & vbCrlf
+    g = g & "} " & vbCrlf
+    g = g & "" & vbCrlf
+    g = g & "function jump2url(){ " & vbCrlf
+    g = g & "jumpUrl=bannerADlink[adNum]; " & vbCrlf
+    g = g & "jumpTarget='_self'; " & vbCrlf
+    g = g & "if(jumpUrl != ''){ " & vbCrlf
+
+
+    g = g & "} " & vbCrlf
+    g = g & "} " & vbCrlf
+    g = g & "function displayStatusMsg() { " & vbCrlf
+    g = g & "status=bannerADlink[adNum]; " & vbCrlf
+    g = g & "document.returnValue = true; " & vbCrlf
+    g = g & "}" & vbCrlf
+    g = g & "</SCRIPT>" & vbCrlf
+    g = g & "<A onmouseover=""displayStatusMsg();return document.returnValue"" href=""javascript:jump2url()"">" & vbCrlf
+    g = g & "<IMG id=bannerADrotator style=""FILTER: revealTrans(duration=2,transition=40)"" height=" & d & " src=""" & i & """ width=" & c & " align=middle name=bannerADrotator></A>" & vbCrlf
+    g = g & "<SCRIPT language=JavaScript type=text/javascript>nextAd()</SCRIPT>" & vbCrlf
+    JsBanner2011 = g
+End Function
+
+
+
+
+
+
+Sub MakeSiteMap()
+    Dim b, c, d, e,f, g,h,i,j,k,l,m,n,o,p,q,r,s,t
+	Dim u,v
+	p = GetHost()
+	s = Format_Time(Now(),2)
+	t = 0
+	
+
+    Rs.Open "Select * From [WebSite]", Conn, 1, 1
+    If Not Rs.Eof Then
+		q = Rs("WebTitle")
+    End If : Rs.Close
+
+	
+    u=u & "<?xml version=""1.0"" encoding=""gb2312""?>" & vbCrlf
+    u=u & "<urlset" & vbCrlf
+    u=u & "    xmlns=""http://www.sitemaps.org/schemas/sitemap/0.9""" & vbCrlf
+    u=u & "    xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""" & vbCrlf
+    u=u & "    xsi:schemaLocation=""http://www.sitemaps.org/schemas/sitemap/0.9" & vbCrlf
+    u=u & "       http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"">" & vbCrlf
+	
+    v=v & "<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">" & vbCrlf
+    v=v & "<head>" & vbCrlf
+    v=v & "<title>网站地图-"& q &"</title>" & vbCrlf
+    v=v & "<meta http-equiv=""Content-type"" content=""text/html;"" charset=""gb2312"" />" & vbCrlf
+    v=v & "<style type=""text/css"">" & vbCrlf
+    v=v & "A{" & vbCrlf
+    v=v & "font-size: 14px;text-decoration:none;" & vbCrlf
+    v=v & "color: #000000;" & vbCrlf
+    v=v & "line-height:30px;" & vbCrlf
+    v=v & "}</style>" & vbCrlf
+    v=v & "</head>" & vbCrlf
+    v=v & "<body>" & vbCrlf
+	
+	
+   	
+    Rs.Open "Select * From [NavBigClass] Where OnHtml=True Order By Sort", Conn, 1, 1
+	For b = 1 To Rs.RecordCount
+        g = Rs("FileName")
+        If g <> "" Then g = g & ".html"
+		h = "/" & Rs("FolderName") & "/"
+        f = h & g
+        f = Replace(Replace(f, "//", "/"), "//", "/")
+		f = UrlAddHttpUrl(p,f)
+		k = Rs("BigClassName")
+		r = IIF(Rs("WebTitle")="",q,Rs("WebTitle"))
+		
+	 	
+		Call Echo(r,f)
+		
+		u=u & "<url>" & vbCrlf & "<loc>"& f &"</loc>" & vbCrlf & "<priority>0.5</priority>" & vbCrlf
+		u=u & "<lastmod>"& s &"</lastmod>" & vbCrlf & "<changefreq>weekly</changefreq>" & vbCrlf & "</url>" & vbCrlf
+		
+		t = t + 1
+		v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
+		If Rs("NavType") = "文本" Then
+			Rss.Open "Select * From [NavSmallClass] Where BigClassName='"& Rs("BigClassName") &"' And OnHtml=True Order By Sort", Conn, 1, 1
+			If Not Rss.Eof Then
+				For c = 1 To Rss.RecordCount
+					g = Rss("FileName")
+					If g <> "" Then g = g & ".html"
+					f = h & g
+					f = h & "/" & Rss("FolderName") & "/" & g
+					f = Replace(Replace(f, "//", "/"), "//", "/")
+					f = UrlAddHttpUrl(p,f)
+					m = Rss("SmallClassName")
+					r = IIF(Rss("WebTitle")="",q,Rss("WebTitle"))					
+					
+					Call Echo(r,f)
+					u=u & "<url>" & vbCrlf & "<loc>"& f &"</loc>" & vbCrlf & "<priority>0.5</priority>" & vbCrlf
+					u=u & "<lastmod>"& s &"</lastmod>" & vbCrlf & "<changefreq>weekly</changefreq>" & vbCrlf & "</url>" & vbCrlf
+					
+					t = t + 1
+					v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
+				Rss.MoveNext: Next 	
+			End If : Rss.Close		
+		End If
+	Rs.MoveNext : Next : Rs.Close
+	
+	
+    Rs.Open "Select * From [BigClass] Where OnHtml=True Order By Sort", Conn, 1, 1
+	For b = 1 To Rs.RecordCount
+        g = Rs("FileName")
+        If g <> "" Then g = g & ".html"
+		h = "/" & Rs("FolderName") & "/"
+        f = h & g
+        f = Replace(Replace(f, "//", "/"), "//", "/")
+		f = UrlAddHttpUrl(p,f)
+		k = Rs("BigClassName")
+		r = IIF(Rs("WebTitle")="",q,Rs("WebTitle"))
+	 	
+		Call Echo(r,f)
+		u=u & "<url>" & vbCrlf & "<loc>"& f &"</loc>" & vbCrlf & "<priority>0.5</priority>" & vbCrlf
+		u=u & "<lastmod>"& s &"</lastmod>" & vbCrlf & "<changefreq>weekly</changefreq>" & vbCrlf & "</url>" & vbCrlf
+		
+		t = t + 1
+		v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
+		Rss.Open "Select * From [SmallClass] Where BigClassName='"& Rs("BigClassName") &"' And  OnHtml=True Order By Sort", Conn, 1, 1
+		If Not Rss.Eof Then		
+			For c = 1 To Rss.RecordCount
+				g = Rss("FileName")
+				If g <> "" Then g = g & ".html"
+				i = "/" & Rss("FolderName") & "/"
+				f = h & "/" & Rss("FolderName") & "/" & g
+				f = Replace(Replace(f, "//", "/"), "//", "/")
+				f = UrlAddHttpUrl(p,f)
+				m = Rss("SmallClassName")
+				r = IIF(Rss("WebTitle")="",q,Rss("WebTitle"))
+				
+				Call Echo(r,f)
+				u=u & "<url>" & vbCrlf & "<loc>"& f &"</loc>" & vbCrlf & "<priority>0.5</priority>" & vbCrlf
+				u=u & "<lastmod>"& s &"</lastmod>" & vbCrlf & "<changefreq>weekly</changefreq>" & vbCrlf & "</url>" & vbCrlf
+				
+				t = t + 1
+				v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
+				
+				
+				Rsx.Open"Select * From [ThreeClass] Where BigClassName='"& k &"' And SmallClassName='"& m &"' And  OnHtml=True Order By Sort",Conn,1,1
+				For d = 1 To Rsx.RecordCount
+					g = Rsx("FileName")
+					If g <> "" Then g = g & ".html"
+					f = h & i & "/" & Rsx("FolderName") & "/" & g
+					f = Replace(Replace(f, "//", "/"), "//", "/")
+					f = UrlAddHttpUrl(p,f)
+					n = Rsx("SmallClassName")
+					r = IIF(Rsx("WebTitle")="",q,Rsx("WebTitle"))
+					
+					Call Echo(r,f)
+					u=u & "<url>" & vbCrlf & "<loc>"& f &"</loc>" & vbCrlf & "<priority>0.5</priority>" & vbCrlf
+					u=u & "<lastmod>"& s &"</lastmod>" & vbCrlf & "<changefreq>weekly</changefreq>" & vbCrlf & "</url>" & vbCrlf
+					
+					t = t + 1
+					v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
+				Rsx.MoveNext : Next : Rsx.Close				
+			Rss.MoveNext: Next
+			End If : Rss.Close
+	Rs.MoveNext : Next : Rs.Close	
+	
+    Rs.Open "Select * From [Product] Where OnHtml=True Order By Sort", Conn, 1, 1
+	For b = 1 To Rs.RecordCount
+        g = Rs("FileName")
+        If g <> "" Then g = g & ".html"
+		h = "/Html/" & Rs("FolderName") & "/"
+        f = h & g
+        f = Replace(Replace(f, "//", "/"), "//", "/")
+		f = UrlAddHttpUrl(p,f)
+		k = Rs("BigClassName")
+		r = IIF(Rs("WebTitle")="",q,Rs("WebTitle"))
+		
+		Call Echo(r,f)
+		u=u & "<url>" & vbCrlf & "<loc>"& f &"</loc>" & vbCrlf & "<priority>0.5</priority>" & vbCrlf
+		u=u & "<lastmod>"& s &"</lastmod>" & vbCrlf & "<changefreq>weekly</changefreq>" & vbCrlf & "</url>" & vbCrlf
+		
+		t = t + 1
+		v=v & "<div>"& t &".<a href="""& f &""">"& r &"</a></div>"
+	Rs.MoveNext : Next : Rs.Close	
+	
+	Call CreateFile("/sitemap.xml", u & "</urlset>")
+	Call CreateFile("/sitemap.html", v & "</body></html>")
+	
+	Call Echo("sitemap.html文档","<a href='/sitemap.html' target='_blank'>sitemap.html</a><br>")
+	Call Echo("sitemap.xml文档","<a href='/sitemap.xml' target='_blank'>sitemap.xml</a>")
+End Sub
+
+
+
+Function WebStat(a)
+    Dim b, c, d
+    Dim e, f, g, h, i, j, k, l, m, n ,o
+    f = Request.ServerVariables("HTTP_REFERER")
+    e = "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME")
+    g = Request.ServerVariables("QUERY_STRING")
+    If g <> "" Then
+        e = e & "?" & g
+    End If
+	f = Request("GoToUrl")
+	e = Request("ThisUrl")
+    l = Request.QueryString("co")
+    b = Now()
+    c = Request.ServerVariables("HTTP_USER_AGENT")
+	c=replace(c,"MSIE","Internet Explorer")
+	c=replace(c,"NT 5.0","2000")
+	c=replace(c,"NT 5.1","XP")
+	c=replace(c,"NT 5.2","2003")
+	
+    d = Split(c & ";;;;", ";")
+    m = d(1)
+    n = Trim(d(2))
+	If Right(n,1)=")" Then n=Mid(n,1,Len(n)-1)
+    h = "来访" & f & vbCrlf
+    h = h & "当前：" & e & vbCrlf
+    h = h & "时间：" & b & vbCrlf
+    h = h & "IP:" & GetIP() & vbCrlf
+    h = h & "IE:" & getBrType("") & vbCrlf
+    h = h & "Cookies=" & l & vbCrlf
+    h = h & "XP=" & n & vbCrlf
+    h = h & "Screen=" & Request("screen") & vbCrlf
+    h = h & "用户信息=" &Request.ServerVariables("HTTP_USER_AGENT")  & vbCrlf
+	
+    h = h & "-------------------------------------------------" & vbCrlf
+	
+    i = a & Format_Time(Now(), 2) & ".txt"
+    Call CreateAddFile(i, h)
+    h = h & vbCrlf & i
+    h = Replace(h, vbCrlf, "\n")
+    h = Replace(h, """", "\""")
+
+	WebStat = h
+End Function
+
+
 %>
+
 
 

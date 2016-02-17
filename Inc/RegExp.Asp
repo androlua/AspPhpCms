@@ -2,563 +2,654 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-01-20
+'创建：2016-02-17
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-fUNcTIoN cHEcKStR(bYVaL a, bYVaL b)
-oN eRRoR rESuME nEXt
-dIM c, d
-cHEcKStR = tRUe
-sET c = cREaTEoBJeCT("VBscript.RegExp")
-c.gLObAL = tRUe
-c.iGNoREcASe = tRUe
-c.pATtERn = b
-sET d = c.eXEcUTe(a)
-iF d.cOUnT = 0 tHEn cHEcKStR = fALsE
-sET d = nOThINg
-sET c = nOThINg
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "CheckStr 检查字符是否存在 函数出错，SerchValue=" & b)
-eND fUNcTIoN
-fUNcTIoN rEGeXP_CHeCKsTR(a, b)
-rEGeXP_CHeCKsTR = cHEcKStR(a, b)
-eND fUNcTIoN
-fUNcTIoN eXIsTSsTR(a, b)
-eXIsTSsTR = cHEcKStR(a, b)
-eND fUNcTIoN
-fUNcTIoN rEGeXP_INsTR(a, b)
-rEGeXP_INsTR = cHEcKStR(a, b)
-eND fUNcTIoN
-fUNcTIoN rEGeXP_REpLAcE(bYVaL a, bYVaL b, bYVaL c)
-oN eRRoR rESuME nEXt
-dIM d
-sET d = cREaTEoBJeCT("VBscript.RegExp")
-d.pATtERn = b
-d.iGNoREcASe = tRUe
-d.gLObAL = tRUe
-rEGeXP_REpLAcE = d.rEPlACe(a, c)
-sET d = nOThINg
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "RegExp_Replace 替换内容 函数出错，SetPattern=" & b & " |Str=" & c)
-eND fUNcTIoN
-fUNcTIoN rEPlACeCOlOR(a, b, c, d)
-iF d <> "" tHEn c = "<font color=" & d & ">" & c & "</font>"
-rEPlACeCOlOR = rEGeXP_REpLAcE(a, b, c)
-eND fUNcTIoN
-fUNcTIoN dELhTMl(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.iGNoREcASe = tRUe
-b.gLObAL = tRUe
-b.pATtERn = "(<[a-zA-Z].*?>)|(<[\/][a-zA-Z].*?>)"
-c = b.rEPlACe(a, "")
-dELhTMl = c
-sET b = nOThINg
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "DelHtml 删除HTML标签 函数出错，")
-eND fUNcTIoN
-fUNcTIoN rEGeXP_DElHTmL(a)
-rEGeXP_DElHTmL = dELhTMl(a)
-eND fUNcTIoN
-fUNcTIoN gETaURlTItLElISt(bYVaL a, bYVaL b)
-oN eRRoR rESuME nEXt
-dIM c, d, e, f, g
-d = ""
-sET g = cREaTEoBJeCT("VBscript.RegExp")
-g.iGNoREcASe = tRUe
-g.gLObAL = tRUe
-g.pATtERn = "<a [^>]*href *= *[""']([^""'> ]+)[^>]*>([^<]+)"
-sET e = g.eXEcUTe(a)
-fOR eACh f iN e
-iF b = "链接" oR b = "网址" oR b = "0" tHEn
-c = f.sUBmATcHEs(0)
-eLSeIF b = "标题" oR b = "1" tHEn
-c = f.sUBmATcHEs(1)
-eLSe
-c = f.sUBmATcHEs(0) & "$Array$" & f.sUBmATcHEs(1)
-eND iF
-iF iNStR(vBCrLF & d & vBCrLF, vBCrLF & c & vBCrLF) = fALsE tHEn
-d = d & c & vBCrLF
-eND iF
-nEXt
-sET e = nOThINg
-sET g = nOThINg
-iF d <> "" tHEn d = lEFt(d, lEN(d) - 2)
-gETaURlTItLElISt = d
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetHrefUrlTitleList 获得内容中链接与标题列表 函数出错，C=" & d)
-eND fUNcTIoN
-fUNcTIoN gETaURl(a)
-gETaURl = gETaURlTItLElISt(a, 0)
-eND fUNcTIoN
-fUNcTIoN gETaTItLE(a)
-gETaTItLE = gETaURlTItLElISt(a, 1)
-eND fUNcTIoN
-fUNcTIoN gETaURlTItLE(a)
-gETaURlTItLE = gETaURlTItLElISt(a, "链接和标题")
-eND fUNcTIoN
-fUNcTIoN gETcONtENtAUrLLiST(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c, d, e, f
-c = ""
-sET f = cREaTEoBJeCT("VBscript.RegExp")
-f.iGNoREcASe = tRUe
-f.gLObAL = tRUe
-f.pATtERn = "<a [^>]*href *= *[""']([^""'> ]+)[^>]*>"
-sET d = f.eXEcUTe(a)
-fOR eACh e iN d
-b = e.sUBmATcHEs(0)
-iF iNStR(vBCrLF & c & vBCrLF, vBCrLF & b & vBCrLF) = fALsE tHEn
-c = c & b & vBCrLF
-eND iF
-nEXt
-sET d = nOThINg
-sET f = nOThINg
-iF c <> "" tHEn c = lEFt(c, lEN(c) - 2)
-gETcONtENtAUrLLiST = c
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetHrefUrlTitleList 获得内容中链接与标题列表 函数出错，C=" & c)
-eND fUNcTIoN
-fUNcTIoN rEGeXP_GEtIMgURlLIsT(bYVaL a, bYVaL b)
-oN eRRoR rESuME nEXt
-dIM c, d, e, f, g, h
-h = ""
-b = lCAsE(b)
-sET e = cREaTEoBJeCT("VBscript.RegExp")
-e.iGNoREcASe = tRUe
-e.gLObAL = tRUe
-e.pATtERn = "<img *src *= *[""|'| ]*([^""'> ]+)"
-sET c = e.eXEcUTe(a)
-fOR eACh d iN c
-g = d.sUBmATcHEs(0)
-f = rIGhT(g, lEN(g) - iNStRReV(g, "."))
-iF b = f oR b = "全部" oR b = "" tHEn
-iF iNStR(vBCrLF & h & vBCrLF, vBCrLF & g & vBCrLF) = fALsE tHEn
-h = h & g & vBCrLF
-eND iF
-eND iF
-nEXt
-sET c = nOThINg
-sET e = nOThINg
-iF h <> "" tHEn h = lEFt(h, lEN(h) - 2)
-rEGeXP_GEtIMgURlLIsT = h
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetIMGUrlList 获得图片中网址 函数出错，c=" & h)
-eND fUNcTIoN
-fUNcTIoN gETiMG(a)
-gETiMG = rEGeXP_GEtIMgURlLIsT(a, "全部")
-eND fUNcTIoN
-fUNcTIoN gETiMGjPG(a)
-gETiMGjPG = rEGeXP_GEtIMgURlLIsT(a, "JPG")
-eND fUNcTIoN
-fUNcTIoN gETiMGgIF(a)
-gETiMGgIF = rEGeXP_GEtIMgURlLIsT(a, "GIF")
-eND fUNcTIoN
-fUNcTIoN gETiMGbMP(a)
-gETiMGbMP = rEGeXP_GEtIMgURlLIsT(a, "Bmp")
-eND fUNcTIoN
-fUNcTIoN gETaSPfUNcTIoNLiST(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c, d, e, f, g
-g = ""
-sET d = cREaTEoBJeCT("VBscript.RegExp")
-d.iGNoREcASe = tRUe
-d.gLObAL = tRUe
-d.pATtERn = "(sub|function) .*?\)"
-sET b = d.eXEcUTe(a)
-fOR eACh c iN b
-g = g & c & vBCrLF
-nEXt
-sET b = nOThINg
-sET d = nOThINg
-iF g <> "" tHEn g = lEFt(g, lEN(g) - 2)
-gETaSPfUNcTIoNLiST = g
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetASPFunctionList 获得ASP函数列表 函数出错，c=" & g)
-eND fUNcTIoN
-fUNcTIoN gETaSPdIMfUNcTIoN(bYVaL a, b, c, d)
-a = rEPlACe(a, "()", "( )")
-dIM e, f, g
-sET g = cREaTEoBJeCT("VBscript.RegExp")
-g.iGNoREcASe = tRUe
-g.gLObAL = tRUe
-a = rEGeXP_REpLAcE(a, "ByVal ", "")
-g.pATtERn = "(sub|function) *([^\(]+) *\(([^\)]+)\)"
-sET e = g.eXEcUTe(a)
-fOR eACh f iN e
-iF iNStR(b, "{") = fALsE tHEn
-b = b & tRIm(f) & vBCrLF
-c = c & tRIm(f.sUBmATcHEs(1)) & vBCrLF
-d = d & rEPlACe(f.sUBmATcHEs(2), " ", "") & vBCrLF
-eND iF
-nEXt
-sET e = nOThINg
-sET g = nOThINg
-gETaSPdIMfUNcTIoN = b
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetASPFunctionList 获得ASP函数列表 函数出错，")
-eND fUNcTIoN
-fUNcTIoN sTRlENgTH(a)
-dIM b, c, d
-c = 0
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.gLObAL = tRUe
-b.iGNoREcASe = tRUe
-b.pATtERn = "[\u4E00-\u9FA5\uF900-\uFA2D]"
-fOR eACh d iN b.eXEcUTe(a)
-c = c + 1
-nEXt
-sET b = nOThINg
-c = c + lEN(a)
-sTRlENgTH = c
-eND fUNcTIoN
-fUNcTIoN rEGeXPgETlENgHT(a)
-rEGeXPgETlENgHT = sTRlENgTH(a)
-eND fUNcTIoN
-fUNcTIoN sTRiNGlENgTH(a)
-sTRiNGlENgTH = sTRlENgTH(a)
-eND fUNcTIoN
-fUNcTIoN gETcSShREf(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c, d, e, f, g
-sET d = cREaTEoBJeCT("VBscript.RegExp")
-d.iGNoREcASe = tRUe
-d.gLObAL = tRUe
-d.pATtERn = "<link .*?href *= *[""|'| ]*([^""'>]+)"
-sET b = d.eXEcUTe(a)
-fOR eACh c iN b
-iF iNStR(lCAsE(c), "stylesheet") > 0 tHEn
-f = c.sUBmATcHEs(0)
-g = g & f & vBCrLF
-eND iF
-nEXt
-sET b = nOThINg
-sET d = nOThINg
-iF g <> "" tHEn g = lEFt(g, lEN(g) - 2)
-gETcSShREf = g
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetCssHref 获得HTML中Css 函数出错，C =" & g)
-eND fUNcTIoN
-fUNcTIoN gETjSSrC(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c, d, e, f, g
-sET d = cREaTEoBJeCT("VBscript.RegExp")
-d.iGNoREcASe = tRUe
-d.gLObAL = tRUe
-d.pATtERn = "<script .*?src *= *[""|'| ]*([^""'>]+)"
-sET b = d.eXEcUTe(a)
-fOR eACh c iN b
-f = c.sUBmATcHEs(0)
-g = g & f & vBCrLF
-nEXt
-sET b = nOThINg
-sET d = nOThINg
-iF g <> "" tHEn g = lEFt(g, lEN(g) - 2)
-gETjSSrC = g
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetJsSrc 获得HTML中Js 函数出错，C =" & g)
-eND fUNcTIoN
-fUNcTIoN dELhTMlSCrIPt(bYVaL a)
-oN eRRoR rESuME nEXt
-dIM b, c
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.iGNoREcASe = tRUe
-b.gLObAL = tRUe
-b.pATtERn = "<script.*</script>"
-c = b.rEPlACe(a, "")
-dELhTMlSCrIPt = c
-sET b = nOThINg
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "删除HTML中<scirpt 函数出错，")
-eND fUNcTIoN
-fUNcTIoN gETmETa(bYVaL a, b, c)
-oN eRRoR rESuME nEXt
-dIM d, e, f, g, h, i
-i = ""
-b = lCAsE(b)
-c = 0
-sET f = cREaTEoBJeCT("VBscript.RegExp")
-f.iGNoREcASe = tRUe
-f.gLObAL = tRUe
-f.pATtERn = "<meta .*?content *= *[""|'| ]*([^""'>]+)"
-sET d = f.eXEcUTe(a)
-fOR eACh e iN d
-iF iNStR(lCAsE(e), b) > 0 tHEn
-h = e.sUBmATcHEs(0)
-i = i & h & vBCrLF
-c = c + 1
-eND iF
-nEXt
-sET d = nOThINg
-sET f = nOThINg
-iF i <> "" tHEn i = lEFt(i, lEN(i) - 2)
-gETmETa = i
-iF eRR tHEn cALl dOErROr(eRR.dEScRIpTIoN, "GetKeyWords 获得HTML中keywords 函数出错，C =" & i)
-eND fUNcTIoN
-fUNcTIoN dELhTMlNOtE(a)
-dIM b, c
-b = cSTr(a)
-sET c = cREaTEoBJeCT("VBscript.RegExp")
-c.pATtERn = "<!--\/*[^<>]*-->"
-c.iGNoREcASe = tRUe
-c.gLObAL = tRUe
-b = c.rEPlACe(b, "")
-dELhTMlNOtE = b
-sET c = nOThINg
-eND fUNcTIoN
-fUNcTIoN dELhTMlMYnOTe(a)
-dIM b, c
-b = cSTr(a)
-sET c = cREaTEoBJeCT("VBscript.RegExp")
-c.pATtERn = "<!--#\/*[^<>]*#-->"
-c.iGNoREcASe = tRUe
-c.gLObAL = tRUe
-b = c.rEPlACe(b, "")
-dELhTMlMYnOTe = b
-sET c = nOThINg
-eND fUNcTIoN
-fUNcTIoN gETsTRiMGlISt(bYVaL a)
-a = rEPlACe(a, "'", """")
-dIM b, c, d, e, f
-b = "" : c = ""
-sET f = cREaTEoBJeCT("VBscript.RegExp")
-f.iGNoREcASe = tRUe
-f.gLObAL = tRUe
-f.pATtERn = "<img [^>]*src=""([^"">]+)[^>]+>"
-sET d = f.eXEcUTe(a)
-fOR eACh e iN d
-b = b & e & "|"
-c = c & e.sUBmATcHEs(0) & "|"
-nEXt
-sET d = nOThINg
-sET f = nOThINg
-iF b <> "" tHEn
-b = lEFt(b, lEN(b) - 1)
-c = lEFt(c, lEN(c) - 1)
-eND iF
-gETsTRiMGlISt = c
-eND fUNcTIoN
-fUNcTIoN gETeMAiLLiST(a)
-dIM b, c, d, e
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.pATtERn = "\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
-b.iGNoREcASe = tRUe
-b.gLObAL = tRUe
-e = ""
-sET d = b.eXEcUTe(a)
-fOR eACh c iN d
-iF iNStR("," & e & ",", "," & c.vALuE & ",") = 0 tHEn
-e = e & c.vALuE & ","
-eND iF
-nEXt
-sET d = nOThINg
-sET b = nOThINg
-iF e <> "" tHEn e = lEFt(e, lEN(e) - 1)
-gETeMAiLLiST = e
-eND fUNcTIoN
-fUNcTIoN oFLiNK_LCaSEtAG(a)
-dIM b, c, d
-sET b = cREaTEoBJeCT("VBscript.RegExp")
-b.pATtERn = "<.+?\>"
-b.iGNoREcASe = tRUe
-b.gLObAL = tRUe
-sET d = b.eXEcUTe(a)
-a = a
-fOR eACh c iN d
-a = rEPlACe(a, c.vALuE, lCAsE(c.vALuE))
-nEXt
-oFLiNK_LCaSEtAG = a
-sET d = nOThINg
-sET b = nOThINg
-eND fUNcTIoN
-fUNcTIoN sCRiPThTMl(bYVaL a, b, c)
-dIM d
-sET d = cREaTEoBJeCT("VBscript.RegExp")
-d.iGNoREcASe = tRUe
-d.gLObAL = tRUe
-sELeCT cASe c
-cASe 1
-d.pATtERn = "<" & b & "([^>])*>"
-a = d.rEPlACe(a, "")
-cASe 2
-d.pATtERn = "<" & b & "([^>])*>.*?</" & b & "([^>])*>"
-a = d.rEPlACe(a, "")
-cASe 3
-d.pATtERn = "<" & b & "([^>])*>"
-a = d.rEPlACe(a, "")
-d.pATtERn = "</" & b & "([^>])*>"
-a = d.rEPlACe(a, "")
-eND sELeCT
-sCRiPThTMl = a
-sET d = nOThINg
-eND fUNcTIoN
-fUNcTIoN gETrEGeXP(a, b, c, d, e)
-dIM f, g, h, i, j, k
-i = ""
-iF c <> "" tHEn c = cINt(c)
-iF d <> "" tHEn d = cINt(d)
-iF e <> "" tHEn e = cINt(e)
-j = fALsE
-iF c <> "" oR d <> "" oR e <> "" tHEn j = tRUe
-sET f = cREaTEoBJeCT("VBscript.RegExp")
-f.pATtERn = a
-f.iGNoREcASe = tRUe
-f.gLObAL = tRUe
-sET h = f.eXEcUTe(b)
-fOR eACh g iN h
-iF j = tRUe tHEn
-k = ""
-iF c <> "" tHEn
-k = k & g.sUBmATcHEs(c)
-eND iF
-iF d <> "" tHEn
-iF k <> "" tHEn k = k & "[$Split$]"
-k = k & g.sUBmATcHEs(d)
-eND iF
-iF e <> "" tHEn
-iF k <> "" tHEn k = k & "[$Split$]"
-k = k & g.sUBmATcHEs(e)
-eND iF
-iF k <> "" tHEn i = i & k & "[$Array$]"
-eLSe
-i = i & g & "[$Array$]"
-eND iF
-nEXt
-iF i <> "" tHEn i = lEFt(i, lEN(i) - 9)
-gETrEGeXP = i
-eND fUNcTIoN
-fUNcTIoN gETiMGjSUrL(a, b)
-dIM c, d, e, f, g
-b = lCAsE(b)
-d = rEGeXPgETsTR("<[img|script][^<>]*src[^<>]*[\/]?>", a, 2)
-e = sPLiT(d, "[$Array$]")
-g = ""
-fOR eACh c iN e
-f = rEGeXPgETsTR("src=[""|']?([^""' ]*)([""|']?).*[\/]?>", c, 1)
-iF b = "1" oR b = "不重复" tHEn
-iF iNStR(vBCrLF & g & vBCrLF, vBCrLF & f & vBCrLF) tHEn
-f = ""
-eND iF
-eND iF
-iF f <> "" tHEn
-g = g & f & vBCrLF
-eND iF
-nEXt
-iF g <> "" tHEn g = lEFt(g, lEN(g) - 2)
-gETiMGjSUrL = g
-eND fUNcTIoN
-fUNcTIoN rEGeXPgETsTR(a, b, c)
-dIM d, e, f, g
-g = ""
-rEGeXPgETsTR = ""
-sET d = cREaTEoBJeCT("VBscript.RegExp")
-d.iGNoREcASe = tRUe
-d.gLObAL = tRUe
-d.pATtERn = a
-sET f = d.eXEcUTe(b)
-fOR eACh e iN f
-iF c = 1 tHEn
-e = d.rEPlACe(e, "$1")
-eLSeIF c = 2 tHEn
-g = g & e & "[$Array$]"
-eND iF
-rEGeXPgETsTR = e
-nEXt
-sET f = nOThINg
-sET d = nOThINg
-iF c = 2 tHEn
-iF g <> "" tHEn g = lEFt(g, lEN(g) - 9)
-rEGeXPgETsTR = g
-eND iF
-eND fUNcTIoN
-fUNcTIoN nEWgETpINgIP(a)
-dIM b, c, d
-dIM e, f, g, h
-nEWgETpINgIP = ""
-b = "/备份/cmd.exe"
-c = gETpINgINfO(b, a)
-d = sPLiT(c, "Request timed out.")
-iF uBOuND(d) >= 4 tHEn
-f = tRIm(rEPlACe(rEPlACe(rEPlACe(a, "http://", ""), "www.", ""), "/", ""))
-e = "http://whois.www.net.cn/whois/api_webinfo?host=" & f & "&_=" & gETrND(9)
-c = gEThTTpPAgE(e, "utf-8")
-g = """ip"":""" : h = """"
-iF iNStR(c, g) > 0 aND iNStR(c, h) > 0 tHEn
-nEWgETpINgIP = sTRcUT(c, g, h, 2)
-eND iF
-eLSe
-g = " [" : h = "]"
-iF iNStR(c, g) > 0 aND iNStR(c, h) > 0 tHEn
-nEWgETpINgIP = sTRcUT(c, g, h, 2)
-eLSe
-nEWgETpINgIP = "NO"
-eND iF
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETpINgIP(a, b)
-dIM c, d, e
-d = " [" : e = "]"
-c = gETpINgINfO(a, b)
-iF iNStR(c, d) > 0 aND iNStR(c, e) > 0 tHEn
-gETpINgIP = sTRcUT(c, d, e, 2)
-eLSe
-gETpINgIP = "NO"
-eND iF
-eND fUNcTIoN
-fUNcTIoN gETpINgINfO(a, b)
-dIM c, d
-sET c = cREaTEoBJeCT("WScript.Shell")
-cALl hANdLEpATh(a)
-sET d = c.eXEc(a & " /c ping " & b)
-gETpINgINfO = d.sTDoUT.rEAdALl
-eND fUNcTIoN
-fUNcTIoN rEGeXPtESt(a, b)
-dIM c
-sET c = cREaTEoBJeCT("VBscript.RegExp")
-c.iGNoREcASe = tRUe
-c.gLObAL = tRUe
-c.pATtERn = b
-rEGeXPtESt = c.tESt(a)
-sET c = nOThINg
-eND fUNcTIoN
-fUNcTIoN gETrEGeXPsTR(bYVaL a, bYVaL b, bYVaL c)
-oN eRRoR rESuME nEXt
-dIM d, e, f, g, h, i
-e = ""
-sET h = cREaTEoBJeCT("VBscript.RegExp")
-h.iGNoREcASe = tRUe
-h.gLObAL = tRUe
-h.pATtERn = b
-sET f = h.eXEcUTe(a)
-fOR eACh g iN f
-i = rEPlACe(c, "\S1\", g.sUBmATcHEs(0))
-i = rEPlACe(i, "\S2\", g.sUBmATcHEs(1))
-i = rEPlACe(i, "\S3\", g.sUBmATcHEs(2))
-i = rEPlACe(i, "\S4\", g.sUBmATcHEs(3))
-i = rEPlACe(i, "\S5\", g.sUBmATcHEs(4))
-a = rEPlACe(a, g, i)
-nEXt
-sET f = nOThINg
-sET h = nOThINg
-gETrEGeXPsTR = a
-eND fUNcTIoN
-fUNcTIoN rEGeXPrEPlACeCSsDIr(bYVaL a, b)
-dIM c, d, e, f
-dIM g, h
-sET e = cREaTEoBJeCT("VBscript.RegExp")
-e.iGNoREcASe = tRUe
-e.gLObAL = tRUe
-e.pATtERn = "<link .*?href *= *[""|'| ]*([^""'>]+)"
-sET c = e.eXEcUTe(a)
-fOR eACh d iN c
-iF iNStR(lCAsE(d), "stylesheet") > 0 tHEn
-g = d.sUBmATcHEs(0)
-h = gETsTRfILeNAmE(g)
-f = rEPlACe(d, g, b & h)
-a = rEPlACe(a, d, f)
-eND iF
-nEXt
-sET c = nOThINg
-sET e = nOThINg
-rEGeXPrEPlACeCSsDIr = a
-eND fUNcTIoN
-fUNcTIoN dELeTEnULlROw(bYVaL a)
-dELeTEnULlROw = rEGeXP_REpLAcE(a, "\r\n\s*\r\n", "")
-eND fUNcTIoN
+
+
+
+Function checkStr(ByVal a, ByVal b)
+    On Error Resume Next
+    Dim c, d
+    checkStr = True
+    Set c = CreateObject("VBscript.RegExp")
+        c.Global = True
+        c.IgnoreCase = True
+        c.pattern = b
+        Set d = c.Execute(a)
+            If d.Count = 0 Then checkStr = False
+        Set d = Nothing
+    Set c = Nothing
+    If Err Then Call doError(Err.Description, "CheckStr 检查字符是否存在 函数出错，SerchValue=" & b)
+End Function
+
+Function regExp_CheckStr(a, b)
+    regExp_CheckStr = checkStr(a, b)
+End Function
+
+Function existsStr(a, b)
+    existsStr = checkStr(a, b)
+End Function
+
+Function regExp_Instr(a, b)
+    regExp_Instr = checkStr(a, b)
+End Function
+
+
+Function regExp_Replace(ByVal a, ByVal b, ByVal c)
+    On Error Resume Next
+    Dim d
+    Set d = CreateObject("VBscript.RegExp")
+        d.pattern = b
+        d.IgnoreCase = True
+        d.Global = True
+        regExp_Replace = d.Replace(a, c)
+    Set d = Nothing
+    If Err Then Call doError(Err.Description, "RegExp_Replace 替换内容 函数出错，SetPattern=" & b & " |Str=" & c)
+End Function
+
+Function replaceColor(a, b, c, d)
+    If d <> "" Then c = "<font color=" & d & ">" & c & "</font>"
+    replaceColor = regExp_Replace(a, b, c)
+End Function
+
+Function delHtml(ByVal a)
+    On Error Resume Next
+    Dim b, c
+    Set b = CreateObject("VBscript.RegExp")
+        b.IgnoreCase = True
+        b.Global = True
+        b.pattern = "(<[a-zA-Z].*?>)|(<[\/][a-zA-Z].*?>)"
+        c = b.Replace(a, "")
+        delHtml = c
+    Set b = Nothing
+    If Err Then Call doError(Err.Description, "DelHtml 删除HTML标签 函数出错，")
+End Function
+
+Function regExp_DelHtml(a)
+    regExp_DelHtml = delHtml(a)
+End Function
+
+Function getAUrlTitleList(ByVal a, ByVal b)
+    On Error Resume Next
+    Dim c, d, e, f, g
+    d = ""
+    Set g = CreateObject("VBscript.RegExp")
+        g.IgnoreCase = True
+        g.Global = True
+        g.pattern = "<a [^>]*href *= *[""']([^""'> ]+)[^>]*>([^<]+)"
+        Set e = g.Execute(a)
+            For Each f In e
+                If b = "链接" Or b = "网址" Or b = "0" Then
+                    c = f.SubMatches(0)
+                ElseIf b = "标题" Or b = "1" Then
+                    c = f.SubMatches(1)
+                Else
+                    c = f.SubMatches(0) & "$Array$" & f.SubMatches(1)
+                End If
+                If InStr(vbCrLf & d & vbCrLf, vbCrLf & c & vbCrLf) = False Then
+                    d = d & c & vbCrLf
+                End If
+            Next
+        Set e = Nothing
+    Set g = Nothing
+    If d <> "" Then d = Left(d, Len(d) - 2)
+    getAUrlTitleList = d
+    If Err Then Call doError(Err.Description, "GetHrefUrlTitleList 获得内容中链接与标题列表 函数出错，C=" & d)
+End Function
+
+Function getAURL(a)
+    getAURL = getAUrlTitleList(a, 0)
+End Function
+
+Function getATitle(a)
+    getATitle = getAUrlTitleList(a, 1)
+End Function
+
+Function getAURLTitle(a)
+    getAURLTitle = getAUrlTitleList(a, "链接和标题")
+End Function
+
+
+
+Function getContentAUrlList(ByVal a)
+    On Error Resume Next
+    Dim b, c, d, e, f
+    c = ""
+    Set f = CreateObject("VBscript.RegExp")
+        f.IgnoreCase = True
+        f.Global = True
+        f.pattern = "<a [^>]*href *= *[""']([^""'> ]+)[^>]*>"
+        Set d = f.Execute(a)
+            For Each e In d
+                b = e.SubMatches(0)
+                If InStr(vbCrLf & c & vbCrLf, vbCrLf & b & vbCrLf) = False Then
+                    c = c & b & vbCrLf
+                End If
+            Next
+        Set d = Nothing
+    Set f = Nothing
+    If c <> "" Then c = Left(c, Len(c) - 2)
+    getContentAUrlList = c
+    If Err Then Call doError(Err.Description, "GetHrefUrlTitleList 获得内容中链接与标题列表 函数出错，C=" & c)
+End Function
+
+
+
+Function regExp_GetImgUrlList(ByVal a, ByVal b)
+    On Error Resume Next
+    Dim c, d, e, f, g, h
+    h = ""
+    b = LCase(b)
+    Set e = CreateObject("VBscript.RegExp")
+        e.IgnoreCase = True
+        e.Global = True
+        e.pattern = "<img *src *= *[""|'| ]*([^""'> ]+)"
+        Set c = e.Execute(a)
+            For Each d In c
+                g = d.SubMatches(0)
+                f = Right(g, Len(g) - InStrRev(g, "."))
+                If b = f Or b = "全部" Or b = "" Then
+                    If InStr(vbCrLf & h & vbCrLf, vbCrLf & g & vbCrLf) = False Then
+                        h = h & g & vbCrLf
+                    End If
+                End If
+            Next
+        Set c = Nothing
+    Set e = Nothing
+    If h <> "" Then h = Left(h, Len(h) - 2)
+    regExp_GetImgUrlList = h
+    If Err Then Call doError(Err.Description, "GetIMGUrlList 获得图片中网址 函数出错，c=" & h)
+End Function
+
+Function getIMG(a)
+    getIMG = regExp_GetImgUrlList(a, "全部")
+End Function
+
+Function getIMGJpg(a)
+    getIMGJpg = regExp_GetImgUrlList(a, "JPG")
+End Function
+
+Function getIMGGif(a)
+    getIMGGif = regExp_GetImgUrlList(a, "GIF")
+End Function
+
+Function getIMGBmp(a)
+    getIMGBmp = regExp_GetImgUrlList(a, "Bmp")
+End Function
+
+Function getASPFunctionList(ByVal a)
+    On Error Resume Next
+    Dim b, c, d, e, f, g
+    g = ""
+    Set d = CreateObject("VBscript.RegExp")
+        d.IgnoreCase = True
+        d.Global = True
+        d.pattern = "(sub|function) .*?\)"
+
+        Set b = d.Execute(a)
+            For Each c In b
+                g = g & c & vbCrLf
+            Next
+        Set b = Nothing
+    Set d = Nothing
+    If g <> "" Then g = Left(g, Len(g) - 2)
+    getASPFunctionList = g
+    If Err Then Call doError(Err.Description, "GetASPFunctionList 获得ASP函数列表 函数出错，c=" & g)
+End Function
+
+Function getASPDimFunction(ByVal a, b, c, d)
+
+    a = Replace(a, "()", "( )")
+    Dim e, f, g
+    Set g = CreateObject("VBscript.RegExp")
+        g.IgnoreCase = True
+        g.Global = True
+
+        a = regExp_Replace(a, "ByVal ", "")
+        g.pattern = "(sub|function) *([^\(]+) *\(([^\)]+)\)"
+        Set e = g.Execute(a)
+            For Each f In e
+
+                If InStr(b, "{") = False Then
+                    b = b & Trim(f) & vbCrLf
+                    c = c & Trim(f.SubMatches(1)) & vbCrLf
+                    d = d & Replace(f.SubMatches(2), " ", "") & vbCrLf
+                End If
+            Next
+        Set e = Nothing
+    Set g = Nothing
+
+    getASPDimFunction = b
+    If Err Then Call doError(Err.Description, "GetASPFunctionList 获得ASP函数列表 函数出错，")
+End Function
+
+
+Function strLength(a)
+    Dim b, c, d
+    c = 0
+    Set b = CreateObject("VBscript.RegExp")
+        b.Global = True
+        b.IgnoreCase = True
+        b.pattern = "[\u4E00-\u9FA5\uF900-\uFA2D]"
+        For Each d In b.Execute(a)
+            c = c + 1
+        Next
+    Set b = Nothing
+    c = c + Len(a)
+    strLength = c
+End Function
+
+Function regExpGetLenght(a)
+    regExpGetLenght = strLength(a)
+End Function
+
+Function stringLength(a)
+    stringLength = strLength(a)
+End Function
+
+Function getCssHref(ByVal a)
+    On Error Resume Next
+    Dim b, c, d, e, f, g
+    Set d = CreateObject("VBscript.RegExp")
+        d.IgnoreCase = True
+        d.Global = True
+        d.pattern = "<link .*?href *= *[""|'| ]*([^""'>]+)"
+        Set b = d.Execute(a)
+            For Each c In b
+                If InStr(LCase(c), "stylesheet") > 0 Then
+                    f = c.SubMatches(0)
+                    g = g & f & vbCrLf
+                End If
+            Next
+        Set b = Nothing
+    Set d = Nothing
+    If g <> "" Then g = Left(g, Len(g) - 2)
+    getCssHref = g
+    If Err Then Call doError(Err.Description, "GetCssHref 获得HTML中Css 函数出错，C =" & g)
+End Function
+
+Function getJsSrc(ByVal a)
+    On Error Resume Next
+    Dim b, c, d, e, f, g
+    Set d = CreateObject("VBscript.RegExp")
+        d.IgnoreCase = True
+        d.Global = True
+        d.pattern = "<script .*?src *= *[""|'| ]*([^""'>]+)"
+        Set b = d.Execute(a)
+            For Each c In b
+                f = c.SubMatches(0)
+                g = g & f & vbCrLf
+            Next
+        Set b = Nothing
+    Set d = Nothing
+    If g <> "" Then g = Left(g, Len(g) - 2)
+    getJsSrc = g
+    If Err Then Call doError(Err.Description, "GetJsSrc 获得HTML中Js 函数出错，C =" & g)
+End Function
+
+Function delHTMLScript(ByVal a)
+    On Error Resume Next
+    Dim b, c
+    Set b = CreateObject("VBscript.RegExp")
+        b.IgnoreCase = True
+        b.Global = True
+        b.pattern = "<script.*</script>"
+        c = b.Replace(a, "")
+        delHTMLScript = c
+    Set b = Nothing
+    If Err Then Call doError(Err.Description, "删除HTML中<scirpt 函数出错，")
+End Function
+
+Function getMeta(ByVal a, b, c)
+    On Error Resume Next
+    Dim d, e, f, g, h, i
+    i = ""
+    b = LCase(b)
+    c = 0
+    Set f = CreateObject("VBscript.RegExp")
+        f.IgnoreCase = True
+        f.Global = True
+        f.pattern = "<meta .*?content *= *[""|'| ]*([^""'>]+)"
+        Set d = f.Execute(a)
+            For Each e In d
+                If InStr(LCase(e), b) > 0 Then
+                    h = e.SubMatches(0)
+                    i = i & h & vbCrLf
+                    c = c + 1
+                End If
+            Next
+        Set d = Nothing
+    Set f = Nothing
+    If i <> "" Then i = Left(i, Len(i) - 2)
+    getMeta = i
+    If Err Then Call doError(Err.Description, "GetKeyWords 获得HTML中keywords 函数出错，C =" & i)
+End Function
+
+Function delHtmlNote(a)
+    Dim b, c
+    b = CStr(a)
+    Set c = CreateObject("VBscript.RegExp")
+        c.pattern = "<!--\/*[^<>]*-->"
+        c.IgnoreCase = True
+        c.Global = True
+        b = c.Replace(b, "")
+        delHtmlNote = b
+    Set c = Nothing
+End Function
+
+Function delHtmlMyNote(a)
+    Dim b, c
+    b = CStr(a)
+    Set c = CreateObject("VBscript.RegExp")
+        c.pattern = "<!--#\/*[^<>]*#-->"
+        c.IgnoreCase = True
+        c.Global = True
+        b = c.Replace(b, "")
+        delHtmlMyNote = b
+    Set c = Nothing
+End Function
+
+Function getStrImgList(ByVal a)
+    a = Replace(a, "'", """")
+    Dim b, c, d, e, f
+    b = "" : c = ""
+    Set f = CreateObject("VBscript.RegExp")
+
+        f.IgnoreCase = True
+        f.Global = True
+        f.pattern = "<img [^>]*src=""([^"">]+)[^>]+>"
+        Set d = f.Execute(a)
+            For Each e In d
+                b = b & e & "|"
+                c = c & e.SubMatches(0) & "|"
+            Next
+        Set d = Nothing
+    Set f = Nothing
+    If b <> "" Then
+        b = Left(b, Len(b) - 1)
+        c = Left(c, Len(c) - 1)
+    End If
+
+
+    getStrImgList = c
+End Function
+
+Function getEMailList(a)
+    Dim b, c, d, e
+    Set b = CreateObject("VBscript.RegExp")
+        b.pattern = "\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
+        b.IgnoreCase = True
+        b.Global = True
+        e = ""
+        Set d = b.Execute(a)
+            For Each c In d
+                If InStr("," & e & ",", "," & c.Value & ",") = 0 Then
+                    e = e & c.Value & ","
+                End If
+            Next
+        Set d = Nothing
+    Set b = Nothing
+    If e <> "" Then e = Left(e, Len(e) - 1)
+    getEMailList = e
+End Function
+
+Function oflink_lcasetag(a)
+    Dim b, c, d
+    Set b = CreateObject("VBscript.RegExp")
+        b.pattern = "<.+?\>"
+        b.IgnoreCase = True
+        b.Global = True
+        Set d = b.Execute(a)
+            a = a
+            For Each c In d
+                a = Replace(a, c.Value, LCase(c.Value))
+            Next
+            oflink_lcasetag = a
+        Set d = Nothing
+    Set b = Nothing
+End Function
+
+
+
+
+
+Function scriptHtml(ByVal a, b, c)
+    Dim d
+    Set d = CreateObject("VBscript.RegExp")
+        d.IgnoreCase = True
+        d.Global = True
+        Select Case c
+            Case 1
+                d.pattern = "<" & b & "([^>])*>"
+                a = d.Replace(a, "")
+            Case 2
+                d.pattern = "<" & b & "([^>])*>.*?</" & b & "([^>])*>"
+                a = d.Replace(a, "")
+            Case 3
+                d.pattern = "<" & b & "([^>])*>"
+                a = d.Replace(a, "")
+                d.pattern = "</" & b & "([^>])*>"
+                a = d.Replace(a, "")
+        End Select
+        scriptHtml = a
+    Set d = Nothing
+End Function
+
+
+
+
+
+
+Function getRegExp(a, b, c, d, e)
+    Dim f, g, h, i, j, k
+    i = ""
+    If c <> "" Then c = CInt(c)
+    If d <> "" Then d = CInt(d)
+    If e <> "" Then e = CInt(e)
+    j = False
+    If c <> "" Or d <> "" Or e <> "" Then j = True
+    Set f = CreateObject("VBscript.RegExp")
+        f.pattern = a
+        f.IgnoreCase = True
+        f.Global = True
+        Set h = f.Execute(b)
+            For Each g In h
+                If j = True Then
+                    k = ""
+                    If c <> "" Then
+                        k = k & g.SubMatches(c)
+                    End If
+                    If d <> "" Then
+                        If k <> "" Then k = k & "[$Split$]"
+                        k = k & g.SubMatches(d)
+                    End If
+                    If e <> "" Then
+                        If k <> "" Then k = k & "[$Split$]"
+                        k = k & g.SubMatches(e)
+                    End If
+                    If k <> "" Then i = i & k & "[$Array$]"
+                Else
+                    i = i & g & "[$Array$]"
+                End If
+            Next
+            If i <> "" Then i = Left(i, Len(i) - 9)
+            getRegExp = i
+End Function
+
+
+
+
+Function getImgJsUrl(a, b)
+    Dim c, d, e, f, g
+    b = LCase(b)
+    d = RegExpGetStr("<[img|script][^<>]*src[^<>]*[\/]?>", a, 2)
+    e = Split(d, "[$Array$]")
+    g = ""
+    For Each c In e
+        f = RegExpGetStr("src=[""|']?([^""' ]*)([""|']?).*[\/]?>", c, 1)
+        If b = "1" Or b = "不重复" Then
+            If InStr(vbCrLf & g & vbCrLf, vbCrLf & f & vbCrLf) Then
+                f = ""
+            End If
+        End If
+        If f <> "" Then
+            g = g & f & vbCrLf
+        End If
+    Next
+    If g <> "" Then g = Left(g, Len(g) - 2)
+    getImgJsUrl = g
+End Function
+
+
+
+
+
+
+
+
+Function regExpGetStr(a, b, c)
+    Dim d, e, f, g
+    g = ""
+    regExpGetStr = ""
+    Set d = CreateObject("VBscript.RegExp")
+        d.IgnoreCase = True
+        d.Global = True
+        d.pattern = a
+        Set f = d.Execute(b)
+            For Each e In f
+                If c = 1 Then
+                    e = d.Replace(e, "$1")
+                ElseIf c = 2 Then
+                    g = g & e & "[$Array$]"
+                End If
+                regExpGetStr = e
+            Next
+        Set f = Nothing
+    Set d = Nothing
+    If c = 2 Then
+        If g <> "" Then g = Left(g, Len(g) - 9)
+        regExpGetStr = g
+    End If
+End Function
+
+
+Function newGetPingIP(a)
+    Dim b, c, d
+    Dim e, f, g, h
+    newGetPingIP = ""
+    b = "/备份/cmd.exe"
+
+    c = GetPingInfo(b, a)
+    d = Split(c, "Request timed out.")
+
+    If UBound(d) >= 4 Then
+        f = Trim(Replace(Replace(Replace(a, "http://", ""), "www.", ""), "/", ""))
+        e = "http://whois.www.net.cn/whois/api_webinfo?host=" & f & "&_=" & getRnd(9)
+        c = GetHttpPage(e, "utf-8")
+        g = """ip"":""" : h = """"
+        If InStr(c, g) > 0 And InStr(c, h) > 0 Then
+            newGetPingIP = StrCut(c, g, h, 2)
+        End If
+    Else
+        g = " [" : h = "]"
+        If InStr(c, g) > 0 And InStr(c, h) > 0 Then
+            newGetPingIP = StrCut(c, g, h, 2)
+        Else
+            newGetPingIP = "NO"
+
+        End If
+    End If
+End Function
+
+Function getPingIP(a, b)
+    Dim c, d, e
+
+    d = " [" : e = "]"
+    c = GetPingInfo(a, b)
+    If InStr(c, d) > 0 And InStr(c, e) > 0 Then
+        getPingIP = StrCut(c, d, e, 2)
+    Else
+        getPingIP = "NO"
+
+    End If
+End Function
+
+Function getPingInfo(a, b)
+    Dim c, d
+    Set c = CreateObject("WScript.Shell")
+        Call HandlePath(a)
+        Set d = c.exec(a & " /c ping " & b)
+            getPingInfo = d.stdout.readall
+End Function
+
+Function regExpTest(a, b)
+    Dim c
+    Set c = CreateObject("VBscript.RegExp")
+        c.IgnoreCase = True
+        c.Global = True
+        c.pattern = b
+        regExpTest = c.Test(a)
+    Set c = Nothing
+End Function
+
+
+Function getRegExpStr(ByVal a, ByVal b, ByVal c)
+    On Error Resume Next
+    Dim d, e, f, g, h, i
+    e = ""
+    Set h = CreateObject("VBscript.RegExp")
+        h.IgnoreCase = True
+        h.Global = True
+        h.pattern = b
+        Set f = h.Execute(a)
+            For Each g In f
+                i = Replace(c, "\S1\", g.SubMatches(0))
+                i = Replace(i, "\S2\", g.SubMatches(1))
+                i = Replace(i, "\S3\", g.SubMatches(2))
+                i = Replace(i, "\S4\", g.SubMatches(3))
+                i = Replace(i, "\S5\", g.SubMatches(4))
+                a = Replace(a, g, i)
+            Next
+        Set f = Nothing
+    Set h = Nothing
+    getRegExpStr = a
+End Function
+
+
+
+
+Function regExpReplaceCssDir(ByVal a, b)
+    Dim c, d, e, f
+    Dim g, h
+    Set e = CreateObject("VBscript.RegExp")
+        e.ignoreCase = True
+        e.global = True
+        e.pattern = "<link .*?href *= *[""|'| ]*([^""'>]+)"
+        Set c = e.Execute(a)
+            For Each d In c
+                If InStr(LCase(d), "stylesheet") > 0 Then
+                    g = d.subMatches(0)
+                    h = getStrFileName(g)
+                    f = Replace(d, g, b & h)
+                    a = Replace(a, d, f)
+                End If
+            Next
+        Set c = Nothing
+    Set e = Nothing
+    regExpReplaceCssDir = a
+End Function
+
+
+
+Function deleteNullRow(ByVal a)
+    deleteNullRow = regExp_Replace(a, "\r\n\s*\r\n", "")
+End Function
 %>
+
 
 
