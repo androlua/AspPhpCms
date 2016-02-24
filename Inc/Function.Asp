@@ -2,1345 +2,1344 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
-
-Function Send_Email(a, b, c, d)
-    Dim e, f, g
-    Response.AddHeader "Content-Type", "text/html; charset=gb2312"
-    Set e = CreateObject("JMail.Message")
-
-        e.ContentTransferEncoding = "base64"
-        e.Encoding = "base64"
-        e.ContentType = "text/html"
-        e.silent = True
-        e.Logging = True
-        e.CharSet = "gb2312"
-        e.MailServerUserName = "m18251922007"
-        e.MailServerPassword = "mydd3a"
-        e.From = "m18251922007@163.com"
-        e.FromName = c
-        e.AddRecipient a
-        e.Subject = b
-
-        g = g & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>"
-        g = g & d
-        g = g & "</body></html>"
-        e.Body = g
-        Send_Email = e.Send("smtp.163.com")
-        e.Close
-    Set e = Nothing
+<% 
+'邮箱发送 例：Response.Write( ServerSend_Email("m18251922007","mydd3a","313801120@qq.com", "标题", "11@aa.com", "内容" & Action ) )
+Function Send_Email(ToMail, ToTitle, MyEmalName, ToContent)
+    Dim JMail, isgo, MailBody 
+    Response.AddHeader "Content-Type", "text/html; charset=gb2312" 
+    Set JMail = CreateObject("JMail.Message")
+        'JMail.ISOEncodeHeaders = False ' 是否进行ISO编码，默认为True
+        JMail.ContentTransferEncoding = "base64" 
+        JMail.Encoding = "base64" 
+        JMail.ContentType = "text/html"    '正常显示内容的代码 
+        JMail.silent = True 
+        JMail.Logging = True 
+        JMail.CharSet = "gb2312" 
+        JMail.MailServerUserName = "m18251922007"    '此为您邮箱的登录帐号，使用时请更改为自己的邮箱登录帐号 
+        JMail.MailServerPassword = "mydd3a"    '此为您邮箱的登录密码，使用时请更改为自己的邮箱登录密码 
+        JMail.From = "m18251922007@163.com"    '"m18251922007@163.com" '发件人Email 
+        JMail.FromName = MyEmalName    '发件人姓名 
+        JMail.AddRecipient ToMail    '收件人Email 
+        JMail.Subject = ToTitle    '邮件主题 
+        '邮件主体（HTML(注意信件内链接附件的方式)）
+        MailBody = MailBody & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>" 
+        MailBody = MailBody & ToContent 
+        MailBody = MailBody & "</body></html>" 
+        JMail.Body = MailBody    '邮件正文 
+        Send_Email = JMail.Send("smtp.163.com")    'SMTP服务器地址         //返回发送是否成功 
+        JMail.Close 
+    Set JMail = Nothing 
+End Function 
+'邮箱发送 
+Function ServerSend_Email(ServerUserName, ServerPassword, ToMail, ToTitle, MyEmalName, ToContent)
+    Dim JMail, isgo, MailBody 
+    Response.AddHeader "Content-Type", "text/html; charset=gb2312" 
+    Set JMail = CreateObject("JMail.Message")
+        'JMail.ISOEncodeHeaders = False ' 是否进行ISO编码，默认为True
+        JMail.ContentTransferEncoding = "base64" 
+        JMail.Encoding = "base64" 
+        JMail.ContentType = "text/html"    '正常显示内容的代码 
+        JMail.silent = True 
+        JMail.Logging = True 
+        JMail.CharSet = "gb2312" 
+        JMail.MailServerUserName = ServerUserName    '此为您邮箱的登录帐号，使用时请更改为自己的邮箱登录帐号 
+        JMail.MailServerPassword = ServerPassword    '此为您邮箱的登录密码，使用时请更改为自己的邮箱登录密码 
+        JMail.From = "m18251922007@163.com"    '"m18251922007@163.com" '发件人Email 
+        JMail.FromName = MyEmalName    '发件人姓名 
+        JMail.AddRecipient ToMail    '收件人Email 
+        JMail.Subject = ToTitle    '邮件主题 
+        '邮件主体（HTML(注意信件内链接附件的方式)）
+        MailBody = MailBody & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>" 
+        MailBody = MailBody & ToContent 
+        MailBody = MailBody & "</body></html>" 
+        JMail.Body = MailBody    '邮件正文 
+        ServerSend_Email = JMail.Send("smtp.163.com")    'SMTP服务器地址         //返回发送是否成功 
+        JMail.Close 
+    Set JMail = Nothing 
+End Function 
+'找ASP函数列表如：Sub a(b,c)
+Function FindAspCode(ByVal Content) 
+	Content = GetAspCode(Content)
+    Content = GetASPFunctionList(Content)    '获得函数列表 
+    FindAspCode =Content
 End Function
-
-Function ServerSend_Email(a, b, c, d, e, f)
-    Dim g, h, i
-    Response.AddHeader "Content-Type", "text/html; charset=gb2312"
-    Set g = CreateObject("JMail.Message")
-
-        g.ContentTransferEncoding = "base64"
-        g.Encoding = "base64"
-        g.ContentType = "text/html"
-        g.silent = True
-        g.Logging = True
-        g.CharSet = "gb2312"
-        g.MailServerUserName = a
-        g.MailServerPassword = b
-        g.From = "m18251922007@163.com"
-        g.FromName = e
-        g.AddRecipient c
-        g.Subject = d
-
-        i = i & "<html><head><META content=zh-cn http-equiv=Content-Language><meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312""><style type=text/css>BODY {FONT-SIZE: 9pt}</style></head><body>"
-        i = i & f
-        i = i & "</body></html>"
-        g.Body = i
-        ServerSend_Email = g.Send("smtp.163.com")
-        g.Close
-    Set g = Nothing
-End Function
-
-Function FindAspCode(ByVal a)
-	a = GetAspCode(a)
-    a = GetASPFunctionList(a)
-    FindAspCode =a
-End Function
-
-Function FindAspFunList(ByVal a)
-	Dim b,c,d,e,f,g
-	a = FindAspCode(a)				
-	b=Split(a,vbCrlf)
-	For Each e In b
-		f = e : e = LCase(e)
-		If e <>"" Then
-			c=0
-			If InStr(e,"function ")>0 Then
-				c=InStr(e,"function ")+8
-			ElseIf InStr(e,"sub ")>0 Then
-				c=InStr(e,"sub ")+3
+'扫描ASP中函数名称列表
+Function FindAspFunList(ByVal Content)
+	Dim SplStr,nLen,SubStr,S,TempS,C
+	Content = FindAspCode(Content)				'获得ASP代码
+	SplStr=Split(Content,vbCrlf)
+	For Each S In SplStr
+		TempS = S : S = LCase(S)
+		If S <>"" Then
+			nLen=0
+			If InStr(S,"function ")>0 Then
+				nLen=InStr(S,"function ")+8
+			ElseIf InStr(S,"sub ")>0 Then
+				nLen=InStr(S,"sub ")+3
 			End If
-			If c > 0 Then
-				f = Mid(f,c)
-				If InStr(f,"(")>0 Then
-					f=Mid(f,1,InStr(f,"(")-1)
+			If nLen > 0 Then
+				TempS = Mid(TempS,nLen)
+				If InStr(TempS,"(")>0 Then
+					TempS=Mid(TempS,1,InStr(TempS,"(")-1)
 				Else
-					f=Mid(f,1,InStr(f & " "," ")-1)
+					TempS=Mid(TempS,1,InStr(TempS & " "," ")-1)
 				End If				
-                g = g & Trim(f) & vbCrLf
+                C = C & Trim(TempS) & vbCrLf            '去除函数名称两边空格
 			End If
 		End If	
         DoEvents
 	Next
-	FindAspFunList=g
-End Function
-
-Function FindAspFunctionCode(ByVal a, ByVal b)
-    Dim c, d, e, f
-    If CheckStr(b, "sub ") Then
-        c = "end sub"
+	FindAspFunList=C 
+End Function  
+'找到指定Asp函数全部代码 感觉不精准
+Function FindAspFunctionCode(ByVal Content, ByVal FunctionName)
+    Dim FunctionType, SplStr, S, C 
+    If CheckStr(FunctionName, "sub ") Then
+        FunctionType = "end sub"
     Else
-        c = "end function"
-    End If
-    a = Right(a, Len(a) - InStr(LCase(a), LCase(b)) + 1)
-    d = Split(a, vbCrlf)
-    For Each e In d
-        f = f & e & vbCrlf
-        If CheckStr(e, c) = True Then Exit For
-    Next
-    FindAspFunctionCode = f
+        FunctionType = "end function" 
+    End If 
+    Content = Right(Content, Len(Content) - InStr(LCase(Content), LCase(FunctionName)) + 1) 
+    SplStr = Split(Content, vbCrlf) 
+    For Each S In SplStr
+        C = C & S & vbCrlf 
+        If CheckStr(S, FunctionType) = True Then Exit For 
+    Next 
+    FindAspFunctionCode = C 
+End Function 
+'处理替换列表 (ReplaceList改成handleReplaceList)为了兼容php程序
+Function handleReplaceList(ByVal Content, YStr, TStr)
+    Dim YSplStr, TSplStr, I, S 
+    YSplStr = Split(YStr, "|") 
+    TSplStr = Split(TStr & "||||||||||||||||||||||||||||||||", "|") 
+    For I = 0 To UBound(YSplStr)
+        S = YSplStr(I) 
+        If S <> "" Then
+            Content = Replace(Content, S, TSplStr(I)) 
+        End If 
+    Next 
+    handleReplaceList = Content 
 End Function
-
-Function handleReplaceList(ByVal a, b, c)
-    Dim d, e, f, g
-    d = Split(b, "|")
-    e = Split(c & "||||||||||||||||||||||||||||||||", "|")
-    For f = 0 To UBound(d)
-        g = d(f)
-        If g <> "" Then
-            a = Replace(a, g, e(f))
-        End If
-    Next
-    handleReplaceList = a
-End Function
-
-Function GetFunNameDim(ByVal a, b, c)
-    Dim d, e, f, g
-    a = Trim(a)
-    If InStr(LCase(a), "sub ") > 0 Then
-        d = "sub"
-    ElseIf InStr(LCase(a), "function ") > 0 Then
-        d = "function"
+'获得函数名称与变量 ，加强版,添加于2013,10,5 
+Function GetFunNameDim(ByVal C, FunName, FunDim)
+    Dim FunType, S1, S2, FunValue 
+    C = Trim(C) 
+    If InStr(LCase(C), "sub ") > 0 Then
+        FunType = "sub" 
+    ElseIf InStr(LCase(C), "function ") > 0 Then
+        FunType = "function" 
     Else
-        Exit Function
-    End If
-    a = Replace(a, ":", ")") & ")"
-    e = InStr(a, d & " ") + Len(d & " ")
-    f = InStr(e, a, ")")
-    a = Mid(a, e, f - e)
-    g = d & " " & a
-    If InStr(a, "(") > 0 Then
-        b = Left(a, InStr(a, "(") - 1)
-        If InStr(b, " ") Then
-            b = Mid(b, InStr(b, " "))
-        End If
-        g = g & ")"
-        e = InStr(g, "(") + 1
-        f = InStr(e, g, ")")
-        c = Mid(g, e, f - e)
-        c = RegExp_Replace(c, "ByVal ", "")
-        c = RegExp_Replace(c, "ByRef ", "")
-        c = Replace(c, " ", "")
+        Exit Function 
+    End If 
+    C = Replace(C, ":", ")") & ")" 
+    S1 = InStr(C, FunType & " ") + Len(FunType & " ") 
+    S2 = InStr(S1, C, ")") 
+    C = Mid(C, S1, S2 - S1) 
+    FunValue = FunType & " " & C 
+    If InStr(C, "(") > 0 Then
+        FunName = Left(C, InStr(C, "(") - 1) 
+        If InStr(FunName, " ") Then
+            FunName = Mid(FunName, InStr(FunName, " "))    '可把Priver与Public去除掉 
+        End If 
+        FunValue = FunValue & ")" 
+        S1 = InStr(FunValue, "(") + 1 
+        S2 = InStr(S1, FunValue, ")") 
+        FunDim = Mid(FunValue, S1, S2 - S1) 
+        FunDim = RegExp_Replace(FunDim, "ByVal ", "")    'ByVal重新定义变更 
+        FunDim = RegExp_Replace(FunDim, "ByRef ", "")    'ByRef为不重新定义变量,默认为它，也就量用上一级函数变量 
+        FunDim = Replace(FunDim, " ", "") 
     Else
-        b = a
-    End If
-
-    GetFunNameDim = g
-End Function
-
-Function LeftSpace(ByVal a, ByVal b)
-    Dim c, d
-    d = 0
-    For c = Len(a) To 1 Step - 1
-        If Mid(a, c, 1) <> " " Then Exit For
-        d = d + 1
-    Next
-    If d > b And Replace(a, " ", "") <> "" Then
-        a = Left(a, Len(a) - d + b)
-    ElseIf d < b And 1 = 1 Then
-        For c = d To b - 1
-            a = a & " "
-        Next
-    End If
-    LeftSpace = a
-End Function
-
-Function RightSpace(ByVal a, ByVal b)
-    Dim c, d
-    d = 0
-    For c = 1 To Len(a)
-        If Mid(a, c, 1) <> " " Then Exit For
-        d = d + 1
-    Next
-    If d > b Then
-        a = Right(a, Len(a) - d + b)
-    ElseIf d < b Then
-        For c = d To b - 1
-            a = " " & a
-        Next
-    End If
-    RightSpace = a
-End Function
-
-Function InFunAddDim(ByVal a)
-    Dim b, c, d, e, f, g, h, i, j, k
-    c = Split("A_p,B_p,C_4,D_2,E_4,F_9,G_1,H_2,I_2,J_3,K_1,L_o,M_m,N_u,O_o,P_n,Q_o,R_l,S_i,T_2,U_2,V_2,W_2,X_2,Y_2,Z_2", ",")
-    b = Split(a, vbCrlf)
-    g = UBound(b) - 1
-    e = StrCut(a, "(", ")", 2)
-    d = Split(e, ",")
-    h = UBound(d) + 1
-
-    If h = 0 Then
-        InFunAddDim = a
-        Exit Function
-    End If
-    i = CInt(g / h)
-    k = 0
-    For f = 0 To UBound(b)
-        e = b(f)
-        If Trim(e) <> "" Then
-            j = j & b(f) & vbCrlf
-        End If
-        If i <> 0 Then
-            If f Mod i = 0 And UBound(d) >= k And f <> UBound(b) Then
-                j = j & "dIm " & c(k) & vbCrlf
-                k = k + 1
-            End If
-        End If
-    Next
-    If j <> "" Then j = Left(j, Len(j) - 2)
-    InFunAddDim = j
-End Function
-
-
-Function GetQQ(ByVal a, b)
-    Dim c, d, e, f, g, h, i, j
-    a = Replace(Replace(LCase(a), "&nbsp;", ""), " ", "")
-    b = 0
-    If InStr(a, "qq") > 0 Then
-        c = Split(a, "qq")
-        For d = 1 To UBound(c)
-            f = c(d)
-            h = "" : i = 14 : j = False
-            For e = 1 To Len(f)
-                If InStr("0123456789", Mid(f, e, 1)) = False Then
-                    If j = True Then Exit For
-                    If i = 0 Then Exit For
-                    i = i - 1
-                    If Mid(f, e, 1) = "群" Then Exit For
+        FunName = C 
+    End If 
+    'Response.Write("FunType=" & FunType & "|C="&C&"|FunValue="&FunValue&"|FunName="&FunName&"|FunDim="&FunDim&"<hr>")
+    GetFunNameDim = FunValue 
+End Function 
+'从右边开始截取 作用：删除左边空格
+Function LeftSpace(ByVal Content, ByVal AddNumb)
+    Dim I, nCount 
+    nCount = 0 
+    For I = Len(Content) To 1 Step - 1
+        If Mid(Content, I, 1) <> " " Then Exit For
+        nCount = nCount + 1 
+    Next 
+    If nCount > AddNumb And Replace(Content, " ", "") <> "" Then
+        Content = Left(Content, Len(Content) - nCount + AddNumb) 
+    ElseIf nCount < AddNumb And 1 = 1 Then
+        For I = nCount To AddNumb - 1
+            Content = Content & " " 
+        Next 
+    End If 
+    LeftSpace = Content 
+End Function 
+'从右边开始截取 作用：删除右边空格
+Function RightSpace(ByVal Content, ByVal AddNumb)
+    Dim I, nCount 
+    nCount = 0 
+    For I = 1 To Len(Content)
+        If Mid(Content, I, 1) <> " " Then Exit For 
+        nCount = nCount + 1 
+    Next 
+    If nCount > AddNumb Then
+        Content = Right(Content, Len(Content) - nCount + AddNumb) 
+    ElseIf nCount < AddNumb Then
+        For I = nCount To AddNumb - 1
+            Content = " " & Content 
+        Next 
+    End If 
+    RightSpace = Content 
+End Function 
+'在函数里加乱的Dim，这个Dim出现次数等于函数参数值，这个Dim是没有任何意思的 
+Function InFunAddDim(ByVal Content)
+    Dim SplStr, Splxx, SplTemp, S, I, VbCrlfNumb, FunDimNumb, ExceptNumb, C, RootNumb 
+    Splxx = Split("A_p,B_p,C_4,D_2,E_4,F_9,G_1,H_2,I_2,J_3,K_1,L_o,M_m,N_u,O_o,P_n,Q_o,R_l,S_i,T_2,U_2,V_2,W_2,X_2,Y_2,Z_2", ",") 
+    SplStr = Split(Content, vbCrlf) 
+    VbCrlfNumb = UBound(SplStr) - 1    '换行数 
+    S = StrCut(Content, "(", ")", 2) 
+    SplTemp = Split(S, ",") 
+    FunDimNumb = UBound(SplTemp) + 1    '函数 
+    '为0表示没有则退出，
+    If FunDimNumb = 0 Then
+        InFunAddDim = Content 
+        Exit Function 
+    End If 
+    ExceptNumb = CInt(VbCrlfNumb / FunDimNumb)    '除数 
+    RootNumb = 0 
+    For I = 0 To UBound(SplStr)
+        S = SplStr(I) 
+        If Trim(S) <> "" Then
+            C = C & SplStr(I) & vbCrlf 
+        End If 
+        If ExceptNumb <> 0 Then
+            If I Mod ExceptNumb = 0 And UBound(SplTemp) >= RootNumb And I <> UBound(SplStr) Then
+                C = C & "dIm " & Splxx(RootNumb) & vbCrlf 
+                RootNumb = RootNumb + 1 
+            End If 
+        End If 
+    Next 
+    If C <> "" Then C = Left(C, Len(C) - 2) 
+    InFunAddDim = C 
+End Function 
+'=============== 下面为2013,11,1添加 
+'获得QQ 
+Function GetQQ(ByVal Content, nOK)
+    Dim SplStr, I, J, S, C, QQ, nErr, QQYes 
+    Content = Replace(Replace(LCase(Content), "&nbsp;", ""), " ", "") 
+    nOK = 0 
+    If InStr(Content, "qq") > 0 Then
+        SplStr = Split(Content, "qq") 
+        For I = 1 To UBound(SplStr)
+            S = SplStr(I) 
+            QQ = "" : nErr = 14 : QQYes = False 
+            For J = 1 To Len(S)
+                If InStr("0123456789", Mid(S, J, 1)) = False Then
+                    If QQYes = True Then Exit For    'qq开始累加时则退出 
+                    If nErr = 0 Then Exit For    '错误大于N退出 
+                    nErr = nErr - 1 
+                    If Mid(S, J, 1) = "群" Then Exit For    '为QQ群退出 
                 Else
-                    j = True
-                    h = h & Mid(f, e, 1)
-                End If
-                If e > 30 Then Exit For
-            Next
-            If Len(h) >= 6 And Len(h) <= 10 And InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
-                If InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
-                    g = g & h & vbCrlf
-                    b = b + 1
-                End If
-            End If
-        Next
-    End If
-    GetQQ = g
-End Function
-
-Function GetTel(ByVal a, b)
-    Dim c, d, e, f, g, h, i, j
-    a = Replace(Replace(LCase(a), "&nbsp;", ""), "手机", "tel")
-    b = 0
-    If InStr(a, "tel") > 0 Then
-        c = Split(a, "tel")
-        For d = 1 To UBound(c)
-            f = c(d)
-            h = "" : i = 14 : j = False
-            For e = 1 To Len(f)
-                If InStr("0123456789", Mid(f, e, 1)) = False Then
-                    If j = True Then Exit For
-                    If i = 0 Then Exit For
-                    i = i - 1
+                    QQYes = True 
+                    QQ = QQ & Mid(S, J, 1) 
+                End If 
+                If J > 30 Then Exit For    'j大于20退出 
+            Next 
+            If Len(QQ) >= 6 And Len(QQ) <= 10 And InStr(vbCrlf & C, vbCrlf & QQ & vbCrlf) = False Then
+                If InStr(vbCrlf & C, vbCrlf & QQ & vbCrlf) = False Then
+                    C = C & QQ & vbCrlf 
+                    nOK = nOK + 1 
+                End If 
+            End If 
+        Next 
+    End If 
+    GetQQ = C 
+End Function 
+'获得手机 
+Function GetTel(ByVal Content, nOK)
+    Dim SplStr, I, J, S, C, Tel, nErr, TelYes 
+    Content = Replace(Replace(LCase(Content), "&nbsp;", ""), "手机", "tel") 
+    nOK = 0 
+    If InStr(Content, "tel") > 0 Then
+        SplStr = Split(Content, "tel") 
+        For I = 1 To UBound(SplStr)
+            S = SplStr(I) 
+            Tel = "" : nErr = 14 : TelYes = False 
+            For J = 1 To Len(S)
+                If InStr("0123456789", Mid(S, J, 1)) = False Then
+                    If TelYes = True Then Exit For    'Tel开始累加时则退出 
+                    If nErr = 0 Then Exit For    '错误大于N退出 
+                    nErr = nErr - 1 
                 Else
-                    j = True
-                    h = h & Mid(f, e, 1)
-                End If
-                If e > 30 Then Exit For
-            Next
-            If Len(h) = 11 Then
-                If InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
-                    g = g & h & vbCrlf
-                    b = b + 1
-                End If
-            End If
-        Next
-    End If
-    GetTel = g
-End Function
-
-Function GetMail(ByVal a, b)
-    Dim c, d, e, f, g, h, i, j
-    a = Replace(Replace(LCase(a), "&nbsp;", ""), "邮箱", "mail")
-    b = 0
-    If InStr(a, "mail") > 0 Then
-        c = Split(a, "mail")
-        For d = 1 To UBound(c)
-            f = c(d)
-            h = "" : i = 14 : j = False
-            For e = 1 To Len(f)
-                If InStr("0123456789abcdefghijklmnopqrstuvwxyz.@", Mid(f, e, 1)) = False Then
-                    If j = True Then Exit For
-                    If i = 0 Then Exit For
-                    i = i - 1
+                    TelYes = True 
+                    Tel = Tel & Mid(S, J, 1) 
+                End If 
+                If J > 30 Then Exit For    'j大于20退出 
+            Next 
+            If Len(Tel) = 11 Then
+                If InStr(vbCrlf & C, vbCrlf & Tel & vbCrlf) = False Then
+                    C = C & Tel & vbCrlf 
+                    nOK = nOK + 1 
+                End If 
+            End If 
+        Next 
+    End If 
+    GetTel = C 
+End Function 
+'获得邮箱 
+Function GetMail(ByVal Content, nOK)
+    Dim SplStr, I, J, S, C, Mail, nErr, MailYes 
+    Content = Replace(Replace(LCase(Content), "&nbsp;", ""), "邮箱", "mail") 
+    nOK = 0 
+    If InStr(Content, "mail") > 0 Then
+        SplStr = Split(Content, "mail") 
+        For I = 1 To UBound(SplStr)
+            S = SplStr(I) 
+            Mail = "" : nErr = 14 : MailYes = False 
+            For J = 1 To Len(S)
+                If InStr("0123456789abcdefghijklmnopqrstuvwxyz.@", Mid(S, J, 1)) = False Then
+                    If MailYes = True Then Exit For    'Mail开始累加时则退出 
+                    If nErr = 0 Then Exit For    '错误大于N退出 
+                    nErr = nErr - 1 
                 Else
-                    j = True
-                    h = h & Mid(f, e, 1)
-                End If
-                If e > 30 Then Exit For
-            Next
-            If InStr(h, ".") > 0 And InStr(h, "@") > 0 Then
-                If InStr(vbCrlf & g, vbCrlf & h & vbCrlf) = False Then
-                    g = g & h & vbCrlf
-                    b = b + 1
-                End If
-            End If
-        Next
-    End If
-    GetMail = g
-End Function
+                    MailYes = True 
+                    Mail = Mail & Mid(S, J, 1) 
+                End If 
+                If J > 30 Then Exit For    'j大于20退出 
+            Next 
+            If InStr(Mail, ".") > 0 And InStr(Mail, "@") > 0 Then
+                If InStr(vbCrlf & C, vbCrlf & Mail & vbCrlf) = False Then
+                    C = C & Mail & vbCrlf 
+                    nOK = nOK + 1 
+                End If 
+            End If 
+        Next 
+    End If 
+    GetMail = C 
+End Function 
+'获得图片列表 
+Function GetImgStr(HttpUrl, Content, nOK)
+    Dim SplStr, I, C, Url, UrlList 
+    Content = GetIMG(Content) 
+    SplStr = Split(Content, vbCrlf) 
+    nOK = 0 
+    For Each Url In SplStr
+        If InStr("|" & UrlList & "|", "|" & Url & "|") = False Then
+            If Left(Url, 1) = "/" Or(InStr(Url, "http://") = False And InStr(Url, "www.") = False) Then
+                Url = FullHttpUrl(HttpUrl, Url) 
+            End If 
+            nOK = nOK + 1 
+            C = C & Url & "<br>" 
+        End If 
+    Next 
+    GetImgStr = C 
+End Function 
+'获得Css列表 
+Function GetCssStr(HttpUrl, Content, nOK)
+    Dim SplStr, I, C, Url, UrlList 
+    Content = GetCssHref(Content) 
+    SplStr = Split(Content, vbCrlf) 
+    nOK = 0 
+    For Each Url In SplStr
+        If InStr("|" & UrlList & "|", "|" & Url & "|") = False Then
+            If Left(Url, 1) = "/" Or(InStr(Url, "http://") = False And InStr(Url, "www.") = False) Then
+                Url = FullHttpUrl(HttpUrl, Url) 
+            End If 
+            nOK = nOK + 1 
+            C = C & Url & "<br>" 
+        End If 
+    Next 
+    GetCssStr = C 
+End Function 
+'获得Js列表 
+Function GetJsStr(HttpUrl, Content, nOK)
+    Dim SplStr, I, C, Url, UrlList 
+    Content = GetJsSrc(Content) 
+    SplStr = Split(Content, vbCrlf) 
+    nOK = 0 
+    For Each Url In SplStr
+        If InStr("|" & UrlList & "|", "|" & Url & "|") = False Then
+            If Left(Url, 1) = "/" Or(InStr(Url, "http://") = False And InStr(Url, "www.") = False) Then
+                Url = FullHttpUrl(HttpUrl, Url) 
+            End If 
+            nOK = nOK + 1 
+            C = C & Url & "<br>" 
+        End If 
+    Next 
+    GetJsStr = C 
+End Function 
 
-Function GetImgStr(a, b, c)
-    Dim d, e, f, g, h
-    b = GetIMG(b)
-    d = Split(b, vbCrlf)
-    c = 0
-    For Each g In d
-        If InStr("|" & h & "|", "|" & g & "|") = False Then
-            If Left(g, 1) = "/" Or(InStr(g, "http://") = False And InStr(g, "www.") = False) Then
-                g = FullHttpUrl(a, g)
-            End If
-            c = c + 1
-            f = f & g & "<br>"
-        End If
-    Next
-    GetImgStr = f
-End Function
-
-Function GetCssStr(a, b, c)
-    Dim d, e, f, g, h
-    b = GetCssHref(b)
-    d = Split(b, vbCrlf)
-    c = 0
-    For Each g In d
-        If InStr("|" & h & "|", "|" & g & "|") = False Then
-            If Left(g, 1) = "/" Or(InStr(g, "http://") = False And InStr(g, "www.") = False) Then
-                g = FullHttpUrl(a, g)
-            End If
-            c = c + 1
-            f = f & g & "<br>"
-        End If
-    Next
-    GetCssStr = f
-End Function
-
-Function GetJsStr(a, b, c)
-    Dim d, e, f, g, h
-    b = GetJsSrc(b)
-    d = Split(b, vbCrlf)
-    c = 0
-    For Each g In d
-        If InStr("|" & h & "|", "|" & g & "|") = False Then
-            If Left(g, 1) = "/" Or(InStr(g, "http://") = False And InStr(g, "www.") = False) Then
-                g = FullHttpUrl(a, g)
-            End If
-            c = c + 1
-            f = f & g & "<br>"
-        End If
-    Next
-    GetJsStr = f
-End Function
-
-
-Function HandleAspExecute(ByVal a)
-	Dim b,c,d
-	If Left(a,2)="<" & "%" Then
-		a = Right(a,Len(a)-2)
+'处理成AspExecute
+Function HandleAspExecute(ByVal Content)
+	Dim SplStr,S,C 
+	If Left(Content,2)="<" & "%" Then
+		Content = Right(Content,Len(Content)-2) 
 	End If	
-	If Right(a,2)="%" & ">" Then
-		a = Left(a, Len(a)-2)
-	End If
-	
-	b=Split(a,vbCrlf)
-	For Each c In b
-		c = TrimVbCrlf(c)
-		If c <> "" Then
-			d=d & c & ":"
+	If Right(Content,2)="%" & ">" Then
+		Content = Left(Content, Len(Content)-2) 
+	End If 
+	'Content=Replace(Content,"""","""""")				'这个不需要，要不会出错
+	SplStr=Split(Content,vbCrlf)
+	For Each S In SplStr
+		S = TrimVbCrlf(S)
+		If S <> "" Then
+			C=C & S & ":"
 		End If
 	Next
-	If d <>"" Then d=Left(d, Len(d)-1)
-	If Left(d,1)="=" Then d = "Response.Write " & Right(d,Len(d)-1)
-	HandleAspExecute = d
+	If C <>"" Then C=Left(C, Len(C)-1)
+	If Left(C,1)="=" Then C = "Response.Write " & Right(C,Len(C)-1)
+	HandleAspExecute = C
 End Function
-
-Function GetUrlStr(a, b, c, d, e)
-    Dim f, g, h, i, j, k, l, m, n, o, p
-    If b = "链接" Then
-        f = GetAURL(c)
-    ElseIf b = "链接标题" Then
-        f = GetATitle(c)
+'获得网址列表 Rw(GetUrlStr("", "链接", Content, "", 0))
+Function GetUrlStr(HttpUrl, SType, Content, SearchValue, nOK)
+    Dim HrefList, SplStr, Title, Url, C, S, LcaseUrl, UrlList, TitleList, SVal, SVal2 
+    If SType = "链接" Then
+        HrefList = GetAURL(Content) 
+    ElseIf SType = "链接标题" Then
+        HrefList = GetATitle(Content) 
     Else
-        f = GetAURLTitle(c)
-    End If
-    g = Split(f, vbCrlf)
-    e = 0
-    For Each k In g
-        If k <> "" Then
-            If b = "链接" Then
-                i = Trim(k)
-                If InStr(LCase(i), "javascript:") = False And i <> "#" And i <> "" Then
-                    If InStr("|" & m & "|", "|" & i & "|") = False Then
-                        If Left(i, 1) = "/" Or(InStr(i, "http://") = False And InStr(i, "www.") = False) Then
-                            i = FullHttpUrl(a, i)
-                        End If
-                        e = e + 1
-                        j = j & i & vbCrlf
-                    End If
-                End If
-            ElseIf b = "链接标题" Then
-                If InStr("|" & n & "|", "|" & k & "|") = False Then
-                    n = n & k & "|"
-                    e = e + 1
-                    j = j & k & vbCrlf
-                End If
+        HrefList = GetAURLTitle(Content) 
+    End If 
+    SplStr = Split(HrefList, vbCrlf) 
+    nOK = 0 
+    For Each S In SplStr
+        If S <> "" Then
+            If SType = "链接" Then
+                Url = Trim(S) 
+                If InStr(LCase(Url), "javascript:") = False And Url <> "#" And Url <> "" Then
+                    If InStr("|" & UrlList & "|", "|" & Url & "|") = False Then
+                        If Left(Url, 1) = "/" Or(InStr(Url, "http://") = False And InStr(Url, "www.") = False) Then
+                            Url = FullHttpUrl(HttpUrl, Url) 
+                        End If 
+                        nOK = nOK + 1 
+                        C = C & Url & vbCrlf 
+                    End If 
+                End If 
+            ElseIf SType = "链接标题" Then
+                If InStr("|" & TitleList & "|", "|" & S & "|") = False Then
+                    TitleList = TitleList & S & "|" 
+                    nOK = nOK + 1 
+                    C = C & S & vbCrlf 
+                End If 
             Else
-                If InStr(k, "【_|-】") > 0 Then
-                    i = Mid(k, 1, InStr(k, "【_|-】") - 1) : l = i
-                    h = Mid(k, Len(i) + 6)
-                    If InStr(LCase(l), "javascript:") = False And i <> "#" And i <> "" Then
-                        If InStr("|" & m & "|", "|" & i & "|") = False Then
-                            If Left(i, 1) = "/" Or(InStr(l, "http://") = False And InStr(l, "www.") = False) Then
-                                i = FullHttpUrl(a, i)
-                            End If
-                            e = e + 1
-                            j = j & i & "   &nbsp;  " & h & vbCrlf
-                        End If
-                    End If
-                End If
-            End If
-        End If
-    Next
-    If d <> "" Then
-        d = Replace(d, " and ", " And ")
-        g = Split(d, " And ")
-        o = g(0)
-        If UBound(g) > 0 Then p = g(1)
-        g = Split(j, vbCrlf) : e = 0 : j = ""
-        For Each k In g
-            If p <> "" Then
-                If InStr(k, o) > 0 And InStr(k, p) > 0 Then
-                    If InStr(vbCrlf & j & vbCrlf, vbCrlf & k & vbCrlf) = False Then
-                        e = e + 1
-                        j = j & k & "<br>"
-                    End If
-                End If
+                If InStr(S, "【_|-】") > 0 Then
+                    Url = Mid(S, 1, InStr(S, "【_|-】") - 1) : LcaseUrl = Url 
+                    Title = Mid(S, Len(Url) + 6) 
+                    If InStr(LCase(LcaseUrl), "javascript:") = False And Url <> "#" And Url <> "" Then
+                        If InStr("|" & UrlList & "|", "|" & Url & "|") = False Then
+                            If Left(Url, 1) = "/" Or(InStr(LcaseUrl, "http://") = False And InStr(LcaseUrl, "www.") = False) Then
+                                Url = FullHttpUrl(HttpUrl, Url) 
+                            End If 
+                            nOK = nOK + 1 
+                            C = C & Url & "   &nbsp;  " & Title & vbCrlf 
+                        End If 
+                    End If 
+                End If 
+            End If 
+        End If 
+    Next 
+    If SearchValue <> "" Then
+        SearchValue = Replace(SearchValue, " and ", " And ") 
+        SplStr = Split(SearchValue, " And ") 
+        SVal = SplStr(0) 
+        If UBound(SplStr) > 0 Then SVal2 = SplStr(1) 
+        SplStr = Split(C, vbCrlf) : nOK = 0 : C = "" 
+        For Each S In SplStr
+            If SVal2 <> "" Then
+                If InStr(S, SVal) > 0 And InStr(S, SVal2) > 0 Then
+                    If InStr(vbCrlf & C & vbCrlf, vbCrlf & S & vbCrlf) = False Then
+                        nOK = nOK + 1 
+                        C = C & S & "<br>" 
+                    End If 
+                End If 
             Else
-                If InStr(k, o) > 0 Then
-                    If InStr(vbCrlf & j & vbCrlf, vbCrlf & k & vbCrlf) = False Then
-                        e = e + 1
-                        j = j & k & "<br>"
-                    End If
-                End If
-            End If
-        Next
-    End If
-    GetUrlStr = j
-End Function
-
-Function GetPageConfig(a, b, c)
-    Dim d, e, f, g, h, i, j, k, ArrUrl(99), m, n, o, p
-    b = GetAURL(b)
-    d = Split(b, vbCrlf)
-    For Each j In d
-        If j <> "" Then
-            k = j
-            If InStr(LCase(j), "javascript:") = False And j <> "#" Then
-                j = Replace(Replace(Replace(Replace(Replace(j, "0", ""), "1", ""), "2", ""), "3", ""), "4", "")
-                j = Replace(Replace(Replace(Replace(Replace(j, "5", ""), "6", ""), "7", ""), "8", ""), "9", "")
-                If c = "注入" And InStr(j, "?") > 0 Then j = HandlSqlInUrl(j)
-                i = i & j & vbCrlf
-                o = InStr(vbCrlf & m, vbCrlf & j & "【】")
-                If o > 0 Then
-                    f = Mid(m, o)
-                    f = Mid(f, 1, InStr(f, vbCrlf) - 1)
-                    p = Split(f, "【】")
-                    g = p(0)
-                    h = p(1) + 1
-                    m = Replace(m, f, g & "【】" & h & "【】" & p(2))
-                    n = j
+                If InStr(S, SVal) > 0 Then
+                    If InStr(vbCrlf & C & vbCrlf, vbCrlf & S & vbCrlf) = False Then
+                        nOK = nOK + 1 
+                        C = C & S & "<br>" 
+                    End If 
+                End If 
+            End If 
+        Next 
+    End If 
+    GetUrlStr = C 
+End Function 
+'获得Html中翻页配置 (采集用到)
+Function GetPageConfig(HttpUrl, Content, SType)
+    Dim SplStr, I, S, S2, S3, C, Url, TempUrl, ArrUrl(99), UrlList, PageUrl, nLen, Splxx 
+    Content = GetAURL(Content) 
+    SplStr = Split(Content, vbCrlf) 
+    For Each Url In SplStr
+        If Url <> "" Then
+            TempUrl = Url 
+            If InStr(LCase(Url), "javascript:") = False And Url <> "#" Then
+                Url = Replace(Replace(Replace(Replace(Replace(Url, "0", ""), "1", ""), "2", ""), "3", ""), "4", "") 
+                Url = Replace(Replace(Replace(Replace(Replace(Url, "5", ""), "6", ""), "7", ""), "8", ""), "9", "") 
+                If SType = "注入" And InStr(Url, "?") > 0 Then Url = HandlSqlInUrl(Url) 
+                C = C & Url & vbCrlf 
+                nLen = InStr(vbCrlf & UrlList, vbCrlf & Url & "【】") 
+                If nLen > 0 Then
+                    S = Mid(UrlList, nLen) 
+                    S = Mid(S, 1, InStr(S, vbCrlf) - 1) 
+                    Splxx = Split(S, "【】") 
+                    S2 = Splxx(0) 
+                    S3 = Splxx(1) + 1 
+                    UrlList = Replace(UrlList, S, S2 & "【】" & S3 & "【】" & Splxx(2)) 
+                    PageUrl = Url 
                 Else
-                    m = m & j & "【】0【】" & FullHttpUrl(a, k) & vbCrlf
-                End If
-            End If
-        End If
-    Next
-    d = Split(m, vbCrlf) : i = ""
-    If c = "注入" Then
-        For Each f In d
-            If InStr(f, "【】") > 0 Then
-                p = Split(f, "【】")
-                j = Trim(p(2))
-                If InStr(j, a) > 0 Then
-                    If InStr(vbCrlf & i, vbCrlf & j & vbCrlf) = False Then
-                        i = i & j & vbCrlf
-                    End If
-                End If
-            End If
-        Next
-        GetPageConfig = i : Exit Function
-    End If
-
-    For Each f In d
-        If InStr(f, "【】") > 0 Then
-            p = Split(f, "【】")
-            If p(1) > 0 Then ArrUrl(p(1)) = p(0) & "  &nbsp; | &nbsp; " & p(2)
-        End If
-    Next
-    For e = 99 To 0 Step - 1
-        If ArrUrl(e) <> "" Then
-            If InStr(ArrUrl(e), a) > 0 Then
-                i = i & ArrUrl(e) & "，   出现[" & e & "]次<br>"
-            End If
-        End If
-    Next
-    GetPageConfig = i
-End Function
-
-Function GetSqlInUrl(a, b, c)
-    Dim d, e, f, g, h, i, j, k, ArrUrl(99), m, n, o, p
-    b = GetAURL(b)
-    d = Split(b, vbCrlf)
-    For Each j In d
-        If j <> "" Then
-            k = j
-            If InStr(j, "?") > 0 Then
-                i = i & j & vbCrlf
-                j = HandlSqlInUrl(j)
-                o = InStr(vbCrlf & m, vbCrlf & j & "【】")
-                If o > 0 Then
-                    f = Mid(m, o)
-                    f = Mid(f, 1, InStr(f, vbCrlf) - 1)
-                    p = Split(f, "【】")
-                    g = p(0)
-                    h = p(1) + 1
-                    m = Replace(m, f, g & "【】" & h & "【】" & p(2))
-                    n = j
+                    UrlList = UrlList & Url & "【】0【】" & FullHttpUrl(HttpUrl, TempUrl) & vbCrlf 
+                End If 
+            End If 
+        End If 
+    Next 
+    SplStr = Split(UrlList, vbCrlf) : C = "" 
+    If SType = "注入" Then
+        For Each S In SplStr
+            If InStr(S, "【】") > 0 Then
+                Splxx = Split(S, "【】") 
+                Url = Trim(Splxx(2)) 
+                If InStr(Url, HttpUrl) > 0 Then
+                    If InStr(vbCrlf & C, vbCrlf & Url & vbCrlf) = False Then
+                        C = C & Url & vbCrlf 
+                    End If 
+                End If 
+            End If 
+        Next 
+        GetPageConfig = C : Exit Function 
+    End If 
+    '处理出页配置
+    For Each S In SplStr
+        If InStr(S, "【】") > 0 Then
+            Splxx = Split(S, "【】") 
+            If Splxx(1) > 0 Then ArrUrl(Splxx(1)) = Splxx(0) & "  &nbsp; | &nbsp; " & Splxx(2) 
+        End If 
+    Next 
+    For I = 99 To 0 Step - 1
+        If ArrUrl(I) <> "" Then
+            If InStr(ArrUrl(I), HttpUrl) > 0 Then
+                C = C & ArrUrl(I) & "，   出现[" & I & "]次<br>" 
+            End If 
+        End If 
+    Next 
+    GetPageConfig = C 
+End Function 
+'获得网页中注入网址 
+Function GetSqlInUrl(HttpUrl, Content, SType)
+    Dim SplStr, I, S, S2, S3, C, Url, TempUrl, ArrUrl(99), UrlList, PageUrl, nLen, Splxx 
+    Content = GetAURL(Content) 
+    SplStr = Split(Content, vbCrlf) 
+    For Each Url In SplStr
+        If Url <> "" Then
+            TempUrl = Url 
+            If InStr(Url, "?") > 0 Then
+                C = C & Url & vbCrlf 
+                Url = HandlSqlInUrl(Url) 
+                nLen = InStr(vbCrlf & UrlList, vbCrlf & Url & "【】") 
+                If nLen > 0 Then
+                    S = Mid(UrlList, nLen) 
+                    S = Mid(S, 1, InStr(S, vbCrlf) - 1) 
+                    Splxx = Split(S, "【】") 
+                    S2 = Splxx(0) 
+                    S3 = Splxx(1) + 1 
+                    UrlList = Replace(UrlList, S, S2 & "【】" & S3 & "【】" & Splxx(2)) 
+                    PageUrl = Url 
                 Else
-                    m = m & j & "【】0【】" & FullHttpUrl(a, k) & vbCrlf
-                End If
-            End If
-        End If
-    Next
-    d = Split(m, vbCrlf)
-    For Each f In d
-        If InStr(f, "【】") > 0 Then
-            p = Split(f, "【】")
-            If h > 0 Then
-                If c = "注入" Then
-                    ArrUrl(p(1)) = p(2)
+                    UrlList = UrlList & Url & "【】0【】" & FullHttpUrl(HttpUrl, TempUrl) & vbCrlf 
+                End If 
+            End If 
+        End If 
+    Next 
+    SplStr = Split(UrlList, vbCrlf) 
+    For Each S In SplStr
+        If InStr(S, "【】") > 0 Then
+            Splxx = Split(S, "【】") 
+            If S3 > 0 Then
+                If SType = "注入" Then
+                    ArrUrl(Splxx(1)) = Splxx(2) 
                 Else
-                    ArrUrl(p(1)) = p(0) & "  &nbsp; | &nbsp; " & p(2)
-                End If
-            End If
-        End If
-    Next
-    i = ""
-    For e = 99 To 0 Step - 1
-        If ArrUrl(e) <> "" Then
-            If c = "注入" Then
-                i = i & ArrUrl(e) & vbCrlf
+                    ArrUrl(Splxx(1)) = Splxx(0) & "  &nbsp; | &nbsp; " & Splxx(2) 
+                End If 
+            End If 
+        End If 
+    Next 
+    C = "" 
+    For I = 99 To 0 Step - 1
+        If ArrUrl(I) <> "" Then
+            If SType = "注入" Then
+                C = C & ArrUrl(I) & vbCrlf 
             Else
-                i = i & ArrUrl(e) & "，   出现[" & e & "]次<br>"
-            End If
-        End If
-    Next
-    GetSqlInUrl = i
-End Function
-
-Function HandlSqlInUrl(a)
-    Dim b, c, d, e
-    c = Split(a, "=")
-    For d = 0 To UBound(c)
-        If d = UBound(c) Then b = b & "=" : Exit For
-        e = c(d)
-        If d Mod 2 = 0 Then
-            b = b & c(d)
+                C = C & ArrUrl(I) & "，   出现[" & I & "]次<br>" 
+            End If 
+        End If 
+    Next 
+    GetSqlInUrl = C 
+End Function 
+'处理注入网址，配置获得网站注入网址 
+Function HandlSqlInUrl(HttpUrl)
+    Dim Url, SplStr, I, S 
+    SplStr = Split(HttpUrl, "=") 
+    For I = 0 To UBound(SplStr)
+        If I = UBound(SplStr) Then Url = Url & "=" : Exit For 
+        S = SplStr(I) 
+        If I Mod 2 = 0 Then
+            Url = Url & SplStr(I) 
         Else
-            If InStr(e, "&") > 0 Then
-                b = b & "=" & Mid(e, InStr(e, "&"))
-            End If
-        End If
-    Next
-    HandlSqlInUrl = b
-End Function
+            If InStr(S, "&") > 0 Then
+                Url = Url & "=" & Mid(S, InStr(S, "&")) 
+            End If 
+        End If 
+    Next 
+    HandlSqlInUrl = Url 
+End Function 
 
 
 
-
-Function GetScanFunctionNameList(a)
+'获得扫描后函数名称列表
+Function GetScanFunctionNameList(Content)
 	On Error Resume Next
-    Dim b, c, d, e, f, g, h, i, j, k, l, m,n,o
-    Dim p ,q,r
-	Dim YesFunction								
-    d = False
-    YesFunction = False
-    e = False
-    l = 0
-    b = Split(a, vbCrlf)
-
-    For Each g In b
-
-        For c = 1 To Len(g)
-            f = Mid(g, c, 1)
-
-            If f = "<" And h = "" Then
-                If Mid(g, c + 1, 1) = "%" Then
-                     d = True
-                     c = c + 1
-                End If
-
-            ElseIf f = "%" And Mid(g, c + 1, 1) = ">" And h = "" Then				
-                d = False
-                c = c + 1
-            End If
-            If d = True Then
-
-                If(f = """" Or h <> "") Then
-
-                    If f = """" Then l = l + 1
-
-                    If l Mod 2 = 0 Then
-                        If Mid(g, c + 1, 1) <> """" Then
-                            h = h & f
-                            j = Right(Replace(Mid(g, 1, c - Len(h)), " ", ""), 1)
-                            If YesFunction = True Then k = k & h 			
-                            l = 0 : h = ""
+    Dim SplStr, I, YesASP, YesWord, Sx, S, Wc, Zc, S1, AspCode, SYHCount, UpWord,FunList,S2
+    Dim UpWordn ,TempS,DimList
+	Dim YesFunction								'函数是否为真 
+    YesASP = False    '是ASP 默认为假 
+    YesFunction = False    '是函数 默认为假 
+    YesWord = False    '是单词 默认为假 
+    SYHCount = 0    '双引号默认为0 
+    SplStr = Split(Content, vbCrlf)    '分割行 
+    '循环分行
+    For Each S In SplStr
+        '循环每个字符
+        For I = 1 To Len(S)
+            Sx = Mid(S, I, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then    '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(S, I + 1, 1) = "%" Then
+                     YesASP = True    'ASP为真 
+                     I = I + 1    '加1而不能加2，要不然<%function Test() 就截取不到 
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(S, I + 1, 1) = ">" And Wc = "" Then				'Wc为输出内容
+                YesASP = False    'ASP为假 
+                I = I + 1    '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(S, I + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            S1 = Right(Replace(Mid(S, 1, I - Len(Wc)), " ", ""), 1)    '必需放在这里，要不会出错 
+                            If YesFunction = True Then AspCode = AspCode & Wc 			'函数代码累加
+                            SYHCount = 0 : Wc = ""    '清除 
                         Else
-                            h = h & f
-                        End If
+                            Wc = Wc & Sx 
+                        End If 
                     Else
-                        h = h & f
+                        Wc = Wc & Sx
                     End If
-                ElseIf f = "'" Then
-                    If YesFunction = True Then k = k & Mid(g, c)
+                ElseIf Sx = "'" Then    '注释则退出
+                    If YesFunction = True Then AspCode = AspCode & Mid(S, I)
                     Exit For
-
-				ElseIf CheckABC(f) = True Or (f = "_" And i<>"") Or i <> "" Then
-                    i = i & f
-                    j = LCase(Mid(g & " ", c + 1, 1))
-                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 And Not(j = "_" And i <> "") Then
-						q = Mid(g,c+1)
-                        If InStr("|function|sub|", "|" & LCase(i) & "|") Then							
-							
-                            If YesFunction = False And LCase(m) <> "end" Then
-                                YesFunction = True
-								o = Mid(g,c+2)
-								o = Mid(o,1,InStr(o,"(")-1)
-								n = n & o & vbCrlf
-                            ElseIf YesFunction = True And LCase(m) = "end" Then
-                                k = k & i & vbCrlf
+                '字母 
+				ElseIf CheckABC(Sx) = True Or (Sx = "_" And Zc<>"") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    S1 = LCase(Mid(S & " ", I + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", S1) = 0 And Not(S1 = "_" And Zc <> "") Then    '最简单判断	
+						TempS = Mid(S,I+1)
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then							
+							'函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" Then
+                                YesFunction = True  
+								S2 = Mid(S,I+2)
+								S2 = Mid(S2,1,InStr(S2,"(")-1)
+								FunList = FunList & S2 & vbCrlf
+                            ElseIf YesFunction = True And LCase(UpWord) = "end" Then    '获得上一个单词
+                                AspCode = AspCode & Zc & vbCrlf 
 								
-                                YesFunction = False
+                                YesFunction = False 
                             End If
-						
-                        End If
-                        m = i
-                        If YesFunction = True Then k = k & i
-                        i = ""
-                    End If
-
-                End If
+						 
+                        End If 
+                        UpWord = Zc    '记住当前单词
+                        If YesFunction = True Then AspCode = AspCode & Zc
+                        Zc = ""  
+                    End If 
+                
+                End If 
             End If	
-        	DoEvents
+        	DoEvents 
         Next		
-
-    Next
-	GetScanFunctionNameList = n
+        
+    Next  
+	GetScanFunctionNameList = FunList
+End Function 
+'获得函数名称20150402
+Function GetFunName(ByVal C)
+	If InStr(C,"(")>0 Then
+		C=Mid(C,1,InStr(C,"(")-1)
+		C=PHPTrim(C)
+	End If
+	GetFunName = C
+End Function 
+'获得函数名称中变量
+Function GetFunDimName(ByVal C)
+	Dim StartStr,EndStr,S
+	C = LCase(C)
+	StartStr = "("
+	EndStr = ")"
+ 	If InStr(C, StartStr)>0 And InStr(C, EndStr)>0 Then
+		C = StrCut(C,StartStr,EndStr,2)
+	End If
+	If C <> "" Then
+		C=Replace(Replace(C,"byref ",""),"byref,","")
+		C=Replace(Replace(C,"byval ",""),"byval,","")
+		C=Replace(C," ","")
+	End If
+	GetFunDimName = C
+End Function 
+'获得变量定义的名称
+Function GetDimName(ByVal C)
+	Dim StartStr,EndStr,S
+	C = LCase(C)
+	StartStr = ":"
+ 	If InStr(C, StartStr)>0 Then
+		C = Mid(C,1,InStr(C,":")-1)
+	End If
+	If C <> "" Then
+		C=Replace(Replace(C,"byref ",""),"byref,","")
+		C=Replace(Replace(C,"byval ",""),"byval,","")
+		C=Replace(C," ","")
+	End If
+	If InStr(C,"'")>0 Then
+		C= PHPTrim(Mid(C,1,InStr(C,"'")-1))				'刪除里面的'注释部分	20150330
+	End If
+	GetDimName = C
 End Function
-
-Function GetFunName(ByVal a)
-	If InStr(a,"(")>0 Then
-		a=Mid(a,1,InStr(a,"(")-1)
-		a=PHPTrim(a)
-	End If
-	GetFunName = a
+'获得Set变量定义的名称 暂时用不上
+Function GetSetName(ByVal C)
+	C = PHPTrim(LCase(C))
+ 	C=Mid(C, 1,InStr(C,"=")-1)
+	GetSetName=Trim(C)
 End Function
-
-Function GetFunDimName(ByVal a)
-	Dim b,c,d
-	a = LCase(a)
-	b = "("
-	c = ")"
- 	If InStr(a, b)>0 And InStr(a, c)>0 Then
-		a = StrCut(a,b,c,2)
-	End If
-	If a <> "" Then
-		a=Replace(Replace(a,"byref ",""),"byref,","")
-		a=Replace(Replace(a,"byval ",""),"byval,","")
-		a=Replace(a," ","")
-	End If
-	GetFunDimName = a
-End Function
-
-Function GetDimName(ByVal a)
-	Dim b,c,d
-	a = LCase(a)
-	b = ":"
- 	If InStr(a, b)>0 Then
-		a = Mid(a,1,InStr(a,":")-1)
-	End If
-	If a <> "" Then
-		a=Replace(Replace(a,"byref ",""),"byref,","")
-		a=Replace(Replace(a,"byval ",""),"byval,","")
-		a=Replace(a," ","")
-	End If
-	If InStr(a,"'")>0 Then
-		a= PHPTrim(Mid(a,1,InStr(a,"'")-1))				
-	End If
-	GetDimName = a
-End Function
-
-Function GetSetName(ByVal a)
-	a = PHPTrim(LCase(a))
- 	a=Mid(a, 1,InStr(a,"=")-1)
-	GetSetName=Trim(a)
-End Function
-
-Function ReplaceDim(ByVal a)
-	Dim b, c, d, e, f, g
-	b = Split(a, ",")
-	For Each c In b
-		c = Trim(c)
-		f = LCase(c)
-		If c <> "" Then
+'替换变量
+Function ReplaceDim(ByVal Content)
+	Dim SplStr, S, TempS, C, LCaseS, DimInTHNumb 
+	SplStr = Split(Content, ",") 
+	For Each S In SplStr
+		S = Trim(S) 
+		LCaseS = LCase(S) 
+		If S <> "" Then
+			'对变量中()处理，
+			If InStr(S, "(") > 0 Then
+				S = Mid(S, 1, InStr(S, "(") - 1) 
+			End If 
+			DimInTHNumb = InStr(LCase(ReplaceDimList), "," & LCaseS & "=")    '替换变量 
+			If DimInTHNumb > 0 Then    '替换变量
+				TempS = Mid(ReplaceDimList, DimInTHNumb + 1) 
+				TempS = Mid(TempS, 1, InStr(TempS, ",") - 1) 
+				TempS = Mid(TempS, InStr(TempS, "=") + 1) 
+				If InStr(FunDim & RootFunDim, "," & TempS & ",") = False Then
+					S = TempS 
+				End If 
+			End If 
+			C = C & S & "," 
+		End If 
+	Next 
+	If C <> "" Then C = Left(C, Len(C) - 1) 
+	ReplaceDim = C 
+End Function 
+'替换变量名称(最优化处理) 加强于20141017
+Function ReplaceDim2(ByVal DimList,DimName)
+	Dim ZD,SplStr,I,S,nMod,nInt,C
+	ReplaceDim2  = DimName
+	ZD="abcdefghijklmnopqrstuvwxyz"
+	DimName=LCase(DimName)
+	SplStr=Split(DimList,",")
+	For I=0 To Ubound(SplStr)
+		S = SplStr(I)
+		If S = DimName Then
+			nMod = (I) Mod Len(ZD)+1
+			nInt = Fix((I)/Len(ZD))
 			
-			If InStr(c, "(") > 0 Then
-				c = Mid(c, 1, InStr(c, "(") - 1)
+			If nMod<>0 Then
+				C=C & Mid(ZD,nMod,1)
 			End If
-			g = InStr(LCase(ReplaceDimList), "," & f & "=")
-			If g > 0 Then
-				d = Mid(ReplaceDimList, g + 1)
-				d = Mid(d, 1, InStr(d, ",") - 1)
-				d = Mid(d, InStr(d, "=") + 1)
-				If InStr(FunDim & RootFunDim, "," & d & ",") = False Then
-					c = d
-				End If
+			If nInt<>0 Then
+				C=C & CopyStr(Mid(ZD,nInt,1),nInt)
 			End If
-			e = e & c & ","
-		End If
-	Next
-	If e <> "" Then e = Left(e, Len(e) - 1)
-	ReplaceDim = e
-End Function
-
-Function ReplaceDim2(ByVal a,b)
-	Dim c,d,e,f,g,h,i
-	ReplaceDim2  = b
-	c="abcdefghijklmnopqrstuvwxyz"
-	b=LCase(b)
-	d=Split(a,",")
-	For e=0 To Ubound(d)
-		f = d(e)
-		If f = b Then
-			g = (e) Mod Len(c)+1
-			h = Fix((e)/Len(c))
-			
-			If g<>0 Then
-				i=i & Mid(c,g,1)
-			End If
-			If h<>0 Then
-				i=i & CopyStr(Mid(c,h,1),h)
-			End If
-			
-			
-			
-			
-			ReplaceDim2 = i
+			'Call Echo(I,Len(ZD))
+			'Call Echo("nMod",nMod)
+			'Call Echo("nInt",nInt)
+			'Call Echo("C",C)
+			ReplaceDim2 = C
 			Exit Function
 		End If
-	Next
+	Next 
 End Function
-
-Function FindFolderRepeatFunction(a)
-    Dim b, c, d, e, f, g, h, i, j, k, l, m, n, o
-	Dim p,q
-    Call HandlePath(a)
-    d = "操作文件夹" & a & vbCrLf
-    e = GetDirFileList(a)
-    k = Split(e, vbCrLf) : o = 0
-    For Each b In k
-        o = o + 1
-        c = o & "、" & b
-    	e = GetFText(b)
-	    e = GetScanFunctionNameList(e)				
-        i = 0 : j = 0 : m = 0 : n = 0 : g = "" : p = "" : q=""
-        l = Split(e, vbCrLf)
-        For Each f In l
-            If f <> "" Then
-                If InStr("|" & g & "|", "|" & f & "|") = 0 Then
-                    g = g & f & "|"
-                    i = i + 1
+'找当前文件夹重复函数主程序
+Function FindFolderRepeatFunction(FolderPath)
+    Dim FilePath, S, C, Content, Funs, FunList, AllFunList, nOK, nErr, SplStr, Splxx, nAllOK, nAllErr, nI 
+	Dim ErrFunList,AllErrFunList
+    Call HandlePath(FolderPath)                                                     '获得完整路径
+    C = "操作文件夹" & FolderPath & vbCrLf 
+    Content = GetDirFileList(FolderPath)
+    SplStr = Split(Content, vbCrLf) : nI = 0 
+    For Each FilePath In SplStr
+        nI = nI + 1 
+        S = nI & "、" & FilePath 
+    	Content = GetFText(FilePath)
+	    Content = GetScanFunctionNameList(Content)				'获得ASP函数名称列表
+        nOK = 0 : nErr = 0 : nAllOK = 0 : nAllErr = 0 : FunList = "" : ErrFunList = "" : AllErrFunList=""
+        Splxx = Split(Content, vbCrLf) 
+        For Each Funs In Splxx
+            If Funs <> "" Then
+                If InStr("|" & FunList & "|", "|" & Funs & "|") = 0 Then
+                    FunList = FunList & Funs & "|" 
+                    nOK = nOK + 1 
                 Else
-					p=p & f & "|"
-                    j = j + 1
-                End If
-                If InStr("|" & h & "|", "|" & f & "|") = 0 Then
-                    h = h & f & "|"
-                    m = m + 1
+					ErrFunList=ErrFunList & Funs & "|" 
+                    nErr = nErr + 1 
+                End If 
+                If InStr("|" & AllFunList & "|", "|" & Funs & "|") = 0 Then
+                    AllFunList = AllFunList & Funs & "|" '全部函数
+                    nAllOK = nAllOK + 1 
                 Else
-					q=q & f & "|"
-                    n = n + 1
-                End If
-            End If
-            DoEvents
-        Next
-		
-        d = d & c & "，函数（" & UBound(k) + 1 & "），重复(" & j & "["& p &"])全部函数重复(" & n & "["& q &"])" & vbCrLf
-        DoEvents
-    Next
-    FindFolderRepeatFunction = d
-End Function
-
-Function FindFileRepeatFunction(a)
+					AllErrFunList=AllErrFunList & Funs & "|" 
+                    nAllErr = nAllErr + 1 
+                End If 
+            End If 
+            DoEvents 
+        Next 
+		'Call CreateFile("allfun.txt", AllFunList)
+        C = C & S & "，函数（" & UBound(SplStr) + 1 & "），重复(" & nErr & "["& ErrFunList &"])全部函数重复(" & nAllErr & "["& AllErrFunList &"])" & vbCrLf
+        DoEvents 
+    Next 
+    FindFolderRepeatFunction = C 
+End Function 
+'找当前文件重复函数 (辅助)
+Function FindFileRepeatFunction(FilePath)
     FindFileRepeatFunction = HandleContentRepeatFunction(GetFText("FilePath"), 2)
 End Function
-
-Function FindContentRepeatFunction(a)
+'找当前内容重复函数
+Function FindContentRepeatFunction(Content)
     FindContentRepeatFunction = HandleContentRepeatFunction(Contnet, 2)
 End Function
-
-Function HandleContentRepeatFunction(a, b)
-    Dim c, d, e, f, g, h, i
-    b = CStr(b)
-    a = GetScanFunctionNameList(a)
-    f = 0 : g = 0
-    h = Split(a, vbCrLf)
-    For Each d In h
-        If d <> "" Then
-            If InStr("|" & e & "|", "|" & d & "|") = 0 Then
-                e = e & d & "|"
-                f = f + 1
+'处理内容重复函数列表 sType为0为不显示，1为显示函数列表，2为显示重复函数列表，3为显示函数与重复函数列表
+Function HandleContentRepeatFunction(Content, sType)
+    Dim C, Funs, FunList, nOK, nErr, Splxx, ErrFunList 
+    sType = CStr(sType)           
+    Content = GetScanFunctionNameList(Content)                                      '获得ASP函数名称列表
+    nOK = 0 : nErr = 0 
+    Splxx = Split(Content, vbCrLf) 
+    For Each Funs In Splxx
+        If Funs <> "" Then
+            If InStr("|" & FunList & "|", "|" & Funs & "|") = 0 Then
+                FunList = FunList & Funs & "|" 
+                nOK = nOK + 1 
             Else
-                i = i & d & vbCrLf
-                g = g + 1
-            End If
-        End If
-        DoEvents
-    Next
-    c = "找到函数共（" & UBound(h) + 1 & "），重复(" & g & ")" & vbCrLf
-	
-	If b = "1" Or b="3" Then
-		 c = c & vbCrLf & "函数列表" & vbCrLf & e
+                ErrFunList = ErrFunList & Funs & vbCrLf 
+                nErr = nErr + 1 
+            End If 
+        End If 
+        DoEvents 
+    Next 
+    C = "找到函数共（" & UBound(Splxx) + 1 & "），重复(" & nErr & ")" & vbCrLf 
+	'函数列表
+	If sType = "1" Or SType="3" Then
+		 C = C & vbCrLf & "函数列表" & vbCrLf & FunList 
 	End If
-	
-    If i <> "" And (b = "1" Or b="3") Then
-        c = c & vbCrLf & "重复函数列表" & vbCrLf & i
-    End If
-    HandleContentRepeatFunction = c
-End Function
-
-Function Replace2(a,b,c)
-	Dim d,e
-	If InStr(a,b) > 0 Then
-		d = Mid(a, 1, InStr(a,b)-1)
-		e = Mid(a, Len(d)+Len(b)+1)
-		a = d & c & e
+	'重复函数列表
+    If ErrFunList <> "" And (sType = "1" Or SType="3") Then
+        C = C & vbCrLf & "重复函数列表" & vbCrLf & ErrFunList 
+    End If 
+    HandleContentRepeatFunction = C 
+End Function 
+'替换字符内容2 自己写得一个 区分大小写
+Function Replace2(Content,SearchStr,ReplaceStr)
+	Dim LeftStr,RightStr
+	If InStr(Content,SearchStr) > 0 Then
+		LeftStr = Mid(Content, 1, InStr(Content,SearchStr)-1)
+		RightStr = Mid(Content, Len(LeftStr)+Len(SearchStr)+1)
+		Content = LeftStr & ReplaceStr & RightStr
 	End If
-	Replace2 = a
-End Function
-
-Function AllReplace(a,b,c)
-	Dim d,e,f
-	For f = 1 To 99
-		If InStr(a,b) > 0 Then
-			d = Mid(a, 1, InStr(a,b)-1)
-			e = Mid(a, Len(d)+Len(b)+1)
-			a = d & c & e
+	Replace2 = Content
+End Function 
+'替换全部字符内容2 自己写得一个 区分大小写
+Function AllReplace(Content,SearchStr,ReplaceStr)
+	Dim LeftStr,RightStr,I
+	For I = 1 To 99
+		If InStr(Content,SearchStr) > 0 Then
+			LeftStr = Mid(Content, 1, InStr(Content,SearchStr)-1)
+			RightStr = Mid(Content, Len(LeftStr)+Len(SearchStr)+1)
+			Content = LeftStr & ReplaceStr & RightStr
 		Else
 			Exit For
 		End If
 	Next
-	AllReplace = a
-End Function
-
-Function ReplaceOneNOLU(a,b,c)
-	Dim d,e,f
-	b=LCase(b)
-	f=LCase(a)
-	If InStr(f,b) > 0 Then
-		d = Mid(a, 1, InStr(f,b)-1)
-		e = Mid(a, Len(d)+Len(b)+1)
-		a = d & c & e
+	AllReplace = Content
+End Function 
+'替换一次，不区分大小写
+Function ReplaceOneNOLU(Content,SearchStr,ReplaceStr)
+	Dim LeftStr,RightStr,LCaseContent
+	SearchStr=LCase(SearchStr)
+	LCaseContent=LCase(Content)
+	If InStr(LCaseContent,SearchStr) > 0 Then
+		LeftStr = Mid(Content, 1, InStr(LCaseContent,SearchStr)-1)
+		RightStr = Mid(Content, Len(LeftStr)+Len(SearchStr)+1)
+		Content = LeftStr & ReplaceStr & RightStr
 	End If
-	ReplaceOneNOLU = a
+	ReplaceOneNOLU = Content
+End Function 
+'优化ASP代码 删除左右空格
+Function OptimizeAspCode(Content)
+    Dim SplStr,S,C,I
+	SplStr=Split(Content,vbCrlf)
+	For Each S In SplStr
+		S = TrimVbTab(S)
+		If S <> "" Then C=C & TrimVbTab(S) & vbCrlf
+	Next    
+    OptimizeAspCode = C
 End Function
-
-Function OptimizeAspCode(a)
-    Dim b,c,d,e
-	b=Split(a,vbCrlf)
-	For Each c In b
-		c = TrimVbTab(c)
-		If c <> "" Then d=d & TrimVbTab(c) & vbCrlf
-	Next
-    OptimizeAspCode = d
-End Function
-
-Function AspCodeConfusion(a)
-    Dim b, c, d, e, f, g, h, i, j, k, l, m
-    Dim n ,o,p
-	Dim YesFunction								
-	Dim StartFunction							
-	StartFunction = False						
-	
-    d = False
-    YesFunction = False
-    e = False
-    l = 0
-    b = Split(a, vbCrlf)
-
-    For Each g In b
-
-        For c = 1 To Len(g)
-            f = Mid(g, c, 1)
-
-            If f = "<" And h = "" Then
-                If Mid(g, c + 1, 1) = "%" Then
-                     d = True
-                     c = c + 1
-					 f = Mid(g, c, 1)
-					 k = k & "<"
-                End If
-
-            ElseIf f = "%" And Mid(g, c + 1, 1) = ">" And h = "" Then				
-                d = False
-                c = c + 1
-				f = Mid(g, c, 1)
-				k = k & "%"
-            End If
-            If d = True Then
-
-                If(f = """" Or h <> "") Then
-
-                    If f = """" Then l = l + 1
-
-                    If l Mod 2 = 0 Then
-                        If Mid(g, c + 1, 1) <> """" Then
-                            h = h & f
-                            j = Right(Replace(Mid(g, 1, c - Len(h)), " ", ""), 1)
-                            k = k & h 			
-                            l = 0 : h = ""
+'Asp代码混淆处理
+Function AspCodeConfusion(Content)
+    Dim SplStr, I, YesASP, YesWord, Sx, S, Wc, Zc, S1, AspCode, SYHCount, UpWord
+    Dim UpWordn ,TempS,DimList
+	Dim YesFunction								'函数是否为真
+	Dim StartFunction							'开始函数 目的是为了让function default 处理函数后面没有()   20150218
+	StartFunction = False						'默认开始函数为假
+	'If nType="" Then  nType  = 0
+    YesASP = False    '是ASP 默认为假 
+    YesFunction = False    '是函数 默认为假 
+    YesWord = False    '是单词 默认为假 
+    SYHCount = 0    '双引号默认为0 
+    SplStr = Split(Content, vbCrlf)    '分割行 
+    '循环分行
+    For Each S In SplStr
+        '循环每个字符
+        For I = 1 To Len(S)
+            Sx = Mid(S, I, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then    '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(S, I + 1, 1) = "%" Then
+                     YesASP = True    'ASP为真 
+                     I = I + 1    '加1而不能加2，要不然<%function Test() 就截取不到 
+					 Sx = Mid(S, I, 1) 
+					 AspCode = AspCode & "<"
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(S, I + 1, 1) = ">" And Wc = "" Then				'Wc为输出内容
+                YesASP = False    'ASP为假 
+                I = I + 1    '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假 
+				Sx = Mid(S, I, 1) 
+				AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(S, I + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            S1 = Right(Replace(Mid(S, 1, I - Len(Wc)), " ", ""), 1)    '必需放在这里，要不会出错 
+                            AspCode = AspCode & Wc 			'函数代码累加
+                            SYHCount = 0 : Wc = ""    '清除 
                         Else
-                            h = h & f
-                        End If
+                            Wc = Wc & Sx 
+                        End If 
                     Else
-                        h = h & f
+                        Wc = Wc & Sx
                     End If
-                ElseIf f = "'" Then
-                    k = k & Mid(g, c)
-                    Exit For
-
-				ElseIf CheckABC(f) = True Or (f = "_" And i<>"") Or i <> "" Then
-                    i = i & f
-                    j = LCase(Mid(g & " ", c + 1, 1))
-                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 And Not(j = "_" And i <> "") Then
-						o = Mid(g,c+1)
-                        If InStr("|function|sub|", "|" & LCase(i) & "|") Then					
-							
-                            If YesFunction = False And LCase(m) <> "end" Then
+                ElseIf Sx = "'" Then    '注释则退出
+                    AspCode = AspCode & Mid(S, I)
+                    Exit For 
+                '字母 
+				ElseIf CheckABC(Sx) = True Or (Sx = "_" And Zc<>"") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    S1 = LCase(Mid(S & " ", I + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", S1) = 0 And Not(S1 = "_" And Zc <> "") Then    '最简单判断	
+						TempS = Mid(S,I+1)
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then					
+							'函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" Then
                                 YesFunction = True
-								p = GetFunDimName(o)
+								DimList = GetFunDimName(TempS)
 								StartFunction=True
-                            ElseIf YesFunction = True And LCase(m) = "end" Then
+                            ElseIf YesFunction = True And LCase(UpWord) = "end" Then    '获得上一个单词                                
                                 YesFunction = False
                             End If
-						ElseIf YesFunction = True And LCase(i) = "dim" Then
-							p = p & "," & GetDimName(o)
+						ElseIf YesFunction = True And LCase(Zc) = "dim" Then
+							DimList = DimList & "," & GetDimName(TempS)
 						ElseIf YesFunction = True  Then
-							
-							If StartFunction=False Then
-								i = ReplaceDim2(p, i)
+							'排除函数后面每一个名称
+							If StartFunction=False Then 
+								Zc = ReplaceDim2(DimList, Zc)
 							End If
 							StartFunction=False
                         End If
-                        m = i
-                        k = k & i
-                        i = ""
-                    End If
+                        UpWord = Zc    '记住当前单词
+                        AspCode = AspCode & Zc
+                        Zc = ""  
+                    End If 
 				Else
-					k = k & f
-                End If
+					AspCode = AspCode & Sx 
+                End If 
 			Else
-				k = k & f
+				AspCode = AspCode & Sx 
             End If
-        	DoEvents
+        	DoEvents 
         Next		
-        k = RTrim(k)
-        k = k & vbCrlf
+        AspCode = RTrim(AspCode)            '去除右边空格
+        AspCode = AspCode & vbCrlf    'Asp换行  	
         DoEvents
-    Next
-    AspCodeConfusion = k
+    Next 
+    AspCodeConfusion = AspCode
 End Function
-
-Function ASPVariableGarbled(a)
-    Dim b, c, d, e, f, g, h, i, j, k, l, m
-    Dim n ,o,p
-	Dim YesFunction								
-	
-    d = False
-    YesFunction = False
-    e = False
-    l = 0
-    b = Split(a, vbCrlf)
-
-    For Each g In b
-
-        For c = 1 To Len(g)
-            f = Mid(g, c, 1)
-
-            If f = "<" And h = "" Then
-                If Mid(g, c + 1, 1) = "%" Then
-                     d = True
-                     c = c + 1
-					 f = Mid(g, c, 1)
-					 k = k & "<"
-                End If
-
-            ElseIf f = "%" And Mid(g, c + 1, 1) = ">" And h = "" Then				
-                d = False
-                c = c + 1
-				f = Mid(g, c, 1)
-				k = k & "%"
-            End If
-            If d = True Then
-
-                If(f = """" Or h <> "") Then
-
-                    If f = """" Then l = l + 1
-
-                    If l Mod 2 = 0 Then
-                        If Mid(g, c + 1, 1) <> """" Then
-                            h = h & f
-                            j = Right(Replace(Mid(g, 1, c - Len(h)), " ", ""), 1)
-                            k = k & h 			
-                            l = 0 : h = ""
+'Asp变量乱码 只对大小写乱
+Function ASPVariableGarbled(Content)
+    Dim SplStr, I, YesASP, YesWord, Sx, S, Wc, Zc, S1, AspCode, SYHCount, UpWord
+    Dim UpWordn ,TempS,DimList
+	Dim YesFunction								'函数是否为真
+	'If nType="" Then  nType  = 0
+    YesASP = False    '是ASP 默认为假 
+    YesFunction = False    '是函数 默认为假 
+    YesWord = False    '是单词 默认为假 
+    SYHCount = 0    '双引号默认为0 
+    SplStr = Split(Content, vbCrlf)    '分割行 
+    '循环分行
+    For Each S In SplStr
+        '循环每个字符
+        For I = 1 To Len(S)
+            Sx = Mid(S, I, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then    '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(S, I + 1, 1) = "%" Then
+                     YesASP = True    'ASP为真 
+                     I = I + 1    '加1而不能加2，要不然<%function Test() 就截取不到 
+					 Sx = Mid(S, I, 1) 
+					 AspCode = AspCode & "<"
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(S, I + 1, 1) = ">" And Wc = "" Then				'Wc为输出内容
+                YesASP = False    'ASP为假 
+                I = I + 1    '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假 
+				Sx = Mid(S, I, 1) 
+				AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(S, I + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            S1 = Right(Replace(Mid(S, 1, I - Len(Wc)), " ", ""), 1)    '必需放在这里，要不会出错 
+                            AspCode = AspCode & Wc 			'函数代码累加
+                            SYHCount = 0 : Wc = ""    '清除 
                         Else
-                            h = h & f
-                        End If
+                            Wc = Wc & Sx 
+                        End If 
                     Else
-                        h = h & f
+                        Wc = Wc & Sx
                     End If
-                ElseIf f = "'" Then
-                    k = k & Mid(g, c)
-                    Exit For
-
-				ElseIf CheckABC(f) = True Or (f = "_" And i<>"") Or i <> "" Then
-                    i = i & f
-                    j = LCase(Mid(g & " ", c + 1, 1))
-                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", j) = 0 And Not(j = "_" And i <> "") Then
-						o = Mid(g,c+1)
-
-                        k = k & LUCaseGarbled(i)
-                        i = ""
-                    End If
+                ElseIf Sx = "'" Then    '注释则退出
+                    AspCode = AspCode & Mid(S, I)
+                    Exit For 
+                '字母 
+				ElseIf CheckABC(Sx) = True Or (Sx = "_" And Zc<>"") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    S1 = LCase(Mid(S & " ", I + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", S1) = 0 And Not(S1 = "_" And Zc <> "") Then    '最简单判断	
+						TempS = Mid(S,I+1)
+                        
+                        AspCode = AspCode & LUCaseGarbled(Zc)
+                        Zc = ""  
+                    End If 
 				Else
-					k = k & f
-                End If
+					AspCode = AspCode & Sx 
+                End If 
 			Else
-				k = k & f
+				AspCode = AspCode & Sx 
             End If
-        	DoEvents
+        	DoEvents 
         Next		
-        k = RTrim(k)
-        k = k & vbCrlf
+        AspCode = RTrim(AspCode)            '去除右边空格
+        AspCode = AspCode & vbCrlf    'Asp换行  	
         DoEvents
-    Next
-    ASPVariableGarbled = k
+    Next 
+    ASPVariableGarbled = AspCode
 End Function
-
-Function LUCaseGarbled(a)
-    Dim b, c, d, e, f, g
-    g = 0
-    For d = 1 To Len(a)
-        e = Mid(a, d, 1)
-        g = g + 1
-        If g = 1 Then
-            e = LCase(e)
-        ElseIf g = 2 Or g = 3 Then
-            e = UCase(e)
-        ElseIf g = 4 Then
-            e = LCase(e): g = 1
+' 让大小写乱掉
+Function LUCaseGarbled(Content)
+    Dim LenStr, SplStr, I, S, C, Numb
+    Numb = 0
+    For I = 1 To Len(Content)
+        S = Mid(Content, I, 1) 
+        Numb = Numb + 1
+        If Numb = 1 Then
+            S = LCase(S)
+        ElseIf Numb = 2 Or Numb = 3 Then
+            S = UCase(S)
+        ElseIf Numb = 4 Then
+            S = LCase(S): Numb = 1
         End If
-        f = f & e
+        C = C & S
     Next
-    LUCaseGarbled = f
+    LUCaseGarbled = C
 End Function
 
-
-Function AspFunctionConfusion(a)
-    Dim b, c,d,e, f, g, h, i, j, k, l, m, n, o,p
-    Dim q ,r,s
-	Dim YesFunction								
-	Dim StartFunction							
-	StartFunction = False						
-	dim nFunIndex								
+'Asp函数名称混淆处理20160120   call rw(AspFunctionConfusion(getftext("5.asp")))
+Function AspFunctionConfusion(Content)
+    Dim SplStr, splxx,I,j, YesASP, YesWord, Sx, S, Wc, Zc, S1, AspCode, SYHCount, UpWord,nNumb
+    Dim UpWordn ,TempS,funList
+	Dim YesFunction								'函数是否为真
+	Dim StartFunction							'开始函数 目的是为了让function default 处理函数后面没有()   20150218
+	StartFunction = False						'默认开始函数为假
+	dim nFunIndex								'函数索引
 	nFunIndex=0
-	dim w
-	
-	w=split("aa|ab|ac|ad|ae|af|ag|ah|ai|aj|ak|al|am|an|ao|ap|aq|ar|at|au|av|aw|ax|ay|az|ba|bb|bc|bd|be|bf|bg|bh|bi|bj|bk|bl|bm|bn|bo|bp|bq|br|bs|bt|bu|bv|bw|bx|by|bz|ca|cb|cc|cd|ce|cf|cg|ch|ci|cj|ck|cl|cm|cn|co|cp|cq|cr|cs|ct|cu|cv","|")
-	dim x,y
-	y= "|"& lcase(getAspFunNameList(a)) &"|"
-	x=split(y,"|")
-
-	
-    f = False
-    YesFunction = False
-    g = False
-    n = 0
-	s="|"			
-    b = Split(a, vbCrlf)
-
-    For Each i In b
-
-        For d = 1 To Len(i)
-            h = Mid(i, d, 1)
-
-            If h = "<" And j = "" Then
-                If Mid(i, d + 1, 1) = "%" Then
-                     f = True
-                     d = d + 1
-					 h = Mid(i, d, 1)
-					 m = m & "<"
-                End If
-
-            ElseIf h = "%" And Mid(i, d + 1, 1) = ">" And j = "" Then				
-                f = False
-                d = d + 1
-				h = Mid(i, d, 1)
-				m = m & "%"
-            End If
-            If f = True Then
-
-                If(h = """" Or j <> "") Then
-
-                    If h = """" Then n = n + 1
-
-                    If n Mod 2 = 0 Then
-                        If Mid(i, d + 1, 1) <> """" Then
-                            j = j & h
-                            l = Right(Replace(Mid(i, 1, d - Len(j)), " ", ""), 1)
-                            m = m & j 			
-                            n = 0 : j = ""
+	dim splNewFun
+	'注意as是不能用的
+	splNewFun=split("aa|ab|ac|ad|ae|af|ag|ah|ai|aj|ak|al|am|an|ao|ap|aq|ar|at|au|av|aw|ax|ay|az|ba|bb|bc|bd|be|bf|bg|bh|bi|bj|bk|bl|bm|bn|bo|bp|bq|br|bs|bt|bu|bv|bw|bx|by|bz|ca|cb|cc|cd|ce|cf|cg|ch|ci|cj|ck|cl|cm|cn|co|cp|cq|cr|cs|ct|cu|cv","|")
+	dim splYunFun,yunFunList
+	yunFunList= "|"& lcase(getAspFunNameList(Content)) &"|"
+	splYunFun=split(yunFunList,"|")
+ 
+	'If nType="" Then  nType  = 0
+    YesASP = False    '是ASP 默认为假 
+    YesFunction = False    '是函数 默认为假 
+    YesWord = False    '是单词 默认为假 
+    SYHCount = 0    '双引号默认为0 
+	funlist="|"			'函数名称列表
+    SplStr = Split(Content, vbCrlf)    '分割行
+    '循环分行
+    For Each S In SplStr
+        '循环每个字符
+        For I = 1 To Len(S)
+            Sx = Mid(S, I, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then    '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(S, I + 1, 1) = "%" Then
+                     YesASP = True    'ASP为真 
+                     I = I + 1    '加1而不能加2，要不然<%function Test() 就截取不到 
+					 Sx = Mid(S, I, 1) 
+					 AspCode = AspCode & "<"
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(S, I + 1, 1) = ">" And Wc = "" Then				'Wc为输出内容
+                YesASP = False    'ASP为假 
+                I = I + 1    '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假 
+				Sx = Mid(S, I, 1) 
+				AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(S, I + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            S1 = Right(Replace(Mid(S, 1, I - Len(Wc)), " ", ""), 1)    '必需放在这里，要不会出错 
+                            AspCode = AspCode & Wc 			'函数代码累加
+                            SYHCount = 0 : Wc = ""    '清除 
                         Else
-                            j = j & h
-                        End If
+                            Wc = Wc & Sx 
+                        End If 
                     Else
-                        j = j & h
+                        Wc = Wc & Sx
                     End If
-                ElseIf h = "'" Then
-                    m = m & Mid(i, d)
-                    Exit For
-
-				ElseIf CheckABC(h) = True Or (h = "_" And k<>"") Or k <> "" Then
-                    k = k & h
-                    l = LCase(Mid(i & " ", d + 1, 1))
-                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", l) = 0 And Not(l = "_" And k <> "") Then
-						r = Mid(i,d+1)
-                        If InStr("|function|sub|", "|" & LCase(k) & "|") Then					
-							
-                            If YesFunction = False And LCase(o) <> "end" and LCase(o) <> "exit" Then
-                               s=s & lcase(GetFunName(r)) & "," & w(nFunIndex)  & "|"
+                ElseIf Sx = "'" Then    '注释则退出
+                    AspCode = AspCode & Mid(S, I)
+                    Exit For 
+                '字母 
+				ElseIf CheckABC(Sx) = True Or (Sx = "_" And Zc<>"") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    S1 = LCase(Mid(S & " ", I + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", S1) = 0 And Not(S1 = "_" And Zc <> "") Then    '最简单判断	
+						TempS = Mid(S,I+1)
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then					
+							'函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" and LCase(UpWord) <> "exit" Then
+                               funList=funList & lcase(GetFunName(TempS)) & "," & splNewFun(nFunIndex)  & "|"
 							   nFunIndex=nFunIndex+1
-							
+							   'call echo("funList",funList)
 								StartFunction=True
-                            ElseIf YesFunction = True And LCase(o) = "end" Then
+                            ElseIf YesFunction = True And LCase(UpWord) = "end" Then    '获得上一个单词    
 								StartFunction=False
                             End If
-						ElseIf YesFunction = True And LCase(k) = "dim" Then
-							
-					
+						ElseIf YesFunction = True And LCase(Zc) = "dim" Then
+							 
+					 
                         End If
 						
-						p=instr(y ,"|" & lcase(k) & "|")
-						if p>0 then
-							for e=1 to ubound(x)
-								if x(e)=lcase(k) then
-									
-									k=w(e)
+						nNumb=instr(yunFunList ,"|" & lcase(Zc) & "|")
+						if nNumb>0 then
+							for j=1 to ubound(splYunFun)
+								if splYunFun(j)=lcase(zc) then
+									'call echo(zc,splNewFun(j))
+									zc=splNewFun(j)
 									exit for
 								end if
 							next
 						end if
 						
-                        o = k
-                        m = m & k
-                        k = ""
-                    End If
+                        UpWord = Zc    '记住当前单词
+                        AspCode = AspCode & Zc
+                        Zc = ""  
+                    End If 
 				Else
-					m = m & h
-                End If
+					AspCode = AspCode & Sx 
+                End If 
 			Else
-				m = m & h
+				AspCode = AspCode & Sx 
             End If
-        	DoEvents
+        	DoEvents 
         Next		
-        m = RTrim(m)
-        m = m & vbCrlf
+        AspCode = RTrim(AspCode)            '去除右边空格
+        AspCode = AspCode & vbCrlf    'Asp换行  	
         DoEvents
-    Next
-    AspFunctionConfusion = m
+    Next 
+    AspFunctionConfusion = AspCode
 End Function
 
-
-Function getAspFunNameList(a)
-    Dim b, c,d, e, f, g, h, i, j, k, l, m, n,o
-    Dim p ,q,r
-	Dim YesFunction								
-	Dim StartFunction							
-	StartFunction = False						
-	
-    e = False
-    YesFunction = False
-    f = False
-    m = 0
-	
-    b = Split(a, vbCrlf)
-
-    For Each h In b
-
-        For d = 1 To Len(h)
-            g = Mid(h, d, 1)
-
-            If g = "<" And i = "" Then
-                If Mid(h, d + 1, 1) = "%" Then
-                     e = True
-                     d = d + 1
-					 g = Mid(h, d, 1)
-					 l = l & "<"
-                End If
-
-            ElseIf g = "%" And Mid(h, d + 1, 1) = ">" And i = "" Then				
-                e = False
-                d = d + 1
-				g = Mid(h, d, 1)
-				l = l & "%"
-            End If
-            If e = True Then
-
-                If(g = """" Or i <> "") Then
-
-                    If g = """" Then m = m + 1
-
-                    If m Mod 2 = 0 Then
-                        If Mid(h, d + 1, 1) <> """" Then
-                            i = i & g
-                            k = Right(Replace(Mid(h, 1, d - Len(i)), " ", ""), 1)
-                            l = l & i 			
-                            m = 0 : i = ""
+'获得ASP函数名称列表 20160120 如  aa|bb|cc
+Function getAspFunNameList(Content)
+    Dim SplStr, splxx,I, YesASP, YesWord, Sx, S, Wc, Zc, S1, AspCode, SYHCount, UpWord,nNumb
+    Dim UpWordn ,TempS,funList
+	Dim YesFunction								'函数是否为真
+	Dim StartFunction							'开始函数 目的是为了让function default 处理函数后面没有()   20150218
+	StartFunction = False						'默认开始函数为假
+	'If nType="" Then  nType  = 0
+    YesASP = False    '是ASP 默认为假 
+    YesFunction = False    '是函数 默认为假 
+    YesWord = False    '是单词 默认为假 
+    SYHCount = 0    '双引号默认为0 
+	 
+    SplStr = Split(Content, vbCrlf)    '分割行 
+    '循环分行
+    For Each S In SplStr
+        '循环每个字符
+        For I = 1 To Len(S)
+            Sx = Mid(S, I, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then    '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(S, I + 1, 1) = "%" Then
+                     YesASP = True    'ASP为真 
+                     I = I + 1    '加1而不能加2，要不然<%function Test() 就截取不到 
+					 Sx = Mid(S, I, 1) 
+					 AspCode = AspCode & "<"
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(S, I + 1, 1) = ">" And Wc = "" Then				'Wc为输出内容
+                YesASP = False    'ASP为假 
+                I = I + 1    '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假 
+				Sx = Mid(S, I, 1) 
+				AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(S, I + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            S1 = Right(Replace(Mid(S, 1, I - Len(Wc)), " ", ""), 1)    '必需放在这里，要不会出错 
+                            AspCode = AspCode & Wc 			'函数代码累加
+                            SYHCount = 0 : Wc = ""    '清除 
                         Else
-                            i = i & g
-                        End If
+                            Wc = Wc & Sx 
+                        End If 
                     Else
-                        i = i & g
+                        Wc = Wc & Sx
                     End If
-                ElseIf g = "'" Then
-                    l = l & Mid(h, d)
-                    Exit For
-
-				ElseIf CheckABC(g) = True Or (g = "_" And j<>"") Or j <> "" Then
-                    j = j & g
-                    k = LCase(Mid(h & " ", d + 1, 1))
-                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", k) = 0 And Not(k = "_" And j <> "") Then
-						q = Mid(h,d+1)
-                        If InStr("|function|sub|", "|" & LCase(j) & "|") Then					
-							
-                            If YesFunction = False And LCase(n) <> "end" and LCase(n) <> "exit" Then
-                               r=r & GetFunName(q) & "|"
-							
-                            End If					
-                        End If
-                        n = j
-						j=""
-                    End If
-                End If
+                ElseIf Sx = "'" Then    '注释则退出
+                    AspCode = AspCode & Mid(S, I)
+                    Exit For 
+                '字母 
+				ElseIf CheckABC(Sx) = True Or (Sx = "_" And Zc<>"") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    S1 = LCase(Mid(S & " ", I + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", S1) = 0 And Not(S1 = "_" And Zc <> "") Then    '最简单判断	
+						TempS = Mid(S,I+1)
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then					
+							'函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" and LCase(UpWord) <> "exit" Then
+                               funList=funList & GetFunName(TempS) & "|"
+							    
+                            End If					 
+                        End If 
+                        UpWord = Zc    '记住当前单词 
+						zc="" 
+                    End If  
+                End If  
             End If
-        	DoEvents
-        Next		
-    Next
-    getAspFunNameList = r
+        	DoEvents 
+        Next		 
+    Next 
+    getAspFunNameList = funList
 End Function
-
-Function AspCodeSafe(a)
-	
-	if instr(a,"'【Asp函数" & "名称混淆】")>0 then			
-		a = AspFunctionConfusion(a )	
+'ASP安全处理
+Function AspCodeSafe(Content) 
+	'这是处理后会出错，因为它调用了多个文件了
+	if instr(content,"'【Asp函数" & "名称混淆】")>0 then			'不分开的话会处理此页
+		Content = AspFunctionConfusion(Content )	'Asp函数名称混淆处理 20160120 
 	end if
-	a = DelAspNote(a)			
-	a = OptimizeAspCode(a)		
-	a = AspCodeConfusion(a )	
-	a = ASPVariableGarbled(a )	
-	AspCodeSafe = a
-End Function
+	Content = DelAspNote(Content)			'删除ASP里注释
+	Content = OptimizeAspCode(Content)		'优化ASP代码	
+	Content = AspCodeConfusion(Content )	'Asp代码混淆处理
+	Content = ASPVariableGarbled(Content )	'Asp变量乱码 只对大小写乱
+	AspCodeSafe = Content
+End Function 
 
-
-function cutDaKuoHao(a)
-	cutDaKuoHao=cutFunctionvValue(a,"{","}")
+'截取函数里大括号
+function cutDaKuoHao(content)
+	cutDaKuoHao=cutFunctionvValue(content,"{","}")
+end function
+'截取函数里小括号
+function cutXianKuoHao(content)
+	cutXianKuoHao=cutFunctionvValue(content,"(",")")
 end function
 
-function cutXianKuoHao(a)
-	cutXianKuoHao=cutFunctionvValue(a,"(",")")
-end function
-
-
-function cutFunctionvValue(a,b,c)
-	dim d,e,f,g,h
-	d=1:e=0
-	for f=1 to len(a)
-		g=mid(a,f,1)
-		h=h & g
-		if g=b then
-			d=d+1
-		elseif g=c then
-			e=e+1
-			if d=e then
+'截取函数值20150716
+function cutFunctionvValue(content,startStr,endStr)
+	dim ku1,ku2,i,s,c
+	ku1=1:ku2=0
+	for i=1 to len(content)
+		s=mid(content,i,1)
+		c=c & s
+		if s=startStr then
+			ku1=ku1+1
+		elseif s=endStr then
+			ku2=ku2+1
+			if ku1=ku2 then
 				exit for
 			end if
-		end if
+		end if 
 	next
-	cutFunctionvValue = h
+	cutFunctionvValue = c
 end function
-
-function getStrIntContentNumb(a,b)
-	dim c
-	if instr(a,b)>0 then
-		c=split(a,b)
-		getStrIntContentNumb = Ubound(c)
+'获得字符在内容里出现次数20150721
+function getStrIntContentNumb(content,findStr)
+	dim splstr
+	if instr(content,findStr)>0 then
+		splstr=split(content,findStr)
+		getStrIntContentNumb = Ubound(splstr)
 	else
 		getStrIntContentNumb=0
 	end if
 end function
 %>
-
 
 
 

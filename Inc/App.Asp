@@ -2,180 +2,179 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <!--#Include File="Config.Asp"-->
-<%
-
+<% 
+'选择动作
 Select Case Request("act")
-	Case "ViewInfo" : ViewInfo()			
-	Case "ViewList" : ViewList()			
-	Case "ViewList2" : ViewList2()			
-	Case "test" : mytest()					
+	Case "ViewInfo" : ViewInfo()			'查看信息
+	Case "ViewList" : ViewList()			'查看列表
+	Case "ViewList2" : ViewList2()			'查看列表2
+	Case "test" : mytest()					'测试
 End Select
-
+'测试
 Sub mytest()
-	Dim b,c,d
-	b=Rf("username")
-	c=Rq("username")
-	d=Rf("userpass")
-	Rw("UserName=" & b & vbCrlf)
-	Rw("UserName2=" & c & vbCrlf)
-	Rw("PassWord=" & d)
+	Dim UserName,UserName2,PassWord
+	UserName=Rf("username")
+	UserName2=Rq("username") 
+	PassWord=Rf("userpass")
+	Rw("UserName=" & UserName & vbCrlf)
+	Rw("UserName2=" & UserName2 & vbCrlf)
+	Rw("PassWord=" & PassWord)
 End Sub
 
-
+'查看列表
 Sub ViewList2()
-	Dim b,c,d,e,f,g,h,i,j,k
+	Dim IPList,nIPCount,Mobile,MobileList,nMobileType,nMobile,nComputer,S,I,IP
 	Response.Addheader "Content-Type","text/html; charset=utf-8"
-	Dim l,m,n,o,p,q
-	
+	Dim nArticleCount,nAddArticle,C,Path,Content,SplStr
+	 
 	Call OpenConn()
-	l=Conn.Execute("Select Count(*) From [Product]")(0)
+	nArticleCount=Conn.Execute("Select Count(*) From [Product]")(0)
 	
-	For j=0 To 50
-		m=Conn.Execute("Select Count(*) From [Product] Where UpDateTime=#"& Date()-j &"#")(0)
-		n = n &  "时间(" & Format_Time(Now-j,2) & ")" & vbCrlf & "新添文章("& m &"/" & l & ")" & vbCrlf
-		p = GetFText("\Admin\Data\Stat\" & Format_Time(Now()-j,2) & ".txt")
-		q=Split(p,"当前：")
-		g=0			
-		h=0			
-		c = 0		
-		f = 0		
+	For I=0 To 50
+		nAddArticle=Conn.Execute("Select Count(*) From [Product] Where UpDateTime=#"& Date()-I &"#")(0)
+		C = C &  "时间(" & Format_Time(Now-I,2) & ")" & vbCrlf & "新添文章("& nAddArticle &"/" & nArticleCount & ")" & vbCrlf
+		Content = GetFText("\Admin\Data\Stat\" & Format_Time(Now()-I,2) & ".txt")
+		SplStr=Split(Content,"当前：")
+		nMobile=0			'默认手机浏览数
+		nComputer=0			'默认电脑浏览数
+		nIPCount = 0		'独立IP总数
+		nMobileType = 0		'手机类型数
 		
-		For Each i In q
-			If InStr(i,"IP:")>0 Then
-				If InStr(i,vbCrlf & "IE: U" & vbCrlf)>0 Then
-					g = g + 1
-					d = Mid(i,InStr(i,"XP=")+3)
-					d = Mid(d,1,InStr(d,vbCrlf)-2)
-					If InStr(vbCrlf & e & vbCrlf, vbCrlf & d & vbCrlf)=0 Then
-						e = e & d & vbCrlf
-						f = f + 1
+		For Each S In SplStr
+			If InStr(S,"IP:")>0 Then
+				If InStr(S,vbCrlf & "IE: U" & vbCrlf)>0 Then
+					nMobile = nMobile + 1
+					Mobile = Mid(S,InStr(S,"XP=")+3)
+					Mobile = Mid(Mobile,1,InStr(Mobile,vbCrlf)-2)
+					If InStr(vbCrlf & MobileList & vbCrlf, vbCrlf & Mobile & vbCrlf)=0 Then
+						MobileList = MobileList & Mobile & vbCrlf
+						nMobileType = nMobileType + 1
 					End If
 				Else
-					h = h + 1
+					nComputer = nComputer + 1
 				End If
-				k = Mid(i,InStr(i,"IP:")+3)
-				k = Mid(k,1,InStr(k,vbCrlf)-2)
-				If InStr(vbCrlf & b & vbCrlf, vbCrlf & k & vbCrlf)=0 Then
-					b = b & k & vbCrlf
-					c = c + 1
+				IP = Mid(S,InStr(S,"IP:")+3)
+				IP = Mid(IP,1,InStr(IP,vbCrlf)-2)
+				If InStr(vbCrlf & IPList & vbCrlf, vbCrlf & IP & vbCrlf)=0 Then
+					IPList = IPList & IP & vbCrlf
+					nIPCount = nIPCount + 1
 				End If
 			End If
 		Next
 		
-		n=n & "LogDate="& Format_Time(Now()-j,2) &"" & vbCrlf 		
-		n=n & "AddArticle="& m &"" & vbCrlf 				
-		n=n & "ArticleSum="& l &"" & vbCrlf 			
-		n=n & "WebBrowseSum="& (h + g) &"" & vbCrlf 	
-		n=n & "ComputerSum="& h &"" & vbCrlf 				
-		n=n & "MobileSum="& g &"" & vbCrlf 					
-		n=n & "IndependentIP="& c &"" & vbCrlf 				
-		n=n & "IndependentMobileType="& f &"" & vbCrlf 	
-		n=n & "MobileTypeList="& e &"" & vbCrlf 			
-		n=n & "-----------" & vbCrlf
+		C=C & "LogDate="& Format_Time(Now()-I,2) &"" & vbCrlf 		'日志时期
+		C=C & "AddArticle="& nAddArticle &"" & vbCrlf 				'添加文章数
+		C=C & "ArticleSum="& nArticleCount &"" & vbCrlf 			'文章总数
+		C=C & "WebBrowseSum="& (nComputer + nMobile) &"" & vbCrlf 	'网页浏览总数
+		C=C & "ComputerSum="& nComputer &"" & vbCrlf 				'电脑浏览数
+		C=C & "MobileSum="& nMobile &"" & vbCrlf 					'手机浏览数
+		C=C & "IndependentIP="& nIPCount &"" & vbCrlf 				'独立IP数
+		C=C & "IndependentMobileType="& nMobileType &"" & vbCrlf 	'独立手机类型数
+		C=C & "MobileTypeList="& MobileList &"" & vbCrlf 			'独立手机类列表		
+		C=C & "-----------" & vbCrlf
 	Next
-	Response.Write(n)
+	Response.Write(C)
 End Sub
-
+'查看列表
 Sub ViewList()
-	Dim b,c,d,e,f,g,h,i,j,k
+	Dim IPList,nIPCount,Mobile,MobileList,nMobileType,nMobile,nComputer,S,I,IP
 	Response.Addheader "Content-Type","text/html; charset=utf-8"
-	Dim l,m,n,o,p,q
+	Dim nArticleCount,nAddArticle,C,Path,Content,SplStr
 	Call OpenConn()
-	l=Conn.Execute("Select Count(*) From [Product]")(0)
+	nArticleCount=Conn.Execute("Select Count(*) From [Product]")(0)
 
 	
-	For j=0 To 50
-		m=Conn.Execute("Select Count(*) From [Product] Where UpDateTime=#"& Date()-j &"#")(0)
-		n = n &  "时间(" & Format_Time(Now-j,2) & ")" & vbCrlf & "新添文章("& m &"/" & l & ")" & vbCrlf
-		p = GetFText("\Admin\Data\Stat\" & Format_Time(Now()-j,2) & ".txt")
-		q=Split(p,"当前：")
-		g=0			
-		h=0			
-		c = 0		
-		f = 0		
-		For Each i In q
-			If InStr(i,"IP:")>0 Then
-				If InStr(i,vbCrlf & "IE: U" & vbCrlf)>0 Then
-					g = g + 1
-					d = Mid(i,InStr(i,"XP=")+3)
-					d = Mid(d,1,InStr(d,vbCrlf)-2)
-					If InStr(vbCrlf & e & vbCrlf, vbCrlf & d & vbCrlf)=0 Then
-						e = e & d & vbCrlf
-						f = f + 1
+	For I=0 To 50
+		nAddArticle=Conn.Execute("Select Count(*) From [Product] Where UpDateTime=#"& Date()-I &"#")(0)
+		C = C &  "时间(" & Format_Time(Now-I,2) & ")" & vbCrlf & "新添文章("& nAddArticle &"/" & nArticleCount & ")" & vbCrlf
+		Content = GetFText("\Admin\Data\Stat\" & Format_Time(Now()-I,2) & ".txt")
+		SplStr=Split(Content,"当前：")
+		nMobile=0			'默认手机浏览数
+		nComputer=0			'默认电脑浏览数
+		nIPCount = 0		'独立IP总数
+		nMobileType = 0		'手机类型数
+		For Each S In SplStr
+			If InStr(S,"IP:")>0 Then
+				If InStr(S,vbCrlf & "IE: U" & vbCrlf)>0 Then
+					nMobile = nMobile + 1
+					Mobile = Mid(S,InStr(S,"XP=")+3)
+					Mobile = Mid(Mobile,1,InStr(Mobile,vbCrlf)-2)
+					If InStr(vbCrlf & MobileList & vbCrlf, vbCrlf & Mobile & vbCrlf)=0 Then
+						MobileList = MobileList & Mobile & vbCrlf
+						nMobileType = nMobileType + 1
 					End If
 				Else
-					h = h + 1
+					nComputer = nComputer + 1
 				End If
-				k = Mid(i,InStr(i,"IP:")+3)
-				k = Mid(k,1,InStr(k,vbCrlf)-2)
-				If InStr(vbCrlf & b & vbCrlf, vbCrlf & k & vbCrlf)=0 Then
-					b = b & k & vbCrlf
-					c = c + 1
+				IP = Mid(S,InStr(S,"IP:")+3)
+				IP = Mid(IP,1,InStr(IP,vbCrlf)-2)
+				If InStr(vbCrlf & IPList & vbCrlf, vbCrlf & IP & vbCrlf)=0 Then
+					IPList = IPList & IP & vbCrlf
+					nIPCount = nIPCount + 1
 				End If
 			End If
 		Next
-		n=n & "网页被浏览("& h + g &")次" & vbCrlf
-		n=n &"IE浏览("& h &")次" & vbCrlf
-		n=n & "手机浏览("& g &")次" & vbCrlf
-		n=n & "独立IP数为("& c &")个" & vbCrlf
-		n=n & "-----------" & vbCrlf
+		C=C & "网页被浏览("& nComputer + nMobile &")次" & vbCrlf
+		C=C &"IE浏览("& nComputer &")次" & vbCrlf
+		C=C & "手机浏览("& nMobile &")次" & vbCrlf
+		C=C & "独立IP数为("& nIPCount &")个" & vbCrlf 
+		C=C & "-----------" & vbCrlf
 	Next
-	Response.Write(n)
+	Response.Write(C)
 End Sub
 
-
+'查看信息
 Sub ViewInfo()
-	Dim b,c,d,e,f,g,h,i,j,k
+	Dim IPList,nIPCount,Mobile,MobileList,nMobileType,nMobile,nComputer,S,I,IP
 	Response.Addheader "Content-Type","text/html; charset=utf-8"
-	Dim l,m,n,o,p,q
+	Dim nArticleCount,nAddArticle,C,Path,Content,SplStr
 	Call OpenConn()
-	l=Conn.Execute("Select Count(*) From [Product]")(0)
-	m=Conn.Execute("Select Count(*) From [Product] Where UpDateTime>=#"& Date() &"#")(0)
+	nArticleCount=Conn.Execute("Select Count(*) From [Product]")(0)
+	nAddArticle=Conn.Execute("Select Count(*) From [Product] Where UpDateTime>=#"& Date() &"#")(0)
 	
 
 	
-	n = "时间(" & Format_Time(Now,2) & ")" & vbCrlf & "新添文章("& m &"/" & l & ")" & vbCrlf
-	p = GetFText("\Admin\Data\Stat\" & Format_Time(Now(),2) & ".txt")
-	q=Split(p,"当前：")
-	g=0			
-	h=0			
-	c = 0		
-	f = 0		
-	For Each i In q
-		If InStr(i,"IP:")>0 Then
-			If InStr(i,vbCrlf & "IE: U" & vbCrlf)>0 Then
-				g = g + 1
-				d = Mid(i,InStr(i,"XP=")+3)
-				d = Mid(d,1,InStr(d,vbCrlf)-2)
-				If InStr(vbCrlf & e & vbCrlf, vbCrlf & d & vbCrlf)=0 Then
-					e = e & d & vbCrlf
-					f = f + 1
+	C = "时间(" & Format_Time(Now,2) & ")" & vbCrlf & "新添文章("& nAddArticle &"/" & nArticleCount & ")" & vbCrlf
+	Content = GetFText("\Admin\Data\Stat\" & Format_Time(Now(),2) & ".txt")
+	SplStr=Split(Content,"当前：")
+	nMobile=0			'默认手机浏览数
+	nComputer=0			'默认电脑浏览数
+	nIPCount = 0		'独立IP总数
+	nMobileType = 0		'手机类型数
+	For Each S In SplStr
+		If InStr(S,"IP:")>0 Then
+			If InStr(S,vbCrlf & "IE: U" & vbCrlf)>0 Then
+				nMobile = nMobile + 1
+				Mobile = Mid(S,InStr(S,"XP=")+3)
+				Mobile = Mid(Mobile,1,InStr(Mobile,vbCrlf)-2)
+				If InStr(vbCrlf & MobileList & vbCrlf, vbCrlf & Mobile & vbCrlf)=0 Then
+					MobileList = MobileList & Mobile & vbCrlf
+					nMobileType = nMobileType + 1
 				End If
 			Else
-				h = h + 1
+				nComputer = nComputer + 1
 			End If
-			k = Mid(i,InStr(i,"IP:")+3)
-			k = Mid(k,1,InStr(k,vbCrlf)-2)
-			If InStr(vbCrlf & b & vbCrlf, vbCrlf & k & vbCrlf)=0 Then
-				b = b & k & vbCrlf
-				c = c + 1
+			IP = Mid(S,InStr(S,"IP:")+3)
+			IP = Mid(IP,1,InStr(IP,vbCrlf)-2)
+			If InStr(vbCrlf & IPList & vbCrlf, vbCrlf & IP & vbCrlf)=0 Then
+				IPList = IPList & IP & vbCrlf
+				nIPCount = nIPCount + 1
 			End If
 		End If
 	Next
-	n=n & "网页被浏览("& h + g &")次" & vbCrlf
-	n=n &"IE浏览("& h &")次" & vbCrlf
-	n=n & "手机浏览("& g &")次" & vbCrlf
-	n=n & "独立IP数为("& c &")个" & vbCrlf
-	n=n & "不同手机类型数为("& f &")个" & vbCrlf
-	n=n & "不同手机列表："& vbCrlf &  e
-	Response.Write(n)
+	C=C & "网页被浏览("& nComputer + nMobile &")次" & vbCrlf
+	C=C &"IE浏览("& nComputer &")次" & vbCrlf
+	C=C & "手机浏览("& nMobile &")次" & vbCrlf
+	C=C & "独立IP数为("& nIPCount &")个" & vbCrlf
+	C=C & "不同手机类型数为("& nMobileType &")个" & vbCrlf
+	C=C & "不同手机列表："& vbCrlf &  MobileList
+	Response.Write(C)
 End Sub
 %>
-

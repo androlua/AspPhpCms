@@ -2,232 +2,231 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
-
-Sub GetWebConfig(a)
-	
+'获得网站配置信息
+Sub GetWebConfig(UserId)
+	'打开过就用缓冲内容
 	If DefaultWebTitle <> "" Then		
 		WebTitle = DefaultWebTitle
 		WebKeywords = DefaultWebKeywords
 		WebDescription = DefaultWebDescription
 		Exit Sub
 	End If
-
-    Rs.Open "Select * From [WebSite] Where UserId="&a, Conn, 1, 1
+    '获得网站配置
+    Rs.Open "Select * From [WebSite] Where UserId="&UserId, Conn, 1, 1 
     If Not Rs.Eof Then
-        WebTemplate = Rs("WebTemplate")
+        WebTemplate = Rs("WebTemplate") 
         WebSkins = Rs("WebSkins") 		
 		
-		WebTitle = Rs("WebTitle")
-        WebKeywords = Rs("WebKeywords")
-        WebDescription = Rs("WebDescription")
+		WebTitle = Rs("WebTitle") 
+        WebKeywords = Rs("WebKeywords") 
+        WebDescription = Rs("WebDescription") 
 		WebBottom = Rs("WebSiteBottom")
-    End If : Rs.Close
+    End If : Rs.Close 
 End Sub
-
-Function GetNavTemplateText(a, b, c,d)
-    Dim e, f, g, h,i
-    If b <> "" Then
-        e = " Where BigClassName='" & a & "' And SmallClassName='"& b &"'"
-	ElseIf a <> "" Then
-        e = " Where BigClassName='" & a & "'"
+'获得导航类别模板内容 
+Function GetNavTemplateText(NavDid, NavSid, NavType,UserID)
+    Dim AddSql, TemplateFileName, FileName, Url,NavBigFolderName
+    If NavSid <> "" Then
+        AddSql = " Where BigClassName='" & NavDid & "' And SmallClassName='"& NavSid &"'" 
+	ElseIf NavDid <> "" Then
+        AddSql = " Where BigClassName='" & NavDid & "'" 
     Else
-        e = " Where NavType='" & c & "'"
+        AddSql = " Where NavType='" & NavType & "'" 
     End If
 
-	
-	If a <> "" Then
-		TempRs.Open"Select * From [NavBigClass] Where BigClassName='"& a &"' And UserId="&d,Conn,1,1
+	'导航大类
+	If NavDid <> "" Then
+		TempRs.Open"Select * From [NavBigClass] Where BigClassName='"& NavDid &"' And UserId="&UserID,Conn,1,1
 		If Not TempRs.Eof Then			
-			i = "/" & TempRs("FolderName") & "/"
-			WebNavType = TempRs("NavType")		
+			NavBigFolderName = "/" & TempRs("FolderName") & "/"
+			WebNavType = TempRs("NavType")		'获得网站导航类型
 		End If:TempRs.Close
 	End If
-	
-	If b <> "" Then
-		TempRs.Open"Select * From [NavSmallClass]  " & e & " And UserId="&d,Conn,1,1
+	'导航小类
+	If NavSid <> "" Then
+		TempRs.Open"Select * From [NavSmallClass]  " & AddSql & " And UserId="&UserID,Conn,1,1
 		If Not TempRs.Eof Then
-			
+			'自定义模板
 			If Trim(TempRs("TemplatePath"))<>"" Then
-				f = TempRs("TemplatePath")
+				TemplateFileName = TempRs("TemplatePath") 
 			Else
-				f = "Main_Model.Html"
+				TemplateFileName = "Main_Model.Html"
 			End If
-			g = GetHandleFileName(TempRs("FileName"))
+			FileName = GetHandleFileName(TempRs("FileName"))
+			'创建一组文件夹(导航文件夹路径)
+			Call CreateDirFolder("/" & NavBigFolderName & TempRs("FolderName"))
+			CreateHTMLPath = "/" & NavBigFolderName & TempRs("FolderName") & "/" & FileName
+			CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	'处理URL   
 			
-			Call CreateDirFolder("/" & i & TempRs("FolderName"))
-			CreateHTMLPath = "/" & i & TempRs("FolderName") & "/" & g
-			CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	
-			
-			MainContent = TempRs("Content")		
+			MainContent = TempRs("Content")		'获得文本中内容
 
-			
+			'显示这篇文章的网站标题关键词描述 
 			WebTitle = IIf(TempRs("WebTitle")<>"",TempRs("WebTitle"),WebTitle)
 			WebKeywords = IIf(TempRs("WebKeywords")<>"",TempRs("WebKeywords"),WebKeywords)
-			WebDescription = IIf(TempRs("WebDescription")<>"",TempRs("WebDescription"),WebDescription)
+			WebDescription = IIf(TempRs("WebDescription")<>"",TempRs("WebDescription"),WebDescription) 
 		
 		End If:TempRs.Close
-		GetNavTemplateText = f:Exit Function
+		GetNavTemplateText = TemplateFileName:Exit Function
 	End If
-	
-    Rs.Open "Select * From [NavBigClass] " & e & "And UserId="&d, Conn, 1, 1
+	'导航大类
+    Rs.Open "Select * From [NavBigClass] " & AddSql & "And UserId="&UserID, Conn, 1, 1 
     If Not Rs.Eof Then
-		
+		'自定义模板
 		If Trim(Rs("TemplatePath"))<>"" Then
-            f = Rs("TemplatePath")
+            TemplateFileName = Rs("TemplatePath") 
         End If
-		
-		g = GetHandleFileName(Rs("FileName"))
+		'获得文件名称
+		FileName = GetHandleFileName(Rs("FileName"))
+        '创建一组文件夹(导航文件夹路径)
+        Call CreateDirFolder("/" & Rs("FolderName")) 
+        CreateHTMLPath = "/" & Rs("FolderName") & "/" & FileName  
+		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	'处理URL   
+		 
+		MainContent = Rs("Content")		'获得文本中内容
 
-        Call CreateDirFolder("/" & Rs("FolderName"))
-        CreateHTMLPath = "/" & Rs("FolderName") & "/" & g
-		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	
-		
-		MainContent = Rs("Content")		
-
-		
+		'显示这篇文章的网站标题关键词描述 
 		WebTitle = IIf(Rs("WebTitle")<>"",Rs("WebTitle"),WebTitle)
 		WebKeywords = IIf(Rs("WebKeywords")<>"",Rs("WebKeywords"),WebKeywords)
-		WebDescription = IIf(Rs("WebDescription")<>"",Rs("WebDescription"),WebDescription)
+		WebDescription = IIf(Rs("WebDescription")<>"",Rs("WebDescription"),WebDescription) 
 	Else
-		
-		f = "Index_Model.Html"
-		Call Echo("没有导航大类【"& a &"】此导航模板为默认",f)
+		'没有此导航 则为默认模板
+		TemplateFileName = "Index_Model.Html"
+		Call Echo("没有导航大类【"& NavDid &"】此导航模板为默认",TemplateFileName)
     End If : Rs.Close
-    GetNavTemplateText = f
-End Function
-
-Function GetClassTemplateText(a,b,c,d)
-    Dim e, f, g, h,i
-    If c <> "" Then
-        e = "Select * From [ThreeClass] Where BigClassName='" & a & "' And SmallClassName='"& b &"' And ThreeClassName='"& c &"'"
-	ElseIf b <> "" Then
-        e = "Select * From [SmallClass] Where BigClassName='" & a & "' And SmallClassName='"& b &"'"
+    GetNavTemplateText = TemplateFileName
+End Function 
+'获得信息类别模板内容 
+Function GetClassTemplateText(ProDid,ProSid,ProTid,UserID) 
+    Dim Sql, TemplateFileName, FileName, Url,RootFolder
+    If ProTid <> "" Then
+        Sql = "Select * From [ThreeClass] Where BigClassName='" & ProDid & "' And SmallClassName='"& ProSid &"' And ThreeClassName='"& ProTid &"'" 
+	ElseIf ProSid <> "" Then
+        Sql = "Select * From [SmallClass] Where BigClassName='" & ProDid & "' And SmallClassName='"& ProSid &"'" 
     Else
-        e = "Select * From [BigClass] Where BigClassName='" & a & "'"
+        Sql = "Select * From [BigClass] Where BigClassName='" & ProDid & "'"
     End If
-	
-	If a <> "" Then
-		TempRs.Open"Select * From [BigClass] Where BigClassName='"& a &"' And UserID=" & d,Conn,1,1
+	'类别大类
+	If ProDid <> "" Then
+		TempRs.Open"Select * From [BigClass] Where BigClassName='"& ProDid &"' And UserID=" & UserID,Conn,1,1
 		If Not TempRs.Eof Then			
-			i = "/" & TempRs("FolderName") & "/"
+			RootFolder = "/" & TempRs("FolderName") & "/"
+		End If:TempRs.Close
+	End If
+	'类别小类
+	If ProDid <> "" Then
+		TempRs.Open"Select * From [SmallClass] Where BigClassName='"& ProDid &"' And SmallClassName='"& ProSid &"' And UserID=" & UserID,Conn,1,1
+		If Not TempRs.Eof Then			
+			RootFolder = RootFolder & "/" & TempRs("FolderName") & "/"
+		End If:TempRs.Close
+	End If
+	'类别子类
+	If ProTid <> "" Then
+		TempRs.Open"Select * From [ThreeClass] Where BigClassName='"& ProDid &"' And SmallClassName='"& ProSid &"' And ThreeClassName='"& ProTid &"' And UserID=" & UserID,Conn,1,1
+		If Not TempRs.Eof Then			
+			RootFolder = RootFolder & "/" & TempRs("FolderName") & "/" 
 		End If:TempRs.Close
 	End If
 	
-	If a <> "" Then
-		TempRs.Open"Select * From [SmallClass] Where BigClassName='"& a &"' And SmallClassName='"& b &"' And UserID=" & d,Conn,1,1
-		If Not TempRs.Eof Then			
-			i = i & "/" & TempRs("FolderName") & "/"
-		End If:TempRs.Close
-	End If
-	
-	If c <> "" Then
-		TempRs.Open"Select * From [ThreeClass] Where BigClassName='"& a &"' And SmallClassName='"& b &"' And ThreeClassName='"& c &"' And UserID=" & d,Conn,1,1
-		If Not TempRs.Eof Then			
-			i = i & "/" & TempRs("FolderName") & "/"
-		End If:TempRs.Close
-	End If
-	
-	TempRs.Open e,Conn,1,1
+	TempRs.Open Sql,Conn,1,1
 	If Not TempRs.Eof Then
-		
+		'自定义模板
 		If Trim(TempRs("TemplatePath"))<>"" Then
-			f = TempRs("TemplatePath")
+			TemplateFileName = TempRs("TemplatePath") 
 		Else
-			f = "Template_Main.html"			
+			TemplateFileName = "Template_Main.html"			 
 		End If
-		g = GetHandleFileName(TempRs("FileName"))
+		FileName = GetHandleFileName(TempRs("FileName"))
+		'创建一组文件夹(导航文件夹路径)
+		Call CreateDirFolder("/" & RootFolder )
+		CreateHTMLPath = "/" & RootFolder & "/" & FileName
+		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	'处理URL   
 		
-		Call CreateDirFolder("/" & i )
-		CreateHTMLPath = "/" & i & "/" & g
-		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	
-		
-		
+		'MainContent = TempRs("Content")		'获得文本中内容
 		If TempRs("WebTitle") <> "" Then WebTitle = TempRs("WebTitle")
 		If TempRs("WebKeywords") <> "" Then WebKeywords = TempRs("WebKeywords")
 		If TempRs("WebDescription") <> "" Then WebDescription = TempRs("WebDescription")
 	End If:TempRs.Close
-	
-	GetClassTemplateText = f
+	 
+	GetClassTemplateText = TemplateFileName
 End Function
-
-Function GetMainInfo(a,b)
-	Dim c,d
-	Rs.Open"Select * From [MainInfo] Where Title='"& a &"' And Recommend=1 And UserID="& b &" Order By Sort,ID",Conn,1,1
-	If Not Rs.Eof Then
+'文本【MainInfo】
+Function GetMainInfo(Did,UserID)
+	Dim Url,C
+	Rs.Open"Select * From [MainInfo] Where Title='"& Did &"' And Recommend=1 And UserID="& UserID &" Order By Sort,ID",Conn,1,1
+	If Not Rs.Eof Then  
 		 GetMainInfo = Rs("Content")
 	End If : Rs.Close
-End Function
-
-Function ProductNavList(a, b, c)
-	Dim d, e, f, g,h,i,j,k,l,m,n,o
-	Rs.Open"Select * From [SmallClass] Where BigClassName='"& a &"'  And UserID="& UserID & " Order By Sort",Conn,1,1
+End Function 
+ '产品类型列表展示【SmallClass】
+Function ProductNavList(Did, ProSid, ProTid)
+	Dim SplStr, I, S, C,Sid,ShowSid,BigFileName,Target,Url,Title,ShowTid,Tid 
+	Rs.Open"Select * From [SmallClass] Where BigClassName='"& Did &"'  And UserID="& UserID & " Order By Sort",Conn,1,1
 	While Not Rs.Eof
-		h = Rs("SmallClassName")
-		i = FontColorFontB(h,Rs("FontB"),Rs("FontColor")) 	
-		j = GetSmallClassFileName( Rs("BigClassName"), Rs("SmallClassName") )
-		Call WebDebug(j,"act=CreateClass&ProDid=" & a & "&ProSid=" & Rs("SmallClassName"))
-		k = ATarget(Rs("Target"))
+		Sid = Rs("SmallClassName")
+		ShowSid = FontColorFontB(Sid,Rs("FontB"),Rs("FontColor")) 	'处理文本颜色与加粗	
+		BigFileName = GetSmallClassFileName( Rs("BigClassName"), Rs("SmallClassName") )
+		Call WebDebug(BigFileName,"act=CreateClass&ProDid=" & Did & "&ProSid=" & Rs("SmallClassName"))'调试
+		Target = ATarget(Rs("Target"))
 		
-		g=g & "        <div class='ClassSmall'><A "& AHref(j,"",k) & StyleClass("ClassSid") &">"& i &"</A></div>" & vbCrlf
-
-		g=g & "<div class='clear10'></div>"
+		C=C & "        <div class='ClassSmall'><A "& AHref(BigFileName,"",Target) & StyleClass("ClassSid") &">"& ShowSid &"</A></div>" & vbCrlf
+ 
+		C=C & "<div class='clear10'></div>"
 	Rs.MoveNext:Wend:Rs.Close
-	ProductNavList = g
-End Function
+	ProductNavList = C
+End Function 
 
 
-
-Sub CreateArticle(a)
-	Dim b,c
-	Rs.Open"Select * From [Product] Where Id=" & a,Conn,1,1
+'创建一篇文章
+Sub CreateArticle(Id)
+	Dim FileName,ImgUrl
+	Rs.Open"Select * From [Product] Where Id=" & Id,Conn,1,1
 	If Not Rs.Eof Then
 		TempDid = Rs("BigclassName")
 		TempSid = Rs("SmallclassName")
 		TempTid = Rs("ThreeclassName")		
-		MainTitle = Rs("Title")					
-		c = ""
+		MainTitle = Rs("Title")					'信息标题名称
+		ImgUrl = ""
 		If IsNul(Rs("SmallFiles"))=False Then	
-			If IsNul(Rs("SmallFiles")) Then c="Images/error.gif" Else c=Rs("SmallFiles")	
+			If IsNul(Rs("SmallFiles")) Then ImgUrl="Images/error.gif" Else ImgUrl=Rs("SmallFiles")	
 		ElseIf IsNul(Rs("BigFiles"))=False Then	
-			If IsNul(Rs("BigFiles")) Then c="Images/error.gif" Else c=Rs("BigFiles")
-		End If
+			If IsNul(Rs("BigFiles")) Then ImgUrl="Images/error.gif" Else ImgUrl=Rs("BigFiles")
+		End If 
 		MainContent = "<div class='ArticleTitle'>"& Rs("Title") &"</div>"
 		
-		If c <> "" And len(c)>5  Then
-			If CheckFile(c)=True Then
-				MainContent = MainContent & "<div style='text-align:center; border:1px double #CCCCCC; padding:4px;margin-bottom:10px;'><img src='"& c &"' width='"& HandleShowImg(c,740,0,"宽") &"'></div>"
+		If ImgUrl <> "" And len(ImgUrl)>5  Then
+			If CheckFile(ImgUrl)=True Then
+				MainContent = MainContent & "<div style='text-align:center; border:1px double #CCCCCC; padding:4px;margin-bottom:10px;'><img src='"& ImgUrl &"' width='"& HandleShowImg(ImgUrl,740,0,"宽") &"'></div>"
 			End If
-		End If
-		MainContent = MainContent & Rs("Content")
+		End If 
+		MainContent = MainContent & Rs("Content") 
 		
 		
-		MainContent = MainContent & "<hr>" & UpPage(Rs(0)) & DownPage(Rs(0))
-		
-		
+		MainContent = MainContent & "<hr>" & UpPage(Rs(0)) & DownPage(Rs(0)) 
+		 
+		'自定义模板
 		If Trim(Rs("TemplatePath"))<>"" Then
-			TemplatePath = WebTemplate & Rs("TemplatePath")
+			TemplatePath = WebTemplate & Rs("TemplatePath") 
 		Else
 			TemplatePath = WebTemplate & "Template_Main.Html"
-		End If
-		b = GetHandleFileName(Rs("FileName"))
-		
+		End If 
+		FileName = GetHandleFileName(Rs("FileName"))
+		'创建一组文件夹(导航文件夹路径)
 		Call CreateDirFolder("/Html")
-		CreateHTMLPath = "/Html/" & Rs("FolderName") & "/" & b
-		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	
+		CreateHTMLPath = "/Html/" & Rs("FolderName") & "/" & FileName
+		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	'处理URL 
 		
-		
+		'显示这篇文章的网站标题关键词描述
 		WebTitle = IIf(Rs("Title")<>"",Rs("Title"),WebTitle)
 		WebTitle = IIf(Rs("WebTitle")<>"",Rs("WebTitle"),WebTitle)
 		WebKeywords = IIf(Rs("WebKeywords")<>"",Rs("WebKeywords"),WebKeywords)
-		WebDescription = IIf(Rs("WebDescription")<>"",Rs("WebDescription"),WebDescription)
-	End If:Rs.Close
+		WebDescription = IIf(Rs("WebDescription")<>"",Rs("WebDescription"),WebDescription) 
+	End If:Rs.Close 
 End Sub
 %>
-

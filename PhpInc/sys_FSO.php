@@ -1,3 +1,13 @@
+<?php 
+/************************************************************
+作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
+版权：源代码公开，各种用途均可免费使用。 
+创建：2016-02-24
+联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
+更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
+*                                    Powered By 云端 
+************************************************************/
+?>
 <?php
 // 读取文件
 function reaFile($file) {
@@ -35,13 +45,13 @@ function getFTextUTF($file){
 }
 
 // 保存文件
-function AspSaveFile($fileName, $text) {
-	$fileName = handlePath ( $fileName );
-	if (! $fileName || ! $text) {
+function AspSaveFile($file, $text) {
+	$file = handlePath ( $file );
+	if (! $file || ! $text) {
 		return false;
 	}
-	if (makeDir ( dirname ( $fileName ) )) {
-		if ($fp = @fopen ( $fileName, "w" )) {
+	if (makeDir ( dirname ( $file ) )) {
+		if ($fp = @fopen ( $file, "w" )) {
 			if (@fwrite ( $fp, $text )) {
 				fclose ( $fp );
 				return true;
@@ -54,8 +64,8 @@ function AspSaveFile($fileName, $text) {
 	return false;
 }
 // &&&创建文件
-function createFile($fileName, $text) {
-	return AspSaveFile ( $fileName, $text );
+function createFile($file, $text) {
+	return AspSaveFile ( $file, $text );
 }
 // 保存累加文件
 function addToFile($file, $text) {
@@ -66,27 +76,27 @@ function addToFile($file, $text) {
 	aspSaveFile ( $file, $text );
 }
 // &&&保存累加文件（辅助上面）
-function createAddFile($fileName, $text) {
-	addToFile ( $fileName, $text );
+function createAddFile($file, $text) {
+	addToFile ( $file, $text );
 }
 // &&&保存累加文件（辅助上面）
-function createAddUpFile($fileName, $text) {
-	addToFile ( $fileName, $text );
+function createAddUpFile($file, $text) {
+	addToFile ( $file, $text );
 }
 
 //创建UTF文件，无BOM
-function createUTFFile($fileName,$content){
-	$fileName = handlePath ( $fileName );
-	echo('fileName='.$fileName);
+function createUTFFile($file,$content){
+	$file = handlePath ( $file );
+	echo('fileName='.$file);
 	$content=toUTFChar($content);  //转utf-8内容
-	$f=fopen($fileName, "wb");
+	$f=fopen($file, "wb");
 	fputs($f, "\xEF\xBB\xBF".'我');		//生成的文件将成为UTF-8格式
 	fclose($f);
-	delFileBOM($fileName,$content); 
+	delFileBOM($file,$content); 
 } 
 //创建UTF文件，无BOM  辅助上面
-function createFileUTF($fileName,$content){
-	createUTFFile($fileName,$content);
+function createFileUTF($file,$content){
+	createUTFFile($file,$content);
 }
 
 
@@ -127,15 +137,18 @@ function rewrite($file, $data) {
 
 // 检测文件
 function checkFile($file) {
+	$file = handlePath ( $file );
 	return is_file ( $file );
 }
 // &&&检测文件（辅助上面）
 function existsFile($file) {
+	$file = handlePath ( $file );
 	return checkFile ( $file );
 }
 // 删除文件
 // 使用 @ 可以屏蔽错误信息输出，比如 ulink 如果要删除的文件或路径不存在会有提示信息，可能会暴露系统一些不想让人知道的信息，加上 @ 后会略过这部分信息的输出。
 function delFile($file) {
+	$file = handlePath ( $file );
 	return @unlink ( $file );
 }
 // &&&删除文件（辅助上面）
@@ -238,7 +251,7 @@ function getFileFolderList($folderPath,$c='',$action='|处理文件#|处理文件夹|文件
 						}else{
 							$s=$ffPath;
 						}
-						$c=$c . $s. "\n";
+						$c=$c . $s. vbCrlf();
 					}
 					if (strstr('|' . $action . '|', '|循环文件夹|')){
 						$c=getFileFolderList($ffPath,$c,$action,$fileTypeList);
@@ -253,7 +266,7 @@ function getFileFolderList($folderPath,$c='',$action='|处理文件#|处理文件夹|文件
 						$s=$ffPath;
 					}
 					if (strstr('|' . $fileTypeList . '|', '|'.$fileType.'|') || strstr('|' . $fileTypeList . '|', '|*|')){
-                   		$c=$c . $s. "\n";				
+                   		$c=$c . $s. vbCrlf();				
 					}
                 }
             }
@@ -359,8 +372,8 @@ function printSpaceSize($size) {
 	return checkSize ( $size );
 }
 // PHP获取文件扩展名（后缀）
-function getExtension($filename) {
-	$myext = substr ( $filename, strrpos ( $filename, '.' ) );
+function getExtension($file) {
+	$myext = substr ( $file, strrpos ( $file, '.' ) );
 	return str_replace ( '.', '', $myext );
 }
 

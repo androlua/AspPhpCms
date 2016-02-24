@@ -2,734 +2,734 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
+'http://127.0.0.1/获得网站Inc里全部函数给VB用.Asp    运行它 更新VB
 
 
-
-
+'清空模块替换数组
 function clearModuleReplaceArray()
-	dim b
-	for b=1 to ubound(ModuleReplaceArray)-1
-		ModuleReplaceArray(b,0)=""
-		ModuleReplaceArray(0,b)=""
+	dim i
+	for i=1 to ubound(ModuleReplaceArray)-1
+		ModuleReplaceArray(i,0)=""
+		ModuleReplaceArray(0,i)=""
 	next
 end function
-
+'打印模块替换数组
 function printModuleReplaceArray()
-	dim b
-	for b=1 to ubound(ModuleReplaceArray)-1
-		if ModuleReplaceArray(b,0)="" then
+	dim i
+	for i=1 to ubound(ModuleReplaceArray)-1
+		if ModuleReplaceArray(i,0)="" then
 			exit function
 		end if
-		call echo(ModuleReplaceArray(b,0),ModuleReplaceArray(0,b))
+		call echo(ModuleReplaceArray(i,0),ModuleReplaceArray(0,i))
 	next
 end function
 
 
-
-Function CheckFunValue(a,b)
-	CheckFunValue = ( Left(a,Len(b)) = b )
+'判断传值是否相等
+Function CheckFunValue(Action,FunName)
+	CheckFunValue = ( Left(Action,Len(FunName)) = FunName )
 End Function
-
-Function ManyTimesHandleTemplateAction(ByVal a)
-	
-	Dim b
-	a = ReplaceGlobleLable(a)						
-	a = RunHtmlAspCode(a)							
-	For b =1 To 6
-		a = HandleTemplateAction(a, True)
+'多次处理模板动作
+Function ManyTimesHandleTemplateAction(ByVal Content)
+	'Php global $isHtmlFormatting;
+	Dim I
+	Content = ReplaceGlobleLable(Content)						'替换全局全部标签
+	Content = RunHtmlAspCode(Content)							'运行Html里Asp代码
+	For I =1 To 6
+		Content = HandleTemplateAction(Content, True)
 	Next
-	a = DelTemplateMyNote(a)						
-	a = Replace(a, "href=""/", "href=""" & Host())	
-	a = TrimVbCrlf(a)								
-	a = ReplaceGlobleLable(a)						
+	Content = DelTemplateMyNote(Content)						'删除模板中我的注释 和无需要代码	
+	Content = Replace(Content, "href=""/", "href=""" & Host())	'让网址路径完整
+	Content = TrimVbCrlf(Content)								'去除两边空格与空行
+	Content = ReplaceGlobleLable(Content)						'替换全局全部标签
 	
 	if isHtmlFormatting=true then
-		a = HandleHtmlFormatting(a,false,0,"删除空行")
+		content = HandleHtmlFormatting(content,false,0,"删除空行")
 	end if
 	
-	
+	'闭合标签开启
 	if isWebLabelClose=true then
-		
+		'第一种，淘汰
 		if 1=2 then
-			a=handleImgClose(a,true)
-			a=handleBrClose(a,false)
-			a=handleHrClose(a,false)
-			a=handleHrClose(a,false)
-			a=handleHtmlLabelClose(a,"input",false)		
-			a=replace(a,"onClick=","onclick=")
-			a=replace(a,"onSubmit=","onsubmit=")
+			Content=handleImgClose(Content,true)
+			Content=handleBrClose(Content,false)
+			Content=handleHrClose(Content,false)
+			Content=handleHrClose(Content,false)
+			Content=handleHtmlLabelClose(Content,"input",false)		
+			Content=replace(Content,"onClick=","onclick=")
+			Content=replace(Content,"onSubmit=","onsubmit=")
 		else
-			
-			a=handleCloseHtml(a,true,"")			
+			'第二种 超强版 不处理JS等改进
+			Content=handleCloseHtml(Content,true,"")			'图片自动加alt  "|*|",
 		end if		
 	end if
 	
 	
 	
 	
-	ManyTimesHandleTemplateAction = a
+	ManyTimesHandleTemplateAction = Content
+End Function
+'替换全部标签
+Function ReplaceGlobleLable(Content)
+	'Php global $WebSkins,$WebTemplate,$WebImages,$WebCss,$WebJs,$PubNavDid,$PubProDid;
+	'Call Eerr(PubNavDid,PubProDid)
+	Content = Replace(Content,"[$样式目录$]",WebSkins)			'网站样式目录
+	Content = Replace(Content,"[$WebSkins$]",WebSkins)			'网站样式目录
+	
+	Content = Replace(Content,"[$WebSkinsIndex$]",WebSkins & "Index\")			'网站样式目录
+	Content = Replace(Content,"[$样式Index目录$]",WebSkins & "Index\")			'网站样式目录
+	
+	Content = Replace(Content,"[$模版文件夹$]",WebTemplate)			'网站模板目录
+	Content = Replace(Content,"[$模版路径$]",WebTemplate)			'网站模板目录
+	Content = Replace(Content,"[$模板目录$]",WebTemplate)			'网站模板目录
+	Content = Replace(Content,"[$WebTemplate$]",WebTemplate)		'网站模板目录
+	
+	Content = Replace(Content,"[$图片目录$]",WebImages)			'图片路径
+	Content = Replace(Content,"[$WebImages$]",WebImages)		'图片路径
+	
+	Content = Replace(Content,"[$Css目录$]",WebCss)			'Css路径
+	Content = Replace(Content,"[$WebCss$]",WebCss)			'Css路径
+	
+	Content = Replace(Content,"[$Js目录$]",WebJs)			'Js路径
+	Content = Replace(Content,"[$WebJs$]",WebJs)		    'Js路径
+	Content = Replace(Content,"[$UploadFiles$]","/UploadFiles/")		    		'上传路径
+	Content = Replace(Content,"[$UploadFilesPic$]","/UploadFiles/Pic/")		    '上传Pic路径
+	
+	
+	
+	Content = Replace(Content,"[$模块目录$]",WebTemplate & "Module\")			'网站模块目录
+	Content = Replace(Content,"[$TemplateModule$]",WebTemplate & "Module\")		'网站模块目录
+	
+	Content = Replace(Content,"[$域名$]", Host())		'域名
+	Content = Replace(Content,"[$DoMain$]", Host())		'域名	
+	
+	Content = Replace(Content,"[$Did$]", IIF(PubNavDid<>"",PubNavDid,PubProDid))		'自定义大类名称	
+	ReplaceGlobleLable = Content
 End Function
 
-Function ReplaceGlobleLable(a)
-	
-	
-	a = Replace(a,"[$样式目录$]",WebSkins)			
-	a = Replace(a,"[$WebSkins$]",WebSkins)			
-	
-	a = Replace(a,"[$WebSkinsIndex$]",WebSkins & "Index\")			
-	a = Replace(a,"[$样式Index目录$]",WebSkins & "Index\")			
-	
-	a = Replace(a,"[$模版文件夹$]",WebTemplate)			
-	a = Replace(a,"[$模版路径$]",WebTemplate)			
-	a = Replace(a,"[$模板目录$]",WebTemplate)			
-	a = Replace(a,"[$WebTemplate$]",WebTemplate)		
-	
-	a = Replace(a,"[$图片目录$]",WebImages)			
-	a = Replace(a,"[$WebImages$]",WebImages)		
-	
-	a = Replace(a,"[$Css目录$]",WebCss)			
-	a = Replace(a,"[$WebCss$]",WebCss)			
-	
-	a = Replace(a,"[$Js目录$]",WebJs)			
-	a = Replace(a,"[$WebJs$]",WebJs)		
-	a = Replace(a,"[$UploadFiles$]","/UploadFiles/")		    		
-	a = Replace(a,"[$UploadFilesPic$]","/UploadFiles/Pic/")		
-	
-	
-	
-	a = Replace(a,"[$模块目录$]",WebTemplate & "Module\")			
-	a = Replace(a,"[$TemplateModule$]",WebTemplate & "Module\")		
-	
-	a = Replace(a,"[$域名$]", Host())		
-	a = Replace(a,"[$DoMain$]", Host())		
-	
-	a = Replace(a,"[$Did$]", IIF(PubNavDid<>"",PubNavDid,PubProDid))		
-	ReplaceGlobleLable = a
-End Function
-
-
-Function RunHtmlAspCode(ByVal  a)
-	Dim b,c, d
-	For d = 1 To 8
-		
-		b = HandleGetAspCode(a,"获取第一段")
-		
-		
-		c = HandleGetAspCode(b,"|第一段|去ASP开始结束标签|去注释部分|每行不为空|处理成Execute代码|")
-		
-		
-		c=TrimVbCrlf(c)
-		
-		If Left(c,1)="=" Then
-			c =  "ExecuteResut" & c
+'运行Html里Asp代码 20141221修改(之前是生成文件，再远程读取，现在改成本页执行)
+Function RunHtmlAspCode(ByVal  Content)
+	Dim AspCode,ExecuteAspCode, I
+	For I = 1 To 8
+		'获得内容里一节ASP代码
+		AspCode = HandleGetAspCode(Content,"获取第一段")
+		'Call Echo("AspCode",AspCode)
+		'对这一节ASP代码处理成干净
+		ExecuteAspCode = HandleGetAspCode(AspCode,"|第一段|去ASP开始结束标签|去注释部分|每行不为空|处理成Execute代码|")
+		'Call Echo("ExecuteAspCode",ExecuteAspCode)
+		'去除两边空格，其它上面已经处理了，再处理一下也没什么了。
+		ExecuteAspCode=TrimVbCrlf(ExecuteAspCode)
+		'为一行时，则追加一个ExecuteResut返回变量，好调用
+		If Left(ExecuteAspCode,1)="=" Then
+			ExecuteAspCode =  "ExecuteResut" & ExecuteAspCode
 		End If
 		
+		'Call die(Replace(ExecuteAspCode,"""",""""""))
+		'处理ASP代码 注意(处理elseif不行，会出错20141229)
+		Execute(ExecuteAspCode)
+		'Call eerr("ExecuteResut",ExecuteResut)
 		
-		
-		Execute(c)
-		
-		
-		If b<>"" Then	
-			
-			
-			
-			
-			a = Replace(a,b,ExecuteResut)
-		
+		If AspCode<>"" Then	
+			'AspCode = "<!--#" & "Include File=""Inc/Config.Asp""-->" & vbCrlf & AspCode' & "<%" & AspCode & "%" & ">"
+			'Call CreateFile("/Temp.Asp", AspCode)
+			'AspCode=GetHttpPage(Host & "/Temp.Asp",1)
+			'替换执行后ASP代码			
+			Content = Replace(Content,AspCode,ExecuteResut)
+		'否则退出Asp执行
 		Else
 			Exit For
 		End If
 	Next
-	RunHtmlAspCode = a
+	RunHtmlAspCode = Content
 End Function
+'模板处理动作 以后可以考虑用这种方式<@SetUp sdf@>
+Function HandleTemplateAction(Content,CodeYes)
+	Dim StartStr,EndStr,ActionList,SplStr,Action,S,HandYes
+	dim isResetRunAction					'是否为重复运行动作	
+	isResetRunAction = false				'默认为假
+	StartStr = "{\$" : EndStr = "\$}"
+	dim tempContent
+	tempContent=Content	
+	tempContent=DelTemplateMyNote(tempContent)			'让数据框里内容不运行，免得出错
+	ActionList = GetArray(tempContent, StartStr, EndStr, True, True)
+	SplStr=Split(ActionList,"$Array$")
+	For Each S In SplStr
+		Action=Trim(S)
+		'Call Echo("Action",Action)
+		Action = HandleInModule(Action,"start") 						'处理动作
+		If Action<>"" Then
+			
+			Action = Trim(Mid(Action,3,Len(Action)-4)) & " "'因为上面对字符处理过了，所以不能用 Trim(Mid(Action, Len(StartStr), Len(Action) - Len(StartStr) - Len(EndStr) + 1))
 
-Function HandleTemplateAction(a,b)
-	Dim c,d,e,f,g,h,i
-	dim isResetRunAction					
-	isResetRunAction = false				
-	c = "{\$" : d = "\$}"
-	dim k
-	k=a	
-	k=DelTemplateMyNote(k)			
-	e = GetArray(k, c, d, True, True)
-	f=Split(e,"$Array$")
-	For Each h In f
-		g=Trim(h)
-		
-		g = HandleInModule(g,"start") 						
-		If g<>"" Then
-			
-			g = Trim(Mid(g,3,Len(g)-4)) & " "
-
-			i = True			
-			
-			If pingBiLable(g) Then
-				g = ""
-			
-			ElseIf CheckFunValue(g, "# ")=True Then
-				g = ""
+			HandYes = True			'处理为真
+			'屏蔽指定标签
+			If pingBiLable(Action) Then
+				Action = ""
+			'{$#$} 这种是放在图片路径里，目的是为了在VB里不处理这个路径
+			ElseIf CheckFunValue(Action, "# ")=True Then
+				Action = ""
 				
-			
-			ElseIf CheckFunValue(g, "ReadColumeSetTitle ")=True Then
-				g = XY_ReadColumeSetTitle(g)
-			
-			ElseIf CheckFunValue(g, "ReadTemplateSource ")=True Then
-				g = XY_ReadTemplateSource(g)
-			
-			ElseIf CheckFunValue(g, "ReadTemplateModule ")=True Then
-				g = XY_ReadTemplateModule(g)
-			
-			ElseIf CheckFunValue(g, "GetContentModule ")=True Then
-				g = XY_GetContentModule(g)
-			
-			ElseIf CheckFunValue(g, "ReplaceTemplateContent ")=True Then
-				g = XY_ReplaceTemplateContent(a,h,g)
-			
-			ElseIf CheckFunValue(g, "ShowTemplateModule ")=True Then
-				g = XY_ShowTemplateModule(g)
-
-            ElseIf CheckFunValue(g, "Layout ") = True Then
-                g = XY_Layout(g)
-
-            ElseIf CheckFunValue(g, "Module ") = True Then
-                g = XY_Module(g)
+			'读模板样式并设置标题与内容   软件里有个栏目Style进行设置
+			ElseIf CheckFunValue(Action, "ReadColumeSetTitle ")=True Then
+				Action = XY_ReadColumeSetTitle(Action)
+			'读模板资源内容
+			ElseIf CheckFunValue(Action, "ReadTemplateSource ")=True Then
+				Action = XY_ReadTemplateSource(Action)
+			'读模块内容
+			ElseIf CheckFunValue(Action, "ReadTemplateModule ")=True Then
+				Action = XY_ReadTemplateModule(Action)
+			'获得内容模块 20150108
+			ElseIf CheckFunValue(Action, "GetContentModule ")=True Then
+				Action = XY_GetContentModule(Action)
+			'替换模板内容 20150109
+			ElseIf CheckFunValue(Action, "ReplaceTemplateContent ")=True Then
+				Action = XY_ReplaceTemplateContent(Content,S,Action)
+			'显示模板模块20150209
+			ElseIf CheckFunValue(Action, "ShowTemplateModule ")=True Then
+				Action = XY_ShowTemplateModule(Action)
+            '显示布局
+            ElseIf CheckFunValue(action, "Layout ") = True Then
+                action = XY_Layout(action)
+            '显示模块
+            ElseIf CheckFunValue(action, "Module ") = True Then
+                action = XY_Module(action)
 				
 				
-			
-			ElseIf CheckFunValue(g, "Include ")=True Then
-				g = XY_Include(g)
+			'加载文件
+			ElseIf CheckFunValue(Action, "Include ")=True Then
+				Action = XY_Include(Action)
 				
+			'------------------- 文本区 -----------------------	
+			'文本内容
+			ElseIf CheckFunValue(Action, "MainInfo ")=True Then
+				Action = XY_MainInfo(Action) 				
+			'文本链接A
+			ElseIf CheckFunValue(Action, "MainInfoA ")=True Then
+				Action = XY_MainInfoA(Action)				
+			'文本链接Url
+			ElseIf CheckFunValue(Action, "MainInfoUrl ")=True Then
+				Action = XY_MainInfoUrl(Action)
+			'文本显示标题
+			ElseIf CheckFunValue(Action, "MainInfo_GetShowTitle ")=True Then
+				Action = XY_MainInfo_GetShowTitle(Action)
+			'显示当前模板里内容
+			ElseIf CheckFunValue(Action, "ShowThisText ")=True Then
+				Action = XY_ShowThisText(Action)
 			
-			
-			ElseIf CheckFunValue(g, "MainInfo ")=True Then
-				g = XY_MainInfo(g) 				
-			
-			ElseIf CheckFunValue(g, "MainInfoA ")=True Then
-				g = XY_MainInfoA(g)				
-			
-			ElseIf CheckFunValue(g, "MainInfoUrl ")=True Then
-				g = XY_MainInfoUrl(g)
-			
-			ElseIf CheckFunValue(g, "MainInfo_GetShowTitle ")=True Then
-				g = XY_MainInfo_GetShowTitle(g)
-			
-			ElseIf CheckFunValue(g, "ShowThisText ")=True Then
-				g = XY_ShowThisText(g)
-			
-			
-			
-			ElseIf CheckFunValue(g, "NavDidA ")=True Then
-				g = XY_NavDidA(g)
-			
-			ElseIf CheckFunValue(g, "GetNavUrl ")=True Then
-				g = XY_GetNavUrl(g)
-			
-			ElseIf CheckFunValue(g, "NavDidExists ")=True Then
-				g = XY_NavDidExists(g)
+			'------------------- 导航区 -----------------------		
+			'导航大类链接A
+			ElseIf CheckFunValue(Action, "NavDidA ")=True Then
+				Action = XY_NavDidA(Action)
+			'大类导航与小类导航链接
+			ElseIf CheckFunValue(Action, "GetNavUrl ")=True Then
+				Action = XY_GetNavUrl(Action)
+			'判断导航大类是否为当前
+			ElseIf CheckFunValue(Action, "NavDidExists ")=True Then
+				Action = XY_NavDidExists(Action)
 				
 				
 			
 				
-			
-
+			'------------------- 链接区 -----------------------	
+ 
+				
+			'普通链接A
+			ElseIf CheckFunValue(Action, "HrefA ")=True Then
+				Action = XY_HrefA(Action)
+				
+			'Banner旗帜
+			ElseIf CheckFunValue(Action, "BannerSwitch ")=True Then
+				Action = XY_BannerSwitch(Action)
+			'Banner旗帜2
+			ElseIf CheckFunValue(Action, "BannerSwitch2 ")=True Then
+				Action = XY_BannerSwitch2(Action)
+			'详细页Banner图
+			ElseIf CheckFunValue(Action, "DetailBanner ")=True Then
+				Action = XY_DetailBanner(Action)
+				
 				
 			
-			ElseIf CheckFunValue(g, "HrefA ")=True Then
-				g = XY_HrefA(g)
-				
+			'------------------- 新闻区 -----------------------					
+			'News新闻
+			ElseIf CheckFunValue(Action, "News ")=True Then
+				Action = XY_News(Action)
+			'显示新闻列表
+			ElseIf CheckFunValue(Action, "ShowNewsList ")=True Then
+				Action = XY_ShowNewsList(Action)
+			'显示新闻相关信息
+			ElseIf CheckFunValue(Action, "RelatedInformationList ")=True Then
+				Action = XY_RelatedInformationList(Action)				
+			'自定义新闻产品列表
+			ElseIf CheckFunValue(Action, "CustomInfoList ")=True Then
+				Action = XY_CustomInfoList(Action)	 
+			'获得当前新闻信息
+			ElseIf CheckFunValue(Action, "getArticleInfo ")=True Then
+				Action = XY_getArticleInfo(Action)	
 			
-			ElseIf CheckFunValue(g, "BannerSwitch ")=True Then
-				g = XY_BannerSwitch(g)
-			
-			ElseIf CheckFunValue(g, "BannerSwitch2 ")=True Then
-				g = XY_BannerSwitch2(g)
-			
-			ElseIf CheckFunValue(g, "DetailBanner ")=True Then
-				g = XY_DetailBanner(g)
-				
-				
-			
-			
-			
-			ElseIf CheckFunValue(g, "News ")=True Then
-				g = XY_News(g)
-			
-			ElseIf CheckFunValue(g, "ShowNewsList ")=True Then
-				g = XY_ShowNewsList(g)
-			
-			ElseIf CheckFunValue(g, "RelatedInformationList ")=True Then
-				g = XY_RelatedInformationList(g)				
-			
-			ElseIf CheckFunValue(g, "CustomInfoList ")=True Then
-				g = XY_CustomInfoList(g)	
-			
-			ElseIf CheckFunValue(g, "getArticleInfo ")=True Then
-				g = XY_getArticleInfo(g)	
-			
-			
-			
-			ElseIf CheckFunValue(g, "CustomGuestBookList ")=True Then
-				g = XY_CustomGuestBookList(g)						
+			'------------------- 分类区 -----------------------	
+			'自定义留言列表
+			ElseIf CheckFunValue(Action, "CustomGuestBookList ")=True Then
+				Action = XY_CustomGuestBookList(Action)						
 								 	
-			
-			ElseIf CheckFunValue(g, "SmallClassList ")=True Then
-				g = XY_SmallClassList(g)
-			
-			ElseIf CheckFunValue(g, "CustomSmallClassList ")=True Then
-				g = XY_CustomSmallClassList(g)
-			
-			ElseIf CheckFunValue(g, "ThreeClassList ")=True Then
-				g = XY_ThreeClassList(g)
-			
-			ElseIf CheckFunValue(g, "CustomTwoDirectoryClassList ")=True Then
-				g = XY_CustomTwoDirectoryClassList(g)
-			
-			ElseIf CheckFunValue(g, "RecommendNavigation ")=True Then
-				g = XY_RecommendNavigation(g)
+			'显示类别小类列表
+			ElseIf CheckFunValue(Action, "SmallClassList ")=True Then
+				Action = XY_SmallClassList(Action)
+			'自定义显示类别小类列表
+			ElseIf CheckFunValue(Action, "CustomSmallClassList ")=True Then
+				Action = XY_CustomSmallClassList(Action)
+			'显示类别子类列表
+			ElseIf CheckFunValue(Action, "ThreeClassList ")=True Then
+				Action = XY_ThreeClassList(Action)
+			'显示自定义二级目录类型列表
+			ElseIf CheckFunValue(Action, "CustomTwoDirectoryClassList ")=True Then
+				Action = XY_CustomTwoDirectoryClassList(Action)
+			'推荐导航，给内页左边使用
+			ElseIf CheckFunValue(Action, "RecommendNavigation ")=True Then
+				Action = XY_RecommendNavigation(Action)
 				
-			
-			ElseIf CheckFunValue(g, "CustomNavList ")=True Then
-				g = XY_CustomNavList(g)
-				
-				
+			'自定义导航
+			ElseIf CheckFunValue(Action, "CustomNavList ")=True Then
+				Action = XY_CustomNavList(Action)
 				
 				
-			
-			
-			ElseIf CheckFunValue(g, "Links ")=True Then
-				g = XY_Links(g)
-			
-			ElseIf CheckFunValue(g, "LinkList ")=True Then
-				g = XY_LinkList(g)
-			
-			ElseIf CheckFunValue(g, "FriendLinkLI ")=True Then
-				g = XY_FriendLinkLI(g)
+				
+				
+			'------------------- 链接区 -----------------------		
+			'友情链接
+			ElseIf CheckFunValue(Action, "Links ")=True Then
+				Action = XY_Links(Action)
+			'链接列表处理
+			ElseIf CheckFunValue(Action, "LinkList ")=True Then
+				Action = XY_LinkList(Action)
+			'友情链接LI方式显示			
+			ElseIf CheckFunValue(Action, "FriendLinkLI ")=True Then
+				Action = XY_FriendLinkLI(Action)
 				
 					
-			
-			
-			ElseIf CheckFunValue(g, "GetDidAHrefUrl ")=True Then
-				g = XY_GetDidAHrefUrl(g)
-			
-			ElseIf CheckFunValue(g, "GetSidAHrefUrl ")=True Then
-				g = XY_GetSidAHrefUrl(g)
-			
-			ElseIf CheckFunValue(g, "GetTidAHrefUrl ")=True Then
-				g = XY_GetTidAHrefUrl(g)
-			
-			ElseIf CheckFunValue(g, "GetProductUrl ")=True Then
-				g = XY_GetProductUrl(g)
+			'------------------- URL区 -----------------------			
+			'大类链接
+			ElseIf CheckFunValue(Action, "GetDidAHrefUrl ")=True Then
+				Action = XY_GetDidAHrefUrl(Action)
+			'小类链接
+			ElseIf CheckFunValue(Action, "GetSidAHrefUrl ")=True Then
+				Action = XY_GetSidAHrefUrl(Action)
+			'子类链接
+			ElseIf CheckFunValue(Action, "GetTidAHrefUrl ")=True Then
+				Action = XY_GetTidAHrefUrl(Action)
+			'产品链接
+			ElseIf CheckFunValue(Action, "GetProductUrl ")=True Then
+				Action = XY_GetProductUrl(Action)
 				
 				
 				
 				
-			
-			ElseIf CheckFunValue(g, "PopularSearchesList ")=True Then
-				g = XY_PopularSearchesList(g)				
+			'热门搜索词列表
+			ElseIf CheckFunValue(Action, "PopularSearchesList ")=True Then
+				Action = XY_PopularSearchesList(Action)				
 				
 				
-			
-			
-			ElseIf CheckFunValue(g, "BatchAutoAddProductClass ")=True Then
-				g = XY_BatchAutoAddProductClass(g)
-			
-			ElseIf CheckFunValue(g, "BatchAutoAddNavClass ")=True Then
-				g = XY_BatchAutoAddNavClass(g)
-				
-				
-				
-			
-			ElseIf CheckFunValue(g, "AutoAddDid ")=True Then
-				g = XY_AutoAddDid(g)
-			
-			ElseIf CheckFunValue(g, "AutoAddSid ")=True Then
-				g = XY_AutoAddSid(g)
-			
-			ElseIf CheckFunValue(g, "AutoAddTid ")=True Then
-				g = XY_AutoAddTid(g)
-			
-			ElseIf CheckFunValue(g, "AutoAddProduct ")=True Then
-				g = XY_AutoAddProduct(g)
-			
-			ElseIf CheckFunValue(g, "AutoAddGuestBook ")=True Then
-				g = XY_AutoAddGuestBook(g)
-			
-			ElseIf CheckFunValue(g, "UpdateBigNav ")=True Then
-				g = XY_UpdateBigNav(g)
-			
-			ElseIf CheckFunValue(g, "AutoBatchAddArticle ")=True Then
-				g = XY_AutoBatchAddArticle(g)
-			
-			ElseIf CheckFunValue(g, "AutoAddInputConfig ")=True Then
-				g = XY_AutoAddInputConfig(g)
-				
-			
-			
-			ElseIf CheckFunValue(g, "ShowPhotoList ")=True Then
-				g = XY_ShowPhotoList(g)
-			
-			ElseIf CheckFunValue(g, "ShowAppointProductList ")=True Then
-				g = XY_ShowAppointProductList(g)
-			
-			ElseIf CheckFunValue(g, "zoomImage ")=True Then
-				g = XY_zoomImage(g)
-			
-			
-			
-			
-			ElseIf CheckFunValue(g, "QQLIStyleListShow ")=True Then
-				g = XY_QQLIStyleListShow(g)
-			
-			ElseIf CheckFunValue(g, "OnLineQQPopup ")=True Then
-				g = XY_OnLineQQPopup(g)
-			
-			ElseIf CheckFunValue(g, "GetOnLineQQUrl ")=True Then
-				g = XY_GetOnLineQQUrl(g)
-				
-				
-			
-			
-			ElseIf CheckFunValue(g, "FormSubmit ")=True Then
-				g = XY_FormSubmit(g)
-				
-			
-			
-			ElseIf CheckFunValue(g, "SiteMap ")=True Then
-				g = XY_SiteMap(g)
-				
-			
-			
-			ElseIf CheckFunValue(g, "Article_Did ")=True Then
-				g = ArticleDid
-			
-			ElseIf CheckFunValue(g, "Article_Sid ")=True Then
-				g = ArticleSid
-			
-			ElseIf CheckFunValue(g, "Article_Tid ")=True Then
-				g = ArticleTid
-			
-			ElseIf CheckFunValue(g, "Article_Title ")=True Then
-				g = ArticleTitle
-			
-			ElseIf CheckFunValue(g, "Article_BigFiles ")=True Then
-				g = ArticleBigFiles
-			
-			ElseIf CheckFunValue(g, "Article_SmallFiles ")=True Then
-				g = ArticleSmallFiles
-			
-			ElseIf CheckFunValue(g, "Article_Id ")=True Then
-				g = ArticleID
-			
-			ElseIf CheckFunValue(g, "Article_DateTime ")=True Then
-				g = ArticleDateTime
-			
-			ElseIf CheckFunValue(g, "Article_Author ")=True Then
-				g = ArticleAuthor
-			
-			ElseIf CheckFunValue(g, "Article_Content ")=True Then
-				g = ArticleContent
-				
-			
-			
-			ElseIf CheckFunValue(g, "GetTableList ")=True Then
-				g = XY_GetTableList(g)
-			
-			ElseIf CheckFunValue(g, "DeleteTable ")=True Then
-				g = XY_DeleteTable(g)
-			
-			ElseIf CheckFunValue(g, "executeSQL ")=True Then
-				g = XY_executeSQL(g)
-				
-				
-			
-			
-			ElseIf CheckFunValue(g, "ForArray ")=True Then
-				g = XY_ForArray(g)
-			
-			
-			
-			ElseIf CheckFunValue(g, "GetNavParam ")=True Then
-				g = XY_GetNavParam(g)
-			
-			ElseIf CheckFunValue(g, "GetClassParam ")=True Then
-				g = XY_GetClassParam(g)
-			
-			ElseIf CheckFunValue(g, "GetArticleParam ")=True Then
-				g = XY_GetArticleParam(g)
-			
-			ElseIf CheckFunValue(g, "GetMainParam ")=True Then
-				g = XY_GetMainParam(g)
-				
-			
-			
-			ElseIf CheckFunValue(g, "clearCache ")=True Then
-				g = XY_clearCache(g)
+			'------------------- 自动添加信息 -----------------------			
+			'批量添加产品类别
+			ElseIf CheckFunValue(Action, "BatchAutoAddProductClass ")=True Then
+				Action = XY_BatchAutoAddProductClass(Action)
+			'批量添加导航类别
+			ElseIf CheckFunValue(Action, "BatchAutoAddNavClass ")=True Then
+				Action = XY_BatchAutoAddNavClass(Action)
 				
 				
 				
+			'自动添加大类
+			ElseIf CheckFunValue(Action, "AutoAddDid ")=True Then
+				Action = XY_AutoAddDid(Action)
+			'自动添加小类
+			ElseIf CheckFunValue(Action, "AutoAddSid ")=True Then
+				Action = XY_AutoAddSid(Action)
+			'自动添加子类
+			ElseIf CheckFunValue(Action, "AutoAddTid ")=True Then
+				Action = XY_AutoAddTid(Action)
+			'自动添加产品信息
+			ElseIf CheckFunValue(Action, "AutoAddProduct ")=True Then
+				Action = XY_AutoAddProduct(Action)
+			'自动添加留言信息
+			ElseIf CheckFunValue(Action, "AutoAddGuestBook ")=True Then
+				Action = XY_AutoAddGuestBook(Action)
+			'更新大类导航信息
+			ElseIf CheckFunValue(Action, "UpdateBigNav ")=True Then
+				Action = XY_UpdateBigNav(Action)
+			'自动批量添加文章信息
+			ElseIf CheckFunValue(Action, "AutoBatchAddArticle ")=True Then
+				Action = XY_AutoBatchAddArticle(Action)
+			'自动添加表单配置
+			ElseIf CheckFunValue(Action, "AutoAddInputConfig ")=True Then
+				Action = XY_AutoAddInputConfig(Action)
 				
+			'------------------- 图片 -----------------------			
+			'图片列表
+			ElseIf CheckFunValue(Action, "ShowPhotoList ")=True Then
+				Action = XY_ShowPhotoList(Action)
+			'显示批量模板样式展示列表
+			ElseIf CheckFunValue(Action, "ShowAppointProductList ")=True Then
+				Action = XY_ShowAppointProductList(Action)
+			'图片缩放
+			ElseIf CheckFunValue(Action, "zoomImage ")=True Then
+				Action = XY_zoomImage(Action)
 			
-			
-			ElseIf CheckFunValue(g, "JsAutoUpdateWebPage ")=True Then
-				g = JsContent
-			
-			ElseIf CheckFunValue(g, "Position ")=True Then
-				g = XY_Position(g)
-			
-			ElseIf CheckFunValue(g, "FastNavigation ")=True Then
-				g = XY_FastNavigation(g)
+			 
+			'------------------- QQ区 -----------------------	
+			'浮动QQ列表显示
+			ElseIf CheckFunValue(Action, "QQLIStyleListShow ")=True Then
+				Action = XY_QQLIStyleListShow(Action)
+			'在线QQ弹窗
+			ElseIf CheckFunValue(Action, "OnLineQQPopup ")=True Then
+				Action = XY_OnLineQQPopup(Action)
+			'批量点击在线QQ网址
+			ElseIf CheckFunValue(Action, "GetOnLineQQUrl ")=True Then
+				Action = XY_GetOnLineQQUrl(Action)
 				
-			
-			
-			ElseIf CheckFunValue(g, "DebugWebSkin ")=True Then
-				g = XY_DebugWebSkin(g)
 				
-			
-			
-			ElseIf CheckFunValue(g, "ResetRunAction ")=True Then
-				isResetRunAction=XY_ResetRunAction(g)
-				g = ""
+			'------------------- 表单 -----------------------
+			'显示提交表单(通用)20150211
+			ElseIf CheckFunValue(Action, "FormSubmit ")=True Then
+				Action = XY_FormSubmit(Action)
 				
+			'------------------- 网站地图区 -----------------------	
+			'显示网站地图
+			ElseIf CheckFunValue(Action, "SiteMap ")=True Then
+				Action = XY_SiteMap(Action)
+				
+			'------------------- 文章区 -----------------------
+			'文章大类名称
+			ElseIf CheckFunValue(Action, "Article_Did ")=True Then
+				Action = ArticleDid
+			'文章小类名称
+			ElseIf CheckFunValue(Action, "Article_Sid ")=True Then
+				Action = ArticleSid
+			'文章子类名称
+			ElseIf CheckFunValue(Action, "Article_Tid ")=True Then
+				Action = ArticleTid
+			'文章标题
+			ElseIf CheckFunValue(Action, "Article_Title ")=True Then
+				Action = ArticleTitle
+			'文章大图
+			ElseIf CheckFunValue(Action, "Article_BigFiles ")=True Then
+				Action = ArticleBigFiles
+			'文章小图
+			ElseIf CheckFunValue(Action, "Article_SmallFiles ")=True Then
+				Action = ArticleSmallFiles
+			'文章ID
+			ElseIf CheckFunValue(Action, "Article_Id ")=True Then
+				Action = ArticleID
+			'文章时间
+			ElseIf CheckFunValue(Action, "Article_DateTime ")=True Then
+				Action = ArticleDateTime
+			'文章作者
+			ElseIf CheckFunValue(Action, "Article_Author ")=True Then
+				Action = ArticleAuthor
+			'文章内容
+			ElseIf CheckFunValue(Action, "Article_Content ")=True Then
+				Action = ArticleContent
+				
+			'------------------- Table表处理 -----------------------
+			'获得数据库表列表
+			ElseIf CheckFunValue(Action, "GetTableList ")=True Then
+				Action = XY_GetTableList(Action)
+			'删除Table表
+			ElseIf CheckFunValue(Action, "DeleteTable ")=True Then
+				Action = XY_DeleteTable(Action)
+			'执行Table表
+			ElseIf CheckFunValue(Action, "executeSQL ")=True Then
+				Action = XY_executeSQL(Action)
+				
+				
+			'------------------- 循环处理 -----------------------
+			'For循环处理
+			ElseIf CheckFunValue(Action, "ForArray ")=True Then
+				Action = XY_ForArray(Action)
 			
-			ElseIf CheckFunValue(g, "onLineViewDialog ")=True Then
-				g = XY_onLineViewDialog(g)
+			'------------------- 参数处理 -----------------------
+			'导航参数处理
+			ElseIf CheckFunValue(Action, "GetNavParam ")=True Then
+				Action = XY_GetNavParam(Action)
+			'产品类型参数处理
+			ElseIf CheckFunValue(Action, "GetClassParam ")=True Then
+				Action = XY_GetClassParam(Action)
+			'文章信息参数处理
+			ElseIf CheckFunValue(Action, "GetArticleParam ")=True Then
+				Action = XY_GetArticleParam(Action)
+			'文本内容参数处理
+			ElseIf CheckFunValue(Action, "GetMainParam ")=True Then
+				Action = XY_GetMainParam(Action)
+				
+			'------------------- 缓冲处理 -----------------------	
+			'清除缓冲
+			ElseIf CheckFunValue(Action, "clearCache ")=True Then
+				Action = XY_clearCache(Action)
+				
+				
+				
+				
+			'------------------- 特殊处理一区 -----------------------
+			'JS自动更新网页
+			ElseIf CheckFunValue(Action, "JsAutoUpdateWebPage ")=True Then
+				Action = JsContent
+			'当前位置
+			ElseIf CheckFunValue(Action, "Position ")=True Then
+				Action = XY_Position(Action)
+			'快速导航
+			ElseIf CheckFunValue(Action, "FastNavigation ")=True Then
+				Action = XY_FastNavigation(Action)
+				
+			'------------------- 特殊处理一区 -----------------------
+			'Js调试网站皮肤
+			ElseIf CheckFunValue(Action, "DebugWebSkin ")=True Then
+				Action = XY_DebugWebSkin(Action)
+				
+			'------------------- 控制区 -----------------------
+			'重复运行动作
+			ElseIf CheckFunValue(Action, "ResetRunAction ")=True Then
+				isResetRunAction=XY_ResetRunAction(Action)
+				Action = ""
+				
+			'Js在线显示面板
+			ElseIf CheckFunValue(Action, "onLineViewDialog ")=True Then
+				Action = XY_onLineViewDialog(Action)
 				 			
 				
-			
-			
-			ElseIf CheckFunValue(g, "copyTemplateMaterial ")=True Then
-				g = VB_copyTemplateMaterial(g)			
+			'------------------- VB处理区 -----------------------
+			'拷贝模板素材
+			ElseIf CheckFunValue(Action, "copyTemplateMaterial ")=True Then
+				Action = VB_copyTemplateMaterial(Action)			'拷贝模板素材
 				
 			
-			
-			
-			ElseIf CheckFunValue(g, "GetTableFieldValue ")=True Then
-				g = GetTableFieldValue(g)			
-			
-			ElseIf CheckFunValue(g, "WebTopNav ")=True Then				
-				g = HandleNavigation(g,"")
-			
-			ElseIf CheckFunValue(g, "WebBottomNav ")=True Then					
-				g = XY_WebBottomNav(g)							
-			
-			ElseIf CheckFunValue(g, "Web_Title ")=True Then
-				g = XY_WebTitle
-			
-			ElseIf CheckFunValue(g, "Web_KeyWords ")=True Then
-				g = XY_WebKeywords
-			
-			ElseIf CheckFunValue(g, "Web_Description ")=True Then
-				g = XY_WebDescription
-			
-			ElseIf CheckFunValue(g, "WebBottom ")=True Or g = "WebBottom" Then
-				g = XY_WebBottom(g)			
-			
-			ElseIf CheckFunValue(g, "MainNav ")=True Then
-				g = MainNav
-			
-			ElseIf CheckFunValue(g, "MainTitle ")=True Then
-				g = MainTitle
-			
-			ElseIf CheckFunValue(g, "MainContent ")=True Then
-				g = MainContent
-			
-			ElseIf CheckFunValue(g, "JsWebStat ")=True Then
-				g = XY_JsWebStat(g)
+			'------------------- 特殊处理常用区 -----------------------
+			'获得表字段内容
+			ElseIf CheckFunValue(Action, "GetTableFieldValue ")=True Then
+				Action = GetTableFieldValue(Action)			'获得表字段内容 				
+			'网站顶部导航
+			ElseIf CheckFunValue(Action, "WebTopNav ")=True Then				
+				Action = HandleNavigation(Action,"")
+			'网站底部导航
+			ElseIf CheckFunValue(Action, "WebBottomNav ")=True Then					
+				Action = XY_WebBottomNav(Action)							
+			'网站标题
+			ElseIf CheckFunValue(Action, "Web_Title ")=True Then
+				Action = XY_WebTitle
+			'网站关键词
+			ElseIf CheckFunValue(Action, "Web_KeyWords ")=True Then
+				Action = XY_WebKeywords
+			'网站描述
+			ElseIf CheckFunValue(Action, "Web_Description ")=True Then
+				Action = XY_WebDescription
+			'网站底部内容
+			ElseIf CheckFunValue(Action, "WebBottom ")=True Or Action = "WebBottom" Then
+				Action = XY_WebBottom(Action)			
+			'主体导航名称
+			ElseIf CheckFunValue(Action, "MainNav ")=True Then
+				Action = MainNav
+			'主体标题
+			ElseIf CheckFunValue(Action, "MainTitle ")=True Then
+				Action = MainTitle
+			'主体内容
+			ElseIf CheckFunValue(Action, "MainContent ")=True Then
+				Action = MainContent
+			'Js版网站统计
+			ElseIf CheckFunValue(Action, "JsWebStat ")=True Then
+				Action = XY_JsWebStat(action)
 				
 				
 			Else			
-				i = False			
+				HandYes = False			'处理为假
 			End If
-			
-			If IsNUl(g) =True Then g=""
-			If i = True Then
-				a = Replace(a,h,g)
-				
-				
-				a = handleModuleReplaceArray(a)
+			'注意这样，有的则不显示 晕 And IsNul(Action)=False
+			If IsNUl(Action) =True Then Action=""
+			If HandYes = True Then
+				Content = Replace(Content,S,Action)
+				'处理替换程序 20150712
+				'call printModuleReplaceArray()
+				Content = handleModuleReplaceArray(Content)
 				call clearModuleReplaceArray()
 				
-				
-				If b=True Then
-					Code=a			
+				'为真则把内容给Code
+				If CodeYes=True Then
+					Code=Content			'把内容赋值给Code，因为Include加载这块会出错
 				End If
 			End If
-			
+			'重复运行动作，因为代码被处理了20150712
 			if isResetRunAction then
-				
-				HandleTemplateAction = HandleTemplateAction(a,b)
+				'call rw(content)
+				HandleTemplateAction = HandleTemplateAction(Content,CodeYes)
 				Exit Function
 			end if
 		End If
 	Next
-	HandleTemplateAction = a
+	HandleTemplateAction = Content
 End Function
 
-
-function XY_DeleteTable(a)
-	dim b,c,d
-	d = RParam(a,"tablename")
-	c = RParam(a,"addsql")
-	b = "select * from ["& d &"] "
-	b = GetWhereAnd(b & " ",c)
-	if CheckSql(b)=false then
-		XY_DeleteTable = "sql出错=" & b
+'删除Table表
+function XY_DeleteTable(Action)
+	dim sql,addsql,tableName
+	tableName = RParam(Action,"tablename")
+	addsql = RParam(Action,"addsql")
+	sql = "select * from ["& tableName &"] "
+	Sql = GetWhereAnd(Sql & " ",addsql)
+	if CheckSql(Sql)=false then
+		XY_DeleteTable = "sql出错=" & sql
 		exit function
 	end if
-	b = "delete from ["& d &"] "
-	b = GetWhereAnd(b & " ",c)
-	conn.execute(b)
+	sql = "delete from ["& tableName &"] "
+	Sql = GetWhereAnd(Sql & " ",addsql)
+	conn.execute(sql)
 end function
-
-function XY_executeSQL(a)
-	dim b
-	b = RParam(a,"sql")
-	call CheckSql(b)
+'执行SQL(20150831)
+function XY_executeSQL(Action)
+	dim sql
+	sql = RParam(Action,"sql")
+	call CheckSql(Sql)
 end function
-
-function XY_getArticleInfo(a)
-	dim b,c,d,e,f,g,h
+'获得文章信息
+function XY_getArticleInfo(Action)
+	dim Default,s,Url,ImgFile,AStr,AUrl,ImgStr
 	if ArticleId="" then
 		XY_getArticleInfo = ""	
 		exit function
 	end if
-	c = GetDefaultValue(a)
+	s = GetDefaultValue(Action)
 	rs.open"Select * From [Product] Where id=" & ArticleId ,conn,1,1
 	if not rs.eof then
-		d = Rs("FileName")
-		If CheckMakeHtmlFile(d)=True Then
-			d = GetHandleUrl( Rs("FileName") )
-			Call WebDebug(d,"act=CreateArticle&ID=" & Rs("Id") )
+		Url = Rs("FileName")
+		If CheckMakeHtmlFile(Url)=True Then
+			Url = GetHandleUrl( Rs("FileName") )
+			Call WebDebug(Url,"act=CreateArticle&ID=" & Rs("Id") )'调试
 		End If
 		
-		e = IIF(Rs("SmallFiles")<>"",Rs("SmallFiles"),Rs("BigFiles"))		
-		f = "<a src='" & Rs("BigFiles") & "'" & SetHtmlParam(a, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
-		g = AHref(d, Rs("Title"), Rs("Target")) & SetHtmlParam(a, "aclass")
-		h = "<img src='" & e & "'" & SetHtmlParam(a, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
+		ImgFile = IIF(Rs("SmallFiles")<>"",Rs("SmallFiles"),Rs("BigFiles"))		
+		AStr = "<a src='" & Rs("BigFiles") & "'" & SetHtmlParam(Action, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
+		AUrl = AHref(Url, Rs("Title"), Rs("Target")) & SetHtmlParam(Action, "aclass")
+		ImgStr = "<img src='" & ImgFile & "'" & SetHtmlParam(Action, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
 	
 	
-		c = ReplaceValueParam(c,"id",  rs("id"))		
-		c = ReplaceValueParam(c,"title",Rs("Title"))
-		c = ReplaceValueParam(c,"showtitle",ShowTitle)
-		c = ReplaceValueParam(c,"adddatetime",Rs("AddDateTime"))
-		c = ReplaceValueParam(c,"imgfile",e)
-		c = ReplaceValueParam(c,"imgurl",e)
-		c = ReplaceValueParam(c,"url",d)
-		c = ReplaceValueParam(c,"aurl",g)
-		c = ReplaceValueParam(c,"astr",f)
-		c = ReplaceValueParam(c,"description",Rs("WebDescription"))
-		c = ReplaceValueParam(c,"content",Rs("Content"))
-		c = ReplaceValueParam(c,"price",Rs("Price"))
-		c = ReplaceValueParam(c,"author",Rs("Author"))
-		c = ReplaceValueParam(c,"nViewCount",Rs.RecordCount)		
+		S = ReplaceValueParam(S,"id",  rs("id"))		
+		S = ReplaceValueParam(S,"title",Rs("Title"))
+		S = ReplaceValueParam(S,"showtitle",ShowTitle)
+		S = ReplaceValueParam(S,"adddatetime",Rs("AddDateTime"))
+		S = ReplaceValueParam(S,"imgfile",ImgFile)
+		S = ReplaceValueParam(S,"imgurl",ImgFile)
+		S = ReplaceValueParam(S,"url",url)
+		S = ReplaceValueParam(S,"aurl",AUrl)
+		S = ReplaceValueParam(S,"astr",AStr)
+		S = ReplaceValueParam(S,"description",Rs("WebDescription"))
+		S = ReplaceValueParam(S,"content",Rs("Content"))
+		S = ReplaceValueParam(S,"price",Rs("Price"))
+		S = ReplaceValueParam(S,"author",Rs("Author"))
+		S = ReplaceValueParam(S,"nViewCount",Rs.RecordCount)		
 	end if:rs.close
-	XY_getArticleInfo = c
+	XY_getArticleInfo = s
 end function
-
-function XY_ResetRunAction(a)
-	dim b
-	b = LCase(RParam(a,"operate"))
-	if b="true" then
+'重复运行动作
+function XY_ResetRunAction(Action)
+	dim operate
+	operate = LCase(RParam(Action,"operate"))
+	if operate="true" then
 		XY_ResetRunAction=true
 	else
 		XY_ResetRunAction = false
 	end if
 end function
-
-function XY_ForArray(a)
-	dim b,c,d,e,f,g,h,i,j
-	b = atRParam(a,"arraylist")				
-	c = RParam(a,"splitstr")
-	j = RParam(a,"nloop")				
+'For循环处理
+function XY_ForArray(Action)
+	dim arrayList,splitStr,Default,splstr,forI,title,s,c,nloop
+	arrayList = atRParam(Action,"arraylist")				'atRParam获得结果处理动作，但不替换动作内容
+	splitStr = RParam(Action,"splitstr")
+	nloop = RParam(Action,"nloop")				'循环数
 	
-	if b="" then
-		b=copyStr("循环" & c,j)
+	if arrayList="" then
+		arrayList=copyStr("循环" & splitStr,nloop)
 	end if
 	
-	d = GetDefaultValue(a)
+	Default = GetDefaultValue(Action) 
 	
-	e=split(b,c)
-	for f = 0 to Ubound(e)
-		g=e(f)
-		if g <>"" then
-			h=d
-			h = ReplaceValueParam(h,"fortitle",  g)
-			h = ReplaceValueParam(h,"forid",  f)
-			h = ReplaceValueParam(h,"fori",  f)
-			h = ReplaceValueParam(h,"forcount",  ubound(e)+1)
-			i=i & h
+	splstr=split(arrayList,splitStr)
+	for forI = 0 to Ubound(splstr)
+		title=splstr(forI)
+		if title <>"" then 
+			s=default
+			S = ReplaceValueParam(S,"fortitle",  title)
+			S = ReplaceValueParam(S,"forid",  fori)
+			S = ReplaceValueParam(S,"fori",  fori)
+			S = ReplaceValueParam(S,"forcount",  ubound(splstr)+1)
+			c=c & s
 		end if
-	next
-	XY_ForArray =i
+	next 
+	XY_ForArray =c
 end function
-
-function XY_GetTableList(a)
-	dim b,c,d,e,f,g
-	b = RParam(a,"sql")
-	c = RParam(a,"splitstr")
-	e = RParam(a,"fieldnamelist")
-	if lcase(c)="vbcrlf" then c=vbcrlf
-	
-	if CheckSql(b)=false then
-		XY_GetTableList = "sql出错=" & b
+'获得数据库表列表
+function XY_GetTableList(Action)
+	dim sql,splitstr,fieldName,fieldNameList,splField,c
+	sql = RParam(Action,"sql")
+	splitstr = RParam(Action,"splitstr")
+	fieldNameList = RParam(Action,"fieldnamelist")
+	if lcase(splitstr)="vbcrlf" then splitstr=vbcrlf
+	'call echo("fieldNameList",fieldNameList)
+	if CheckSql(Sql)=false then
+		XY_GetTableList = "sql出错=" & sql
 		exit function
 	end if
-	if e="" then
+	if fieldNameList="" then
 		XY_GetTableList = ""
 		exit function
 	end if
-	e=replace(e,"，",",")
-	f=split(e,",")
-	rs.open b,conn,1,1
-	
+	fieldNameList=replace(fieldNameList,"，",",")
+	splField=split(fieldNameList,",")
+	rs.open sql,conn,1,1
+	'call echo("记录总数",rs.recordcount)
 	while not rs.eof
-		for each d in f
-			d=trim(d)
-			
-			if g<>"" then g=g & c
-			g=g & rs(d)
+		for each fieldName in splField
+			fieldName=trim(fieldName)
+			'call echo(fieldName,"f")
+			if c<>"" then c=c & splitstr
+			c=c & rs(fieldName)
 		next
 	rs.movenext:wend:rs.close
 	
-	XY_GetTableList = g
+	XY_GetTableList = c
 end function
+'提交表单(通用)20150211
+Function XY_FormSubmit(Action)
+	Dim C,AltStr,styleCss,nWidth,nHeight,SplStr,S,I,nOK
+	
+	Dim Did,TableName,FormName,ClassName,isVerificationCode,InputStr,InputStrList,InfoS	
+	Dim submitname,resetname
+	dim fieldName								'字段名称
+	dim content,splxx,valueStr,showStr
+	dim Placeholder										'提示内容
+	dim passWordFieldName								'密码字段名称
+	dim isAddTableNameInput								'是否追加TableName表单
+	isAddTableNameInput=true							'默认为真
+	
+	submitname = RParam(Action,"submitname")
+	resetname = RParam(Action,"resetname")
+	If submitname = "" Then submitname="提交"
+	If resetname = "" Then resetname="重置"
+	
+	'Dim InputStr								'Input内容
+	Did = RParam(Action,"Did")
+	ClassName = RParam(Action,"ClassName")
+	TableName = RParam(Action,"TableName")
+	FormName = RParam(Action,"FormName")
+	isVerificationCode = RParam(Action,"isVerificationCode")
 
-Function XY_FormSubmit(a)
-	Dim b,c,d,e,f,g,h,i,j
-	
-	Dim k,l,m,n,o,p,q,InfoS	
-	Dim s,t
-	dim fieldName								
-	dim v,w,x,y
-	dim Placeholder										
-	dim passWordFieldName								
-	dim isAddTableNameInput								
-	isAddTableNameInput=true							
-	
-	s = RParam(a,"submitname")
-	t = RParam(a,"resetname")
-	If s = "" Then s="提交"
-	If t = "" Then t="重置"
-	
-	
-	k = RParam(a,"Did")
-	n = RParam(a,"ClassName")
-	l = RParam(a,"TableName")
-	m = RParam(a,"FormName")
-	o = RParam(a,"isVerificationCode")
-
-	b = "<div class="""& n &""">" & vbCrlf
-    b = b & "<form name="""& m &""" id="""& m &""" method=""post"" action=""/Inc/Create_Html.Asp?act=FormSubmit"" onSubmit=""return CheckForm(this);"">" & vbCrlf
-	Rs.Open"Select * From [InputConfig] Where BigClassName='"& k &"' And Through<>0 Order By Sort",Conn,1,1
+	C = "<div class="""& ClassName &""">" & vbCrlf
+    C = C & "<form name="""& FormName &""" id="""& FormName &""" method=""post"" action=""/Inc/Create_Html.Asp?act=FormSubmit"" onSubmit=""return CheckForm(this);"">" & vbCrlf
+	Rs.Open"Select * From [InputConfig] Where BigClassName='"& Did &"' And Through<>0 Order By Sort",Conn,1,1
 	While Not Rs.Eof
-		
+		'字符名称，可自定义
 		fieldName=Rs("FieldName")
 		if fieldName="自定义" then
 			fieldName=Rs("CustomFieldName")
@@ -739,137 +739,137 @@ Function XY_FormSubmit(a)
 			if lcase(fieldName)="tablename" then
 				isAddTableNameInput=false
 			end if
-		end if
+		end if 
 		
 		Placeholder=Rs("Placeholder")
 		if Placeholder<>"" then
 			Placeholder = " placeholder="""& Placeholder &""""
 		end if
 	
-		c=""
-		
+		AltStr=""
+		'判断
 		If Rs("VerificationType") <> "" And Rs("VerificationType") <> "无" Then			
-			c="alt="""& IIF(Rs("VerificationMsg")<>"",Rs("VerificationMsg"),"请输入" & Rs("FrontTitle"))
+			AltStr="alt="""& IIF(Rs("VerificationMsg")<>"",Rs("VerificationMsg"),"请输入" & Rs("FrontTitle"))
 			
 			If Rs("VerificationType")<>"不为空" Then
-				c=c & "{Array}["& Rs("VerificationType") &"]"
+				AltStr=AltStr & "{Array}["& Rs("VerificationType") &"]"
 			End If			
-			c=c & """"
+			AltStr=AltStr & """"
 		End If
-		d=""
-		e=LCase(Trim(Rs("InputWidth")))
-		If e<>"" Then
-			e = HandleCssPX(e)
-			d = d & IIF(d=""," style='width:"& e &";","width:"& e &";")
+		styleCss=""
+		nWidth=LCase(Trim(Rs("InputWidth")))
+		If nWidth<>"" Then
+			nWidth = HandleCssPX(nWidth)
+			styleCss = styleCss & IIF(styleCss=""," style='width:"& nWidth &";","width:"& nWidth &";")
 		End If
-		f=LCase(Trim(Rs("InputHeight")))
-		If f<>"" Then
-			f = HandleCssPX(f)
-			d = d & IIF(d=""," style='height:"& f &";","height:"& f &";")
-			
+		nHeight=LCase(Trim(Rs("InputHeight")))
+		If nHeight<>"" Then
+			nHeight = HandleCssPX(nHeight)
+			styleCss = styleCss & IIF(styleCss=""," style='height:"& nHeight &";","height:"& nHeight &";")
+			'Call Echo("","00")
 			If Rs("InputType")<>"文本域" Then
-				d = d & IIF(d=""," style='line-height:"& f &";","line-height:"& f &";")
-				
+				styleCss = styleCss & IIF(styleCss=""," style='line-height:"& nHeight &";","line-height:"& nHeight &";")
+				'Call Eerr("","11")
 			End If
 		End If
-		If d <> "" Then d=d & "'"
+		If styleCss <> "" Then styleCss=styleCss & "'"
 		
 		
 		
 		InfoS = "    <dl>" & vbCrlf
-		InfoS = InfoS & "    <dt>"& Replace(Rs("FrontTitle")," ","&nbsp;") &"</dt>" & vbCrlf		
+		InfoS = InfoS & "    <dt>"& Replace(Rs("FrontTitle")," ","&nbsp;") &"</dt>" & vbCrlf		'处理空格
 		
-		
+		'单文本 文本域 多选 单选 下拉列表
 
-  		p="":q=""
+  		InputStr="":InputStrList=""
 		If Rs("InputType")="单文本" Or Rs("InputType")="单文本居中" Then
 			If Rs("InputType")="单文本居中" Then
-				If d="" Then
-					d = " style='text-align:center;'"
+				If styleCss="" Then
+					styleCss = " style='text-align:center;'"
 				Else
-					d=replace(d,"style='","style='text-align:center;")
+					styleCss=replace(styleCss,"style='","style='text-align:center;")
 				End If
 			End If
-			InfoS = InfoS & "    <dd><input type=""text"" name="""& fieldName &""" id="""& fieldName &""" "& c &" value="""& Rs("DefaultValue") &""""& d & Placeholder &"></dd>" & vbCrlf
+			InfoS = InfoS & "    <dd><input type=""text"" name="""& fieldName &""" id="""& fieldName &""" "& AltStr &" value="""& Rs("DefaultValue") &""""& styleCss & Placeholder &"></dd>" & vbCrlf
 		ElseIf Rs("InputType")="密码" Then
 			passWordFieldName = fieldName
-			InfoS = InfoS & "    <dd><input type=""password"" name="""& fieldName &""" id="""& fieldName &""" "& c &" value="""& Rs("DefaultValue") &""""& d & Placeholder &"></dd>" & vbCrlf
+			InfoS = InfoS & "    <dd><input type=""password"" name="""& fieldName &""" id="""& fieldName &""" "& AltStr &" value="""& Rs("DefaultValue") &""""& styleCss & Placeholder &"></dd>" & vbCrlf
 		ElseIf Rs("InputType")="确认密码" Then
-			c=Mid(c,1,len(c)-1) & passWordFieldName & """"
-			InfoS = InfoS & "    <dd><input type=""password"" name="""& fieldName &""" id="""& fieldName &""" "& c &" value="""& Rs("DefaultValue") &""""& d & Placeholder &"></dd>" & vbCrlf
+			AltStr=Mid(AltStr,1,len(AltStr)-1) & passWordFieldName & """"
+			InfoS = InfoS & "    <dd><input type=""password"" name="""& fieldName &""" id="""& fieldName &""" "& AltStr &" value="""& Rs("DefaultValue") &""""& styleCss & Placeholder &"></dd>" & vbCrlf
 		ElseIf Rs("InputType")="文本域" Then
-			InfoS = InfoS & "    <dd><textarea  name="""& fieldName &""" id="""& fieldName &""" "& c & d & Placeholder &">"& Rs("DefaultValue") &"</textarea></dd>" & vbCrlf
+			InfoS = InfoS & "    <dd><textarea  name="""& fieldName &""" id="""& fieldName &""" "& AltStr & styleCss & Placeholder &">"& Rs("DefaultValue") &"</textarea></dd>" & vbCrlf
 		
-		
+		'验证码
 		ElseIf Rs("InputType")="验证码" Then
-			If d="" Then
-				d = " style='text-align:center;'"
+			If styleCss="" Then
+				styleCss = " style='text-align:center;'"
 			Else
-				d=replace(d,"style='","style='text-align:center;")
+				styleCss=replace(styleCss,"style='","style='text-align:center;")
 			End If
-			
+			'call echo("fieldName",fieldName)
 			if fieldName="" then
 				fieldName="YZM"
 			end if
-			InfoS = InfoS & "    <dd><input type=""text"" name="""& fieldName &""" id="""& fieldName &""" "& c &" value="""& Rs("DefaultValue") &""""& d & Placeholder &"></dd>" & vbCrlf
-			InfoS = InfoS & "    <dd><img src=""/Inc/Code_7.asp"" id='imgcaptcha' onClick=""this.src='/Inc/Code_7.asp?n='+Math.random()"" style=""cursor:pointer;"" title=""点击换一张验证码""><a href=""javascript:;"" onClick=""$('#imgcaptcha').click();"">&nbsp;看不清？换一张</a></dd>" & vbCrlf
+			InfoS = InfoS & "    <dd><input type=""text"" name="""& fieldName &""" id="""& fieldName &""" "& AltStr &" value="""& Rs("DefaultValue") &""""& styleCss & Placeholder &"></dd>" & vbCrlf
+			InfoS = InfoS & "    <dd><img src=""/Inc/Code_7.asp"" id='imgcaptcha' onClick=""this.src='/Inc/Code_7.asp?n='+Math.random()"" style=""cursor:pointer;"" title=""点击换一张验证码""><a href=""javascript:;"" onClick=""$('#imgcaptcha').click();"">&nbsp;看不清？换一张</a></dd>" & vbCrlf   '"& Session("YZM") &"   这个是验证码哟
 
 		ElseIf Rs("InputType")="隐藏域" Then
 			InfoS = InfoS & "    <dd>" & InputHiddenText(fieldName, Rs("DefaultValue")) & vbCrlf
 		
-		
+		'单选
 		ElseIf Rs("InputType")="单选" Then
-			j=0
-			g=Split(Rs("DefaultValue"),"|")
-			For Each h In g
-				If h <> "" Then
-					j=j+1
-					If InStr("|"& q &"|","|"& h &"|")=False Then
-p=p & "<input type=""radio"" name="""& fieldName &""" id="""& fieldName & j &""" value="""& h &""" /><label for="""& fieldName & j &""">"& h &"</label>" & vbCrlf
-						q=q & h & "|"
+			nOK=0
+			SplStr=Split(Rs("DefaultValue"),"|")
+			For Each S In SplStr
+				If S <> "" Then
+					nOK=nOK+1
+					If InStr("|"& InputStrList &"|","|"& S &"|")=False Then
+InputStr=InputStr & "<input type=""radio"" name="""& fieldName &""" id="""& fieldName & nOK &""" value="""& S &""" /><label for="""& fieldName & nOK &""">"& S &"</label>" & vbCrlf
+						InputStrList=InputStrList & S & "|"
 					Else
-						p = Replace(p," value="""& h &""" />"," value="""& h &""" checked />")
+						InputStr = Replace(InputStr," value="""& S &""" />"," value="""& S &""" checked />")
 					End If
 				End If
 			Next
 			
-			InfoS = InfoS & p
+			InfoS = InfoS & InputStr
 			
 			
 		ElseIf Rs("InputType")="多选" Then
-			j=0
-			g=Split(Rs("DefaultValue"),"|")
-			For Each h In g
-				If h <> "" Then
-					j=j+1
-					If InStr("|"& q &"|","|"& h &"|")=False Then
-p=p & "<input type=""checkbox"" name="""& fieldName &""" id="""& fieldName & j &""" value="""& h &""" /><label for="""& fieldName & j &""">"& h &"</label>" & vbCrlf
-						q=q & h & "|"
+			nOK=0
+			SplStr=Split(Rs("DefaultValue"),"|")
+			For Each S In SplStr
+				If S <> "" Then
+					nOK=nOK+1
+					If InStr("|"& InputStrList &"|","|"& S &"|")=False Then
+InputStr=InputStr & "<input type=""checkbox"" name="""& fieldName &""" id="""& fieldName & nOK &""" value="""& S &""" /><label for="""& fieldName & nOK &""">"& S &"</label>" & vbCrlf
+						InputStrList=InputStrList & S & "|"
 					Else
-						p = Replace(p," value="""& h &""" />"," value="""& h &""" checked />")
+						InputStr = Replace(InputStr," value="""& S &""" />"," value="""& S &""" checked />")
 					End If
 				End If
 			Next
 			
-			InfoS = InfoS & p
+			InfoS = InfoS & InputStr
 			
 		ElseIf Rs("InputType")="下拉列表" Then
 		
 			InfoS = InfoS & "<select name="""& fieldName &""" id="""& fieldName &""">" & vbCrlf
-			j=0
-			v=Rs("DefaultValue")			
-			v=replace(v,"\|","[$特殊字符A]$")
-			v=replace(v,"\-","[$特殊字符B]$")
-			g=Split(Rs("DefaultValue"),"|")
-			For Each h In g
-				If h <> "" Then
-					j=j+1
-					h=replace(h,"[$特殊字符A]$","|")
-					h=replace(h,"[$特殊字符B]$","-")
-					w=split(h & "-" & h,"-")
-					x=w(0)
-					y=w(1)
-					InfoS = InfoS & "<option value="""& x &""" "& IIF(j=1,"selected","") & ">"& y &"</option>" & vbCrlf
+			nOK=0
+			content=Rs("DefaultValue")			
+			content=replace(content,"\|","[$特殊字符A]$")
+			content=replace(content,"\-","[$特殊字符B]$")
+			SplStr=Split(Rs("DefaultValue"),"|")
+			For Each S In SplStr
+				If S <> "" Then
+					nOK=nOK+1
+					s=replace(s,"[$特殊字符A]$","|")
+					s=replace(s,"[$特殊字符B]$","-")
+					splxx=split(s & "-" & s,"-")
+					valueStr=splxx(0)
+					showStr=splxx(1)
+					InfoS = InfoS & "<option value="""& valueStr &""" "& IIF(nOK=1,"selected","") & ">"& showStr &"</option>" & vbCrlf
 				End If
 			Next
 			
@@ -885,289 +885,289 @@ p=p & "<input type=""checkbox"" name="""& fieldName &""" id="""& fieldName & j &
 		
 		InfoS = DisplayOnlineED2(WEB_ADMINURL &"TableManage.Asp?act=ShowEdit&Id=" & Rs(0) & "&TableName=InputConfig"& "&n=" & GetRnd(11), InfoS, "<li|<a ")
 		
-		b=b & InfoS
+		C=C & InfoS
 		
 	Rs.MoveNext:Wend:Rs.Close
  	
-	b=b & InputHiddenText("DialogTitle",k)
-	if l<>"" and isAddTableNameInput=true then
-    b = b & "<input name=""TableName"" type=""hidden"" id=""TableName"" value="""& l &""">" & vbCrlf
+	C=C & InputHiddenText("DialogTitle",Did)
+	if TableName<>"" and isAddTableNameInput=true then
+    C = C & "<input name=""TableName"" type=""hidden"" id=""TableName"" value="""& TableName &""">" & vbCrlf
 	end if
-    b = b & "<div class=""submitbtn"">" & vbCrlf
-    b = b & "<input type=""submit"" name=""Submit"" value="""& s &""" class=""btn white"">" & vbCrlf
-    b = b & "<input name=""button"" type=""reset"" class=""btn white"" id=""button"" value="""& t &""">" & vbCrlf
-    b = b & "</div>" & vbCrlf
-    b = b & "</form>" & vbCrlf
-    b = b & "</div>" & vbCrlf
-	XY_FormSubmit = b
+    C = C & "<div class=""submitbtn"">" & vbCrlf
+    C = C & "<input type=""submit"" name=""Submit"" value="""& submitname &""" class=""btn white"">" & vbCrlf
+    C = C & "<input name=""button"" type=""reset"" class=""btn white"" id=""button"" value="""& resetname &""">" & vbCrlf
+    C = C & "</div>" & vbCrlf
+    C = C & "</form>" & vbCrlf
+    C = C & "</div>" & vbCrlf
+	XY_FormSubmit = C
 End Function
 
-
-Function XY_FastNavigation(a)
-	Dim b,c,d, e, f, g, h, i,j,k,l,m,n,o, p
-	Dim q
-	d = RParam(a,"UlClass")
-	e = RParam(a,"LiClass")
-	f = RParam(a,"AClass")
-	g = RParam(a,"FocusClass")
-	h = LCase(RParam(a,"FocusText"))
-	n = RParam(a,"DefaultSqlType")
-	o = RParam(a,"DefaultDid")
-	
-	
-	p = "nav"
-	
-	l = PubNavSid
+'快速导航
+Function XY_FastNavigation(Action)
+	Dim S,C,UlClass, LiClass, AClass, FocusClass, FocusText, Url,Sql,Did,Sid,NavType,DefaultSqlType,DefaultDid, SqlType
+	Dim ShowTitle
+	UlClass = RParam(Action,"UlClass")
+	LiClass = RParam(Action,"LiClass")
+	AClass = RParam(Action,"AClass")
+	FocusClass = RParam(Action,"FocusClass")
+	FocusText = LCase(RParam(Action,"FocusText"))
+	DefaultSqlType = RParam(Action,"DefaultSqlType")
+	DefaultDid = RParam(Action,"DefaultDid")
+	'Call Echo("PubNavDid",PubNavDid)
+	'Call Echo("PubProDid",PubProDid)
+	SqlType = "nav"
+	'Call Echo("Did",Did)
+	Sid = PubNavSid
 	If PubNavDid<>"" Then
-		m = GetNavType(PubNavDid)		
-		If m="文本" Then
-			j = "Select * From [NavSmallClass] Where BigClassName='"& PubNavDid &"' Order By Sort"
+		NavType = GetNavType(PubNavDid)		
+		If NavType="文本" Then
+			Sql = "Select * From [NavSmallClass] Where BigClassName='"& PubNavDid &"' Order By Sort"
 		Else
-			j = "Select * From [SmallClass] Where BigClassName='"& PubNavDid &"' Order By Sort"
-			p = "product"
-			l = PubProSid
+			Sql = "Select * From [SmallClass] Where BigClassName='"& PubNavDid &"' Order By Sort"
+			SqlType = "product"
+			Sid = PubProSid
 		End If	
 	ElseIf PubProDid <> "" Then
-		j = "Select * From [SmallClass] Where BigClassName='"& PubProDid &"' Order By Sort"
-		p = "product"
-		l = PubProSid
+		Sql = "Select * From [SmallClass] Where BigClassName='"& PubProDid &"' Order By Sort"
+		SqlType = "product"
+		Sid = PubProSid
 	End If
-	If j<>"" Then
-		Rss.Open j, Conn, 1, 1
-		If Rss.Eof And o<>"" Then
+	If Sql<>"" Then
+		Rss.Open Sql, Conn, 1, 1
+		If Rss.Eof And DefaultDid<>"" Then
 			Rss.Close
-			If n = "nav" Then
-				j = "Select * From [NavSmallClass] Where BigClassName='"& o &"' Order By Sort"
+			If DefaultSqlType = "nav" Then
+				Sql = "Select * From [NavSmallClass] Where BigClassName='"& DefaultDid &"' Order By Sort"
 			Else
-				j = "Select * From [SmallClass] Where BigClassName='"& o &"' Order By Sort"
+				Sql = "Select * From [SmallClass] Where BigClassName='"& DefaultDid &"' Order By Sort"
 			End If
-			Rss.Open j, Conn, 1, 1
-			
+			Rss.Open Sql, Conn, 1, 1
+			'Call Eerr(Sql,NavType & "," & DefaultDid)
 		End If
 		While Not Rss.Eof
-			If p = "nav" Then
-				i = GetNavUrl(Rss("BigClassName"), Rss("SmallClassName"))
+			If SqlType = "nav" Then
+				Url = GetNavUrl(Rss("BigClassName"), Rss("SmallClassName"))
 			Else
-				i = GetSmallClassFolderName(Rss("BigClassName"), Rss("SmallClassName"))
-				
-				
+				Url = GetSmallClassFolderName(Rss("BigClassName"), Rss("SmallClassName"))
+				'Url = GetClassUrl(Rss("BigClassName"), Rss("SmallClassName"), "")
+				'Call Echo("Url",Url)
 			End If
+			'Call Echo(Rss("BigClassName"),Rss("SmallClassName"))
 			
-			
-			b = Rss("SmallClassName")
-			q = FontColorFontB(b, Rss("FontB"), Rss("FontColor"))
-			If Rss("SmallClassName") = l Then
-				If g<>"" And h="true" Then
-					b = "<span class="""& g &""">"& q &"</span>"
+			S = Rss("SmallClassName")
+			ShowTitle = FontColorFontB(S, Rss("FontB"), Rss("FontColor"))
+			If Rss("SmallClassName") = Sid Then
+				If FocusClass<>"" And FocusText="true" Then
+					S = "<span class="""& FocusClass &""">"& ShowTitle &"</span>"
 				Else
-					If g<>"" Then
-						b = "<a "& AHref(i, Rss("SmallClassName"), Rss("Target")) &" class="""& g &""">"& q &"</a>"	
+					If FocusClass<>"" Then
+						S = "<a "& AHref(Url, Rss("SmallClassName"), Rss("Target")) &" class="""& FocusClass &""">"& ShowTitle &"</a>"	
 					Else
-						b = "<a "& AHref(i, Rss("SmallClassName"), Rss("Target")) &">"& q &"</a>"	
+						S = "<a "& AHref(Url, Rss("SmallClassName"), Rss("Target")) &">"& ShowTitle &"</a>"	
 					End If
 				End If
 			Else
-				If f<>"" Then
-					b = "<a "& AHref(i, Rss("SmallClassName"), Rss("Target")) &" class="""& f &""">"& q &"</a>"	
+				If AClass<>"" Then
+					S = "<a "& AHref(Url, Rss("SmallClassName"), Rss("Target")) &" class="""& AClass &""">"& ShowTitle &"</a>"	
 				Else
-					b = "<a "& AHref(i, Rss("SmallClassName"), Rss("Target")) &">"& q &"</a>"	
+					S = "<a "& AHref(Url, Rss("SmallClassName"), Rss("Target")) &">"& ShowTitle &"</a>"	
 				End If
 			End If
 			
-			If p = "nav" Then
-				b = DisplayOnlineEditDialog(""& adminDir &"NavManage.Asp?act=EditNavSmall&Id=" & Rss("Id") & "&n=" & GetRnd(11), b)
+			If SqlType = "nav" Then
+				S = DisplayOnlineEditDialog(""& adminDir &"NavManage.Asp?act=EditNavSmall&Id=" & Rss("Id") & "&n=" & GetRnd(11), S)
 			Else
-				b = DisplayOnlineEditDialog(""& adminDir &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & Rss("Id") & "&n=" & GetRnd(11), b)
+				S = DisplayOnlineEditDialog(""& adminDir &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & Rss("Id") & "&n=" & GetRnd(11), S)
 			End If
 			
 			
-			
-			If d<>"" Or  e<>"" Then
-				If e<>"" And e<>"#" Then
-					b = "<li class="""& e &""">" & b
+			'是否加LI
+			If UlClass<>"" Or  LiClass<>"" Then
+				If LiClass<>"" And LiClass<>"#" Then
+					S = "<li class="""& LiClass &""">" & S
 				Else
-					b = "<li>" & b
+					S = "<li>" & S
 				End If
-				b = b & "</li>"
+				S = S & "</li>"
 			End If
-			c=c & b & vbCrlf
+			C=C & S & vbCrlf
 		Rss.MoveNext:Wend:Rss.Close
 	End If
-	
-	If d<>"" Or e<>"" Then
-		If d<>"" And d<>"#" Then
-			c = "<ul class="""& d &""">" & c
+	'就否加UL
+	If UlClass<>"" Or LiClass<>"" Then
+		If UlClass<>"" And UlClass<>"#" Then
+			C = "<ul class="""& UlClass &""">" & C
 		Else
-			c = "<ul>" & c
+			C = "<ul>" & C
 		End If
-		c = c & "</ul>"
+		C = C & "</ul>"
 	End If
 	
-	XY_FastNavigation = c
+	XY_FastNavigation = C
 End Function
 
 
-
-Function XY_Position(a)
-    Dim b, c, d, e, f, g
-	Dim h,i, j,k,l,m,n,o,p
-	Dim q
-	
-	
+'获得当前位置(网站)
+Function XY_Position(Action)
+    Dim Url, C, BigFolder, SmallFolder, Delimiter, nDirectory
+	Dim Did,HomeStr, NavDidStr,NavSidStr,DidStr,SidStr,TidStr,ProStr,RootFolder
+	Dim MainStr
+	'Call Echo("PubNavDid", PubNavDid)
+	'Call Echo("PubNavSid", PubNavSid)
 		
+	'Call Echo("PubProDid", PubProDid)
+	'Call Echo("PubProSid", PubProSid)
+	'Call Echo("PubProTid", PubProTid)	
+	Delimiter = RParam(Action,"Delimiter")						'分隔符
+	If Delimiter="" Then Delimiter = " > "
 	
+	'nDirectory(目录显示条数，3级为最好SEO用到)
+	nDirectory = HandleNumber(RParam(Action,"nDirectory"))		'目录级别数
 	
-	
-	f = RParam(a,"Delimiter")						
-	If f="" Then f = " > "
-	
-	
-	g = HandleNumber(RParam(a,"nDirectory"))		
-	
-	If IsNul(g)=True Then
-		g = 5
+	If IsNul(nDirectory)=True Then
+		nDirectory = 5
 	Else
-		g = Cint(g)
+		nDirectory = Cint(nDirectory)
 	End If
 	
-
+    '获得首页
     TempRs.Open "Select * From [NavBigClass] Where NavType='首页'", Conn, 1, 1
     If Not TempRs.Eof Then
-        b = "/" & GetWebFolderName() & TempRs("FolderName") & "/" & TempRs("FileName")
-        b = GetHandleUrl(b)
-		Call WebDebug(b,"act=showweb")
-		i = "<a " & AHref(b, "首页", TempRs("Target")) & ">首页</a>"
+        Url = "/" & GetWebFolderName() & TempRs("FolderName") & "/" & TempRs("FileName")
+        Url = GetHandleUrl(Url)    '处理URL
+		Call WebDebug(Url,"act=showweb")'调试
+		HomeStr = "<a " & AHref(Url, "首页", TempRs("Target")) & ">首页</a>"
     End If : TempRs.Close
 	
-
-	d = "/" & GetWebFolderName()
+    '导航大类
+	BigFolder = "/" & GetWebFolderName()
     If PubNavDid <> "" Or PubProDid<>"" Then
-		h = IIF(PubNavDid <> "", PubNavDid, PubProDid)
-        TempRs.Open "Select * From [NavBigClass] Where BigClassName='" & h & "'", Conn, 1, 1		
+		Did = IIF(PubNavDid <> "", PubNavDid, PubProDid)
+        TempRs.Open "Select * From [NavBigClass] Where BigClassName='" & Did & "'", Conn, 1, 1		
         If Not TempRs.Eof Then
-
-
+            'Url = "/" & GetWebFolderName() & TempRs("FolderName") & "/" & TempRs("FileName")
+            'Url = GetHandleUrl(Url)    '处理URL
 			
-			b = GetNavUrl(TempRs("BigClassName"),"")
+			Url = GetNavUrl(TempRs("BigClassName"),"")
 			
 			
-			Call WebDebug(b,"act=Nav&NavDid=" & TempRs("BigClassName"))
-            d = "/" & GetWebFolderName() & TempRs("FolderName") & "/"
-            j = "<a " & AHref(b, TempRs("BigClassName"), TempRs("Target")) & ">" & TempRs("BigClassName") & "</a>" 		
+			Call WebDebug(Url,"act=Nav&NavDid=" & TempRs("BigClassName"))'调试
+            BigFolder = "/" & GetWebFolderName() & TempRs("FolderName") & "/"
+            NavDidStr = "<a " & AHref(Url, TempRs("BigClassName"), TempRs("Target")) & ">" & TempRs("BigClassName") & "</a>" 		
 			
-			j = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavBig&Id=" & TempRs("Id") & "&n=" & GetRnd(11), j, "<li|<a ")
+			NavDidStr = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavBig&Id=" & TempRs("Id") & "&n=" & GetRnd(11), NavDidStr, "<li|<a ")
 			
         End If : TempRs.Close
     End If
-
+    '导航小类
     If PubNavSid <> "" Then
         TempRs.Open "Select * From [NavSmallClass] Where BigClassName='" & PubNavDid & "' And SmallClassName='" & PubNavSid & "'", Conn, 1, 1
         If Not TempRs.Eof Then
 		
+			'Url = Trim(Replace(TempRs("FolderName"),"\","/"))
+			'If Left(Url,1)<>"/" Then
+			'	Url = BigFolder & "/" & Url & "/"
+			'Else
+			'	Url = "/" & TempRs("FolderName") & "/"
+			'End If
+			'Url = Url & TempRs("FileName")
+			
+			'Url = "/" & BigFolder & TempRs("FolderName") & "/" & TempRs("FileName")
+            'Url = GetHandleUrl(Url)    '处理URL
+			
+			Url = GetNavUrl(TempRs("BigClassName"),TempRs("SmallClassName"))
 			
 			
 			
+			Call WebDebug(Url,"act=Nav&NavDid=" & TempRs("BigClassName") & "&NavSid=" & TempRs("SmallClassName"))'调试
+            NavSidStr = "<a " & AHref(Url, TempRs("SmallClassName"), TempRs("Target")) & ">" & TempRs("SmallClassName") & "</a>"
 			
-			
-			
-			
-			
-			
-
-			
-			b = GetNavUrl(TempRs("BigClassName"),TempRs("SmallClassName"))
-			
-			
-			
-			Call WebDebug(b,"act=Nav&NavDid=" & TempRs("BigClassName") & "&NavSid=" & TempRs("SmallClassName"))
-            k = "<a " & AHref(b, TempRs("SmallClassName"), TempRs("Target")) & ">" & TempRs("SmallClassName") & "</a>"
-			
-			k = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavSmall&Id=" & TempRs("Id") & "&n=" & GetRnd(11), k, "<li|<a ")
+			NavSidStr = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavSmall&Id=" & TempRs("Id") & "&n=" & GetRnd(11), NavSidStr, "<li|<a ")
         End If : TempRs.Close
     End If
 	
-
-	d = "/" & GetWebFolderName()
-    If PubProDid <> "" And j="" Then
+    '类别大类	
+	BigFolder = "/" & GetWebFolderName()
+    If PubProDid <> "" And NavDidStr="" Then
         TempRs.Open "Select * From [BigClass] Where BigClassName='" & PubProDid & "'", Conn, 1, 1
         If Not TempRs.Eof Then
 
+			'Url = "/" & GetWebFolderName() & TempRs("FolderName") & "/" & TempRs("FileName")
+            'Url = GetHandleUrl(Url)    '处理URL
+			Url = GetClassUrl(TempRs("BigClassName"),"","")
 			
-
-			b = GetClassUrl(TempRs("BigClassName"),"","")
+			Call WebDebug(Url,"act=CreateClass&ProDid=" & TempRs("BigClassName"))'调试
+            BigFolder = "/" & GetWebFolderName() & TempRs("FolderName") & "/"
+            DidStr = "<a " & AHref(Url, TempRs("BigClassName"), TempRs("Target")) & ">" & TempRs("BigClassName") & "</a>"
 			
-			Call WebDebug(b,"act=CreateClass&ProDid=" & TempRs("BigClassName"))
-            d = "/" & GetWebFolderName() & TempRs("FolderName") & "/"
-            l = "<a " & AHref(b, TempRs("BigClassName"), TempRs("Target")) & ">" & TempRs("BigClassName") & "</a>"
-			
-			l = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditBigClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), l, "<li|<a ")
+			DidStr = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditBigClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), DidStr, "<li|<a ")
         End If : TempRs.Close
     End If
-
+    '类别小类
     If PubProSid <> "" Then
         TempRs.Open "Select * From [SmallClass] Where BigClassName='" & PubProDid & "' And SmallClassName='" & PubProSid & "'", Conn, 1, 1
         If Not TempRs.Eof Then
+			'Url = Trim(Replace(TempRs("FolderName"),"\","/"))
+			'If Left(Url,1)<>"/" Then
+			'	Url = BigFolder & "/" & Url & "/"
+			'Else
+			'	Url = "/" & GetWebFolderName() & TempRs("FolderName") & "/"
+			'End If			
+			'Url = Url & TempRs("FileName")
+			
+			'Call Echo(Url,GetClassUrl(TempRs("BigClassName"), TempRs("SmallClassName"), ""))
+			'直接截取小类网址，唉，程序写复杂了，有点乱 20150107
+			
+			'Url = "/" & BigFolder & TempRs("FolderName") & "/" & TempRs("FileName")
+			
+            'Url = GetHandleUrl(Url)    '处理URL .
+			
+			Url = GetClassUrl(TempRs("BigClassName"), TempRs("SmallClassName"), "")
 			
 			
+			Call WebDebug(Url,"act=CreateClass&ProDid=" & TempRs("BigClassName") & "&ProSid=" & TempRs("SmallClassName"))'调试
+            SmallFolder = "/" & TempRs("FolderName") & "/"
+            SidStr = "<a " & AHref(Url, TempRs("SmallClassName"), TempRs("Target")) & ">" & TempRs("SmallClassName") & "</a>"
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
-			
-			b = GetClassUrl(TempRs("BigClassName"), TempRs("SmallClassName"), "")
-			
-			
-			Call WebDebug(b,"act=CreateClass&ProDid=" & TempRs("BigClassName") & "&ProSid=" & TempRs("SmallClassName"))
-            e = "/" & TempRs("FolderName") & "/"
-            m = "<a " & AHref(b, TempRs("SmallClassName"), TempRs("Target")) & ">" & TempRs("SmallClassName") & "</a>"
-			
-			
-			m = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), m, "<li|<a ")
+			SidStr = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), SidStr, "<li|<a ")
         End If : TempRs.Close
     End If
-
+    '类别子类
     If PubProTid <> "" Then
         TempRs.Open "Select * From [ThreeClass] Where BigClassName='" & PubProDid & "' And SmallClassName='" & PubProSid & "' And ThreeClassName='" & PubProTid & "'", Conn, 1, 1
         If Not TempRs.Eof Then
 		
 		
+			'Url = Trim(Replace(TempRs("FolderName"),"\","/"))
+			'If Left(Url,1)<>"/" Then
+			'	Url = RootFolder & SmallFolder & "/" & Url & "/"
+			'Else
+			'	Url = "/" & GetWebFolderName() & TempRs("FolderName") & "/"
+			'End If
+			'Url = Url & TempRs("FileName")
 			
+            'Url = "/" & BigFolder & SmallFolder & TempRs("FolderName") & "/" & TempRs("FileName")
+            'Url = GetHandleUrl(Url)    '处理URL
+			'Url = GetClassUrl(TempRs("BigClassName"), TempRs("SmallClassName"), TempRs("ThreeClassName"))
 			
+			Call WebDebug(Url,"act=CreateClass&ProDid=" & TempRs("BigClassName") & "&ProSid=" & TempRs("SmallClassName") & "&ProTid=" & TempRs("ThreeClassName"))'调试
+            TidStr = "<a " & AHref(Url, TempRs("ThreeClassName"), TempRs("Target")) & ">" & TempRs("ThreeClassName") & "</a>"
 			
-			
-			
-			
-			
-			
-
-
-			
-			
-			Call WebDebug(b,"act=CreateClass&ProDid=" & TempRs("BigClassName") & "&ProSid=" & TempRs("SmallClassName") & "&ProTid=" & TempRs("ThreeClassName"))
-            n = "<a " & AHref(b, TempRs("ThreeClassName"), TempRs("Target")) & ">" & TempRs("ThreeClassName") & "</a>"
-			
-			n = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), n, "<li|<a ")
+			TidStr = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), TidStr, "<li|<a ")
         End If : TempRs.Close
     End If
-	
+	'显示产品信息
 	If PubId <>"" Then
 		TempRs.Open"Select * From [Product] Where Id=" & PubId,Conn,1,1
 		If Not TempRs.Eof Then
-			b = TempRs("FileName")
-			If CheckMakeHtmlFile(b)=True Then
-				b = GetHandleUrl(TempRs("FileName"))
-				Call WebDebug(b, "act=CreateArticle&ID=" & TempRs("Id"))
+			Url = TempRs("FileName")
+			If CheckMakeHtmlFile(Url)=True Then
+				Url = GetHandleUrl(TempRs("FileName"))
+				Call WebDebug(Url, "act=CreateArticle&ID=" & TempRs("Id"))                      '调试
 			End If
-			o =  "<a " & AHref(b, TempRs("Title"), TempRs("Target")) & ">" & TempRs("Title") & "</a>"
-			o = DisplayOnlineED2(WEB_ADMINURL &"Product.Asp?act=ShowEditProduct&Id=" & TempRs("Id") & "&n=" & GetRnd(11), o, "<li|<a ")
+			ProStr =  "<a " & AHref(Url, TempRs("Title"), TempRs("Target")) & ">" & TempRs("Title") & "</a>"
+			ProStr = DisplayOnlineED2(WEB_ADMINURL &"Product.Asp?act=ShowEditProduct&Id=" & TempRs("Id") & "&n=" & GetRnd(11), ProStr, "<li|<a ")
 		End If : TempRs.Close
 	End If
 	
@@ -1175,13 +1175,13 @@ Function XY_Position(a)
 	If MainTitle<>"" Then
 		TempRs.Open"Select * From [MainInfo] Where ShowTitle='"& MainTitle &"'",Conn,1,1
 		If Not TempRs.Eof Then
-			b = GetMainInfoUrl(MainTitle)	
-			If CheckMakeHtmlFile(b)=True Then
-				b = GetHandleUrl(TempRs("FileName"))
-				Call WebDebug(b, "act=MainInfo&ID=" & TempRs("Id"))
+			Url = GetMainInfoUrl(MainTitle)	
+			If CheckMakeHtmlFile(Url)=True Then
+				Url = GetHandleUrl(TempRs("FileName"))
+				Call WebDebug(Url, "act=MainInfo&ID=" & TempRs("Id"))                      '调试
 			End If
-			q =   "[-|_]" & "<a " & AHref(b, TempRs("ShowTitle"), TempRs("Target")) & ">" & TempRs("ShowTitle") & "</a>"
-			q = DisplayOnlineED2(WEB_ADMINURL &"MainInfo.Asp?act=ShowEdit&Id=" & TempRs("Id") & "&n=" & GetRnd(11), q, "<li|<a ")
+			MainStr =   "[-|_]" & "<a " & AHref(Url, TempRs("ShowTitle"), TempRs("Target")) & ">" & TempRs("ShowTitle") & "</a>"
+			MainStr = DisplayOnlineED2(WEB_ADMINURL &"MainInfo.Asp?act=ShowEdit&Id=" & TempRs("Id") & "&n=" & GetRnd(11), MainStr, "<li|<a ")
 		End If : TempRs.Close
 		
 		
@@ -1189,686 +1189,686 @@ Function XY_Position(a)
 	
 	
 	
-	c = j & "[-|_]" & k & "[-|_]" & l & "[-|_]" & m & "[-|_]" & n & "[-|_]" & o & q
-	
-    XY_Position = i & f & InAfterToBeforeGetArray(c,g, f)
+	C = NavDidStr & "[-|_]" & NavSidStr & "[-|_]" & DidStr & "[-|_]" & SidStr & "[-|_]" & TidStr & "[-|_]" & ProStr & MainStr
+	'Call Eerr("C",C)
+    XY_Position = HomeStr & Delimiter & InAfterToBeforeGetArray(C,nDirectory, Delimiter)
 End Function
-
-
-Function InAfterToBeforeGetArray(a, ByVal b, c)
-	Dim d,e,f,g
-	d=Split(a,"[-|_]")
-	For e = Ubound(d) To 0 Step - 1	
-		f = d(e)
-		If f <>"" Then
-			If g<>"" Then f = f & c
-			g = f & g
-			b=b-1
-			If b<=0 Then Exit For
+'分割后从后向前摘取指定数组值 Intercept(截取数) AfterAdditionalStr(前追加内容)
+'例：Call Echo("分割后从后向前摘取指定数组值",InAfterToBeforeGetArray("a[-|_]b[-|_]c[-|_]d[-|_]e[-|_]1[-|_]2[-|_]3[-|_]4",3))
+Function InAfterToBeforeGetArray(Content, ByVal nIntercept, AfterAdditionalStr)
+	Dim SplStr,I,S,C
+	SplStr=Split(Content,"[-|_]")
+	For I = Ubound(SplStr) To 0 Step - 1	
+		S = SplStr(I)
+		If S <>"" Then
+			If C<>"" Then S = S & AfterAdditionalStr
+			C = S & C
+			nIntercept=nIntercept-1
+			If nIntercept<=0 Then Exit For
 		End If
 	Next
-	InAfterToBeforeGetArray = g
+	InAfterToBeforeGetArray = C
 End Function
 
 
-
-Function XY_GetNavParam(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim i,j
-	i = RParam(a,"TableName")
-	j = RParam(a,"FieldName")
-	XY_GetNavParam = GetNavParam(i,j,h)
+'获得导航参数
+Function XY_GetNavParam(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim TableName,FieldName
+	TableName = RParam(Action,"TableName")
+	FieldName = RParam(Action,"FieldName")
+	XY_GetNavParam = GetNavParam(TableName,FieldName,AddSql)
 End Function
-
-Function XY_GetClassParam(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim i,j
-	i = RParam(a,"TableName")
-	j = RParam(a,"FieldName")
-	XY_GetClassParam = GetClassParam(i,j,h)
+'获得导航参数
+Function XY_GetClassParam(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim TableName,FieldName
+	TableName = RParam(Action,"TableName")
+	FieldName = RParam(Action,"FieldName")
+	XY_GetClassParam = GetClassParam(TableName,FieldName,AddSql)
 End Function
-
-Function XY_GetArticleParam(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim i,j
-	i = RParam(a,"TableName")
-	j = RParam(a,"FieldName")
-	XY_GetArticleParam = GetArticleParam(i,j,h)
+'获得文章参数
+Function XY_GetArticleParam(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim TableName,FieldName
+	TableName = RParam(Action,"TableName")
+	FieldName = RParam(Action,"FieldName")
+	XY_GetArticleParam = GetArticleParam(TableName,FieldName,AddSql)
 End Function
-
-Function XY_GetMainParam(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim i,j
-	i = RParam(a,"TableName")
-	j = RParam(a,"FieldName")
-	XY_GetMainParam = GetMainParam(i,j,h)
+'获得文章参数
+Function XY_GetMainParam(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim TableName,FieldName
+	TableName = RParam(Action,"TableName")
+	FieldName = RParam(Action,"FieldName")
+	XY_GetMainParam = GetMainParam(TableName,FieldName,AddSql)
 End Function
-
-Function XY_GetDidAHrefUrl(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	XY_GetDidAHrefUrl = GetBigClassFileName(b)
+'获得大类链接
+Function XY_GetDidAHrefUrl(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	XY_GetDidAHrefUrl = GetBigClassFileName(Did)
 End Function
-
-Function XY_GetSidAHrefUrl(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	XY_GetSidAHrefUrl = GetSmallClassFileName(b,c)
+'获得子类链接
+Function XY_GetSidAHrefUrl(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	XY_GetSidAHrefUrl = GetSmallClassFileName(Did,Sid)
 End Function
-
-Function XY_GetTidAHrefUrl(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	XY_GetTidAHrefUrl = GetThreeClassFileName(b,c,d)
+'获得子类链接
+Function XY_GetTidAHrefUrl(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	XY_GetTidAHrefUrl = GetThreeClassFileName(Did,Sid,Tid)
 End Function
-
-Function XY_GetProductUrl(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim i
-	If e<>"" Then i = "And Title='"& e &"'"
-	i = GetWhereAnd(GetDidSidTidSQl(b,c,d),i)
-	i = GetWhereAnd(i,h)
+'获得产品链接
+Function XY_GetProductUrl(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim Sql
+	If Title<>"" Then Sql = "And Title='"& Title &"'"
+	Sql = GetWhereAnd(GetDidSidTidSQl(Did,Sid,Tid),Sql)
+	Sql = GetWhereAnd(Sql,AddSql)
+	'Call Eerr("Sql", Sql)
 	
-	
-    TempRs.Open "Select * From [Product] " & i, Conn, 1, 1
+    TempRs.Open "Select * From [Product] " & Sql, Conn, 1, 1
     If Not TempRs.Eof Then
         XY_GetProductUrl = GetHandleUrl(TempRs("FileName"))
-		Call WebDebug(XY_GetProductUrl,"act=CreateArticle&ID=" & TempRs("Id") )
+		Call WebDebug(XY_GetProductUrl,"act=CreateArticle&ID=" & TempRs("Id") )'调试
     End If : TempRs.Close
 End Function
-
-Function XY_GetNavUrl(a)
-	Dim b, c, d
-	b = RParam(a,"Did")
-	c = RParam(a,"Sid")
-	
-	
-	d = GetNavUrl(b,c)
-	XY_GetNavUrl = d
-	
+'大类导航与小类导航链接
+Function XY_GetNavUrl(Action)
+	Dim Did, Sid, Url
+	Did = RParam(Action,"Did")
+	Sid = RParam(Action,"Sid")
+	'Call Echo("Did",Did)
+	'Call Echo("Sid",Sid)
+	Url = GetNavUrl(Did,Sid)
+	XY_GetNavUrl = Url
+	'Call Echo("Url",Url)
 End Function
-
-Function XY_NavDidExists(a)
-	dim b,c,d
-	b = RParam(a,"navdid")
-	c = RParam(a,"valueStr")
-	d = RParam(a,"defaultStr")
-	
-	if b=pubNavDid then
-		XY_NavDidExists=c
+'判断导航大类是否为当前
+Function XY_NavDidExists(Action)
+	dim navDid,valueStr,defaultStr
+	navDid = RParam(Action,"navdid")
+	valueStr = RParam(Action,"valueStr")
+	defaultStr = RParam(Action,"defaultStr")
+	'call echo(navdid,pubNavDid)
+	if navdid=pubNavDid then
+		XY_NavDidExists=valueStr
 	else
-		XY_NavDidExists=d	
+		XY_NavDidExists=defaultStr	
 	end if
 
 end Function
-
-Function XY_SiteMap(a)
-	Dim b,c, d
-	c = RParam(a,"NavAddSql")
-	d = RParam(a,"ClassAddSql")
-	b = RParam(a,"class")
-	
-	
-	
-	XY_SiteMap = SiteMap(a)			
+'显示网站地图
+Function XY_SiteMap(Action)
+	Dim ClassName,NavAddSql, ClassAddSql
+	NavAddSql = RParam(Action,"NavAddSql")
+	ClassAddSql = RParam(Action,"ClassAddSql")
+	ClassName = RParam(Action,"class")
+	'Call Echo("NavAddSql",NavAddSql)
+	'Call Echo("ClassAddSql",ClassAddSql)
+	'XY_SiteMap = SiteMap(ClassName, NavAddSql, ClassAddSql)			'第一种，废弃掉
+	XY_SiteMap = SiteMap(Action)			'新的
 End Function
+'AddSql = HandleInModule(AddSql,"end")
 
-
-
-Function XY_QQLIStyleListShow(a)
-	Dim b,c,d,e,f,g,h,i,j
-	i = RParam(a,"ShowQQPhoto")
+'浮动QQ列表显示
+Function XY_QQLIStyleListShow(Action)
+	Dim SplQQName,SplQQNumber,QQ,QQName,I,S,C,ShowQQPhoto,QQStyle
+	ShowQQPhoto = RParam(Action,"ShowQQPhoto")
 	Rs.Open "Select * From [QQMSN]", Conn, 1, 1
 	If Not Rs.Eof Then
-		b = Split(Rs("QQName"), "|")
-		c = Split(Rs("QQNumber"), "|")
-		j = Rs("QQStyle")
-		
-		For f = 0 To UBound(c)
-			d=c(f) : e=b(f)
-			If e <> "" Then
-				
-				g = "<li"& SetHtmlParam(a,"liclass") &">"
-				If i = "true" Then
-					e="<img src='http://wpa.qq.com/pa?p=1:"& d &":"& j &"' align='absmiddle'>" & e
+		SplQQName = Split(Rs("QQName"), "|")
+		SplQQNumber = Split(Rs("QQNumber"), "|")
+		QQStyle = Rs("QQStyle")
+		'Call Echo(Rs("QQNumber"),Rs("QQName"))
+		For I = 0 To UBound(SplQQNumber)
+			QQ=SplQQNumber(I) : QQName=SplQQName(I)
+			If QQName <> "" Then
+				'Call Echo("QQName",QQName)
+				S = "<li"& SetHtmlParam(Action,"liclass") &">"
+				If ShowQQPhoto = "true" Then
+					QQName="<img src='http://wpa.qq.com/pa?p=1:"& QQ &":"& QQStyle &"' align='absmiddle'>" & QQName
 				End If
-				h=h & g &"<a target=blank href='tencent://message/?uin=" & d & "&Site=com&Menu=yes' "& SetHtmlParam(a,"aclass") &">"& e &"</a></li>" & vbCrlf
+				C=C & S &"<a target=blank href='tencent://message/?uin=" & QQ & "&Site=com&Menu=yes' "& SetHtmlParam(Action,"aclass") &">"& QQName &"</a></li>" & vbCrlf
 			End If
 		Next
 	End If : Rs.Close
-	
-	XY_QQLIStyleListShow = h
+	'Call Echo("C",C)
+	XY_QQLIStyleListShow = C
 End Function
-
-Function XY_OnLineQQPopup(a)
-	Dim b, c, d,e,f,g,h,i,j
-	Dim OnQQDialogue		
-	Dim OnQQPopup			
+'在线QQ弹窗 20150109
+Function XY_OnLineQQPopup(Action)
+	Dim QQList, QQNameList, SplQQ,SplName,Site,I,QQ,QQName,C
+	Dim OnQQDialogue		'启用QQ对话
+	Dim OnQQPopup			'启用QQ弹窗
 	
-	b = RParam(a,"QQList")
-	c = RParam(a,"QQNameList")
-	f = RParam(a,"Site")
-	OnQQDialogue = RParam(a,"OnQQDialogue")
-	OnQQPopup = RParam(a,"OnQQPopup")
+	QQList = RParam(Action,"QQList")
+	QQNameList = RParam(Action,"QQNameList")
+	Site = RParam(Action,"Site")
+	OnQQDialogue = RParam(Action,"OnQQDialogue")
+	OnQQPopup = RParam(Action,"OnQQPopup")
+	'Call Echo("OnQQDialogue",OnQQDialogue)
+	'Call Echo("OnQQPopup",OnQQPopup)
 	
-	
-	
-	b=Replace(b, "，",",")
-	c=Replace(c, "，",",")
-	d = Split(b, ",")
-	e = Split(c, ",")
-	For g=0 To Ubound(d)
-		h = d(g)
-		i = ""
-		If Ubound(e)>=g Then
-			i = e(g)
+	QQList=Replace(QQList, "，",",")
+	QQNameList=Replace(QQNameList, "，",",")
+	SplQQ = Split(QQList, ",")
+	SplName = Split(QQNameList, ",")
+	For I=0 To Ubound(SplQQ)
+		QQ = SplQQ(I)
+		QQName = ""
+		If Ubound(SplName)>=I Then
+			QQName = SplName(I)
 		End If
 		If OnQQDialogue="true" Then
-			j=j & "window.location.href='tencent://message/?uin="& h &"&Site="& f &"&Menu=yes';" & vbCrlf
+			C=C & "window.location.href='tencent://message/?uin="& QQ &"&Site="& Site &"&Menu=yes';" & vbCrlf
 		End If
 		If OnQQPopup = "true" Then
-			j=j & "window.location.href='tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin="& h &"';" & vbCrlf
+			C=C & "window.location.href='tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin="& QQ &"';" & vbCrlf
 		End If
 	Next
-	If j <>"" Then
-		j="<script>"& j &"</script>"
+	If C <>"" Then
+		C="<script>"& C &"</script>"
 	End If
-	XY_OnLineQQPopup = j
+	XY_OnLineQQPopup = C
 End Function
-
-Function XY_GetOnLineQQUrl(a)
-	Dim b,c,d,e,f
-	b = RParam(a,"Title")
-	c = RParam(a,"QQList")
-	c = Replace(Replace(Replace(c," ",""),",","|"),"，","|")
-	d = RParam(a,"AutoAdd")
-	e = RParam(a,"IsOnlineChat")
-	f = RParam(a,"IsAddFriend")
+'批量点击在线QQ网址
+Function XY_GetOnLineQQUrl(Action)
+	Dim Title,QQList,AutoAdd,IsOnlineChat,IsAddFriend
+	Title = RParam(Action,"Title")
+	QQList = RParam(Action,"QQList")
+	QQList = Replace(Replace(Replace(QQList," ",""),",","|"),"，","|")
+	AutoAdd = RParam(Action,"AutoAdd")
+	IsOnlineChat = RParam(Action,"IsOnlineChat")
+	IsAddFriend = RParam(Action,"IsAddFriend")
 	
-	Rs.Open"Select * From [OnLineQQ] Where Title='"& b &"'",Conn,1,3
+	Rs.Open"Select * From [OnLineQQ] Where Title='"& Title &"'",Conn,1,3
 	If Not Rs.Eof Then
 		XY_GetOnLineQQUrl = "javascript:OnLineQQ('"& Rs("QQ") &"',"& LCase(Rs("IsOnlineChat")) &", "& LCase(Rs("IsAddFriend")) &");"
-	ElseIf d="true" Then
+	ElseIf AutoAdd="true" Then
 		Rs.AddNew
-		Rs("Title") = b
-		Rs("QQ") = c
-		Rs("IsOnlineChat") = IIF(e="true",True,False)
-		Rs("IsAddFriend") = IIF(f="true",True,False)
+		Rs("Title") = Title
+		Rs("QQ") = QQList
+		Rs("IsOnlineChat") = IIF(IsOnlineChat="true",True,False)
+		Rs("IsAddFriend") = IIF(IsAddFriend="true",True,False)
 		Rs.Update
-		XY_GetOnLineQQUrl = "javascript:OnLineQQ('"& c &"',"& e &", "& f &");"
+		XY_GetOnLineQQUrl = "javascript:OnLineQQ('"& QQList &"',"& IsOnlineChat &", "& IsAddFriend &");"
 	End If:Rs.Close
 	XY_GetOnLineQQUrl = XY_GetOnLineQQUrl & """" & getControlStr(""& adminDir &"OnLineQQManage.Asp") & """"
 		
 	
 End Function
 
-
-Function XY_ShowPhotoList(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim i,j, k,l,m,n,o,p,q,r,s,t,u,v,w,x
-	Call XY_AutoAddHandle(a)			
+'图片列表
+Function XY_ShowPhotoList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim ULClass,Sql, SplTypeStr,I,J,S,C,AYes,Url,SplStartStr,SplEndStr,ImgFile,AStr,AUrl,ImgStr,AImg
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
 	
-	k = RParam(a,"SplTypeStr")
-	p = LCase(RParam(a,"AYes"))
-	x = LCase(RParam(a,"AImg"))
-	r = LCase(RParam(a,"SplStartStr"))
-	s = LCase(RParam(a,"SplEndStr"))
-	j = "Select * From [Product] Where BigClassName='"& b &"'"
-	j = GetWhereAnd(j,h)
-	
-	Rs.Open j,Conn,1,1
-	For l=1 To f
+	SplTypeStr = RParam(Action,"SplTypeStr")
+	AYes = LCase(RParam(Action,"AYes"))
+	AImg = LCase(RParam(Action,"AImg"))
+	SplStartStr = LCase(RParam(Action,"SplStartStr"))
+	SplEndStr = LCase(RParam(Action,"SplEndStr"))
+	Sql = "Select * From [Product] Where BigClassName='"& Did &"'"
+	Sql = GetWhereAnd(Sql,AddSql)
+	'Call Echo("Sql",Sql)
+	Rs.Open Sql,Conn,1,1
+	For I=1 To TopNumb
 		If Rs.Eof Then Exit For
 		
-		q = Rs("FileName")
-		If CheckMakeHtmlFile(q)=True Then
-			q = GetHandleUrl( Rs("FileName") )
-			Call WebDebug(q,"act=CreateArticle&ID=" & Rs("Id") )
+		Url = Rs("FileName")
+		If CheckMakeHtmlFile(Url)=True Then
+			Url = GetHandleUrl( Rs("FileName") )
+			Call WebDebug(Url,"act=CreateArticle&ID=" & Rs("Id") )'调试
 		End If
 		
-		t = IIF(Rs("SmallFiles")<>"",Rs("SmallFiles"),Rs("BigFiles"))
-		n = ""
-		If x = "true" Then
-			n = "<img src='"& t &"'" & SetHtmlParam(a,"imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") &">"
+		ImgFile = IIF(Rs("SmallFiles")<>"",Rs("SmallFiles"),Rs("BigFiles"))
+		S = ""
+		If AImg = "true" Then
+			S = "<img src='"& ImgFile &"'" & SetHtmlParam(Action,"imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") &">"
 		End If
-		If p="true" Then
-			n="<a href='"& q &"'" & SetHtmlParam(a,"target|title|alt|id|class") &">"& n &"</a>"
+		If AYes="true" Then
+			S="<a href='"& Url &"'" & SetHtmlParam(Action,"target|title|alt|id|class") &">"& S &"</a>"
 		End If
-		n = r & n & k & s & vbCrlf
-		 	u = "<a src='" & Rs("BigFiles") & "'" & SetHtmlParam(a, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
-			v = AHref(q, Rs("Title"), Rs("Target")) & SetHtmlParam(a, "aclass")
-			w = "<img src='" & t & "'" & SetHtmlParam(a, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
+		S = SplStartStr & S & SplTypeStr & SplEndStr & vbCrlf
+		 	AStr = "<a src='" & Rs("BigFiles") & "'" & SetHtmlParam(Action, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
+			AUrl = AHref(Url, Rs("Title"), Rs("Target")) & SetHtmlParam(Action, "aclass")
+			ImgStr = "<img src='" & ImgFile & "'" & SetHtmlParam(Action, "imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") & ">"
 			
 			
-			
-			n = Replace(n,"[$i$]",l)
-			n = Replace(n,"[$i-1$]",l-1)
-			
-			For m=1 To 6
-				n = ReplaceValueParam(n,"ni",l)								
-				n = ReplaceValueParam(n,"编号-1",l-1)								
-				n = ReplaceValueParam(n,"编号",l)								
-				n = ReplaceValueParam(n,"title",Rs("Title"))
-				n = ReplaceValueParam(n,"showtitle",ShowTitle)
-				n = ReplaceValueParam(n,"adddatetime",Rs("AddDateTime"))
-				n = ReplaceValueParam(n,"imgfile",t)
-				n = ReplaceValueParam(n,"imgurl",t)
-				n = ReplaceValueParam(n,"url",q)
-				n = ReplaceValueParam(n,"aurl",v)
-				n = ReplaceValueParam(n,"astr",u)
-				n = ReplaceValueParam(n,"description",Rs("WebDescription"))
-				n = ReplaceValueParam(n,"content",Rs("Content"))
-				n = ReplaceValueParam(n,"price",Rs("Price"))
-				n = ReplaceValueParam(n,"author",Rs("Author"))
+			'对i特殊处理，兼容之前设置
+			S = Replace(S,"[$i$]",I)
+			S = Replace(S,"[$i-1$]",I-1)
+			'执行6次，争取处理全部标签			
+			For J=1 To 6
+				S = ReplaceValueParam(S,"ni",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+				S = ReplaceValueParam(S,"编号-1",I-1)								'不对为i，因为i会与imgurl冲突 [$i$]
+				S = ReplaceValueParam(S,"编号",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+				S = ReplaceValueParam(S,"title",Rs("Title"))
+				S = ReplaceValueParam(S,"showtitle",ShowTitle)
+				S = ReplaceValueParam(S,"adddatetime",Rs("AddDateTime"))
+				S = ReplaceValueParam(S,"imgfile",ImgFile)
+				S = ReplaceValueParam(S,"imgurl",ImgFile)
+				S = ReplaceValueParam(S,"url",url)
+				S = ReplaceValueParam(S,"aurl",AUrl)
+				S = ReplaceValueParam(S,"astr",AStr)
+				S = ReplaceValueParam(S,"description",Rs("WebDescription"))
+				S = ReplaceValueParam(S,"content",Rs("Content"))
+				S = ReplaceValueParam(S,"price",Rs("Price"))
+				S = ReplaceValueParam(S,"author",Rs("Author"))
 			Next
+			'加控制
+			S = DisplayOnlineEditDialog(""& adminDir &"Product.Asp?act=ShowEditProduct&Id=" & Rs("Id") & "&n=" & GetRnd(11), S)
 			
-			n = DisplayOnlineEditDialog(""& adminDir &"Product.Asp?act=ShowEditProduct&Id=" & Rs("Id") & "&n=" & GetRnd(11), n)
-			
-		o=o & n
+		C=C & S
 	Rs.MoveNext:Next:Rs.Close
-	XY_ShowPhotoList=o
+	XY_ShowPhotoList=C
 End Function
-
-Sub GetTemplateSplit(a,b,c,d)
-	Dim e,f
-	
-	e = "<!--#DialogStart#-->" : f = "<!--#DialogStartEnd#-->"
-	If InStr(a,e)>0 And InStr(a,f)>0 Then
-		b = StrCut(a,e,f,2)
+'获得模板分割字段 Call GetTemplateSplit(Content,DialogStart,DialogSplit,DialogEnd)
+Sub GetTemplateSplit(Content,DialogStart,DialogSplit,DialogEnd)
+	Dim StartStr,EndStr
+	'面板开始段
+	StartStr = "<!--#DialogStart#-->" : EndStr = "<!--#DialogStartEnd#-->"
+	If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then
+		DialogStart = StrCut(Content,StartStr,EndStr,2)
 	End If
-	
-	e = "<!--#TemplateSplitStart#-->" : f = "<!--#TemplateSplitEnd#-->"
-	If InStr(a,e)>0 And InStr(a,f)>0 Then
-		c = StrCut(a,e,f,2)
+	'分割字符内容
+	StartStr = "<!--#TemplateSplitStart#-->" : EndStr = "<!--#TemplateSplitEnd#-->"
+	If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then
+		DialogSplit = StrCut(Content,StartStr,EndStr,2)
 	End If
-	
-	e = "<!--#DialogEnd#-->" : f = "<!--#DialogEndEnd#-->"
-	If InStr(a,e)>0 And InStr(a,f)>0 Then
-		d = StrCut(a,e,f,2)
+	'面板结束段
+	StartStr = "<!--#DialogEnd#-->" : EndStr = "<!--#DialogEndEnd#-->"
+	If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then
+		DialogEnd = StrCut(Content,StartStr,EndStr,2)
 	End If
 End Sub
-
-Function XY_ShowAppointProductList(a)
-	Dim b,c,d,e,f,g,h,i
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Call XY_AutoAddHandle(a)			
+'显示批量模板样式展示列表
+Function XY_ShowAppointProductList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
 	
-	Dim j, k,l,m,n,o,p,q,r,s,t,u,v,w,x
-	Dim y,z,aa
+	Dim Sql, I,S,C,AYes,Url,ImgStr,ImgPath,AStr,AUrl,TemplateId,Content,DialogStart,DialogSplit,DialogEnd
+	Dim ShowTitle,Price,WebDescription
 	
-	t = RParam(a,"TemplateId")
-	u = ReadTemplateSource(t)
-	Call GetTemplateSplit(u,v,w,x)		
+	TemplateId = RParam(Action,"TemplateId")
+	Content = ReadTemplateSource(TemplateId)
+	Call GetTemplateSplit(Content,DialogStart,DialogSplit,DialogEnd)		'获得模板分割字段
 	
-	j = "Select * From [Product] Where BigClassName='"& b &"'"
-	j = GetWhereAnd(j,h)
-	Rs.Open j,Conn,1,1
-	For k=1 To f
+	Sql = "Select * From [Product] Where BigClassName='"& Did &"'"
+	Sql = GetWhereAnd(Sql,AddSql)
+	Rs.Open Sql,Conn,1,1
+	For I=1 To TopNumb
 		If Rs.Eof Then Exit For
 		
-		o = Rs("FileName")
-		If CheckMakeHtmlFile(o)=True Then
-		o = GetHandleUrl( Rs("FileName") )
-			Call WebDebug(o,"act=CreateArticle&ID=" & Rs("Id") )
+		Url = Rs("FileName")
+		If CheckMakeHtmlFile(Url)=True Then
+		Url = GetHandleUrl( Rs("FileName") )
+			Call WebDebug(Url,"act=CreateArticle&ID=" & Rs("Id") )'调试
 		End If
 		
-		q = IIF(IsNul(Rs("SmallFiles")),Rs("BigFiles"),Rs("SmallFiles"))
-		p = "<img src='"& q &"'" & SetHtmlParam(a,"imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") &">"
+		ImgPath = IIF(IsNul(Rs("SmallFiles")),Rs("BigFiles"),Rs("SmallFiles"))
+		ImgStr = "<img src='"& ImgPath &"'" & SetHtmlParam(Action,"imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") &">"
 		
-		r = "<a src='"& Rs("BigFiles") &"'" & SetHtmlParam(a,"imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") &">"
-        y = CutStr(Rs("Title"), g, "... ")
-        y = FontColorFontB(y, Rs("FontB"), Rs("FontColor"))		
-		r = "<a " & AHref(o, Rs("Title"), Rs("Target")) & SetHtmlParam(a,"aclass") &">" & y & "</a>" & vbCrLf
-		s = AHref(o, Rs("Title"), Rs("Target")) & SetHtmlParam(a,"aclass")
+		AStr = "<a src='"& Rs("BigFiles") &"'" & SetHtmlParam(Action,"imgtitle|imgalt|imgid|imgclass|imgwidth|imgheight") &">"
+        ShowTitle = CutStr(Rs("Title"), CutStrNumb, "... ")
+        ShowTitle = FontColorFontB(ShowTitle, Rs("FontB"), Rs("FontColor"))		
+		AStr = "<a " & AHref(Url, Rs("Title"), Rs("Target")) & SetHtmlParam(Action,"aclass") &">" & ShowTitle & "</a>" & vbCrLf
+		AUrl = AHref(Url, Rs("Title"), Rs("Target")) & SetHtmlParam(Action,"aclass")
 		
-		l = Replace(w,"[$title$]",y)
-		z = IIF(isNul(Rs("Price")),0,Rs("Price"))
-		l = Replace(l,"[$price$]",z)
-		l = Replace(l,"[$url$]",s)
-		aa = IIF(isNul(Rs("WebDescription")),"",Rs("WebDescription"))
-		l = Replace(l,"[$productabout$]",aa)
-		l = Replace(l,"[$showimages$]",p)
-		l = Replace(l,"[$imgfile$]",q)
-		l = Replace(l,"[$imgurl$]",q)
+		S = Replace(DialogSplit,"[$title$]",ShowTitle)
+		Price = IIF(isNul(Rs("Price")),0,Rs("Price"))
+		S = Replace(S,"[$price$]",Price)
+		S = Replace(S,"[$url$]",AUrl)
+		WebDescription = IIF(isNul(Rs("WebDescription")),"",Rs("WebDescription"))
+		S = Replace(S,"[$productabout$]",WebDescription)
+		S = Replace(S,"[$showimages$]",ImgStr)
+		S = Replace(S,"[$imgfile$]",ImgPath)
+		S = Replace(S,"[$imgurl$]",ImgPath)
 		
-		m=m & l
+		C=C & S
 	Rs.MoveNext:Next:Rs.Close
-	XY_ShowAppointProductList= v & m & x
+	XY_ShowAppointProductList= DialogStart & C & DialogEnd
 End Function
-
-Function XY_zoomImage(a)
-	dim b,c, d, e, f, g, h, i,j,k,l
-	b = RParam(a,"imageFilePath")
-	
-	if checkFile(b)=false then
+'图片缩放(20151218)
+Function XY_zoomImage(Action)
+	dim imageFilePath,imgWidth, imgHeight, nSetWidth, nSetHeight, nLeft, nTop, sType,s,nWrapWidth,nWrapHeight
+	imageFilePath = RParam(Action,"imageFilePath") 
+	'图片不存在则退出
+	if checkFile(imageFilePath)=false then
 		exit function
 	end if
-	call getImageWidthHeight(b,c,d)			
+	call getImageWidthHeight(imageFilePath,imgWidth,imgHeight)			'获得图片宽高
 	
-	e = RParam(a,"nSetWidth")
-	f = RParam(a,"nSetHeight")
-	g = RParam(a,"nLeft")
-	h = RParam(a,"nTop")
+	nSetWidth = RParam(Action,"nSetWidth")
+	nSetHeight = RParam(Action,"nSetHeight")
+	nLeft = RParam(Action,"nLeft")
+	nTop = RParam(Action,"nTop")
 	
-	k = RParam(a,"nWrapWidth")					
-	l = RParam(a,"nWrapHeight") 					
+	nWrapWidth = RParam(Action,"nWrapWidth")					'包宽
+	nWrapHeight = RParam(Action,"nWrapHeight") 					'包高
 	
-	i = RParam(a,"sType")
-	if i<>"" then i="|"& i &"|"
+	sType = RParam(Action,"sType")
+	if sType<>"" then sType="|"& sType &"|"
 	
+	'call echo("nSetWidth",nSetWidth)
+	'call echo("nSetHeight",nSetHeight)
 	
-	
-	
-	j=zoomImage(k,l,c, d, e, f, g, h, i)
-	XY_zoomImage=j
+	s=zoomImage(nWrapWidth,nWrapHeight,imgWidth, imgHeight, nSetWidth, nSetHeight, nLeft, nTop, sType)
+	XY_zoomImage=s'imageFilePath & "("& imgWidth &","& imgHeight &")"
 end function
-
-Function XY_PopularSearchesList(a)
-	Dim b,c,d,e,f,g,h,i
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim j
-	j = RParam(a,"SplTypeStr")
-	XY_PopularSearchesList = PopularSearchesList(a,f,j,h)
+'热门搜索列表
+Function XY_PopularSearchesList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim SplTypeStr
+	SplTypeStr = RParam(Action,"SplTypeStr")
+	XY_PopularSearchesList = PopularSearchesList(Action,TopNumb,SplTypeStr,AddSql)
 End Function
-
-Function XY_SmallClassList(a)
-	Dim b,c,d,e,f,g,h,i
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Call XY_AutoAddHandle(a)			
+'显示类别小类列表
+Function XY_SmallClassList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
 	
-	Dim j,k
-	j=RParam(a,"LiClass")
-	k=RParam(a,"AClass")
+	Dim LiClass,AClass
+	LiClass=RParam(Action,"LiClass")
+	AClass=RParam(Action,"AClass")
+	'Call Echo(Action & "LiClass",LiClass)
+	'Call Echo("AClass",AClass)
+	Dim S,C
+	S = SmallClassList(Did, LiClass, AClass, AddSql)
 	
-	
-	Dim l,m
-	l = SmallClassList(b, j, k, h)
-	
-	i = RParam(a,"ULClass")
-	If i<>"" Then
-		m = vbCrlf & "<ul class='"& i &"'>"
+	ULClass = RParam(Action,"ULClass")
+	If ULClass<>"" Then
+		C = vbCrlf & "<ul class='"& ULClass &"'>"
 	Else
-		m = vbCrlf & "<ul>"
+		C = vbCrlf & "<ul>"
 	End If
 	
-	m = m & vbCrlf & l & vbCrlf & "</ul>" & vbCrlf	
-	XY_SmallClassList = m
+	C = C & vbCrlf & S & vbCrlf & "</ul>" & vbCrlf	
+	XY_SmallClassList = C
 End Function
-
-Function XY_CustomSmallClassList(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)		
-	Call XY_AutoAddHandle(a)			
-	Dim i,j,k,l,m,n,o,p,q,r,s
-	j = GetDefaultValue(a)
-	i = "Select * From [SmallClass]" & GetDidSidTidSQl(b,"","")
-	i =  GetWhereAnd(i,h)		
-	Rs.Open i,Conn,1,1
-	For k = 1 To f
+'自定义显示小类别类列表
+Function XY_CustomSmallClassList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)		'获得这么函数参数
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
+	Dim Sql,Default,I,S,C,StartStr,EndStr,Url,ShowTitle,DateTime,ImgFile
+	Default = GetDefaultValue(Action)
+	Sql = "Select * From [SmallClass]" & GetDidSidTidSQl(Did,"","")
+	Sql =  GetWhereAnd(Sql,AddSql)		
+	Rs.Open Sql,Conn,1,1
+	For I = 1 To TopNumb
 		If Rs.Eof Then Exit For
-		n="[list-"& k &"]" : o="[/list-"& k &"]"
-		
-		If InStr(j,n)=False Then
-			n="[list]" : o="[/list]"
+		StartStr="[list-"& I &"]" : EndStr="[/list-"& I &"]"
+		'没有则用默认
+		If InStr(Default,StartStr)=False Then
+			StartStr="[list]" : EndStr="[/list]"
 		End If
-		If InStr(j,n)>0 And InStr(j,o)>0 Then
-			l = StrCut(j,n,o,2)
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			S = StrCut(Default,StartStr,EndStr,2)
 						
-			l = Replace(l,"[$bigclassname$]",Rs("BigClassName"))
-			l = Replace(l,"[$smallclassname$]",Rs("SmallClassName"))
+			S = Replace(S,"[$bigclassname$]",Rs("BigClassName"))
+			S = Replace(S,"[$smallclassname$]",Rs("SmallClassName"))
 			
 			
-			p = GetSmallClassFileName( Rs("BigClassName"), Rs("SmallClassName") )
-			Call WebDebug(p,"act=CreateClass&ProDid=" & Rs("BigClassName") & "&ProSid=" & Rs("SmallClassName") & "&page=1")
-			l = Replace(l,"[$url$]",p)
+			Url = GetSmallClassFileName( Rs("BigClassName"), Rs("SmallClassName") )
+			Call WebDebug(Url,"act=CreateClass&ProDid=" & Rs("BigClassName") & "&ProSid=" & Rs("SmallClassName") & "&page=1")'调试
+			S = Replace(S,"[$url$]",Url)
 						
-			
-			n="[list-"& k &" startdialog]" : o="[/list-"& k &" startdialog]"
-			If InStr(j,n)>0 And InStr(j,o)>0 Then
-				l = StrCut(j,n,o,2) & l
+			'开始位置加Dialog内容
+			StartStr="[list-"& I &" startdialog]" : EndStr="[/list-"& I &" startdialog]"
+			If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+				S = StrCut(Default,StartStr,EndStr,2) & S
 			End If
-			
-			n="[list-"& k &" enddialog]" : o="[/list-"& k &" enddialog]"
-			If InStr(j,n)>0 And InStr(j,o)>0 Then
-				l = l & StrCut(j,n,o,2)
+			'结束位置加Dialog内容
+			StartStr="[list-"& I &" enddialog]" : EndStr="[/list-"& I &" enddialog]"
+			If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+				S = S & StrCut(Default,StartStr,EndStr,2)
 			End If			
-			m = m & l
+			C = C & S
 		End If	
 	Rs.MoveNext:Next:Rs.Close
 	
-	
-	n="[dialog start]" : o="[/dialog start]"
-	If InStr(j,n)>0 And InStr(j,o)>0 Then
-		m = StrCut(j,n,o,2) & m
+	'开始内容加Dialog内容
+	StartStr="[dialog start]" : EndStr="[/dialog start]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = StrCut(Default,StartStr,EndStr,2) & C
+	End If
+	'结束内容加Dialog内容
+	StartStr="[dialog end]" : EndStr="[/dialog end]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = C &  StrCut(Default,StartStr,EndStr,2)
 	End If
 	
-	n="[dialog end]" : o="[/dialog end]"
-	If InStr(j,n)>0 And InStr(j,o)>0 Then
-		m = m &  StrCut(j,n,o,2)
-	End If
-	
-	XY_CustomSmallClassList = m
+	XY_CustomSmallClassList = C
 End Function
-
-Function XY_ThreeClassList(a)
-	Dim b,c,d,e,f,g,h,i
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Call XY_AutoAddHandle(a)			
-	Dim TidAType									
-	TidAType = RParam(a,"TidAType")	
+'显示类别子类列表
+Function XY_ThreeClassList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
+	Dim TidAType									'子类链接
+	TidAType = RParam(Action,"TidAType")	'子类链接
 	
-	Dim k,l
-	k=RParam(a,"ThreeLiCss"):l=RParam(a,"ThreeACss")
-	Dim m,n
+	Dim ThreeLiCss,ThreeACss
+	ThreeLiCss=RParam(Action,"ThreeLiCss"):ThreeACss=RParam(Action,"ThreeACss")
+	Dim S,C
 	
-	m = ThreeClassList(b,k, l, TidAType, h)
+	S = ThreeClassList(Did,ThreeLiCss, ThreeACss, TidAType, AddSql)
 	
-	i = RParam(a,"ULClass")
-	If i<>"" Then
-		n = vbCrlf & "<ul class='"& i &"'>"
+	ULClass = RParam(Action,"ULClass")
+	If ULClass<>"" Then
+		C = vbCrlf & "<ul class='"& ULClass &"'>"
 	Else
-		n = vbCrlf & "<ul>"
+		C = vbCrlf & "<ul>"
 	End If
 	
-	n = n & vbCrlf & m & vbCrlf & "</ul>" & vbCrlf	
-	XY_ThreeClassList = n
+	C = C & vbCrlf & S & vbCrlf & "</ul>" & vbCrlf	
+	XY_ThreeClassList = C
 End Function
 
-
-Function XY_RecommendNavigation(a)
-	Dim b,c,d,e,f,g,h,i,j
-	Dim k
-	Dim l,m,n,Content	
+'推荐导航，给内页左边使用 20150204
+Function XY_RecommendNavigation(Action)
+	Dim Id,SplStr,Splxx,I,S,C,Did,Url,UrlList
+	Dim UlClass
+	Dim Title,ShowTitle,AutoAdd,Content	
 	
-	h = PubNavDid
-	If h="" Then h=PubProDid
+	Did = PubNavDid
+	If Did="" Then Did=PubProDid
+	
+	'Call Echo("PubNavDid",PubNavDid)
+	'Call Echo("PubProDid",PubProDid)
+	'Call Echo("Did",Did)
 	
 	
+	UlClass = RParam(Action,"UlClass")	'子类链接
+	If UlClass <> "" Then UlClass = " class="""& UlClass &""""
 	
-	
-	
-	
-	k = RParam(a,"UlClass")	
-	If k <> "" Then k = " class="""& k &""""
-	
-	l = "推荐导航"
-	m = "推荐导航"
-	n = "true"
-	Content = ReadMainInfo(l)
+	Title = "推荐导航"
+	ShowTitle = "推荐导航"
+	AutoAdd = "true"
+	Content = ReadMainInfo(Title)
 	If Content="" Then
-		Content = GetDefaultValue(a)
-		
-		If LCase(n)="true" Then
-			Call AutoAddMainInfo(l,m,Content)
-			Conn.Execute("Update [MainInfo] Set DispalyEditor=False Where Title='"& l &"'")
+		Content = GetDefaultValue(Action)
+		'是否自动添加信息
+		If LCase(AutoAdd)="true" Then
+			Call AutoAddMainInfo(Title,ShowTitle,Content)
+			Conn.Execute("Update [MainInfo] Set DispalyEditor=False Where Title='"& Title &"'")
 		End If
 	End If
 	Content = TrimVbCrlf(Content)
-	c=Split(Content,vbCrlf)
-	For Each f In c
-		f = TrimVbCrlf(f)
-		If f<>"" Then
-			j = f
-			If InStr("，"& f &"，","，"& h &"，")>0 Then
+	SplStr=Split(Content,vbCrlf)
+	For Each S In SplStr
+		S = TrimVbCrlf(S)
+		If S<>"" Then
+			UrlList = S
+			If InStr("，"& S &"，","，"& Did &"，")>0 Then
 				Exit For
 			End If
 		End If
 	Next
-	
-	j=Replace(j,"," , "，")
-	j=Replace(Replace(j,"\，","【撇分号】"), "\|", "【撇分割】")
-	If j<>"" Then
-		c=Split(j,"，")
-		For Each f In c
-			d=Split(f & "||", "|")
- 			l=d(0):m=IIF(d(1)="",d(0),d(1)):i=d(2)
-				
-				If i="" Then
-					i = GetNavUrl(l,"")
+	'Call Echo("UrlList", UrlList)
+	UrlList=Replace(UrlList,"," , "，")
+	UrlList=Replace(Replace(UrlList,"\，","【撇分号】"), "\|", "【撇分割】")
+	If UrlList<>"" Then
+		SplStr=Split(UrlList,"，")
+		For Each S In SplStr
+			Splxx=Split(S & "||", "|")
+ 			Title=Splxx(0):ShowTitle=IIF(Splxx(1)="",Splxx(0),Splxx(1)):Url=Splxx(2)
+				'从导航找
+				If Url="" Then
+					Url = GetNavUrl(Title,"")
 				End If
-				
-				If i="" Then
-					i = GetClassUrl(l,"","")
+				'从类型分类找
+				If Url="" Then
+					Url = GetClassUrl(Title,"","")
 				End If
-				
-				If i="" Then
-					i = GetMainUrl(l)
+				'从文件内容找
+				If Url="" Then
+					Url = GetMainUrl(Title)
 				End If
 			
-			If l=h Then
-				m="<font color=red>"& m &"</font>"
+			If Title=Did Then
+				ShowTitle="<font color=red>"& ShowTitle &"</font>"
 			End If
-			
-			g = g & "<li><a href="""& i &""">"& m &"</a></li>" & vbCrlf
+			'Call Echo(Title,Url)
+			C = C & "<li><a href="""& Url &""">"& ShowTitle &"</a></li>" & vbCrlf
 		Next
 	End If
-	b = ReadMainId("推荐导航")
-	If b<>"" And Request("gl") = "edit" Then
-		g = DisplayOnlineEditDialog(""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & b & "&n=" & GetRnd(11), g)
+	Id = ReadMainId("推荐导航")
+	If Id<>"" And Request("gl") = "edit" Then
+		C = DisplayOnlineEditDialog(""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & Id & "&n=" & GetRnd(11), C)
 	End If
 	
-	g= "<ul"& k &">"& g &"</ul>"
-	XY_RecommendNavigation = g
+	C= "<ul"& UlClass &">"& C &"</ul>"
+	XY_RecommendNavigation = C
 End Function
 
-
-Function XY_CustomTwoDirectoryClassList(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)		
-	Dim i,j,k,l,m,n,o,p,q,r,s,t,u,v
-	Dim w,x,y
-	Dim SidAType									
-	Dim TidAType									
-	Dim SmallUrl									
-	Dim SmallAddSql									
-	SmallAddSql = RParam(a,"SmallAddSql")	
+'显示自定义二级目录分类列表
+Function XY_CustomTwoDirectoryClassList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)		'获得这么函数参数
+	Dim Default,I,J,S,C,StartStr,EndStr,Url,ShowTitle,DateTime,ImgFile,DefaultImage,RndShow,IdList
+	Dim SmallStr,SmallTitle,Sql
+	Dim SidAType									'小类链接
+	Dim TidAType									'子类链接
+	Dim SmallUrl									'小类网址
+	Dim SmallAddSql									'子AddSql
+	SmallAddSql = RParam(Action,"SmallAddSql")	    '子类链接
 	
-	i = GetDefaultValue(a)
-	t = RParam(a,"DefaultImage")	
-	SidAType = RParam(a,"SidAType")	
-	TidAType = RParam(a,"TidAType")	
+	Default = GetDefaultValue(Action)
+	DefaultImage = RParam(Action,"DefaultImage")	'默认图片
+	SidAType = RParam(Action,"SidAType")	'小类链接
+	TidAType = RParam(Action,"TidAType")	'子类链接
 	
 	
-	y = "Select * From [SmallClass]" & GetDidSidTidSQl(b,"","")
-	y =  GetWhereAnd(y,h)		
-	Rs.Open y,Conn,1,1
-	For j = 1 To Rs.RecordCount
-		n="[smalllist-"& j &"]" : o="[/smalllist-"& j &"]"
-		
-		If InStr(i,n)=False Then
-			n="[smalllist]" : o="[/smalllist]"
+	Sql = "Select * From [SmallClass]" & GetDidSidTidSQl(Did,"","")
+	Sql =  GetWhereAnd(Sql,AddSql)		
+	Rs.Open Sql,Conn,1,1
+	For I = 1 To Rs.RecordCount
+		StartStr="[smalllist-"& I &"]" : EndStr="[/smalllist-"& I &"]"
+		'没有则用默认
+		If InStr(Default,StartStr)=False Then
+			StartStr="[smalllist]" : EndStr="[/smalllist]"
 		End If
-		w="":x=""
-		If InStr(i,n)>0 And InStr(i,o)>0 Then
-			x = StrCut(i,n,o,2) & vbCrlf
-			x=Replace(x, "[$smallname$]", Rs("SmallClassName"))
+		SmallStr="":SmallTitle=""
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			SmallTitle = StrCut(Default,StartStr,EndStr,2) & vbCrlf
+			SmallTitle=Replace(SmallTitle, "[$smallname$]", Rs("SmallClassName"))
 			
-			SmallUrl = getClassUrl(Rs("BigClassName"),Rs("SmallClassName"),"")					
+			SmallUrl = getClassUrl(Rs("BigClassName"),Rs("SmallClassName"),"")					'获得小类网址
 			
-			x = Replace(x, "[$smallurl$]", SmallUrl)
+			SmallTitle = Replace(SmallTitle, "[$smallurl$]", SmallUrl)
+			'Call Echo("SmallUrl",SmallUrl)
 			
-			
-			y = "Select * From [ThreeClass] Where BigClassName='"& Rs("BigClassName") &"' And SmallClassName='"& Rs("SmallClassName") &"'"
-			y =  GetWhereAnd(y,SmallAddSql)		
-			Rsx.Open y,Conn,1,1
-			For k = 1 To Rsx.RecordCount
-				n="[threelist-"& j &"]" : o="[/threelist-"& j &"]"
-				
-				If InStr(i,n)=False Then
-					n="[threelist]" : o="[/threelist]"
+			Sql = "Select * From [ThreeClass] Where BigClassName='"& Rs("BigClassName") &"' And SmallClassName='"& Rs("SmallClassName") &"'"
+			Sql =  GetWhereAnd(Sql,SmallAddSql)		
+			Rsx.Open Sql,Conn,1,1
+			For J = 1 To Rsx.RecordCount
+				StartStr="[threelist-"& I &"]" : EndStr="[/threelist-"& I &"]"
+				'没有则用默认
+				If InStr(Default,StartStr)=False Then
+					StartStr="[threelist]" : EndStr="[/threelist]"
 				End If
-				If InStr(i,n)>0 And InStr(i,o)>0 Then
-					l = StrCut(i,n,o,2) & vbCrlf
-					p = GetThreeClassFolderName( Rsx("BigClassName"), Rsx("SmallClassName"), Rsx("ThreeClassName")) 		
+				If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+					S = StrCut(Default,StartStr,EndStr,2) & vbCrlf
+					Url = GetThreeClassFolderName( Rsx("BigClassName"), Rsx("SmallClassName"), Rsx("ThreeClassName")) 		
 					
 					
-					Call WebDebug(p,"act=CreateClass&ProDid=" & b & "&ProSid=" & Rs("SmallClassName"))
+					Call WebDebug(Url,"act=CreateClass&ProDid=" & Did & "&ProSid=" & Rs("SmallClassName"))'调试					
 					If TidAType="文本类型" Then
-						p = "{$GetProductUrl did='"& Rsx("BigClassName") &"' sid='"& Rsx("SmallClassName") &"' tid='"& Rsx("ThreeClassName") &"' title='"& Rsx("ThreeClassName") &"'$}"
+						Url = "{$GetProductUrl did='"& Rsx("BigClassName") &"' sid='"& Rsx("SmallClassName") &"' tid='"& Rsx("ThreeClassName") &"' title='"& Rsx("ThreeClassName") &"'$}"
 					End If		
 								
-					l = Replace(l, "[$smallname$]", Rsx("SmallClassName"))
-					l = Replace(l, "[$threename$]", Rsx("ThreeClassName"))
-					l = Replace(l, "[$threeurl$]", p)
+					S = Replace(S, "[$smallname$]", Rsx("SmallClassName"))
+					S = Replace(S, "[$threename$]", Rsx("ThreeClassName"))
+					S = Replace(S, "[$threeurl$]", Url)
 					
+					'S = DisplayOnlineEditDialog(""& adminDir &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & Rsx("Id") & "&n=" & GetRnd(11), S)
+					'加强于20150129	
+					S = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & Rsx("Id") & "&n=" & GetRnd(11), S, "<li|<a ")
 					
-					
-					l = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & Rsx("Id") & "&n=" & GetRnd(11), l, "<li|<a ")
-					
-					w=w & l & vbCrlf
+					SmallStr=SmallStr & S & vbCrlf
 					
 				End If
 			Rsx.MoveNext:Next:Rsx.Close
 		End If
-		
-		n="[smalldialog start]" : o="[/smalldialog start]"
-		If InStr(i,n)>0 And InStr(i,o)>0 Then
-			w = StrCut(i,n,o,2) & vbCrlf & w
+		'开始内容加Dialog内容
+		StartStr="[smalldialog start]" : EndStr="[/smalldialog start]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			SmallStr = StrCut(Default,StartStr,EndStr,2) & vbCrlf & SmallStr
+		End If
+		'结束内容加Dialog内容
+		StartStr="[smalldialog end]" : EndStr="[/smalldialog end]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			SmallStr = SmallStr & vbCrlf & StrCut(Default,StartStr,EndStr,2)
 		End If
 		
-		n="[smalldialog end]" : o="[/smalldialog end]"
-		If InStr(i,n)>0 And InStr(i,o)>0 Then
-			w = w & vbCrlf & StrCut(i,n,o,2)
-		End If
+		'SmallTitle = DisplayOnlineEditDialog(""& adminDir &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & Rs("Id") & "&n=" & GetRnd(11), SmallTitle)
+		'加强于20150129	
+		SmallTitle = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & Rs("Id") & "&n=" & GetRnd(11), SmallTitle, "<li|<a ")
 		
 		
 		
-		x = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & Rs("Id") & "&n=" & GetRnd(11), x, "<li|<a ")
-		
-		
-		
-		m=m & x & w & vbCrlf				
+		C=C & SmallTitle & SmallStr & vbCrlf				'小类标题+小类内容
 			
 	Rs.MoveNext:Next:Rs.Close
 	
-	
-	n="[dialog start]" : o="[/dialog start]"
-	If InStr(i,n)>0 And InStr(i,o)>0 Then
-		m = StrCut(i,n,o,2) & vbCrlf & m
+	'开始内容加Dialog内容
+	StartStr="[dialog start]" : EndStr="[/dialog start]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = StrCut(Default,StartStr,EndStr,2) & vbCrlf & C
+	End If
+	'结束内容加Dialog内容
+	StartStr="[dialog end]" : EndStr="[/dialog end]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = C & vbCrlf &   StrCut(Default,StartStr,EndStr,2)
 	End If
 	
-	n="[dialog end]" : o="[/dialog end]"
-	If InStr(i,n)>0 And InStr(i,o)>0 Then
-		m = m & vbCrlf &   StrCut(i,n,o,2)
-	End If
 	
-	
-	XY_CustomTwoDirectoryClassList = m
+	XY_CustomTwoDirectoryClassList = C
 End Function
-
-Function XY_News(a)
-	Dim b,c,d,e,f,g,h,i,j,k,l
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)		
-	Dim m,n,o,p,q
-	Dim CssStyle															
-	Dim ContentWidth														
-	ContentWidth = LCase(Trim(RParam(a,"ContentWidth")))				
+'新闻类
+Function XY_News(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,AutoAddDid,AutoAdd,I,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)		'获得这么函数参数
+	Dim S,C,DateYes,AutoAddSid,AutoAddTid
+	Dim CssStyle															'Css样式
+	Dim ContentWidth														'内容宽度
+	ContentWidth = LCase(Trim(RParam(Action,"ContentWidth")))				'内容宽度20150130
 	If ContentWidth<>"" Then
 		If Right(ContentWidth,1)<>"%" And Right(ContentWidth,1)<>"px" Then
 			ContentWidth = ContentWidth & "px"
@@ -1879,902 +1879,902 @@ Function XY_News(a)
 	End If
 	
 	
-	
-	If CheckBigClass(b) = 0 Then
-		i = RParam(a,"AutoAddDid")
-		If LCase(i)="true" Then
-			Call AutoAddBigClass(b)
+	'判断大类
+	If CheckBigClass(Did) = 0 Then
+		AutoAddDid = RParam(Action,"AutoAddDid")
+		If LCase(AutoAddDid)="true" Then
+			Call AutoAddBigClass(Did)
+		End If		
+	End If
+	'判断小类
+	If CheckSmallClass(Did,Sid) = 0 Then
+		AutoAddSid = RParam(Action,"AutoAddSid")
+		If LCase(AutoAddSid)="true" Then
+			Call AutoAddSmallClass(Did,Sid)
+		End If		
+	End If
+	'判断子类
+	If CheckThreeClass(Did,Sid,Tid) = 0 Then
+		AutoAddTid = RParam(Action,"AutoAddTid")
+		If LCase(AutoAddTid)="true" Then
+			Call AutoAddThreeClass(Did,Sid,Tid)
 		End If		
 	End If
 	
-	If CheckSmallClass(b,c) = 0 Then
-		p = RParam(a,"AutoAddSid")
-		If LCase(p)="true" Then
-			Call AutoAddSmallClass(b,c)
-		End If		
-	End If
-	
-	If CheckThreeClass(b,c,d) = 0 Then
-		q = RParam(a,"AutoAddTid")
-		If LCase(q)="true" Then
-			Call AutoAddThreeClass(b,c,d)
-		End If		
-	End If
-	
-	If CheckProduct(b,c,d)=0 Then				
-		j = RParam(a,"AutoAdd")
-		If LCase(j)="true" Then
-		 	For k = 1 To f
-				Call AutoAddArticle(b, c, d, b & "-标题" & k, b & "-内容" & k)		
+	If CheckProduct(Did,Sid,Tid)=0 Then				'检测是否有记录
+		AutoAdd = RParam(Action,"AutoAdd")
+		If LCase(AutoAdd)="true" Then
+		 	For I = 1 To TopNumb
+				Call AutoAddArticle(Did, Sid, Tid, Did & "-标题" & I, Did & "-内容" & I)		
 			Next
 		End If	
 	End If
-	o = RParam(a,"DateYes")						
-	m =  NewsList(b,f,"<li>","</li>" & vbCrlf,o, a)
-	l = RParam(a,"ULClass")
-	If l<>"" Then
-		n = vbCrlf & "<ul class='"& l &"'"& CssStyle &">"
+	DateYes = RParam(Action,"DateYes")						'是否显示时间
+	S =  NewsList(Did,TopNumb,"<li>","</li>" & vbCrlf,DateYes, Action)
+	ULClass = RParam(Action,"ULClass")
+	If ULClass<>"" Then
+		C = vbCrlf & "<ul class='"& ULClass &"'"& CssStyle &">"
 	Else
-		n = vbCrlf & "<ul>"
+		C = vbCrlf & "<ul>"
 	End If
-	n = n & vbCrlf & m & vbCrlf & "</ul>" & vbCrlf	
-	XY_News = n
+	C = C & vbCrlf & S & vbCrlf & "</ul>" & vbCrlf	
+	XY_News = C
 End Function
-
-Function XY_CustomInfoList(a)
-	XY_CustomInfoList=HandleDispalyArticleList(a,"")
+'自定义信息列表
+Function XY_CustomInfoList(Action)
+	XY_CustomInfoList=HandleDispalyArticleList(Action,"")
 End Function
-
-Function XY_RelatedInformationList(a)
-	Dim b,c,d,e,f,g,h
-	e = RParam(a,"DefaultRelatedLableList")	
-	c = RParam(a,"AddSql")	
-	d = RParam(a,"DefaultAddSql")	
-	d = HandleInModule(d,"end")
-	
+'显示文章相关信息列表
+Function XY_RelatedInformationList(Action)
+	Dim Sql,AddSql,DefaultAddSql,DefaultRelatedLableList,SplStr,Word,C
+	DefaultRelatedLableList = RParam(Action,"DefaultRelatedLableList")	'默认相关标签列表
+	AddSql = RParam(Action,"AddSql")	'追加SQL
+	DefaultAddSql = RParam(Action,"DefaultAddSql")	'默认追加SQL
+	DefaultAddSql = HandleInModule(DefaultAddSql,"end")
+	'文章ID不为空
 	If PubId<>"" Then
-		b = GetWhereAnd(b, "And Id<>" & PubId)
+		Sql = GetWhereAnd(Sql, "And Id<>" & PubId)
 		Rs.Open"Select * From [Product] Where Id=" & PubId,Conn,1,1
 		If Not Rs.Eof Then
 			If Rs("RelatedTags")<>"||" And Rs("RelatedTags")<>"" Then
-				e = Rs("RelatedTags")
-				
+				DefaultRelatedLableList = Rs("RelatedTags")
+				'Call Eerr("RelatedTags",Rs("RelatedTags"))
 			End If
 		End If:Rs.Close
 	Else
-		b = GetWhereAnd(b & " ",d)
+		Sql = GetWhereAnd(Sql & " ",DefaultAddSql)
 	End If
-	e = Replace(e,"'","")		
-	
-	If e<>"" Then
-		f=Split(e,"|")
-		For Each g In f
-			If g<>"" Then
-				g = "|"& g &"|"
-				b = GetWhereAnd(b, "And RelatedTags Like '%"& g &"%'")
+	DefaultRelatedLableList = Replace(DefaultRelatedLableList,"'","")		'去除'符号
+	'自定义标签不为空则
+	If DefaultRelatedLableList<>"" Then
+		SplStr=Split(DefaultRelatedLableList,"|")
+		For Each Word In SplStr
+			If Word<>"" Then
+				Word = "|"& Word &"|"
+				Sql = GetWhereAnd(Sql, "And RelatedTags Like '%"& Word &"%'")
 			End If	
 		Next
 	Else
-		b = GetWhereAnd(b & " ",d)
+		Sql = GetWhereAnd(Sql & " ",DefaultAddSql)
 	End If
-	b =  GetWhereAnd(b & " ",c)
-	
-	XY_RelatedInformationList = HandleDispalyArticleList(a,b)
+	Sql =  GetWhereAnd(Sql & " ",AddSql)
+	'Call Echo(DefaultAddSql,Sql)
+	XY_RelatedInformationList = HandleDispalyArticleList(Action,Sql)
 End Function
-
-Function HandleDispalyArticleList(a,b)
-	Dim c,d,e,f,g,h,i
-	Call HandleFunParameter(a,c,d,e,f,g,h,i)		
-	Call XY_AutoAddHandle(a)			
-	Dim j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
-	Dim DescriptionLabel					
-	Dim WebDescription						
-	Dim Price								
-	Dim Content								
-	Dim noFollow							
-	j = GetDefaultValue(a)		
-	Dim fa,ga,ha,ia
-	Dim ArticleDescription		
-	Dim ModI								
-	Dim HtmlCode							
-	Dim ma,na
-	dim tempCode							
-	dim replaceStrName						
-	dim defaultaddcontent					
-	dim addContent							
-	dim dispalyPage							
-	dim nPageSize							
-	defaultaddcontent = ModuleFindContent(a,"defaultaddcontent")
+'显示文章列表  修改2014 12 01
+Function HandleDispalyArticleList(Action,Sql)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)		'获得这么函数参数
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
+	Dim Default,I,J,S,C,StartStr,EndStr,Url,AUrl,AStr,AImg,ShowTitle,DateTime,ImgFile,DefaultImage,RndShow,IdList
+	Dim DescriptionLabel					'标签
+	Dim WebDescription						'网站描述
+	Dim Price								'价格
+	Dim Content								'内容
+	Dim noFollow							'不追踪 20141222
+	Default = GetDefaultValue(Action)		'获得默认内容
+	Dim AutoAddDid,AutoAddSid,AutoAddTid,AutoAdd
+	Dim ArticleDescription		'文章描述(简要简介)
+	Dim ModI								'余循环20150112
+	Dim HtmlCode							'HTML代码
+	Dim SplStr,Splxx
+	dim tempCode							'暂存Code内容 20150712
+	dim replaceStrName						'替换字符名称20150712	
+	dim defaultaddcontent					'默认添加Content内容20150713
+	dim addContent							'添加内容
+	dim dispalyPage							'显示翻页信息 
+	dim nPageSize							'每页记录条数
+	defaultaddcontent = ModuleFindContent(Action,"defaultaddcontent")
+	
+	'call echo("defaultaddcontent",defaultaddcontent)
+	
+	replaceStrName = RParam(Action,"replacestrname")
+	
+	dispalyPage =lcase(RParam(Action,"dispalyPage"))  '显示翻页信息
+	nPageSize =lcase(RParam(Action,"nPageSize"))  '获得每页显示数
 	
 	
 	
-	replaceStrName = RParam(a,"replacestrname")
-	
-	dispalyPage =lcase(RParam(a,"dispalyPage"))
-	nPageSize =lcase(RParam(a,"nPageSize"))
-	
-	
-	
-	o="[htmlcode]" : p="[/htmlcode]"
-	If InStr(j,o)>0 And InStr(j,p)>0 Then
-		HtmlCode = StrCut(j,o,p,2)
+	StartStr="[htmlcode]" : EndStr="[/htmlcode]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		HtmlCode = StrCut(Default,StartStr,EndStr,2)
 	End If
-	Dim ua,va,wa,xa,ya,za
-	
-	
-	If CheckBigClass(c) = 0 Then
-		fa = RParam(a,"AutoAddDid")
-		If LCase(fa)="true" Then
-			Call AutoAddBigClass(c)
+	Dim Module1,Module2,Module3,Module4,nMod1,nMod2
+	'判断是否追加大类，小类，子类，这样不好，正确是正确，但是太不优化了。20141223
+	'判断大类
+	If CheckBigClass(Did) = 0 Then
+		AutoAddDid = RParam(Action,"AutoAddDid")
+		If LCase(AutoAddDid)="true" Then
+			Call AutoAddBigClass(Did)
 		End If		
 	End If
-	
-	If CheckSmallClass(c,d) = 0 Then
-		ga = RParam(a,"AutoAddSid")
-		If LCase(ga)="true" Then
-			Call AutoAddSmallClass(c,d)
+	'判断小类
+	If CheckSmallClass(Did,Sid) = 0 Then
+		AutoAddSid = RParam(Action,"AutoAddSid")
+		If LCase(AutoAddSid)="true" Then
+			Call AutoAddSmallClass(Did,Sid)
 		End If		
 	End If
-	
-	If CheckThreeClass(c,d,e) = 0 Then
-		ha = RParam(a,"AutoAddTid")
-		If LCase(ha)="true" Then
-			Call AutoAddThreeClass(c,d,e)
+	'判断子类
+	If CheckThreeClass(Did,Sid,Tid) = 0 Then
+		AutoAddTid = RParam(Action,"AutoAddTid")
+		If LCase(AutoAddTid)="true" Then
+			Call AutoAddThreeClass(Did,Sid,Tid)
 		End If		
 	End If
-	
-	If CheckProduct(c,d,e)=0 Then				
-		ia = RParam(a,"AutoAdd")
-		
-		If LCase(ia)="true" Then
-		 	For k = 1 To g
+	'这里不运行不到，因为被上一级给运行掉了
+	If CheckProduct(Did,Sid,Tid)=0 Then				'检测是否有记录
+		AutoAdd = RParam(Action,"AutoAdd")
+		'call echo(AutoAdd,CheckProduct(Did,Sid,Tid))
+		If LCase(AutoAdd)="true" Then
+		 	For I = 1 To TopNumb
 				if defaultaddcontent<>"" then
-					m = defaultaddcontent					
-					m = ReplaceValueParam(m,"ni",k)								
-					m = ReplaceValueParam(m,"编号-1",k-1)								
-					m = ReplaceValueParam(m,"编号",k)								
-					m = ReplaceValueParam(m,"did",  c)
-					m = ReplaceValueParam(m,"sid",  d)	
-					m = ReplaceValueParam(m,"tid",  e)	
+					s = defaultaddcontent					
+					S = ReplaceValueParam(S,"ni",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+					S = ReplaceValueParam(S,"编号-1",I-1)								'不对为i，因为i会与imgurl冲突 [$i$]
+					S = ReplaceValueParam(S,"编号",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+					S = ReplaceValueParam(S,"did",  Did)
+					S = ReplaceValueParam(S,"sid",  Sid)	
+					S = ReplaceValueParam(S,"tid",  Tid)	
 				else
-					m = c & "-内容"
+					s = Did & "-内容"
 				end if
 				
 				
-				Call autoAddArticleAction(a,c, d, e, c & "-标题" & k,"", m)
+				Call autoAddArticleAction(action,Did, Sid, Tid, Did & "-标题" & I,"", s) 
 				
 			Next
 		End If
 	End If
 	
-	x = RParam(a,"DefaultImage")	
-	y = RParam(a,"RndShow")	
-	noFollow = Trim(LCase(RParam(a,"noFollow")))	
+	DefaultImage = RParam(Action,"DefaultImage")	'默认图片
+	RndShow = RParam(Action,"RndShow")	'随机显示	
+	noFollow = Trim(LCase(RParam(Action,"noFollow")))	'不追踪	
 	
-	If b="" Then
-		b = "Select * From [Product]" & GetDidSidTidSQl(c,d,e)
-		b =  GetWhereAnd(b,i)	
-		Rs.Open b,Conn,1,1
-		
-		If y="true" Then
-			z = GetProductRndIdList(Rs,g)
-			b = "Select * From [Product] Where Id In("& z &")"
-			
+	If Sql="" Then
+		Sql = "Select * From [Product]" & GetDidSidTidSQl(Did,Sid,Tid)
+		Sql =  GetWhereAnd(Sql,AddSql)	
+		Rs.Open Sql,Conn,1,1
+		'随机获得信息
+		If RndShow="true" Then
+			IdList = GetProductRndIdList(Rs,TopNumb)
+			Sql = "Select * From [Product] Where Id In("& IdList &")"
+			'Call Echo(Sql,IdList)
 			Rs.Close
-			Rs.Open b,Conn,1,1
+			Rs.Open Sql,Conn,1,1
 		End If
 	Else
-		b = "Select * From [Product]" & b
-		
-		Rs.Open b,Conn,1,1
+		Sql = "Select * From [Product]" & Sql
+		'Call Eerr("Sql=",Sql)
+		Rs.Open Sql,Conn,1,1
 	End If
 	
-	
-	dim abb,bbb,cbb,dbb
+	'翻页设置
+	dim nCount,Page,x,MaxPage
 	if nPageSize="" then
 		nPageSize=999
 	end if
-	
-	abb = rs.RecordCount
-	bbb = Request("page")
-	cbb = getRsPageNumber(rs, abb, nPageSize, bbb)
-
-	For k = 1 To g
+	 
+	nCount = rs.RecordCount 
+	page = Request("page")  
+	x = getRsPageNumber(rs, nCount, nPageSize, page)                                '获得Rs页数                                                  '记录总数
+ 
+	For I = 1 To TopNumb
 		If Rs.Eof Then Exit For
-		o="[list-"& k &"]" : p="[/list-"& k &"]"
+		StartStr="[list-"& I &"]" : EndStr="[/list-"& I &"]"
 		
-		
+		'例[list-mod2]  [/list-mod2]    20150112
 		For ModI=6 To 2 Step -1
-			If InStr(j,o)=False And k Mod ModI =0 Then
-				o="[list-mod"& ModI &"]" : p="[/list-mod"& ModI &"]"
-				If InStr(j,o)>0 Then
-					
+			If InStr(Default,StartStr)=False And I Mod ModI =0 Then
+				StartStr="[list-mod"& ModI &"]" : EndStr="[/list-mod"& ModI &"]"
+				If InStr(Default,StartStr)>0 Then
+					'Call Echo("ModI=" & ModI & ",I=" & I,StartStr)
 					Exit For
 				End If
 			End If
 		Next
 		
-		
-		If InStr(j,o)=False Then
-			o="[list]" : p="[/list]"
+		'没有则用默认
+		If InStr(Default,StartStr)=False Then
+			StartStr="[list]" : EndStr="[/list]"
 		End If
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			m = StrCut(j,o,p,2)
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			S = StrCut(Default,StartStr,EndStr,2)
 			
-			q = Rs("FileName")
-			If CheckMakeHtmlFile(q)=True Then
-				q = GetHandleFileName(q)
-				q = DetailPageAddHtmlPrefix(Rs("FolderName")) & q
+			Url = Rs("FileName")
+			If CheckMakeHtmlFile(Url)=True Then
+				Url = GetHandleFileName(Url)
+				Url = DetailPageAddHtmlPrefix(Rs("FolderName")) & Url
 			End If
-			
+			'自定义产品网址
 			if Rs("CustomAUrl")<>"" then
-				q=rs("CustomAUrl")
+				url=rs("CustomAUrl") 
 			end if
 			
-			Call WebDebug(q, "act=CreateArticle&ID=" & Rs("Id"))
+			Call WebDebug(Url, "act=CreateArticle&ID=" & Rs("Id"))                      '调试
 			
-			r = AHref(q, Rs("Title"), Rs("Target"))
+			AUrl = AHref(Url, Rs("Title"), Rs("Target"))
 			
-			s = "<a " & AHref(q, Rs("Title"), Rs("Target")) & SetHtmlParam(a, "aclass") & IIF(noFollow="true"," rel='nofollow'","") & ">" & u & "</a>" & vbCrLf
+			AStr = "<a " & AHref(Url, Rs("Title"), Rs("Target")) & SetHtmlParam(Action, "aclass") & IIF(noFollow="true"," rel='nofollow'","") & ">" & ShowTitle & "</a>" & vbCrLf
 			
 			
 			WebDescription = Rs("WebDescription")
 			
-			u = CutStr(Rs("Title"), h, "... ")
-			u = FontColorFontB(u, Rs("FontB"), Rs("FontColor"))			
+			ShowTitle = CutStr(Rs("Title"), CutStrNumb, "... ")
+			ShowTitle = FontColorFontB(ShowTitle, Rs("FontB"), Rs("FontColor"))			
+			'DateTime = Format_Time(Rs("UpDateTime"), 14)
+			ImgFile = IIF(IsNul(Rs("SmallFiles")),Rs("BigFiles"),Rs("SmallFiles"))			'也行
+			If ImgFile="" Then ImgFile=DefaultImage				'图片为真则用默认图片
 			
-			w = IIF(IsNul(Rs("SmallFiles")),Rs("BigFiles"),Rs("SmallFiles"))			
-			If w="" Then w=x				
+			AImg = ImgSrc(ImgFile, Rs("Title"), Rs("Target"))
 			
-			t = ImgSrc(w, Rs("Title"), Rs("Target"))
-			
-			ArticleDescription = Rs("ArticleDescription")								
+			ArticleDescription = Rs("ArticleDescription")								     '简要说明		
 			If ArticleDescription="#" Or ArticleDescription="null" Or ArticleDescription="empty" Then
 				ArticleDescription = ""
 			ElseIf IsNul(ArticleDescription) Then
 				ArticleDescription = Rs("Content")
 			End If	
 			
-			For l=1 To 3
-				m = ReplaceValueParam(m,"ni",k)								
-				m = ReplaceValueParam(m,"编号-1",k-1)								
-				m = ReplaceValueParam(m,"编号",k)								
+			For J=1 To 3
+				S = ReplaceValueParam(S,"ni",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+				S = ReplaceValueParam(S,"编号-1",I-1)								'不对为i，因为i会与imgurl冲突 [$i$]
+				S = ReplaceValueParam(S,"编号",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+				
+				'S = ReplaceValueParam(S,"编号-1%2",Fix(I/2)-1)					'不对为i，因为i会与imgurl冲突 [$i$]
 				
 				
 				
 				
-				
-				
-				m = ReplaceValueParam(m,"id",  Rs("Id"))
-				m = ReplaceValueParam(m,"title",  Rs("Title"))
-				m = ReplaceValueParam(m,"showtitle",u)
-				m = ReplaceValueParam(m,"adddatetime",Rs("AddDateTime"))
-				m = ReplaceValueParam(m,"imgfile",w)
-				m = ReplaceValueParam(m,"imgurl",w)
-				m = ReplaceValueParam(m,"url",q)
-				m = ReplaceValueParam(m,"aurl",r)
-				m = ReplaceValueParam(m,"aimg",t)				
-				m = ReplaceValueParam(m,"astr",s)
-				m = ReplaceValueParam(m,"description",Rs("WebDescription"))
-				m = ReplaceValueParam(m,"content",Rs("Content"))
-				m = ReplaceValueParam(m,"price",Rs("Price"))			
-				m = ReplaceValueParam(m,"memberprice",Rs("memberprice"))			
-				m = ReplaceValueParam(m,"newprice",Rs("NewPrice"))		
-				m = ReplaceValueParam(m,"sold",Rs("sold"))				
-				m = ReplaceValueParam(m,"author",Rs("Author"))
-				m = ReplaceValueParam(m,"productabout",Rs("WebDescription"))
-				m = ReplaceValueParam(m,"articledescription",ArticleDescription)
+				S = ReplaceValueParam(S,"id",  Rs("Id"))
+				S = ReplaceValueParam(S,"title",  Rs("Title"))
+				S = ReplaceValueParam(S,"showtitle",ShowTitle)
+				S = ReplaceValueParam(S,"adddatetime",Rs("AddDateTime"))
+				S = ReplaceValueParam(S,"imgfile",ImgFile)
+				S = ReplaceValueParam(S,"imgurl",ImgFile)
+				S = ReplaceValueParam(S,"url",url)
+				S = ReplaceValueParam(S,"aurl",AUrl)
+				S = ReplaceValueParam(S,"aimg",AImg)				'20150112			
+				S = ReplaceValueParam(S,"astr",AStr)
+				S = ReplaceValueParam(S,"description",Rs("WebDescription"))
+				S = ReplaceValueParam(S,"content",Rs("Content"))
+				S = ReplaceValueParam(S,"price",Rs("Price"))			'价格
+				S = ReplaceValueParam(S,"memberprice",Rs("memberprice"))			'价格				
+				S = ReplaceValueParam(S,"newprice",Rs("NewPrice"))		'新价格
+				S = ReplaceValueParam(S,"sold",Rs("sold"))				'已售出
+				S = ReplaceValueParam(S,"author",Rs("Author"))
+				S = ReplaceValueParam(S,"productabout",Rs("WebDescription"))
+				S = ReplaceValueParam(S,"articledescription",ArticleDescription)     '摘要(文章简要描述)20141225
 			Next
 			
-			q = ""& adminDir &"Product.Asp?act=ShowEditProduct&Id=" & Rs("Id") & "&n=" & GetRnd(11)
-			m = DisplayOnlineEditDialog(q, m)
+			Url = ""& adminDir &"Product.Asp?act=ShowEditProduct&Id=" & Rs("Id") & "&n=" & GetRnd(11)
+			S = DisplayOnlineEditDialog(Url, S)
 			
 			
 			
-			
-			o="[list-"& k &" startdialog]" : p="[/list-"& k &" startdialog]"
-			If InStr(j,o)>0 And InStr(j,p)>0 Then
-				m = StrCut(j,o,p,2) & m
+			'开始位置加Dialog内容
+			StartStr="[list-"& I &" startdialog]" : EndStr="[/list-"& I &" startdialog]"
+			If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+				S = StrCut(Default,StartStr,EndStr,2) & S
 			End If
-			
-			o="[list-"& k &" enddialog]" : p="[/list-"& k &" enddialog]"
-			If InStr(j,o)>0 And InStr(j,p)>0 Then
-				m = m & StrCut(j,o,p,2)
+			'结束位置加Dialog内容
+			StartStr="[list-"& I &" enddialog]" : EndStr="[/list-"& I &" enddialog]"
+			If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+				S = S & StrCut(Default,StartStr,EndStr,2)
 			End If
 			
 			if replaceStrName<>"" then
-				call addModuleReplaceArray(replaceStrName & k,m)
+				call addModuleReplaceArray(replaceStrName & i,s)
 			else
-				n = n & m
+				C = C & S
 			end if
 		End If	
 	Rs.MoveNext:Next:Rs.Close
 	
-	
-	o="[dialog start]" : p="[/dialog start]"
-	If InStr(j,o)>0 And InStr(j,p)>0 Then
-		n = StrCut(j,o,p,2) & n
+	'开始内容加Dialog内容
+	StartStr="[dialog start]" : EndStr="[/dialog start]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = StrCut(Default,StartStr,EndStr,2) & C
 	End If
-	
-	o="[dialog end]" : p="[/dialog end]"
-	If InStr(j,o)>0 And InStr(j,p)>0 Then
-		n = n &  StrCut(j,o,p,2)
+	'结束内容加Dialog内容
+	StartStr="[dialog end]" : EndStr="[/dialog end]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = C &  StrCut(Default,StartStr,EndStr,2)
 	End If
-	
+	'特殊功能开发 20150112等更高开发应用
 	If HtmlCode<>"" Then
-		ya=0:za=0
-		ma=Split(n, "[$vbCrlf$]") : n=""
-		For k=0 To Ubound(ma)
-			m = ma(k)
+		nMod1=0:nMod2=0
+		SplStr=Split(C, "[$vbCrlf$]") : C=""
+		For I=0 To Ubound(SplStr)
+			S = SplStr(I)
 			
-			If k=0 Then
-				m = Replace(m,"[noneOrblack]","black")
+			If I=0 Then
+				S = Replace(S,"[noneOrblack]","black")
 			Else
-				m = Replace(m,"[noneOrblack]","none")
+				S = Replace(S,"[noneOrblack]","none")
 			End If
 			
-			If m <> "" And InStr(m, "[$Array$]") Then 		
-				If (k+1) Mod 2=0 Then
-					m = Replace(m,"[@i@]",ya)
-					ya=ya+1				
+			If S <> "" And InStr(S, "[$Array$]") Then 		
+				If (I+1) Mod 2=0 Then
+					S = Replace(S,"[@i@]",nMod1)
+					nMod1=nMod1+1				
 				Else
-					m = Replace(m,"[@i@]",za)
-					za=za+1				
+					S = Replace(S,"[@i@]",nMod2)
+					nMod2=nMod2+1				
 				End If		
-				na=Split(m, "[$Array$]")
+				Splxx=Split(S, "[$Array$]")
 				
-				If (k+1) Mod 2=0 Then
-					wa = wa & na(0)
-					xa = xa & na(1)	
+				If (I+1) Mod 2=0 Then
+					Module3 = Module3 & Splxx(0)
+					Module4 = Module4 & Splxx(1)	
 				Else
-					ua = ua & na(0)
-					va = va & na(1)
+					Module1 = Module1 & Splxx(0)
+					Module2 = Module2 & Splxx(1)
 				End If
 			End If
 		Next
-		HtmlCode = Replace(HtmlCode,"[$Module_1$]", ua)
-		HtmlCode = Replace(HtmlCode,"[$Module_2$]", va)
-		HtmlCode = Replace(HtmlCode,"[$Module_3$]", wa)
-		HtmlCode = Replace(HtmlCode,"[$Module_4$]", xa)
-		n = HtmlCode
+		HtmlCode = Replace(HtmlCode,"[$Module_1$]", Module1)
+		HtmlCode = Replace(HtmlCode,"[$Module_2$]", Module2)
+		HtmlCode = Replace(HtmlCode,"[$Module_3$]", Module3)
+		HtmlCode = Replace(HtmlCode,"[$Module_4$]", Module4)
+		C = HtmlCode
 	End If
 	
 	
 		
-	dim ebb,fbb,gbb,hbb,pageStr	
-	If bbb <= 1 Then
+	dim homePageStr,parentPageStr,nextPageStr,endPageStr,pageStr	
+	If Page <= 1 Then
 		
-		
-		o="[defaultHomePageStr]" : p="[/defaultHomePageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			ebb = StrCut(j,o,p,2)
+		'首页
+		StartStr="[defaultHomePageStr]" : EndStr="[/defaultHomePageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			homePageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-			ebb = "<span class='PageBox'>首页</span> &nbsp;"
+			homePageStr = "<span class='PageBox'>首页</span> &nbsp;" 
 		end if
 		
-		
-		o="[defaultParentPageStr]" : p="[/defaultParentPageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			fbb = StrCut(j,o,p,2)
+		'上一页
+		StartStr="[defaultParentPageStr]" : EndStr="[/defaultParentPageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			parentPageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-	        fbb = "<span class='PageBox'>上一页</span> &nbsp;"
+	        parentPageStr = "<span class='PageBox'>上一页</span> &nbsp;"
 		end if
-    Else		
-		
-		q=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "" & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
-		q=replace(q,"///","/")
-		Call WebDebug(q, GetUrlAddToParam(GetUrl(),"&page=1","replace"))
-		
-		o="[homePageStr]" : p="[/homePageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			ebb = StrCut(j,o,p,2)
+    Else		 
+		'首页
+		url=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "" & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
+		url=replace(url,"///","/")
+		Call WebDebug(Url, GetUrlAddToParam(GetUrl(),"&page=1","replace"))                      '调试
+		 
+		StartStr="[homePageStr]" : EndStr="[/homePageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			homePageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-			ebb = "<a href=""[$url$]"">首页</a> &nbsp;"
+			homePageStr = "<a href=""[$url$]"">首页</a> &nbsp;" 
 		end if
-		ebb=replace(ebb,"[$url$]",q)
+		homePageStr=replace(homePageStr,"[$url$]",url)
 		
-		
-		q=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "_" & (bbb-1) & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
-		q=replace(q,"///","/")
-		Call WebDebug(q,  GetUrlAddToParam(GetUrl(),"&page=" & bbb-1,"replace") )
-		o="[parentPageStr]" : p="[/parentPageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			fbb = StrCut(j,o,p,2)
+		'上一页
+		url=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "_" & (page-1) & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
+		url=replace(url,"///","/")
+		Call WebDebug(Url,  GetUrlAddToParam(GetUrl(),"&page=" & page-1,"replace") )                      '调试
+		StartStr="[parentPageStr]" : EndStr="[/parentPageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			parentPageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-			fbb = "<a href=""[$url$]"">上一页</a> &nbsp;"
+			parentPageStr = "<a href=""[$url$]"">上一页</a> &nbsp;" 
 		end if
-		fbb=replace(fbb,"[$url$]",q)
+		parentPageStr=replace(parentPageStr,"[$url$]",url)
 	
 		
 		
 	end if
 	
-
-    If bbb >= dbb Then
+     '下一页 与 尾页
+    If Page >= MaxPage Then 
 	
-		
-		o="[defaultNextPageStr]" : p="[/defaultNextPageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			gbb = StrCut(j,o,p,2)
+		'下一页
+		StartStr="[defaultNextPageStr]" : EndStr="[/defaultNextPageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			nextPageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-			gbb = "<span class='PageBox'>下一页</span> &nbsp;"
+			nextPageStr = "<span class='PageBox'>下一页</span> &nbsp;" 
 		end if
 		
-		
-		o="[defaultEndPageStr]" : p="[/defaultEndPageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			hbb = StrCut(j,o,p,2)
+		'尾页
+		StartStr="[defaultEndPageStr]" : EndStr="[/defaultEndPageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			endPageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-	        hbb = "<span class='PageBox'>尾页</span>"
-		end if
-
+	        endPageStr = "<span class='PageBox'>尾页</span>" 
+		end if 
+        
     Else
 		
 		if CreateHtmlPath<>"" then
-			
-			q=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "_" & (bbb+1) & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
+			'下一页
+			url=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "_" & (page+1) & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
 		end if
-		q=replace(q,"///","/")
-		Call WebDebug(q,  GetUrlAddToParam(GetUrl(),"&page=" & bbb+1,"replace")  )
-		
-		o="[nextPageStr]" : p="[/nextPageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			gbb = StrCut(j,o,p,2)
+		url=replace(url,"///","/")
+		Call WebDebug(Url,  GetUrlAddToParam(GetUrl(),"&page=" & page+1,"replace")  )                      '调试
+		 
+		StartStr="[nextPageStr]" : EndStr="[/nextPageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			nextPageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-			gbb = "<a href=""[$url$]"">下一页</a> &nbsp;"
+			nextPageStr = "<a href=""[$url$]"">下一页</a> &nbsp;" 
 		end if
-		gbb=replace(gbb,"[$url$]",q)
+		nextPageStr=replace(nextPageStr,"[$url$]",url)
 	
 		if CreateHtmlPath<>"" then
-			
-			q=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "_" & dbb & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
+			'尾页
+			url=mid(CreateHtmlPath,1,instrrev(CreateHtmlPath,".")-1) & "_" & MaxPage & mid(CreateHtmlPath,instr(CreateHtmlPath,"."))
 		end if
-		q=replace(q,"///","/")
-		Call WebDebug(q,  GetUrlAddToParam(GetUrl(),"&page=" & dbb,"replace")  )
+		url=replace(url,"///","/")
+		Call WebDebug(Url,  GetUrlAddToParam(GetUrl(),"&page=" & MaxPage,"replace")  )                      '调试
 		
-		o="[endPageStr]" : p="[/endPageStr]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			hbb = StrCut(j,o,p,2)
+		StartStr="[endPageStr]" : EndStr="[/endPageStr]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			endPageStr = StrCut(Default,StartStr,EndStr,2)
 		else
-			hbb = "<a href=""[$url$]"">尾页</a> &nbsp;"
+			endPageStr = "<a href=""[$url$]"">尾页</a> &nbsp;" 
 		end if
-		hbb=replace(hbb,"[$url$]",q)
+		endPageStr=replace(endPageStr,"[$url$]",url)
 	end if
 	
-	pageStr = ebb & fbb & gbb & hbb	
+	pageStr = homePageStr & parentPageStr & nextPageStr & endPageStr	
 	if dispalyPage="true" or dispalyPage="1" then	
-		
-		o="[page]" : p="[/page]"
-		If InStr(j,o)>0 And InStr(j,p)>0 Then
-			m = StrCut(j,o,p,2)
-			m=replace(m,"[$homePageStr$]",ebb)				
-			m=replace(m,"[$parentPageStr$]",fbb)			
-			m=replace(m,"[$nextPageStr$]",gbb)				
-			m=replace(m,"[$endPageStr$]",hbb)				
-			m=replace(m,"[$Page$]",bbb)							
-			m=replace(m,"[$MaxPage$]",dbb)						
-			m=replace(m,"[$nCount$]",abb)						
-			n=n & m
+		'页信息
+		StartStr="[page]" : EndStr="[/page]"
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			S = StrCut(Default,StartStr,EndStr,2)
+			s=replace(s,"[$homePageStr$]",homePageStr)				'首页
+			s=replace(s,"[$parentPageStr$]",parentPageStr)			'上一页
+			s=replace(s,"[$nextPageStr$]",nextPageStr)				'下一页
+			s=replace(s,"[$endPageStr$]",endPageStr)				'尾页
+			s=replace(s,"[$Page$]",Page)							'当前页
+			s=replace(s,"[$MaxPage$]",MaxPage)						'总页
+			s=replace(s,"[$nCount$]",nCount)						'总有记录			
+			c=c & s
 		else		
-			n = n & "<div class='t_page ColorLink'>总数：" & abb & "条&nbsp;&nbsp;当前页数：<span class='FontRed'>" & bbb & "</span>/" & dbb & "&nbsp;" & pageStr & "</div>"
+			C = C & "<div class='t_page ColorLink'>总数：" & nCount & "条&nbsp;&nbsp;当前页数：<span class='FontRed'>" & Page & "</span>/" & MaxPage & "&nbsp;" & pageStr & "</div>" 
 		end if
 	end if
 	
-	HandleDispalyArticleList = n
+	HandleDispalyArticleList = c
 End Function
 
 
-
-Function XY_CustomGuestBookList(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)		
-	Call XY_AutoAddHandle(a)			
-	Dim i,j,k,l,m,n,o,p,q,r,s
-	j = GetDefaultValue(a)
-	
-	
-	i = "Select * From [GuestBook]" & GetDidSidTidSQl(b,c,d)
-	i =  GetWhereAnd(i,h)		
-	Rs.Open i,Conn,1,1
-	For k = 1 To f
+'自定义留言列表###########################################未调用此功能函数
+Function XY_CustomGuestBookList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)		'获得这么函数参数
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
+	Dim Sql,Default,I,S,C,StartStr,EndStr,Url,ShowTitle,DateTime,ImgFile
+	Default = GetDefaultValue(Action)
+	'Call Echo("Action",Action)
+	'Call Echo("AddSql",AddSql)
+	Sql = "Select * From [GuestBook]" & GetDidSidTidSQl(Did,Sid,Tid)
+	Sql =  GetWhereAnd(Sql,AddSql)		
+	Rs.Open Sql,Conn,1,1
+	For I = 1 To TopNumb
 		If Rs.Eof Then Exit For
-		n="[list-"& k &"]" : o="[/list-"& k &"]"
-		
-		If InStr(j,n)=False Then
-			n="[list]" : o="[/list]"
+		StartStr="[list-"& I &"]" : EndStr="[/list-"& I &"]"
+		'没有则用默认
+		If InStr(Default,StartStr)=False Then
+			StartStr="[list]" : EndStr="[/list]"
 		End If
-		If InStr(j,n)>0 And InStr(j,o)>0 Then
-			l = StrCut(j,n,o,2)
+		If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+			S = StrCut(Default,StartStr,EndStr,2)
 						
-			l = ReplaceValueParam(l,"guestname",Rs("GuestName"))			
-			l = ReplaceValueParam(l,"email",Rs("EMail"))					
-			l = ReplaceValueParam(l,"tel",Rs("Tel"))						
-			l = ReplaceValueParam(l,"qq",Rs("QQ"))							
-			l = ReplaceValueParam(l,"ip",Rs("IP"))							
-			l = ReplaceValueParam(l,"content",Rs("Content"))				
-			l = ReplaceValueParam(l,"reply",Rs("Reply"))					
+			S = ReplaceValueParam(S,"guestname",Rs("GuestName"))			'留言者
+			S = ReplaceValueParam(S,"email",Rs("EMail"))					'留言者邮箱
+			S = ReplaceValueParam(S,"tel",Rs("Tel"))						'留言者电话
+			S = ReplaceValueParam(S,"qq",Rs("QQ"))							'留言者QQ
+			S = ReplaceValueParam(S,"ip",Rs("IP"))							'留言者IP
+			S = ReplaceValueParam(S,"content",Rs("Content"))				'留言者内容
+			S = ReplaceValueParam(S,"reply",Rs("Reply"))					'回答内容
 			
 			
-			
-			n="[list-"& k &" startdialog]" : o="[/list-"& k &" startdialog]"
-			If InStr(j,n)>0 And InStr(j,o)>0 Then
-				l = StrCut(j,n,o,2) & l
+			'开始位置加Dialog内容
+			StartStr="[list-"& I &" startdialog]" : EndStr="[/list-"& I &" startdialog]"
+			If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+				S = StrCut(Default,StartStr,EndStr,2) & S
 			End If
-			
-			n="[list-"& k &" enddialog]" : o="[/list-"& k &" enddialog]"
-			If InStr(j,n)>0 And InStr(j,o)>0 Then
-				l = l & StrCut(j,n,o,2)
+			'结束位置加Dialog内容
+			StartStr="[list-"& I &" enddialog]" : EndStr="[/list-"& I &" enddialog]"
+			If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+				S = S & StrCut(Default,StartStr,EndStr,2)
 			End If			
-			m = m & l
+			C = C & S
 		End If	
 	Rs.MoveNext:Next:Rs.Close
 	
-	
-	n="[dialog start]" : o="[/dialog start]"
-	If InStr(j,n)>0 And InStr(j,o)>0 Then
-		m = StrCut(j,n,o,2) & m
+	'开始内容加Dialog内容
+	StartStr="[dialog start]" : EndStr="[/dialog start]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = StrCut(Default,StartStr,EndStr,2) & C
+	End If
+	'结束内容加Dialog内容
+	StartStr="[dialog end]" : EndStr="[/dialog end]"
+	If InStr(Default,StartStr)>0 And InStr(Default,EndStr)>0 Then
+		C = C &  StrCut(Default,StartStr,EndStr,2)
 	End If
 	
-	n="[dialog end]" : o="[/dialog end]"
-	If InStr(j,n)>0 And InStr(j,o)>0 Then
-		m = m &  StrCut(j,n,o,2)
-	End If
-	
-	XY_CustomGuestBookList = m
+	XY_CustomGuestBookList = C
 End Function
-
-Function XY_ShowNewsList(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)		
-	Dim i,j,k,l,m
-	Call XY_AutoAddHandle(a)			
+'显示新闻列表
+Function XY_ShowNewsList(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)		'获得这么函数参数
+	Dim AutoAddDid,AutoAdd,ImageDivStr,ID,NewSql
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
 	
-	Dim n,o,p,q,r,s,t,u,v
-	u = RParam(a,"DateYes")						
-	v = RParam(a,"NewsStyle")					
-	o="<ul" & SetHtmlParam(a,"ulclass") &">"
-	q = "Select * From [Product]" & GetDidSidTidSQl(b,c,d) & GetWhereAnd(q,h)
-	If v<>"" And v<>"default" Then
-		m = "Select * From [Product]" & GetDidSidTidSQl(b,c,d)
-		m =  GetWhereAnd(m," Where (BigFiles<>'' Or SmallFiles<>'')")
-		m =  GetWhereAnd(m,h)
-		
-		Rs.Open m,Conn,1,1
+	Dim I,C,S,Sql,Url,ShowTitle,AStr,DateYes,NewsStyle
+	DateYes = RParam(Action,"DateYes")						'是否显示时间
+	NewsStyle = RParam(Action,"NewsStyle")					'新闻样式(顶部与底部是否显示一条新闻)
+	C="<ul" & SetHtmlParam(Action,"ulclass") &">"
+	Sql = "Select * From [Product]" & GetDidSidTidSQl(Did,Sid,Tid) & GetWhereAnd(Sql,AddSql)
+	If NewsStyle<>"" And NewsStyle<>"default" Then
+		NewSql = "Select * From [Product]" & GetDidSidTidSQl(Did,Sid,Tid)
+		NewSql =  GetWhereAnd(NewSql," Where (BigFiles<>'' Or SmallFiles<>'')")
+		NewSql =  GetWhereAnd(NewSql,AddSql)
+		'Call Echo("NewSql",NewSql)
+		Rs.Open NewSql,Conn,1,1
 		If Not Rs.Eof Then
 		
-			k="<img src='"& IIF(Rs("BigFiles")<>"",Rs("BigFiles"),Rs("SmallFiles")) &"'" & SetHtmlParam(a,"imgclass|imgwidth|imgheight") &">"
+			ImageDivStr="<img src='"& IIF(Rs("BigFiles")<>"",Rs("BigFiles"),Rs("SmallFiles")) &"'" & SetHtmlParam(Action,"imgclass|imgwidth|imgheight") &">"
 			
-			
-			r = Rs("FileName")
-			If CheckMakeHtmlFile(r)=True Then
-				r = GetHandleUrl(Rs("FileName"))
-				Call WebDebug(r, "act=CreateArticle&ID=" & Rs("Id"))
+			'给图片加链接
+			Url = Rs("FileName")
+			If CheckMakeHtmlFile(Url)=True Then
+				Url = GetHandleUrl(Rs("FileName"))
+				Call WebDebug(Url, "act=CreateArticle&ID=" & Rs("Id"))                      '调试
 			End If
 			
-			k = "<a " & AHref(r, Rs("Title"), Rs("Target")) & SetHtmlParam(a,"aclass") & ">" & k & "</a>"			
-			
-			If InStr("|footphotonews|topphotonews|","|"& v &"|") > 0 Then
-				k =k & "<span" & SetHtmlParam(a,"textclass") &">" & CutStr(Rs("Content"), 100, "... ") & "</span>"
+			ImageDivStr = "<a " & AHref(Url, Rs("Title"), Rs("Target")) & SetHtmlParam(Action,"aclass") & ">" & ImageDivStr & "</a>"			
+			'显示单个新闻文本
+			If InStr("|footphotonews|topphotonews|","|"& NewsStyle &"|") > 0 Then
+				ImageDivStr =ImageDivStr & "<span" & SetHtmlParam(Action,"textclass") &">" & CutStr(Rs("Content"), 100, "... ") & "</span>"
 			End If
-			l = Rs("ID")
+			ID = Rs("ID")
 		End If:Rs.Close
-		q= "Select * From [Product]" & GetDidSidTidSQl(b,c,d)
-		If l <> "" Then q =  GetWhereAnd(q," Where Id<>"& l &"")
-		q =  GetWhereAnd(q,h)
+		Sql= "Select * From [Product]" & GetDidSidTidSQl(Did,Sid,Tid)
+		If Id <> "" Then Sql =  GetWhereAnd(Sql," Where Id<>"& Id &"")
+		Sql =  GetWhereAnd(Sql,AddSql)
 	End If
-	Rs.Open q,Conn,1,1
-	For n=1 To f
+	Rs.Open Sql,Conn,1,1
+	For I=1 To TopNumb
 		If Rs.Eof Then Exit For
 		
-		r = Rs("FileName")
-		If CheckMakeHtmlFile(r)=True Then
-        	r = GetHandleUrl(Rs("FileName"))
-	        Call WebDebug(r, "act=CreateArticle&ID=" & Rs("Id"))
+		Url = Rs("FileName")
+		If CheckMakeHtmlFile(Url)=True Then
+        	Url = GetHandleUrl(Rs("FileName"))
+	        Call WebDebug(Url, "act=CreateArticle&ID=" & Rs("Id"))                      '调试
 		End If
 		
-        s = CutStr(Rs("Title"), g, "... ")
-        s = FontColorFontB(s, Rs("FontB"), Rs("FontColor"))
+        ShowTitle = CutStr(Rs("Title"), CutStrNumb, "... ")
+        ShowTitle = FontColorFontB(ShowTitle, Rs("FontB"), Rs("FontColor"))
 
-        t = "<a " & AHref(r, Rs("Title"), Rs("Target")) & SetHtmlParam(a,"aclass") & ">" & s & "</a>"
-        If u <> "" Then
-            t = t & "<span class=""timeright"">" & Format_Time(Rs("UpDateTime"), u) & "</span>" & vbCrLf
+        AStr = "<a " & AHref(Url, Rs("Title"), Rs("Target")) & SetHtmlParam(Action,"aclass") & ">" & ShowTitle & "</a>"
+        If DateYes <> "" Then
+            AStr = AStr & "<span class=""timeright"">" & Format_Time(Rs("UpDateTime"), DateYes) & "</span>" & vbCrLf
         End If
-		o=o & "<li" & SetHtmlParam(a,"liclass") &">"& t &"</li>" & vbCrlf
+		C=C & "<li" & SetHtmlParam(Action,"liclass") &">"& AStr &"</li>" & vbCrlf
 	Rs.MoveNext:Next:Rs.Close
-	o = o & "</ul>" & vbCrlf
-	
-	If InStr("|topphoto|topphotonews|","|"& v &"|") > 0 Then
-		o=k & o
-	ElseIf InStr("|footphoto|footphotonews|","|"& v &"|") > 0 Then
-		o= o & k
+	C = C & "</ul>" & vbCrlf
+	'显示一条新闻带图片的
+	If InStr("|topphoto|topphotonews|","|"& NewsStyle &"|") > 0 Then
+		C=ImageDivStr & C
+	ElseIf InStr("|footphoto|footphotonews|","|"& NewsStyle &"|") > 0 Then
+		C= C & ImageDivStr
 	End If
 	
-	XY_ShowNewsList = o	
+	XY_ShowNewsList = C	
 End Function
-
-Function XY_BannerSwitch(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	XY_BannerSwitch = BannerSwitch(b,f)
+'切换Banner旗帜
+Function XY_BannerSwitch(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	XY_BannerSwitch = BannerSwitch(Did,TopNumb)
 End Function
-
-Function XY_BannerSwitch2(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	XY_BannerSwitch2 = BannerSwitch2(b,f)
+'切换Banner旗帜2
+Function XY_BannerSwitch2(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	XY_BannerSwitch2 = BannerSwitch2(Did,TopNumb)
 End Function
-
-Function XY_LinkList(a)
-	Dim b,c
-	c = " | "								
-	b = RParam(a,"Title")
-	c = RParam(a,"spltypestr")	
-	XY_LinkList = HandleLinkList(b,c)	
+'友情连接列表处理
+Function XY_LinkList(Action)
+	Dim Title,SplTypeStr
+	SplTypeStr = " | "								'默认分割类型
+	Title = RParam(Action,"Title")
+	SplTypeStr = RParam(Action,"spltypestr")	
+	XY_LinkList = HandleLinkList(Title,SplTypeStr)	
 End Function
-
-Function XY_Links(a)
-	Dim b,c,d
-	c = " | "								
-	b = RParam(a,"AddSql")
-	c = RParam(a,"spltypestr")		
-	Dim e,f,g,h,i,j,k,l
-	l = "Select * From [FriendLink]"
-	l = GetWhereAnd(l,b)
-	Rsx.Open l,Conn,1,1
-	For j=1 To Rsx.RecordCount
-		e =  Rsx("Url")
-		g = ATarget(Rsx("Target"))
-		h = ARel(Rsx("NoFollow"))
-		f = Rsx("Title")
-		i = Rsx("ImgPath")
-		d = "<a href='"& e &"'"& g &""&h & SetHtmlParam(a,"class")&" title="""& f &""">"& FontColorFontB(f,Rsx("FontB"),Rsx("FontColor")) &"</a>" & c
+'友情链接
+Function XY_Links(Action)
+	Dim AddSql,SplTypeStr,S
+	SplTypeStr = " | "								'默认分割类型
+	AddSql = RParam(Action,"AddSql")
+	SplTypeStr = RParam(Action,"spltypestr")		
+	Dim Url,Title,Target,Rel,ImgPath,I,C,Sql
+	Sql = "Select * From [FriendLink]"
+	Sql = GetWhereAnd(Sql,AddSql)
+	Rsx.Open Sql,Conn,1,1
+	For I=1 To Rsx.RecordCount
+		Url =  Rsx("Url")
+		Target = ATarget(Rsx("Target"))
+		Rel = ARel(Rsx("NoFollow"))
+		Title = Rsx("Title")
+		ImgPath = Rsx("ImgPath")
+		S = "<a href='"& Url &"'"& Target &""&Rel & SetHtmlParam(Action,"class")&" title="""& Title &""">"& FontColorFontB(Title,Rsx("FontB"),Rsx("FontColor")) &"</a>" & SplTypeStr
 		
-		
-		d = DisplayOnlineED2(WEB_ADMINURL &"FriendLink.Asp?act=ShowEdit&Id=" & Rsx("Id") & "&n=" & GetRnd(11), d, "<li|<a ")
-		k=k & d & vbCrlf		
+		'S = HandleDisplayOnlineEditDialog(""& adminDir &"FriendLink.Asp?act=ShowEdit&Id=" & Rsx("Id") & "&n=" & GetRnd(11), S,"style='float:right;padding:0 4px;'","")	
+		S = DisplayOnlineED2(WEB_ADMINURL &"FriendLink.Asp?act=ShowEdit&Id=" & Rsx("Id") & "&n=" & GetRnd(11), S, "<li|<a ")
+		C=C & S & vbCrlf		
 	Rsx.MoveNext:Next:Rsx.Close
-	XY_Links = k
+	XY_Links = C
 End Function
-
-Function XY_FriendLinkLI(a)
-	Dim b
-	b = RParam(a,"AddSql")
-	Dim c,d,e,f,g,h,i,j,k
-	j = "Select * From [FriendLink]"
-	j = GetWhereAnd(j,b)
-	Rsx.Open j,Conn,1,1
-	For h=1 To Rsx.RecordCount
-		c =  Rsx("Url")
-		e = ATarget(Rsx("Target"))
-		f = ARel(Rsx("NoFollow"))
-		d = Rsx("Title")
-		g = Rsx("ImgPath")
-		k = "<a href='"& c &"'"& e &""&f & SetHtmlParam(a,"class")&" >" & FontColorFontB(d,Rsx("FontB"),Rsx("FontColor")) &"</a>"
-		k = HandleDisplayOnlineEditDialog(""& adminDir &"FriendLink.Asp?act=ShowEdit&Id=" & Rs("Id") & "&n=" & GetRnd(11), k,"style='float:right;padding:0 4px;'","")
+'友情链接LI方式显示			
+Function XY_FriendLinkLI(Action)
+	Dim AddSql
+	AddSql = RParam(Action,"AddSql")
+	Dim Url,Title,Target,Rel,ImgPath,I,C,Sql,S
+	Sql = "Select * From [FriendLink]"
+	Sql = GetWhereAnd(Sql,AddSql)
+	Rsx.Open Sql,Conn,1,1
+	For I=1 To Rsx.RecordCount
+		Url =  Rsx("Url")
+		Target = ATarget(Rsx("Target"))
+		Rel = ARel(Rsx("NoFollow"))
+		Title = Rsx("Title")
+		ImgPath = Rsx("ImgPath")
+		S = "<a href='"& Url &"'"& Target &""&Rel & SetHtmlParam(Action,"class")&" >" & FontColorFontB(Title,Rsx("FontB"),Rsx("FontColor")) &"</a>"
+		S = HandleDisplayOnlineEditDialog(""& adminDir &"FriendLink.Asp?act=ShowEdit&Id=" & Rs("Id") & "&n=" & GetRnd(11), S,"style='float:right;padding:0 4px;'","")
 		
-		i=i & "<li"& SetHtmlParam(a,"liclass") &">" & k & "</li>"
+		C=C & "<li"& SetHtmlParam(Action,"liclass") &">" & S & "</li>"
 	Rsx.MoveNext:Next:Rsx.Close
-	XY_FriendLinkLI = i
+	XY_FriendLinkLI = C
 End Function
 
 
 
-
-Function XY_HrefA(a)
-	Dim b,c,d,e,f,g,h
-	a = HandleInModule(a,"start")
-	b = RParam(a,"Content")
-	f = RParam(a,"Type")
-	If f="收藏" Then
-		
-		
-		g = "shoucang(document.title,window.location)"
-		d = "<a href='javascript:;' onClick="""& g &""" " & SetHtmlParam(a,"target|title|alt|id|class|style") &">"& b &"</a>"
-	ElseIf f="设为首页" Then
-		
-		
-		g = "SetHome(this,window.location)"
-		d = "<a href='javascript:;' onClick="""& g &"""" & SetHtmlParam(a,"target|title|alt|id|class|style") &">"& b &"</a>"
+'普通链接A
+Function XY_HrefA(Action)
+	Dim Content,Href,C,AContent,AType,Url,Title
+	Action = HandleInModule(Action,"start")
+	Content = RParam(Action,"Content")
+	AType = RParam(Action,"Type")
+	If AType="收藏" Then
+		'第一种方法
+		'Url = "window.external.addFavorite('"& WebUrl &"','"& WebTitle &"')"
+		Url = "shoucang(document.title,window.location)"
+		C = "<a href='javascript:;' onClick="""& Url &""" " & SetHtmlParam(Action,"target|title|alt|id|class|style") &">"& Content &"</a>"
+	ElseIf AType="设为首页" Then
+		'第一种方法
+		'Url = "var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('"& WebUrl &"');"
+		Url = "SetHome(this,window.location)"
+		C = "<a href='javascript:;' onClick="""& Url &"""" & SetHtmlParam(Action,"target|title|alt|id|class|style") &">"& Content &"</a>"
 	Else
-		b = RParam(a,"Title")
+		Content = RParam(Action,"Title")
 	End If
 	
-	b = HandleInModule(b,"end")
-	If d = "" Then d = "<a" & SetHtmlParam(a,"href|target|title|alt|id|class|rel|style") &">"& b &"</a>"
+	Content = HandleInModule(Content,"end")
+	If C = "" Then C = "<a" & SetHtmlParam(Action,"href|target|title|alt|id|class|rel|style") &">"& Content &"</a>"
 	
-	XY_HrefA = d
+	XY_HrefA = C
+End Function
+'显示当前模板里内容
+Function XY_ShowThisText(Action)
+	Dim Default
+	Default = GetDefaultValue(Action)
+	XY_ShowThisText = Default
 End Function
 
-Function XY_ShowThisText(a)
-	Dim b
-	b = GetDefaultValue(a)
-	XY_ShowThisText = b
-End Function
 
 
-
-
-Function XY_MainInfo2(a)
-	Dim b,c,d,e
+'获得文本内容 这个是干什么用得？？？20150121
+Function XY_MainInfo2(Action)
+	Dim Title,ShowTitle,AutoAdd,Content
 	
-	b = RParam(a,"Title")
-	c = RParam(a,"ShowTitle")
-	d = RParam(a,"AutoAdd")	
+	Title = RParam(Action,"Title")
+	ShowTitle = RParam(Action,"ShowTitle")
+	AutoAdd = RParam(Action,"AutoAdd")	
 	
-	e = ReadMainInfo(b)
-	If e="" Then
-		e = GetDefaultValue(a)
-		
-		If LCase(d)="true" Then
-			Call AutoAddMainInfo(b,c,e)
+	Content = ReadMainInfo(Title)
+	If Content="" Then
+		Content = GetDefaultValue(Action)
+		'是否自动添加信息
+		If LCase(AutoAdd)="true" Then
+			Call AutoAddMainInfo(Title,ShowTitle,Content)
 		End If
 	End If
-	XY_MainInfo2 = e
+	XY_MainInfo2 = Content
 End Function
-
-Function XY_MainInfo(a)
-	Dim b,c,d,e, f, g, h
+'获得文本内容
+Function XY_MainInfo(Action)
+	Dim Title,ShowTitle,AutoAdd,Content, Id, Url, OnHtml
 	
-	b = RParam(a,"Title")
-	c = RParam(a,"ShowTitle")
-	d = RParam(a,"AutoAdd")	
-	h = RParam(a,"OnHtml")
-	If h="" Then h=False	
+	Title = RParam(Action,"Title")
+	ShowTitle = RParam(Action,"ShowTitle")
+	AutoAdd = RParam(Action,"AutoAdd")	
+	OnHtml = RParam(Action,"OnHtml")
+	If OnHtml="" Then OnHtml=False	
 	
-	e = ReadMainInfo(b)
-	If e="" Then
-		e = GetDefaultValue(a)
-		
-		If LCase(d)="true" Then
-			Call HandleAutoAddMainInfo(b,c,h,e)
+	Content = ReadMainInfo(Title)
+	If Content="" Then
+		Content = GetDefaultValue(Action)
+		'是否自动添加信息
+		If LCase(AutoAdd)="true" Then
+			Call HandleAutoAddMainInfo(Title,ShowTitle,OnHtml,Content)
 		End If
 	End If
-	f = ReadMainId(b)
-	If f<>"" And Request("gl") = "edit" Then
-		
-		g = ""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & f & "&n=" & GetRnd(11)
-		e = DisplayOnlineED2(g, e, "<span |<div ")
+	Id = ReadMainId(Title)
+	If Id<>"" And Request("gl") = "edit" Then
+		'Content = DisplayOnlineEditDialog(""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & Id & "&n=" & GetRnd(11), Content)
+		Url = ""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & Id & "&n=" & GetRnd(11)
+		Content = DisplayOnlineED2(Url, Content, "<span |<div ")
 	End If
+	'处理内容参数标签
+	Content = HandleContentParamLabel(Action,Content)
 	
-	e = HandleContentParamLabel(a,e)
-	
-	XY_MainInfo = e
+	XY_MainInfo = Content
+End Function
+'处理内容参数标签
+Function HandleContentParamLabel(Action,ByVal Content)
+	Dim DelHtmlYes,TrimYes,nLen
+	'删除Html
+	DelHtmlYes = RParam(Action,"DelHtml")			'是否删除Html
+	If DelHtmlYes="true" Then Content = Replace(DelHtml(Content),"<","&lt;")			'HTML处理
+	'删除两边空格
+	TrimYes = RParam(Action,"trim")			'是否删除两边空格
+	If TrimYes="true" Then Content = TrimVbCrlf(Content)
+
+	'截取字符处理
+	nLen = RParam(Action,"Len")			'字符长度值
+	nLen = HandleNumber(nLen)
+	If nLen<>"" Then Content = CutStr(Content,nLen,"...")' Left(Content,nLen)
+	HandleContentParamLabel = Content
 End Function
 
-Function HandleContentParamLabel(a,ByVal b)
-	Dim c,d,e
+'文本内容链接A
+Function XY_MainInfoA(Action)
+	Dim Title,ShowTitle,AutoAdd,Content,Url
 	
-	c = RParam(a,"DelHtml")			
-	If c="true" Then b = Replace(DelHtml(b),"<","&lt;")			
+	Title = RParam(Action,"Title")
+	ShowTitle = RParam(Action,"ShowTitle")
+	AutoAdd = RParam(Action,"AutoAdd")	
+	Url = GetMainInfoUrl(Title)		'获得文本内容地址
 	
-	d = RParam(a,"trim")			
-	If d="true" Then b = TrimVbCrlf(b)
-
-	
-	e = RParam(a,"Len")			
-	e = HandleNumber(e)
-	If e<>"" Then b = CutStr(b,e,"...")
-	HandleContentParamLabel = b
-End Function
-
-
-Function XY_MainInfoA(a)
-	Dim b,c,d,e,f
-	
-	b = RParam(a,"Title")
-	c = RParam(a,"ShowTitle")
-	d = RParam(a,"AutoAdd")	
-	f = GetMainInfoUrl(b)		
-	
-	If f="" Then
-		e = GetDefaultValue(a)
-		
-		If LCase(d)="true" Then
-			Call AutoAddMainInfo(b,c,e)
+	If Url="" Then
+		Content = GetDefaultValue(Action)
+		'是否自动添加信息
+		If LCase(AutoAdd)="true" Then
+			Call AutoAddMainInfo(Title,ShowTitle,Content)
 		End If
 	End If
-	XY_MainInfoA = "<a href='"& f &"'"& SetHtmlParam(a,"target|title|alt|id|class|style|") &">"& b &"</a>"
+	XY_MainInfoA = "<a href='"& Url &"'"& SetHtmlParam(Action,"target|title|alt|id|class|style|") &">"& Title &"</a>"
 End Function
-
-Function XY_MainInfoUrl(a)
-	Dim b,c,d,e,f
+'文本内容链接Url
+Function XY_MainInfoUrl(Action)
+	Dim Title,ShowTitle,AutoAdd,Content,Url
 	
-	b = RParam(a,"Title")
-	c = RParam(a,"ShowTitle")
-	d = RParam(a,"AutoAdd")	
-	f = GetMainInfoUrl(b)		
+	Title = RParam(Action,"Title")
+	ShowTitle = RParam(Action,"ShowTitle")
+	AutoAdd = RParam(Action,"AutoAdd")	
+	Url = GetMainInfoUrl(Title)		'获得文本内容地址
 	
-	If f="" Then
-		e = GetDefaultValue(a)
-		
-		If LCase(d)="true" Then
-			Call AutoAddMainInfo(b,c,e)
+	If Url="" Then
+		Content = GetDefaultValue(Action)
+		'是否自动添加信息
+		If LCase(AutoAdd)="true" Then
+			Call AutoAddMainInfo(Title,ShowTitle,Content)
 		End If
 	End If
-	XY_MainInfoUrl = f
+	XY_MainInfoUrl = Url
 End Function
-
-Function XY_MainInfo_GetShowTitle(a)
-	Dim b,c,d,e,f,g,h
+'文本显示标题
+Function XY_MainInfo_GetShowTitle(Action)
+	Dim Title,ShowTitle,AutoAdd,Default,Url,ReadShowTitle,Id
 	
-	b = RParam(a,"Title")
-	c = RParam(a,"ShowTitle")
-	d = RParam(a,"AutoAdd")
+	Title = RParam(Action,"Title")
+	ShowTitle = RParam(Action,"ShowTitle")
+	AutoAdd = RParam(Action,"AutoAdd")
 	
-	g = ReadMainInfoShowTitle(b)		
+	ReadShowTitle = ReadMainInfoShowTitle(Title)		'获得文本内容地址
 	
-	If g="" Then
-		e = GetDefaultValue(a)
-		
-		If LCase(d)="true" Then
-			Call AutoAddMainInfo(b,c,e)
+	If ReadShowTitle="" Then
+		Default = GetDefaultValue(Action)
+		'是否自动添加信息
+		If LCase(AutoAdd)="true" Then
+			Call AutoAddMainInfo(Title,ShowTitle,default)
 		End If
-		g = c
+		ReadShowTitle = ShowTitle
 	End If
-	h = ReadMainId(b)
-	If h<>"" And Request("gl") = "edit" Then
-		
-		f = ""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & h & "&n=" & GetRnd(11)
-		g = DisplayOnlineED2(f, g, "<span |<div ")
+	Id = ReadMainId(Title)
+	If Id<>"" And Request("gl") = "edit" Then
+		'Content = DisplayOnlineEditDialog(""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & Id & "&n=" & GetRnd(11), Content)
+		Url = ""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & Id & "&n=" & GetRnd(11)
+		ReadShowTitle = DisplayOnlineED2(Url, ReadShowTitle, "<span |<div ")
 	End If
 	
 	
-	XY_MainInfo_GetShowTitle = g
+	XY_MainInfo_GetShowTitle = ReadShowTitle
 	
 End Function
 
 
 
-
-Function XY_NavDidA(a)	
-	Dim b,NavDid	
-	NavDid = RParam(a, "NavDid")
-	b = GetNavUrl(NavDid, "")		
-	b = FullHttpUrl(Host(),b)
-	XY_NavDidA = "<a href='"& b &"'"& SetHtmlParam(a,"target|title|alt|id|class|style|") &">"& NavDid &"</a>"
+'导航大类链接 NavBigName=''为导航大类名称
+Function XY_NavDidA(Action)	
+	Dim Url,NavDid	
+	NavDid = RParam(Action, "NavDid")
+	Url = GetNavUrl(NavDid, "")		'获得导航地址
+	Url = FullHttpUrl(Host(),Url)
+	XY_NavDidA = "<a href='"& Url &"'"& SetHtmlParam(Action,"target|title|alt|id|class|style|") &">"& NavDid &"</a>"
 End Function
-
-Function XY_NavDidUrl(a)	
-	Dim b,NavDid	
-	NavDid = RParam(a, "NavDid")
-	b = GetNavUrl(NavDid, "")		
-	XY_NavDidUrl = b
+'导航大类Url
+Function XY_NavDidUrl(Action)	
+	Dim Url,NavDid	
+	NavDid = RParam(Action, "NavDid")
+	Url = GetNavUrl(NavDid, "")		'获得导航地址 
+	XY_NavDidUrl = Url
 End Function
-
+'处理网站标题  20141222
 Function XY_WebTitle()
-	Dim b
+	Dim S
 	XY_WebTitle = WebTitle
-	b = Trim(LCase(WebTitle))
-	If b="#" Or b="null" Or b="empty" Then
+	S = Trim(LCase(WebTitle))
+	If S="#" Or S="null" Or S="empty" Then
 		XY_WebTitle = ""
 	End If	
 End Function
-
+'处理网站关键词 20141222
 Function XY_WebKeywords()
-	Dim b
+	Dim S
 	XY_WebKeywords = WebKeywords
-	b = Trim(LCase(WebKeywords))
-	If b="#" Or b="null" Or b="empty" Then
+	S = Trim(LCase(WebKeywords))
+	If S="#" Or S="null" Or S="empty" Then
 		XY_WebKeywords = ""
 	End If	
 End Function
-
+'处理网站描述 2014122
 Function XY_WebDescription()
-	Dim b
+	Dim S
 	XY_WebDescription = WebDescription
-	b = Trim(LCase(WebDescription))
-	If b="#" Or b="null" Or b="empty" Then
+	S = Trim(LCase(WebDescription))
+	If S="#" Or S="null" Or S="empty" Then
 		XY_WebDescription = ""
 	End If	
 End Function
 
-
-Function XY_WebBottom(a)
+'获得网站底部内容aa
+Function XY_WebBottom(Action)
 	If WebBottom = "[底部无内容]" Or WebBottom="[$网站底部$]"  Then
-		
+		'获得网站配置
 		Rs.Open "Select * From [WebSite]", Conn, 1, 3
 		If Not Rs.Eof Then
-			WebBottom=GetDefaultValue(a)
+			WebBottom=GetDefaultValue(Action)
 			Rs("WebSiteBottom") = WebBottom
 			Rs.Update
 		End If : Rs.Close
@@ -2782,896 +2782,896 @@ Function XY_WebBottom(a)
 	XY_WebBottom = WebBottom
 End Function
 
-
-Function XY_WebBottomNav(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
+'网站底部导航
+Function XY_WebBottomNav(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
 	
-	Dim i,j, k, l, m, n, o, p,q,r
-	r = RParam(a,"SplTypeStr")
-	If h="" Then h="Where NavButtom<>0  Order By Sort Asc"
+	Dim I,S, C, Url, FileName, BigFolder, ShowDid, Target,Sql,SplTypeStr
+	SplTypeStr = RParam(Action,"SplTypeStr")
+	If AddSql="" Then AddSql="Where NavButtom<>0  Order By Sort Asc"
 	
-	q  = "Select * From [NavBigClass] "
-	If UserId<>"" Then q = GetWhereAnd(q, " And UserId=" & UserId) 			
-	q = GetWhereAnd(q, h)
-	Rs.Open q, Conn, 1, 1
-	For i = 1 To Rs.RecordCount
-		m = Rs("FileName")
-		If m <> "" And Right(m,1)<>"/" Then m = m & ".html"
+	Sql  = "Select * From [NavBigClass] "
+	If UserId<>"" Then Sql = GetWhereAnd(Sql, " And UserId=" & UserId) 			'指定用户
+	Sql = GetWhereAnd(Sql, AddSql)
+	Rs.Open Sql, Conn, 1, 1
+	For I = 1 To Rs.RecordCount
+		FileName = Rs("FileName")
+		If FileName <> "" And Right(FileName,1)<>"/" Then FileName = FileName & ".html"
 	
-		n = "/" & GetWebFolderName() & Rs("FolderName") & "/"
-		b = Rs("BigClassName")
-		o = FontColorFontB(b, Rs("FontB"), Rs("FontColor"))
-		p = Rs("Target")
+		BigFolder = "/" & GetWebFolderName() & Rs("FolderName") & "/"
+		Did = Rs("BigClassName")
+		ShowDid = FontColorFontB(Did, Rs("FontB"), Rs("FontColor"))
+		Target = Rs("Target")
 		
-		l = Rs("FileName")
-		If CheckMakeHtmlFile(l)=True Then
-			l = n & m
-			l = Replace(Replace(l, "//", "/"), "//", "/")
-			l = FullHttpUrl(Host,l)	
+		Url = Rs("FileName")
+		If CheckMakeHtmlFile(Url)=True Then
+			Url = BigFolder & FileName
+			Url = Replace(Replace(Url, "//", "/"), "//", "/")
+			Url = FullHttpUrl(Host,Url)	
 		End If
-		Call WebDebug(l,"act=Nav&NavDid=" & b)	
+		Call WebDebug(Url,"act=Nav&NavDid=" & Did)	'调试
 		If InStr("|产品|新闻|下载|","|" & Rs("NavType") & "|")>0 Then
-			Call WebDebug(l,"act=Nav&NavDid=" & b & "&Page=1")	
+			Call WebDebug(Url,"act=Nav&NavDid=" & Did & "&Page=1")	'调试
 		End If		
 		
-		j = "<a " & AHref(l, o, p) & SetHtmlParam(a,"aclass|class|style") & ">" & o & "</a>"
-		If i <> Rs.RecordCount And r<>"" Then j = j & r
-		
-		j = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavBig&Id=" & Rs("Id") & "&n=" & GetRnd(11), j, "<li|<a ")
-		k = k & j
+		S = "<a " & AHref(Url, ShowDid, Target) & SetHtmlParam(Action,"aclass|class|style") & ">" & ShowDid & "</a>"
+		If I <> Rs.RecordCount And SplTypeStr<>"" Then S = S & SplTypeStr
+		'S = HandleDisplayOnlineEditDialog(""& adminDir &"NavManage.Asp?act=EditNavBig&Id=" & Rs("Id") & "&n=" & GetRnd(11), S,"style='float:right;padding:0 4px;'","")
+		S = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavBig&Id=" & Rs("Id") & "&n=" & GetRnd(11), S, "<li|<a ")
+		C = C & S
 	Rs.MoveNext : Next : Rs.Close
-	XY_WebBottomNav = k
+	XY_WebBottomNav = C
 End Function
 
-
-
-
-
-Function XY_BatchAutoAddProductClass(a)
-	Dim b,c,d,e,f,g,h,i,j,k,l,m,n
-	b = GetDefaultValue(a)
-	Dim o,p
-	p = LCase(Trim(RParam(a,"RootDirYes")))			
-	o = RParam(a,"Operate")
-	If o="false" Then Exit Function				
-	c = Split(b, vbCrlf) 	
-	For d = 0 To UBound(c)
-		e = Replace(c(d),vbTab, CopyStr(" ",4))
-		If e <> "" And Left(Trim(e),1)<>"#" Then
-			f = Split(e & "||||||", "|")
-			g = Trim(f(0))
-			n = f(1)
-			h = f(2)
-			i = f(3)
-			If n = "" Then n =  d
-			If Left(f(0),12)= CopyStr(" ",12) Then
-				f(0)=Replace(f(0),"[类别]", j & "_" & k & "_" & l)
-				f(0)=" did='"& j &"' sid='"& k &"' tid='"& l &"'" & f(0)
-				Call XY_AutoAddProduct(f(0))			
-				
-			ElseIf Left(f(0),8)= CopyStr(" ",8) Then
-				l=g
-				m="Select * From [ThreeClass] Where BigClassName='" & j & "' And SmallClassName='"& k &"' And ThreeClassName='"& l &"'"
-				If h = "" Then h = l
-			ElseIf Left(f(0),4)=CopyStr(" ",4)  Then
-				k=g : l=""
-				m="Select * From [SmallClass] Where BigClassName='" & j & "' And SmallClassName='"& k &"'"					
-				If h = "" Then h = k
-			ElseIf g<>"" Then
-				j=g : k="" : l=""
-				m="Select * From [BigClass] Where BigClassName='" & j & "'"				
-				If h = "" Then h = j
+'**********************************************************************
+'					           辅助类列表
+'**********************************************************************
+'批量添加产品类别用VbTab作为级别分类 创建于20141117
+Function XY_BatchAutoAddProductClass(Action)
+	Dim Default,SplDid,I,S,Splxx,Did,FileName,TemplatePath,DidName,SidName,TidName,Sql,nSort
+	Default = GetDefaultValue(Action)
+	Dim Operate,RootDirYes
+	RootDirYes = LCase(Trim(RParam(Action,"RootDirYes")))			'是否为主目录
+	Operate = RParam(Action,"Operate")
+	If Operate="false" Then Exit Function				'操作为假则 退出
+	SplDid = Split(Default, vbCrlf) 	
+	For I = 0 To UBound(SplDid)
+		S = Replace(SplDid(I),vbTab, CopyStr(" ",4))
+		If S <> "" And Left(Trim(S),1)<>"#" Then
+			Splxx = Split(S & "||||||", "|")
+			Did = Trim(Splxx(0))
+			nSort = Splxx(1)
+			FileName = Splxx(2)
+			TemplatePath = Splxx(3)
+			If nSort = "" Then nSort =  I
+			If Left(Splxx(0),12)= CopyStr(" ",12) Then
+				Splxx(0)=Replace(Splxx(0),"[类别]", DidName & "_" & SidName & "_" & TidName)
+				Splxx(0)=" did='"& DidName &"' sid='"& SidName &"' tid='"& TidName &"'" & Splxx(0)
+				Call XY_AutoAddProduct(Splxx(0))			'自动添加产品信息(批量的哟)
+				'CAll Echo("Splxx(0)",Splxx(0))
+			ElseIf Left(Splxx(0),8)= CopyStr(" ",8) Then
+				TidName=Did
+				Sql="Select * From [ThreeClass] Where BigClassName='" & DidName & "' And SmallClassName='"& SidName &"' And ThreeClassName='"& TidName &"'"
+				If FileName = "" Then FileName = TidName
+			ElseIf Left(Splxx(0),4)=CopyStr(" ",4)  Then
+				SidName=Did : TidName=""
+				Sql="Select * From [SmallClass] Where BigClassName='" & DidName & "' And SmallClassName='"& SidName &"'"					
+				If FileName = "" Then FileName = SidName
+			ElseIf Did<>"" Then
+				DidName=Did : SidName="" : TidName=""
+				Sql="Select * From [BigClass] Where BigClassName='" & DidName & "'"				
+				If FileName = "" Then FileName = DidName
 			End If
-			If j<>"" Then
-				Rs.Open m, Conn, 1, 3
+			If DidName<>"" Then
+				Rs.Open Sql, Conn, 1, 3
 				If Rs.Eof Then
 					Rs.AddNew
-						If j <>"" Then Rs("BigClassName") = j
-						If k <>"" Then Rs("SmallClassName") = k
-						If l <>"" Then Rs("ThreeClassName") = l
-						Rs("Sort") = n
-						If h<>"" And p="true" Then h = "/" & h
-						Rs("FolderName") = PinYin(h, 3)
+						If DidName <>"" Then Rs("BigClassName") = DidName
+						If SidName <>"" Then Rs("SmallClassName") = SidName
+						If TidName <>"" Then Rs("ThreeClassName") = TidName
+						Rs("Sort") = nSort
+						If FileName<>"" And RootDirYes="true" Then FileName = "/" & FileName
+						Rs("FolderName") = PinYin(FileName, 3)
 					Rs.Update
-					
+					'strHtml = strHtml & "添加产品大类 " & Did & "<br>"
 				End If:Rs.Close
 			End If
 		End If
 	Next
-	
+	'Call Eerr(Default,Action)
 End Function
 
-
-Function XY_BatchAutoAddNavClass(a)
-	Dim b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q
-	b = GetDefaultValue(a)
-	Dim r,s,t
-	dim isDelTable												
-	dim v
-	dim w:Set w = CreateObject("Adodb.RecordSet")
-	dim x
+'批量添加导航类别用VbTab作为级别分类 创建于20141117
+Function XY_BatchAutoAddNavClass(Action)
+	Dim Default,SplDid,I,S,Did,Sid,FileName,FolderName,TemplatePath,Sql,nSort,NavType,NavLocation,NavActionType,WebTitle,clearS
+	Default = GetDefaultValue(Action)
+	Dim Operate,RootDirYes,Content
+	dim isDelTable												    '为是否删除表
+	dim isAddFolderName
+	dim Rs:Set Rs = CreateObject("Adodb.RecordSet")
+	dim isFileNameToPinYin
 	
-	v = LCase(Trim(RParam(a,"isaddfoldername")))			
+	isAddFolderName = LCase(Trim(RParam(Action,"isaddfoldername")))			'是否添加文件夹名称
 	
-	r = RParam(a,"Operate")
-	s = LCase(Trim(RParam(a,"RootDirYes")))			
-	isDelTable = LCase(Trim(RParam(a,"isDelTable")))			
-	x = LCase(Trim(RParam(a,"isFileNameToPinYin")))			
-	dim url											
+	Operate = RParam(Action,"Operate")
+	RootDirYes = LCase(Trim(RParam(Action,"RootDirYes")))			'是否为主目录    主目录会在前面加 /  符号
+	isDelTable = LCase(Trim(RParam(Action,"isDelTable")))			'是否要删除表
+	isFileNameToPinYin = LCase(Trim(RParam(Action,"isFileNameToPinYin")))			'是否转拼音
+	dim url											'链接网址
+	'call echo("isFileNameToPinYin",isFileNameToPinYin)
 	
 	
-	
-	If r="false" Then Exit Function				
+	If Operate="false" Then Exit Function				'操作为假则 退出
 	
 	if isDelTable<>"true" then
-		w.Open"Select * From [NavBigClass]",Conn,1,1
-		If w.RecordCount>1 Then w.Close : Exit Function			
-		If Not w.Eof Then
-			If w("BigClassName")<>"测试首页" Then w.Close : Exit Function			
+		Rs.Open"Select * From [NavBigClass]",Conn,1,1
+		If Rs.RecordCount>1 Then Rs.Close : Exit Function			'记录大于1退出
+		If Not Rs.Eof Then
+			If Rs("BigClassName")<>"测试首页" Then Rs.Close : Exit Function			'当前记录大类名称不为 测试首页 退出
 		End If
-		w.Close
+		Rs.Close
 	end if
-	Conn.Execute("Delete From [NavBigClass]")				
+	Conn.Execute("Delete From [NavBigClass]")				'删除导航大类
 	
-	c = Split(b, vbCrlf)
-	For d = 0 To UBound(c)
-		e = Replace(c(d),vbTab, CopyStr(" ",4))
-		q=phpTrim(e)
-		If q <> ""  And Left(Trim(e),1)<>"#" Then
-			l = RParam(e,"Sort")
-			h = RParam(e,"FileName")
-			i = RParam(e,"FolderName")
-			j = RParam(e,"Template")
-			t = RParam(e,"Content")
-			p = RParam(e,"WebTitle")								
-			n = "|" & RParam(e,"NavLocation") & "|"			
-			url = phptrim(clearRParam(e,"url"))							
+	SplDid = Split(Default, vbCrlf)
+	For I = 0 To UBound(SplDid)
+		S = Replace(SplDid(I),vbTab, CopyStr(" ",4))
+		clearS=phpTrim(S)
+		If clearS <> ""  And Left(Trim(S),1)<>"#" Then
+			nSort = RParam(S,"Sort")
+			FileName = RParam(S,"FileName")
+			FolderName = RParam(S,"FolderName")
+			TemplatePath = RParam(S,"Template")
+			Content = RParam(S,"Content")
+			WebTitle = RParam(S,"WebTitle")								'网站标题
+			NavLocation = "|" & RParam(S,"NavLocation") & "|"			'导航位置
+			url = phptrim(clearRParam(S,"url"))							'链接网址
+			'call echo(s,url)
+		 	if FileName="null" then FileName=""
 			
-		 	if h="null" then h=""
-			
-			If l = "" Then l =  d
-			o=""
-			If Left(e,4)=CopyStr(" ",4)  Then
-				g = RParam(e,"Sid") : m=""
-				
-				k="Select * From [NavSmallClass] Where BigClassName='" & f & "' And SmallClassName='"& g &"'"					
-				o="navsmall"
-				If h="" Then h = g			
+			If nSort = "" Then nSort =  I
+			NavActionType=""
+			If Left(S,4)=CopyStr(" ",4)  Then
+				Sid = RParam(S,"Sid") : NavType=""
+				'If FileName="" Then FileName = Sid			'获得默认文件名
+				Sql="Select * From [NavSmallClass] Where BigClassName='" & Did & "' And SmallClassName='"& Sid &"'"					
+				NavActionType="navsmall"
+				If FileName="" Then FileName = Sid			'获得默认文件名
 			Else
-				f = RParam(e,"Did") : g=""
-				m = RParam(e,"NavType")				
-				
-				If h="" Then h = f			
-				k="Select * From [NavBigClass] Where BigClassName='" & f & "'"
+				Did = RParam(S,"Did") : Sid=""
+				NavType = RParam(S,"NavType")				'导航类型
+				'Call Echo(S,NavType)
+				If FileName="" Then FileName = Did			'获得默认文件名
+				Sql="Select * From [NavBigClass] Where BigClassName='" & Did & "'"
 			End If
-			If f<>"" Then
-				
-				w.Open k, Conn, 1, 3
-				If w.Eof Then
-					w.AddNew
-						If f <>"" Then w("BigClassName") = f
-						If g <>"" Then w("SmallClassName") = g
-						w("TemplatePath") = j						
-						If m <>"首页" Then
-							if v="true" and i<>"null" And i<>"空" then
-								If i =  "" Then
-									if g<>"" then
-										i=g
+			If Did<>"" Then
+				'CAll Echo("Sql",Sql)
+				Rs.Open Sql, Conn, 1, 3
+				If Rs.Eof Then
+					Rs.AddNew
+						If Did <>"" Then Rs("BigClassName") = Did
+						If Sid <>"" Then Rs("SmallClassName") = Sid
+						Rs("TemplatePath") = TemplatePath						
+						If NavType <>"首页" Then
+							if isAddFolderName="true" and FolderName<>"null" And FolderName<>"空" then
+								If FolderName =  "" Then 
+									if Sid<>"" then
+										FolderName=Sid
 									else									
-										i=f
+										FolderName=Did
 									end if	
 								end if							
-								If i<>"" And s="true" Then i = "/" & i
+								If FolderName<>"" And RootDirYes="true" Then FolderName = "/" & FolderName
 								
-								w("FolderName") = PinYin(i, 3)
+								Rs("FolderName") = PinYin(FolderName, 3)
 							end if
-							if trim(lcase(h))="thistemplate" then								
-									h=mid(j,1,instrrev(j,".")-1)
-							elseif trim(lcase(h))="this" then							
-								if g<>"" then
-									h=g
+							if trim(lcase(fileName))="thistemplate" then								
+									fileName=mid(TemplatePath,1,instrrev(TemplatePath,".")-1)
+							elseif trim(lcase(fileName))="this" then							
+								if sid<>"" then
+									fileName=sid
 								else
-									h=f
+									fileName=did
 								end if
 							end if
-							
-							if x="true" then
-								h=HtmlFileName(h)						
+							'处理生成html文件名称
+							if isFileNameToPinYin="true" then 
+								fileName=HtmlFileName(FileName)						'转拼音去多余字符
 							else
-								h=SetFileName(h)						
+								fileName=SetFileName(FileName)						'转正确保存文件类型								
 							end if
-							
-							w("FileName") = h	
+							'网址不为空则用自定义网址
+							Rs("FileName") = fileName	'生成Html文件名
 
 						End If
 						
-						w("Sort") = l
-						If m<>"" Then
-							w("NavType") = m							
-							If InStr(n,"顶部")>0 Then
-								w("NavTop") = True
+						Rs("Sort") = nSort
+						If NavType<>"" Then
+							Rs("NavType") = NavType							
+							If InStr(NavLocation,"顶部")>0 Then
+								Rs("NavTop") = True
 							Else
-								w("NavTop") = False
+								Rs("NavTop") = False
 							End If
 						End If
-						If (m="文本" Or o="navsmall") and t="" Then
-							t = f & " " & g & " 详细信息内容写在这里面。更多....."
+						If (NavType="文本" Or NavActionType="navsmall") and Content="" Then
+							Content = Did & " " & Sid & " 详细信息内容写在这里面。更多....."
 							
-						elseif (m="产品" or m="新闻") and instr("|no|#|","|" & t & "|")=false then							
-							call XY_AutoAddProduct("{$AutoAddProduct did='"& f &"' title='在这里面写上信息标题[id]{@Array@}' topnumb='20' bigimage='/UploadFiles/NoImg.jpg' default='在这里面写上信息内容[id]' autoadddid='true'$}")
+						elseif (NavType="产品" or NavType="新闻") and instr("|no|#|","|" & content & "|")=false then							
+							call XY_AutoAddProduct("{$AutoAddProduct did='"& Did &"' title='在这里面写上信息标题[id]{@Array@}' topnumb='20' bigimage='/UploadFiles/NoImg.jpg' default='在这里面写上信息内容[id]' autoadddid='true'$}")
 						End If
-						If InStr(n,"底部") > 0 Then w("NavButtom") = True
-						If InStr(n,"左边") > 0 Then w("NavLeft") = True
-						If InStr(n,"中间") > 0 Then w("NavContent") = True
-						If InStr(n,"右边") > 0 Then w("NavRight") = True
-						If InStr(n,"其它") > 0 Then w("NavOthre") = True				
-						
-						If InStr("|产品|新闻|下载|", "|"& m &"|")>0 Then
-							Call AutoAddBigClass(f)
+						If InStr(NavLocation,"底部") > 0 Then Rs("NavButtom") = True
+						If InStr(NavLocation,"左边") > 0 Then Rs("NavLeft") = True
+						If InStr(NavLocation,"中间") > 0 Then Rs("NavContent") = True
+						If InStr(NavLocation,"右边") > 0 Then Rs("NavRight") = True
+						If InStr(NavLocation,"其它") > 0 Then Rs("NavOthre") = True				
+						'当为产品或新闻呀下载时，添加产品大类 20150124		
+						If InStr("|产品|新闻|下载|", "|"& NavType &"|")>0 Then
+							Call AutoAddBigClass(Did)
 						End If
-						if p="" then
-							if g<>"" then
-								p=g
+						if WebTitle="" then
+							if sid<>"" then
+								WebTitle=sid
 							else
-								p=f
+								WebTitle=did
 							end if
 						end if
-						if lcase(p)="null" then
-							p=""
+						if lcase(WebTitle)="null" then
+							WebTitle=""
 						end if
-						call echo(f,p)
+						call echo(did,webtitle)
 						
-						w("CustomAUrl") = url						
-						w("WebTitle") = p
-						w("Content") = t
-					w.Update
-				End If:w.Close
+						Rs("CustomAUrl") = url						
+						Rs("WebTitle") = WebTitle
+						Rs("Content") = Content
+					Rs.Update
+				End If:Rs.Close
 			End If
 		End If
 	Next
-	
+	'Call Eerr(Default,Action)
 End Function
 
 
-
-Function XY_AutoAddHandle(a)
-	Dim b,c,d,e,f,g,h,i,j,k
-	Dim l,m,n
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)		
-	Dim o,p
-	dim defaultaddcontent					
-	dim addContent							
+'自动添加大类，小类，子类，产品
+Function XY_AutoAddHandle(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,AutoAdd,I,ULClass
+	Dim AutoAddDid,AutoAddSid,AutoAddTid
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)		'获得这么函数参数
+	Dim S,C
+	dim defaultaddcontent					'默认添加Content内容20150713
+	dim addContent							'添加内容
 	
 	
-	defaultaddcontent = ModuleFindContent(a,"defaultaddcontent")
+	defaultaddcontent = ModuleFindContent(Action,"defaultaddcontent")
 	
 	
-	
-	If CheckBigClass(b) = 0 Then
-		l = RParam(a,"AutoAddDid")
-		If LCase(l)="true" Then
-			Call AutoAddBigClass(b)
+	'自动添加大类
+	If CheckBigClass(Did) = 0 Then
+		AutoAddDid = RParam(Action,"AutoAddDid")
+		If LCase(AutoAddDid)="true" Then
+			Call AutoAddBigClass(Did)
 		End If		
 	End If
-	
-	If CheckSmallClass(b,c) = 0 Then
-		m = RParam(a,"AutoAddSid")
-		If LCase(m)="true" Then
-			Call AutoAddSmallClass(b,c)
+	'自动添加小类
+	If CheckSmallClass(Did,Sid) = 0 Then
+		AutoAddSid = RParam(Action,"AutoAddSid")
+		If LCase(AutoAddSid)="true" Then
+			Call AutoAddSmallClass(Did,Sid)
 		End If		
 	End If
-	
-	If CheckThreeClass(b,c,d) = 0 Then
-		n = RParam(a,"AutoAddTid")
-		If LCase(n)="true" Then
-			Call AutoAddThreeClass(b,c,d)
+	'自动添加子类
+	If CheckThreeClass(Did,Sid,Tid) = 0 Then
+		AutoAddTid = RParam(Action,"AutoAddTid")
+		If LCase(AutoAddTid)="true" Then
+			Call AutoAddThreeClass(Did,Sid,Tid)
 		End If		
 	End If
-	
-	If CheckProduct(b,"","")=0 Then
-		i = RParam(a,"AutoAdd")
-		If LCase(i)="true" Then
-		 	For j = 1 To f
+	'自动添加产品
+	If CheckProduct(Did,"","")=0 Then
+		AutoAdd = RParam(Action,"AutoAdd")
+		If LCase(AutoAdd)="true" Then
+		 	For I = 1 To TopNumb
 			
 			if defaultaddcontent<>"" then
-					o = defaultaddcontent					
-					o = ReplaceValueParam(o,"ni",j)								
-					o = ReplaceValueParam(o,"编号-1",j-1)								
-					o = ReplaceValueParam(o,"编号",j)								
-					o = ReplaceValueParam(o,"did",  b)	
-					o = ReplaceValueParam(o,"sid",  c)	
-					o = ReplaceValueParam(o,"tid",  d)	
+					s = defaultaddcontent					
+					S = ReplaceValueParam(S,"ni",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+					S = ReplaceValueParam(S,"编号-1",I-1)								'不对为i，因为i会与imgurl冲突 [$i$]
+					S = ReplaceValueParam(S,"编号",I)								'不对为i，因为i会与imgurl冲突 [$i$]
+					S = ReplaceValueParam(S,"did",  Did)	
+					S = ReplaceValueParam(S,"sid",  Sid)	
+					S = ReplaceValueParam(S,"tid",  Tid)	
 				else
-					o = b & "-内容"
+					s = Did & "-内容"
 				end if
 			
-				Call AutoAddArticle(b,c,d,b & c & d & "-标题" & j,o)		
+				Call AutoAddArticle(Did,Sid,Tid,Did & Sid & Tid & "-标题" & I,s)		
 			Next
 		End If
 	End If	
 End Function
-
-Function XY_AutoAddDid(a)
-	Dim b,c,d,e,f,g,h,i
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim j,k
-	j=Split(b,"[Array]")
-	For Each k In j
-		If k<>"" Then
-			Call AutoAddBigClass(k)
+'自动添加大类
+Function XY_AutoAddDid(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim SplStr,S
+	SplStr=Split(Did,"[Array]")
+	For Each S In SplStr
+		If S<>"" Then
+			Call AutoAddBigClass(S)
 		End If
 	Next
 End Function
-
-Function XY_AutoAddSid(a)
-	Dim b,c,d,e,f,g,h,i
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim j,k,l,m
-	j=Split(d,"[Array]")
+'自动添加小类
+Function XY_AutoAddSid(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim SplStr,S,Sql,nCount
+	SplStr=Split(Tid,"[Array]")
 	
-	l = GetDidSidTidSQl(b,"","")
-	l = GetWhereAnd(l,h)
-	Rs.Open"Select * From [ThreeClass] " & l,Conn,1,1
-	m=Rs.RecordCount : Rs.Close
-	If m<>0 Then Exit Function
-	j=Split(c,"[Array]")
-	For Each k In j
-		If k<>"" Then
-			Call AutoAddSmallClass(b,k)
+	Sql = GetDidSidTidSQl(Did,"","")
+	Sql = GetWhereAnd(Sql,AddSql)
+	Rs.Open"Select * From [ThreeClass] " & Sql,Conn,1,1
+	nCount=Rs.RecordCount : Rs.Close
+	If nCount<>0 Then Exit Function
+	SplStr=Split(Sid,"[Array]")
+	For Each S In SplStr
+		If S<>"" Then
+			Call AutoAddSmallClass(Did,S)
 		End If
 	Next
 End Function
-
-Function XY_AutoAddTid(a)
-	Dim b,c,d,e,f,g,h,i
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Dim j,k,l,m
-	j=Split(d,"[Array]")
+'自动添加子类
+Function XY_AutoAddTid(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql,ULClass
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Dim SplStr,S,Sql,nCount
+	SplStr=Split(Tid,"[Array]")
 	
-	l = GetDidSidTidSQl(b,c,"")	
-	l = GetWhereAnd(l,h)
-	Rs.Open"Select * From [ThreeClass] " & l,Conn,1,1
-	m=Rs.RecordCount : Rs.Close
-	If m<>0 Then Exit Function	
-	For Each k In j
-		If k<>"" Then
-			Call AutoAddThreeClass(b,c,k)
+	Sql = GetDidSidTidSQl(Did,Sid,"")	
+	Sql = GetWhereAnd(Sql,AddSql)
+	Rs.Open"Select * From [ThreeClass] " & Sql,Conn,1,1
+	nCount=Rs.RecordCount : Rs.Close
+	If nCount<>0 Then Exit Function	
+	For Each S In SplStr
+		If S<>"" Then
+			Call AutoAddThreeClass(Did,Sid,S)
 		End If
 	Next
 End Function
-
-Function XY_AutoAddProduct(a)
-	Dim b,c,d,e,f,g,h
-	Call HandleFunParameter(a,b,c,d,e,f,g,h)
-	Call XY_AutoAddHandle(a)			
-	Dim i,j,k,l,m,n,o
-	j = GetDefaultValue(a)
-	Rs.Open"Select * From [Product] " & GetDidSidTidSQl(b,c,d),Conn,1,1
-	n = Rs.RecordCount:Rs.Close
-	
-	If n>0 Then Exit Function
-	
-	o = Split(e, "{@Array@}")
-	If n<f Then
-		For l = 1 To f-n
-			If Ubound(o)	>=l-1 Then
-				e=o(l-1)
-				
-				if e="" then
-					e=o(0)
+'自动添加产品信息
+Function XY_AutoAddProduct(Action)
+	Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
+	Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
+	Call XY_AutoAddHandle(Action)			'处理添加信息处理
+	Dim ULClass,Default,Content,I,NewTitle,nCount,SplTitle
+	Default = GetDefaultValue(Action)
+	Rs.Open"Select * From [Product] " & GetDidSidTidSQl(Did,Sid,Tid),Conn,1,1
+	nCount = Rs.RecordCount:Rs.Close
+	'有记录则不自动生成产品信息了，不管当前记录是否大于TopNumb设置数 都退出 2014 12 10
+	If nCount>0 Then Exit Function
+	'Call Echo("Title",Title)
+	SplTitle = Split(Title, "{@Array@}")
+	If nCount<TopNumb Then
+		For I = 1 To TopNumb-nCount
+			If Ubound(SplTitle)	>=I-1 Then
+				Title=SplTitle(I-1)
+				'如果为空则还是用默认的
+				if Title="" then
+					Title=SplTitle(0)
 				end if
 			Else
-				e=o(0)
+				Title=SplTitle(0)
 			End If
-			
-			If Instr(e,"[id]")>0 Then
-				m = Replace(e,"[id]",l)
-			ElseIf Ubound(o)<=0 Then
-				m = e & "-" & l
+			'call echo("Title",Title)
+			If Instr(Title,"[id]")>0 Then
+				NewTitle = Replace(Title,"[id]",I)
+			ElseIf Ubound(SplTitle)<=0 Then
+				NewTitle = Title & "-" & I
 			Else
-				m = e
-			End If
-			
-			k = Replace(j,"[id]",l)
-			Call AutoAddArticleAction(a,b,c,d,m,l,k)
+				NewTitle = Title
+			End If 
+			'call echo("NewTitle",NewTitle)
+			Content = Replace(Default,"[id]",I)
+			Call AutoAddArticleAction(Action,Did,Sid,Tid,NewTitle,I,Content)
 		Next
 	End If
 End Function
-
-Function XY_AutoAddGuestBook(a)
-	Dim b,c,d,e,f,g,h,i,j,k,l
-	c = RParam(a,"TopNumb")
-	d = RParam(a,"GuestName")
-	e = RParam(a,"EMail")
-	f = RParam(a,"Message")
-	g = RParam(a,"Reply")
-	h = RParam(a,"Tel")
-	i = RParam(a,"QQ")
-	j = RParam(a,"MSN")
-	k = RParam(a,"IP")
+'自动添加留言信息
+Function XY_AutoAddGuestBook(Action)
+	Dim I,TopNumb,GuestName,EMail,Message,Reply,Tel,QQ,MSN,IP,nCount
+	TopNumb = RParam(Action,"TopNumb")
+	GuestName = RParam(Action,"GuestName")
+	EMail = RParam(Action,"EMail")
+	Message = RParam(Action,"Message")
+	Reply = RParam(Action,"Reply")
+	Tel = RParam(Action,"Tel")
+	QQ = RParam(Action,"QQ")
+	MSN = RParam(Action,"MSN")
+	IP = RParam(Action,"IP")
 	Rs.Open"Select * From [GuestBook]",Conn,1,1
-	l = Rs.RecordCount
+	nCount = Rs.RecordCount
 	Rs.Close
-	
-	If l>0 Then Exit Function			
-	For b=1 To c
-		Rs.Open"Select * From [GuestBook] Where Content='"& f &"'",Conn,1,3
+	'有记录则退出
+	If nCount>0 Then Exit Function			
+	For I=1 To TopNumb
+		Rs.Open"Select * From [GuestBook] Where Content='"& Message &"'",Conn,1,3
 		If Rs.Eof Then
 			Rs.AddNew
-			Rs("GuestName")=Replace(d,"[id]",b)			
-			Rs("EMail")=Replace(e,"[id]",b)					
-			Rs("Content")=Replace(f,"[id]",b)				
-			Rs("Reply")=Replace(g,"[id]",b)					
-			Rs("Tel")=Replace(h,"[id]",b)						
-			Rs("QQ")=Replace(i,"[QQ]",b)						
-			Rs("MSN")=Replace(j,"[MSN]",b)					
-			Rs("IP")=Replace(k,"[IP]",b)						
+			Rs("GuestName")=Replace(GuestName,"[id]",I)			'留言者
+			Rs("EMail")=Replace(EMail,"[id]",I)					'邮箱
+			Rs("Content")=Replace(Message,"[id]",I)				'留言内容
+			Rs("Reply")=Replace(Reply,"[id]",I)					'回答内容
+			Rs("Tel")=Replace(Tel,"[id]",I)						'联系电话
+			Rs("QQ")=Replace(QQ,"[QQ]",I)						'联系QQ
+			Rs("MSN")=Replace(MSN,"[MSN]",I)					'联系MSN
+			Rs("IP")=Replace(IP,"[IP]",I)						'客户IP
 			Rs.Update
 		End If:Rs.Close
 	Next
 End Function
-
-Function XY_UpdateBigNav(a)
-	Dim b,c
-	b = RParam(a,"Did")
-	If b="" Then Exit Function						
-	c = ModuleFindContent(a,"content")
-	Rs.Open"Select * From [NavBigClass] Where BigClassName='"& b &"'",Conn,1,3
+'更新大类导航
+Function XY_UpdateBigNav(Action)
+	Dim Did,Content
+	Did = RParam(Action,"Did")
+	If Did="" Then Exit Function						'退出更新大类导航
+	Content = ModuleFindContent(Action,"content")
+	Rs.Open"Select * From [NavBigClass] Where BigClassName='"& Did &"'",Conn,1,3
 	If Not Rs.Eof Then
-		Rs("Content") = c
+		Rs("Content") = Content
 		Rs.Update
 	End If:Rs.Close
 End Function
-
-Function XY_AutoBatchAddArticle(a)
-	Dim b,c,d,e,f,g,h,i,j
-	b = Trim(RParam(a,"FolderPath"))
-	If b="" Then Exit Function				
-	If CheckFolder(b)=False Then Exit Function	
-	g = GetDirFolderNameList(b)
-	If g = "" Then Exit Function							
-	h = Split(g,vbCrlf)
-	For Each d In h
-		If d <>"" And Left(d,1)<>"#" Then
-			Call AddArticle20141218(b,d,"","")
-			
-			c = b & "\" & d
-			g = GetDirFolderNameList(c)
-			
-			i = Split(g,vbCrlf)
-			For Each e In i
-				If e <>"" And Left(e,1)<>"#" Then
-					
-					Call AddArticle20141218(b, d, e, "")
+'自动批量添加文章
+Function XY_AutoBatchAddArticle(Action)
+	Dim RootDir,FolderPath,Did,Sid,Tid,Content,SplDid,SplSid,SplTid
+	RootDir = Trim(RParam(Action,"FolderPath"))
+	If RootDir="" Then Exit Function				'目录为空则退出
+	If CheckFolder(RootDir)=False Then Exit Function	'检测目录不存在则退出
+	Content = GetDirFolderNameList(RootDir)
+	If Content = "" Then Exit Function							'主目录下没有文件夹 则退出
+	SplDid = Split(Content,vbCrlf)
+	For Each Did In SplDid
+		If Did <>"" And Left(Did,1)<>"#" Then
+			Call AddArticle20141218(RootDir,Did,"","")
+			'二级操作
+			FolderPath = RootDir & "\" & Did
+			Content = GetDirFolderNameList(FolderPath)
+			'CAll Echo("Content",Content)
+			SplSid = Split(Content,vbCrlf)
+			For Each Sid In SplSid
+				If Sid <>"" And Left(Sid,1)<>"#" Then
+					'Call Echo(RootDir,Did & ">>" & Sid)
+					Call AddArticle20141218(RootDir, Did, Sid, "")
 				End If
 			Next
 		End If
 	Next	
 End Function
-
-Function XY_AutoAddInputConfig(a)
-	Dim b,c,d,e,f,g,h,i,j,k,l,m,n,o
+'自动添加表单配置
+Function XY_AutoAddInputConfig(Action)
+	Dim Did,fronttitle,backendtitle,inputtype,fieldname,defaultvalue,inputwidth,inputheight,verificationmsg,listshow,through,verificationtype,nSort,tipstext
 	
-	b = RParam(a,"Did")							
-	c = RParam(a,"fronttitle")			
-	d = RParam(a,"backendtitle")		
-	e = RParam(a,"inputtype")				
+	Did = RParam(Action,"Did")							'大类名称
+	fronttitle = RParam(Action,"fronttitle")			'前端标题
+	backendtitle = RParam(Action,"backendtitle")		'后端标题
+	inputtype = RParam(Action,"inputtype")				'Input类型
 	
-	f = RParam(a,"fieldname")								
-	g = RParam(a,"defaultvalue")						
-	h = RParam(a,"inputwidth")							
-	i = RParam(a,"inputheight")							
+	fieldname = RParam(Action,"fieldname")								'字段名称
+	defaultvalue = RParam(Action,"defaultvalue")						'默认内容
+	inputwidth = RParam(Action,"inputwidth")							'Input宽
+	inputheight = RParam(Action,"inputheight")							'Input高
 	
-	j = RParam(a,"verificationmsg")							
-	k = RParam(a,"listshow")										
-	l = RParam(a,"through")											
-	m = RParam(a,"verificationtype")						
-	n = RParam(a,"Sort")												
-	o = RParam(a,"tipstext")										
+	verificationmsg = RParam(Action,"verificationmsg")							'是否为经验码
+	listshow = RParam(Action,"listshow")										'列表显示
+	through = RParam(Action,"through")											'推荐
+	verificationtype = RParam(Action,"verificationtype")						'验证类型
+	nSort = RParam(Action,"Sort")												'排序
+	tipstext = RParam(Action,"tipstext")										'提示信息
 	
-	If d="" Then Exit Function				
-	Rs.Open"Select * From [InputConfig] Where BigClassName='"& b &"' And fronttitle='"& c &"'",Conn,1,3
+	If backendtitle="" Then Exit Function				'前端为空则退出
+	Rs.Open"Select * From [InputConfig] Where BigClassName='"& Did &"' And fronttitle='"& fronttitle &"'",Conn,1,3
 	If Rs.Eof Then
 		Rs.AddNew
-		Rs("BigClassName") = b
-		Rs("fronttitle") = c
-		Rs("backendtitle") = d
-		Rs("inputtype") = e
+		Rs("BigClassName") = Did
+		Rs("fronttitle") = fronttitle
+		Rs("backendtitle") = backendtitle
+		Rs("inputtype") = inputtype
 		
-		Rs("fieldname") = f
-		Rs("defaultvalue") = g
-		Rs("inputwidth") = h
-		Rs("inputheight") = i
+		Rs("fieldname") = fieldname
+		Rs("defaultvalue") = defaultvalue
+		Rs("inputwidth") = inputwidth
+		Rs("inputheight") = inputheight
 		
-		Rs("verificationmsg") = j
-		Rs("verificationtype") = m
+		Rs("verificationmsg") = verificationmsg
+		Rs("verificationtype") = verificationtype
 		
-		If l<>"" Then Rs("through") = True
-		If k<>"" Then Rs("listshow") = True
-		If n<>"" Then Rs("Sort") = n
-		Rs("tipstext") = o
+		If through<>"" Then Rs("through") = True
+		If listshow<>"" Then Rs("listshow") = True
+		If nSort<>"" Then Rs("Sort") = nSort
+		Rs("tipstext") = tipstext
 		
 		Rs.Update
 	End If:Rs.Close
 	
 
 End Function
-
-Function AddArticle20141218(a,b,c,d)
-	Dim e,f,g,h,i,j,k
-	Call Echo("", a & "\" & b & "\" & c & "\" & d)
-	e = GetFileFolderList(a & "\" & b & "\" & c & "\" & d, True, "|txt|doc|docx|", "", "", "", "")
-	f=Split(e,vbCrlf)
-	For Each g In f
-		If g<>"" Then
-			h = LCase(getFileExtName(g))
-			i = GetFilePathName(g)
-			If h = "txt" Then
-				e=GetFText(g)
-			ElseIf h = "doc" Or h = "docx" Then
-				e=GetDocText(g)
+'配合上面，添加文章
+Function AddArticle20141218(RootDir,Did,Sid,Tid)
+	Dim Content,SplStr,FilePath,FileType,FileName,Sql,AddSql
+	Call Echo("", RootDir & "\" & Did & "\" & Sid & "\" & Tid)
+	Content = GetFileFolderList(RootDir & "\" & Did & "\" & Sid & "\" & Tid, True, "|txt|doc|docx|", "", "", "", "")
+	SplStr=Split(Content,vbCrlf)
+	For Each FilePath In SplStr
+		If FilePath<>"" Then
+			FileType = LCase(getFileExtName(FilePath))
+			FileName = GetFilePathName(FilePath)
+			If FileType = "txt" Then
+				Content=GetFText(FilePath)
+			ElseIf FileType = "doc" Or FileType = "docx" Then
+				Content=GetDocText(FilePath)
 			End If
-			j = "Select * From [Product] Where Title='"& i &"' "
-			If b<>"" Then j = GetWhereAnd(j, "And BigClassName='"& b &"'")
-			If c<>"" Then j = GetWhereAnd(j, "And SmallClassName='"& c &"'")
-			If d<>"" Then j = GetWhereAnd(j, "And ThreeClassName='"& d &"'")			
-			Rs.Open j,Conn,1,3
+			Sql = "Select * From [Product] Where Title='"& FileName &"' "
+			If Did<>"" Then Sql = GetWhereAnd(Sql, "And BigClassName='"& Did &"'")
+			If Sid<>"" Then Sql = GetWhereAnd(Sql, "And SmallClassName='"& Sid &"'")
+			If Tid<>"" Then Sql = GetWhereAnd(Sql, "And ThreeClassName='"& Tid &"'")			
+			Rs.Open Sql,Conn,1,3
 			If Rs.Eof Then
 				Rs.AddNew
-				Rs("BigClassName") = b
-				Rs("SmallClassName") = c
-				Rs("ThreeClassName") = d
-				Rs("WebTitle") = i
-				Rs("Title") = i
-				Rs("FileName") = HtmlFileName(i)
-				Rs("Content") = e
+				Rs("BigClassName") = Did
+				Rs("SmallClassName") = Sid
+				Rs("ThreeClassName") = Tid
+				Rs("WebTitle") = FileName
+				Rs("Title") = FileName
+				Rs("FileName") = HtmlFileName(FileName)
+				Rs("Content") = Content
 				Rs.Update		
 			End If:Rs.Close
-			
-			
-			
-			
+			'Call Echo("Sql",Sql)
+			'Call Echo("FilePath",FilePath)
+			'Call Echo("FileType",FileType)
+			'Call Echo("FileName",FileName)
 		End IF
 	Next
-	
+	'Call Echo("Content",Content)
 End Function
 
 
+'读出Left模板样式		这里面字符 ' 来回复制会出错，所以我们用 \|*|\ 代替处理
+Function XY_ReadColumeSetTitle(Action)
+	Dim StartStr,EndStr,Style,Title,ValueStr,MoreClass,MoreUrl,MoreStr,AStr,AClassStr
+	Action = HandleInModule(Action,"start")
+	style = RParam(Action,"style")
+	Title = RParam(Action,"Title")
+	'Call Echo("ContentHeight",ContentHeight)
+	'ValueStr = RParam(Action,"value")	
+	'根据模块找内容
+	ValueStr = ModuleFindContent(Action,"value")
+	'Call Eerr("ValueStr",ValueStr)
+	ValueStr = FindModuleStr(Code,ValueStr)					'找模块对应内容
 
-Function XY_ReadColumeSetTitle(a)
-	Dim b,c,d,e,f,g,h,i,j,k
-	a = HandleInModule(a,"start")
-	d = RParam(a,"style")
-	e = RParam(a,"Title")
+	MoreClass = RParam(Action,"MoreClass")
+	MoreUrl = Trim(RParam(Action,"MoreUrl"))
+	MoreStr = RParam(Action,"MoreStr")
+	ValueStr = HandleInModule(ValueStr,"end")
+	XY_ReadColumeSetTitle = ReadColumeSetTitle(Action, Style,Title,ValueStr)
 	
-	
-	
-	f = ModuleFindContent(a,"value")
-	
-	f = FindModuleStr(Code,f)					
-
-	g = RParam(a,"MoreClass")
-	h = Trim(RParam(a,"MoreUrl"))
-	i = RParam(a,"MoreStr")
-	f = HandleInModule(f,"end")
-	XY_ReadColumeSetTitle = ReadColumeSetTitle(a, d,e,f)
-	
-	If g="" Then g="more"			
-	
-	
-	If h<>"" And i<>"" Then
-		
-		j = "<a " & AHref(h, e, "") & " class='"& g &"'>" & i & "</a>" 		
-		XY_ReadColumeSetTitle = Replace(XY_ReadColumeSetTitle,"<!--#AMore#-->",j)
+	If MoreClass="" Then MoreClass="more"			'More链接为空 则用默认代替
+	'If MoreUrl="" Then MoreUrl="#"					'More链接网址为空 则用默认#代替
+	'More链接样式不能为空，因为没有样式它就不能让More在最近边
+	If MoreUrl<>"" And MoreStr<>"" Then
+		'AStr = "<a href='"& MoreUrl &"' class='"& MoreClass &"'>"& MoreStr &"</a>"		
+		AStr = "<a " & AHref(MoreUrl, Title, "") & " class='"& MoreClass &"'>" & MoreStr & "</a>" 		
+		XY_ReadColumeSetTitle = Replace(XY_ReadColumeSetTitle,"<!--#AMore#-->",AStr)
 	End If
 End Function
-
-Function XY_ReadTemplateSource(a)
-	Dim b
-	b = RParam(a,"SourceId")	
-	XY_ReadTemplateSource = ReadTemplateSource(b)
+'读模板资源内容
+Function XY_ReadTemplateSource(Action)
+	Dim SourceId
+	SourceId = RParam(Action,"SourceId")	
+	XY_ReadTemplateSource = ReadTemplateSource(SourceId)
 End Function
+'读模块内容
+Function XY_ReadTemplateModule(Action)
+	Dim ModuleId,FilePath
+	Dim SourceList				'源内容列表 20150109
+	Dim ReplaceList				'替换内容列表
+	Dim SplSource,SplReplace,I,SourceStr,ReplaceStr
+	'Call die(Action)
+	
+	FilePath = RParam(Action,"File")
+	ModuleId = RParam(Action,"ModuleId")
+	SourceList = RParam(Action,"SourceList")
+	ReplaceList = RParam(Action,"ReplaceList")
+	'Call Echo(SourceList,ReplaceList)
+	
+	If ModuleId="" Then ModuleId = RParam(Action,"ModuleName")			'用块名称
+	FilePath = FilePath & ".html"
+	'Call Echo("FilePath",FilePath)
+	'Call Echo("ModuleId",ModuleId)
 
-Function XY_ReadTemplateModule(a)
-	Dim b,c
-	Dim SourceList				
-	Dim ReplaceList				
-	Dim f,g,h,i,j
+	XY_ReadTemplateModule = ReadTemplateModuleStr(FilePath,"",ModuleId)
 	
-	
-	c = RParam(a,"File")
-	b = RParam(a,"ModuleId")
-	SourceList = RParam(a,"SourceList")
-	ReplaceList = RParam(a,"ReplaceList")
-	
-	
-	If b="" Then b = RParam(a,"ModuleName")			
-	c = c & ".html"
-	
-	
-
-	XY_ReadTemplateModule = ReadTemplateModuleStr(c,"",b)
-	
-	
+	'批量替换指定内容列表
 	If SourceList<>"" And ReplaceList<>"" Then
-		f = Split(SourceList,"[Array]")
-		g = Split(ReplaceList,"[Array]")
-		For h = 0 To Ubound(f)
-			i = f(h)
-			j = g(h)
-			If i <>"" Then
-				XY_ReadTemplateModule=Replace(XY_ReadTemplateModule, i, j)
+		SplSource = Split(SourceList,"[Array]")
+		SplReplace = Split(ReplaceList,"[Array]")
+		For I = 0 To Ubound(SplSource)
+			SourceStr = SplSource(I)
+			ReplaceStr = SplReplace(I)
+			If SourceStr <>"" Then
+				XY_ReadTemplateModule=Replace(XY_ReadTemplateModule, SourceStr, ReplaceStr)
 			End If
 		Next
 	End If
 	
 End Function
-
-Function XY_GetContentModule(a)
-	XY_GetContentModule = XY_ReadTemplateModule(a)
+'读模块内容 和上面一样
+Function XY_GetContentModule(Action)
+	XY_GetContentModule = XY_ReadTemplateModule(Action)
 End Function
-
-Function XY_ReplaceTemplateContent(a,b,c)
-	
-	Dim d,e
-	d = ModuleFindContent(c,"SourceStr")
-	e = ModuleFindContent(c,"ReplaceStr")
-	
-	
-	If InStr(a,d)>0 Then
-		a = Replace(a,b,"")				
-		a = Replace(a,d,e)				
-		
+'替换模板内容 20150109
+Function XY_ReplaceTemplateContent(Content,TemplateLableStr,Action)
+	'Call die(Action)
+	Dim SourceStr,ReplaceStr
+	SourceStr = ModuleFindContent(Action,"SourceStr")
+	ReplaceStr = ModuleFindContent(Action,"ReplaceStr")
+	'CAll Rw(Action)
+	'Call Eerr(SourceStr,ReplaceStr)
+	If InStr(Content,SourceStr)>0 Then
+		Content = Replace(Content,TemplateLableStr,"")				'先把这个替换模板标签内容删除
+		Content = Replace(Content,SourceStr,ReplaceStr)				'替换内容
+		'Call Die(Content)		
 	End If
 	XY_ReplaceTemplateContent = ""
 End Function
 
-
-Function XY_ShowTemplateModule(a)
-	Dim b,c
-	Dim d,e,f
-	Dim g,h
-	b = RParam(a,"DefaultModule")
-	c = RParam(a,"SelectModule")
+'显示模板模块
+Function XY_ShowTemplateModule(Action)
+	Dim DefaultModule,SelectModule
+	Dim Did,Sid,Tid
+	Dim MainInfoModule,ProductModule
+	DefaultModule = RParam(Action,"DefaultModule")
+	SelectModule = RParam(Action,"SelectModule")
 	
+	'Call echo("DefaultModule",DefaultModule)
+	Did = PubProDid
+	Sid = PubProSid
+	Tid = PubProTid
 	
-	d = PubProDid
-	e = PubProSid
-	f = PubProTid
-	
-	
+	'详细页
 	If PubID<>"" Then
 		If PubActionType = "MainInfo" Then
 			Rs.Open"Select * From [MainInfo] Where Id=" & PubID,Conn,1,1
 			If Not Rs.Eof Then
-				If Rs(c)<>"" Then
-					g = Rs(c)
+				If Rs(SelectModule)<>"" Then
+					MainInfoModule = Rs(SelectModule)
 					
 				End If
 			End If:Rs.Close		
 		ElseIf PubActionType = "Article" Then
 			Rs.Open"Select * From [Product] Where Id=" & PubID,Conn,1,1
 			If Not Rs.Eof Then
-				If Rs(c)<>"" Then
-					h = Rs(c)
+				If Rs(SelectModule)<>"" Then
+					ProductModule = Rs(SelectModule)
 				End If
-				d=Rs("BigClassName")
-				e=Rs("SmallClassName")
-				f=Rs("ThreeClassName")
+				Did=Rs("BigClassName")
+				Sid=Rs("SmallClassName")
+				Tid=Rs("ThreeClassName")
 			End If:Rs.Close			
 		End If
 	End If
-	
+	'导航大类不为空
 	If PubNavDid<>"" Then
 		Rs.Open"Select * From [NavBigClass] Where BigClassName='"& PubNavDid &"'",Conn,1,1
 		If Not Rs.Eof Then
 			
-			If Rs(c)<>"" Then
-				b = Rs(c)
+			If Rs(SelectModule)<>"" Then
+				DefaultModule = Rs(SelectModule)
 			End If
 		End If:Rs.Close
 	End If
-	
+	'导航小类不为空
 	If PubNavSid<>"" Then
 		Rs.Open"Select * From [NavSmallClass] Where BigClassName='"& PubNavDid &"' And SmallClassName='"& PubNavSid &"'",Conn,1,1
 		If Not Rs.Eof Then
-			If Rs(c)<>"" Then
-				b = Rs(c)
+			If Rs(SelectModule)<>"" Then
+				DefaultModule = Rs(SelectModule)
 			End If
 		End If:Rs.Close
 	End If
 	
-	
-	If d<>"" Then
-		Rs.Open"Select * From [BigClass] Where BigClassName='"& d &"'",Conn,1,1
+	'类别大类不为空
+	If Did<>"" Then
+		Rs.Open"Select * From [BigClass] Where BigClassName='"& Did &"'",Conn,1,1
 		If Not Rs.Eof Then
-			If Rs(c)<>"" Then
-				b = Rs(c)
+			If Rs(SelectModule)<>"" Then
+				DefaultModule = Rs(SelectModule)
 			End If
 		End If:Rs.Close
 	End If
-	
-	If e<>"" Then
-		Rs.Open"Select * From [SmallClass] Where BigClassName='"& d &"' And SmallClassName='"& e &"'",Conn,1,1
+	'类别小类不为空
+	If Sid<>"" Then
+		Rs.Open"Select * From [SmallClass] Where BigClassName='"& Did &"' And SmallClassName='"& Sid &"'",Conn,1,1
 		If Not Rs.Eof Then
-			If Rs(c)<>"" Then
-				b = Rs(c)
+			If Rs(SelectModule)<>"" Then
+				DefaultModule = Rs(SelectModule)
 			End If
 		End If:Rs.Close
 	End If
-	
-	If f<>"" Then
-		Rs.Open"Select * From [SmallClass] Where BigClassName='"& d &"' And SmallClassName='"& e &"' And ThreeClassName='"& f &"'",Conn,1,1
+	'类别子类不为空
+	If Tid<>"" Then
+		Rs.Open"Select * From [SmallClass] Where BigClassName='"& Did &"' And SmallClassName='"& Sid &"' And ThreeClassName='"& Tid &"'",Conn,1,1
 		If Not Rs.Eof Then
-			If Rs(c)<>"" Then
-				b = Rs(c)
+			If Rs(SelectModule)<>"" Then
+				DefaultModule = Rs(SelectModule)
 			End If
 		End If:Rs.Close
 	End If
 
 	
-	If g<>"" Then
-		b = g
-	ElseIf h<>"" Then
-		b = h
+	If MainInfoModule<>"" Then
+		DefaultModule = MainInfoModule
+	ElseIf ProductModule<>"" Then
+		DefaultModule = ProductModule
 	End If
 	
 	
-	Dim i,j,k
-	i=Split(b,"|")
-	For Each j In i
-		If j<>"" Then
-			Rs.Open"Select * From [TemplateModule] Where Title='"& j &"'",Conn,1,1
+	Dim SplStr,Title,C
+	SplStr=Split(DefaultModule,"|")
+	For Each Title In SplStr
+		If Title<>"" Then
+			Rs.Open"Select * From [TemplateModule] Where Title='"& Title &"'",Conn,1,1
 			If Not Rs.Eof Then
-				k=k & Rs("Content") & vbCrlf
+				C=C & Rs("Content") & vbCrlf
 			End If:Rs.Close	
 		End If
 	Next
 	
-	
+	'Call RW(C)
 		
-	k = HandleCodeReplace(k)			
+	C = HandleCodeReplace(C)			'处理这里面模块样式			20150213
+	'Call Die("<hr>" & C)
 	
-	
-	XY_ShowTemplateModule = k
+	XY_ShowTemplateModule = C
 End Function
 
 
 
-
-Function GetTableFieldValue(a)			
-	Dim b,c,d,e,f,g
-	b = " table='" : c = "'"
-	If InStr(a,b)>0 And InStr(a,c)>0 Then
-		e = StrCut(a,b,c,2)
+'获得表字段内容     辅助类
+Function GetTableFieldValue(Action)			
+	Dim StartStr,EndStr,Content,TableName,FieldName,AddSql
+	StartStr = " table='" : EndStr = "'"
+	If InStr(Action,StartStr)>0 And InStr(Action,EndStr)>0 Then
+		TableName = StrCut(Action,StartStr,EndStr,2)
 	End If
-	b = " field='" : c = "'"
-	If InStr(a,b)>0 And InStr(a,c)>0 Then
-		f = StrCut(a,b,c,2)
+	StartStr = " field='" : EndStr = "'"
+	If InStr(Action,StartStr)>0 And InStr(Action,EndStr)>0 Then
+		FieldName = StrCut(Action,StartStr,EndStr,2)
 	End If
-	g = "Select * From ["& e &"]"
+	AddSql = "Select * From ["& TableName &"]"
 	If UserId<>"" Then
-		If LCase(e)<>"member" Then
-			g = g & " Where UserId=" & UserId
+		If LCase(TableName)<>"member" Then
+			AddSql = AddSql & " Where UserId=" & UserId
 		Else
-			g = g & " Where Id=" & UserId
+			AddSql = AddSql & " Where Id=" & UserId
 		End If
 	End If
-	
-	If CheckSql("Select "& f &" From ["& e &"]")=False Then Exit Function
-	
-	If CheckSql(g)=False Then Exit Function			
-	Rs.Open g,Conn,1,1
+	'SQL出错了 没有当前表与字段
+	If CheckSql("Select "& FieldName &" From ["& TableName &"]")=False Then Exit Function
+	''SQL出错了  语法错误
+	If CheckSql(AddSql)=False Then Exit Function			
+	Rs.Open AddSql,Conn,1,1
 	If Not Rs.Eof Then
-		GetTableFieldValue = Rs(f)
+		GetTableFieldValue = Rs(FieldName)
 	Else
-		GetTableFieldValue = "表["& e &"]字段["& f &"]没找到内容"		
+		GetTableFieldValue = "表["& TableName &"]字段["& FieldName &"]没找到内容"		'测试用
 	End If : Rs.Close
 End Function
-
-Function SetHtmlParam(a,b)
-	Dim c,d,e,f,g,h
-	e = "'"
-	c=Split(b,"|")
-	For Each d In c
-		d=Trim(d)
-		If d <> "" Then
-			
-			h = d
-			If Left(h,3)="img" then
-				h = Mid(h,4)
-			ElseIf Left(h,1)="a" then
-				h = Mid(h,2)
-			ElseIf InStr("|ul|li|", "|" & Left(h,2) & "|")>0 then
-				h = Mid(h,3)
+'HTML标签参数自动添加(target|title|alt|id|class|style|)    辅助类
+Function SetHtmlParam(Content,ParamList)
+	Dim SplStr,StartStr,EndStr,C,ParamValue,ReplaceStartStr
+	EndStr = "'"
+	SplStr=Split(ParamList,"|")
+	For Each StartStr In SplStr
+		StartStr=Trim(StartStr)
+		If StartStr <> "" Then
+			'替换开始字符   因为开始字符类型可变 不同
+			ReplaceStartStr = StartStr
+			If Left(ReplaceStartStr,3)="img" then
+				ReplaceStartStr = Mid(ReplaceStartStr,4)
+			ElseIf Left(ReplaceStartStr,1)="a" then
+				ReplaceStartStr = Mid(ReplaceStartStr,2)
+			ElseIf InStr("|ul|li|", "|" & Left(ReplaceStartStr,2) & "|")>0 then
+				ReplaceStartStr = Mid(ReplaceStartStr,3)
 			End If
-			h = " " & h & "='"
+			ReplaceStartStr = " " & ReplaceStartStr & "='"
 			
-			d= " " & d & "='"
-			If InStr(a,d)>0 And InStr(a,e)>0 Then
-				g = StrCut(a,d,e,2)
-				g = HandleInModule(g,"end") 			
-				f=f &  h & g & e
+			StartStr= " " & StartStr & "='"
+			If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then
+				ParamValue = StrCut(Content,StartStr,EndStr,2)
+				ParamValue = HandleInModule(ParamValue,"end") 			'处理内部模块
+				C=C &  ReplaceStartStr & ParamValue & EndStr
 			End If
 		End If
 	Next
-	SetHtmlParam = f
+	SetHtmlParam = C
 End Function
 
 
+'VB不引用 Start
 
-
-
-function XY_onLineViewDialog(a)
-    Dim b,c,d
-	
-	c = LCase(RParam(a,"operate"))
-	if c<>"true" then
+'在线显示面板
+function XY_onLineViewDialog(Action)
+    Dim C,operate,url
+	'为假退出
+	operate = LCase(RParam(Action,"operate"))
+	if operate<>"true" then
 		exit function
 	end if
 	
-    b = "<style type=""text/css"">" & vbCrlf
-    b = b & "#dontrolbox{" & vbCrlf
-    b = b & "	position:fixed !Important;bottom:0;right:0;position:absolute;z-index:1000;" & vbCrlf
-    b = b & "	border:1px solid #CCCCCC;" & vbCrlf
-    b = b & "	background-color:#FDFCE8;" & vbCrlf
-    b = b & "	width:110px;" & vbCrlf
-    b = b & "	height:100px;" & vbCrlf
-    b = b & "	text-align:center;" & vbCrlf
-    b = b & "	line-height:26px;" & vbCrlf
-    b = b & "	font-size:12px;" & vbCrlf
-    b = b & "}" & vbCrlf
-    b = b & "</style>" & vbCrlf
-    b = b & "<div id=""dontrolbox"">" & vbCrlf
-	d = GetUrlAddToParam(geturl,"MackHtml=False","replace")	
-	d = GetUrlAddToParam(d,"nn=" & GetRnd(11),"replace")		
+    C = "<style type=""text/css"">" & vbCrlf
+    C = C & "#dontrolbox{" & vbCrlf
+    C = C & "	position:fixed !Important;bottom:0;right:0;position:absolute;z-index:1000;" & vbCrlf
+    C = C & "	border:1px solid #CCCCCC;" & vbCrlf
+    C = C & "	background-color:#FDFCE8;" & vbCrlf
+    C = C & "	width:110px;" & vbCrlf
+    C = C & "	height:100px;" & vbCrlf
+    C = C & "	text-align:center;" & vbCrlf
+    C = C & "	line-height:26px;" & vbCrlf
+    C = C & "	font-size:12px;" & vbCrlf
+    C = C & "}" & vbCrlf
+    C = C & "</style>" & vbCrlf
+    C = C & "<div id=""dontrolbox"">" & vbCrlf
+	url = GetUrlAddToParam(geturl,"MackHtml=False","replace")	
+	url = GetUrlAddToParam(url,"nn=" & GetRnd(11),"replace")		'加个随机数
 	
-    b = b & "	<a href="""&   GetUrlAddToParam(d,"gl=edit","delete") & """>正确显示</a><br>" & vbCrlf
-    b = b & "	<a href="""&   GetUrlAddToParam(d,"gl=edit","replace") & """>在线修改</a><br>" & vbCrlf
+    C = C & "	<a href="""&   GetUrlAddToParam(url,"gl=edit","delete") & """>正确显示</a><br>" & vbCrlf
+    C = C & "	<a href="""&   GetUrlAddToParam(url,"gl=edit","replace") & """>在线修改</a><br>" & vbCrlf
 	
-	d = GetUrlAddToParam(geturl,"MackHtml=true","replace")
-	d = GetUrlAddToParam(d,"gl=edit","delete")
+	url = GetUrlAddToParam(geturl,"MackHtml=true","replace")
+	url = GetUrlAddToParam(url,"gl=edit","delete")
 	
-    b = b & "	<a href="""& GetUrlAddToParam(d,"gotoHtml=true","replace") &""" target='_blank'>HTML版</a>" & vbCrlf
-    b = b & "</div>" & vbCrlf
+    C = C & "	<a href="""& GetUrlAddToParam(url,"gotoHtml=true","replace") &""" target='_blank'>HTML版</a>" & vbCrlf
+    C = C & "</div>" & vbCrlf
 	
-	
+	'判断本地
     If GetIP = "127.0.0.1" Or InStr(GetIP, "192.168.") > 0 Then
 		If Request("MackHtml") = "False" Then
-        	XY_onLineViewDialog = b
+        	XY_onLineViewDialog = C
 		end if
     End If	
 end function
 
 
-
-Function XY_DebugWebSkin(a)
-	Dim b,c,d,e,f ,g,h,i,j
+'Js调试网站皮肤
+Function XY_DebugWebSkin(Action)
+	Dim DirPath,DirList,SplStr,S,C ,HttpUrl,Url,FieldName,FieldContent
 	Dim CssStr	
-	d=Split(Request.QueryString(),"&")
-	For Each e In d
-		i = Mid(e,1,InStr(e,"=")-1)
-		j = Mid(e,InStr(e,"=")+1) 		
-		If LCase(i)<>"n" And LCase(i)<>"findtpl" And LCase(i)<>"replacetpl" Then
-			If j<>"" Then
-				h = h & IIF(h="","?","&") & i & "=" & j
+	SplStr=Split(Request.QueryString(),"&")
+	For Each S In SplStr
+		FieldName = Mid(S,1,InStr(S,"=")-1)
+		FieldContent = Mid(S,InStr(S,"=")+1) 		
+		If LCase(FieldName)<>"n" And LCase(FieldName)<>"findtpl" And LCase(FieldName)<>"replacetpl" Then
+			If FieldContent<>"" Then
+				Url = Url & IIF(Url="","?","&") & FieldName & "=" & FieldContent
 			End If
 		End If
 	Next
-	h =  "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") & h & "&n=" & GetRnd(11)
+	Url =  "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") & Url & "&n=" & GetRnd(11)
+	'CAll Echo("Url",Url)
 	
-	
-	b = WebSkins & "Index\column"
-	c = GetDirFolderNameList(b)
-	d=Split(c,vbCrlf)
-	For Each e In d
-		If e <>"" Then
-			g=h & "&FindTpl=style='312'&ReplaceTpl=style='"& e &"'"
-			f=f & "<a href="""& g &""">"& e &"</a><br>" & vbCrlf
+	DirPath = WebSkins & "Index\column"
+	DirList = GetDirFolderNameList(DirPath)
+	SplStr=Split(DirList,vbCrlf)
+	For Each S In SplStr
+		If S <>"" Then
+			HttpUrl=Url & "&FindTpl=style='312'&ReplaceTpl=style='"& S &"'"
+			C=C & "<a href="""& HttpUrl &""">"& S &"</a><br>" & vbCrlf
 		End If
 	Next
-	If f <> "" Then	
+	If C <> "" Then	
 		CssStr = "<style>" & vbCrlf
 		CssStr = CssStr & "/*网站样式切换 <div id=""webStyleTab""></div>*/" & vbCrlf
 		CssStr = CssStr & "#webStyleTab{" & vbCrlf
@@ -3683,13 +3683,13 @@ Function XY_DebugWebSkin(a)
 		CssStr = CssStr & "	top: 0px;" & vbCrlf
 		CssStr = CssStr & "}" & vbCrlf
 		CssStr = CssStr & "</style>" & vbCrlf	
-		f = CssStr & "<div id=""webStyleTab"">" & f &  "</div>"
+		C = CssStr & "<div id=""webStyleTab"">" & C &  "</div>"
 	End If
-	XY_DebugWebSkin = f
+	XY_DebugWebSkin = C
 End Function
 
 
-
+'管理
 Select Case Request("actgl")
 	Case "login" : Call gl_Login()
 	Case "action" : Call gl_Action()
@@ -3697,7 +3697,7 @@ Select Case Request("actgl")
 	Case "testdialog" : Call test_Dialog()
 End Select
 
-
+'获得动作
 Sub gl_Action()
 	Call OpenConn()
 	Rs.Open"Select * From [WebSite]",Conn,1,1
@@ -3706,7 +3706,7 @@ Sub gl_Action()
 	End If
 	Response.End()
 End Sub
-
+'删除动作
 Sub dle_Action()
 	Call OpenConn()
 	Rs.Open"Select * From [WebSite]",Conn,1,3
@@ -3717,7 +3717,7 @@ Sub dle_Action()
 	End If
 	Response.End()
 End Sub
-
+'记录登录
 Sub gl_Login()
 	Call OpenConn()
 	Rs.Open"Select * From [WebSite]",Conn,1,3
@@ -3728,7 +3728,7 @@ Sub gl_Login()
 	End If
 	Response.End()
 End Sub
-
+'显示测试面板
 Sub test_Dialog()
 	Call Echo("记录登录", "<a href='?actgl=login' target='_blank'>记录登录</a>")
 	Call Echo("获得动作", "<a href='?actgl=action' target='_blank'>获得动作</a>")
@@ -3736,17 +3736,16 @@ Sub test_Dialog()
 	Response.End()
 End Sub
 
-
-Function VB_copyTemplateMaterial(a)	
+'拷贝模板素材
+Function VB_copyTemplateMaterial(Action)	
 	VB_copyTemplateMaterial=""
 End Function
-
-function pingBiLable(a)
+'给VB里用，主要是屏蔽指定标签，不处理   20150628
+function pingBiLable(action)
 	pingBiLable = false
 end function
-
+'VB不引用 End
 %>
-
 
 
 

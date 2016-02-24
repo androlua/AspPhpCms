@@ -2,154 +2,153 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
+'详细页Banner图 20150123
+function XY_DetailBanner(action)
+    dim DefaultImage, did, sid, tid, MainId, ProId, ImgUrl 
+    DefaultImage = RParam(action, "defaultimage")                                   '默认图片
 
-function XY_DetailBanner(a)
-    dim b, c, d, e, f, g, h
-    b = RParam(a, "defaultimage")
-
-    c = PubNavDid
-    if c = "" then c = PubProDid
-    d = PubNavSid
-    if d = "" then d = PubProSid
-    e = PubProTid
-    if e = "" then e = PubProTid
+    did = PubNavDid 
+    if did = "" then did = PubProDid 
+    sid = PubNavSid 
+    if sid = "" then sid = PubProSid 
+    tid = PubProTid 
+    if tid = "" then tid = PubProTid 
 
     if PubID <> "" then
         if PubActionType = "MainInfo" then
-            f = PubID
+            MainId = PubID 
         elseIf PubActionType = "Article" then
-            g = PubID
-        end if
-    end if
+            ProId = PubID 
+        end if 
+    end if 
 
-
-    if c <> "" then
-        rs.open "Select * From [BigClass] Where BigClassName='" & c & "' And ImgPath<>''", conn, 1, 1
+        '产品大类
+    if did <> "" then
+        rs.open "Select * From [BigClass] Where BigClassName='" & did & "' And ImgPath<>''", conn, 1, 1 
         if not rs.eOF then
-            h = rs("ImgPath")
-        end if : rs.close
-    end if
-
-    if d <> "" then
-        rs.open "Select * From [SmallClass] Where BigClassName='" & c & "' And SmallClassName='" & d & "' And ImgPath<>''", conn, 1, 1
+            ImgUrl = rs("ImgPath") 
+        end if : rs.close 
+    end if 
+        '产品小类
+    if sid <> "" then
+        rs.open "Select * From [SmallClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "' And ImgPath<>''", conn, 1, 1 
         if not rs.eOF then
-            h = rs("ImgPath")
-        end if : rs.close
-    end if
-
-    if e <> "" then
-        rs.open "Select * From [ThreeClass] Where BigClassName='" & c & "' And SmallClassName='" & d & "' And ThreeClassName='" & e & "' And ImgPath<>''", conn, 1, 1
+            ImgUrl = rs("ImgPath") 
+        end if : rs.close 
+    end if 
+        '产品子类
+    if tid <> "" then
+        rs.open "Select * From [ThreeClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "' And ThreeClassName='" & tid & "' And ImgPath<>''", conn, 1, 1 
         if not rs.eOF then
-            h = rs("ImgPath")
-        end if : rs.close
-    end if
+            ImgUrl = rs("ImgPath") 
+        end if : rs.close 
+    end if 
 
-
-    if c <> "" then
-        rs.open "Select * From [NavBigClass] Where BigClassName='" & c & "' And ImgPath<>''", conn, 1, 1
+        '导航大类
+    if did <> "" then
+        rs.open "Select * From [NavBigClass] Where BigClassName='" & did & "' And ImgPath<>''", conn, 1, 1 
         if not rs.eOF then
-            h = rs("ImgPath")
-        end if : rs.close
-    end if
-
-    if d <> "" then
-        rs.open "Select * From [NavSmallClass] Where BigClassName='" & c & "' And SmallClassName='" & d & "' And ImgPath<>''", conn, 1, 1
+            ImgUrl = rs("ImgPath") 
+        end if : rs.close 
+    end if 
+        '导航小类
+    if sid <> "" then
+        rs.open "Select * From [NavSmallClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "' And ImgPath<>''", conn, 1, 1 
         if not rs.eOF then
-            h = rs("ImgPath")
-        end if : rs.close
-    end if
-
-    if g <> "" and 1 = 2 then
-        rs.open "Select * From [Product] Where Id=" & g & " And (BigFiles<>'' Or SmallFiles<>'')", conn, 1, 1
+            ImgUrl = rs("ImgPath") 
+        end if : rs.close 
+    end if 
+        '产品详细   不需要这个，因为这样会把上传的产品用到Banner详细页里，这样就不好了呀，你这个笨蛋。。。20150124
+    if ProId <> "" and 1 = 2 then
+        rs.open "Select * From [Product] Where Id=" & ProId & " And (BigFiles<>'' Or SmallFiles<>'')", conn, 1, 1 
         if not rs.eOF then
-            h = IIF(rs("BigFiles") <> "", rs("BigFiles"), rs("SmallFiles"))
-        end if : rs.close
-    end if
+            ImgUrl = IIF(rs("BigFiles") <> "", rs("BigFiles"), rs("SmallFiles")) 
+        end if : rs.close 
+    end if 
 
-    XY_DetailBanner = IIF(h <> "", h, b)
-    XY_DetailBanner = HandleHttpUrl(XY_DetailBanner)
+    XY_DetailBanner = IIF(ImgUrl <> "", ImgUrl, DefaultImage) 
+    XY_DetailBanner = HandleHttpUrl(XY_DetailBanner) 
 
     if 1 = 2 then
-        call echo("PubNavDid", PubNavDid)
-        call echo("PubNavSid", PubNavSid)
-        call echo("PubProDid", PubProDid)
-        call echo("PubProSid", PubProSid)
-        call echo("PubProTid", PubProTid)
+        call echo("PubNavDid", PubNavDid) 
+        call echo("PubNavSid", PubNavSid) 
+        call echo("PubProDid", PubProDid) 
+        call echo("PubProSid", PubProSid) 
+        call echo("PubProTid", PubProTid) 
 
-        call echo("PubActionType", PubActionType)
-        call echo("PubID", PubID)
-        call echo("PubClassName", PubClassName)
-        call echo("PubWD", PubWD)
-        call echo("ImgUrl", h)
-    end if
+        call echo("PubActionType", PubActionType) 
+        call echo("PubID", PubID) 
+        call echo("PubClassName", PubClassName) 
+        call echo("PubWD", PubWD) 
+        call echo("ImgUrl", ImgUrl) 
+    end if 
 
 end function
+ 
 
-
-
-function BannerSwitch(byVal a, byVal b)
-    dim c, d, e, f, g, h
-    h = 22
-    if lCase(left(a, 4)) = "sql:" then
-        e = mid(a, 5)
+'Banner切换
+function BannerSwitch(byVal did, byVal TopNumb)
+    dim i, c, addSql, sql, url, CutStrNumb 
+    CutStrNumb = 22 
+    if lCase(left(did, 4)) = "sql:" then
+        addSql = mid(did, 5) 
     else
-        e = "Where BigClassName='" & a & "' And Recommend<>0 Order By Sort"
-    end if
-    d = d & "<div class=""bannerlb pr"" id=""flashs"">" & vbCrLf
-    f = "Select * From [Product] " & e
-    rs.open f, conn, 1, 1
-    for c = 1 to rs.recordCount
-        if c > b then exit for
+        addSql = "Where BigClassName='" & did & "' And Recommend<>0 Order By Sort" 
+    end if 
+    c = c & "<div class=""bannerlb pr"" id=""flashs"">" & vbCrLf 
+    sql = "Select * From [Product] " & addSql 
+    rs.open sql, conn, 1, 1 
+    for i = 1 to rs.recordCount
+        if i > TopNumb then exit for 
 
-        g = rs("FileName")
-        if CheckRemoteUrl(g) = false then
-            g = GetHandleUrl(rs("FileName"))
-            call WebDebug(g, "act=CreateArticle&ID=" & rs("Id"))
-        end if
+        url = rs("FileName") 
+        if CheckRemoteUrl(url) = false then
+            url = GetHandleUrl(rs("FileName")) 
+            call WebDebug(url, "act=CreateArticle&ID=" & rs("Id"))                      '调试
+        end if 
 
-        ShowTitle = CutStr(rs("Title"), h, "... ")
-        ShowTitle = FontColorFontB(ShowTitle, rs("FontB"), rs("FontColor"))
+        ShowTitle = CutStr(rs("Title"), CutStrNumb, "... ") 
+        ShowTitle = FontColorFontB(ShowTitle, rs("FontB"), rs("FontColor")) 
 
-        d = d & "    <div title=""" & ShowTitle & """ alt=""" & ShowTitle & """ onClick=""window.open('" & g & "')"" class=""bgitem"" id=""flashbg" & c - 1 & """  style=""background: url('" & rs("BigFiles") & "') no-repeat scroll center top;" & vbCrLf
-        d = d & "height: 496px;cursor:pointer; width: 100%; margin:0 auto;""></div>" & vbCrLf & vbCrLf
-
-
-    rs.moveNext : next : rs.close
+        c = c & "    <div title=""" & ShowTitle & """ alt=""" & ShowTitle & """ onClick=""window.open('" & url & "')"" class=""bgitem"" id=""flashbg" & i - 1 & """  style=""background: url('" & rs("BigFiles") & "') no-repeat scroll center top;" & vbCrLf 
+        c = c & "height: 496px;cursor:pointer; width: 100%; margin:0 auto;""></div>" & vbCrLf & vbCrLf 
 
 
-    d = d & "</div> " & vbCrLf
+    rs.moveNext : next : rs.close 
 
-    BannerSwitch = d
+          'C=C & "<script type=""text/javascript"" src=""/Skins/WeiZhanLue/Index/flash.js""></'script>" & vbCrlf
+    c = c & "</div> " & vbCrLf 
+
+    BannerSwitch = c 
 end function
+ 
+'Banner切换2
+function BannerSwitch2(byVal did, byVal TopNumb)
+    dim i, c 
+    rs.open "Select * From[Product] Where BigClassName='" & did & "'", conn, 1, 1 
+    c = c & "<div class=""container"" id=""idTransformView2"">" & vbCrLf 
+    c = c & "  <ul class=""slider slider2"" id=""idSlider2"">" & vbCrLf 
+    for i = 1 to TopNumb
+        if rs.eOF then TopNumb = i - 1 : exit for 
+        c = c & "    <li><img src=""" & rs("BigFiles") & """/></li>" & vbCrLf 
+    rs.moveNext : next : rs.close 
+    c = c & "  </ul>" & vbCrLf 
+    c = c & "  <ul class=""num"" id=""idNum2"">" & vbCrLf 
 
-
-function BannerSwitch2(byVal a, byVal b)
-    dim c, d
-    rs.open "Select * From[Product] Where BigClassName='" & a & "'", conn, 1, 1
-    d = d & "<div class=""container"" id=""idTransformView2"">" & vbCrLf
-    d = d & "  <ul class=""slider slider2"" id=""idSlider2"">" & vbCrLf
-    for c = 1 to b
-        if rs.eOF then b = c - 1 : exit for
-        d = d & "    <li><img src=""" & rs("BigFiles") & """/></li>" & vbCrLf
-    rs.moveNext : next : rs.close
-    d = d & "  </ul>" & vbCrLf
-    d = d & "  <ul class=""num"" id=""idNum2"">" & vbCrLf
-
-    for c = 1 to b
-        d = d & "    <li>" & c & "</li>" & vbCrLf
-    next
-    d = d & "  </ul>" & vbCrLf
-    d = d & "</div>" & vbCrLf
-    BannerSwitch2 = d
+    for i = 1 to TopNumb
+        c = c & "    <li>" & i & "</li>" & vbCrLf 
+    next 
+    c = c & "  </ul>" & vbCrLf 
+    c = c & "</div>" & vbCrLf 
+    BannerSwitch2 = c 
 end function
 
 %>
-
 

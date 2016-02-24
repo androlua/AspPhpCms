@@ -2,290 +2,289 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'Cai采集内容(2014)
 
-
-
-Function getHttpPage(ByVal a, ByVal b)
-    getHttpPage = handleGetHttpPage(a, b)(0)
-End Function
-
-Function handleGetHttpPage(ByVal a, ByVal b)
-    On Error Resume Next
-    Dim c, d, e, f, g, h
-    c = Now()
-    b = handleStrCharSet(b)
-    If IsNull(a) = True Or Len(a) < 18 Or a = "$False$" Then
-        handleGetHttpPage = "$False$"
-        Exit Function
+'获得采集内容
+Function getHttpPage(ByVal HttpUrl, ByVal Char_Set)
+    getHttpPage = handleGetHttpPage(HttpUrl, Char_Set)(0) 
+End Function 
+'处理获得采集内容
+Function handleGetHttpPage(ByVal HttpUrl, ByVal Char_Set)
+    On Error Resume Next 
+    Dim startTime, nStatus, nTime, content, splType, webFileSize 
+    startTime = Now()
+    Char_Set = handleStrCharSet(Char_Set) 
+    If IsNull(HttpUrl) = True Or Len(HttpUrl) < 18 Or HttpUrl = "$False$" Then
+        handleGetHttpPage = "$False$" 
+        Exit Function 
     End If
-    Dim i
-    Set i = CreateObject("MSXML2.XMLHTTP")
-        Call i.Open("GET", a, False)
-        i.send
-        If i.readyState <> 4 Then
-            Set i = Nothing
-            handleGetHttpPage = "$False$"
-            Exit Function
-        End If
+    Dim Http 
+    Set Http = CreateObject("MSXML2.XMLHTTP")
+        Call Http.Open("GET", HttpUrl, False) 
+        Http.send 
+        If Http.readyState <> 4 Then
+            Set Http = Nothing 
+            handleGetHttpPage = "$False$" 
+            Exit Function 
+        End If 
 
-        f = BytesToBstr(i.responseBody, b)
-        d = i.Status
-        e = DateDiff("s", c, Now())
-        h = strLength(f)
+        content = BytesToBstr(Http.responseBody, Char_Set) 
+        nStatus = Http.Status 
+        nTime = DateDiff("s", startTime, Now()) 
+        webFileSize = strLength(content) 
 
-        g = "|-*ypia=|"
-        handleGetHttpPage = Split(f & g & d & g & e & g & h, g)
+        splType = "|-*ypia=|" 
+        handleGetHttpPage = Split(content & splType & nStatus & splType & nTime & splType & webFileSize, splType) 
 
-    Set i = Nothing
-End Function
+    Set Http = Nothing 
+End Function 
 
-
-Function getURLContent(a, b)
-    getURLContent = getHttpPage(a, b)
-End Function
-
-Function getHttpUrl(a, b)
-    getHttpUrl = getHttpPage(a, b)
-End Function
-Function bytesToBstr(a, b)
-    Dim c
-    If isNul(a) Then Exit Function
-    Set c = CreateObject("ADODB.Stream")
-        c.Type = 1
-        c.Mode = 3
-        c.Open
-        Call c.Write(a)
-        c.Position = 0
-        c.Type = 2
-        c.Charset = b
-        bytesToBstr = c.ReadText
-        c.Close
-    Set c = Nothing
-End Function
-
-
-
-
-
-
-Function strCut(ByVal a, ByVal b, ByVal c, ByVal d)
-
-    Dim e, f, g, h, i
-    If InStr(a, b) = False Or InStr(a, c) = False Then
-        i = ""
-        Exit Function
-    End If
-    Select Case d
-
+'获得采集内容 (辅助)
+Function getURLContent(HttpUrl, Char_Set)
+    getURLContent = getHttpPage(HttpUrl, Char_Set) 
+End Function 
+'获得采集内容 (辅助)
+Function getHttpUrl(HttpUrl, Char_Set)
+    getHttpUrl = getHttpPage(HttpUrl, Char_Set) 
+End Function 
+Function bytesToBstr(body, Cset)
+    Dim ObjStream 
+    If isNul(body) Then Exit Function                                               '为空则退出
+    Set ObjStream = CreateObject("ADODB.Stream")
+        ObjStream.Type = 1 
+        ObjStream.Mode = 3 
+        ObjStream.Open 
+        Call ObjStream.Write(body) 
+        ObjStream.Position = 0 
+        ObjStream.Type = 2 
+        ObjStream.Charset = Cset 
+        bytesToBstr = ObjStream.ReadText 
+        ObjStream.Close 
+    Set ObjStream = Nothing 
+End Function 
+'截取字符串 更新20160114
+'c=[A]abbccdd[/A]
+'0=abbccdd
+'1=[A]abbccdd[/A]
+'3=[A]abbccdd
+'4=abbccdd[/A]
+Function strCut(ByVal content, ByVal startStr, ByVal endStr, ByVal cutType)
+    'On Error Resume Next
+    Dim s1, s1Str, s2, s3, c 
+    If InStr(content, startStr) = False Or InStr(content, endStr) = False Then
+        c = "" 
+        Exit Function 
+    End If 
+    Select Case cutType
+        '完善于20150923
         Case 1
-            e = InStr(a, b)
-            f = Mid(a, e + Len(b))
-            g = e + InStr(f, c) + Len(b) + Len(c) - 1
+            s1 = InStr(content, startStr) 
+            s1Str = Mid(content, s1 + Len(startStr)) 
+            s2 = s1 + InStr(s1Str, endStr) + Len(startStr) + Len(endStr) - 1 '为什么要减1
 
         Case Else
-            e = InStr(a, b) + Len(b)
-            f = Mid(a, e)
-
-            g = e + InStr(f, c) - 1
-
+            s1 = InStr(content, startStr) + Len(startStr) 
+            s1Str = Mid(content, s1) 
+            'S2 = InStr(S1, Content, EndStr)
+            s2 = s1 + InStr(s1Str, endStr) - 1 
+        'call echo("s2",s2)
     End Select
-    h = g - e
-    If h >= 0 Then
-        i = Mid(a, e, h)
+    s3 = s2 - s1 
+    If s3 >= 0 Then
+        c = Mid(content, s1, s3) 
     Else
-        i = ""
-    End If
-    If d = 3 Then
-        i = b & i
-    End If
-    If d = 4 Then
-        i = i & c
-    End If
-    strCut = i
+        c = "" 
+    End If 
+    If cutType = 3 Then
+        c = startStr & c 
+    End If 
+    If cutType = 4 Then
+        c = c & endStr 
+    End If 
+    strCut = c 
+    'If Err.Number <> 0 Then Call eerr(startStr, content)
+'doError Err.Description, "StrCut 截取字符串 函数出错，StartStr=" & EchoHTML(StartStr) & "<hr>EndStr=" & EchoHTML(EndStr)
+End Function 
+'获得截取内容,20150305
+Function getStrCut(ByVal content, ByVal startStr, ByVal endStr, ByVal CutType)
+    getStrCut = "" 
+    'Content=Replace(Replace(Content,Chr(13),""),Chr(10),"")
+    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+        getStrCut = strCut(content, startStr, endStr, CutType) 
+    End If 
+End Function 
+'接取字符 CutStr(Content,22,"null")
+Function cutStr(ByVal content, ByVal CutNumb, ByVal MoreStr)
+    Dim i, s, n 
+    n = 0 
+    CutNumb = CInt(CutNumb)                                                         '转换成数字类型    追加于20141107
+    If MoreStr = "" Then MoreStr = "..." 
+    If LCase(MoreStr) = "none" Or LCase(MoreStr) = "null" Then MoreStr = "" 
+    cutStr = content 
+    For i = 1 To Len(content)
+        s = Asc(Mid(CStr(content), i, 1)) 
+        If s < 0 Then s = s + 65536 
+        If s < 255 Then n = n + 1 
+        If s > 255 Then n = n + 2 
+        If n >= CutNumb Then cutStr = Left(content, i) & MoreStr : Exit Function 
+    Next 
+End Function 
+'截取内容，不区分大小写 20150327  C=CutStrNOLU(c,"<heAd",">")
+Function cutStrNOLU(content, startStr, endStr)
+    Dim s, LCaseContent, nStartLen, nEndLen, NewStartStr 
+    startStr = LCase(startStr) 
+    endStr = LCase(endStr) 
+    LCaseContent = LCase(content) 
 
+    If InStr(LCaseContent, startStr) > 0 Then
+        nStartLen = InStr(LCaseContent, startStr) 
+        s = Mid(content, nStartLen) 
+        LCaseContent = Mid(s, Len(startStr) + 1) 
+        NewStartStr = Mid(s, 1, Len(startStr) + 1)                                      '获得开始字符
 
-End Function
+        LCaseContent = Replace(LCaseContent, "<", "&lt;") 
+        'Call eerr("111",LCaseContent)
 
-Function getStrCut(ByVal a, ByVal b, ByVal c, ByVal d)
-    getStrCut = ""
+        nEndLen = InStr(LCaseContent, endStr) 
+        Call echo("nEndLen", nEndLen) 
 
-    If InStr(a, b) > 0 And InStr(a, c) > 0 Then
-        getStrCut = strCut(a, b, c, d)
-    End If
-End Function
+        s = Mid(content, nStartLen, nEndLen + Len(startStr)) 
+        'Call Echo(nStartLen,nEndLen)
+        'Call Echo("S",S)
+        cutStrNOLU = s 
+    End If 
+End Function 
 
-Function cutStr(ByVal a, ByVal b, ByVal c)
-    Dim d, e, f
-    f = 0
-    b = CInt(b)
-    If c = "" Then c = "..."
-    If LCase(c) = "none" Or LCase(c) = "null" Then c = ""
-    cutStr = a
-    For d = 1 To Len(a)
-        e = Asc(Mid(CStr(a), d, 1))
-        If e < 0 Then e = e + 65536
-        If e < 255 Then f = f + 1
-        If e > 255 Then f = f + 2
-        If f >= b Then cutStr = Left(a, d) & c : Exit Function
-    Next
-End Function
-
-Function cutStrNOLU(a, b, c)
-    Dim d, e, f, g, h
-    b = LCase(b)
-    c = LCase(c)
-    e = LCase(a)
-
-    If InStr(e, b) > 0 Then
-        f = InStr(e, b)
-        d = Mid(a, f)
-        e = Mid(d, Len(b) + 1)
-        h = Mid(d, 1, Len(b) + 1)
-
-        e = Replace(e, "<", "&lt;")
-
-
-        g = InStr(e, c)
-        Call echo("nEndLen", g)
-
-        d = Mid(a, f, g + Len(b))
-
-
-        cutStrNOLU = d
-    End If
-End Function
-
-
-Function setCutTDStr(ByVal a, ByVal b, ByVal c)
-    Dim d, e, f, g, h, i
-    a = CStr(a & "")
-    If a = "" Then setCutTDStr = a : Exit Function
-    If b = "" Then setCutTDStr = a : Exit Function
-    g = 0 : i = False
-    h = Int(b / 6.3)
-    For d = 1 To Len(a)
-        e = Mid(a, d, 1)
-        If g >= h Then
-            i = True
-            Exit For
+'接取TD字符
+Function setCutTDStr(ByVal content, ByVal TDWidth, ByVal MoreColor)
+    Dim i, s, c, n, EndNumb, YesMore 
+    content = CStr(content & "") 
+    If content = "" Then setCutTDStr = content : Exit Function 
+    If TDWidth = "" Then setCutTDStr = content : Exit Function                      'TDWidth为空，则为自动
+    n = 0 : YesMore = False 
+    EndNumb = Int(TDWidth / 6.3) 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If n >= EndNumb Then
+            YesMore = True 
+            Exit For 
         Else
-            f = f & e
-        End If
-        If Asc(e) < 0 Then
-            g = g + 2
+            c = c & s 
+        End If 
+        If Asc(s) < 0 Then
+            n = n + 2 
         Else
-            g = g + 1
-        End If
-    Next
-    If i = True Then
+            n = n + 1 
+        End If 
+    Next 
+    If YesMore = True Then
+        '需要处理Title标题的HTML
+        c = "<span Title=""" & showHTMLCode(content) & """ style=""background-color:" & MoreColor & ";"">" & c & "</span>" 
+    End If 
+    setCutTDStr = c 
+End Function 
+'接取TD字符 (辅助)
+Function cutTDStr(content, TDWidth)
+    cutTDStr = setCutTDStr(content, TDWidth, "#FBE3EF") 
+End Function 
+'分割字符
+Function getArrayList(ByVal content, ByVal startStr, ByVal endStr, ByVal StartType, ByVal EndType, ByVal SType)
+    'on error resume next
+    If IsNull(content) = True Or IsNull(startStr) = True Or IsNull(endStr) = True Then
+        getArrayList = "" 
+        Exit Function 
+    End If 
+    Dim c, Rep, Matches, TheMatch 
+    content = Replace(Replace(content, Chr(10), "【换行】"), Chr(13), "【换行】") '替换掉换行
+    Set Rep = CreateObject("VBscript.RegExp")
+        Rep.IgnoreCase = True 
+        Rep.Global = True 
+        Rep.pattern = "(" & startStr & ").+?(" & endStr & ")" 
+        Set Matches = Rep.Execute(content)
+            For Each TheMatch In Matches
+                c = c & "$Array$" & TheMatch.Value 
+            Next 
+        Set Matches = Nothing 
+        If c = "" Then
+            getArrayList = "" 
+            Exit Function 
+        End If 
+        c = Right(c, Len(c) - 7) 
+        If StartType = False Then
+            Rep.pattern = startStr 
+            c = Rep.Replace(c, "") 
+        End If 
+        If EndType = False Then
+            Rep.pattern = endStr 
+            c = Rep.Replace(c, "") 
+        End If 
+    Set Rep = Nothing 
+    If SType = "1" Or SType = "去掉字符" Or SType = True Then
+        c = Replace(c, """", "") 
+        c = Replace(c, "'", "") 
+        c = Replace(c, " ", "") 
+        c = Replace(c, "(", "") 
+        c = Replace(c, ")", "") 
+    End If 
+    getArrayList = c 
+End Function 
+'分割字符 不处理字符 (辅助)
+Function getArray(content, startStr, endStr, StartType, EndType)
+    getArray = getArrayList(content, startStr, endStr, StartType, EndType, "") 
+End Function 
+'分割字符 去掉字符 (辅助)
+Function getArray1(content, startStr, endStr, StartType, EndType)
+    getArray1 = getArrayList(content, startStr, endStr, StartType, EndType, "去掉字符") 
+End Function 
+'截取指定分割值
+Function getSplit(ByVal content, ByVal splStr, ByVal n)
+    Dim splxx 
+    splxx = Split(content, splStr) 
+    getSplit = splxx(n) 
+End Function 
+'获得分数总数
+Function getSplitCount(ByVal content, ByVal splStr)
+    Dim splxx 
+    splxx = Split(content, splStr) 
+    getSplitCount = UBound(splxx) 
+    If getSplitCount > 0 Then getSplitCount = getSplitCount + 1                     '不为空加一
+End Function 
 
-        f = "<span Title=""" & showHTMLCode(a) & """ style=""background-color:" & c & ";"">" & f & "</span>"
-    End If
-    setCutTDStr = f
-End Function
+'代理 因为它不能与VB软件共存
+Function agent(ByVal HttpUrl)
+    'On Error Resume Next
+    Server.ScriptTimeout = 999 
+    '----------
+    '获取远程数据
+    Dim http 
+    Set http = CreateObject("WinHttp.WinHttpRequest.5.1")
 
-Function cutTDStr(a, b)
-    cutTDStr = setCutTDStr(a, b, "#FBE3EF")
-End Function
-
-Function getArrayList(ByVal a, ByVal b, ByVal c, ByVal d, ByVal e, ByVal f)
-
-    If IsNull(a) = True Or IsNull(b) = True Or IsNull(c) = True Then
-        getArrayList = ""
-        Exit Function
-    End If
-    Dim g, h, i, j
-    a = Replace(Replace(a, Chr(10), "【换行】"), Chr(13), "【换行】")
-    Set h = CreateObject("VBscript.RegExp")
-        h.IgnoreCase = True
-        h.Global = True
-        h.pattern = "(" & b & ").+?(" & c & ")"
-        Set i = h.Execute(a)
-            For Each j In i
-                g = g & "$Array$" & j.Value
-            Next
-        Set i = Nothing
-        If g = "" Then
-            getArrayList = ""
-            Exit Function
-        End If
-        g = Right(g, Len(g) - 7)
-        If d = False Then
-            h.pattern = b
-            g = h.Replace(g, "")
-        End If
-        If e = False Then
-            h.pattern = c
-            g = h.Replace(g, "")
-        End If
-    Set h = Nothing
-    If f = "1" Or f = "去掉字符" Or f = True Then
-        g = Replace(g, """", "")
-        g = Replace(g, "'", "")
-        g = Replace(g, " ", "")
-        g = Replace(g, "(", "")
-        g = Replace(g, ")", "")
-    End If
-    getArrayList = g
-End Function
-
-Function getArray(a, b, c, d, e)
-    getArray = getArrayList(a, b, c, d, e, "")
-End Function
-
-Function getArray1(a, b, c, d, e)
-    getArray1 = getArrayList(a, b, c, d, e, "去掉字符")
-End Function
-
-Function getSplit(ByVal a, ByVal b, ByVal c)
-    Dim d
-    d = Split(a, b)
-    getSplit = d(c)
-End Function
-
-Function getSplitCount(ByVal a, ByVal b)
-    Dim c
-    c = Split(a, b)
-    getSplitCount = UBound(c)
-    If getSplitCount > 0 Then getSplitCount = getSplitCount + 1
-End Function
-
-
-Function agent(ByVal a)
-
-    Server.ScriptTimeout = 999
-
-
-    Dim b
-    Set b = CreateObject("WinHttp.WinHttpRequest.5.1")
-
-        b.Open "GET", a, False
+        http.Open "GET", HttpUrl, False 
         If Request.ServerVariables("HTTP_REFERER") <> "" Then
-            b.SetRequestHeader "Referer", Request.ServerVariables("HTTP_REFERER")
-        End If
+            http.SetRequestHeader "Referer", Request.ServerVariables("HTTP_REFERER") 
+        End If 
         If Request.Cookies <> "" Then
-            b.SetRequestHeader "Cookie", Request.Cookies
-        End If
-        b.SetRequestHeader "User-Agent", Request.ServerVariables("HTTP_USER_AGENT")
-        b.SetRequestHeader "X-Forwarded-For", Request.ServerVariables("REMOTE_ADDR") & ", " & Request.ServerVariables("LOCAL_ADDR")
-        b.SetRequestHeader "Connection", "Close"
-        b.SetRequestHeader "Nuclear-Atk", "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") & "?" & Request.QueryString
-        b.SetRequestHeader "Nuclear-Atk-Host", Request.ServerVariables("HTTP_HOST")
-        b.send
+            http.SetRequestHeader "Cookie", Request.Cookies 
+        End If 
+        http.SetRequestHeader "User-Agent", Request.ServerVariables("HTTP_USER_AGENT") 
+        http.SetRequestHeader "X-Forwarded-For", Request.ServerVariables("REMOTE_ADDR") & ", " & Request.ServerVariables("LOCAL_ADDR") 
+        http.SetRequestHeader "Connection", "Close" 
+        http.SetRequestHeader "Nuclear-Atk", "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") & "?" & Request.QueryString 
+        http.SetRequestHeader "Nuclear-Atk-Host", Request.ServerVariables("HTTP_HOST") 
+        http.send 
 
-        Response.Status = b.Status & " " & b.StatusText
-        Response.ContentType = b.GetResponseHeader("Content-Type")
-        Response.BinaryWrite b.responseBody
+        Response.Status = http.Status & " " & http.StatusText                           '照搬远程HTTP状态码与状态描述文本
+        Response.ContentType = http.GetResponseHeader("Content-Type")                   '照搬远程内容类型
+        Response.BinaryWrite http.responseBody                                          '输出二进制内容
 End Function
 
-%>
-
+%>  
 
 

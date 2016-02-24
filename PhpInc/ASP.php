@@ -1,3 +1,13 @@
+<?php 
+/************************************************************
+作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
+版权：源代码公开，各种用途均可免费使用。 
+创建：2016-02-24
+联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
+更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
+*                                    Powered By 云端 
+************************************************************/
+?>
 <?PHP
 //\n换行 \r换行  \t相当于按Tab键
 
@@ -13,7 +23,6 @@ error_reporting(E_ALL | E_STRICT);			// error_reporting(E_STRICT);		//为不显示错
 header("Content-Type: text/html; charset=gb2312");
 
 session_start();		//开启Session20151119
-require_once 'sys_Cai.Php';
 
 //跳转
 function RR($url){
@@ -121,7 +130,7 @@ function CLng($content){
 function LCase($content){
 	return strtolower($content);
 }
-//转成小写
+//转成大写
 function UCase($content){
 	return strtoupper($content);
 }
@@ -442,6 +451,19 @@ function left($str,$nlength){
 function right($str,$nlength){
 	return substr($str, $nlength*-1);
 }
+//vbcrlf
+function vbCrlf(){
+	return chr(13) . chr(10);
+}
+
+//获得系统参数20160224
+function ServerVariables($sName){
+	$sName=strtoupper($sName);	
+	if($sName=='SERVER_NAME'){
+		$sName='HTTP_HOST';
+	}
+	return @$_SERVER[$sName];
+}
 
 
 //执行SQL语句
@@ -461,10 +483,6 @@ function connExecute($sql){
 function  checkFunValue($Action,$FunName){
 	$checkFunValue = ( substr($Action, 0 ,strlen($FunName)) == $FunName );
  return @$checkFunValue;}
-//返回当前网址
-function getUrl(){
-	return 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-}
 //ASP版md5
 function aspMD5($str,$sType){
 	return md5($str);

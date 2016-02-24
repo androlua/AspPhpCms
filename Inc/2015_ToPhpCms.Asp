@@ -2,129 +2,128 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'与phpcms通用   我的后台
 
 
+'显示导航列表
+Function XY_PHP_NavList(action)
+    XY_PHP_NavList = XY_PHP_GeneralList(action, "nav", "Select * From [v9_category] where parentid=0 and ismenu=1 order by listorder asc") 
+End Function 
 
+'显示细节列表
+Function XY_PHP_DetailList(action)
+    XY_PHP_DetailList = XY_PHP_GeneralList(action, "detail", "Select top 6 * From [v9_picture]") 
+End Function 
 
-Function XY_PHP_NavList(a)
-    XY_PHP_NavList = XY_PHP_GeneralList(a, "nav", "Select * From [v9_category] where parentid=0 and ismenu=1 order by listorder asc")
-End Function
+'通用信息列表
+Function XY_PHP_GeneralList(action, sType, sql)
+    Dim did, sid, tid, title, topNumb, cutStrNumb, addSql 
+    Call HandleFunParameter(action, did, sid, tid, title, topNumb, cutStrNumb, addSql) '获得这么函数参数
+    Dim defaultStr, i, j, s, c, startStr, endStr, url 
+    Dim noFollow                                                                    '不追踪 20141222
+    defaultStr = GetDefaultValue(action)                                            '获得默认内容
+    Dim modI                                                                        '余循环20150112
+    noFollow = Trim(LCase(RParam(action, "noFollow")))                              '不追踪
 
-
-Function XY_PHP_DetailList(a)
-    XY_PHP_DetailList = XY_PHP_GeneralList(a, "detail", "Select top 6 * From [v9_picture]")
-End Function
-
-
-Function XY_PHP_GeneralList(a, b, c)
-    Dim d, e, f, g, h, i, j
-    Call HandleFunParameter(a, d, e, f, g, h, i, j)
-    Dim k, l, m, n, o, p, q, r
-    Dim s
-    k = GetDefaultValue(a)
-    Dim t
-    s = Trim(LCase(RParam(a, "noFollow")))
-
-    rs.Open c, conn, 1, 1
-
-    For l = 1 To rs.RecordCount
-        If rs.EOF Then Exit For
-
-        If b = "nav" Then
-            r = b & "_" & rs("catid") & ".html"
-            d = rs("catname")
-            g = rs("catname")
-
-        ElseIf b = "detail" Then
-            r = b & "_" & rs("ID") & ".html"
-            d = ""
-            g = rs("title")
-        End If
-
-        If r = WEBURLFILEPATH Then
-            p = "[list-focus]" : q = "[/list-focus]"
+    rs.Open sql, conn, 1, 1 
+    'Call eerr("Sql【"& Rs.RecordCount &"】", Sql)
+    For i = 1 To rs.RecordCount
+        If rs.EOF Then Exit For 
+        '【导航】
+        If sType = "nav" Then
+            url = sType & "_" & rs("catid") & ".html" 
+            did = rs("catname") 
+            title = rs("catname") 
+        '【文章】
+        ElseIf sType = "detail" Then
+            url = sType & "_" & rs("ID") & ".html" 
+            did = "" 
+            title = rs("title") 
+        End If 
+        '网址判断
+        If url = WEBURLFILEPATH Then
+            startStr = "[list-focus]" : endStr = "[/list-focus]" 
         Else
-            p = "[list-" & l & "]" : q = "[/list-" & l & "]"
-        End If
+            startStr = "[list-" & i & "]" : endStr = "[/list-" & i & "]" 
+        End If 
+        '网址加前缀
+        url = WEBURLPREFIX & url 
+        '例[list-mod2]  [/list-mod2]    20150112
+        For modI = 6 To 2 Step - 1
+            If InStr(defaultStr, startStr) = False And i Mod modI = 0 Then
+                startStr = "[list-mod" & modI & "]" : endStr = "[/list-mod" & modI & "]" 
+                If InStr(defaultStr, startStr) > 0 Then
+                    Exit For 
+                End If 
+            End If 
+        Next 
 
-        r = WEBURLPREFIX & r
+        '没有则用默认
+        If InStr(defaultStr, startStr) = False Then
+            startStr = "[list]" : endStr = "[/list]" 
+        End If 
 
-        For t = 6 To 2 Step - 1
-            If InStr(k, p) = False And l Mod t = 0 Then
-                p = "[list-mod" & t & "]" : q = "[/list-mod" & t & "]"
-                If InStr(k, p) > 0 Then
-                    Exit For
-                End If
-            End If
-        Next
-
-
-        If InStr(k, p) = False Then
-            p = "[list]" : q = "[/list]"
-        End If
-
-        If InStr(k, p) > 0 And InStr(k, q) > 0 Then
-            n = StrCut(k, p, q, 2)
-            For m = 1 To 3
-                n = ReplaceValueParam(n, "ni", l)
-                n = ReplaceValueParam(n, "编号-1", l - 1)
-                n = ReplaceValueParam(n, "编号", l)
-                n = ReplaceValueParam(n, "bigclassname", d)
-                n = ReplaceValueParam(n, "title", g)
-                n = ReplaceValueParam(n, "url", r)
-            Next
-
-
-
-            p = "[list-" & l & " startdialog]" : q = "[/list-" & l & " startdialog]"
-            If InStr(k, p) > 0 And InStr(k, q) > 0 Then
-                n = StrCut(k, p, q, 2) & n
-            End If
-
-            p = "[list-" & l & " enddialog]" : q = "[/list-" & l & " enddialog]"
-            If InStr(k, p) > 0 And InStr(k, q) > 0 Then
-                n = n & StrCut(k, p, q, 2)
-            End If
-            o = o & n
-        End If
-    rs.MoveNext : Next : rs.Close
+        If InStr(defaultStr, startStr) > 0 And InStr(defaultStr, endStr) > 0 Then
+            s = StrCut(defaultStr, startStr, endStr, 2) 
+            For j = 1 To 3
+                s = ReplaceValueParam(s, "ni", i)                                               '不对为i，因为i会与imgurl冲突 [$i$]
+                s = ReplaceValueParam(s, "编号-1", i - 1)                                       '不对为i，因为i会与imgurl冲突 [$i$]
+                s = ReplaceValueParam(s, "编号", i)                                             '不对为i，因为i会与imgurl冲突 [$i$]
+                s = ReplaceValueParam(s, "bigclassname", did) 
+                s = ReplaceValueParam(s, "title", title) 
+                s = ReplaceValueParam(s, "url", url) 
+            Next 
 
 
-    p = "[dialog start]" : q = "[/dialog start]"
-    If InStr(k, p) > 0 And InStr(k, q) > 0 Then
-        o = StrCut(k, p, q, 2) & o
-    End If
+            '开始位置加Dialog内容
+            startStr = "[list-" & i & " startdialog]" : endStr = "[/list-" & i & " startdialog]" 
+            If InStr(defaultStr, startStr) > 0 And InStr(defaultStr, endStr) > 0 Then
+                s = StrCut(defaultStr, startStr, endStr, 2) & s 
+            End If 
+            '结束位置加Dialog内容
+            startStr = "[list-" & i & " enddialog]" : endStr = "[/list-" & i & " enddialog]" 
+            If InStr(defaultStr, startStr) > 0 And InStr(defaultStr, endStr) > 0 Then
+                s = s & StrCut(defaultStr, startStr, endStr, 2) 
+            End If 
+            c = c & s 
+        End If 
+    rs.MoveNext : Next : rs.Close 
 
-    p = "[dialog end]" : q = "[/dialog end]"
-    If InStr(k, p) > 0 And InStr(k, q) > 0 Then
-        o = o & StrCut(k, p, q, 2)
-    End If
-    XY_PHP_GeneralList = o
+    '开始内容加Dialog内容
+    startStr = "[dialog start]" : endStr = "[/dialog start]" 
+    If InStr(defaultStr, startStr) > 0 And InStr(defaultStr, endStr) > 0 Then
+        c = StrCut(defaultStr, startStr, endStr, 2) & c 
+    End If 
+    '结束内容加Dialog内容
+    startStr = "[dialog end]" : endStr = "[/dialog end]" 
+    If InStr(defaultStr, startStr) > 0 And InStr(defaultStr, endStr) > 0 Then
+        c = c & StrCut(defaultStr, startStr, endStr, 2) 
+    End If 
+    XY_PHP_GeneralList = c
 End Function
 
 
-
-Function XY_PHP_SinglePage(a)
-	XY_PHP_SinglePage=XY_PHP_GetFieldValue(a,"select * from [v9_page]","content")
+'获得文本内容 这个是干什么用得？？？20150121
+Function XY_PHP_SinglePage(Action)
+	XY_PHP_SinglePage=XY_PHP_GetFieldValue(Action,"select * from [v9_page]","content")
 End Function
-
-function XY_PHP_GetFieldValue(a,b,c)
-	rs.open b,conn,1,1
+'获得单个字段内容
+function XY_PHP_GetFieldValue(Action,sql,fieldName)
+	rs.open sql,conn,1,1
 	if not rs.eof then
-		XY_PHP_GetFieldValue=rs(c)
+		XY_PHP_GetFieldValue=rs(fieldName)
 	else
-		XY_PHP_GetFieldValue=GetDefaultValue(a)
+		XY_PHP_GetFieldValue=GetDefaultValue(Action)
 	end if:rs.close
 end function
-%>
-
+%> 
 
 
 

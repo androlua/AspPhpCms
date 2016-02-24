@@ -2,121 +2,123 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%Option Explicit%>
-<!--#Include File = "Common.Asp"-->
-<!--#Include File = "Function.Asp"-->
-<!--#Include File = "FSO.Asp"-->
-<!--#Include File = "AdodbStream.Asp"-->
-<!--#Include File = "XML.Asp"-->
-<!--#Include File = "Time.Asp"-->
-<!--#Include File = "RegExp.Asp"-->
-<!--#Include File = "Cai.Asp"-->
-<!--#Include File = "StringNumber.Asp"-->
-<!--#Include File = "EncDec.Asp"-->
-<!--#Include File = "Dictionary.Asp"-->
-<!--#Include File = "Access.Asp"-->
-<!--#Include File = "Incpage.Asp"-->
-<!--#Include File = "Check.Asp"-->
-<!--#Include File = "GetWord.Asp"-->
-<!--#Include File = "Url.Asp"-->
-<!--#Include File = "Conn.Asp"-->
-<!--#Include File = "Fun_Table.Asp"-->
-<!--#Include File = "FunHTML.Asp"-->
-<!--#Include File = "ProductGl.Asp"-->
-<!--#Include File = "Html.Asp"-->
+<!--#Include File = "Common.Asp"--> 
+<!--#Include File = "Function.Asp"--> 
+<!--#Include File = "FSO.Asp"--> 
+<!--#Include File = "AdodbStream.Asp"--> 
+<!--#Include File = "XML.Asp"--> 
+<!--#Include File = "Time.Asp"--> 
+<!--#Include File = "RegExp.Asp"--> 
+<!--#Include File = "Cai.Asp"--> 
+<!--#Include File = "StringNumber.Asp"--> 
+<!--#Include File = "EncDec.Asp"--> 
+<!--#Include File = "Dictionary.Asp"--> 
+<!--#Include File = "Access.Asp"--> 
+<!--#Include File = "Incpage.Asp"--> 
+<!--#Include File = "Check.Asp"--> 
+<!--#Include File = "GetWord.Asp"--> 
+<!--#Include File = "Url.Asp"--> 
+<!--#Include File = "Conn.Asp"--> 
+<!--#Include File = "Fun_Table.Asp"--> 
+<!--#Include File = "FunHTML.Asp"--> 
+<!--#Include File = "ProductGl.Asp"--> 
+<!--#Include File = "Html.Asp"--> 
 <!--#Include File = "AutoAdd.Asp"-->
-<!--#Include File = "Web2014.Asp"-->
-<!--#Include File = "Print.Asp"-->
-<!--#Include File = "Img.Asp"-->
+<!--#Include File = "Web2014.Asp"-->   
+<!--#Include File = "Print.Asp"--> 
+<!--#Include File = "Img.Asp"--> 
 <!--#Include File = "PinYin.Asp"-->
-<!--#Include File = "Md5.Asp"-->
+<!--#Include File = "Md5.Asp"--> 
 <!--#Include File = "Function2014.Asp"-->
-<!--#Include File = "2014_Links.Asp"-->
-<!--#Include File = "2014_MainInfo.Asp"-->
-<!--#Include File = "2014_News.Asp"-->
-<!--#Include File = "2014_Banner.Asp"-->
-<!--#Include File = "2014_Array.Asp"-->
-<!--#Include File = "2014_Js.Asp"-->
-<!--#Include File = "2014_Css.Asp"-->
-<!--#Include File = "2014_Template.Asp"-->
-<!--#Include File = "2014_Action.Asp"-->
-<!--#Include File = "2014_Nav.Asp"-->
-<!--#Include File = "2014_Class.Asp"-->
-<!--#Include File = "2014_Search.Asp"-->
-<!--#Include File = "2014_GBUTF.Asp"-->
-<!--#Include File = "2014_Form.Asp"-->
-<!--#Include File = "2014_SiteMap.Asp"-->
-<!--#Include File = "2014_NetWorkClass.Asp"-->
+<!--#Include File = "IE.Asp"-->  
+<!--#Include File = "ASPPHPAccess.Asp"-->   
+<!--#Include File = "2014_Links.Asp"--> 
+<!--#Include File = "2014_MainInfo.Asp"-->  
+<!--#Include File = "2014_News.Asp"--> 
+<!--#Include File = "2014_Banner.Asp"--> 
+<!--#Include File = "2014_Array.Asp"--> 
+<!--#Include File = "2014_Js.Asp"--> 
+<!--#Include File = "2014_Css.Asp"--> 
+<!--#Include File = "2014_Template.Asp"-->  
+<!--#Include File = "2014_Action.Asp"-->  
+<!--#Include File = "2014_Nav.Asp"-->  
+<!--#Include File = "2014_Class.Asp"-->  
+<!--#Include File = "2014_Search.Asp"-->  
+<!--#Include File = "2014_GBUTF.Asp"-->   
+<!--#Include File = "2014_Form.Asp"-->  
+<!--#Include File = "2014_SiteMap.Asp"-->   
+
 <!--#Include File = "2014_Doc.Asp"-->
 <!--#Include File = "2014_Xls.Asp"-->
 <!--#Include File = "2014_Cache.Asp"-->
 <!--#Include File = "2014_Cookies.Asp"-->
 <!--#Include File = "2014_Author.Asp"-->
-<!--#Include File = "2015_Special.Asp"-->
-<!--#Include File = "2015_Formatting.Asp"-->
-<!--#Include File = "2015_Color.Asp"-->
+<!--#Include File = "2015_Special.Asp"--> 
+<!--#Include File = "2015_Formatting.Asp"--> 
+<!--#Include File = "2015_Color.Asp"--> 
 <!--#Include File = "2015_Param.Asp"-->
 <!--#Include File = "2015_ASP.Asp"-->
-<!--#Include File = "2015_BieRen.Asp"-->
-<!--#Include File = "2015_SqlIn.Asp"-->
+<!--#Include File = "2015_BieRen.Asp"--> 
+<!--#Include File = "2015_SqlIn.Asp"-->  
 <!--#Include File = "2015_Json.Asp"-->
-<!--#Include File = "2015_PHP.Asp"-->
+<!--#Include File = "2015_PHP.Asp"-->  
 <!--#Include File = "2015_WebSql.Asp"-->
-<!--#Include File = "2015_hexSwitch.Asp"-->
-<!--#Include File = "2015_APGeneral.Asp"-->
-<!--#Include File = "2015_ToMyPHP.Asp"-->
-<!--#Include File = "2015_Editor.Asp"-->
-<!--#Include File = "2015_Editor.Asp"-->
-<!--#Include File = "ASPPHPAccess.Asp"-->
-<!--#Include File = "2015_NewWebFunction.Asp"-->
-<!--#Include File = "IE.Asp"-->
+<!--#Include File = "2015_hexSwitch.Asp"-->  
+<!--#Include File = "2015_APGeneral.Asp"-->  
+<!--#Include File = "2015_ToMyPHP.Asp"-->   
+<!--#Include File = "2015_Editor.Asp"-->   
+<!--#Include File = "2015_Editor.Asp"-->    
+<!--#Include File = "2015_NewWebFunction.Asp"-->   
+<!--#Include File = "2016_WebControl.Asp"-->    
+<!--#Include File = "2016_SaveData.Asp"-->     
 
-<!--#Include File = "ZClass_YouKou.Asp"-->
-<!--#Include File = "ZClass_Maiside.Asp"-->
-<!--#Include File = "SystemInfo.Asp"-->
-<%
+ 
+ 
+<!--#Include File = "SystemInfo.Asp"--> 
+<% 
 
+'ExecuteGlobal("S=""bb""")				'可动态加载文件不过不能有<%出现
 
-
-Server.ScriptTimeOut = 9999	
+Server.ScriptTimeOut = 9999	'超时
 Public db, Conn, Rs, Rsx, Rss, Rst, Rsd, TempRs, TempRs2, RsTemp
-Public nCount, nPageSize, MaxPage, Page
+Public nCount, nPageSize, MaxPage, Page 
 
 Public WebTitle, WebUrl, WebKeywords, WebDescription, TemplatePath, TemplateContent, CreateHtmlPath, ClassStr, CreatePage
 Dim MainNav,MainTitle,MainContent
 Public SysStyle(9)
-Public PubTimer : PubTimer = now()		
-
+Public PubTimer : PubTimer = now()		'Timer()不要用这个(20150728)
+'主程序全局变量设置
 Public PubNavDid,PubNavSid,PubProDid,PubProSid,PubProTid,PubActionType,PubID,PubClassName,PubWD
-Dim PubNavType				
-Public ReadBlockList			
-Public ExecuteResut				
+Dim PubNavType				'网站导航类型
+Public ReadBlockList			'读出块列表 配置FindModuleStr函数使用
+Public ExecuteResut				'执行返回结果
 
-dim makeHtmlFileToLCase	 : makeHtmlFileToLCase=true		
-dim isWebLabelClose : isWebLabelClose=true					
+dim makeHtmlFileToLCase	 : makeHtmlFileToLCase=true		'生成HTML文件转小写
+dim isWebLabelClose : isWebLabelClose=true					'闭合标签(20150831)
 
-dim HandleisCache : HandleisCache=false						
+dim HandleisCache : HandleisCache=false						'缓冲是否处理了
 dim adminDir :adminDir="/admin/"
 dim WEB_ADMINURL : WEB_ADMINURL ="/admin/index.asp"
 
 SysStyle(0) = "#999999"
 Response.Addheader "Content-Type","text/html; charset=gb2312"
-	
+	'禁止缓冲
 	Response.Buffer = True
 	Response.Expires = 0
 	Response.ExpiresAbsolute = Now() - 1
 	Response.CacheControl = "no-cache"
 	Response.AddHeader "Expires",Date()
 	Response.AddHeader "Pragma","no-cache"
-	Response.AddHeader "Cache-Control","private, no-cache, must-revalidate"
+	Response.AddHeader "Cache-Control","private, no-cache, must-revalidate" 
 Select Case Request("A")
-	Case "HandWebImgPath" : 	
+	Case "HandWebImgPath" : 	'处理网站图片路径
 	Call OpenConn()
 	Rs.Open"Select * From [Product]",Conn,1,3
 	Call Echo("表[Product]", "共有数据["& Rs.RecordCount &"]条")
@@ -134,7 +136,7 @@ End Select
 
 
 
-%>
+%> 
 
 
 

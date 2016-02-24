@@ -2,405 +2,404 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'AdodbStream Adodb.Stream组件操作大全 (2013,9,27)
 
-
-
-Function checkCode(ByVal a)
-	checkCode=getFileCharset(a)
+'获得文件编码
+Function checkCode(ByVal fileName)
+	checkCode=getFileCharset(fileName)
 End Function
-
-Function getFileCharset(ByVal a)
-    On Error Resume Next
-    Dim b, c
-    Call HandlePath(a)
-    Set b = CreateObject("ADODB.Stream")
-        b.Type = 1
-        b.Mode = 3
-        b.Open
-        b.Position = 0
-        Call b.loadFromFile(a)
-        c = b.read(2)
-        If TypeName(c) = "Null" Then getFileCharset = "gb2312" : Exit Function
-        If AscB(MidB(c, 1, 1)) = &HEF And AscB(MidB(c, 2, 1)) = &HBB Then
-            getFileCharset = "utf-8"
-        ElseIf AscB(MidB(c, 1, 1)) = &HFF And AscB(MidB(c, 2, 1)) = &HFE Then
-            getFileCharset = "unicode"
+'获得文件编码
+Function getFileCharset(ByVal fileName)
+    On Error Resume Next 
+    Dim ObjStream, bintou 
+    Call HandlePath(fileName)                                                       '获得完整路径
+    Set ObjStream = CreateObject("ADODB.Stream")
+        ObjStream.Type = 1 
+        ObjStream.Mode = 3 
+        ObjStream.Open 
+        ObjStream.Position = 0 
+        Call ObjStream.loadFromFile(fileName) 
+        bintou = ObjStream.read(2)                                                      '以二进制方式读出二个字符出来(不太太)
+        If TypeName(bintou) = "Null" Then getFileCharset = "gb2312" : Exit Function 
+        If AscB(MidB(bintou, 1, 1)) = &HEF And AscB(MidB(bintou, 2, 1)) = &HBB Then
+            getFileCharset = "utf-8" 
+        ElseIf AscB(MidB(bintou, 1, 1)) = &HFF And AscB(MidB(bintou, 2, 1)) = &HFE Then
+            getFileCharset = "unicode" 
         Else
-            getFileCharset = "gb2312"
-        End If
-        b.Close
-    Set b = Nothing
-    If Err Then doError Err.Description, "getFileCharset，获得文件编码 函数出错，FileName=" & a
+            getFileCharset = "gb2312" 
+        End If 
+        ObjStream.Close 
+    Set ObjStream = Nothing 
+    If Err Then doError Err.Description, "getFileCharset，获得文件编码 函数出错，FileName=" & fileName 
 
 End Function
-
-Function seniorCheckCode(ByVal a)
-
-
-
-
-    Dim b, c
-    Call HandlePath(a)
-    Set b = CreateObject("ADODB.Stream")
-        b.Type = 1
-        b.Mode = 3
-        b.Open
-        b.Position = 0
-        Call b.loadFromFile(a)
-        c = b.read(2)
-        If TypeName(c) = "Null" Then seniorCheckCode = CheckFileCode(a) : Exit Function
-
-
-        If AscB(MidB(c, 1, 1)) = &HEF And AscB(MidB(c, 2, 1)) = &HBB Then
-            seniorCheckCode = "UTF-8"
-        ElseIf AscB(MidB(c, 1, 1)) = &HFF And AscB(MidB(c, 2, 1)) = &HFE Then
-            seniorCheckCode = "UNICODE"
+'获得文件编码Senior
+Function seniorCheckCode(ByVal fileName)
+    '暂时不这样用，因为慢，但是还要测试20150119
+    'CheckCode = CheckFileCode(FileName)            '获得文件编码(这种慢 但精准)
+    'Exit Function
+    'On Error Resume Next
+    Dim ObjStream, bintou 
+    Call HandlePath(fileName)                                                       '获得完整路径
+    Set ObjStream = CreateObject("ADODB.Stream")
+        ObjStream.Type = 1 
+        ObjStream.Mode = 3 
+        ObjStream.Open 
+        ObjStream.Position = 0 
+        Call ObjStream.loadFromFile(fileName) 
+        bintou = ObjStream.read(2)                                                      '以二进制方式读出二个字符出来(不太太)
+        If TypeName(bintou) = "Null" Then seniorCheckCode = CheckFileCode(fileName) : Exit Function '改进2015019
+        'N1 = AscB(MidB(bintou, 1, 1)) : N2 = AscB(MidB(bintou, 2, 1))
+        'N = N1 & N2
+        If AscB(MidB(bintou, 1, 1)) = &HEF And AscB(MidB(bintou, 2, 1)) = &HBB Then
+            seniorCheckCode = "UTF-8" 
+        ElseIf AscB(MidB(bintou, 1, 1)) = &HFF And AscB(MidB(bintou, 2, 1)) = &HFE Then
+            seniorCheckCode = "UNICODE" 
         Else
-            seniorCheckCode = CheckFileCode(a)
-        End If
-
-        b.Close
-    Set b = Nothing
-    If Err Then doError Err.Description, "CheckCode，获得文件编码 函数出错，FileName=" & a
-End Function
-
-Function readFile(ByVal a, ByVal b)
-    On Error Resume Next
-    If b = "1" Or UCase(b) = "GB2312" Then
-        b = "GB2312"
-    ElseIf b = "0" Or UCase(b) = "UTF-8" Then
-        b = "UTF-8"
-    ElseIf b = "2" Or UCase(b) = "UNICODE" Then
-        b = "UNICODE"
+            seniorCheckCode = CheckFileCode(fileName)                                       '另一种超强获得文件编码方法
+        End If 
+        'CAll Rw(FileName & " >> Char_Set=" & CheckCode & " Code=" & N1  & "["& Chr(N1) &"]" &  "," & N2 & "["& Chr(N2) &"]" &"(utf-8(239,187),unicode(255,254)<br>")
+        ObjStream.Close 
+    Set ObjStream = Nothing 
+    If Err Then doError Err.Description, "CheckCode，获得文件编码 函数出错，FileName=" & fileName 
+End Function 
+'数据流读出内容
+Function readFile(ByVal fileName, ByVal Char_Set)
+    On Error Resume Next 
+    If Char_Set = "1" Or UCase(Char_Set) = "GB2312" Then
+        Char_Set = "GB2312" 
+    ElseIf Char_Set = "0" Or UCase(Char_Set) = "UTF-8" Then
+        Char_Set = "UTF-8" 
+    ElseIf Char_Set = "2" Or UCase(Char_Set) = "UNICODE" Then
+        Char_Set = "UNICODE" 
     Else
-        b = checkCode(a)
-        If b = "" Then Exit Function
-    End If
-    Dim c, d, e, f
-    Call HandlePath(a)
-	if checkfile(a)=false then
+        Char_Set = checkCode(fileName) 
+        If Char_Set = "" Then Exit Function 
+    End If 
+    Dim str, stm, f, fso 
+    Call HandlePath(fileName)                                                       '获得完整路径
+	if checkfile(fileName)=false then 
 		readFile=""
 		exit function
 	end if
-    Set d = CreateObject("ADODB.Stream")
-        d.Type = 2
-        d.Mode = 3
-        d.Charset = b
-        d.Open
-        Set f = CreateObject("Scripting.FileSystemObject")
-            Set e = f.GetFile(a)
-                If e.Size > 0 Then
-                    Call d.loadFromFile(a)
-                End If
-                c = d.ReadText
-                d.Close
-            Set d = Nothing
-            readFile = c
-            If Err Then doError Err.Description, "ReadFile，数据流读出内容 函数出错，FileName=" & a
-        Set f = Nothing
-    Set d = Nothing
+    Set stm = CreateObject("ADODB.Stream")
+        stm.Type = 2                                                                    '以本模式读取
+        stm.Mode = 3 
+        stm.Charset = Char_Set 
+        stm.Open 
+        Set fso = CreateObject("Scripting.FileSystemObject")
+            Set f = fso.GetFile(fileName)
+                If f.Size > 0 Then
+                    Call stm.loadFromFile(fileName) 
+                End If 
+                str = stm.ReadText 
+                stm.Close 
+            Set stm = Nothing 
+            readFile = str 
+            If Err Then doError Err.Description, "ReadFile，数据流读出内容 函数出错，FileName=" & fileName 
+        Set fso = Nothing 
+    Set stm = Nothing 
+End Function 
+'数据流读出内容  (辅助)
+Function getStext(fileName)
+    getStext = readFile(fileName, "")
 End Function
-
-Function getStext(a)
-    getStext = readFile(a, "")
-End Function
-
-function getFTextUTF(a)
-	 getFTextUTF=readFile(a,"utf-8")
+'以UTF-8方法读文件内容
+function getFTextUTF(fileName)
+	 getFTextUTF=readFile(fileName,"utf-8")
 end function
-
-Function writeToFile(ByVal a, ByVal b, ByVal c)
-    On Error Resume Next
-    If c = "1" Or UCase(c) = "GB2312" Then
-        c = "GB2312"
-    ElseIf c = "0" Or UCase(c) = "UTF-8" Then
-        c = "UTF-8"
-    ElseIf c = "2" Or UCase(c) = "UNICODE" Then
-        c = "UNICODE"
+'写入内容
+Function writeToFile(ByVal fileName, ByVal content, ByVal Char_Set)
+    On Error Resume Next 
+    If Char_Set = "1" Or UCase(Char_Set) = "GB2312" Then
+        Char_Set = "GB2312" 
+    ElseIf Char_Set = "0" Or UCase(Char_Set) = "UTF-8" Then
+        Char_Set = "UTF-8" 
+    ElseIf Char_Set = "2" Or UCase(Char_Set) = "UNICODE" Then
+        Char_Set = "UNICODE" 
     Else
-        c = "GB2312"
-    End If
-
-    Dim d
-    Call HandlePath(a)
-    Set d = CreateObject("ADODB.Stream")
-        d.Type = 2
-        d.Mode = 3
-        d.Charset = c
-        d.Open
-        Call d.WriteText(b)
-        Call d.SaveToFile(a, 2)
-        d.Flush
-        d.Close
-        writeToFile = a & "写入成功"
-    Set d = Nothing
-    If Err Then doError Err.Description, "WriteToFile，数据流写入内容 函数出错，FileName=" & a & "，Content字符" & Len(b)
+        Char_Set = "GB2312" 
+    End If 
+    'Call Echo("Char_Set",Char_Set)
+    Dim stm 
+    Call HandlePath(fileName)                                                       '获得完整路径
+    Set stm = CreateObject("ADODB.Stream")
+        stm.Type = 2                                                                    '以本模式读取
+        stm.Mode = 3 
+        stm.Charset = Char_Set 
+        stm.Open 
+        Call stm.WriteText(content) 
+        Call stm.SaveToFile(fileName, 2) 
+        stm.Flush 
+        stm.Close 
+        writeToFile = fileName & "写入成功" 
+    Set stm = Nothing 
+    If Err Then doError Err.Description, "WriteToFile，数据流写入内容 函数出错，FileName=" & fileName & "，Content字符" & Len(content) 
 End Function
-
-function createFileUTF(byval a, byval b)
-	call writeToFile(a,b,"utf-8")
+'创建UTF-8文件（20151201）
+function createFileUTF(byval fileName, byval content)
+	call writeToFile(fileName,content,"utf-8")
 end function
+'是UTF或GB2312
+'自动获得编码并且判断Html内容是否与读出文件编码一致，一致则退出内容
+Function getUGText(ByVal path)
+    Dim Char_Set, FanCharSet, TempCharSet 
+    Dim IsContent 
+    Char_Set = checkCode(path) 
+    IsContent = False 
+    '二次处理，防读取错误
+    If Char_Set = "utf-8" Then
+        FanCharSet = "gb2312" 
+    ElseIf Char_Set = "gb2312" Then
+        FanCharSet = "utf-8" 
+    End If 
+    TempCharSet = FanCharSet 
+    If FanCharSet <> "" Then
+        If CheckStr(LCase(getUGText), "<meta [^>]*charset *= *" & FanCharSet) = True Then
+            getUGText = readFile(path, TempCharSet) 
+            IsContent = True 
+        End If 
+    End If 
+    '没有读出内容则用文件自身编码读出内容
+    If IsContent = False Then
+        getUGText = readFile(path, Char_Set) 
+    End If 
+End Function 
+'检测Html内容是否设置了编码(当前页没有调用过20150119)
+Function checkContentCharset(ByVal content, ByVal Char_Set)
+    content = LCase(content) 
+    Char_Set = LCase(Char_Set) 
+    checkContentCharset = True 
+    If InStr(content, "<meta ") > 0 Then
+        Dim i, s, TempS, LalType, LalStr 
+        For i = 1 To Len(content)
+            s = Mid(content, i, 1) 
+            If s = "<" Then
+                TempS = LCase(Mid(content, i)) 
+                LalType = LCase(Mid(TempS, 1, InStr(TempS, " "))) 
+                If LalType = "<meta " Then
+                    LalStr = Mid(TempS, 1, InStr(TempS, ">")) 
+                    If InStr(LalStr, "charset") > 0 Then
+                        If InStr(LalStr, Char_Set) = 0 Then checkContentCharset = False 
+                    End If 
+                End If 
+            End If 
+        Next 
+    End If 
+End Function 
+'超级文件编码获取
+Function checkFileCode(filePath)
+    Dim splStr, c, content, ToPath, YuanStr, s, nLen 
+    YuanStr = BinaryReadFile(filePath) 
 
-
-Function getUGText(ByVal a)
-    Dim b, c, d
-    Dim e
-    b = checkCode(a)
-    e = False
-
-    If b = "utf-8" Then
-        c = "gb2312"
-    ElseIf b = "gb2312" Then
-        c = "utf-8"
-    End If
-    d = c
-    If c <> "" Then
-        If CheckStr(LCase(getUGText), "<meta [^>]*charset *= *" & c) = True Then
-            getUGText = readFile(a, d)
-            e = True
-        End If
-    End If
-
-    If e = False Then
-        getUGText = readFile(a, b)
-    End If
-End Function
-
-Function checkContentCharset(ByVal a, ByVal b)
-    a = LCase(a)
-    b = LCase(b)
-    checkContentCharset = True
-    If InStr(a, "<meta ") > 0 Then
-        Dim c, d, e, f, g
-        For c = 1 To Len(a)
-            d = Mid(a, c, 1)
-            If d = "<" Then
-                e = LCase(Mid(a, c))
-                f = LCase(Mid(e, 1, InStr(e, " ")))
-                If f = "<meta " Then
-                    g = Mid(e, 1, InStr(e, ">"))
-                    If InStr(g, "charset") > 0 Then
-                        If InStr(g, b) = 0 Then checkContentCharset = False
-                    End If
-                End If
-            End If
-        Next
-    End If
-End Function
-
-Function checkFileCode(a)
-    Dim b, c, d, e, f, g, h
-    f = BinaryReadFile(a)
-
-
-
-
-
-    If Len(f) > 2500 Then
-        f = Right(f, 2500)
-    End If
-    h = Len(f)
-    e = a & "_Temp"
-    b = Split("GB2312|UTF-8|UNICODE", "|")
-    For Each g In b
-        d = readFile(a, g)
-        Call WriteToFile(e, d, g)
-        c = BinaryReadFile(e)
-        c = Right(c, h)
-        If f = c Then
-            checkFileCode = g
-            Call deleteFile(e)
-            Exit For
-        End If
-    Next
-    Call deleteFile(e)
-End Function
-
-Function getFileBinaryContent(a)
-    Dim b
-    Call HandlePath(a)
-    Set b = CreateObject("ADODB.Stream")
-        b.Mode = 3
-        b.Type = 1
-        b.Open
-        Call b.loadFromFile(a)
-        getFileBinaryContent = b.read
-        b.Close
-    Set b = Nothing
-
-End Function
-
-Function binaryReadFile(a)
-    Dim b, c, d, e
-    Call HandlePath(a)
-    Set e = CreateObject("ADODB.Stream")
-        e.Mode = 3
-        e.Type = 1
-        e.Open
-        Call e.loadFromFile(a)
-        d = "" : b = 0 : c = 1
-        While b < e.Size
-            d = d & AscB(e.read(c))
-            b = b + c
-            DoEvents
-        Wend
-    Set e = Nothing
-    binaryReadFile = d
-End Function
-
-Function readBinary(a, b)
-    Dim c, d, e, f
-    If b = "" Then b = 0
-    Call HandlePath(a)
-    Set f = CreateObject("ADODB.Stream")
-        f.Mode = 3
-        f.Type = 1
-        f.Open
-        Call f.loadFromFile(a)
-        e = "" : c = 0 : d = 1
-        While c < f.Size
-            e = e &(AscB(f.read(d)) + b) & "|"
-            c = c + d
-        Wend
-        If e <> "" Then e = Left(e, Len(e) - 1)
-    Set f = Nothing
-    readBinary = e
-End Function
-
-Function decSaveBinary(a, b, c)
-    Dim d, buf(), f
-    If c = "" Then c = 0
-    d = Split(b, "|")
-    ReDim buf(UBound(d))
-    For f = 0 To UBound(d)
-        buf(f) = CByte(CInt(d(f)) - c)
-    Next
-    Call WriteBinary(a, buf)
-End Function
-
-Sub writeBinary(a, b)
-    Dim c, d, e, f
-    Call HandlePath(a)
-
-	if typeName(b)<>"Byte()" then
-		e = UBound(b) : ReDim d(e \ 2)
-		For c = 0 To e - 1 Step 2
-			d(c \ 2) = ChrW(b(c + 1) * 256 + b(c))
-		Next
-		If c = e Then d(c \ 2) = ChrW(b(c))
-		d = Join(d, "")
+    'If Len(YuanStr) > 500 Then
+    'YuanStr = Right(YuanStr, Len(YuanStr) - 30)
+    'End If
+    '只提取2500个字符
+    If Len(YuanStr) > 2500 Then
+        YuanStr = Right(YuanStr, 2500) 
+    End If 
+    nLen = Len(YuanStr) 
+    ToPath = filePath & "_Temp" 
+    splStr = Split("GB2312|UTF-8|UNICODE", "|") 
+    For Each s In splStr
+        content = readFile(filePath, s) 
+        Call WriteToFile(ToPath, content, s) 
+        c = BinaryReadFile(ToPath) 
+        c = Right(c, nLen) 
+        If YuanStr = c Then
+            checkFileCode = s 
+            Call deleteFile(ToPath)                                                         '删除这个临时文件
+            Exit For 
+        End If 
+    Next 
+    Call deleteFile(ToPath)                                                         '删除这个临时文件
+End Function 
+'获得文件二进制内容 20150312
+Function getFileBinaryContent(filePath)
+    Dim stream 
+    Call HandlePath(filePath)                                                       '获得完整路径
+    Set stream = CreateObject("ADODB.Stream")
+        stream.Mode = 3 
+        stream.Type = 1 
+        stream.Open 
+        Call stream.loadFromFile(filePath) 
+        getFileBinaryContent = stream.read 
+        stream.Close 
+    Set stream = Nothing 
+'Response.BinaryWrite Stream.Read            '显示二进制文件内容
+End Function 
+'读取二进制文件处理成数字方式
+Function binaryReadFile(filePath)
+    Dim i, nR, c, stm 
+    Call HandlePath(filePath)                                                       '获得完整路径
+    Set stm = CreateObject("ADODB.Stream")
+        stm.Mode = 3 
+        stm.Type = 1 
+        stm.Open 
+        Call stm.loadFromFile(filePath) 
+        c = "" : i = 0 : nR = 1 
+        While i < stm.Size
+            c = c & AscB(stm.read(nR)) 
+            i = i + nR 
+            DoEvents 
+        Wend 
+    Set stm = Nothing 
+    binaryReadFile = c 
+End Function 
+'读取二进制文件并加密
+Function readBinary(filePath, pass)
+    Dim i, nR, c, stm 
+    If pass = "" Then pass = 0                                                      '如果为空则为零20150119
+    Call HandlePath(filePath)                                                       '获得完整路径
+    Set stm = CreateObject("ADODB.Stream")
+        stm.Mode = 3 
+        stm.Type = 1 
+        stm.Open 
+        Call stm.loadFromFile(filePath) 
+        c = "" : i = 0 : nR = 1                                                         '每次读取字符数
+        While i < stm.Size
+            c = c &(AscB(stm.read(nR)) + pass) & "|" 
+            i = i + nR 
+        Wend 
+        If c <> "" Then c = Left(c, Len(c) - 1) 
+    Set stm = Nothing 
+    readBinary = c 
+End Function 
+'解密保存二进制文件
+Function decSaveBinary(filePath, content, pass)
+    Dim splStr, buf(), i 
+    If pass = "" Then pass = 0                                                      '如果为空则为零20150119
+    splStr = Split(content, "|") 
+    ReDim buf(UBound(splStr)) 
+    For i = 0 To UBound(splStr)
+        buf(i) = CByte(CInt(splStr(i)) - pass) 
+    Next 
+    Call WriteBinary(filePath, buf) 
+End Function 
+'保存二进制文件   call writeBinary(filePath,Request.BinaryRead (Request.TotalBytes))
+Sub writeBinary(filePath, Buf)
+    Dim i, aBuf, size, bStream 
+    Call HandlePath(filePath)                                                       '获得完整路径
+    '不是二进制处理成二进制(20151211)
+	if typeName(Buf)<>"Byte()" then
+		size = UBound(Buf) : ReDim aBuf(size \ 2) 
+		For i = 0 To size - 1 Step 2
+			aBuf(i \ 2) = ChrW(Buf(i + 1) * 256 + Buf(i)) 
+		Next 
+		If i = size Then aBuf(i \ 2) = ChrW(Buf(i)) 
+		aBuf = Join(aBuf, "")
 	else	
-		d=b
+		aBuf=Buf
 	end if
 	
-    Set f = CreateObject("ADODB.Stream")
-        f.Type = 1
-        f.Open
+    Set bStream = CreateObject("ADODB.Stream")
+        bStream.Type = 1 
+        bStream.Open 
         With CreateObject("ADODB.Stream")
-            .Type = 2
-            .Open
-            Call.WriteText(d)
-            .Position = 2
-            Call.CopyTo(f)
-            .Close
-        End With
-        Call f.SaveToFile(a, 2)
-        f.Close
-    Set f = Nothing
-End Sub
+            .Type = 2 
+            .Open 
+            Call.WriteText(aBuf) 
+            .Position = 2 
+            Call.CopyTo(bStream) 
+            .Close 
+        End With 
+        Call bStream.SaveToFile(filePath, 2) 
+        bStream.Close 
+    Set bStream = Nothing 
+End Sub 
 
 
 
-
-
-Public Function getFileCharset2(ByVal a)
-    Dim b
-
+'---------------------------- 待定 ----------------------------
+'获得文件编码 超级快速版 (从ASPBOX引用过来)  不要用
+Public Function getFileCharset2(ByVal filePath)
+    Dim strFileHead 
+    'On Error Resume Next
     If Err Then
-        Err.Clear
-    End If
-    Call HandlePath(a)
-    Dim c, d
-    Set c = CreateObject("ADODB.Stream")
-        With c
-            .Type = 1
-            .Mode = 3
-            .Open
-            .loadFromFile a
-            d =.read(3)
-            .Close
-        End With
-    Set c = Nothing
+        Err.Clear 
+    End If 
+    Call HandlePath(filePath)                                                       '获得完整路径
+    Dim objStream, LoadBytes 
+    Set objStream = CreateObject("ADODB.Stream")
+        With objStream
+            .Type = 1 
+            .Mode = 3 
+            .Open 
+            .loadFromFile filePath 
+            LoadBytes =.read(3) 
+            .Close 
+        End With 
+    Set objStream = Nothing 
     If Err.Number <> 0 Then
-        Err.Clear : getFileCharset2 = "" : Exit Function
-    End If
+        Err.Clear : getFileCharset2 = "" : Exit Function 
+    End If 
 
-    b = BinToHex(d)
-    If b = "EFBBBF" Then
-        getFileCharset2 = "UTF-8"
+    strFileHead = BinToHex(LoadBytes) 
+    If strFileHead = "EFBBBF" Then
+        getFileCharset2 = "UTF-8" 
     Else
-        b = Left(b, 4)
-        If b = "FEFF" Then
-            getFileCharset2 = "UNICODE BIG"
-        ElseIf b = "FFFE" Then
-            getFileCharset2 = "UNICODE"
-        ElseIf b = "3C25" Or b = "3C21" Then
-            getFileCharset2 = "GB2312"
+        strFileHead = Left(strFileHead, 4) 
+        If strFileHead = "FEFF" Then
+            getFileCharset2 = "UNICODE BIG" 
+        ElseIf strFileHead = "FFFE" Then
+            getFileCharset2 = "UNICODE" 
+        ElseIf strFileHead = "3C25" Or strFileHead = "3C21" Then
+            getFileCharset2 = "GB2312" 
         Else
-            getFileCharset2 = "GB2312"
-        End If
-    End If
+            getFileCharset2 = "GB2312" 
+        End If 
+    End If 
     If Err.Number <> 0 Then
-        Err.Clear : getFileCharset2 = "" : Exit Function
-    End If
-End Function
-Public Function binToHex(ByVal a)
-    Dim b, c
-    b = 0
-    For c = 1 To LenB(a)
-        b = b * 256 + AscB(MidB(a, c, 1))
-    Next
-    binToHex = Hex(b)
-End Function
+        Err.Clear : getFileCharset2 = "" : Exit Function 
+    End If 
+End Function 
+Public Function binToHex(ByVal vStream)
+    Dim reVal, i 
+    reVal = 0 
+    For i = 1 To LenB(vStream)
+        reVal = reVal * 256 + AscB(MidB(vStream, i, 1)) 
+    Next 
+    binToHex = Hex(reVal) 
+End Function 
 
 
 
-
-function Base64Encode(a)
-    dim b,c
-    set b=createobject("adodb.stream")
-    b.Type=2
-    b.charset="unicode"
-    b.mode=3
-    call b.open()
-    b.writeText a
-    b.Position=0
-    b.Type=1
-
-
-    set c=createobject("msxml.domdocument")
-    call c.loadXml("<root/>")
-    c.DocumentElement.DataType="bin.base64"
-    c.DocumentElement.NodeTypedValue=b.read()
-    Base64Encode=c.DocumentElement.text
+'可以把字符或二进制内容转成字符，牛 从别人哪里复制过来20160112
+function Base64Encode(strData)
+    dim objAds,objXd
+    set objAds=createobject("adodb.stream")
+    objAds.Type=2
+    objAds.charset="unicode"
+    objAds.mode=3
+    call objAds.open()
+    objAds.writeText strData
+    objAds.Position=0
+    objAds.Type=1
+    'objAds.Position=2
+ 
+    set objXd=createobject("msxml.domdocument")
+    call objXd.loadXml("<root/>")
+    objXd.DocumentElement.DataType="bin.base64"
+    objXd.DocumentElement.NodeTypedValue=objAds.read()
+    Base64Encode=objXd.DocumentElement.text
+end function
+'转成二进制了Byte()
+function Base64Decode(strData)
+    dim objXd
+    set objXd=createobject("msxml.domdocument")
+    call objXd.loadXml("<root/>")
+    objXd.DocumentElement.DataType="bin.base64"
+    objXd.DocumentElement.text=strData
+    Base64Decode=objXd.DocumentElement.NodeTypedValue
 end function
 
-function Base64Decode(a)
-    dim b
-    set b=createobject("msxml.domdocument")
-    call b.loadXml("<root/>")
-    b.DocumentElement.DataType="bin.base64"
-    b.DocumentElement.text=a
-    Base64Decode=b.DocumentElement.NodeTypedValue
-end function
-
-%>
-
+%> 
 

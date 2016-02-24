@@ -2,335 +2,383 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+
+'新的截取字符20160216
+Function newGetStrCut(content, title)
+    Dim s 
+    If InStr(content, "【/" & title & "】") > 0 Then
+        s = ADSql(phptrim(getStrCut(content, "【" & title & "】", "【/" & title & "】", 0))) 
+    Else
+        s = ADSql(phptrim(getStrCut(content, "【" & title & "】", vbCrLf, 0))) 
+    End If 
+    newGetStrCut = s 
+End Function 
 
 
-function newGetStrCut(a,b)
-	dim c
-	if instr(a,"【/"& b &"】")>0 then
-		c = ADSql(phptrim(getStrCut(a, "【"& b &"】", "【/"& b &"】", 0)) )
-	else
-		c = ADSql(phptrim(getStrCut(a, "【"& b &"】", vbCrLf, 0) ))
-	end if
-	newGetStrCut=c
-end function
-
-
-
+'重置数据库数据
 Sub resetAccessData()
-    Call OpenConn()
-    Dim b, c, d, e, f, g,h
-	h=request("webdataDir")
-	if h<>"" then
-		if checkFolder(h)=false then
-			call eerr("网站数据目录不存在，恢复默认数据未成功", h)
-		end if
-	else
-		h="/Data/WebData/"
-	end if
-	
-    Call echo("提示", "恢复数据完成")
-    Call rw("<hr><a href='../index.asp' target='_blank'>进入首页</a> | <a href=""?"" target='_blank'>进入后台</a>")
+    Call OpenConn() 
+    Dim splStr, i, s, columnname, title, nCount, webdataDir 
+    webdataDir = Request("webdataDir") 
+    If webdataDir <> "" Then
+        If checkFolder(webdataDir) = False Then
+            Call eerr("网站数据目录不存在，恢复默认数据未成功", webdataDir) 
+        End If 
+    Else
+        webdataDir = "/Data/WebData/" 
+    End If 
 
-    Dim i, j, k, l, m, n, o, p, q, r, s, t, u
-    Dim v, w, x, y, z, aa, ba, ca, da, ea, fa, ga, ha
-	dim ia
-    Dim ja, ka, la, ma, na
-    Dim oa, pa, qa
-	dim columnenname																
-	dim sa,ta,bannerimage												
-	
-	
+    Call echo("提示", "恢复数据完成") 
+    Call rw("<hr><a href='../index.asp' target='_blank'>进入首页</a> | <a href=""?"" target='_blank'>进入后台</a>") 
+
+    Dim content, filePath, parentid, author, adddatetime, fileName, bodycontent, webtitle, webkeywords, webdescription, sortrank, labletitle, target 
+    Dim websitebottom, webtemplate, webimages, webcss, webjs, flags, websiteurl, splxx, columntype, relatedtags, npagesize, customaurl, nofollow 
+    Dim templatepath, through 
+    Dim showreason, ncomputersearch, nmobliesearch, ncountsearch, ndegree           '竞价表
+    Dim displaytitle, simpleintroduction, isonhtml                                  '单页表
+    Dim columnenname                                                                '导航表
+    Dim smallimage, bigImage, bannerimage                                           '文章表
 
 
-	
-    i = getftext(h & "/website.ini")
-    If i <> "" Then
-        p =  newGetStrCut(i,"webtitle")
-        q = newGetStrCut(i,"webkeywords")
-        r = newGetStrCut(i,"webdescription")
-        v = newGetStrCut(i,"websitebottom")
-        w = newGetStrCut(i,"webtemplate")
-        x = newGetStrCut(i,"webimages")
-        y =newGetStrCut(i,"webcss")
-        z =newGetStrCut(i,"webjs")
-        aa = newGetStrCut(i,"flags")
-        ba = newGetStrCut(i,"websiteurl")
-		
-		if getRecordCount(db_PREFIX & "website", "")=0 then
-			conn.execute("insert into " & db_PREFIX & "website(webtitle) values('测试')")
-		end if
-		
-    conn.Execute("update " & db_PREFIX & "website  set webtitle='" & p & "',webkeywords='" & q & "',webdescription='" & r & "',websitebottom='" & v & "',webtemplate='" & w & "',webimages='" & x & "',webcss='" & y & "',webjs='" & z & "',flags='" & aa & "',websiteurl='" & ba & "'")
-	End If
 
 
-    conn.Execute("delete from " & db_PREFIX & "webcolumn")
-    i = getDirTxtList(h & "/NavData/")
-    b = Split(i, vbCrLf)
-    Call hr()
-    For Each j In b
-        n = getfilename(j)
-        If j <> "" And InStr("_#", Left(n, 1)) = False Then
-            Call echo("导航", j)
-            i = getftext(j)
-            ca = Split(i, vbCrLf & "-------------------------------")
-            For Each d In ca
-                If InStr(d, "【webtitle】") > 0 Then
-					p =  newGetStrCut(d,"webtitle")
-					q = newGetStrCut(d,"webkeywords")
-					r = newGetStrCut(d,"webdescription")
+    '网站配置
+    content = getftext(webdataDir & "/website.ini") 
+    If content <> "" Then
+        webtitle = newGetStrCut(content, "webtitle") 
+        webkeywords = newGetStrCut(content, "webkeywords") 
+        webdescription = newGetStrCut(content, "webdescription") 
+        websitebottom = newGetStrCut(content, "websitebottom") 
+        webtemplate = newGetStrCut(content, "webtemplate") 
+        webimages = newGetStrCut(content, "webimages") 
+        webcss = newGetStrCut(content, "webcss") 
+        webjs = newGetStrCut(content, "webjs") 
+        flags = newGetStrCut(content, "flags") 
+        websiteurl = newGetStrCut(content, "websiteurl") 
 
-                    s = newGetStrCut(d,"sortrank")
-                    If s = "" Then s = 0
-                    n =newGetStrCut(d,"filename")
-                    e =newGetStrCut(d,"columnname")
-					columnenname=newGetStrCut(d,"columnenname")
-                    da = newGetStrCut(d,"columntype")
-                    aa =newGetStrCut(d,"flags")
-                    k = newGetStrCut(d,"parentid")
-                    k = phptrim(getColumnId(k) )
-                    t = newGetStrCut(d,"labletitle")
+        If getRecordCount(db_PREFIX & "website", "") = 0 Then
+            conn.Execute("insert into " & db_PREFIX & "website(webtitle) values('测试')") 
+        End If 
 
-                    fa =newGetStrCut(d,"npagesize")
-                    If fa = "" Then fa = 10
+        conn.Execute("update " & db_PREFIX & "website  set webtitle='" & webtitle & "',webkeywords='" & webkeywords & "',webdescription='" & webdescription & "',websitebottom='" & websitebottom & "',webtemplate='" & webtemplate & "',webimages='" & webimages & "',webcss='" & webcss & "',webjs='" & webjs & "',flags='" & flags & "',websiteurl='" & websiteurl & "'") 
+    End If 
 
-                    u = newGetStrCut(d,"target")
-					
-                    sa = newGetStrCut(d,"smallimage")
-                    ta = newGetStrCut(d,"bigImage")
-                    bannerimage = newGetStrCut(d,"bannerimage")
-					
-                    ia = newGetStrCut(d,"templatepath")
-					
+    '导航
+    conn.Execute("delete from " & db_PREFIX & "webcolumn") 
+    content = getDirTxtList(webdataDir & "/webcolumn/") 
+    splStr = Split(content, vbCrLf) 
+    Call hr() 
+    For Each filePath In splStr
+        fileName = getfilename(filePath) 
+        If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
+            Call echo("导航", filePath) 
+            content = getftext(filePath) 
+            splxx = Split(content, vbCrLf & "-------------------------------") 
+            For Each s In splxx
+                If InStr(s, "【webtitle】") > 0 Then
+                    webtitle = newGetStrCut(s, "webtitle") 
+                    webkeywords = newGetStrCut(s, "webkeywords") 
+                    webdescription = newGetStrCut(s, "webdescription") 
 
-                    o = newGetStrCut(d,"bodycontent")
-                    o = contentTranscoding(o)
+                    sortrank = newGetStrCut(s, "sortrank") 
+                    If sortrank = "" Then sortrank = 0 
+                    fileName = newGetStrCut(s, "filename") 
+                    columnname = newGetStrCut(s, "columnname") 
+                    columnenname = newGetStrCut(s, "columnenname") 
+                    columntype = newGetStrCut(s, "columntype") 
+                    flags = newGetStrCut(s, "flags") 
+                    parentid = newGetStrCut(s, "parentid") 
+                    parentid = phptrim(getColumnId(parentid)) 
+                    labletitle = newGetStrCut(s, "labletitle") 
+                    '每页显示条数
+                    npagesize = newGetStrCut(s, "npagesize") 
+                    If npagesize = "" Then npagesize = 10                                           '默认分页数为10条
 
-                    qa = newGetStrCut(d,"isonhtml")
-                    If qa = "0" Or LCase(qa) = "false" Then
-                        qa = 0
+                    target = newGetStrCut(s, "target") 
+
+                    smallimage = newGetStrCut(s, "smallimage") 
+                    bigImage = newGetStrCut(s, "bigImage") 
+                    bannerimage = newGetStrCut(s, "bannerimage") 
+
+                    templatepath = newGetStrCut(s, "templatepath") 
+
+
+                    bodycontent = newGetStrCut(s, "bodycontent") 
+                    bodycontent = contentTranscoding(bodycontent) 
+                    '是否启用生成html
+                    isonhtml = newGetStrCut(s, "isonhtml") 
+                    If isonhtml = "0" Or LCase(isonhtml) = "false" Then
+                        isonhtml = 0 
                     Else
-                        qa = 1
-                    End If
-
-                    ha = newGetStrCut(d,"nofollow")
-                    If ha = "1" Or LCase(ha) = "true" Then
-                        ha = 1
+                        isonhtml = 1 
+                    End If 
+                    '是否为nofollow
+                    nofollow = newGetStrCut(s, "nofollow") 
+                    If nofollow = "1" Or LCase(nofollow) = "true" Then
+                        nofollow = 1 
                     Else
-                        ha = 0
-                    End If
+                        nofollow = 0 
+                    End If 
 
 
-                    pa = newGetStrCut(d,"simpleintroduction")
-                    pa = contentTranscoding(pa)
+                    simpleintroduction = newGetStrCut(s, "simpleintroduction") 
+                    simpleintroduction = contentTranscoding(simpleintroduction) 
 
-                    o = newGetStrCut(d,"bodycontent")
-                    o = contentTranscoding(o)
+                    bodycontent = newGetStrCut(s, "bodycontent") 
+                    bodycontent = contentTranscoding(bodycontent) 
 
-                    conn.Execute("insert into " & db_PREFIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,simpleintroduction,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values('" & p & "','" & q & "','" & r & "','" & e & "','" & columnenname & "','" & da & "'," & s & ",'" & n & "','" & aa & "'," & k & ",'" & t & "','" & pa & "','" & o & "'," & fa & "," & qa & "," & ha & ",'" & u & "','" & sa & "','" & ta & "','" & bannerimage & "','" & ia & "')")
-                End If
-            Next
-        End If
-    Next
+                    conn.Execute("insert into " & db_PREFIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,simpleintroduction,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values('" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & columnname & "','" & columnenname & "','" & columntype & "'," & sortrank & ",'" & fileName & "','" & flags & "'," & parentid & ",'" & labletitle & "','" & simpleintroduction & "','" & bodycontent & "'," & npagesize & "," & isonhtml & "," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
+                End If 
+            Next 
+        End If 
+    Next 
 
-
-    conn.Execute("delete from " & db_PREFIX & "articledetail")
-    i = getDirTxtList(h & "/ArticleData/")
-    b = Split(i, vbCrLf)
-    Call hr()
-    For Each j In b
-        n = getfilename(j)
-        If j <> "" And InStr("_#", Left(n, 1)) = False Then
-            Call echo("文章", j)
-            i = getftext(j)
-            ca = Split(i, vbCrLf & "-------------------------------")
-            For Each d In ca
-                If InStr(d, "【title】") > 0 Then
-                    d = d & vbCrLf
-                    k = newGetStrCut(d,"parentid")
-                    k = getColumnId(k)
-                    f = newGetStrCut(d,"title")
-					p =  newGetStrCut(d,"webtitle")
-					q = newGetStrCut(d,"webkeywords")
-					r = newGetStrCut(d,"webdescription")
-
-
-                    l = newGetStrCut(d,"author")
-                    s =newGetStrCut(d,"sortrank")
-                    If s = "" Then s = 0
-                    m = newGetStrCut(d,"adddatetime")
-                    n =newGetStrCut(d,"filename")
-                    aa = newGetStrCut(d,"flags")
-                    ea =newGetStrCut(d,"relatedtags")
-
-                    ga = newGetStrCut(d,"customaurl")
-                    u = newGetStrCut(d,"target")
-
-					
-                    sa = newGetStrCut(d,"smallimage")
-                    ta = newGetStrCut(d,"bigImage")
-                    bannerimage = newGetStrCut(d,"bannerimage")
-                    ia = newGetStrCut(d,"templatepath")
+    '文章
+    conn.Execute("delete from " & db_PREFIX & "articledetail") 
+    content = getDirTxtList(webdataDir & "/articledetail/") 
+    splStr = Split(content, vbCrLf) 
+    Call hr() 
+    For Each filePath In splStr
+        fileName = getfilename(filePath) 
+        If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
+            Call echo("文章", filePath) 
+            content = getftext(filePath) 
+            splxx = Split(content, vbCrLf & "-------------------------------") 
+            For Each s In splxx
+                If InStr(s, "【title】") > 0 Then
+                    s = s & vbCrLf 
+                    parentid = newGetStrCut(s, "parentid") 
+                    parentid = getColumnId(parentid) 
+                    title = newGetStrCut(s, "title") 
+                    webtitle = newGetStrCut(s, "webtitle") 
+                    webkeywords = newGetStrCut(s, "webkeywords") 
+                    webdescription = newGetStrCut(s, "webdescription") 
 
 
-                    o =newGetStrCut(d,"bodycontent")
-                    o = contentTranscoding(o)
+                    author = newGetStrCut(s, "author") 
+                    sortrank = newGetStrCut(s, "sortrank") 
+                    If sortrank = "" Then sortrank = 0 
+                    adddatetime = newGetStrCut(s, "adddatetime") 
+                    fileName = newGetStrCut(s, "filename") 
+                    flags = newGetStrCut(s, "flags") 
+                    relatedtags = newGetStrCut(s, "relatedtags") 
 
-                    qa =newGetStrCut(d,"isonhtml")
-                    If qa = "0" Or LCase(qa) = "false" Then
-                        qa = 0
+                    customaurl = newGetStrCut(s, "customaurl") 
+                    target = newGetStrCut(s, "target") 
+
+
+                    smallimage = newGetStrCut(s, "smallimage") 
+                    bigImage = newGetStrCut(s, "bigImage") 
+                    bannerimage = newGetStrCut(s, "bannerimage") 
+                    templatepath = newGetStrCut(s, "templatepath") 
+
+
+                    bodycontent = newGetStrCut(s, "bodycontent") 
+                    bodycontent = contentTranscoding(bodycontent) 
+                    '是否启用生成html
+                    isonhtml = newGetStrCut(s, "isonhtml") 
+                    If isonhtml = "0" Or LCase(isonhtml) = "false" Then
+                        isonhtml = 0 
                     Else
-                        qa = 1
-                    End If
-
-                    ha = newGetStrCut(d,"nofollow")
-                    If ha = "1" Or LCase(ha) = "true" Then
-                        ha = 1
+                        isonhtml = 1 
+                    End If 
+                    '是否为nofollow
+                    nofollow = newGetStrCut(s, "nofollow") 
+                    If nofollow = "1" Or LCase(nofollow) = "true" Then
+                        nofollow = 1 
                     Else
-                        ha = 0
-                    End If
-                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & k & ",'" & f & "','" & p & "','" & q & "','" & r & "','" & l & "'," & s & ",'" & m & "','" & n & "','" & aa & "','" & ea & "','" & o & "','" & Now() & "'," & qa & ",'" & ga & "'," & ha & ",'" & u & "','" & sa & "','" & ta & "','" & bannerimage & "','" & ia & "')")
-                End If
-            Next
-        End If
-    Next
+                        nofollow = 0 
+                    End If 
+                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & parentid & ",'" & title & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & author & "'," & sortrank & ",'" & adddatetime & "','" & fileName & "','" & flags & "','" & relatedtags & "','" & bodycontent & "','" & Now() & "'," & isonhtml & ",'" & customaurl & "'," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
+                End If 
+            Next 
+        End If 
+    Next 
+
+    '单页
+    conn.Execute("delete from " & db_PREFIX & "OnePage") 
+    content = getDirTxtList(webdataDir & "/OnePage/") 
+    splStr = Split(content, vbCrLf) 
+    Call hr() 
+    For Each filePath In splStr
+        fileName = getfilename(filePath) 
+        If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
+            Call echo("单页", filePath) 
+            content = getftext(filePath) 
+            splxx = Split(content, vbCrLf & "-------------------------------") 
+            For Each s In splxx
+                If InStr(s, "【webkeywords】") > 0 Then
+                    s = s & vbCrLf 
+                    title = newGetStrCut(s, "title") 
+                    displaytitle = newGetStrCut(s, "displaytitle") 
+                    webtitle = newGetStrCut(s, "webtitle") 
+                    webkeywords = newGetStrCut(s, "webkeywords") 
+                    webdescription = newGetStrCut(s, "webdescription") 
 
 
-    conn.Execute("delete from " & db_PREFIX & "OnePage")
-    i = getDirTxtList(h & "/OnePageData/")
-    b = Split(i, vbCrLf)
-    Call hr()
-    For Each j In b
-        n = getfilename(j)
-        If j <> "" And InStr("_#", Left(n, 1)) = False Then
-            Call echo("单页", j)
-            i = getftext(j)
-            ca = Split(i, vbCrLf & "-------------------------------")
-            For Each d In ca
-                If InStr(d, "【webkeywords】") > 0 Then
-                    d = d & vbCrLf
-                    f =newGetStrCut(d,"title")
-                    oa = newGetStrCut(d,"displaytitle")
-					p =  newGetStrCut(d,"webtitle")
-					q = newGetStrCut(d,"webkeywords")
-					r = newGetStrCut(d,"webdescription")
 
+                    adddatetime = newGetStrCut(s, "adddatetime") 
+                    fileName = newGetStrCut(s, "filename") 
 
+                    simpleintroduction = newGetStrCut(s, "simpleintroduction") 
 
-                    m = newGetStrCut(d,"adddatetime")
-                    n = newGetStrCut(d,"filename")
+                    simpleintroduction = contentTranscoding(simpleintroduction) 
+                    target = newGetStrCut(s, "target") 
+                    templatepath = newGetStrCut(s, "templatepath") 
 
-                    pa =newGetStrCut(d,"simpleintroduction")
-					
-                    pa = contentTranscoding(pa)
-                    u = newGetStrCut(d,"target")
-                    ia = newGetStrCut(d,"templatepath")
-
-                    o = newGetStrCut(d,"bodycontent")
-                    o = contentTranscoding(o)
-
-                    qa =newGetStrCut(d,"isonhtml")
-                    If qa = "0" Or LCase(qa) = "false" Then
-                        qa = 0
+                    bodycontent = newGetStrCut(s, "bodycontent") 
+                    bodycontent = contentTranscoding(bodycontent) 
+                    '是否启用生成html
+                    isonhtml = newGetStrCut(s, "isonhtml") 
+                    If isonhtml = "0" Or LCase(isonhtml) = "false" Then
+                        isonhtml = 0 
                     Else
-                        qa = 1
-                    End If
-
-                    ha =newGetStrCut(d,"nofollow")
-                    If ha = "1" Or LCase(ha) = "true" Then
-                        ha = 1
+                        isonhtml = 1 
+                    End If 
+                    '是否为nofollow
+                    nofollow = newGetStrCut(s, "nofollow") 
+                    If nofollow = "1" Or LCase(nofollow) = "true" Then
+                        nofollow = 1 
                     Else
-                        ha = 0
-                    End If
+                        nofollow = 0 
+                    End If 
 
 
-                    conn.Execute("insert into " & db_PREFIX & "onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,simpleintroduction,bodycontent,nofollow,target,templatepath) values('" & f & "','" & oa & "','" & p & "','" & q & "','" & r & "','" & m & "','" & n & "'," & qa & ",'" & pa & "','" & o & "'," & ha & ",'" & u & "','" & ia & "')")
-                End If
-            Next
-        End If
-    Next
+                    conn.Execute("insert into " & db_PREFIX & "onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,simpleintroduction,bodycontent,nofollow,target,templatepath) values('" & title & "','" & displaytitle & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & adddatetime & "','" & fileName & "'," & isonhtml & ",'" & simpleintroduction & "','" & bodycontent & "'," & nofollow & ",'" & target & "','" & templatepath & "')") 
+                End If 
+            Next 
+        End If 
+    Next 
+
+    '竞价
+    conn.Execute("delete from " & db_PREFIX & "Bidding") 
+    content = getDirTxtList(webdataDir & "/Bidding/") 
+    splStr = Split(content, vbCrLf) 
+    Call hr() 
+    For Each filePath In splStr
+        fileName = getfilename(filePath) 
+        If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
+            Call echo("竞价", filePath) 
+            content = getftext(filePath) 
+            splxx = Split(content, vbCrLf & "-------------------------------") 
+            For Each s In splxx
+                If InStr(s, "【webkeywords】") > 0 Then
+                    webkeywords = newGetStrCut(s, "webkeywords") 
+                    showreason = newGetStrCut(s, "showreason") 
+                    ncomputersearch = newGetStrCut(s, "ncomputersearch") 
+                    nmobliesearch = newGetStrCut(s, "nmobliesearch") 
+                    ncountsearch = newGetStrCut(s, "ncountsearch") 
+                    ndegree = newGetStrCut(s, "ndegree") 
+                    ndegree = getnumber(ndegree) 
+                    If ndegree = "" Then
+                        ndegree = 0 
+                    End If 
+                    conn.Execute("insert into " & db_PREFIX & "Bidding (webkeywords,showreason,ncomputersearch,nmobliesearch,ndegree) values('" & webkeywords & "','" & showreason & "'," & ncomputersearch & "," & nmobliesearch & "," & ndegree & ")") 
+                End If 
+            Next 
+        End If 
+    Next 
+
+    '搜索统计
+    conn.Execute("delete from " & db_PREFIX & "SearchStat") 
+    content = getDirTxtList(webdataDir & "/SearchStat/") 
+    splStr = Split(content, vbCrLf) 
+    Call hr() 
+    For Each filePath In splStr
+        fileName = getfilename(filePath) 
+        If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
+            Call echo("搜索统计", filePath) 
+            content = getftext(filePath) 
+            splxx = Split(content, vbCrLf & "-------------------------------") 
+            For Each s In splxx
+                If InStr(s, "【title】") > 0 Then
+                    title = newGetStrCut(s, "title") 
+                    webtitle = newGetStrCut(s, "webtitle") 
+                    webkeywords = newGetStrCut(s, "webkeywords") 
+                    webdescription = newGetStrCut(s, "webdescription") 
+
+                    customaurl = newGetStrCut(s, "customaurl") 
+                    target = newGetStrCut(s, "target") 
+                    through = newGetStrCut(s, "through") 
+                    If through = "0" Or LCase(through) = "false" Then
+                        through = 0 
+                    Else
+                        through = 1 
+                    End If 
+                    sortrank = newGetStrCut(s, "sortrank") 
+                    If sortrank = "" Then sortrank = 0 
+                    '是否启用生成html
+                    isonhtml = newGetStrCut(s, "isonhtml") 
+                    If isonhtml = "0" Or LCase(isonhtml) = "false" Then
+                        isonhtml = 0 
+                    Else
+                        isonhtml = 1 
+                    End If 
+                    '是否为nofollow
+                    nofollow = newGetStrCut(s, "nofollow") 
+                    If nofollow = "1" Or LCase(nofollow) = "true" Then
+                        nofollow = 1 
+                    Else
+                        nofollow = 0 
+                    End If 
+                    'call echo("title",title)
+                    conn.Execute("insert into " & db_PREFIX & "SearchStat (title,webtitle,webkeywords,webdescription,customaurl,target,through,sortrank,isonhtml,nofollow) values('" & title & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & customaurl & "','" & target & "'," & through & "," & sortrank & "," & isonhtml & "," & nofollow & ")") 
+
+                End If 
+            Next 
+        End If 
+    Next 
+
+    '评论
+    conn.Execute("delete from " & db_PREFIX & "TableComment") 
 
 
-    conn.Execute("delete from " & db_PREFIX & "Bidding")
-    i = getDirTxtList(h & "/BiddingData/")
-    b = Split(i, vbCrLf)
-    Call hr()
-    For Each j In b
-        n = getfilename(j)
-        If j <> "" And InStr("_#", Left(n, 1)) = False Then
-            Call echo("竞价", j)
-            i = getftext(j)
-            ca = Split(i, vbCrLf & "-------------------------------")
-            For Each d In ca
-                If InStr(d, "【webkeywords】") > 0 Then
-                    q =newGetStrCut(d,"webkeywords")
-                    ja = newGetStrCut(d,"showreason")
-                    ka =newGetStrCut(d,"ncomputersearch")
-                    la = newGetStrCut(d,"nmobliesearch")
-                    ma = newGetStrCut(d,"ncountsearch")
-                    na =newGetStrCut(d,"ndegree")
-                    na = getnumber(na)
-                    If na = "" Then
-                        na = 0
-                    End If
-                    conn.Execute("insert into " & db_PREFIX & "Bidding (webkeywords,showreason,ncomputersearch,nmobliesearch,ndegree) values('" & q & "','" & ja & "'," & ka & "," & la & "," & na & ")")
-                End If
-            Next
-        End If
-    Next
+
+End Sub 
+
+'内容转码
+Function contentTranscoding(ByVal content)
+    content = Replace(Replace(Replace(Replace(content, "<?", "&lt;?"), "?>", "?&gt;"), "<" & "%", "&lt;%"), "?>", "%&gt;") 
 
 
+    Dim splStr, i, s, c, isTranscoding, isBR 
+    isTranscoding = False 
+    isBR = False 
+    splStr = Split(content, vbCrLf) 
+    For Each s In splStr
+        If InStr(s, "[&html转码&]") > 0 Then
+            isTranscoding = True 
+        End If 
+        If InStr(s, "[&html转码end&]") > 0 Then
+            isTranscoding = False 
+        End If 
+        If InStr(s, "[&全部换行&]") > 0 Then
+            isBR = True 
+        End If 
+        If InStr(s, "[&全部换行end&]") > 0 Then
+            isBR = False 
+        End If 
 
-    conn.Execute("delete from " & db_PREFIX & "TableComment")
-
-
-
-End Sub
-
-
-Function contentTranscoding(ByVal a)
-    a = Replace(Replace(Replace(Replace(a, "<?", "&lt;?"), "?>", "?&gt;"), "<" & "%", "&lt;%"), "?>", "%&gt;")
-
-
-    Dim b, c, d, e, f, g
-    f = False
-    g = False
-    b = Split(a, vbCrLf)
-    For Each d In b
-        If InStr(d, "[&html转码&]") > 0 Then
-            f = True
-        End If
-        If InStr(d, "[&html转码end&]") > 0 Then
-            f = False
-        End If
-        If InStr(d, "[&全部换行&]") > 0 Then
-            g = True
-        End If
-        If InStr(d, "[&全部换行end&]") > 0 Then
-            g = False
-        End If
-
-        If f = True Then
-            d = Replace(Replace(d, "[&html转码&]", ""), "<", "&lt;")
+        If isTranscoding = True Then
+            s = Replace(Replace(s, "[&html转码&]", ""), "<", "&lt;") 
         Else
-            d = Replace(d, "[&html转码end&]", "")
-        End If
-        If g = True Then
-            d = Replace(d, "[&全部换行&]", "") & "<br>"
+            s = Replace(s, "[&html转码end&]", "") 
+        End If 
+        If isBR = True Then
+            s = Replace(s, "[&全部换行&]", "") & "<br>" 
         Else
-            d = Replace(d, "[&全部换行end&]", "")
-        End If
-        e = e & d & vbCrLf
-    Next
-    contentTranscoding = e
-End Function
-%>
-
+            s = Replace(s, "[&全部换行end&]", "") 
+        End If 
+        c = c & s & vbCrLf 
+    Next 
+    contentTranscoding = c 
+End Function 
+%>   
 

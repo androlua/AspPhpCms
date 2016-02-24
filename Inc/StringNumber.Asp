@@ -2,743 +2,742 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
 
-
-function isStrTransferred(a)
-	dim b,c,d,e
-	e=0
-	for c = 0 to len(a)-1
-		d=mid(a,len(a)-c,1)
-		if d="\" then
-			e=e+1
+'判断是否为字符转义
+function isStrTransferred(content)
+	dim splstr,i,s,nCount
+	nCount=0
+	for i = 0 to len(content)-1
+		s=mid(content,len(content)-i,1)
+		if s="\" then
+			nCount=nCount+1
 		else
-			isStrTransferred=IIF(e mod 2=1,true,false)
+			isStrTransferred=IIF(nCount mod 2=1,true,false)
 			exit function
 		end if
 	next
 end function
 
-
-Function getBL(a, b, c)
-    Dim splStr(3)
-    Dim e : e = 1
-    Dim f : f = 1
-    Dim g
-    Dim h
-    If a < 0 Then
-        a = a * - 1
-        e = -1
-    End If
-    If b < 0 Then
-        b = b * - 1
-        f = -1
-    End If
-    If a > b Then
-        g = FormatNumber(a / b, 2)
-        splStr(0) = g
-        splStr(1) = 1
+'计算比率，游戏开发中用到 20150601
+Function getBL(setWidth, setHeight, nDanFuXianZhi)
+    Dim splStr(3) 
+    Dim nWidthZheFu : nWidthZheFu = 1                                               '宽正负
+    Dim nHeightZheFu : nHeightZheFu = 1                                             '高正负
+    Dim nBFB                                                                        '百分比
+    Dim nXXFBX                                                                      '每个百分比，因为要判断他不能超过10
+    If setWidth < 0 Then
+        setWidth = setWidth * - 1 
+        nWidthZheFu = -1 
+    End If 
+    If setHeight < 0 Then
+        setHeight = setHeight * - 1 
+        nHeightZheFu = -1 
+    End If 
+    If setWidth > setHeight Then
+        nBFB = FormatNumber(setWidth / setHeight, 2)                                    '//长宽 百分比
+        splStr(0) = nBFB 
+        splStr(1) = 1 
     Else
-        g = FormatNumber(b / a, 2)
-        splStr(0) = 1
-        splStr(1) = g
-    End If
+        nBFB = FormatNumber(setHeight / setWidth, 2)                                    '//高宽 百分比
+        splStr(0) = 1 
+        splStr(1) = nBFB 
+    End If 
+    '每步超出指定值，处理
+    'if nBFB>=nDanFuXianZhi then
+    nXXFBX = FormatNumber(nDanFuXianZhi / nBFB, 2) 
+    splStr(0) = splStr(0) * nXXFBX 
+    splStr(1) = splStr(1) * nXXFBX 
+    'end if
+
+    splStr(0) = splStr(0) * nWidthZheFu 
+    splStr(1) = splStr(1) * nHeightZheFu 
+    splStr(2) = nBFB 
+    splStr(3) = GetCountPage(setWidth, splStr(0)) 
+    Call echo("page count 页数", splStr(3)) 
+    splStr(3) = getCountStep(setWidth, setHeight, splStr(0), splStr(1), splStr(3)) 
+
+    getBL = splStr 
+End Function 
+
+'获得总步数
+Function getCountStep(nWidthStep, nHeightStep, nWidthBL, nHeightBL, nCountPage)
+    Dim i 
+    getCountStep = "" 
+    If nWidthStep < 0 Then
+        nWidthStep = nWidthStep * - 1 
+    End If 
+    If nHeightStep < 0 Then
+        nHeightStep = nHeightStep * - 1 
+    End If 
+    If nWidthBL < 0 Then
+        nWidthBL = nWidthBL * - 1 
+    End If 
+    If nHeightBL < 0 Then
+        nHeightBL = nHeightBL * - 1 
+    End If 
+    For i = nCountPage - 10 To nCountPage
+        'call echo(i & "、nWidthBL*i>=nWidthStep",nWidthBL*i &">="&nWidthStep    & "   |  " & nHeightBL*i &">="& nHeightStep)
+        If nWidthBL * i >= nWidthStep Or nHeightBL * i >= nHeightStep Then
+            getCountStep = i 
+        'call echo("getCountStep",getCountStep)
+        End If 
+    Next 
+End Function 
 
 
-    h = FormatNumber(c / g, 2)
-    splStr(0) = splStr(0) * h
-    splStr(1) = splStr(1) * h
-
-
-    splStr(0) = splStr(0) * e
-    splStr(1) = splStr(1) * f
-    splStr(2) = g
-    splStr(3) = GetCountPage(a, splStr(0))
-    Call echo("page count 页数", splStr(3))
-    splStr(3) = getCountStep(a, b, splStr(0), splStr(1), splStr(3))
-
-    getBL = splStr
+'获得中文汉字内容
+Function getChina(content)
+    Dim i, c, j, s 
+    For i = 1 To Len(content)
+        j = Asc(Mid(content, i, 1)) 
+        s = Mid(content, i, 1) 
+        '是汉字累加
+        If j < 0 Then
+            If(j <= -22033 And j >= -24158) = False Then
+                c = c & s 
+            End If 
+        End If 
+    Next 
+    getChina = c 
 End Function
-
-
-Function getCountStep(a, b, c, d, e)
-    Dim f
-    getCountStep = ""
-    If a < 0 Then
-        a = a * - 1
-    End If
-    If b < 0 Then
-        b = b * - 1
-    End If
-    If c < 0 Then
-        c = c * - 1
-    End If
-    If d < 0 Then
-        d = d * - 1
-    End If
-    For f = e - 10 To e
-
-        If c * f >= a Or d * f >= b Then
-            getCountStep = f
-
-        End If
-    Next
-End Function
-
-
-
-Function getChina(a)
-    Dim b, c, d, e
-    For b = 1 To Len(a)
-        d = Asc(Mid(a, b, 1))
-        e = Mid(a, b, 1)
-
-        If d < 0 Then
-            If(d <= -22033 And d >= -24158) = False Then
-                c = c & e
-            End If
-        End If
-    Next
-    getChina = c
-End Function
-
-Function isChina(a)
-    Dim b, c, d
-    For b = 1 To Len(a)
-        c = Asc(Mid(a, b, 1))
-        d = Mid(a, b, 1)
-
-        If c < 0 Then
-            If(c <= -22033 And c >= -24158) = False Then
+'判断是否有中文
+Function isChina(content)
+    Dim i, j, s 
+    For i = 1 To Len(content)
+        j = Asc(Mid(content, i, 1)) 
+        s = Mid(content, i, 1) 
+        '是汉字累加
+        If j < 0 Then
+            If(j <= -22033 And j >= -24158) = False Then
                 isChina=true
 				exit function
-            End If
-        End If
-    Next
+            End If 
+        End If 
+    Next 
 	isChina=false
 End Function
-
-Function checkChina(a)
-	checkChina=isChina(a)
+'判断是否有中文 (辅助)
+Function checkChina(content)
+	checkChina=isChina(content)
 End Function
 
+'PHP里Rand使用20150212
+Function pHPRand(nMinimum, nMaximum)
+    Randomize 
+    pHPRand = "" 
+    Dim i 
+    For i = 1 To 9
+        pHPRand = CInt((nMinimum + nMaximum) * Rnd) 
+        If pHPRand >= nMinimum And pHPRand <= nMaximum Then
+            Exit For 
+        End If 
+    Next 
+    If pHPRand < nMinimum Then
+        pHPRand = nMinimum 
+    ElseIf pHPRand > nMaximum Then
+        pHPRand = nMaximum 
+    End If 
+End Function 
 
-Function pHPRand(a, b)
-    Randomize
-    pHPRand = ""
-    Dim c
-    For c = 1 To 9
-        pHPRand = CInt((a + b) * Rnd)
-        If pHPRand >= a And pHPRand <= b Then
-            Exit For
-        End If
-    Next
-    If pHPRand < a Then
-        pHPRand = a
-    ElseIf pHPRand > b Then
-        pHPRand = b
-    End If
-End Function
-
-
-Function pHPRnd(a, b)
-    pHPRnd = pHPRand(a, b)
-End Function
-
-
-
-Function deleteRepeatStr(a, b)
-    Dim c, d, e
-    e = ""
-    c = Split(a, b)
-    For Each d In c
-        If d <> "" Then
-            If InStr(b & e & b, b & d & b) = False Then
-                e = e & d & b
-            End If
-        End If
-    Next
-    If e <> "" Then e = Left(e, Len(e) - Len(b))
-    deleteRepeatStr = e
-End Function
+'引用上面，为什么？因为我老写错这个单词
+Function pHPRnd(nMinimum, nMaximum)
+    pHPRnd = pHPRand(nMinimum, nMaximum) 
+End Function 
 
 
-Function replaceN(a, b, c, d)
-    Dim e
-    d = HandleNumber(d)
-    If d = "" Then
-        d = 1
+'删除重复内容  20141220
+Function deleteRepeatStr(content, SplType)
+    Dim splStr, s, c 
+    c = "" 
+    splStr = Split(content, SplType) 
+    For Each s In splStr
+        If s <> "" Then
+            If InStr(SplType & c & SplType, SplType & s & SplType) = False Then
+                c = c & s & SplType 
+            End If 
+        End If 
+    Next 
+    If c <> "" Then c = Left(c, Len(c) - Len(SplType)) 
+    deleteRepeatStr = c 
+End Function 
+
+'替换内容N次 20141220
+Function replaceN(content, YunStr, ReplaceStr, nNumb)
+    Dim i 
+    nNumb = HandleNumber(nNumb) 
+    If nNumb = "" Then
+        nNumb = 1 
     Else
-        d = CInt(d)
-    End If
-    For e = 1 To d
-        a = Replace(a, b, c)
-    Next
+        nNumb = CInt(nNumb) 
+    End If 
+    For i = 1 To nNumb
+        content = Replace(content, YunStr, ReplaceStr) 
+    Next 
 
-    replaceN = a
-End Function
+    replaceN = content 
+End Function 
 
-
-Public Function fillZero(a)
-    If Len(a) = 1 Then
-        fillZero = "0" & a
+'asp日期补0函数   引用别人20141216
+Public Function fillZero(content)
+    If Len(content) = 1 Then
+        fillZero = "0" & content 
     Else
-        fillZero = a
-    End If
-End Function
+        fillZero = content 
+    End If 
+End Function 
 
-
-Function caseInsensitiveReplace(a, b, c)
-    Dim d, e, f, g, h, i, j
-    i = ""
-    If LCase(b) = LCase(c) Then
-        caseInsensitiveReplace = a
-    End If
-    f = LCase(a)
-    For j = 1 To 99
-        If InStr(f, b) > 0 Then
-            d = InStr(f, b) - 1
-            g = Left(a, d)
-            e = d + Len(b) + 1
-            h = Mid(a, e)
-            a = g & c & h
-
-
-
-            f = LCase(a)
+'不分大小写替换，作者：小云，写于20140925 用法Response.Write(CaseInsensitiveReplace("112233aabbbccddee","b","小云你牛"))
+Function caseInsensitiveReplace(content, Check_Str, Replace_Str)
+    Dim StartLen, EndLen, LowerCase, startStr, endStr, c, i 
+    c = "" 
+    If LCase(Check_Str) = LCase(Replace_Str) Then
+        caseInsensitiveReplace = content 
+    End If 
+    LowerCase = LCase(content) 
+    For i = 1 To 99
+        If InStr(LowerCase, Check_Str) > 0 Then
+            StartLen = InStr(LowerCase, Check_Str) - 1 
+            startStr = Left(content, StartLen) 
+            EndLen = StartLen + Len(Check_Str) + 1 
+            endStr = Mid(content, EndLen) 
+            content = startStr & Replace_Str & endStr 
+            'Call Echo(StartLen,EndLen)
+            'Call Echo(StartStr,EndStr)
+            'Call Echo("Content",Content)
+            LowerCase = LCase(content) 
         Else
-            Exit For
-        End If
-    Next
-    caseInsensitiveReplace = a
-End Function
+            Exit For 
+        End If 
+    Next 
+    caseInsensitiveReplace = content 
+End Function 
 
+'数组数字排序 (2013,10,1)
+Function array_Sort(sArray)
+    Dim i, j, MinmaxSlot, Minmax, temp 
+    For i = UBound(sArray) To 0 Step - 1
+        Minmax = sArray(i) 
+        MinmaxSlot = 0 
+        For j = 1 To i
+            If sArray(j) > Minmax Then
+                Minmax = sArray(j) 
+                MinmaxSlot = j 
+            End If 
+        Next 
+        If MinmaxSlot <> i Then
+            temp = sArray(MinmaxSlot) 
+            sArray(MinmaxSlot) = sArray(i) 
+            sArray(i) = temp 
+        End If 
+    Next 
+    array_Sort = sArray 
+End Function 
 
-Function array_Sort(a)
-    Dim b, c, d, e, f
-    For b = UBound(a) To 0 Step - 1
-        e = a(b)
-        d = 0
-        For c = 1 To b
-            If a(c) > e Then
-                e = a(c)
-                d = c
-            End If
-        Next
-        If d <> b Then
-            f = a(d)
-            a(d) = a(b)
-            a(b) = f
-        End If
-    Next
-    array_Sort = a
-End Function
+'处理Zip大小
+Function handleZipSize(ByVal ZipSize)
+    On Error Resume Next 
+    Dim nSize 
+    ZipSize = LCase(ZipSize) 
+    nSize = GetDianNumb(ZipSize) 
+    If InStr(ZipSize, "g") Then
+        nSize = nSize * 1073741824 
+    ElseIf InStr(ZipSize, "m") Then
+        nSize = nSize * 1048576 
+    ElseIf InStr(ZipSize, "k") Then
+        nSize = nSize * 1024 
+    End If 
+    handleZipSize = nSize 
+    If Err Then doError Err.Description, "HandleZipSize 处理Zip大小 函数出错，ZipSize=" & ZipSize 
+End Function 
 
-
-Function handleZipSize(ByVal a)
-    On Error Resume Next
-    Dim b
-    a = LCase(a)
-    b = GetDianNumb(a)
-    If InStr(a, "g") Then
-        b = b * 1073741824
-    ElseIf InStr(a, "m") Then
-        b = b * 1048576
-    ElseIf InStr(a, "k") Then
-        b = b * 1024
-    End If
-    handleZipSize = b
-    If Err Then doError Err.Description, "HandleZipSize 处理Zip大小 函数出错，ZipSize=" & a
-End Function
-
-
-Function getRnd(ByVal a)
-    Randomize
-    Dim b, c, d
-    For c = 1 To a
-        If c Mod 2 = 0 Then
-            b = ChrW((57 - 48) * Rnd + 48)
-        ElseIf c Mod 3 = 0 Then
-            b = ChrW((90 - 65) * Rnd + 65)
+'//生成随机数
+Function getRnd(ByVal nCount)
+    Randomize 
+    Dim s, i, c
+    For i = 1 To nCount
+        If i Mod 2 = 0 Then
+            s = ChrW((57 - 48) * Rnd + 48)                                                  '0~9
+        ElseIf i Mod 3 = 0 Then
+            s = ChrW((90 - 65) * Rnd + 65)                                                  'A~Z
         Else
-            b = ChrW((122 - 97) * Rnd + 97)
-        End If
-        d=d & b
-    Next
-	getRnd=d
-End Function
+            s = ChrW((122 - 97) * Rnd + 97)                                                 'a~z
+        End If 
+        c=c & s 
+    Next 
+	getRnd=c
+End Function 
 
-
+'获得随机数，仿js(20150826)
 Function mathRandom()
-    Dim b, c
-    c = ""
-    Randomize
-    For b = 1 To 16
-        c = c & Int(Rnd() * 9)
-    Next
-    mathRandom = "0." & c
-End Function
+    Dim i, c 
+    c = "" 
+    Randomize 
+    For i = 1 To 16
+        c = c & Int(Rnd() * 9) 
+    Next 
+    mathRandom = "0." & c 
+End Function 
 
 
+'获得指定位数随机A到Z字符
+Function getRndAZ(nCount)
+    Dim ZD, i, s, c 
+    c = "" : ZD = "" 
+    Randomize 
+    ZD = "abcdefghijklmnopqrstuvwxyz" & UCase(ZD) 
+    For i = 1 To nCount
+        s = Mid(ZD, pHPRnd(1, Len(ZD)), 1) 
+        c = c & s 
+    Next 
+    getRndAZ = c 
+End Function 
 
-Function getRndAZ(a)
-    Dim b, c, d, e
-    e = "" : b = ""
-    Randomize
-    b = "abcdefghijklmnopqrstuvwxyz" & UCase(b)
-    For c = 1 To a
-        d = Mid(b, pHPRnd(1, Len(b)), 1)
-        e = e & d
-    Next
-    getRndAZ = e
-End Function
+'获得随机数 （辅助上面）
+Function getRand(ByVal nCount)
+    getRand = getRnd(nCount) 
+End Function 
 
-
-Function getRand(ByVal a)
-    getRand = getRnd(a)
-End Function
-
-
-
-Function copyStrNumb(ByVal a, b)
-    Dim c, d
-    If b > 0 Then
-        d = a
-        For c = 1 To b - 1
-            a = a & d
-        Next
+'拷贝内容N次 InputStr输入值  Multiplier乘数和php里面一样2014 12 02
+'如果 multiplier 被设置为小于等于0，函数返回空字符串。
+Function copyStrNumb(ByVal InputStr, Multiplier)
+    Dim i, s 
+    If Multiplier > 0 Then
+        s = InputStr 
+        For i = 1 To Multiplier - 1
+            InputStr = InputStr & s 
+        Next 
     Else
-        a = ""
-    End If
-    copyStrNumb = a
-End Function
+        InputStr = "" 
+    End If 
+    copyStrNumb = InputStr 
+End Function 
+
+'拷贝内容N次  PHP里函数
+Function str_Repeat(ByVal InputStr, Multiplier)
+    str_Repeat = copyStrNumb(InputStr, Multiplier) 
+End Function 
+
+'引用上面的
+Function copyStr(InputStr, Multiplier)
+    copyStr = copyStrNumb(InputStr, Multiplier) 
+End Function 
+
+'内容加Tab
+Function contentAddTab(ByVal content, nNumb)
+    contentAddTab = copyStr("    ", nNumb) & Join(Split(content, vbCrLf), vbCrLf & copyStr("    ", nNumb)) 
+End Function 
+
+'删除最后指定字符20150228 Content=DeleteEndStr(Content,2)
+Function deleteEndStr(content, nLen)
+    If content <> "" Then content = Left(content, Len(content) - nLen) 
+    deleteEndStr = content 
+End Function 
 
 
-Function str_Repeat(ByVal a, b)
-    str_Repeat = copyStrNumb(a, b)
-End Function
+'StringNumber (2013,9,27)
+Function toNumber(ByVal n, ByVal d)
+    toNumber = FormatNumber(n, d, - 1) 
+End Function 
 
+'处理成数字
+Function handleNumber(ByVal content)
+    Dim i, s, c 
+    c = "" 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("0123456789", s) > 0 Then
+            c = c & s 
+        End If 
+    Next 
+    handleNumber = c 
+End Function 
 
-Function copyStr(a, b)
-    copyStr = copyStrNumb(a, b)
-End Function
+'字符串中提取数字 20150507
+Function strDrawInt(ByVal content)
+    strDrawInt = handleNumber(content) 
+End Function 
 
+'处理成数字 首字符可以是-符号
+Function getFirstNegativeNumber(ByVal content)
+    Dim i, s, c 
+    c = "" 
+    content = Trim(content) 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If s = "-" And c = "" Then
+            c = c & s 
+        ElseIf InStr("0123456789", s) > 0 Then
+            c = c & s 
+        End If 
+    Next 
+    If c = "" Then c = 0 
+    getFirstNegativeNumber = c 
+End Function 
 
-Function contentAddTab(ByVal a, b)
-    contentAddTab = copyStr("    ", b) & Join(Split(a, vbCrLf), vbCrLf & copyStr("    ", b))
-End Function
+'检测是否为数字类型
+Function checkNumberType(ByVal content)
+    checkNumberType = handleNumber(content) 
+End Function 
 
+'检测字符内容为数字类型
+Function checkStrIsNumberType(ByVal content)
+    Dim i, s 
+    checkStrIsNumberType = True 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("0123456789", s) = False Then
+            checkStrIsNumberType = False 
+            Exit Function 
+        End If 
+    Next 
+End Function 
 
-Function deleteEndStr(a, b)
-    If a <> "" Then a = Left(a, Len(a) - b)
-    deleteEndStr = a
-End Function
+'处理成数字类型
+Function handleNumberType(ByVal content)
+    Dim i, s, c 
+    c = "" 
+    content = Trim(content) 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If i = 1 And InStr("+-*/", Left(content, 1)) > 0 Then
+            c = c & s 
+        ElseIf i > 1 And s = "." Then
+            c = c & s 
+        ElseIf InStr("0123456789", s) > 0 Then
+            c = c & s 
+        End If 
+    Next 
+    handleNumberType = c 
+End Function 
 
-
-
-Function toNumber(ByVal a, ByVal b)
-    toNumber = FormatNumber(a, b, - 1)
-End Function
-
-
-Function handleNumber(ByVal a)
-    Dim b, c, d
-    d = ""
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("0123456789", c) > 0 Then
-            d = d & c
-        End If
-    Next
-    handleNumber = d
-End Function
-
-
-Function strDrawInt(ByVal a)
-    strDrawInt = handleNumber(a)
-End Function
-
-
-Function getFirstNegativeNumber(ByVal a)
-    Dim b, c, d
-    d = ""
-    a = Trim(a)
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If c = "-" And d = "" Then
-            d = d & c
-        ElseIf InStr("0123456789", c) > 0 Then
-            d = d & c
-        End If
-    Next
-    If d = "" Then d = 0
-    getFirstNegativeNumber = d
-End Function
-
-
-Function checkNumberType(ByVal a)
-    checkNumberType = handleNumber(a)
-End Function
-
-
-Function checkStrIsNumberType(ByVal a)
-    Dim b, c
-    checkStrIsNumberType = True
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("0123456789", c) = False Then
-            checkStrIsNumberType = False
-            Exit Function
-        End If
-    Next
-End Function
-
-
-Function handleNumberType(ByVal a)
-    Dim b, c, d
-    d = ""
-    a = Trim(a)
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If b = 1 And InStr("+-*/", Left(a, 1)) > 0 Then
-            d = d & c
-        ElseIf b > 1 And c = "." Then
-            d = d & c
-        ElseIf InStr("0123456789", c) > 0 Then
-            d = d & c
-        End If
-    Next
-    handleNumberType = d
-End Function
-
-
-Function getNumber(ByVal a)
-    Dim b, c, d
-    d = ""
-    a = Trim(a)
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("0123456789", c) > 0 Then
-            If d = "" And c = "0" Then
+'获得数字 只单独获得数字 并且第一个字数不能为零0     20150322
+Function getNumber(ByVal content)
+    Dim i, s, c 
+    c = "" 
+    content = Trim(content) 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("0123456789", s) > 0 Then
+            If c = "" And s = "0" Then                                                      '待改进，因为现在脑子不够用了，就这么定敢20150322
             Else
-                d = d & c
-            End If
-        End If
-    Next
-    getNumber = ""
-    If d <> "" Then
-        getNumber = Int(d)
-    End If
-End Function
+                c = c & s 
+            End If 
+        End If 
+    Next 
+    getNumber = "" 
+    If c <> "" Then
+        getNumber = Int(c) 
+    End If 
+End Function 
 
-
-Function checkNumb(a)
-    If InStr("0123456789.", a) > 0 Then
-        checkNumb = True
+'检测是否为数字
+Function checkNumb(s)
+    If InStr("0123456789.", s) > 0 Then
+        checkNumb = True 
     Else
-        checkNumb = False
-    End If
-End Function
+        checkNumb = False 
+    End If 
+End Function 
 
+'获得有小数点数字
+Function getDianNumb(ByVal content)
+    Dim i, s, c 
+    c = "" 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("0123456789.", s) > 0 Then
+            c = c & s 
+        End If 
+    Next 
+    getDianNumb = c 
+End Function 
 
-Function getDianNumb(ByVal a)
-    Dim b, c, d
-    d = ""
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("0123456789.", c) > 0 Then
-            d = d & c
-        End If
-    Next
-    getDianNumb = d
-End Function
+'获得总页数
+Function getCountPage(nCount, nPageSize)
+    '把负数转成正确进行计算20150502
+	dim nCountPage
+    If nCount < 0 Then
+        nCount = nCount * - 1 
+    End If 
+    If nPageSize < 0 Then
+        nPageSize = nPageSize * - 1 
+    End If 
+    nCountPage = Fix(nCount / nPageSize) 
+    If InStr(nCount / nPageSize, ".") > 0 Then nCountPage = nCountPage + 1 
+	getCountPage=nCountPage
+End Function 
 
+'获得处理后页数
+Function getPageNumb(nRecordCount, nPageSize)
+	dim n
+    n = Int(nRecordCount / nPageSize) 
+    If nRecordCount Mod nPageSize > 0 Then
+        n=n + 1 
+    End If 
+	getPageNumb=n
+End Function 
 
-Function getCountPage(a, b)
+'处理获得采集总页数
+Function getCaiHandleCountPage(content)
+    content = DelHtml(content) 
+    content = handleNumber(content) 
+    getCaiHandleCountPage = "" 
+    If Len(content) < 10 Then
+        getCaiHandleCountPage = Right(content, 1) 
+    ElseIf Len(content) < 200 Then
+        getCaiHandleCountPage = Right(content, 2) 
+    End If 
+End Function 
 
-	dim c
-    If a < 0 Then
-        a = a * - 1
-    End If
-    If b < 0 Then
-        b = b * - 1
-    End If
-    c = Fix(a / b)
-    If InStr(a / b, ".") > 0 Then c = c + 1
-	getCountPage=c
-End Function
+'获得采集排序总页数 20150312
+Function getCaiSortCountPage(ByVal content)
+    Dim i, s 
+    getCaiSortCountPage = "" 
+    content = DelHtml(content) 
+    content = handleNumber(content) 
+    For i = 1 To 30
+        s = Mid(content, 1, Len(i)) 
+        If s = CStr(i) Then
+            getCaiSortCountPage = i 
+            'Call Echo(i,s)
+            content = Right(content, Len(content) - Len(i)) 
+        End If 
+    Next 
+End Function 
 
-
-Function getPageNumb(a, b)
-	dim c
-    c = Int(a / b)
-    If a Mod b > 0 Then
-        c=c + 1
-    End If
-	getPageNumb=c
-End Function
-
-
-Function getCaiHandleCountPage(a)
-    a = DelHtml(a)
-    a = handleNumber(a)
-    getCaiHandleCountPage = ""
-    If Len(a) < 10 Then
-        getCaiHandleCountPage = Right(a, 1)
-    ElseIf Len(a) < 200 Then
-        getCaiHandleCountPage = Right(a, 2)
-    End If
-End Function
-
-
-Function getCaiSortCountPage(ByVal a)
-    Dim b, c
-    getCaiSortCountPage = ""
-    a = DelHtml(a)
-    a = handleNumber(a)
-    For b = 1 To 30
-        c = Mid(a, 1, Len(b))
-        If c = CStr(b) Then
-            getCaiSortCountPage = b
-
-            a = Right(a, Len(a) - Len(b))
-        End If
-    Next
-End Function
-
-
-Function minMaxBetween(a, b, c)
-    a = CInt(a)
-    b = CInt(b)
-    c = CInt(c)
-    If a > b Then
-        minMaxBetween = b
-    ElseIf c > a Then
-        minMaxBetween = c
-        If c > b Then
-            minMaxBetween = b
-        End If
+'最大与最小之间 Between the minimum and maximum
+Function minMaxBetween(Minimum, Maximum, ValueNumb)
+    Minimum = CInt(Minimum)                                                         '最小数
+    Maximum = CInt(Maximum)                                                         '最大数
+    ValueNumb = CInt(ValueNumb)                                                     '当前数
+    If Minimum > Maximum Then
+        minMaxBetween = Maximum 
+    ElseIf ValueNumb > Minimum Then
+        minMaxBetween = ValueNumb 
+        If ValueNumb > Maximum Then
+            minMaxBetween = Maximum 
+        End If 
     Else
-        minMaxBetween = a
-    End If
-End Function
+        minMaxBetween = Minimum 
+    End If 
+End Function 
 
+'获得内容文件名称中类型  (在FSO文件里已经有这个功能了20141220)
+Function getStrFileType(fileName)
+    Dim c 
+    c = "" 
+    If InStr(fileName, ".") > 0 Then
+        c = LCase(Mid(fileName, InStrRev(fileName, ".") + 1)) 
+        If InStr(c, "?") > 0 Then
+            c = Mid(c, 1, InStr(c, "?") - 1) 
+        End If 
+    End If 
+    getStrFileType = c 
+End Function 
 
-Function getStrFileType(a)
-    Dim b
-    b = ""
-    If InStr(a, ".") > 0 Then
-        b = LCase(Mid(a, InStrRev(a, ".") + 1))
-        If InStr(b, "?") > 0 Then
-            b = Mid(b, 1, InStr(b, "?") - 1)
-        End If
-    End If
-    getStrFileType = b
-End Function
-
-
-Function val(ByVal a)
-    If a & "" = "" Or Not IsNumeric(a) Then
-        val = 0
+'将字符类型转成数字类型
+Function val(ByVal s)
+    If s & "" = "" Or Not IsNumeric(s) Then
+        val = 0 
     Else
-        val = CLng(a)
-    End If
-End Function
+        val = CLng(s) 
+    End If 
+End Function 
 
-
-Function strLen(a)
-    If IsNull(a) Or a = "" Then
-        strLen = 0
+'返回字符串左边N个byte
+Function strLen(str)
+    If IsNull(str) Or str = "" Then
+        strLen = 0 
     Else
-        Dim b, c, d, e
-        d = 0
-        c = Len(a)
-        For b = 1 To c
+        Dim i, n, k, chrA 
+        k = 0 
+        n = Len(str) 
+        For i = 1 To n
 
 
-            e = Mid(a, b, 1)
+            chrA = Mid(str, i, 1) 
 
+            'If Asc(chrA) >= 0 And Asc(chrA) <= 255 Then
+            'K = K + 1
+            'Else
+            'K = K + 2
+            'End If
 
+            If chrA < 0 Then chrA = chrA + 65536 
+            If chrA < 255 Then k = k + 1 
+            If chrA > 255 Then k = k + 2 
 
+        Next 
+        strLen = k 
+    End If 
+End Function 
 
+'循环加缩进 AddIndent(Content,"    ")
+Function addIndent(content, IndentStr)
+    Dim splStr, s, c 
+    c = "" 
+    splStr = Split(content, vbCrLf) 
+    For Each s In splStr
+        c = c & IndentStr & s & vbCrLf 
+    Next 
+    addIndent = TrimVbCrlf(c) 
+End Function 
 
+'获得数字前字符 2014 12 12(作用是为夏文强切换分块服务的)
+Function getNumberBeforeStr(content)
+    Dim i, s, c 
+    c = "" 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("0123456789", s) > 0 Then Exit For 
+        c = c & s 
+    Next 
+    getNumberBeforeStr = c 
+End Function 
 
-
-            If e < 0 Then e = e + 65536
-            If e < 255 Then d = d + 1
-            If e > 255 Then d = d + 2
-
-        Next
-        strLen = d
-    End If
-End Function
-
-
-Function addIndent(a, b)
-    Dim c, d, e
-    e = ""
-    c = Split(a, vbCrLf)
-    For Each d In c
-        e = e & b & d & vbCrLf
-    Next
-    addIndent = TrimVbCrlf(e)
-End Function
-
-
-Function getNumberBeforeStr(a)
-    Dim b, c, d
-    d = ""
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("0123456789", c) > 0 Then Exit For
-        d = d & c
-    Next
-    getNumberBeforeStr = d
-End Function
-
-
-
-Function makePassword(ByVal a)
-    Dim b
-    Dim c, d, e, f
-    Randomize
-    b = ""
-    For f = 1 To a
-        c = Int((1 - 0 + 1) * Rnd + 0)
-        If c = 0 Then
-            d = 90
-            e = 65
+'获得随机数 20141212
+'用法response.write makePassword(6)
+Function makePassword(ByVal maxLen)
+    Dim strNewPass 
+    Dim whatsNext, upper, lower, intCounter 
+    Randomize 
+    strNewPass = "" 
+    For intCounter = 1 To maxLen
+        whatsNext = Int((1 - 0 + 1) * Rnd + 0) 
+        If whatsNext = 0 Then
+            upper = 90 
+            lower = 65 
         Else
-            d = 57
-            e = 48
-        End If
-        b = b & Chr(Int((d - e + 1) * Rnd + e))
-    Next
-    makePassword = b
-End Function
+            upper = 57 
+            lower = 48 
+        End If 
+        strNewPass = strNewPass & Chr(Int((upper - lower + 1) * Rnd + lower)) 
+    Next 
+    makePassword = strNewPass 
+End Function 
 
+'功能说明：生成随机字符串，包括大小写字母，数字，和其它符合，常用于干扰码。 20141212
+'参数说明：stars--干扰码最小长度，ends--干扰码最大长度
+'用法'Response.Write rndcode(20, 330)
+Function rndcode(ByVal stars, ByVal ends)
+    Dim rndlen, i 
+    Randomize 
+    rndcode = "" 
+    rndlen = Int(stars * Rnd + ends - stars) 
+    For i = 1 To rndlen
+        Randomize 
+        rndcode = rndcode & Chr(Int(127 * Rnd + 1)) 
+    Next 
+End Function 
 
+'获得随机手机号码 没什么意义，引用别人的  20141217
+'例:CAll Rw(GetRandomPhoneNumber(41))
+Function getRandomPhoneNumber(nCount)
+    Dim num1, rndnum, j, c 
+    c = "" : rndnum = "" 
+    j = 1 
+    Do While j < nCount
+        Randomize 
+        Do While Len(rndnum) < 9                                                        '产生随机数的个数
+            num1 = CStr(Chr((57 - 48) * Rnd + 48)) 
+            rndnum = rndnum & num1 
+        Loop 
+        c = c & 13 & rndnum & vbCrLf 
+        rndnum = "" 
+        j = j + 1 
+    Loop 
+    If c <> "" Then c = Left(c, Len(c) - 2) 
+    getRandomPhoneNumber = c 
+End Function 
 
+'获得字符长度
+Function lenStr(content)
+    Dim l, t, c 
+    c = "" 
+    Dim i 
+    l = Len(content) 
+    t = 0 
+    For i = 1 To l
+        c = Asc(Mid(content, i, 1)) 
+        If c < 0 Then c = c + 65536 
+        If c < 255 Then t = t + 1 
+        If c > 255 Then t = t + 2 
+    Next 
+    lenStr = t 
+End Function 
 
-Function rndcode(ByVal a, ByVal b)
-    Dim c, d
-    Randomize
-    rndcode = ""
-    c = Int(a * Rnd + b - a)
-    For d = 1 To c
-        Randomize
-        rndcode = rndcode & Chr(Int(127 * Rnd + 1))
-    Next
-End Function
-
-
-
-Function getRandomPhoneNumber(a)
-    Dim b, c, d, e
-    e = "" : c = ""
-    d = 1
-    Do While d < a
-        Randomize
-        Do While Len(c) < 9
-            b = CStr(Chr((57 - 48) * Rnd + 48))
-            c = c & b
-        Loop
-        e = e & 13 & c & vbCrLf
-        c = ""
-        d = d + 1
-    Loop
-    If e <> "" Then e = Left(e, Len(e) - 2)
-    getRandomPhoneNumber = e
-End Function
-
-
-Function lenStr(a)
-    Dim b, c, d
-    d = ""
-    Dim e
-    b = Len(a)
-    c = 0
-    For e = 1 To b
-        d = Asc(Mid(a, e, 1))
-        If d < 0 Then d = d + 65536
-        If d < 255 Then c = c + 1
-        If d > 255 Then c = c + 2
-    Next
-    lenStr = c
-End Function
-
-
-Function toString(ByVal a)
-    If IsArray(a) Then
-        Dim b
-        b = Join(a, ",")
-        toString = b
+'数组转字符串
+Function toString(ByVal arr)
+    If IsArray(arr) Then
+        Dim tmp 
+        tmp = Join(arr, ",") 
+        toString = tmp 
     Else
-        toString = a
-    End If
-End Function
+        toString = arr 
+    End If 
+End Function 
+'移除数字(20151022)
+Function remoteNumber(content)
+    Dim i, s, c 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("0123456789.", s) = False Then
+            c = c & s 
+        End If 
+    Next 
+    remoteNumber = c 
+End Function 
 
-Function remoteNumber(a)
-    Dim b, c, d
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("0123456789.", c) = False Then
-            d = d & c
+
+'================================================= 判断有特殊字符 start
+'处理有无指定字符
+Function handleHaveStr(content, zd)
+    Dim s, i 
+    handleHaveStr = False 
+    For i = 1 To Len(zd)
+        s = Mid(zd, i, 1) 
+        If InStr(content, s) > 0 Then
+            handleHaveStr = True 
+            Exit Function 
         End If
-    Next
-    remoteNumber = d
-End Function
-
-
-
-
-Function handleHaveStr(a, b)
-    Dim c, d
-    handleHaveStr = False
-    For d = 1 To Len(b)
-        c = Mid(b, d, 1)
-        If InStr(a, c) > 0 Then
-            handleHaveStr = True
-            Exit Function
-        End If
-    Next
-End Function
-
-Function haveLowerCase(a)
-    haveLowerCase = handleHaveStr(a, "abcdefghijklmnopqrstuvwxyz")
-End Function
-
-Function haveUpperCase(a)
-    haveUpperCase = handleHaveStr(a, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-End Function
-
-Function haveNumber(a)
-    haveNumber = handleHaveStr(a, "0123456789")
-End Function
-
-Function haveChina(a)
-    Dim b, c
-    haveChina = False
-    For b = 1 To Len(a)
-        c = Asc(Mid(a, b, 1))
-
-        If c < 0 Then
-            If(c <= -22033 And c >= -24158) = False Then
-                haveChina = True
-                Exit Function
-            End If
-        End If
-    Next
-End Function
-
-%>
-
+    Next 
+End Function 
+'有小写(20151224)
+Function haveLowerCase(content)
+    haveLowerCase = handleHaveStr(content, "abcdefghijklmnopqrstuvwxyz") 
+End Function 
+'有大写(20151224)
+Function haveUpperCase(content)
+    haveUpperCase = handleHaveStr(content, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") 
+End Function 
+'有数字(20151224)
+Function haveNumber(content)
+    haveNumber = handleHaveStr(content, "0123456789") 
+End Function 
+'有汉字(20151224)
+Function haveChina(content)
+    Dim i, j 
+    haveChina = False 
+    For i = 1 To Len(content)
+        j = Asc(Mid(content, i, 1)) 
+        '是汉字累加
+        If j < 0 Then
+            If(j <= -22033 And j >= -24158) = False Then
+                haveChina = True 
+                Exit Function 
+            End If 
+        End If 
+    Next 
+End Function 
+'================================================= 判断有特殊字符 end
+%>  
 
 
 

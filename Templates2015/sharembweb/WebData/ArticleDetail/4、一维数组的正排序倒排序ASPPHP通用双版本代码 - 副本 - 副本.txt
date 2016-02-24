@@ -1,0 +1,345 @@
+【parentid】ASP
+【title】一维数组的正排序和倒排序处理，ASP/PHP通用双版本代码
+【webtitle】一维数组的正排序和倒排序处理，ASP/PHP通用双版本代码 - 分享模板网站
+【webkeywords】一维数组的正排序和倒排序处理，ASP/PHP通用双版本代码 - 分享模板网站
+【webdescription】一维数组的正排序和倒排序处理，ASP/PHP通用双版本代码 - 分享模板网站
+【sortrank】896
+【author】sharembweb
+【adddatetime】2016-01-18 16:30:15
+【filename】/asp/onearraysort.html
+【flags】|c|
+【relatedtags】ASP,PHP,在线ASP转PHP
+【bodycontent】
+{$displayEditor title='aab' $}
+一维数组的正排序和倒排序处理，ASP/PHP通用双版本代码，2016年1月18日 代码测试完成，分享给大家，希望对大家有所帮助，如有意见可联系本站<strong><a href="http://sharembweb.com/" target="_blank" class="ablue">分享模板网站</a></strong>。ASP代码部分可通过【<strong><a href="http://sharembweb.com/asptophp/" target="_blank" class="ablue">ASP转PHP</a></strong>】来进行转换。<br>
+大家复制ASP或PHP代码块放到自己本地，运行就可以看到结果了，效果如：<br>
+<b>原来顺序：</b>3,2,4,1,6,0<hr><b>选择排序：</b>0,1,2,3,4,6<hr><b>快速排序：</b>0,1,2,3,4,6<hr><b>反序排序：</b>6,4,3,2,1,0<hr><b>最 大 值：</b>6<hr><b>最 小 值：</b>0<hr>
+
+
+
+<br>
+<p>本文版权归作者所有，转摘请注明作者和出处！<br />
+作者：云端<br />
+首发：<a href="http://sharembweb.com/" target="_blank" class="ablue">http://sharembweb.com</a></p>
+
+
+
+<br><br>
+<strong><a href="http://sharembweb.com/asp/" target="_blank" class="ablue">ASP</a></strong>代码部分：
+<pre class="brush: vb;">
+ 
+<%
+'************************************************************
+'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
+'版权：源代码公开，各种用途均可免费使用。 
+'创建：2016-01-15
+'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
+'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
+'*                                    Powered By 云端 
+'************************************************************
+
+
+
+'===================================
+'选择排序
+'===================================
+Function selectSort(a_Data)
+    Dim i, j, k 
+    Dim bound, t 
+    bound = UBound(a_Data)  
+    For i = 0 To bound - 1
+        k = i 
+        For j = i + 1 To bound
+            If a_Data(k) > a_Data(j) Then
+                k = j 
+            End If 
+        Next 
+        t = a_Data(i) 
+        a_Data(i) = a_Data(k) 
+        a_Data(k) = t 
+    Next 
+    selectSort = a_Data 
+End Function 
+'===================================
+'快速排序
+'===================================
+Function quickSort(a_Data)
+    Dim i, j 
+    Dim bound, t 
+    bound = UBound(a_Data) 
+    For i = 0 To bound - 1
+        For j = i + 1 To bound
+            If a_Data(i) > a_Data(j) Then
+                t = a_Data(i) 
+                a_Data(i) = a_Data(j) 
+                a_Data(j) = t 
+            End If 
+        Next 
+    Next 
+    quickSort = a_Data 
+End Function 
+ 
+'===================================
+'快速排序-反序排列
+'===================================
+Function reQuickSort(a_Data)
+    Dim i, Bound, TempArr 
+    a_Data = quickSort(a_Data) 
+    TempArr = quickSort(a_Data) 
+    Bound = UBound(a_Data) 
+    For i = 0 To Bound
+        a_Data(i) = TempArr(Bound - i) 
+    Next 
+    reQuickSort = a_Data 
+End Function 
+'数组反向
+Function arrayReverse()
+    arrayReverse = reQuickSort(a_Data) 
+End Function 
+'===================================
+'输出数组
+'===================================
+Sub responseArray(a_Data, str)
+    Dim s, i 
+    s = "" 
+    Response.Write "<b>" & str & "：</b>" 
+    For i = 0 To UBound(a_Data)
+        s = s & a_Data(i) & "," 
+    Next 
+    s = Left(s, Len(s) - 1) 
+    Response.Write s 
+    Response.Write "<hr>" 
+End Sub 
+'===================================
+'求数组最大值
+'===================================
+Function max(a_Data)
+    Dim i, j, Bound, temp 
+    a_Data = quickSort(a_Data) 
+    Bound = UBound(a_Data) 
+    For i = 0 To Bound
+        For j = i + 1 To Bound
+            If a_Data(j) > a_Data(i) Then
+                temp = a_Data(i) 
+                a_Data(i) = a_Data(j) 
+                a_Data(j) = temp 
+            End If 
+        Next 
+    Next 
+    max = a_Data(0) 
+End Function 
+'===================================
+'求数组最小值
+'===================================
+Function min(a_Data)
+    Dim i, j, Bound, temp 
+    a_Data = quickSort(a_Data) 
+    Bound = UBound(a_Data) 
+    For i = 0 To Bound
+        For j = i + 1 To Bound
+            If a_Data(j) > a_Data(i) Then
+                temp = a_Data(i) 
+                a_Data(i) = a_Data(j) 
+                a_Data(j) = temp 
+            End If 
+        Next 
+    Next 
+    min = a_Data(Bound) 
+End Function 
+
+
+ 
+
+call testArrayData()
+'测试数组数据 20141217
+Function testArrayData()
+    Dim aData 
+    aData = Array(3, 2, 4, 1, 6, 0) 
+    Call ResponseArray(aData, "原来顺序") 
+    Call ResponseArray(SelectSort(aData), "选择排序") 
+    Call ResponseArray(QuickSort(aData), "快速排序")  
+    Call ResponseArray(ReQuickSort(aData), "反序排序") 
+    Response.Write "<b>最 大 值：</b>" & Max(aData) & "<hr>" 
+    Response.Write "<b>最 小 值：</b>" & Min(aData) & "<hr>" 
+End Function 
+%> 
+</pre>
+
+<strong><a href="http://sharembweb.com/php/" target="_blank" class="ablue">PHP</a></strong>代码部分：
+<pre class="brush: php;">
+<?PHP
+//************************************************************
+//作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
+//版权：源代码公开，各种用途均可免费使用。
+//创建：2016-01-15
+//联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
+//更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
+//*                                    Powered By 云端
+//************************************************************
+
+
+
+//===================================
+//选择排序
+//===================================
+function selectSort($a_Data){
+    $i=''; $j=''; $k ='';
+    $bound=''; $t ='';
+    $bound = UBound($a_Data) ;
+    for( $i = 0 ; $i<= $bound - 1; $i++){
+        $k = $i ;
+        for( $j = $i + 1 ; $j<= $bound; $j++){
+            if( $a_Data[$k] > $a_Data[$j] ){
+                $k = $j ;
+            }
+        }
+        $t = $a_Data[$i] ;
+        $a_Data[$i] = $a_Data[$k] ;
+        $a_Data[$k] = $t ;
+    }
+    $selectSort = $a_Data ;
+    return @$selectSort;
+}
+//===================================
+//快速排序
+//===================================
+function quickSort($a_Data){
+    $i=''; $j ='';
+    $bound=''; $t ='';
+    $bound = UBound($a_Data) ;
+    for( $i = 0 ; $i<= $bound - 1; $i++){
+        for( $j = $i + 1 ; $j<= $bound; $j++){
+            if( $a_Data[$i] > $a_Data[$j] ){
+                $t = $a_Data[$i] ;
+                $a_Data[$i] = $a_Data[$j] ;
+                $a_Data[$j] = $t ;
+            }
+        }
+    }
+    $quickSort = $a_Data ;
+    return @$quickSort;
+}
+
+//===================================
+//快速排序-反序排列
+//===================================
+function reQuickSort($a_Data){
+    $i=''; $Bound=''; $TempArr ='';
+    $a_Data = quickSort($a_Data) ;
+    $TempArr = quickSort($a_Data) ;
+    $Bound = UBound($a_Data) ;
+    for( $i = 0 ; $i<= $Bound; $i++){
+        $a_Data[$i] = $TempArr[$Bound - $i] ;
+    }
+    $reQuickSort = $a_Data ;
+    return @$reQuickSort;
+}
+//数组反向
+function arrayReverse(){
+    $arrayReverse = reQuickSort($GLOBALS['a_Data']) ;
+    return @$arrayReverse;
+}
+//===================================
+//输出数组
+//===================================
+function responseArray($a_Data, $str){
+    $s=''; $i ='';
+    $s = '' ;
+    echo '<b>' . $str . '：</b>' ;
+    for( $i = 0 ; $i<= UBound($a_Data); $i++){
+        $s = $s . $a_Data[$i] . ',' ;
+    }
+    $s = substr($s, 0 , strlen($s) - 1) ;
+    echo $s ;
+    echo '<hr>' ;
+}
+//===================================
+//求数组最大值
+//===================================
+function PHPMax($a_Data){
+    $i=''; $j=''; $Bound=''; $temp ='';
+    $a_Data = quickSort($a_Data) ;
+    $Bound = UBound($a_Data) ;
+    for( $i = 0 ; $i<= $Bound; $i++){
+        for( $j = $i + 1 ; $j<= $Bound; $j++){
+            if( $a_Data[$j] > $a_Data[$i] ){
+                $temp = $a_Data[$i] ;
+                $a_Data[$i] = $a_Data[$j] ;
+                $a_Data[$j] = $temp ;
+            }
+        }
+    }
+    $PHPMax = $a_Data[0] ;
+    return @$PHPMax;
+}
+//===================================
+//求数组最小值
+//===================================
+function PHPMin($a_Data){
+    $i=''; $j=''; $Bound=''; $temp ='';
+    $a_Data = quickSort($a_Data) ;
+    $Bound = UBound($a_Data) ;
+    for( $i = 0 ; $i<= $Bound; $i++){
+        for( $j = $i + 1 ; $j<= $Bound; $j++){
+            if( $a_Data[$j] > $a_Data[$i] ){
+                $temp = $a_Data[$i] ;
+                $a_Data[$i] = $a_Data[$j] ;
+                $a_Data[$j] = $temp ;
+            }
+        }
+    }
+    $PHPMin = $a_Data[$Bound] ;
+    return @$PHPMin;
+}
+
+
+
+
+testArrayData();
+//测试数组数据 20141217
+function testArrayData(){
+    $aData ='';
+    $aData = array(3, 2, 4, 1, 6, 0) ;
+    ResponseArray($aData, '原来顺序') ;
+    ResponseArray(SelectSort($aData), '选择排序') ;
+    ResponseArray(QuickSort($aData), '快速排序') ;
+    ResponseArray(ReQuickSort($aData), '反序排序') ;
+    echo '<b>最 大 值：</b>' . PHPMax($aData) . '<hr>' ;
+    echo '<b>最 小 值：</b>' . PHPMin($aData) . '<hr>' ;
+}
+?>
+
+
+
+<?PHP
+//系统函数列表
+header("Content-Type: text/html; charset=gb2312");
+function InStr($content,$search){
+	if( $search!=""){
+		if(strstr($content,$search)){
+			return strpos($content,$search)+1;
+		}else{
+			return 0;
+		}
+	}else{
+		return 0;
+	}
+}
+function Mid($content,$nStart,$nLength=-1){
+	$nStart--;				//可以从1开始
+	if($nLength==-1){
+		$nLength=strlen ( $content );
+	}else{
+		//$nLength--;
+	} 
+	return substr($content, $nStart, $nLength) ;
+}
+function UBound($content){
+	return count($content)-1;
+}
+
+?>
+
+
+</pre>
+【/bodycontent】

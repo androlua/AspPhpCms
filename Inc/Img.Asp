@@ -2,316 +2,316 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
 
 
+'技巧：计算图片等比率缩放方法 宽=213,高=160  缩放后宽=100,高=75   100除213得到小数后两位，四舍五入
+'document.write("\n<br>显示" + 100/213)
+'document.write("\n<br>计算" + 160*0.47)
 
 
+'用法
+'Call Rw(HandleShowImg("UploadFiles/Soso.gif",100,60,""))
+'Call Rw(HandleShowImg("UploadFiles/Soso.gif",100,60,"高"))
+'Call Rw(HandleShowImg("UploadFiles/Soso.gif",100,60,"宽"))
 
-
-
-
-
-
-
-
-
-
+'VB不引用 Start
+'psd不行，等加
 Class GPS
-    Dim aso
+    Dim aso 
     Private Sub class_Initialize()
         Set aso = CreateObject("ADODB.Stream")
-            aso.Mode = 3
-            aso.Type = 1
-            aso.Open
+            aso.Mode = 3 
+            aso.Type = 1 
+            aso.Open 
     End Sub
     Private Sub class_Terminate()
-        Set aso = Nothing
-    End Sub
-    Private Function bin2Str(a)
-        Dim b, c, d
-        For b = 1 To LenB(a)
-            d = MidB(a, b, 1)
-            If AscB(d) < 128 Then
-                c = c & Chr(AscB(d))
+        Set aso = Nothing 
+    End Sub 
+    Private Function bin2Str(Bin)
+        Dim g, str, clow 
+        For g = 1 To LenB(Bin)
+            clow = MidB(Bin, g, 1) 
+            If AscB(clow) < 128 Then
+                str = str & Chr(AscB(clow)) 
             Else
-                b = b + 1
-                If b <= LenB(a) Then c = c & Chr(AscW(MidB(a, b, 1) & d))
-            End If
-        Next
-        bin2Str = c
-    End Function
-    Private Function binVal(a)
-        Dim b
-        Dim c
-        b = 0
-        For c = LenB(a) To 1 Step - 1
-            b = b * 256 + AscB(MidB(a, c, 1))
-        Next
-        binVal = b
-    End Function
-    Private Function binVal2(a)
-        Dim b, c
-        b = 0
-        For c = 1 To LenB(a)
-            b = b * 256 + AscB(MidB(a, c, 1))
-        Next
-        binVal2 = b
-    End Function
+                g = g + 1 
+                If g <= LenB(Bin) Then str = str & Chr(AscW(MidB(Bin, g, 1) & clow)) 
+            End If 
+        Next 
+        bin2Str = str 
+    End Function 
+    Private Function binVal(bin)
+        Dim ret 
+        Dim h 
+        ret = 0 
+        For h = LenB(bin) To 1 Step - 1
+            ret = ret * 256 + AscB(MidB(bin, h, 1)) 
+        Next 
+        binVal = ret 
+    End Function 
+    Private Function binVal2(bin)
+        Dim ret, g 
+        ret = 0 
+        For g = 1 To LenB(bin)
+            ret = ret * 256 + AscB(MidB(bin, g, 1)) 
+        Next 
+        binVal2 = ret 
+    End Function 
+    '///以下是调用代码/// 获得图片文件大小
+    Function getImageSize(filespec)
+        Dim bFlag, p1 
+        If checkFile(filespec) = False Then Exit Function                               '图片文件不存 则退出
 
-    Function getImageSize(a)
-        Dim b, c
-        If checkFile(a) = False Then Exit Function
-
-        aso.loadFromFile(a)
-
-        Dim ret(3)
-
-        b = aso.read(3)
-
-        Select Case Hex(binVal(b))
+        aso.loadFromFile(filespec) 
+        'On Error Resume Next
+        Dim ret(3) 
+        'call echo("filespec",filespec)
+        bFlag = aso.read(3) 
+        'Call Echo("bFlag1",Hex(binVal(bFlag)))
+        Select Case Hex(binVal(bFlag))
             Case "4E5089"
-                aso.read(15)
-                ret(0) = "PNG"
-                ret(1) = binVal2(aso.read(2))
-                aso.read(2)
-                ret(2) = binVal2(aso.read(2))
+                aso.read(15) 
+                ret(0) = "PNG" 
+                ret(1) = binVal2(aso.read(2)) 
+                aso.read(2) 
+                ret(2) = binVal2(aso.read(2)) 
             Case "464947"
-                aso.read(3)
-                ret(0) = "GIF"
-                ret(1) = binVal(aso.read(2))
-                ret(2) = binVal(aso.read(2))
+                aso.read(3) 
+                ret(0) = "GIF" 
+                ret(1) = binVal(aso.read(2)) 
+                ret(2) = binVal(aso.read(2)) 
             Case "FFD8FF"
                 Do
-                Do : c = binVal(aso.read(1)) : Loop While c = 255 And Not aso.EOS
-                If c > 191 And c < 196 Then Exit Do Else aso.read(binval2(aso.read(2)) - 2)
-                Do : c = binVal(aso.read(1)) : Loop While c < 255 And Not aso.EOS
-                Loop While True
-                aso.read(3)
-                ret(0) = "JPG"
-                ret(2) = binval2(aso.read(2))
-                ret(1) = binval2(aso.read(2))
+                Do : p1 = binVal(aso.read(1)) : Loop While p1 = 255 And Not aso.EOS
+                If p1 > 191 And p1 < 196 Then Exit Do Else aso.read(binval2(aso.read(2)) - 2) 
+                Do : p1 = binVal(aso.read(1)) : Loop While p1 < 255 And Not aso.EOS 
+                Loop While True 
+                aso.read(3) 
+                ret(0) = "JPG" 
+                ret(2) = binval2(aso.read(2)) 
+                ret(1) = binval2(aso.read(2)) 
             Case Else
-                If Left(bin2Str(b), 2) = "BM" Then
-                    aso.read(15)
-                    ret(0) = "BMP"
-                    ret(1) = binval(aso.read(4))
-                    ret(2) = binval(aso.read(4))
+                If Left(bin2Str(bFlag), 2) = "BM" Then
+                    aso.read(15) 
+                    ret(0) = "BMP" 
+                    ret(1) = binval(aso.read(4)) 
+                    ret(2) = binval(aso.read(4)) 
                 Else
-                    ret(0) = ""
+                    ret(0) = "" 
                 End If
         End Select
-        ret(3) = "width=""" & ret(1) & """ height=""" & ret(2) & """"
-        getImageSize = ret
-    End Function
-End Class
+        ret(3) = "width=""" & ret(1) & """ height=""" & ret(2) & """" 
+        getImageSize = ret 
+    End Function 
+End Class 
+'VB不引用 End
 
+'处理显示图片
+Function handleShowImg(imagename, setWidth, setHeight, SType)
+    Dim filePath 
+    Dim fs 
 
+    filePath = HandlePath(imagename) 
+    '/////建立GPS类实体/////
 
-Function handleShowImg(a, b, c, d)
-    Dim e
-    Dim f
-
-    e = HandlePath(a)
-
-
-    Dim g
-    Set g = new GPS
-        Set f = CreateObject("Scripting.FileSystemObject")
-
-            Dim h
-            h = f.GetExtensionName(e)
-            Dim i
-            Dim j, k
-            Select Case h
+    Dim GetPicSize 
+    Set GetPicSize = new GPS
+        Set fs = CreateObject("Scripting.FileSystemObject")
+            '/////获取图片类型/////
+            Dim PicSuffixName 
+            PicSuffixName = fs.GetExtensionName(filePath) 
+            Dim PD                                          '//Picture Dimension
+            Dim PWidth, PHeight 
+            Select Case PicSuffixName
                 Case "gif", "bmp", "jpg", "png"
+                    '/////调用GPS通用类中的GetImageSize函数获取图片尺寸/////
 
-
-                    i = g.getImageSize(e)
-                    j = i(1)
-                    k = i(2)
+                    PD = GetPicSize.getImageSize(filePath) 
+                    PWidth = PD(1)                         '//获取图片宽度
+                    PHeight = PD(2)                        '//获取图片高度
             End Select
-        Set f = Nothing
-    Set g = Nothing
-    Dim l, m
-    Dim n
+        Set fs = Nothing 
+    Set GetPicSize = Nothing 
+    Dim PXWidth, PXHeight 
+    Dim Pp                                                                          '//长宽比
 
-    Call echo("PWidth", j)
-    Call echo("PHeight", k)
+    Call echo("PWidth", PWidth) 
+    Call echo("PHeight", PHeight) 
 
-    Call echo("setWidth", b)
-    Call echo("setHeight", c)
+    Call echo("setWidth", setWidth) 
+    Call echo("setHeight", setHeight) 
 
-
-    If j = 0 Or j = "" Then
-        l = 0
-        m = 0
+    '获得图片宽为零或为空则
+    If PWidth = 0 Or PWidth = "" Then
+        PXWidth = 0 
+        PXHeight = 0 
     Else
-        If c < b And c > 0 Then
-            n = FormatNumber(k / j, 2)
+        If setHeight < setWidth And setHeight > 0 Then
+            Pp = FormatNumber(PHeight / PWidth, 2)          '//高宽 百分比
 
-            m = c
-            l = FormatNumber(c * n, 0)
+            PXHeight = setHeight 
+            PXWidth = FormatNumber(setHeight * Pp, 0) 
         Else
-            n = FormatNumber(j / k, 2)
+            Pp = FormatNumber(PWidth / PHeight, 2)          '//长宽 百分比
 
-            l = b
-            m = FormatNumber(b / n, 0)
-            Call echo(n, b & "   " & b / n)
-        End If
-    End If
+            PXWidth = setWidth 
+            PXHeight = FormatNumber(setWidth / Pp, 0) 
+            Call echo(Pp, setWidth & "   " & setWidth / Pp) 
+        End If 
+    End If 
 
-    Call echo("宽百分比", FormatNumber(j / k, 2))
-    Call echo("高百分比", FormatNumber(k / j, 2))
+    Call echo("宽百分比", FormatNumber(PWidth / PHeight, 2)) 
+    Call echo("高百分比", FormatNumber(PHeight / PWidth, 2)) 
 
-    Call echo("PXWidth", l)
-    Call echo("PXHeight", m)
+    Call echo("PXWidth", PXWidth) 
+    Call echo("PXHeight", PXHeight) 
 
-    If d = "宽" Then
-        If b < l Then l = b
-        handleShowImg = l
-    ElseIf d = "高" Then
-        If c < l Then l = c
-        handleShowImg = l
+    If SType = "宽" Then
+        If setWidth < PXWidth Then PXWidth = setWidth 
+        handleShowImg = PXWidth 
+    ElseIf SType = "高" Then
+        If setHeight < PXWidth Then PXWidth = setHeight 
+        handleShowImg = PXWidth 
     Else
-        handleShowImg = "<img onerror=javascript:this.src='product_pic/wutu.jpg';this.width='92';this.height='130' src='" & a & "' border='0' width='" & l & "' height='" & m & "'>显示图片"
-    End If
-
-
-
-
-
-End Function
-
-Function getImageWidthHeight(a, b, c)
-    Dim d, e
-    Call HandlePath(a)
-    Set d = new GPS
-        Set e = CreateObject("Scripting.FileSystemObject")
-            Dim f
-            f = e.GetExtensionName(a)
-            Dim g
-            Select Case f
+        handleShowImg = "<img onerror=javascript:this.src='product_pic/wutu.jpg';this.width='92';this.height='130' src='" & imagename & "' border='0' width='" & PXWidth & "' height='" & PXHeight & "'>显示图片" 
+    End If 
+    'response.Write "<br>"
+    'response.write PXWidth&"X"&PXHeight  '当前图片显示的尺寸
+    'response.Write "<br>"
+    'response.write PWidth&"X"&PHeight  '图片原始尺寸
+'onload='javascript:if(this.width>940) this.width=940;'                加载完后处理
+End Function 
+'获得图片宽高
+Function getImageWidthHeight(filePath, width, height)
+    Dim GetPicSize, fs 
+    Call HandlePath(filePath)                                                       '获得完整路径
+    Set GetPicSize = new GPS
+        Set fs = CreateObject("Scripting.FileSystemObject")
+            Dim PicSuffixName 
+            PicSuffixName = fs.GetExtensionName(filePath) 
+            Dim PD 
+            Select Case PicSuffixName
                 Case "gif", "bmp", "jpg", "png"
-                    g = d.getImageSize(a)
-                    b = g(1)
-                    c = g(2)
+                    PD = GetPicSize.getImageSize(filePath) 
+                    width = PD(1)                          '//获取图片宽度
+                    height = PD(2)                         '//获取图片高度
             End Select
-        Set e = Nothing
-    Set d = Nothing
-	getImageWidthHeight=split(b & "|" & c,"|")
-End Function
+        Set fs = Nothing 
+    Set GetPicSize = Nothing 
+	getImageWidthHeight=split(width & "|" & height,"|")
+End Function 
+'获得图片宽值
+Function getImageWidthValue(filePath)
+    Dim width 
+    Call GetImageWidthHeight(filePath, width, "") 
+    getImageWidthValue = width 
+End Function 
+'获得文件内容类型
+Function getFileContentType(filePath)
+    Dim GetPicSize, fs 
+    Call HandlePath(filePath)                                                       '获得完整路径
+    Set GetPicSize = new GPS
+        Set fs = CreateObject("Scripting.FileSystemObject")
+            Dim PD 
+            PD = GetPicSize.getImageSize(filePath) 
+            getFileContentType = PD(0)                      '//获取图片类型
+        Set fs = Nothing 
+    Set GetPicSize = Nothing 
+End Function 
+'瀑布流方式显示图片列表
+Function imageWaterfall(folderPath, nRow, SetWidth)
+    Dim content, splStr, i, ImgPath, c, s, nProportion, width, height, thisI, nNumb 
+    Dim SplC(99), SplN(99) 
+    nRow = nRow - 1                                                                 '减一，循环从1开始就不显示内容，晕
+    '初始化
+    For i = 0 To nRow
+        SplC(i) = "" 
+        SplN(i) = 0 
+    Next 
+    'Content = GetDirFileNameList(FolderPath)
+    content = GetFileFolderList(folderPath, True, "全部", "", "全部文件夹", "NO", "") 
+    content = Replace(LCase(content), LCase(Server.MapPath("/")), "")               '强力替换路径
 
-Function getImageWidthValue(a)
-    Dim b
-    Call GetImageWidthHeight(a, b, "")
-    getImageWidthValue = b
-End Function
+    splStr = Split(content, vbCrLf) : folderPath = Replace(folderPath, "\", "/") 
+    For Each ImgPath In splStr
+        s = "<span><img src=" & host & ImgPath & " width='" & SetWidth & "'></span>" 
+        Call GetImageWidthHeight(ImgPath, width, height) 
+        If width > SetWidth Then
+            nProportion = FormatNumber(SetWidth / width, 2) 
+            width = SetWidth 
+            height = FormatNumber(height * nProportion, 0) 
+        End If 
+        thisI = 0 : nNumb = "" 
+        For i = 0 To nRow
+            If nNumb = "" Then
+                nNumb = SplN(i) 
+            ElseIf SplN(i) < nNumb Then
+                thisI = i 
+                nNumb = SplN(i) 
+            End If 
+        Next 
+        SplN(thisI) = SplN(thisI) + height 
+        SplC(thisI) = SplC(thisI) & s 
+    Next 
+    For i = 0 To nRow
+        c = c & "<div class=""ImgDivBox"">" & SplC(i) & "</div>" & vbCrLf 
+    Next 
+    c = c & "<div class=clear></div>" 
+    imageWaterfall = c 
+End Function 
 
-Function getFileContentType(a)
-    Dim b, c
-    Call HandlePath(a)
-    Set b = new GPS
-        Set c = CreateObject("Scripting.FileSystemObject")
-            Dim d
-            d = b.getImageSize(a)
-            getFileContentType = d(0)
-        Set c = Nothing
-    Set b = Nothing
-End Function
-
-Function imageWaterfall(a, b, c)
-    Dim d, e, f, g, h, i, j, k, l, m, n
-    Dim SplC(99), SplN(99)
-    b = b - 1
-
-    For f = 0 To b
-        SplC(f) = ""
-        SplN(f) = 0
-    Next
-
-    d = GetFileFolderList(a, True, "全部", "", "全部文件夹", "NO", "")
-    d = Replace(LCase(d), LCase(Server.MapPath("/")), "")
-
-    e = Split(d, vbCrLf) : a = Replace(a, "\", "/")
-    For Each g In e
-        i = "<span><img src=" & host & g & " width='" & c & "'></span>"
-        Call GetImageWidthHeight(g, k, l)
-        If k > c Then
-            j = FormatNumber(c / k, 2)
-            k = c
-            l = FormatNumber(l * j, 0)
-        End If
-        m = 0 : n = ""
-        For f = 0 To b
-            If n = "" Then
-                n = SplN(f)
-            ElseIf SplN(f) < n Then
-                m = f
-                n = SplN(f)
-            End If
-        Next
-        SplN(m) = SplN(m) + l
-        SplC(m) = SplC(m) & i
-    Next
-    For f = 0 To b
-        h = h & "<div class=""ImgDivBox"">" & SplC(f) & "</div>" & vbCrLf
-    Next
-    h = h & "<div class=clear></div>"
-    imageWaterfall = h
-End Function
-
-
-Function zoomImage(a,b, c, d, e, f, g, h, i)
-    Dim j, k, l, m
+'图片等比例缩放(20151218)  自动加宽 加高  加padding-left 加padding-top    例 Call rw("<img src='"& tempFilePath &"'" & zoomImage(imgWidth, imgHeight, 35, 35, 0, 0, "") & " />")
+Function zoomImage(nWrapWidth,nWrapHeight, imgWidth, imgHeight, nSetWidth, nSetHeight, nLeft, nTop, sType)
+    Dim htmlStr, css, nNewWidth, nNewHeight
 	
 	
-    If a = "" Then a = 0
-    If b = "" Then b = 0
-	a=cint(a) : b=cint(b)
+    If nWrapWidth = "" Then nWrapWidth = 0 
+    If nWrapHeight = "" Then nWrapHeight = 0 
+	nWrapWidth=cint(nWrapWidth) : nWrapHeight=cint(nWrapHeight)
+	 
+    If nLeft = "" Then nLeft = 0 
+    If nTop = "" Then nTop = 0  
+	imgWidth=cint(imgWidth) : imgHeight=cint(imgHeight) : nSetWidth=cint(nSetWidth) : nSetHeight=cint(nSetHeight) : nLeft=cint(nLeft) : nTop=cint(nTop)
 	
-    If g = "" Then g = 0
-    If h = "" Then h = 0
-	c=cint(c) : d=cint(d) : e=cint(e) : f=cint(f) : g=cint(g) : h=cint(h)
+	dim temp_nLeft, temp_nTop				'暂存
+	temp_nLeft=nLeft : temp_nTop=nTop
 	
-	dim n, temp_nTop				
-	n=g : temp_nTop=h
-	
-    If c / d >= e / f Then
-        If c > e Then
-            l = e
-            m =(d * e) / c
+    If imgWidth / imgHeight >= nSetWidth / nSetHeight Then
+        If imgWidth > nSetWidth Then
+            nNewWidth = nSetWidth 
+            nNewHeight =(imgHeight * nSetWidth) / imgWidth 
         Else
-            l = c
-            m = d
-        End If
+            nNewWidth = imgWidth 
+            nNewHeight = imgHeight 
+        End If 
     Else
-        If d > f Then
-            m = f
-            l =(c * f) / d
+        If imgHeight > nSetHeight Then
+            nNewHeight = nSetHeight 
+            nNewWidth =(imgWidth * nSetHeight) / imgHeight 
         Else
-            l = c
-            m = d
-        End If
+            nNewWidth = imgWidth 
+            nNewHeight = imgHeight 
+        End If 
     End If
 
-    l = Int(l)
-    m = Int(m)
-    g = g + e - l
-    h = h + f - m
-    j = " width=""" & l & """ height=""" & m & """"
-
-    if b>0 then
-		
-			if instr(i,"|imgulmiddel|")>0 then
-				h=(b-m)/2
-			end if
+    nNewWidth = Int(nNewWidth) 
+    nNewHeight = Int(nNewHeight) 
+    nLeft = nLeft + nSetWidth - nNewWidth 
+    nTop = nTop + nSetHeight - nNewHeight 
+    htmlStr = " width=""" & nNewWidth & """ height=""" & nNewHeight & """" 
+  
+    if nWrapHeight>0 then
+		'call echo("nWrapHeight",nWrapHeight)
+			if instr(sType,"|imgulmiddel|")>0 then
+				nTop=(nWrapHeight-nNewHeight)/2 
+			end if 
 	end if
 	
 	
@@ -320,20 +320,19 @@ Function zoomImage(a,b, c, d, e, f, g, h, i)
 	
 	
 	
-    If g > 0 and g<>n Then
-        k = k & "padding-left:" & g & "px;"
-    End If
-    If h > 0 and h<>n Then
-        k = k & "padding-top:" & h & "px;"
-    End If
-
-
-    If k <> "" Then
-        k = " style=""" & k & """"
-    End If
-    zoomImage = j & k
+    If nLeft > 0 and nLeft<>temp_nLeft Then
+        css = css & "padding-left:" & nLeft & "px;" 
+    End If 
+    If nTop > 0 and nTop<>temp_nLeft Then
+        css = css & "padding-top:" & nTop & "px;" 
+    End If 
+    'Call echo("nLeft", nLeft) 
+    'Call echo("nTop", nTop) 
+    If css <> "" Then
+        css = " style=""" & css & """" 
+    End If 
+    zoomImage = htmlStr & css 
 End Function
 
-%>
-
+%>  
 

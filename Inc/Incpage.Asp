@@ -2,194 +2,261 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
-
-Function PageControl(a, b, c, d, e)
-
-    Dim f, g, h, i, j, k, l
-    j = "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME")
-    f = Split(Request.ServerVariables("QUERY_STRING"), "&")
-    For Each h In f
-        g = Split(h, "=")
-        If StrComp(g(0), "page", vbTextCompare) <> 0 Then
-            i = i & g(0) & "=" & g(1) & "&"
-        End If
-    Next
+<% 
+'dim nCount,nPageSize,maxpage,page,x,i,PageControl 
+Function PageControl(nCount, nPageCount, Page, Table_style, Font_style)
+    '生成上一页下一页链接
+    Dim Query, A, X, Temp, Action, I, C 
+    Action = "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") 
+    Query = Split(Request.ServerVariables("QUERY_STRING"), "&") 
+    For Each X In Query
+        A = Split(X, "=") 
+        If StrComp(A(0), "page", vbTextCompare) <> 0 Then
+            Temp = Temp & A(0) & "=" & A(1) & "&" 
+        End If 
+    Next 
 	
-    l = l & "<table width=100% border=0 cellpadding=0 cellspacing=0 class=hui>" & vbCrlf
-    l = l & "<TD align=center height=35 class='font'>" & vbCrlf
-    l = l & e & vbCrlf
-    If c <= 1 Then
-        l = l & "首 页 " & vbCrlf
-        l = l & "上一页 " & vbCrlf
+    C = C & "<table width=100% border=0 cellpadding=0 cellspacing=0 class=hui>" & vbCrlf 
+    C = C & "<TD align=center height=35 class='font'>" & vbCrlf 
+    C = C & Font_style & vbCrlf 
+    If Page <= 1 Then
+        C = C & "首 页 " & vbCrlf 
+        C = C & "上一页 " & vbCrlf 
     Else
-        l = l & "<A HREF=" & j & "?" & i & "Page=1 class='huilianjie'>首 页</A> " & vbCrlf
-        l = l & "<A HREF=" & j & "?" & i & "Page=" &(c - 1) & " class='huilianjie'>上一页</A> " & vbCrlf
-    End If
-    If c >= b Then
-        l = l & "下一页 " & vbCrlf
-        l = l & "尾 页 " & vbCrlf
+        C = C & "<A HREF=" & Action & "?" & Temp & "Page=1 class='huilianjie'>首 页</A> " & vbCrlf 
+        C = C & "<A HREF=" & Action & "?" & Temp & "Page=" &(Page - 1) & " class='huilianjie'>上一页</A> " & vbCrlf 
+    End If 
+    If Page >= nPageCount Then
+        C = C & "下一页 " & vbCrlf 
+        C = C & "尾 页 " & vbCrlf 
     Else
-        l = l & "<A HREF=" & j & "?" & i & "Page=" &(c + 1) & " class='huilianjie'>下一页</A> " & vbCrlf
-        l = l & "<A HREF=" & j & "?" & i & "Page=" & b & " class='huilianjie'>尾 页</A> " & vbCrlf
-    End If
-    l = l & " 页次：<b><font color=red>" & c & "</font>/" & b & "</b>页" & vbCrlf
-    l = l & " 共有<b>" & a & "</b>个记录" & vbCrlf
-    If b < 10 Then
-        l = l & "<SELECT onchange='location.href(this.options[this.selectedIndex].value)'>"
-        For k = 1 To b
-            If c = k Then
-                l = l & "<option value=?" & i & "page=" & k & " selected> 第" & k & "页</option>"
+        C = C & "<A HREF=" & Action & "?" & Temp & "Page=" &(Page + 1) & " class='huilianjie'>下一页</A> " & vbCrlf 
+        C = C & "<A HREF=" & Action & "?" & Temp & "Page=" & nPageCount & " class='huilianjie'>尾 页</A> " & vbCrlf 
+    End If 
+    C = C & " 页次：<b><font color=red>" & Page & "</font>/" & nPageCount & "</b>页" & vbCrlf 
+    C = C & " 共有<b>" & nCount & "</b>个记录" & vbCrlf 
+    If nPageCount < 10 Then
+        C = C & "<SELECT onchange='location.href(this.options[this.selectedIndex].value)'>" 
+        For I = 1 To nPageCount
+            If Page = I Then
+                C = C & "<option value=?" & Temp & "page=" & I & " selected> 第" & I & "页</option>" 
             Else
-                l = l & "<option value=?" & i & "page=" & k & "> 第" & k & "页</option>"
-            End If
-        Next
-        l = l & "</select>"
+                C = C & "<option value=?" & Temp & "page=" & I & "> 第" & I & "页</option>" 
+            End If 
+        Next 
+        C = C & "</select>" 
     Else
-		i = Replace(i,"\","\\")
-        l = l & "<input name=""GotoPage"" value=""" & c & """ type=""text"" id=""GotoPage"" size=""5"" style=""text-align:center;"" /> &nbsp;"
-        l = l & "<input type=""button"" name=""button"" id=""button"" value=""跳转"" onclick=""location.href('?" & i & "Page=' + document.all.GotoPage.value)"" />"
-    End If
-    l = l & "<!--用时--></TD>" & vbCrlf
-    l = l & "</TR>" & vbCrlf
-    l = l & "</table>" & vbCrlf
-    PageControl = l
-End Function
+		Temp = Replace(Temp,"\","\\")
+        C = C & "<input name=""GotoPage"" value=""" & Page & """ type=""text"" id=""GotoPage"" size=""5"" style=""text-align:center;"" /> &nbsp;" 
+        C = C & "<input type=""button"" name=""button"" id=""button"" value=""跳转"" onclick=""location.href('?" & Temp & "Page=' + document.all.GotoPage.value)"" />" 
+    End If 
+    C = C & "<!--用时--></TD>" & vbCrlf 
+    C = C & "</TR>" & vbCrlf 
+    C = C & "</table>" & vbCrlf 
+    PageControl = C 
+End Function 
 
-
-function webPageControl(a, b, c, d)
-	dim e,f,g,h,i,j,k
-	dim l,nextPage						
-	dim isDisplayTip		
-	
+'页控制  记录总数  每页显示数  当前面 (2015117)   webPageControl(59,12,1,"http://www.baidu.com")
+function webPageControl(nRecrodCount, nPageSize, nPage, configPageUrl, action)
+	dim s,c,nCountPage,i,nDisplay,nDispalyOK,nTemp
+	dim previousPage,nextPage						'定义上一页，下一页
+	dim isDisplayTip		'是否显示提示翻页信息	
 	isDisplayTip=true
 	
-	
-    if d="" then
-        d=GetUrlAddToParam( GetUrl(),"?page=[id]","replace")
+	dim sPageStart,sPageEnd,sHomePage,sHomePageFocus,sUpPage,sUpPageFocus,sNextPage,sNextPageFocus,sForPage,sForPageFocus,sTailPage,sTailPageFocus
+	if action<>"" then
+		sPageStart=getStrCut(action, "[sPageStart]", "[/sPageStart]", 2)			'页头部分
+		sPageEnd=getStrCut(action, "[sPageEnd]", "[/sPageEnd]", 2)					'页尾部分
+		sHomePage=getStrCut(action, "[sHomePage]", "[/sHomePage]", 2)	'首页
+		sHomePageFocus=getStrCut(action, "[sHomePageFocus]", "[/sHomePageFocus]", 2)		'首页交点
+		sUpPage=getStrCut(action, "[sUpPage]", "[/sUpPage]", 2)						'上一页
+		sUpPageFocus=getStrCut(action, "[sUpPageFocus]", "[/sUpPageFocus]", 2)				'上一页交点
+		sNextPage=getStrCut(action, "[sNextPage]", "[/sNextPage]", 2)				'下一页
+		sNextPageFocus=getStrCut(action, "[sNextPageFocus]", "[/sNextPageFocus]", 2)			'下一页交点
+		sForPage=getStrCut(action, "[sForPage]", "[/sForPage]", 2)							'循环页
+		sForPageFocus=getStrCut(action, "[sForPageFocus]", "[/sForPageFocus]", 2)				'循环页交点
+		sTailPage=getStrCut(action, "[sTailPage]", "[/sTailPage]", 2)							'最后页
+		sTailPageFocus=getStrCut(action, "[sTailPageFocus]", "[/sTailPageFocus]", 2)			'最后页交点
+	end if
+	'页头部分
+	if sPageStart="" then
+		sPageStart="<ul class=""pagecontrolwrap"">" & vbcrlf & "<li class=""pageinfo"">共[$nRecrodCount$]条 [$nPage$]/[$nCountPage$]页</li>" & vbcrlf
+	end if
+	'页尾部分
+	if sPageEnd="" then
+		sPageEnd="</ul><div class=""clear""></div>" & vbcrlf
+	end if
+	'首页
+	if sHomePage="" then
+		sHomePage="<li class=""pageli"">首页</li>" & vbcrlf
+	end if
+	'首页交点
+	if sHomePageFocus="" then
+		sHomePageFocus="<li><a href=""[$url$]"">首页</a></li>" & vbcrlf
+	end if
+	'上一页
+	if sUpPage="" then
+		sUpPage="<li class=""pageli"">上一页</li>" & vbcrlf
+	end if
+	'上一页交点
+	if sUpPageFocus="" then
+		sUpPageFocus="<li><a href=""[$url$]"">上一页</a></li>" & vbcrlf
+	end if
+	'下一页
+	if sNextPage="" then
+		sNextPage="<li class=""pageli"">下一页</li>" & vbcrlf
+	end if
+	'下一页交点
+	if sNextPageFocus="" then
+		sNextPageFocus="<li><a href=""[$url$]"">下一页</a></li>" & vbcrlf
+	end if
+	'循环页
+	if sForPage="" then
+		sForPage="<li><a href=""[$url$]"">[$i$]</a></li>" & vbcrlf
+	end if
+	'循环页交点
+	if sForPageFocus="" then
+		sForPageFocus="<li class=""pagefocus"">[$i$]</li>" & vbcrlf
+	end if
+	'最后页
+	if sTailPage="" then
+		sTailPage="<li class=""pageli"">末页</li>" & vbcrlf
+	end if
+	'最后页交点
+	if sTailPageFocus="" then
+		sTailPageFocus="<li><a href=""[$url$]"">末页</a></li>" & vbcrlf 
 	end if
 	
-	i=6			
-	j=0		
-	c=HandleNumberType(c)
-	if c="" then
-		c=1
+	'配置页为空则
+    if configPageUrl="" then
+        configPageUrl=GetUrlAddToParam( GetUrl(),"?page=[id]","replace")
+	end if
+	
+	nDisplay=6			'显示数
+	nDispalyOK=0		'显示成功数
+	nPage=HandleNumberType(nPage)
+	if nPage="" then 
+		nPage=1
 	else
-		c=Cint(c)
+		nPage=Cint(nPage)
 	end if
-	
-	g=GetCountPage(a,b)
-	
-	
-	
-	l=c-1
-	nextPage=c+1
+	'获得总页数
+	nCountPage=GetCountPage(nRecrodCount,nPageSize)
 	
 	
-	if l<=0 then
-		l=""
+	
+	previousPage=nPage-1
+	nextPage=nPage+1
+	
+	'处理上一页
+	if previousPage<=0 then
+		previousPage=""
 	end if
-	
-	if nextPage>g then
+	'处理下一页
+	if nextPage>nCountPage then
 		nextPage=""
-	end if
+	end if 
 	
-	f=f & "<ul class=""pagecontrolwrap"">" & vbcrlf
-	
-	f=f & "<li class=""pageinfo"">总数["& a &"]  共["& c &"/"& g &"]页</li>" & vbcrlf
-	
-	if c>1 then
-		f=f & "<li><a href="""&  replace(d,"[id]","") &""">首页</a></li>" & vbcrlf			
+	'页开始
+	c=sPageStart 
+	'首页
+	if nPage>1 then
+		c=c & replace(sHomePageFocus,"[$url$]",replace(configPageUrl,"[id]",""))
 	elseif isDisplayTip=true then
-		f=f & "<li class=""pageli"">首页</li>" & vbcrlf
+		c=c & sHomePage
 	end if
-	
-	if l<>"" then
-		k=l
-		if l<=1 then
-			k=""
+	'上一页
+	if previousPage<>"" then
+		nTemp=previousPage
+		if previousPage<=1 then
+			nTemp=""
 		end if
-		f=f & "<li><a href="""&  replace(d,"[id]",k) &""">上一页</a></li>" & vbcrlf
+		c=c & replace(sUpPageFocus,"[$url$]",replace(configPageUrl,"[id]",nTemp))
 	elseif isDisplayTip=true then
-		f=f & "<li class=""pageli"">上一页</li>" & vbcrlf
+		c=c & sUpPage
 	end if
-
+ 
  	
-	dim o
+	dim n
+	'call echo(npage,ncountpage)
+	n = (nPage-3)
+	'call echo("n",n)
 	
-	o = (c-3)
-	
-	
-	
-	for h = o to g
-		if h>=1 then
-			j=j+1
-			
-			if h = c then
-				f=f & "<li class=""pagefocus"">"& h &"</li>" & vbcrlf
+	'翻页循环
+	for i = n to nCountPage
+		if i>=1 then
+			nDispalyOK=nDispalyOK+1
+			'call echo(i,nPage)
+			if i = nPage then
+				c=c & replace(sForPageFocus,"[$i$]",i)
 			else
-				k=h
-				if h<=1 then
-					k=""
+				nTemp=i
+				if i<=1 then
+					nTemp=""
 				end if
-				f=f & "<li><a href="""&  replace(d,"[id]",k) &""">"& h &"</a></li>" & vbcrlf
+				c=c & replace(replace(sForPage,"[$url$]",replace(configPageUrl,"[id]",nTemp)),"[$i$]",i)
 			end if
-			if j>i then
+			if nDispalyOK>nDisplay then
 				exit for
 			end if
 		end if
-	next
-	
-	if g>c then
-		f=f & "<li><a href="""& replace(d,"[id]",nextPage) &""">下一页</a></li>" & vbcrlf
+	next 
+	'下一页
+	if nCountPage>nPage then
+		c=c & replace(sNextPageFocus,"[$url$]",replace(configPageUrl,"[id]",nextPage))
 	elseif isDisplayTip=true then
-		f=f & "<li class=""pageli"">下一页</li>" & vbcrlf
+		c=c & sNextPage
 	end if
-	
-	if g>c then
-		f=f & "<li><a href="""& replace(d,"[id]",g) &""">末页</a></li>" & vbcrlf
+	'末页
+	if nCountPage>nPage then
+		c=c & replace(sTailPageFocus,"[$url$]",replace(configPageUrl,"[id]",nCountPage))
 	elseif isDisplayTip=true then
-		f=f & "<li class=""pageli"">末页</li>" & vbcrlf
-	end if
+		c=c & sTailPage
+	end if 
 	
-	f=f & "</ul><div class=""clear""></div>" & vbcrlf
-	webPageControl=f  & vbcrlf
+	c=c & sPageEnd
+	
+	
+	c = replaceValueParam(c, "nRecrodCount", nRecrodCount)
+	c = replaceValueParam(c, "nPage", nPage)
+	c = replaceValueParam(c, "nCountPage", nCountPage)
+		
+	webPageControl=c  & vbcrlf
 end function
 
 
-
-Function getRsPageNumber(a, b, c, d)
-    Dim e
-	e=0
-    a.PageSize = c
-    maxPage = a.PageCount
-	if maxPage>0 then
-		If Not IsNumeric(d) Or d = "" Then
-			d = 1
+'获得Rs页数
+Function getRsPageNumber(rs, nCount, nPageSize, page)
+    Dim x 
+	x=0
+    rs.PageSize = nPageSize                                                         '每页记录条数 可自定义
+    maxPage = rs.PageCount
+	if maxPage>0 then 
+		If Not IsNumeric(page) Or page = "" Then
+			page = 1 
 		Else
-			d = CInt(d)
-		End If
-		If d < 1 Then
-			d = 1
-		ElseIf d > maxPage Then
-			d = maxPage
-		End If
-		a.AbsolutePage = d
-		If d = maxPage Then
-			e = b - (maxPage - 1) * c
+			page = CInt(page) 
+		End If 
+		If page < 1 Then
+			page = 1 
+		ElseIf page > maxPage Then
+			page = maxPage 
+		End If 
+		rs.AbsolutePage = page
+		If page = maxPage Then
+			x = nCount - (maxPage - 1) * nPageSize 
 		Else
-			e = c
-		End If
+			x = nPageSize 
+		End If 
 	end if
-    getRsPageNumber = e
+    getRsPageNumber = x 
 End Function
-%>
-
+%> 
 
 

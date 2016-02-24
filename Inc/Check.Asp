@@ -2,257 +2,256 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'Check验证 (2013,10,26)
+
+'是大写 20160105
+Function isUCase(content)
+    Dim i, s 
+    isUCase = True 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("ABCDEFGHIJKLMNOPQRSTUVWXYZ", s) = False Then
+            isUCase = False 
+            Exit Function 
+        End If 
+    Next 
+End Function 
+'是小写 20160105
+Function isLCase(content)
+    Dim i, s 
+    isLCase = True 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("abcdefghijklmnopqrstuvwxyz", s) = False Then
+            isLCase = False 
+            Exit Function 
+        End If 
+    Next 
+End Function 
 
 
-
-Function isUCase(a)
-    Dim b, c
-    isUCase = True
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("ABCDEFGHIJKLMNOPQRSTUVWXYZ", c) = False Then
-            isUCase = False
-            Exit Function
-        End If
-    Next
-End Function
-
-Function isLCase(a)
-    Dim b, c
-    isLCase = True
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("abcdefghijklmnopqrstuvwxyz", c) = False Then
-            isLCase = False
-            Exit Function
-        End If
-    Next
-End Function
-
-
-
-Sub checkErr(a)
+'检测错误
+Sub checkErr(errMsg)
     If Err.Number <> 0 Then
-        Call echo(Err.Number, "自定义错误信息：" & a & "<br>系统错误信息：" & Err.Description & "<br>最初生成错误的对象或应用程序的名称：" & Err.Source)
-    End If
-End Sub
+        Call echo(Err.Number, "自定义错误信息：" & errMsg & "<br>系统错误信息：" & Err.Description & "<br>最初生成错误的对象或应用程序的名称：" & Err.Source) 
+    End If 
+End Sub 
 
+'把字符true转真类型 false转假类型
+Function strToTrueFalse(ByVal content)
+    content = Trim(LCase(content)) 
+    strToTrueFalse = IIF(content = "true", True, False) 
+End Function 
+'把字符true转1类型 false转0类型
+Function strTrueFalseToInt(ByVal content)
+    content = Trim(LCase(content)) 
+    strTrueFalseToInt = IIF(content = "true", 1, 0) 
+End Function 
+'检查换行
+Function checkVbCrlf(content)
+    checkVbCrlf = False 
+    If InStr(content, vbCrLf) > 0 Then checkVbCrlf = True 
+End Function 
+'检查换行    辅助
+Function checkBr(content)
+    checkBr = checkVbCrlf(content) 
+End Function 
 
-Function strToTrueFalse(ByVal a)
-    a = Trim(LCase(a))
-    strToTrueFalse = IIF(a = "true", True, False)
-End Function
-
-Function strTrueFalseToInt(ByVal a)
-    a = Trim(LCase(a))
-    strTrueFalseToInt = IIF(a = "true", 1, 0)
-End Function
-
-Function checkVbCrlf(a)
-    checkVbCrlf = False
-    If InStr(a, vbCrLf) > 0 Then checkVbCrlf = True
-End Function
-
-Function checkBr(a)
-    checkBr = checkVbCrlf(a)
-End Function
-
-
-Function isParity(a)
-    isParity = ""
-    If Not IsNumeric(a) Then
-        isParity = "这不是一个数字啊"
-        Exit Function
-    End If
-    If a Mod 2 = 0 Then
-        isParity = 0
+'判断数字奇偶
+Function isParity(Numb)
+    isParity = "" 
+    If Not IsNumeric(Numb) Then
+        isParity = "这不是一个数字啊" 
+        Exit Function 
+    End If 
+    If Numb Mod 2 = 0 Then
+        isParity = 0 
     Else
-        isParity = 1
-    End If
-End Function
-
-Function checkEval(a)
-    On Error Resume Next
-    Call Execute(a)
+        isParity = 1 
+    End If 
+End Function 
+'检测eval正确性
+Function checkEval(content)
+    On Error Resume Next 
+    Call Execute(content) 
     If Err.Number = 0 Then
-        checkEval = True
+        checkEval = True 
     Else
-        checkEval = False
-    End If
-End Function
-
-
-
-Function replace_SQLText(a)
-    If IsNull(a) Then
-        replace_SQLText = ""
-        Exit Function
+        checkEval = False 
+    End If 
+End Function 
+'********************************************************
+'过滤SQL非法字符并格式化html代码
+'********************************************************
+Function replace_SQLText(fString)
+    If IsNull(fString) Then
+        replace_SQLText = "" 
+        Exit Function 
     Else
-        a = Trim(a)
-        a = Replace(a, "'", "''")
-        a = Replace(a, ";", "；")
-        a = Replace(a, "--", "—")
-        a = HTMLEncode(a)
-        replace_SQLText = a
-    End If
-End Function
-
-
-
+        fString = Trim(fString) 
+        fString = Replace(fString, "'", "''") 
+        fString = Replace(fString, ";", "；") 
+        fString = Replace(fString, "--", "—") 
+        fString = HTMLEncode(fString) 
+        replace_SQLText = fString 
+    End If 
+End Function 
+'********************************************************
+'检查是否外部提交数据
+'********************************************************
 Function chkPost()
-    Dim b, c
-    chkPost = False
-    b = CStr(Request.ServerVariables("HTTP_REFERER"))
-    c = CStr(Request.ServerVariables("SERVER_NAME"))
-    Call echo(b, c)
-    If Mid(b, 8, Len(c)) <> c Then
-        chkPost = False
+    Dim Server_v1, Server_v2 
+    chkPost = False 
+    Server_v1 = CStr(Request.ServerVariables("HTTP_REFERER")) 
+    Server_v2 = CStr(Request.ServerVariables("SERVER_NAME")) 
+    Call echo(Server_v1, Server_v2) 
+    If Mid(Server_v1, 8, Len(Server_v2)) <> Server_v2 Then
+        chkPost = False 
     Else
-        chkPost = True
-    End If
-End Function
-
-
-Function isMail(a)
-    isMail = True
-    Dim b
-    Set b = CreateObject("VBscript.RegExp")
-        b.pattern = "([\.a-zA-Z0-9_-]){2,10}@([a-zA-Z0-9_-]){2,10}(\.([a-zA-Z0-9]){2,}){1,4}$"
-        isMail = b.Test(a)
-    Set b = Nothing
-End Function
-
-Function isValidEmail(a)
-    Dim b, c, d, e
-    isValidEmail = True
-    b = Split(a, "@")
-    If UBound(b) <> 1 Then isValidEmail = False : Exit Function
-    For Each c In b
-        If Len(c) <= 0 Then isValidEmail = False : Exit Function
-        For d = 1 To Len(c)
-            e = LCase(Mid(c, d, 1))
-            If InStr("abcdefghijklmnopqrstuvwxyz_-.", e) <= 0 And Not IsNumeric(e) Then isValidEmail = False : Exit Function
-        Next
-        If Left(c, 1) = "." Or Right(c, 1) = "." Then isValidEmail = False : Exit Function
-    Next
-    If InStr(b(1), ".") <= 0 Then isValidEmail = False : Exit Function
-    d = Len(b(1)) - InStrRev(b(1), ".")
-    If d <> 2 And d <> 3 Then isValidEmail = False : Exit Function
-    If InStr(a, "..") > 0 Then isValidEmail = False
-End Function
-
-Function isCode(ByVal a)
-    Dim b
-    b = Replace(a, " ", "")
-    b = Replace(b, Chr(13), "")
-    b = Replace(b, Chr(10), "")
-    b = Replace(b, vbTab, "")
-    isCode = IIF(b <> "", True, False)
-End Function
-
-Function checkNumber(ByVal a)
-    Dim b, c
-    If Len(a) = 0 Then checkNumber = False : Exit Function
-    checkNumber = True
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("0123456789", LCase(c)) = False Then
-            checkNumber = False
-            Exit Function
-        End If
-    Next
-End Function
-
-Function isNumber(ByVal a)
-    isNumber = checkNumber(a)
-End Function
-
-Function checkABC(ByVal a)
-    Dim b, c
-    checkABC = True
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If InStr("abcdefghijklmnopqrstuvwxyz", LCase(c)) = False Then
-            checkABC = False
-            Exit Function
-        End If
-    Next
-End Function
-
-Function getLen(a)
-    Dim b, c, d
-    d = 0
-    For b = 1 To Len(a)
-        c = Asc(Mid(CStr(a), b, 1))
-        If c < 0 Then
-            d = d + 2
+        chkPost = True 
+    End If 
+End Function 
+'Response.Write(IsMail("asdf@sdf.com"))
+'正则表达验证邮箱
+Function isMail(email)
+    isMail = True 
+    Dim Rep 
+    Set Rep = CreateObject("VBscript.RegExp")
+        Rep.pattern = "([\.a-zA-Z0-9_-]){2,10}@([a-zA-Z0-9_-]){2,10}(\.([a-zA-Z0-9]){2,}){1,4}$" 
+        isMail = Rep.Test(email) 
+    Set Rep = Nothing 
+End Function 
+'邮箱验证第二种
+Function isValidEmail(email)
+    Dim names, Name, i, c 
+    isValidEmail = True 
+    names = Split(email, "@") 
+    If UBound(names) <> 1 Then isValidEmail = False : Exit Function 
+    For Each Name In names
+        If Len(Name) <= 0 Then isValidEmail = False : Exit Function 
+        For i = 1 To Len(Name)
+            c = LCase(Mid(Name, i, 1)) 
+            If InStr("abcdefghijklmnopqrstuvwxyz_-.", c) <= 0 And Not IsNumeric(c) Then isValidEmail = False : Exit Function 
+        Next 
+        If Left(Name, 1) = "." Or Right(Name, 1) = "." Then isValidEmail = False : Exit Function 
+    Next 
+    If InStr(names(1), ".") <= 0 Then isValidEmail = False : Exit Function 
+    i = Len(names(1)) - InStrRev(names(1), ".") 
+    If i <> 2 And i <> 3 Then isValidEmail = False : Exit Function 
+    If InStr(email, "..") > 0 Then isValidEmail = False 
+End Function 
+'检测为有效字符
+Function isCode(ByVal content)
+    Dim c 
+    c = Replace(content, " ", "") 
+    c = Replace(c, Chr(13), "") 
+    c = Replace(c, Chr(10), "") 
+    c = Replace(c, vbTab, "") 
+    isCode = IIF(c <> "", True, False) 
+End Function 
+'测试是否为数字
+Function checkNumber(ByVal content)
+    Dim i, s 
+    If Len(content) = 0 Then checkNumber = False : Exit Function 
+    checkNumber = True 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("0123456789", LCase(s)) = False Then
+            checkNumber = False 
+            Exit Function 
+        End If 
+    Next 
+End Function 
+'测试是否为数字 (辅助)
+Function isNumber(ByVal content)
+    isNumber = checkNumber(content) 
+End Function 
+'测试是否为字母
+Function checkABC(ByVal content)
+    Dim i, s 
+    checkABC = True 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If InStr("abcdefghijklmnopqrstuvwxyz", LCase(s)) = False Then
+            checkABC = False 
+            Exit Function 
+        End If 
+    Next 
+End Function 
+'获得字符长度 汉字算两个字符
+Function getLen(content)
+    Dim i, s, n 
+    n = 0 
+    For i = 1 To Len(content)
+        s = Asc(Mid(CStr(content), i, 1)) 
+        If s < 0 Then
+            n = n + 2 
         Else
-            d = d + 1
-        End If
-    Next
-    getLen = d
-End Function
-
-Function checkTime(a)
-    checkTime = IIF(IsDate(a) = False, False, True)
-End Function
-
-Function isNul(ByVal a)
-    On Error Resume Next : If Err.Number <> 0 Then Err.Clear
-    isNul = False
-    Select Case VarType(a)
+            n = n + 1 
+        End If 
+    Next 
+    getLen = n 
+End Function 
+'测试是否为时间类型
+Function checkTime(DateTime)
+    checkTime = IIF(IsDate(DateTime) = False, False, True) 
+End Function 
+'判断是否为空
+Function isNul(ByVal s)
+    On Error Resume Next : If Err.Number <> 0 Then Err.Clear 
+    isNul = False 
+    Select Case VarType(s)
         Case vbEmpty, vbNull
-            isNul = True : Exit Function
+            isNul = True : Exit Function 
         Case vbString
-            If a = "" Then isNul = True : Exit Function
+            If s = "" Then isNul = True : Exit Function 
         Case vbObject
-            Select Case TypeName(a)
+            Select Case TypeName(s)
                 Case "Nothing", "Empty"
-                    isNul = True : Exit Function
+                    isNul = True : Exit Function 
                 Case "Recordset"
-                    If a.State = 0 Then isNul = True : Exit Function
-                    If a.BOF And a.EOF Then isNul = True : Exit Function
+                    If s.State = 0 Then isNul = True : Exit Function 
+                    If s.BOF And s.EOF Then isNul = True : Exit Function 
                 Case "Dictionary"
-                    If a.Count = 0 Then isNul = True : Exit Function
+                    If s.Count = 0 Then isNul = True : Exit Function 
             End Select
     Case vbArray, 8194, 8204, 8209
-        If UBound(a) = -1 Then isNul = True : Exit Function
-    End Select
-    On Error Goto 0
-End Function
+        If UBound(s) = -1 Then isNul = True : Exit Function 
+    End Select 
+    On Error Goto 0 
+End Function 
 
 
-
-
-
-
-
-
-
-
-
-
-Function foundInArr(a, b, c)
-    Dim d, e
-    foundInArr = False
-    If InStr(a, c) > 0 Then
-        d = Split(a, c)
-        For e = 0 To UBound(d)
-            If LCase(Trim(d(e))) = LCase(Trim(b)) Then
-                foundInArr = True : Exit For
-            End If
-        Next
+'****************************************************
+'函数名：FoundInArr
+'作  用：检查一个数组中所有元素是否包含指定字符串
+'时  间：2011年10月13日
+'参  数： strArr
+'strToFind
+'strSplit
+'返回值：字符串
+'调  试：SHtml=R_("{测试}",Function FoundInArr(strArr, strToFind, strSplit))
+'****************************************************
+Function foundInArr(strArr, strToFind, strSplit)
+    Dim arrTemp, i 
+    foundInArr = False 
+    If InStr(strArr, strSplit) > 0 Then
+        arrTemp = Split(strArr, strSplit) 
+        For i = 0 To UBound(arrTemp)
+            If LCase(Trim(arrTemp(i))) = LCase(Trim(strToFind)) Then
+                foundInArr = True : Exit For 
+            End If 
+        Next 
     Else
-        If LCase(Trim(a)) = LCase(Trim(b)) Then foundInArr = True
-    End If
-End Function
-%>
-
+        If LCase(Trim(strArr)) = LCase(Trim(strToFind)) Then foundInArr = True 
+    End If 
+End Function 
+%>  
 

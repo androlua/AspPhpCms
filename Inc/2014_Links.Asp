@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -10,49 +10,48 @@
 %>
 <%
 
-
-
-Function HandleLinkList(a, b)
-	Dim c,d,e,f,g
-	c=Split(a,"$Split$")
-	For Each e In c
-		If e <> "" Then
-			If InStr(e,"(")>0 Then
-				f = Mid(e,1,InStr(e,"(")-1)
-				g = Mid(e,InStr(e,"(")+1)
-				If g<>"" Then
-					If Right(g,1) = ")" Then g=Left(g,Len(g)-1)
+'暂时保留
+'处理链接列表 例如    HandleLinkList("加入收藏(收藏)$Split$设为首页(设为首页)$Split${$NavBigLink$联系我们}$Split$腾讯微博(http://www.baidu.com/)$Split$新浪微博(http://www.google.cn)"," | ")
+Function HandleLinkList(Content, ListSplValue)
+	Dim SplStr,C,S,ShowStr,Action
+	SplStr=Split(Content,"$Split$")
+	For Each S In SplStr
+		If S <> "" Then
+			If InStr(S,"(")>0 Then
+				ShowStr = Mid(S,1,InStr(S,"(")-1)
+				Action = Mid(S,InStr(S,"(")+1)
+				If Action<>"" Then
+					If Right(Action,1) = ")" Then Action=Left(Action,Len(Action)-1)
 				End If
-				If g="收藏" Then
-					e = "<a href='javascript:;' onClick=""window.external.addFavorite('"& WebUrl &"','"& WebTitle &"')"">"& f &"</a>"
-				ElseIf g="设为首页" Then
-					e = "<a href='javascript:;' onClick=""var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('"& WebUrl &"');"">"& f &"</a>"
+				If Action="收藏" Then
+					S = "<a href='javascript:;' onClick=""window.external.addFavorite('"& WebUrl &"','"& WebTitle &"')"">"& ShowStr &"</a>"
+				ElseIf Action="设为首页" Then
+					S = "<a href='javascript:;' onClick=""var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('"& WebUrl &"');"">"& ShowStr &"</a>"
 				Else
-					e = "<a href='"& g &"'>"& f &"</a>"
-				End If
+					S = "<a href='"& Action &"'>"& ShowStr &"</a>"
+				End If 
 			End If
-			d=d & e & b
+			C=C & S & ListSplValue
 		End If
 	Next
-	If d <> "" then d=Left(d,Len(d)-Len(b))
-	HandleLinkList = d
+	If C <> "" then C=Left(C,Len(C)-Len(ListSplValue))
+	HandleLinkList = C
 End Function
 
-
-function FriendLinkText(a)
-    dim b, c, d, e, f, g, h
-    rsx.open "Select * From [FriendLink] Where Through<>0 Order By Sort", conn, 1, 1
-    for g = 1 to rsx.recordCount
-        b = rsx("Url")
-        d = ATarget(rsx("Target"))
-        e = ARel(rsx("NoFollow"))
-        c = rsx("Title")
-        f = rsx("ImgPath")
-        h = h & "<a href='" & b & "'" & d & "" & e & ">" & FontColorFontB(c, rsx("FontB"), rsx("FontColor")) & "</a>" & a & vbCrLf
-    rsx.moveNext : next : rsx.close
-    FriendLinkText = h
+'友情链接文本版
+function FriendLinkText(splStr)
+    dim url, title, Target, Rel, ImgPath, i, c 
+    rsx.open "Select * From [FriendLink] Where Through<>0 Order By Sort", conn, 1, 1 
+    for i = 1 to rsx.recordCount
+        url = rsx("Url") 
+        Target = ATarget(rsx("Target")) 
+        Rel = ARel(rsx("NoFollow")) 
+        title = rsx("Title") 
+        ImgPath = rsx("ImgPath") 
+        c = c & "<a href='" & url & "'" & Target & "" & Rel & ">" & FontColorFontB(title, rsx("FontB"), rsx("FontColor")) & "</a>" & splStr & vbCrLf 
+    rsx.moveNext : next : rsx.close 
+    FriendLinkText = c 
 end function
 
 
 %>
-

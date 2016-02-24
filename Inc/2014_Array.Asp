@@ -2,491 +2,490 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'数据处理函数库
 
+'删除内容有#号列表(20150818)
+Function remoteContentJingHao(content, splType)
+    Dim splStr, s, c 
+    splStr = Split(content, splType) 
+    For Each s In splStr
+        If Left(phpTrim(s), 1) <> "#" And Left(phpTrim(s), 1) <> "_" Then
+            If c <> "" Then c = c & splType 
+            c = c & s 
+        End If 
+    Next 
+    remoteContentJingHao = c 
+End Function 
+'删除数组有#号或这个_号列表(20150818)
+Function remoteArrayJingHao(splStr)
+    Dim s, c, splType 
+    splType = "[|-|_]" 
+    For Each s In splStr
+        If Left(phpTrim(s), 1) <> "#" And Left(phpTrim(s), 1) <> "_" Then
+            If c <> "" Then c = c & splType 
+            c = c & s 
+        End If 
+    Next 
+    splStr = Split(c, splType) 
+    remoteArrayJingHao = splStr 
+End Function 
 
+'每个字符加指定值
+Function getEachStrAddValue(content, valueStr)
+    Dim i, s, c 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        c = c & s & valueStr 
+    Next 
+    getEachStrAddValue = c 
+End Function 
+'获得值在数组里位置 20150708
+Function getValueInArrayID(splStr, valueStr)
+    Dim i 
+    getValueInArrayID = -1 
+    For i = 0 To UBound(splStr)
+        If splStr(i) = valueStr Then
+            getValueInArrayID = i 
+            Exit For 
+        End If 
+    Next 
+End Function 
+'判断值是否在数组里
+Function checkValueInArray(splStr, valueStr)
+    Dim i 
+    checkValueInArray = False 
+    For i = 0 To UBound(splStr)
+        If splStr(i) = valueStr Then
+            checkValueInArray = True 
+            Exit For 
+        End If 
+    Next 
+End Function 
 
-Function remoteContentJingHao(a, b)
-    Dim c, d, e
-    c = Split(a, b)
-    For Each d In c
-        If Left(phpTrim(d), 1) <> "#" And Left(phpTrim(d), 1) <> "_" Then
-            If e <> "" Then e = e & b
-            e = e & d
-        End If
-    Next
-    remoteContentJingHao = e
-End Function
+'删除重复数组  20141220
+Function deleteRepeatArray(splStr)
+    Dim SplType, s, c 
+    SplType = "[|-|_]" 
+    For Each s In splStr
+        If s <> "" Then
+            If InStr(SplType & c & SplType, SplType & s & SplType) = False Then
+                c = c & s & SplType 
+            End If 
+        End If 
+    Next 
+    If c <> "" Then c = Left(c, Len(c) - Len(SplType)) 
+    splStr = Split(c, SplType) 
+    deleteRepeatArray = splStr 
+End Function 
+'删除重复内容 自定分割类型 20150724
+Function deleteRepeatContent(content, splType)
+    Dim splStr, s, c 
+    splStr = Split(content, splType) 
+    For Each s In splStr
+        If s <> "" Then
+            If InStr(splType & c & splType, splType & s & splType) = False Then
+                If c <> "" Then c = c & splType 
+                c = c & s 
+            End If 
+        End If 
+    Next 
+    deleteRepeatContent = c 
+End Function 
 
-Function remoteArrayJingHao(a)
-    Dim b, c, d
-    d = "[|-|_]"
-    For Each b In a
-        If Left(phpTrim(b), 1) <> "#" And Left(phpTrim(b), 1) <> "_" Then
-            If c <> "" Then c = c & d
-            c = c & b
-        End If
-    Next
-    a = Split(c, d)
-    remoteArrayJingHao = a
-End Function
-
-
-Function getEachStrAddValue(a, b)
-    Dim c, d, e
-    For c = 1 To Len(a)
-        d = Mid(a, c, 1)
-        e = e & d & b
-    Next
-    getEachStrAddValue = e
-End Function
-
-Function getValueInArrayID(a, b)
-    Dim c
-    getValueInArrayID = -1
-    For c = 0 To UBound(a)
-        If a(c) = b Then
-            getValueInArrayID = c
-            Exit For
-        End If
-    Next
-End Function
-
-Function checkValueInArray(a, b)
-    Dim c
-    checkValueInArray = False
-    For c = 0 To UBound(a)
-        If a(c) = b Then
-            checkValueInArray = True
-            Exit For
-        End If
-    Next
-End Function
-
-
-Function deleteRepeatArray(a)
-    Dim b, c, d
-    b = "[|-|_]"
-    For Each c In a
-        If c <> "" Then
-            If InStr(b & d & b, b & c & b) = False Then
-                d = d & c & b
-            End If
-        End If
-    Next
-    If d <> "" Then d = Left(d, Len(d) - Len(b))
-    a = Split(d, b)
-    deleteRepeatArray = a
-End Function
-
-Function deleteRepeatContent(a, b)
-    Dim c, d, e
-    c = Split(a, b)
-    For Each d In c
-        If d <> "" Then
-            If InStr(b & e & b, b & d & b) = False Then
-                If e <> "" Then e = e & b
-                e = e & d
-            End If
-        End If
-    Next
-    deleteRepeatContent = e
-End Function
-
-
-Function getArrayCount(a, b)
-    Dim c
-    If InStr(a, b) > 0 Then
-        c = Split(a, b)
-        getArrayCount = UBound(c) + 1
+'获得数据总数
+Function getArrayCount(content, SplC)
+    Dim splStr 
+    If InStr(content, SplC) > 0 Then
+        splStr = Split(content, SplC) 
+        getArrayCount = UBound(splStr) + 1 
     Else
-        getArrayCount = 0
-    End If
-End Function
-
-Function randomShow(a, b,c)
-    Dim d, e, f, g, h
-    Randomize
-    For h = 1 To c
-        d = Split(a, b)
-        For Each e In d
-            g = CInt(Rnd * 100)
-            If g > 50 Then
-                f = f & e & b
+        getArrayCount = 0 
+    End If 
+End Function 
+'随机显示内容 randomShow("1,2,3,4,5,6,7,8,9", ",", 2)
+Function randomShow(content, SplType,NSwitch)
+    Dim splStr, s, c, n, i 
+    Randomize 
+    For i = 1 To NSwitch
+        splStr = Split(content, SplType) 
+        For Each s In splStr
+            n = CInt(Rnd * 100) 
+            If n > 50 Then
+                c = c & s & SplType 
             Else
-                f = e & b & f
-            End If			
-        Next
-        If f <> "" Then f = Left(f, Len(f) - Len(b))
-        a = f
-        f = ""
-    Next
-
-    randomShow = a
-End Function
-
-Function arrayRandomShow(ByVal a, b)
-    Dim c, d, e, f, g
-    g = "[|-|_]"
-    Randomize
-    For f = 1 To b
-        For Each c In a
-            e = CInt(Rnd * 100)
-            If e > 50 Then
-                d = d & c & g
+                c = s & SplType & c 
+            End If			        
+        Next 
+        If c <> "" Then c = Left(c, Len(c) - Len(SplType)) 
+        content = c 
+        c = "" 
+    Next 
+    'Call Echo("C",C)
+    randomShow = content 
+End Function 
+'数组随机显示 ArrayRandomShow("1,2,3,4,5,6,7,8,9", 2)
+Function arrayRandomShow(ByVal splStr, NSwitch)
+    Dim s, c, n, i, SplType 
+    SplType = "[|-|_]" 
+    Randomize 
+    For i = 1 To NSwitch
+        For Each s In splStr
+            n = CInt(Rnd * 100) 
+            If n > 50 Then
+                c = c & s & SplType 
             Else
-                d = c & g & d
-            End If
-
-        Next
-        If d <> "" Then d = Left(d, Len(d) - Len(g))
-        a = Split(d, g) : d = ""
-    Next
-    arrayRandomShow = a
-End Function
-
-Sub printArray(a)
-    Dim b, c
-    For b = 0 To UBound(a)
-        c = a(b)
-        Call echo(b, c)
-    Next
-End Sub
-
-Sub echoArray(a)
-    Call PrintArray(a)
-End Sub
-
-Function str_Shuffle(a)
-    Dim b, c, d, e
-    Randomize
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        If d = "" Then
-            d = c
-        ElseIf Len(d) = 1 Then
-            e = CInt(Rnd * 100)
-            If e > 50 Then
-                d = d & c
+                c = s & SplType & c 
+            End If 
+        'Call Echo(S,N)
+        Next 
+        If c <> "" Then c = Left(c, Len(c) - Len(SplType)) 
+        splStr = Split(c, SplType) : c = "" 
+    Next 
+    arrayRandomShow = splStr 
+End Function 
+'打印数组内容
+Sub printArray(splStr)
+    Dim i, s 
+    For i = 0 To UBound(splStr)
+        s = splStr(i) 
+        Call echo(i, s) 
+    Next 
+End Sub 
+'显示数组内容  (辅助上面)
+Sub echoArray(splStr)
+    Call PrintArray(splStr) 
+End Sub 
+'返回打乱后的字符串。Shuffle=洗牌  2014 12 02
+Function str_Shuffle(content)
+    Dim i, s, c, n 
+    Randomize 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        If c = "" Then
+            c = s 
+        ElseIf Len(c) = 1 Then
+            n = CInt(Rnd * 100) 
+            If n > 50 Then
+                c = c & s 
             Else
-                d = c & d
-            End If
+                c = s & c 
+            End If 
         Else
-            e = CInt(Rnd * Len(d)) + 1
-            d = Mid(d, 1, e) & c & Mid(d, e + 1)
-        End If
-    Next
-    str_Shuffle = d
-End Function
-
-Function characterUpset(a)
-    characterUpset = str_Shuffle(a)
-End Function
-
-Function str_Split(a, b)
-    Dim c, d, e, f, ArrStr(99), h
-    If b <= 0 Then b = 1
-    f = 0 : h = 0
-    For c = 1 To Len(a)
-        d = Mid(a, c, 1)
-        e = e & d
-        f = f + 1
-        If f = b Then
-            ArrStr(h) = e
-            e = "" : f = 0
-            h = h + 1
-        End If
-    Next
-    str_Split = ArrStr
-End Function
-
-Function removeNullValueArray(a, b)
-    removeNullValueArray = HandleArray(a, b, "nonull")
-End Function
-
-Function removeRepeatValueArray(a, b)
-    removeRepeatValueArray = HandleArray(a, b, "norepeat")
-End Function
-
-Function handleArray(a, b, c)
-    Dim d, e, f, g
-    c = "|" & LCase(c) & "|"
-    d = Split(a, b)
-    For Each e In d
-        g = True
-        If InStr(c, "|nonull|") > 0 And g = True Then
-            If e = "" Then g = False
-        End If
-        If InStr(c, "|norepeat|") > 0 And g = True Then
-            If InStr(b & f & b, b & e & b) > 0 Then g = False
-        End If
-        If g = True Then f = f & e & b
-    Next
-    If f <> "" Then f = Left(f, Len(f) - Len(b))
-    handleArray = f
-End Function
-
-Function arrayToString(a, b)
-    Dim c, d
-    For Each c In a
-        If c <> "" Then
-            d = d & c & b
-        End If
-    Next
-    arrayToString = d
-End Function
-
+            n = CInt(Rnd * Len(c)) + 1 
+            c = Mid(c, 1, n) & s & Mid(c, n + 1) 
+        End If 
+    Next 
+    str_Shuffle = c 
+End Function 
+'字符打乱
+Function characterUpset(content)
+    characterUpset = str_Shuffle(content) 
+End Function 
+'将字符串转换为数组   PHP里用到，暂时留着   把内容与几个字符分割成数组  如  abcefg,2     0=ab 1=ce 2=fg
+Function str_Split(content, Split_Length)
+    Dim i, s, c, n, ArrStr(99), nArray 
+    If Split_Length <= 0 Then Split_Length = 1 
+    n = 0 : nArray = 0 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        c = c & s 
+        n = n + 1 
+        If n = Split_Length Then
+            ArrStr(nArray) = c 
+            c = "" : n = 0 
+            nArray = nArray + 1 
+        End If 
+    Next 
+    str_Split = ArrStr 
+End Function 
+'移除空值数组
+Function removeNullValueArray(content, SplType)
+    removeNullValueArray = HandleArray(content, SplType, "nonull") 
+End Function 
+'移除重复数组
+Function removeRepeatValueArray(content, SplType)
+    removeRepeatValueArray = HandleArray(content, SplType, "norepeat") 
+End Function 
+'处理数组
+Function handleArray(content, SplType, SType)
+    Dim splStr, s, c, OKYes 
+    SType = "|" & LCase(SType) & "|" 
+    splStr = Split(content, SplType) 
+    For Each s In splStr
+        OKYes = True 
+        If InStr(SType, "|nonull|") > 0 And OKYes = True Then
+            If s = "" Then OKYes = False 
+        End If 
+        If InStr(SType, "|norepeat|") > 0 And OKYes = True Then
+            If InStr(SplType & c & SplType, SplType & s & SplType) > 0 Then OKYes = False 
+        End If 
+        If OKYes = True Then c = c & s & SplType 
+    Next 
+    If c <> "" Then c = Left(c, Len(c) - Len(SplType)) 
+    handleArray = c 
+End Function 
+'处理转字符(20151124)
+Function arrayToString(splStr, addtoStr)
+    Dim s, c 
+    For Each s In splStr
+        If s <> "" Then
+            c = c & s & addtoStr 
+        End If 
+    Next 
+    arrayToString = c 
+End Function 
+'测试数组数据 20141217
 Function testArrayData()
-    Dim b
-    b = Array(3, 2, 4, 1, 6, 0)
-    Call ResponseArray(b, "原来顺序")
-    Call ResponseArray(SelectSort(b), "选择排序")
-    Call ResponseArray(QuickSort(b), "快速排序")
-    Call ResponseArray(InsertSort(b), "插入排序")
-    Call ResponseArray(BubbleSort(b), "冒泡排序")
-    Call ResponseArray(ReQuickSort(b), "反序排序")
-    Response.Write "<b>最 大 值：</b>" & Max(b) & "<hr>"
-    Response.Write "<b>最 小 值：</b>" & Min(b) & "<hr>"
-End Function
+    Dim aData 
+    aData = Array(3, 2, 4, 1, 6, 0) 
+    Call ResponseArray(aData, "原来顺序") 
+    Call ResponseArray(SelectSort(aData), "选择排序") 
+    Call ResponseArray(QuickSort(aData), "快速排序") 
+    Call ResponseArray(InsertSort(aData), "插入排序") 
+    Call ResponseArray(BubbleSort(aData), "冒泡排序") 
+    Call ResponseArray(ReQuickSort(aData), "反序排序") 
+    Response.Write "<b>最 大 值：</b>" & Max(aData) & "<hr>" 
+    Response.Write "<b>最 小 值：</b>" & Min(aData) & "<hr>" 
+End Function 
+'===================================
+'选择排序
+'===================================
+Function selectSort(a_Data)
+    Dim i, j, k 
+    Dim bound, t 
+    bound = UBound(a_Data) 
 
+    For i = 0 To bound - 1
+        k = i 
+        For j = i + 1 To bound
+            If a_Data(k) > a_Data(j) Then
+                k = j 
+            End If 
+        Next 
+        t = a_Data(i) 
+        a_Data(i) = a_Data(k) 
+        a_Data(k) = t 
+    Next 
+    selectSort = a_Data 
+End Function 
+'===================================
+'快速排序
+'===================================
+Function quickSort(a_Data)
+    Dim i, j 
+    Dim bound, t 
+    bound = UBound(a_Data) 
+    For i = 0 To bound - 1
+        For j = i + 1 To bound
+            If a_Data(i) > a_Data(j) Then
+                t = a_Data(i) 
+                a_Data(i) = a_Data(j) 
+                a_Data(j) = t 
+            End If 
+        Next 
+    Next 
+    quickSort = a_Data 
+End Function 
+'===================================
+'冒泡排序
+'===================================
+Function bubbleSort(a_Data)
+    Dim bound 
+    bound = UBound(a_Data) 
+    Dim bSorted, i, t 
+    bSorted = False 
+    Do While bound > 0 And bSorted = False
+        bSorted = True 
+        For i = 0 To bound - 1
+            If a_Data(i) > a_Data(i + 1) Then
+                t = a_Data(i) 
+                a_Data(i) = a_Data(i + 1) 
+                a_Data(i + 1) = t 
+                bSorted = False 
+            End If 
+        Next 
+        bound = bound - 1 
+    Loop 
 
+    bubbleSort = a_Data 
+End Function 
+'===================================
+'插入排序
+'===================================
+Function insertSort(a_Data)
+    Dim bound 
+    bound = UBound(a_Data) 
+    Dim i, j, t 
 
-Function selectSort(a)
-    Dim b, c, d
-    Dim e, f
-    e = UBound(a)
-
-    For b = 0 To e - 1
-        d = b
-        For c = b + 1 To e
-            If a(d) > a(c) Then
-                d = c
-            End If
-        Next
-        f = a(b)
-        a(b) = a(d)
-        a(d) = f
-    Next
-    selectSort = a
-End Function
-
-
-
-Function quickSort(a)
-    Dim b, c
-    Dim d, e
-    d = UBound(a)
-    For b = 0 To d - 1
-        For c = b + 1 To d
-            If a(b) > a(c) Then
-                e = a(b)
-                a(b) = a(c)
-                a(c) = e
-            End If
-        Next
-    Next
-    quickSort = a
-End Function
-
-
-
-Function bubbleSort(a)
-    Dim b
-    b = UBound(a)
-    Dim c, d, e
-    c = False
-    Do While b > 0 And c = False
-        c = True
-        For d = 0 To b - 1
-            If a(d) > a(d + 1) Then
-                e = a(d)
-                a(d) = a(d + 1)
-                a(d + 1) = e
-                c = False
-            End If
-        Next
-        b = b - 1
-    Loop
-
-    bubbleSort = a
-End Function
-
-
-
-Function insertSort(a)
-    Dim b
-    b = UBound(a)
-    Dim c, d, e
-
-    For c = 1 To b
-        e = a(c)
-        d = c
-        Do While e < a(d - 1) And d > 0
-            a(d) = a(d - 1)
-            d = d - 1
-        Loop
-        a(d) = e
-    Next
-    insertSort = a
-End Function
-
-
-
-Function reQuickSort(a)
-    Dim b, c, d
-    a = quickSort(a)
-    d = quickSort(a)
-    c = UBound(a)
-    For b = 0 To c
-        a(b) = d(c - b)
-    Next
-    reQuickSort = a
-End Function
-
+    For i = 1 To bound
+        t = a_Data(i) 
+        j = i 
+        Do While t < a_Data(j - 1) And j > 0
+            a_Data(j) = a_Data(j - 1) 
+            j = j - 1 
+        Loop 
+        a_Data(j) = t 
+    Next 
+    insertSort = a_Data 
+End Function 
+'===================================
+'快速排序-反序排列
+'===================================
+Function reQuickSort(a_Data)
+    Dim i, Bound, TempArr 
+    a_Data = quickSort(a_Data) 
+    TempArr = quickSort(a_Data) 
+    Bound = UBound(a_Data) 
+    For i = 0 To Bound
+        a_Data(i) = TempArr(Bound - i) 
+    Next 
+    reQuickSort = a_Data 
+End Function 
+'数组反向
 Function arrayReverse()
-    arrayReverse = reQuickSort(a_Data)
-End Function
+    arrayReverse = reQuickSort(a_Data) 
+End Function 
+'===================================
+'输出数组
+'===================================
+Sub responseArray(a_Data, str)
+    Dim s, i 
+    s = "" 
+    Response.Write "<b>" & str & "：</b>" 
+    For i = 0 To UBound(a_Data)
+        s = s & a_Data(i) & "," 
+    Next 
+    s = Left(s, Len(s) - 1) 
+    Response.Write s 
+    Response.Write "<hr>" 
+End Sub 
+'===================================
+'求数组最大值
+'===================================
+Function max(a_Data)
+    Dim i, j, Bound, temp 
+    a_Data = quickSort(a_Data) 
+    Bound = UBound(a_Data) 
+    For i = 0 To Bound
+        For j = i + 1 To Bound
+            If a_Data(j) > a_Data(i) Then
+                temp = a_Data(i) 
+                a_Data(i) = a_Data(j) 
+                a_Data(j) = temp 
+            End If 
+        Next 
+    Next 
+    max = a_Data(0) 
+End Function 
+'===================================
+'求数组最小值
+'===================================
+Function min(a_Data)
+    Dim i, j, Bound, temp 
+    a_Data = quickSort(a_Data) 
+    Bound = UBound(a_Data) 
+    For i = 0 To Bound
+        For j = i + 1 To Bound
+            If a_Data(j) > a_Data(i) Then
+                temp = a_Data(i) 
+                a_Data(i) = a_Data(j) 
+                a_Data(j) = temp 
+            End If 
+        Next 
+    Next 
+    min = a_Data(Bound) 
+End Function 
 
 
 
-Sub responseArray(a, b)
-    Dim c, d
-    c = ""
-    Response.Write "<b>" & b & "：</b>"
-    For d = 0 To UBound(a)
-        c = c & a(d) & ","
-    Next
-    c = Left(c, Len(c) - 1)
-    Response.Write c
-    Response.Write "<hr>"
-End Sub
 
-
-
-Function max(a)
-    Dim b, c, d, e
-    a = quickSort(a)
-    d = UBound(a)
-    For b = 0 To d
-        For c = b + 1 To d
-            If a(c) > a(b) Then
-                e = a(b)
-                a(b) = a(c)
-                a(c) = e
-            End If
-        Next
-    Next
-    max = a(0)
-End Function
-
-
-
-Function min(a)
-    Dim b, c, d, e
-    a = quickSort(a)
-    d = UBound(a)
-    For b = 0 To d
-        For c = b + 1 To d
-            If a(c) > a(b) Then
-                e = a(b)
-                a(b) = a(c)
-                a(c) = e
-            End If
-        Next
-    Next
-    min = a(d)
-End Function
-
-
-
-
-
+'测试二维数组显示
 Function testTwoDimensionalArray()
-    Dim b, c
-    b = HandleSplitArray("9-g|2-b|3-a|1-中", "|", "-")
-    For c = 0 To UBound(b)
-        Call echo(b(c, 1), b(c, 0)) : Doevents
-    Next
-    Call echo("", "Ａｄｃ")
-    Call TwoDimensionalArrayAsc(b)
-    For c = 0 To UBound(b)
-        Call echo(b(c, 1), b(c, 0)) : Doevents
-    Next
-    Call echo("", "Desc")
-    Call TwoDimensionalArrayDesc(b)
-    For c = 0 To UBound(b)
-        Call echo(b(c, 1), b(c, 0)) : Doevents
-    Next
-End Function
+    Dim splStr, i 
+    splStr = HandleSplitArray("9-g|2-b|3-a|1-中", "|", "-") 
+    For i = 0 To UBound(splStr)
+        Call echo(splStr(i, 1), splStr(i, 0)) : Doevents 
+    Next 
+    Call echo("", "Ａｄｃ") 
+    Call TwoDimensionalArrayAsc(splStr)                                '二维数组正排序
+    For i = 0 To UBound(splStr)
+        Call echo(splStr(i, 1), splStr(i, 0)) : Doevents 
+    Next 
+    Call echo("", "Desc") 
+    Call TwoDimensionalArrayDesc(splStr)                               '二维数组倒排序
+    For i = 0 To UBound(splStr)
+        Call echo(splStr(i, 1), splStr(i, 0)) : Doevents 
+    Next 
+End Function 
 
+'处理分割二维数组 20150313
+Function handleSplitArray(content, SplOneType, SplTowType)
+    Dim SplA, SplB, splStr, splxx, i, s, c, j, t, SplType 
+    SplType = "[|Array|]" 
+    splStr = Split(content, SplOneType) 
+    For i = 0 To UBound(splStr)
+        If splStr(i) <> "" Then
+            splxx = Split(splStr(i), SplTowType) 
+            SplA = SplA & splxx(0) & SplType 
+            SplB = SplB & splxx(1) & SplType 
+        End If 
+    Next 
+    If SplA <> "" Then SplA = Left(SplA, Len(SplA) - Len(SplType)) 
+    If SplB <> "" Then SplB = Left(SplB, Len(SplB) - Len(SplType)) 
+    SplA = Split(SplA, SplType) 
+    SplB = Split(SplB, SplType) 
 
-Function handleSplitArray(a, b, c)
-    Dim d, e, f, g, h, i, j, k, l, m
-    m = "[|Array|]"
-    f = Split(a, b)
-    For h = 0 To UBound(f)
-        If f(h) <> "" Then
-            g = Split(f(h), c)
-            d = d & g(0) & m
-            e = e & g(1) & m
-        End If
-    Next
-    If d <> "" Then d = Left(d, Len(d) - Len(m))
-    If e <> "" Then e = Left(e, Len(e) - Len(m))
-    d = Split(d, m)
-    e = Split(e, m)
-
-    ReDim f(UBound(d), UBound(e))
-    For h = 0 To UBound(d)
-        f(h, 0) = d(h)
-        f(h, 1) = e(h)
-    Next
-    handleSplitArray = f
-End Function
-
-Function twoDimensionalArrayAsc(a)
-    Dim b, c, d
-    For b = 0 To UBound(a)
-        If IsNul(a(b, 0)) = False Then
-            For c = b To UBound(a)
-                If a(b, 0) > a(c, 0) Then
-                    d = a(b, 0)
-                    a(b, 0) = a(c, 0)
-                    a(c, 0) = d
-                    d = a(b, 1)
-                    a(b, 1) = a(c, 1)
-                    a(c, 1) = d
-                End If
-            Next
-        End If
-    Next
-    twoDimensionalArrayAsc = a
-End Function
-
-Function twoDimensionalArrayDesc(a)
-    Dim b, c, d
-    For b = 0 To UBound(a)
-        If IsNul(a(b, 0)) = False Then
-            For c = b To UBound(a)
-                If a(b, 0) < a(c, 0) Then
-                    d = a(b, 0)
-                    a(b, 0) = a(c, 0)
-                    a(c, 0) = d
-                    d = a(b, 1)
-                    a(b, 1) = a(c, 1)
-                    a(c, 1) = d
-                End If
-            Next
-        End If
-    Next
-    twoDimensionalArrayDesc = a
-End Function
-%>
-
+    ReDim splStr(UBound(SplA), UBound(SplB)) 
+    For i = 0 To UBound(SplA)
+        splStr(i, 0) = SplA(i) 
+        splStr(i, 1) = SplB(i) 
+    Next 
+    handleSplitArray = splStr 
+End Function 
+'二维数组正排序 20150313
+Function twoDimensionalArrayAsc(splStr)
+    Dim i, j, t 
+    For i = 0 To UBound(splStr)
+        If IsNul(splStr(i, 0)) = False Then
+            For j = i To UBound(splStr)
+                If splStr(i, 0) > splStr(j, 0) Then
+                    t = splStr(i, 0) 
+                    splStr(i, 0) = splStr(j, 0) 
+                    splStr(j, 0) = t 
+                    t = splStr(i, 1) 
+                    splStr(i, 1) = splStr(j, 1) 
+                    splStr(j, 1) = t 
+                End If 
+            Next 
+        End If 
+    Next 
+    twoDimensionalArrayAsc = splStr 
+End Function 
+'二维数组倒排序 20150313
+Function twoDimensionalArrayDesc(splStr)
+    Dim i, j, t 
+    For i = 0 To UBound(splStr)
+        If IsNul(splStr(i, 0)) = False Then
+            For j = i To UBound(splStr)
+                If splStr(i, 0) < splStr(j, 0) Then
+                    t = splStr(i, 0) 
+                    splStr(i, 0) = splStr(j, 0) 
+                    splStr(j, 0) = t 
+                    t = splStr(i, 1) 
+                    splStr(i, 1) = splStr(j, 1) 
+                    splStr(j, 1) = t 
+                End If 
+            Next 
+        End If 
+    Next 
+    twoDimensionalArrayDesc = splStr 
+End Function 
+%> 
 

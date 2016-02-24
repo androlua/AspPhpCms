@@ -2,728 +2,727 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'快速操作网站Sql 为移植(20151029)
 
+'产品类别追加SQL处理
+'SqlGetDidSidTidSQl(Did,Sid,Tid)
+'Sql =  GetWhereAnd(Sql,AddSql)
+'写二种操作数据库方法，一种是操作全部数据库，另一个是带句柄操作数据库  20150723
 
-
-
-
-
-
-
-
-Function getDidSidTidSQl(a, b, c)
-    Dim d, e
-    e = " Where "
-    If a <> "" Then
-        d = d & e & "BigClassName='" & a & "'"
-        e = " And "
-    End If
-    If b <> "" Then
-        d = d & e & "SmallClassName='" & b & "'"
-        e = " And "
-    End If
-    If c <> "" Then
-        d = d & e & "ThreeClassName='" & c & "'"
-    End If
-    getDidSidTidSQl = d
-End Function
-
-Function checkBigClass(a)
-    checkBigClass = conn.Execute("Select Count(*) From [BigClass] Where BigClassName='" & a & "'")(0)
-End Function
-
-Function checkSmallClass(a, b)
-    Dim c, d
-    c = "Select Count(*) From [SmallClass]"
-    d = getDidSidTidSQl(a, b, "")
-    c = GetWhereAnd(c, d)
-    checkSmallClass = conn.Execute(c)(0)
-End Function
-
-Function checkThreeClass(a, b, c)
-    Dim d, e
-    d = "Select Count(*) From [ThreeClass]"
-    e = getDidSidTidSQl(a, b, c)
-    d = GetWhereAnd(d, e)
-    checkThreeClass = conn.Execute(d)(0)
-End Function
-
-Function checkProduct(a, b, c)
-    Dim d
-    d = "Select Count(*) From [Product]"
-    If a <> "" Then d = GetWhereAnd(d, "BigClassName='" & a & "'")
-    If b <> "" Then d = GetWhereAnd(d, "SmallClassName='" & b & "'")
-    If c <> "" Then d = GetWhereAnd(d, "ThreeClassName='" & c & "'")
-    checkProduct = conn.Execute(d)(0)
-End Function
-
-Function autoAddMainInfo(a, b, c)
-    Call HandleAutoAddMainInfo(a, b, False, c)
-End Function
-
-Function handleAutoAddMainInfo(a, b, c, d)
-    Dim e
-    e = "Select * From [MainInfo] Where Title='" & a & "'"
-    If UserId <> "" Then e = GetWhereAnd(e, " And UserId=" & UserId)
-    If CheckSql(e) = False Then Call eerr("Sql", e)
-    rs.Open e, conn, 1, 3
+'================ 辅助 ==========================
+'类型大类小类子为自动链接
+Function getDidSidTidSQl(did, sid, tid)
+    Dim sql, PrefixSql                                                              '前缀SQL
+    PrefixSql = " Where " 
+    If did <> "" Then
+        sql = sql & PrefixSql & "BigClassName='" & did & "'" 
+        PrefixSql = " And " 
+    End If 
+    If sid <> "" Then
+        sql = sql & PrefixSql & "SmallClassName='" & sid & "'" 
+        PrefixSql = " And " 
+    End If 
+    If tid <> "" Then
+        sql = sql & PrefixSql & "ThreeClassName='" & tid & "'" 
+    End If 
+    getDidSidTidSQl = sql 
+End Function 
+'检测大类存在
+Function checkBigClass(did)
+    checkBigClass = conn.Execute("Select Count(*) From [BigClass] Where BigClassName='" & did & "'")(0) 
+End Function 
+'检测小类存在
+Function checkSmallClass(did, sid)
+    Dim sql, addSql 
+    sql = "Select Count(*) From [SmallClass]" 
+    addSql = getDidSidTidSQl(did, sid, "") 
+    sql = GetWhereAnd(sql, addSql) 
+    checkSmallClass = conn.Execute(sql)(0) 
+End Function 
+'检测子类存在
+Function checkThreeClass(did, sid, tid)
+    Dim sql, addSql 
+    sql = "Select Count(*) From [ThreeClass]" 
+    addSql = getDidSidTidSQl(did, sid, tid) 
+    sql = GetWhereAnd(sql, addSql) 
+    checkThreeClass = conn.Execute(sql)(0) 
+End Function 
+'检测产品信息存在
+Function checkProduct(did, sid, tid)
+    Dim sql 
+    sql = "Select Count(*) From [Product]" 
+    If did <> "" Then sql = GetWhereAnd(sql, "BigClassName='" & did & "'") 
+    If sid <> "" Then sql = GetWhereAnd(sql, "SmallClassName='" & sid & "'") 
+    If tid <> "" Then sql = GetWhereAnd(sql, "ThreeClassName='" & tid & "'") 
+    checkProduct = conn.Execute(sql)(0) 
+End Function 
+'自动添加文本信息（先判断）
+Function autoAddMainInfo(title, ShowTitle, content)
+    Call HandleAutoAddMainInfo(title, ShowTitle, False, content) 
+End Function 
+'处理自动添加文本内容
+Function handleAutoAddMainInfo(title, ShowTitle, OnHtml, content)
+    Dim sql 
+    sql = "Select * From [MainInfo] Where Title='" & title & "'" 
+    If UserId <> "" Then sql = GetWhereAnd(sql, " And UserId=" & UserId)            '指定用户
+    If CheckSql(sql) = False Then Call eerr("Sql", sql) 
+    rs.Open sql, conn, 1, 3 
     If rs.EOF Then
-        rs.AddNew
-        rs("Title") = a
-        rs("ShowTitle") = b
-        rs("Content") = d
-        rs("OnHtml") = c
-        rs.Update
-    End If : rs.Close
-End Function
-
-Function autoAddBigClass(a)
-    Dim b, c
-    If conn.Execute("Select Count(*) From [BigClass] Where BigClassName='" & a & "'")(0) = 0 Then
-        b = PinYin(a, 3)
-        c = conn.Execute("Select Count(*) From [SmallClass]")(0) + 1
-        conn.Execute("Insert Into[BigClass](BigClassName,FolderName,Sort) Values('" & a & "', '" & b & "'," & c & ")")
-        autoAddBigClass = "【" & a & "】创建大类成功"
+        rs.AddNew 
+        rs("Title") = title 
+        rs("ShowTitle") = ShowTitle 
+        rs("Content") = content 
+        rs("OnHtml") = OnHtml 
+        rs.Update 
+    End If : rs.Close 
+End Function 
+'自动添加大类（先判断）
+Function autoAddBigClass(did)
+    Dim folderName, nSort 
+    If conn.Execute("Select Count(*) From [BigClass] Where BigClassName='" & did & "'")(0) = 0 Then
+        folderName = PinYin(did, 3) 
+        nSort = conn.Execute("Select Count(*) From [SmallClass]")(0) + 1 
+        conn.Execute("Insert Into[BigClass](BigClassName,FolderName,Sort) Values('" & did & "', '" & folderName & "'," & nSort & ")") 
+        autoAddBigClass = "【" & did & "】创建大类成功" 
     Else
-        autoAddBigClass = "【" & a & "】大类已存在"
-    End If
-End Function
-
-Function autoAddSmallClass(a, b)
-    Dim c, d
-    If conn.Execute("Select Count(*) From [SmallClass] Where BigClassName='" & a & "' And  SmallClassName='" & b & "'")(0) = 0 Then
-        c = PinYin(b, 3)
-        d = conn.Execute("Select Count(*) From [SmallClass] Where BigClassName='" & a & "'")(0) + 1
-        conn.Execute("Insert Into[SmallClass](BigClassName,SmallClassName,FolderName,Sort) Values('" & a & "','" & b & "', '" & c & "'," & d & ")")
-        autoAddSmallClass = "【" & a & "】创建小类成功"
+        autoAddBigClass = "【" & did & "】大类已存在" 
+    End If 
+End Function 
+'自动添加小类（先判断）
+Function autoAddSmallClass(did, sid)
+    Dim folderName, nSort 
+    If conn.Execute("Select Count(*) From [SmallClass] Where BigClassName='" & did & "' And  SmallClassName='" & sid & "'")(0) = 0 Then
+        folderName = PinYin(sid, 3) 
+        nSort = conn.Execute("Select Count(*) From [SmallClass] Where BigClassName='" & did & "'")(0) + 1 
+        conn.Execute("Insert Into[SmallClass](BigClassName,SmallClassName,FolderName,Sort) Values('" & did & "','" & sid & "', '" & folderName & "'," & nSort & ")") 
+        autoAddSmallClass = "【" & did & "】创建小类成功" 
     Else
-        autoAddSmallClass = "【" & a & "】小类已存在"
-    End If
-End Function
-
-Function autoAddThreeClass(a, b, c)
-    Dim d, e
-    If conn.Execute("Select Count(*) From [ThreeClass] Where BigClassName='" & a & "' And  SmallClassName='" & b & "' And ThreeClassName='" & c & "'")(0) = 0 Then
-        d = PinYin(b, 3)
-        e = conn.Execute("Select Count(*) From [SmallClass] Where BigClassName='" & a & "' And  SmallClassName='" & b & "'")(0) + 1
-        conn.Execute("Insert Into[ThreeClass](BigClassName,SmallClassName,ThreeClassName,FolderName,Sort) Values('" & a & "','" & b & "','" & c & "', '" & d & "'," & e & ")")
-        autoAddThreeClass = "【" & b & "】创建子类成功"
+        autoAddSmallClass = "【" & did & "】小类已存在" 
+    End If 
+End Function 
+'自动添加三级子类（先判断）
+Function autoAddThreeClass(did, sid, tid)
+    Dim folderName, nSort 
+    If conn.Execute("Select Count(*) From [ThreeClass] Where BigClassName='" & did & "' And  SmallClassName='" & sid & "' And ThreeClassName='" & tid & "'")(0) = 0 Then
+        folderName = PinYin(sid, 3) 
+        nSort = conn.Execute("Select Count(*) From [SmallClass] Where BigClassName='" & did & "' And  SmallClassName='" & sid & "'")(0) + 1 
+        conn.Execute("Insert Into[ThreeClass](BigClassName,SmallClassName,ThreeClassName,FolderName,Sort) Values('" & did & "','" & sid & "','" & tid & "', '" & folderName & "'," & nSort & ")") 
+        autoAddThreeClass = "【" & sid & "】创建子类成功" 
     Else
-        autoAddThreeClass = "【" & b & "】子类已存在"
-    End If
-End Function
+        autoAddThreeClass = "【" & sid & "】子类已存在" 
+    End If 
+End Function 
+'自动添加文章（先判断）
+Function autoAddArticle(did, sid, tid, title, content)
+    autoAddArticle = AutoAddArticleAction("", did, sid, tid, title, "", content) 
+End Function 
+'自动添加文件（先判断）
+Function autoAddArticleAction(action, did, sid, tid, title, SortID, content)
+    Dim addSql, sql, NewTitle,Splxx
+    Dim BigImage, SmallImage, NewBigImage, NewSmallImage 
+    Dim WebKeywords, WebDescription, NewWebKeywords, NewWebDescription, OriginalTitleYes, newAritcleID 
 
-Function autoAddArticle(a, b, c, d, e)
-    autoAddArticle = AutoAddArticleAction("", a, b, c, d, "", e)
-End Function
+    BigImage = RParam(action, "BigImage")                                           '大图地址
+    SmallImage = RParam(action, "SmallImage")                                       '小图地址
+    BigImage = HandleHttpUrl(Replace(BigImage, "[$样式名称$]", WebSkins)) 
+    SmallImage = HandleHttpUrl(Replace(SmallImage, "[$样式名称$]", WebSkins)) 
 
-Function autoAddArticleAction(a, b, c, d, e, f, g)
-    Dim h, i, j,k
-    Dim l, m, n, o
-    Dim p, q, r, s, t, u
+    WebKeywords = RParam(action, "Keywords")                                        '网站关键词
+    WebDescription = RParam(action, "Description")                                  '网站描述
+    WebKeywords = HandleHttpUrl(Replace(WebKeywords, "[$样式名称$]", WebSkins)) 
+    WebDescription = HandleHttpUrl(Replace(WebDescription, "[$样式名称$]", WebSkins)) 
 
-    l = RParam(a, "BigImage")
-    m = RParam(a, "SmallImage")
-    l = HandleHttpUrl(Replace(l, "[$样式名称$]", WebSkins))
-    m = HandleHttpUrl(Replace(m, "[$样式名称$]", WebSkins))
-
-    p = RParam(a, "Keywords")
-    q = RParam(a, "Description")
-    p = HandleHttpUrl(Replace(p, "[$样式名称$]", WebSkins))
-    q = HandleHttpUrl(Replace(q, "[$样式名称$]", WebSkins))
-
-    t = LCase(RParam(a, "OriginalTitleYes"))
+    OriginalTitleYes = LCase(RParam(action, "OriginalTitleYes"))                    '是否为原标题
 	
-	dim memberprice			
-	dim price				
-    memberprice =RParam(a, "memberprice")			
-    price =RParam(a, "price")						
+	dim memberprice			'会员价
+	dim price				'价格
+    memberprice =RParam(action, "memberprice")			'会员价
+    price =RParam(action, "price")						'价格
 	
 	
 
-    e = Trim(e)
-    h = h & getDidSidTidSQl(b, c, d)
-    If e <> "" Then h = h & " And Title='" & e & "'"
-    i = "Select * From [Product]" & GetWhereAnd(i, h)
-    RsTemp.Open i, conn, 1, 3
+    title = Trim(title) 
+    addSql = addSql & getDidSidTidSQl(did, sid, tid) 
+    If title <> "" Then addSql = addSql & " And Title='" & title & "'" 
+    sql = "Select * From [Product]" & GetWhereAnd(sql, addSql) 
+    RsTemp.Open sql, conn, 1, 3 
     If RsTemp.EOF Then
-        If t = "true" Then
-            j = e
+        If OriginalTitleYes = "true" Then
+            NewTitle = title 
         Else
-            j = b & "-" & c & "-" & d & "-" & e
-        End If
-        RsTemp.AddNew
-        RsTemp("BigClassName") = b
-        RsTemp("SmallClassName") = c
-        RsTemp("ThreeClassName") = d
-        RsTemp("WebTitle") = e
-        RsTemp("Title") = j
+            NewTitle = did & "-" & sid & "-" & tid & "-" & title 
+        End If 
+        RsTemp.AddNew 
+        RsTemp("BigClassName") = did 
+        RsTemp("SmallClassName") = sid 
+        RsTemp("ThreeClassName") = tid 
+        RsTemp("WebTitle") = title 
+        RsTemp("Title") = NewTitle 
 
 
+        'FileName = HtmlFileName(NewTitle & "-" & GetRnd(11))            '文件名加随机数
 
+        NewBigImage = Replace(BigImage, "[id]", SortID) 
+        NewSmallImage = Replace(SmallImage, "[id]", SortID) 
+        If NewBigImage <> "" Then RsTemp("BigFiles") = NewBigImage 
+        If NewSmallImage <> "" Then RsTemp("SmallFiles") = NewSmallImage 
 
-        n = Replace(l, "[id]", f)
-        o = Replace(m, "[id]", f)
-        If n <> "" Then RsTemp("BigFiles") = n
-        If o <> "" Then RsTemp("SmallFiles") = o
+        NewWebKeywords = Replace(WebKeywords, "[id]", NewTitle) 
+        NewWebDescription = Replace(WebDescription, "[id]", NewTitle) 
 
-        r = Replace(p, "[id]", j)
-        s = Replace(q, "[id]", j)
+        RsTemp("WebKeywords") = NewWebKeywords 
+        RsTemp("WebDescription") = NewWebDescription 
 
-        RsTemp("WebKeywords") = r
-        RsTemp("WebDescription") = s
-
-        RsTemp("Content") = g
+        RsTemp("Content") = content
 		
-		call echo(a,memberprice)
-		
+		call echo(action,memberprice)
+		'价格
 		if price<>"" then
 			if instr(price,"-")>0 then
-				k=split(price,"-")
-        		RsTemp("price") = PHPRand(cint(k(0)),cint(k(1)))
-			end if
+				splxx=split(price,"-")
+        		RsTemp("price") = PHPRand(cint(splxx(0)),cint(splxx(1)))
+			end if 
 		end if
-		
+		'会员价
 		if memberprice<>"" then
 			if instr(memberprice,"-")>0 then
-				k=split(memberprice,"-")
-        		RsTemp("memberprice") = PHPRand(cint(k(0)),cint(k(1)))
-			end if
+				splxx=split(memberprice,"-")
+        		RsTemp("memberprice") = PHPRand(cint(splxx(0)),cint(splxx(1)))
+			end if 
 		end if
 
-        RsTemp.Update
-        u = RsTemp(0)
-        RsTemp.Close
+        RsTemp.Update 
+        newAritcleID = RsTemp(0) 
+        RsTemp.Close 
 
-        RsTemp.Open "Select * From [Product] where id=" & u, conn, 1, 3
+        RsTemp.Open "Select * From [Product] where id=" & newAritcleID, conn, 1, 3 
         If Not RsTemp.EOF Then
-            RsTemp("FileName") = "article" & u
-            RsTemp.Update
-        End If
+            RsTemp("FileName") = "article" & newAritcleID 
+            RsTemp.Update 
+        End If 
 
-        autoAddArticleAction = True
+        autoAddArticleAction = True 
     Else
-        autoAddArticleAction = False
-    End If : RsTemp.Close
-End Function
-
-Function autoAddBigClassAndArticle(a, b)
-    Dim c
-    Call AutoAddBigClass(a)
-    For c = 1 To b
-        Call AutoAddArticle(a, "", "", a & "标题-" & c, a & "内容-" & c)
-    Next
-End Function
-
-
+        autoAddArticleAction = False 
+    End If : RsTemp.Close 
+End Function 
+'自动添加文章并自动创建大类
+Function autoAddBigClassAndArticle(did, topNumb)
+    Dim i 
+    Call AutoAddBigClass(did) 
+    For i = 1 To topNumb
+        Call AutoAddArticle(did, "", "", did & "标题-" & i, did & "内容-" & i) 
+    Next 
+End Function 
 
 
 
 
 
 
+
+'获得网站模板路径 20150114
 Function getWebTemplate()
-    Dim b
-    Set b = CreateObject("Adodb.RecordSet")
-        b.Open "Select * From [WebSite]", conn, 1, 1
-        If Not b.EOF Then
-            getWebTemplate = b("WebTemplate")
-        End If : b.Close
+    Dim rs 
+    Set rs = CreateObject("Adodb.RecordSet")
+        rs.Open "Select * From [WebSite]", conn, 1, 1 
+        If Not rs.EOF Then
+            getWebTemplate = rs("WebTemplate") 
+        End If : rs.Close 
 End Function
-
+'获得网站样式路径 20150114
 Function getWebSkins()
-    Dim b
-    Set b = CreateObject("Adodb.RecordSet")
-        b.Open "Select * From [WebSite]", conn, 1, 1
-        If Not b.EOF Then
-            getWebSkins = b("WebSkins")
-        End If : b.Close
+    Dim rs 
+    Set rs = CreateObject("Adodb.RecordSet")
+        rs.Open "Select * From [WebSite]", conn, 1, 1 
+        If Not rs.EOF Then
+            getWebSkins = rs("WebSkins") 
+        End If : rs.Close 
 End Function
-
+'获得网站素材 20150713
 Function getWebImages()
-    Dim b
-    Set b = CreateObject("Adodb.RecordSet")
-        b.Open "Select * From [WebSite]", conn, 1, 1
-        If Not b.EOF Then
-            getWebImages = b("WebImages")
-        End If : b.Close
+    Dim rs 
+    Set rs = CreateObject("Adodb.RecordSet")
+        rs.Open "Select * From [WebSite]", conn, 1, 1 
+        If Not rs.EOF Then
+            getWebImages = rs("WebImages") 
+        End If : rs.Close 
 End Function
 
-
-Function detailPageAddHtmlPrefix(ByVal a)
-    a = HandleHttpUrl(a)
-    If InStr(a, "/") = False Then
-        a = "/Html/" & a
+'获得产品信息细节页是否加Html文件前缀 230141215
+Function detailPageAddHtmlPrefix(ByVal fileName)
+    fileName = HandleHttpUrl(fileName) 
+    If InStr(fileName, "/") = False Then
+        fileName = "/Html/" & fileName 
     Else
-        a = ReplaceN(GetWebFolderName() & a, "//", "/", 3)
+        fileName = ReplaceN(GetWebFolderName() & fileName, "//", "/", 3) 
+        'Call Echo("FileName",FileName)
+
+    End If 
+    If Left(fileName, 1) <> "/" Then fileName = "/" & fileName 
+    detailPageAddHtmlPrefix = fileName                                              '前面还是加一个/吧
+End Function 
+'获得处理后文件夹名称 汉字转拼音
+Function getHandleFolderName(folderName)
+    folderName = PinYin2(folderName) 
+    folderName = Replace(Replace(folderName, "/", "\"), " ", "") 
+    folderName = Replace(Replace(folderName, "\\", "\"), "\\", "\") 
+    getHandleFolderName = folderName 
+End Function 
 
 
-    End If
-    If Left(a, 1) <> "/" Then a = "/" & a
-    detailPageAddHtmlPrefix = a
-End Function
 
-Function getHandleFolderName(a)
-    a = PinYin2(a)
-    a = Replace(Replace(a, "/", "\"), " ", "")
-    a = Replace(Replace(a, "\\", "\"), "\\", "\")
-    getHandleFolderName = a
-End Function
-
-
-
-
-Function getMainInfoUrl(a)
-    Dim b, c
-    rs.Open "Select * From [MainInfo] Where Title='" & a & "'", conn, 1, 1
+'获得Main信息网址
+Function getMainInfoUrl(title)
+    Dim fileName, url 
+    rs.Open "Select * From [MainInfo] Where Title='" & title & "'", conn, 1, 1 
     If Not rs.EOF Then
-
+        '自定义模板
         If Trim(rs("TemplatePath")) <> "" Then
-            TemplatePath = WebTemplate & rs("TemplatePath")
+            TemplatePath = WebTemplate & rs("TemplatePath") 
         Else
-            TemplatePath = WebTemplate & "Main_Model.Html"
-        End If
+            TemplatePath = WebTemplate & "Main_Model.Html" 
+        End If 
 
 
+        '更新于20150209
+        url = Trim(rs("FileName")) 
 
-        c = Trim(rs("FileName"))
+        If CheckMakeHtmlFile(url) = True Then
+            fileName = GetHandleFileName(url) 
+            url = detailPageAddHtmlPrefix(rs("FolderName")) & "/" & url 
+            url = GetHandleUrl(url)                                                         '处理URL
+        End If 
 
-        If CheckMakeHtmlFile(c) = True Then
-            b = GetHandleFileName(c)
-            c = detailPageAddHtmlPrefix(rs("FolderName")) & "/" & c
-            c = GetHandleUrl(c)
-        End If
+        url = WebDebug(url, "act=MainInfo&Id=" & rs("Id"))                          '调试
+    End If : rs.Close 
+    getMainInfoUrl = url 
+End Function 
+'获得Main信息网址  (赋值上面)
+Function getMainUrl(title)
+    getMainUrl = getMainInfoUrl(title) 
+End Function 
+'获得导航链接地址 获得导航文件地址 获得导航大类 获得导航小类  导航大类链接 导航小类链接 导航链接
+Function getNavUrl(did, sid)
+    Dim url, folderName, TempRs 
 
-        c = WebDebug(c, "act=MainInfo&Id=" & rs("Id"))
-    End If : rs.Close
-    getMainInfoUrl = c
-End Function
-
-Function getMainUrl(a)
-    getMainUrl = getMainInfoUrl(a)
-End Function
-
-Function getNavUrl(a, b)
-    Dim c, d, e
-
-    Set e = CreateObject("Adodb.RecordSet")
-        e.Open "Select * From [NavBigClass] Where BigClassName='" & a & "'", conn, 1, 1
-        If Not e.EOF Then
-            d = Trim(e("FolderName"))
-            c = GetWebFolderName & "/" & e("FolderName") & "/" & e("FileName")
-            c = GetHandleUrl(c)
-
-            If CheckMakeHtmlFile(e("FileName")) = False Then
-                c = e("FileName")
-            End If
-
-            c = WebDebug(c, "act=Nav&NavDid=" & a)
-        End If : e.Close
-        If b <> "" Then
-            e.Open "Select * From [NavSmallClass] Where BigClassName='" & a & "' And SmallClassName='" & b & "'", conn, 1, 3
-            If Not e.EOF Then
-                If e("FolderName") = "" Then
-                    c = "/" & d & "/"
-                Else
-                    c = "/" & e("FolderName") & "/"
-                End If
-                If e("FileName") = "" Then
-                    e("FileName") = HtmlFileName(e("SmallClassName"))
-                    e.Update
-                End If
-                c = GetWebFolderName & c & e("FileName")
-                c = GetHandleUrl(c)
-
-
-                If CheckMakeHtmlFile(e("FileName")) = False Then
-                    c = e("FileName")
-                End If
-
-                c = WebDebug(c, "act=Nav&NavDid=" & a & "&NavSid=" & b)
-
-            End If : e.Close
-        End If
-        getNavUrl = c
-
-End Function
-
-Function getNavTarget(a, b)
-    If b <> "" Then
-        TempRs.Open "Select * From [NavSmallClass] Where BigClassName='" & a & "' And SmallClassName='" & b & "'", conn, 1, 1
+    Set TempRs = CreateObject("Adodb.RecordSet")
+        TempRs.Open "Select * From [NavBigClass] Where BigClassName='" & did & "'", conn, 1, 1 
         If Not TempRs.EOF Then
-            getNavTarget = TempRs("Target")
-        End If : TempRs.Close
-        Exit Function
-    End If
-    TempRs.Open "Select * From [NavBigClass] Where BigClassName='" & a & "'", conn, 1, 1
+            folderName = Trim(TempRs("FolderName")) 
+            url = GetWebFolderName & "/" & TempRs("FolderName") & "/" & TempRs("FileName") 
+            url = GetHandleUrl(url)                                                         '处理URL
+            '追加判断20141226
+            If CheckMakeHtmlFile(TempRs("FileName")) = False Then
+                url = TempRs("FileName") 
+            End If 
+
+            url = WebDebug(url, "act=Nav&NavDid=" & did)                                '调试
+        End If : TempRs.Close 
+        If sid <> "" Then
+            TempRs.Open "Select * From [NavSmallClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "'", conn, 1, 3 
+            If Not TempRs.EOF Then
+                If TempRs("FolderName") = "" Then
+                    url = "/" & folderName & "/" 
+                Else
+                    url = "/" & TempRs("FolderName") & "/" 
+                End If 
+                If TempRs("FileName") = "" Then
+                    TempRs("FileName") = HtmlFileName(TempRs("SmallClassName")) 
+                    TempRs.Update 
+                End If 
+                url = GetWebFolderName & url & TempRs("FileName") 
+                url = GetHandleUrl(url)                                                         '处理URL
+                'Call Echo("Url", Url)
+                '追加判断20141226
+                If CheckMakeHtmlFile(TempRs("FileName")) = False Then
+                    url = TempRs("FileName") 
+                End If 
+
+                url = WebDebug(url, "act=Nav&NavDid=" & did & "&NavSid=" & sid)         '调试
+            'Call Echo("Url", Url)
+            End If : TempRs.Close 
+        End If 
+        getNavUrl = url 
+    'Call Echo("GetNavUrl", GetNavUrl)
+End Function
+'获得导航链接地址打开类型 获得导航文件地址 获得导航大类 获得导航小类
+Function getNavTarget(did, sid)
+    If sid <> "" Then
+        TempRs.Open "Select * From [NavSmallClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "'", conn, 1, 1 
+        If Not TempRs.EOF Then
+            getNavTarget = TempRs("Target") 
+        End If : TempRs.Close 
+        Exit Function 
+    End If 
+    TempRs.Open "Select * From [NavBigClass] Where BigClassName='" & did & "'", conn, 1, 1 
     If Not TempRs.EOF Then
-        getNavTarget = TempRs("Target")
-    End If : TempRs.Close
+        getNavTarget = TempRs("Target") 
+    End If : TempRs.Close 
+End Function 
+'获得BigClass表中类型大类文件夹
+Function getBigClassFolderName(did)
+    Dim TempRs 
+    Set TempRs = CreateObject("Adodb.RecordSet")
+        TempRs.Open "Select * From [BigClass] Where BigClassName='" & did & "'", conn, 1, 1 
+        If Not TempRs.EOF Then
+
+            getBigClassFolderName = "/" & TempRs("FolderName") & "/" & TempRs("FileName") 
+            getBigClassFolderName = GetHandleUrl(getBigClassFolderName)                     '处理URL
+
+            '追加判断20141226
+            If CheckMakeHtmlFile(TempRs("FileName")) = False Then
+                getBigClassFolderName = TempRs("FileName") 
+            End If 
+
+            Call WebDebug(getBigClassFolderName, "act=CreateClass&ProDid=" & TempRs("BigClassName") & "&page=1") '调试
+        End If : TempRs.Close 
 End Function
+'调用上一函数  (辅助)
+Function getBigClassFileName(did)
+    getBigClassFileName = getBigClassFolderName(did) 
+End Function 
+'调用上一函数  (辅助)
+Function getBigClassUrl(did)
+    getBigClassUrl = getBigClassFolderName(did) 
+End Function 
+'获得类别小类文件夹
+Function getSmallClassFolderName(did, sid)
+    Dim url, RootFolder, DirName, TempRs 
+    Set TempRs = CreateObject("Adodb.RecordSet")
 
-Function getBigClassFolderName(a)
-    Dim b
-    Set b = CreateObject("Adodb.RecordSet")
-        b.Open "Select * From [BigClass] Where BigClassName='" & a & "'", conn, 1, 1
-        If Not b.EOF Then
+        TempRs.Open "Select * From [BigClass] Where BigClassName='" & did & "'", conn, 1, 1 
+        If Not TempRs.EOF Then
 
-            getBigClassFolderName = "/" & b("FolderName") & "/" & b("FileName")
-            getBigClassFolderName = GetHandleUrl(getBigClassFolderName)
+            RootFolder = "/" & TempRs("FolderName") & "/" 
 
-
-            If CheckMakeHtmlFile(b("FileName")) = False Then
-                getBigClassFolderName = b("FileName")
-            End If
-
-            Call WebDebug(getBigClassFolderName, "act=CreateClass&ProDid=" & b("BigClassName") & "&page=1")
-        End If : b.Close
-End Function
-
-Function getBigClassFileName(a)
-    getBigClassFileName = getBigClassFolderName(a)
-End Function
-
-Function getBigClassUrl(a)
-    getBigClassUrl = getBigClassFolderName(a)
-End Function
-
-Function getSmallClassFolderName(a, b)
-    Dim c, d, e, f
-    Set f = CreateObject("Adodb.RecordSet")
-
-        f.Open "Select * From [BigClass] Where BigClassName='" & a & "'", conn, 1, 1
-        If Not f.EOF Then
-
-            d = "/" & f("FolderName") & "/"
+            'If CheckMakeHtmlFile(TempRs("FileName"))=True Then
+            'GetSmallClassFolderName = "/" & TempRs("FolderName") & "/"
+            'GetSmallClassFolderName = GetHandleUrl(GetSmallClassFolderName)    '处理URL
+            'Else
+            'GetSmallClassFolderName = TempRs("FileName")
+            'End If
+            getSmallClassFolderName = RootFolder 
+            Call WebDebug(getSmallClassFolderName, "act=CreateClass&ProDid=" & TempRs("BigClassName")) '调试
+        End If : TempRs.Close 
+        If sid <> "" Then
+            TempRs.Open "Select * From [SmallClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "'", conn, 1, 1 
+            If Not TempRs.EOF Then
 
 
-
-
-
-
-
-            getSmallClassFolderName = d
-            Call WebDebug(getSmallClassFolderName, "act=CreateClass&ProDid=" & f("BigClassName"))
-        End If : f.Close
-        If b <> "" Then
-            f.Open "Select * From [SmallClass] Where BigClassName='" & a & "' And SmallClassName='" & b & "'", conn, 1, 1
-            If Not f.EOF Then
-
-
-                e = Trim(Replace(f("FolderName"), "\", "/"))
-                If Left(e, 1) <> "/" Then
-                    d = d & "/" & e & "/"
+                DirName = Trim(Replace(TempRs("FolderName"), "\", "/")) 
+                If Left(DirName, 1) <> "/" Then
+                    RootFolder = RootFolder & "/" & DirName & "/" 
                 Else
-                    d = "/" & f("FolderName") & "/"
-                End If
+                    RootFolder = "/" & TempRs("FolderName") & "/" 
+                End If 
 
-
-
-
-
-
-
-                If CheckMakeHtmlFile(f("FileName")) = True Then
-                    d = d & f("FileName")
-                    d = "/" & GetWebFolderName() & GetHandleUrl(d)
+                'If CheckMakeHtmlFile(TempRs("FileName"))=True Then
+                'GetSmallClassFolderName = GetSmallClassFolderName & "/" & TempRs("FolderName") & "/" & TempRs("FileName")
+                'GetSmallClassFolderName = GetHandleUrl(GetSmallClassFolderName)    '处理URL
+                'Else
+                'GetSmallClassFolderName = TempRs("FileName")
+                'End If
+                If CheckMakeHtmlFile(TempRs("FileName")) = True Then
+                    RootFolder = RootFolder & TempRs("FileName") 
+                    RootFolder = "/" & GetWebFolderName() & GetHandleUrl(RootFolder) '处理URL         '改进
                 Else
-                    d = "/" & GetWebFolderName() & f("FileName")
+                    RootFolder = "/" & GetWebFolderName() & TempRs("FileName")       '改进
+                    '判断当文件名称为网址是 则返回网址  此函数是获得小类目录名 改进 20150107
+                    If GetWebSite(TempRs("FileName")) <> "" Then
+                        RootFolder = TempRs("FileName") 
+                    End If 
+                End If 
 
-                    If GetWebSite(f("FileName")) <> "" Then
-                        d = f("FileName")
-                    End If
-                End If
+                getSmallClassFolderName = RootFolder 
 
-                getSmallClassFolderName = d
-
-                Call WebDebug(getSmallClassFolderName, "act=CreateClass&ProDid=" & a & "&ProSid=" & f("SmallClassName"))
-            End If : f.Close
-        End If
+                Call WebDebug(getSmallClassFolderName, "act=CreateClass&ProDid=" & did & "&ProSid=" & TempRs("SmallClassName")) '调试
+            End If : TempRs.Close 
+        End If 
 End Function
-
-Function getSmallClassFileName(a, b)
-    getSmallClassFileName = getSmallClassFolderName(a, b)
-End Function
-
-Function getSmallClassUrl(a, b)
-    getSmallClassUrl = getSmallClassFolderName(a, b)
-End Function
-
-Function getThreeClassFolderName(a, b, c)
-    Dim d, e
-
-    TempRs.Open "Select * From [BigClass] Where BigClassName='" & a & "'", conn, 1, 1
+'调用上一函数   (辅助)
+Function getSmallClassFileName(did, sid)
+    getSmallClassFileName = getSmallClassFolderName(did, sid) 
+End Function 
+'调用上一函数   (辅助)
+Function getSmallClassUrl(did, sid)
+    getSmallClassUrl = getSmallClassFolderName(did, sid) 
+End Function 
+'获得类型子类文件夹
+Function getThreeClassFolderName(did, sid, tid)
+    Dim RootFolder, DirName 
+    'Call Echo("显示",Did & ">>" & Sid & ">>" & Tid)
+    TempRs.Open "Select * From [BigClass] Where BigClassName='" & did & "'", conn, 1, 1 
     If Not TempRs.EOF Then
 
-        d = "/" & TempRs("FolderName") & "/"
+        RootFolder = "/" & TempRs("FolderName") & "/" 
 
-
-
-
-
-
-
-        getThreeClassFolderName = d
-        Call WebDebug(getThreeClassFolderName, "act=CreateClass&ProDid=" & TempRs("BigClassName"))
-    End If : TempRs.Close
-    If b <> "" Then
-        TempRs.Open "Select * From [SmallClass] Where BigClassName='" & a & "' And SmallClassName='" & b & "'", conn, 1, 1
+        'If CheckMakeHtmlFile(TempRs("FileName"))=True Then
+        'GetThreeClassFolderName = "/" & TempRs("FolderName") & "/"
+        'GetThreeClassFolderName = GetHandleUrl(GetThreeClassFolderName)    '处理URL
+        'Else
+        'GetThreeClassFolderName = TempRs("FileName")
+        'End If
+        getThreeClassFolderName = RootFolder 
+        Call WebDebug(getThreeClassFolderName, "act=CreateClass&ProDid=" & TempRs("BigClassName")) '调试
+    End If : TempRs.Close 
+    If sid <> "" Then
+        TempRs.Open "Select * From [SmallClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "'", conn, 1, 1 
         If Not TempRs.EOF Then
 
+            'If CheckMakeHtmlFile(TempRs("FileName"))=True Then
+            'GetThreeClassFolderName = GetThreeClassFolderName & "/" & TempRs("FolderName") & "/"
+            'GetThreeClassFolderName = GetHandleUrl(GetThreeClassFolderName)    '处理URL
+            'Else
+            'GetThreeClassFolderName = TempRs("FileName")
+            'End If
 
-
-
-
-
-
-
-            e = Trim(Replace(TempRs("FolderName"), "\", "/"))
-            If Left(e, 1) <> "/" Then
-                d = d & "/" & e & "/"
+            DirName = Trim(Replace(TempRs("FolderName"), "\", "/")) 
+            If Left(DirName, 1) <> "/" Then
+                RootFolder = RootFolder & "/" & DirName & "/" 
             Else
-                d = "/" & TempRs("FolderName") & "/"
-            End If
+                RootFolder = "/" & TempRs("FolderName") & "/" 
+            End If 
 
-            getThreeClassFolderName = d
-            Call WebDebug(getThreeClassFolderName, "act=CreateClass&ProDid=" & a & "&ProSid=" & TempRs("SmallClassName"))
-        End If : TempRs.Close
-    End If
-    If c <> "" Then
-        TempRs.Open "Select * From [ThreeClass] Where BigClassName='" & a & "' And SmallClassName='" & b & "' And ThreeClassName='" & c & "'", conn, 1, 1
+            getThreeClassFolderName = RootFolder 
+            Call WebDebug(getThreeClassFolderName, "act=CreateClass&ProDid=" & did & "&ProSid=" & TempRs("SmallClassName")) '调试
+        End If : TempRs.Close 
+    End If 
+    If tid <> "" Then
+        TempRs.Open "Select * From [ThreeClass] Where BigClassName='" & did & "' And SmallClassName='" & sid & "' And ThreeClassName='" & tid & "'", conn, 1, 1 
         If Not TempRs.EOF Then
 
-            e = Trim(Replace(TempRs("FolderName"), "\", "/"))
-            If Left(e, 1) <> "/" Then
-                d = d & "/" & e & "/"
+            DirName = Trim(Replace(TempRs("FolderName"), "\", "/")) 
+            If Left(DirName, 1) <> "/" Then
+                RootFolder = RootFolder & "/" & DirName & "/" 
             Else
-                d = "/" & TempRs("FolderName") & "/"
+                RootFolder = "/" & TempRs("FolderName") & "/" 
 
-
+                '判断当文件名称为网址是 则返回网址  此函数是获得子类目录名 改进 20150107
                 If GetWebSite(TempRs("FileName")) <> "" Then
-                    d = TempRs("FileName")
-                End If
+                    RootFolder = TempRs("FileName") 
+                End If 
 
-            End If
-
-
-
-
-
-
-
+            End If 
+            'Call Echo(TempRs("FileName"), CheckMakeHtmlFile(TempRs("FileName")))
+            'If CheckMakeHtmlFile(TempRs("FileName"))=True Then
+            'GetThreeClassFolderName = GetThreeClassFolderName & "/" & TempRs("FolderName") & "/" & TempRs("FileName")
+            'GetThreeClassFolderName = GetHandleUrl(GetThreeClassFolderName)    '处理URL
+            'Else
+            'GetThreeClassFolderName = TempRs("FileName")
+            'End If
 
             If CheckMakeHtmlFile(TempRs("FileName")) = True Then
-                d = d & TempRs("FileName")
-                d = GetHandleUrl(d)
+                RootFolder = RootFolder & TempRs("FileName") 
+                RootFolder = GetHandleUrl(RootFolder)                                           '处理URL
             Else
-                d = TempRs("FileName")
-            End If
+                RootFolder = TempRs("FileName") 
+            End If 
 
-            getThreeClassFolderName = d
-            Call WebDebug(getThreeClassFolderName, "act=CreateClass&ProDid=" & a & "&ProSid=" & b & "&ProTid=" & TempRs("ThreeClassName"))
-        End If : TempRs.Close
-    End If
-End Function
-
-Function getThreeClassFileName(a, b, c)
-    getThreeClassFileName = getThreeClassFolderName(a, b, c)
-End Function
-
-Function getThreeClassUrl(a, b, c)
-    getThreeClassUrl = getThreeClassFolderName(a, b, c)
-End Function
-
-Function getClassUrl(a, b, c)
-    Dim d
-    If c <> "" Then
-        d = getThreeClassFolderName(a, b, c)
-    ElseIf b <> "" Then
-        d = getSmallClassFolderName(a, b)
+            getThreeClassFolderName = RootFolder 
+            Call WebDebug(getThreeClassFolderName, "act=CreateClass&ProDid=" & did & "&ProSid=" & sid & "&ProTid=" & TempRs("ThreeClassName")) '调试
+        End If : TempRs.Close 
+    End If 
+End Function 
+'调用上一函数   (辅助)
+Function getThreeClassFileName(did, sid, tid)
+    getThreeClassFileName = getThreeClassFolderName(did, sid, tid) 
+End Function 
+'调用上一函数   (辅助)
+Function getThreeClassUrl(did, sid, tid)
+    getThreeClassUrl = getThreeClassFolderName(did, sid, tid) 
+End Function 
+'获得产品类型的URL地址，包括大类与小类与子类
+Function getClassUrl(did, sid, tid)
+    Dim url 
+    If tid <> "" Then
+        url = getThreeClassFolderName(did, sid, tid) 
+    ElseIf sid <> "" Then
+        url = getSmallClassFolderName(did, sid) 
     Else
-        d = getBigClassFolderName(a)
-    End If
-    d = Trim(Replace(d, "\", "/"))
-    If Left(d, 1) <> "/" And GetWebSite(d) = "" Then d = "/" & d
-    getClassUrl = d
-End Function
-
-Function getClassUrl_Nav(a, b, c)
-    Dim d
-    d = getClassUrl(a, b, c)
-    d = Mid(d, 2)
-    If Right(d, 1) = "/" Then d = Left(d, Len(d) - 1)
-    getClassUrl_Nav = d
-End Function
-
-Function getProductUrl(a)
-    TempRs.Open "Select * From [Product] " & a, conn, 1, 1
+        url = getBigClassFolderName(did) 
+    End If 
+    url = Trim(Replace(url, "\", "/")) 
+    If Left(url, 1) <> "/" And GetWebSite(url) = "" Then url = "/" & url 
+    getClassUrl = url 
+End Function 
+'获得产品类型的URL地址，包括大类与小类与子类 导航用
+Function getClassUrl_Nav(did, sid, tid)
+    Dim url 
+    url = getClassUrl(did, sid, tid) 
+    url = Mid(url, 2) 
+    If Right(url, 1) = "/" Then url = Left(url, Len(url) - 1) 
+    getClassUrl_Nav = url 
+End Function 
+'获得产品链接地址
+Function getProductUrl(addSql)
+    TempRs.Open "Select * From [Product] " & addSql, conn, 1, 1 
     If Not TempRs.EOF Then
-        getProductUrl = GetHandleUrl(TempRs("FileName"))
-        Call WebDebug(getProductUrl, "act=CreateArticle&ID=" & TempRs("Id"))
-    End If : TempRs.Close
-End Function
-
-Function aotuGetProductFileName(ByVal a)
-    Dim b, c, d
-    d = a
-    a = Md5(d, 2) & Md5(d, 4)
-    b = True
-    While b
-        TempRs.Open "Select * From [Product] Where Title='" & a & "'", conn, 1, 1
+        getProductUrl = GetHandleUrl(TempRs("FileName")) 
+        Call WebDebug(getProductUrl, "act=CreateArticle&ID=" & TempRs("Id"))        '调试
+    End If : TempRs.Close 
+End Function 
+'自动处理产品文件名称 不重复    添加于2014,03,28
+Function aotuGetProductFileName(ByVal title)
+    Dim YesOK, fileName, TempTitle 
+    TempTitle = title 
+    title = Md5(TempTitle, 2) & Md5(TempTitle, 4) 
+    YesOK = True 
+    While YesOK
+        TempRs.Open "Select * From [Product] Where Title='" & title & "'", conn, 1, 1 
         If TempRs.EOF Then
-            b = False
-            aotuGetProductFileName = a
+            YesOK = False 
+            aotuGetProductFileName = title 
         Else
-            d = d & "1"
-            a = Md5(d, 2) & Md5(d, 4)
-        End If : TempRs.Close
-
-    Wend
-End Function
-
-Function upPage(a)
-    Dim b, c, d, e, f, g, h, i, j
-    RsTemp.Open "Select * From [Product] Where ID=" & a, conn, 1, 1
+            TempTitle = TempTitle & "1" 
+            title = Md5(TempTitle, 2) & Md5(TempTitle, 4) 
+        End If : TempRs.Close 
+        'Call Echo(TempTitle,Title) : Doevents
+    Wend 
+End Function 
+'产品上一页
+Function upPage(id)
+    Dim add, did, sid, tid, sql, url, Target, title, AHttpUrl 
+    RsTemp.Open "Select * From [Product] Where ID=" & id, conn, 1, 1 
     If Not RsTemp.Eof Then
-        c = RsTemp("BigClassName")
-        d = RsTemp("SmallClassName")
-        e = RsTemp("ThreeClassName")
-    End If : RsTemp.Close
+        did = RsTemp("BigClassName") 
+        sid = RsTemp("SmallClassName") 
+        tid = RsTemp("ThreeClassName") 
+    End If : RsTemp.Close 
 
-    If e <> "" Then
-        b = "BigClassName='" & c & "' And SmallClassName='" & d & "' And ThreeClassName='" & e & "' And"
-    ElseIf d <> "" Then
-        b = "BigClassName='" & c & "' And SmallClassName='" & d & "' And"
+    If tid <> "" Then
+        add = "BigClassName='" & did & "' And SmallClassName='" & sid & "' And ThreeClassName='" & tid & "' And" 
+    ElseIf sid <> "" Then
+        add = "BigClassName='" & did & "' And SmallClassName='" & sid & "' And" 
     Else
-        b = "BigClassName='" & c & "' And "
-    End If
-    f = "Select * from [Product] where " & b & "  Id < " & a & " order by Id  desc"
+        add = "BigClassName='" & did & "' And " 
+    End If 
+    sql = "Select * from [Product] where " & add & "  Id < " & id & " order by Id  desc" 
 
-    RsTemp.Open f, conn, 1, 1
+    RsTemp.Open sql, conn, 1, 1 
     If Not RsTemp.Eof Then
 
-        g = RsTemp("FileName")
-        If CheckRemoteUrl(g) = False Then
-            g = GetHandleUrl(RsTemp("FileName"))
-            Call WebDebug(g, "act=CreateArticle&ID=" & RsTemp("Id"))
-        End If
+        url = RsTemp("FileName") 
+        If CheckRemoteUrl(url) = False Then
+            url = GetHandleUrl(RsTemp("FileName")) 
+            Call WebDebug(url, "act=CreateArticle&ID=" & RsTemp("Id"))                  '调试
+        End If 
 
-        h = "_top"
-        i = RsTemp("Title")
-        j = "<a " & AHref(g, i, h) & ">上一篇："
+        Target = "_top" 
+        title = RsTemp("Title") 
+        AHttpUrl = "<a " & AHref(url, title, Target) & ">上一篇：" 
 
-        upPage = j & CutStr(i, 100, "...") & "</a><br>"
+        upPage = AHttpUrl & CutStr(title, 100, "...") & "</a><br>" 
     Else
-        upPage = InfoColor("上一篇：没有<br>", SysStyle(0)) & ""
-    End If
-    RsTemp.Close
-End Function
-
-Function downPage(a)
-    Dim b, c, d, e, f, g, h, i, j
-    RsTemp.Open "Select * From [Product] Where ID=" & a, conn, 1, 1
+        upPage = InfoColor("上一篇：没有<br>", SysStyle(0)) & "" 
+    End If 
+    RsTemp.Close 
+End Function 
+'产品下一页
+Function downPage(id)
+    Dim add, did, sid, tid, sql, url, Target, title, AHttpUrl 
+    RsTemp.Open "Select * From [Product] Where ID=" & id, conn, 1, 1 
     If Not RsTemp.EOF Then
-        c = RsTemp("BigClassName")
-        d = RsTemp("SmallClassName")
-        e = RsTemp("ThreeClassName")
-    End If : RsTemp.Close
+        did = RsTemp("BigClassName") 
+        sid = RsTemp("SmallClassName") 
+        tid = RsTemp("ThreeClassName") 
+    End If : RsTemp.Close 
 
-    If e <> "" Then
-        b = "BigClassName='" & c & "' And SmallClassName='" & d & "' And ThreeClassName='" & e & "' And"
-    ElseIf d <> "" Then
-        b = "BigClassName='" & c & "' And SmallClassName='" & d & "' And"
+    If tid <> "" Then
+        add = "BigClassName='" & did & "' And SmallClassName='" & sid & "' And ThreeClassName='" & tid & "' And" 
+    ElseIf sid <> "" Then
+        add = "BigClassName='" & did & "' And SmallClassName='" & sid & "' And" 
 
     Else
-        b = "BigClassName='" & c & "' And "
-    End If
-    f = "select * from Product where " & b & "  Id > " & a & " order by Id  asc"
-    RsTemp.Open f, conn, 1, 1
+        add = "BigClassName='" & did & "' And " 
+    End If 
+    sql = "select * from Product where " & add & "  Id > " & id & " order by Id  asc" 
+    RsTemp.Open sql, conn, 1, 1 
     If Not RsTemp.EOF Then
 
-        g = RsTemp("FileName")
-        If CheckRemoteUrl(g) = False Then
-            g = GetHandleUrl(RsTemp("FileName"))
-            Call WebDebug(g, "act=CreateArticle&ID=" & RsTemp("Id"))
-        End If
+        url = RsTemp("FileName") 
+        If CheckRemoteUrl(url) = False Then
+            url = GetHandleUrl(RsTemp("FileName")) 
+            Call WebDebug(url, "act=CreateArticle&ID=" & RsTemp("Id"))                  '调试
+        End If 
 
-        h = "_top"
-        i = RsTemp("Title")
-        j = "<a " & AHref(g, i, h) & ">下一篇："
+        Target = "_top" 
+        title = RsTemp("Title") 
+        AHttpUrl = "<a " & AHref(url, title, Target) & ">下一篇：" 
 
-        downPage = j & CutStr(i, 100, "...") & "</a><br>"
+        downPage = AHttpUrl & CutStr(title, 100, "...") & "</a><br>" 
 
     Else
-        downPage = InfoColor("下一篇：没有<br>", SysStyle(0))
-    End If
-    RsTemp.Close
-End Function
+        downPage = InfoColor("下一篇：没有<br>", SysStyle(0)) 
+    End If 
+    RsTemp.Close 
+End Function 
 
-
-Function getHandleFileName(ByVal a)
-
-    If a = "" Or a = "/" Or a = "\" Then
-        getHandleFileName = "/Index.Html"
+'处理获得完善Html文件名称
+Function getHandleFileName(ByVal fileName)
+    '处理获得文件路径
+    If fileName = "" Or fileName = "/" Or fileName = "\" Then
+        getHandleFileName = "/Index.Html" 
     Else
-        getHandleFileName = a & ".Html"
-    End If
-End Function
+        getHandleFileName = fileName & ".Html" 
+    End If 
+End Function 
 
 
 
+'生成HTML文件名称处理
+Function htmlFileName(ByVal fileName)
+    htmlFileName = handleSaveFileName(fileName, True) 
+End Function 
+'处理成能保存的文件名称(20150902)
+Function handleSaveFileName(ByVal fileName, isToPinYin)
+    Dim ZD, i, s 
+    fileName = Trim(fileName) 
+    If CheckMakeHtmlFile(fileName) = True Then
+        ZD = ":*?""<>|.," 
+        For i = 1 To Len(ZD)
+            s = Mid(ZD, i, 1) 
+            fileName = Replace(fileName, s, "") 
+        Next 
+        If isToPinYin = True Then
+            fileName = Trim(PinYin2(fileName)) 
+        End If 
+    End If 
+    'If FileName = "" Then FileName = GetDefaultFileName()            '文件名称为空则获得默认文件名称 不能要
+    handleSaveFileName = Left(fileName, 100)                                        '截取100个字符
+End Function 
 
-Function htmlFileName(ByVal a)
-    htmlFileName = handleSaveFileName(a, True)
-End Function
-
-Function handleSaveFileName(ByVal a, b)
-    Dim c, d, e
-    a = Trim(a)
-    If CheckMakeHtmlFile(a) = True Then
-        c = ":*?""<>|.,"
-        For d = 1 To Len(c)
-            e = Mid(c, d, 1)
-            a = Replace(a, e, "")
-        Next
-        If b = True Then
-            a = Trim(PinYin2(a))
-        End If
-    End If
-
-    handleSaveFileName = Left(a, 100)
-End Function
-
-
-Function checkMakeHtmlFile(ByVal a)
-    Dim b
-    a = Trim(LCase(Replace(a, "\", "/"))) : b = a
-    If InStr(a, "/") > 0 Then
-        a = Trim(Mid(a, InStrRev(a, "/") + 1))
-    End If
-    checkMakeHtmlFile = True
-    If Left(b, 7) = "http://" Or Left(b, 4) = "www." Or Left(b, 4) = "url:" Or Left(b, 5) = "/url:" Or Left(a, 1) = "#" Or Left(a, 11) = "javascript:" Then
-        checkMakeHtmlFile = False
-    End If
-End Function
-
-
-
-
-
-
-Function displayOnlineEditDialog(a, b)
-    displayOnlineEditDialog = HandleDisplayOnlineEditDialog(a, b, "", "")
-End Function
-
-Function displayOnlineED2(a, b, c)
-    displayOnlineED2 = HandleDisplayOnlineEditDialog(a, b, "", c)
-End Function
-%>
-
+'检查是否可以创建文件
+Function checkMakeHtmlFile(ByVal fileName)
+    Dim url 
+    fileName = Trim(LCase(Replace(fileName, "\", "/"))) : url = fileName 
+    If InStr(fileName, "/") > 0 Then
+        fileName = Trim(Mid(fileName, InStrRev(fileName, "/") + 1)) 
+    End If 
+    checkMakeHtmlFile = True 
+    If Left(url, 7) = "http://" Or Left(url, 4) = "www." Or Left(url, 4) = "url:" Or Left(url, 5) = "/url:" Or Left(fileName, 1) = "#" Or Left(fileName, 11) = "javascript:" Then
+        checkMakeHtmlFile = False 
+    End If 
+End Function 
+'显示在线修改面板 2014 12 12
+'用法：
+'Url = ""& adminDir &"MainInfo.Asp?act=ShowEdit&Id=" & Id & "&n=" & GetRnd(11)
+'Content = DisplayOnlineEditDialog(Url, Content)
+'添加在线修改
+'MainContent = DisplayOnlineEditDialog(""& adminDir &"NavManage.Asp?act=EditNavBig&Id=" & TempRs("Id") & "&n=" & GetRnd(11), MainContent)
+Function displayOnlineEditDialog(url, content)
+    displayOnlineEditDialog = HandleDisplayOnlineEditDialog(url, content, "", "") 
+End Function 
+'在线修改快速添加二   S = DisplayOnlineED2(Url, S, "<li|<a ")
+Function displayOnlineED2(url, content, ReplaceStr)
+    displayOnlineED2 = HandleDisplayOnlineEditDialog(url, content, "", ReplaceStr) 
+End Function 
+%> 
 

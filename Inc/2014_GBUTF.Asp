@@ -2,394 +2,393 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'编码互换 GB2312与UTF-8转换
 
-
-
-Function UTF2GB(ByVal a)
-    Dim b, c
-    For b = 1 To Len(a)
-
-        If Mid(a, b, 1) = "%" Then
-
-            If Len(a) >= b + 8 Then
-                c = c & ConvChinese(Mid(a, b, 9))
-                b = b + 8
+'UTF转GB23
+Function UTF2GB(ByVal UTFStr)
+    Dim Dig, GBStr 
+    For Dig = 1 To Len(UTFStr)
+        '如果UTF8编码文字以%开头则进行转换
+        If Mid(UTFStr, Dig, 1) = "%" Then
+            'UTF8编码文字大于8则转换为汉字
+            If Len(UTFStr) >= Dig + 8 Then
+                GBStr = GBStr & ConvChinese(Mid(UTFStr, Dig, 9)) 
+                Dig = Dig + 8 
             Else
-                c = c & Mid(a, b, 1)
-            End If
+                GBStr = GBStr & Mid(UTFStr, Dig, 1) 
+            End If 
         Else
-            c = c & Mid(a, b, 1)
-        End If
-    Next
-    UTF2GB = c
+            GBStr = GBStr & Mid(UTFStr, Dig, 1) 
+        End If 
+    Next 
+    UTF2GB = GBStr 
 End Function
-
-
-Function CheckUTFToGB2312(ByVal a)
-    Dim b, c
-    CheckUTFToGB2312 = True
-    For b = 1 To Len(a)
-
-        If Mid(a, b, 1) = "%" Then
-
-            If Len(a) >= b + 8 Then
-                If ConvChinese(Mid(a, b, 9)) = "[出错Error]" Then
-                    CheckUTFToGB2312 = False : Exit Function
-                End If
-                b = b + 8
+ 
+'检测是否可以把UTF转GB2312
+Function CheckUTFToGB2312(ByVal UTFStr)
+    Dim Dig, GBStr 
+    CheckUTFToGB2312 = True 
+    For Dig = 1 To Len(UTFStr)
+        '如果UTF8编码文字以%开头则进行转换
+        If Mid(UTFStr, Dig, 1) = "%" Then
+            'UTF8编码文字大于8则转换为汉字
+            If Len(UTFStr) >= Dig + 8 Then
+                If ConvChinese(Mid(UTFStr, Dig, 9)) = "[出错Error]" Then
+                    CheckUTFToGB2312 = False : Exit Function 
+                End If 
+                Dig = Dig + 8 
             Else
-                c = c & Mid(a, b, 1)
-            End If
+                GBStr = GBStr & Mid(UTFStr, Dig, 1) 
+            End If 
         Else
-            c = c & Mid(a, b, 1)
-        End If
-    Next
+            GBStr = GBStr & Mid(UTFStr, Dig, 1) 
+        End If 
+    Next 
 End Function
-
-
-Function ConvChinese(a)
-    On Error Resume Next
-    Err.Clear
-    Dim b, c, d, e, f
-    b = Split(Mid(a, 2), "%")
-    c = 0
-    d = 0
-    For c = 0 To UBound(b)
-        b(c) = c16to2(b(c))
-    Next
-    For c = 0 To UBound(b) - 1
-        e = InStr(b(c), "0")
-        f = ""
-        For d = 1 To e - 1
-            If d = 1 Then
-                b(c) = Right(b(c), Len(b(c)) - e)
-                f = f & b(c)
+ 
+'UTF8编码文字将转换为汉字 配合上面
+Function ConvChinese(X)
+    On Error Resume Next 
+    Err.Clear 
+    Dim ArrStr, I, J, DigS, Unicode 
+    ArrStr = Split(Mid(X, 2), "%") 
+    I = 0 
+    J = 0 
+    For I = 0 To UBound(ArrStr)
+        ArrStr(I) = c16to2(ArrStr(I)) 
+    Next 
+    For I = 0 To UBound(ArrStr) - 1
+        DigS = InStr(ArrStr(I), "0") 
+        Unicode = "" 
+        For J = 1 To DigS - 1
+            If J = 1 Then
+                ArrStr(I) = Right(ArrStr(I), Len(ArrStr(I)) - DigS) 
+                Unicode = Unicode & ArrStr(I) 
             Else
-                c = c + 1
-                b(c) = Right(b(c), Len(b(c)) - 2)
-                f = f & b(c)
-            End If
-        Next
+                I = I + 1 
+                ArrStr(I) = Right(ArrStr(I), Len(ArrStr(I)) - 2) 
+                Unicode = Unicode & ArrStr(I) 
+            End If 
+        Next 
 
-        If Len(c2to16(f)) = 4 Then
-            ConvChinese = ConvChinese & ChrW(Int("&H" & c2to16(f)))
+        If Len(c2to16(Unicode)) = 4 Then
+            ConvChinese = ConvChinese & ChrW(Int("&H" & c2to16(Unicode))) 
         Else
-            ConvChinese = ConvChinese & Chr(Int("&H" & c2to16(f)))
-        End If
-        If Err <> 0 Then ConvChinese = "[出错Error]" : Exit Function
-    Next
+            ConvChinese = ConvChinese & Chr(Int("&H" & c2to16(Unicode))) 
+        End If 
+        If Err <> 0 Then ConvChinese = "[出错Error]" : Exit Function '出错就退出
+    Next 
 End Function
+ 
 
+ 
+'转UTF8编码，非常精准，好用，(2014 12 11)
+Function UTF8_URLEncoding(szInput)
+    Dim wch, uch, szRet 
+    Dim x 
+    Dim nAsc 
+    If szInput = "" Then
+        UTF8_URLEncoding = szInput 
+        Exit Function 
+    End If 
+    For x = 1 To Len(szInput)
+        wch = Mid(szInput, x, 1) 
+        nAsc = AscW(wch) 
 
+        If nAsc < 0 Then nAsc = nAsc + 65536 
 
-
-Function UTF8_URLEncoding(a)
-    Dim b, c, d
-    Dim e
-    Dim f
-    If a = "" Then
-        UTF8_URLEncoding = a
-        Exit Function
-    End If
-    For e = 1 To Len(a)
-        b = Mid(a, e, 1)
-        f = AscW(b)
-
-        If f < 0 Then f = f + 65536
-
-        If(f And &HFF80) = 0 Then
-            d = d & b
+        If(nAsc And &HFF80) = 0 Then
+            szRet = szRet & wch 
         Else
-            If(f And &HF000) = 0 Then
-                c = "%" & Hex(((f \ 2 ^ 6)) Or &HC0) & Hex(f And &H3F Or &H80)
-                d = d & c
+            If(nAsc And &HF000) = 0 Then
+                uch = "%" & Hex(((nAsc \ 2 ^ 6)) Or &HC0) & Hex(nAsc And &H3F Or &H80) 
+                szRet = szRet & uch 
             Else
-                c = "%" & Hex((f \ 2 ^ 12) Or &HE0) & "%" & _
-                Hex((f \ 2 ^ 6) And &H3F Or &H80) & "%" & _
-                Hex(f And &H3F Or &H80)
-                d = d & c
-            End If
-        End If
-    Next
-    UTF8_URLEncoding = d
+                uch = "%" & Hex((nAsc \ 2 ^ 12) Or &HE0) & "%" & _ 
+                Hex((nAsc \ 2 ^ 6) And &H3F Or &H80) & "%" & _ 
+                Hex(nAsc And &H3F Or &H80) 
+                szRet = szRet & uch 
+            End If 
+        End If 
+    Next 
+    UTF8_URLEncoding = szRet 
 End Function
+ 
+'GB转UTF8--将GB编码文字转换为UTF8编码文字  这个不精准，等以后给废除掉
+Function toUTF8(szInput)
+    Dim wch, uch, szRet 
+    Dim X 
+    Dim nAsc 
+    '如果输入参数为空，则退出函数
+    If szInput = "" Then
+        toUTF8 = szInput 
+        Exit Function 
+    End If 
+    '开始转换
+    For X = 1 To Len(szInput)
+        '利用mid函数分拆GB编码文字
+        wch = Mid(szInput, X, 1) 
+        '利用ascW函数返回每一个GB编码文字的Unicode字符代码
+        '注：asc函数返回的是ANSI 字符代码，注意区别
+        nAsc = AscW(wch) 
+        If nAsc < 0 Then nAsc = nAsc + 65536 
 
-
-Function toUTF8(a)
-    Dim b, c, d
-    Dim e
-    Dim f
-
-    If a = "" Then
-        toUTF8 = a
-        Exit Function
-    End If
-
-    For e = 1 To Len(a)
-
-        b = Mid(a, e, 1)
-
-
-        f = AscW(b)
-        If f < 0 Then f = f + 65536
-
-        If(f And &HFF80) = 0 Then
-            d = d & b
+        If(nAsc And &HFF80) = 0 Then
+            szRet = szRet & wch 
         Else
-            If(f And &HF000) = 0 Then
-                c = "%" & Hex(((f / 2 ^ 6)) Or &HC0) & Hex(f And &H3F Or &H80)
-                d = d & c
+            If(nAsc And &HF000) = 0 Then
+                uch = "%" & Hex(((nAsc / 2 ^ 6)) Or &HC0) & Hex(nAsc And &H3F Or &H80) 
+                szRet = szRet & uch 
             Else
+                'GB编码文字的Unicode字符代码在0800 - FFFF之间采用三字节模版
+                uch = "%" & Hex((nAsc / 2 ^ 12) Or &HE0) & "%" & _ 
+                Hex((nAsc / 2 ^ 6) And &H3F Or &H80) & "%" & _ 
+                Hex(nAsc And &H3F Or &H80) 
+                szRet = szRet & uch 
+            End If 
+        End If 
+    Next 
 
-                c = "%" & Hex((f / 2 ^ 12) Or &HE0) & "%" & _
-                Hex((f / 2 ^ 6) And &H3F Or &H80) & "%" & _
-                Hex(f And &H3F Or &H80)
-                d = d & c
-            End If
-        End If
-    Next
-
-    toUTF8 = d
+    toUTF8 = szRet 
 End Function
-
-
-Function chinese2unicode(a)
-    Dim b
-    Dim c
-    Dim d
-    If(IsNull(a)) Then
-        Exit Function
-    End If
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        d = d & Chr(38)
-        d = d & Chr(35)
-        d = d & Chr(120)
-        d = d & Hex(AscW(c))
-        d = d & Chr(59)
-    Next
-    chinese2unicode = d
+ 
+'GB转unicode---将GB编码文字转换为unicode编码文字
+Function chinese2unicode(Str)
+    Dim I 
+    Dim Str_one 
+    Dim Str_unicode 
+    If(IsNull(Str)) Then
+        Exit Function 
+    End If 
+    For I = 1 To Len(Str)
+        Str_one = Mid(Str, I, 1) 
+        Str_unicode = Str_unicode & Chr(38) 
+        Str_unicode = Str_unicode & Chr(35) 
+        Str_unicode = Str_unicode & Chr(120) 
+        Str_unicode = Str_unicode & Hex(AscW(Str_one)) 
+        Str_unicode = Str_unicode & Chr(59) 
+    Next 
+    chinese2unicode = Str_unicode 
 End Function
+ 
 
-
-
-Function isvalidhex(a)
-    Dim b
-    isvalidhex = True
-    a = UCase(a)
-    If Len(a) <> 3 Then isvalidhex = False : Exit Function
-    If Left(a, 1) <> "%" Then isvalidhex = False : Exit Function
-    b = Mid(a, 2, 1)
-    If Not(((b >= "0") and(b <= "9")) Or((b >= "A") and(b <= "Z"))) Then isvalidhex = False : Exit Function
-    b = Mid(a, 3, 1)
-    If Not(((b >= "0") and(b <= "9")) Or((b >= "A") and(b <= "Z"))) Then isvalidhex = False : Exit Function
+'判断是否为有效的十六进制代码
+Function isvalidhex(Str)
+    Dim C 
+    isvalidhex = True 
+    Str = UCase(Str) 
+    If Len(Str) <> 3 Then isvalidhex = False : Exit Function 
+    If Left(Str, 1) <> "%" Then isvalidhex = False : Exit Function 
+    C = Mid(Str, 2, 1) 
+    If Not(((C >= "0") and(C <= "9")) Or((C >= "A") and(C <= "Z"))) Then isvalidhex = False : Exit Function 
+    C = Mid(Str, 3, 1) 
+    If Not(((C >= "0") and(C <= "9")) Or((C >= "A") and(C <= "Z"))) Then isvalidhex = False : Exit Function 
 End Function
-
-
-
-Function escape(a)
-    Dim b, c, d, e
-    c = ""
-    For b = 1 To Len(a)
-        d = Mid(a, b, 1)
-        e = AscW(d)
-        If(e >= 48 And e <= 57) Or(e >= 65 And e <= 90) Or(e >= 97 And e <= 122) Then
-            c = c & d
-        ElseIf InStr("@*_-./", d) > 0 Then
-            c = c & d
-        ElseIf e > 0 And e < 16 Then
-            c = c & "%0" & Hex(e)
-        ElseIf e >= 16 And e < 256 Then
-            c = c & "%" & Hex(e)
+ 
+'---------------------- 自己文件引用 ----------------------------
+'作用同JS的escape一样
+Function escape(Str)
+    Dim I, S, C, A 
+    S = "" 
+    For I = 1 To Len(Str)
+        C = Mid(Str, I, 1) 
+        A = AscW(C) 
+        If(A >= 48 And A <= 57) Or(A >= 65 And A <= 90) Or(A >= 97 And A <= 122) Then
+            S = S & C 
+        ElseIf InStr("@*_-./", C) > 0 Then
+            S = S & C 
+        ElseIf A > 0 And A < 16 Then
+            S = S & "%0" & Hex(A) 
+        ElseIf A >= 16 And A < 256 Then
+            S = S & "%" & Hex(A) 
         Else
-            c = c & "%u" & Hex(e)
-        End If
-    Next
-    escape = c
+            S = S & "%u" & Hex(A) 
+        End If 
+    Next 
+    escape = S 
 End Function
+ 
 
-
-
-Function unescape(a)
-    Dim b, c, d, e, f, g, h
-    e = False
-    f = ""
-    c = ""
-    For b = 1 To Len(a)
-        d = Mid(a, b, 1)
-        If d = "+" Then
-            c = c & " "
-        ElseIf Mid(a, b, 2) = "%u" And b <= Len(a) - 5 Then
-            If IsNumeric("&H" & Mid(a, b + 2, 4)) Then
-                c = c & ChrW(CInt("&H" & Mid(a, b + 2, 4)))
-                b = b + 5
+'作用同JS的unescape一样
+Function unescape(Str)
+    Dim I, NewStr, C, HaveChar, LastChar, next_1_c, next_1_num 
+    HaveChar = False 
+    LastChar = "" 
+    NewStr = "" 
+    For I = 1 To Len(Str)
+        C = Mid(Str, I, 1) 
+        If C = "+" Then
+            NewStr = NewStr & " " 
+        ElseIf Mid(Str, I, 2) = "%u" And I <= Len(Str) - 5 Then
+            If IsNumeric("&H" & Mid(Str, I + 2, 4)) Then
+                NewStr = NewStr & ChrW(CInt("&H" & Mid(Str, I + 2, 4))) 
+                I = I + 5 
             Else
-                c = c & d
-            End If
-
-
-
-
-
-
-
-        ElseIf d = "%" And b <= Len(a) - 2 Then
-            g = Mid(a, b + 1, 2)
-            If IsNumeric("&H" & g) Then
-                h = CInt("&H" & g)
-                If e = True Then
-                    e = False
-                    c = c & Chr(CInt("&H" & f & g))
+                NewStr = NewStr & C 
+            End If 
+            'ElseIf c="%" and i<=Len(str)-2 Then
+            'If IsNumeric("&H" & Mid(str,i+1,2)) Then
+            'newstr = newstr & ChrW(CInt("&H" & Mid(str,i+1,2)))
+            'i = i+2
+            'Else
+            'newstr = newstr & c
+        'End If
+        ElseIf C = "%" And I <= Len(Str) - 2 Then
+            next_1_c = Mid(Str, I + 1, 2) 
+            If IsNumeric("&H" & next_1_c) Then
+                next_1_num = CInt("&H" & next_1_c) 
+                If HaveChar = True Then
+                    HaveChar = False 
+                    NewStr = NewStr & Chr(CInt("&H" & LastChar & next_1_c)) 
                 Else
-                    If Abs(h) <= 127 Then
-                        c = c & Chr(h)
+                    If Abs(next_1_num) <= 127 Then
+                        NewStr = NewStr & Chr(next_1_num) 
                     Else
-                        e = True
-                        f = g
-                    End If
-                End If
-                b = b + 2
+                        HaveChar = True 
+                        LastChar = next_1_c 
+                    End If 
+                End If 
+                I = I + 2 
             Else
-                c = c & d
-            End If
+                NewStr = NewStr & C 
+            End If 
         Else
-            c = c & d
-        End If
-    Next
-    unescape = c
+            NewStr = NewStr & C 
+        End If 
+    Next 
+    unescape = NewStr 
 End Function
-
-
-Function ChineseToUnicode(a)
-    Dim b, c, d
-    For b = 1 To Len(a)
-        c = Mid(a, b, 1)
-        c = "&#x" & Hex(AscW(c)) & ";"
-        d = d & c
-    Next
-    ChineseToUnicode = d
+ 
+'汉字乱码如：（中国，&#x4E2D;&#x56FD;）
+Function ChineseToUnicode(Str)
+    Dim I, S, C 
+    For I = 1 To Len(Str)
+        S = Mid(Str, I, 1) 
+        S = "&#x" & Hex(AscW(S)) & ";" 
+        C = C & S 
+    Next 
+    ChineseToUnicode = C 
 End Function
-
-
-Function UnicodeToChinese(a)
-    Dim b, c, d
-    b = Split(a, ";")
-    For Each c In b
-        If InStr(c, "&#x") > 0 Then
-            c = Right(c, Len(c) - 3)
-            d = d & ChrW(CInt("&H" & c))
-        End If
-    Next
-    UnicodeToChinese = d
+ 
+'解汉字乱码
+Function UnicodeToChinese(Content)
+    Dim SplStr, S, C 
+    SplStr = Split(Content, ";") 
+    For Each S In SplStr
+        If InStr(S, "&#x") > 0 Then
+            S = Right(S, Len(S) - 3) 
+            C = C & ChrW(CInt("&H" & S)) 
+        End If 
+    Next 
+    UnicodeToChinese = C 
 End Function
+ 
 
-
-
-
-Function URLEncode(ByRef a)
-    Dim b
-    Dim c
-    For b = 1 To Len(a)
-        If Asc(Mid(a, b, 1)) < 0 Then
-            c = "%" & Right(CStr(Hex(Asc(Mid(a, b, 1)))), 2)
-            c = "%" & Left(CStr(Hex(Asc(Mid(a, b, 1)))), Len(CStr(Hex(Asc(Mid(a, b, 1))))) - 2) & c
-            URLEncode = URLEncode & c
-        ElseIf(Asc(Mid(a, b, 1)) >= 65 And Asc(Mid(a, b, 1)) <= 90) Or(Asc(Mid(a, b, 1)) >= 97 And Asc(Mid(a, b, 1)) <= 122) Then
-            URLEncode = URLEncode & Mid(a, b, 1)
+ 
+'Url加码
+Function URLEncode(ByRef StrUrl)
+    Dim I 
+    Dim TempStr 
+    For I = 1 To Len(StrUrl)
+        If Asc(Mid(StrUrl, I, 1)) < 0 Then
+            TempStr = "%" & Right(CStr(Hex(Asc(Mid(StrUrl, I, 1)))), 2) 
+            TempStr = "%" & Left(CStr(Hex(Asc(Mid(StrUrl, I, 1)))), Len(CStr(Hex(Asc(Mid(StrUrl, I, 1))))) - 2) & TempStr 
+            URLEncode = URLEncode & TempStr 
+        ElseIf(Asc(Mid(StrUrl, I, 1)) >= 65 And Asc(Mid(StrUrl, I, 1)) <= 90) Or(Asc(Mid(StrUrl, I, 1)) >= 97 And Asc(Mid(StrUrl, I, 1)) <= 122) Then
+            URLEncode = URLEncode & Mid(StrUrl, I, 1) 
         Else
-            URLEncode = URLEncode & "%" & Hex(Asc(Mid(a, b, 1)))
-        End If
-    Next
+            URLEncode = URLEncode & "%" & Hex(Asc(Mid(StrUrl, I, 1))) 
+        End If 
+    Next 
 End Function
-
-
-Function URLDecode(ByRef a)
-    Dim b
-    If InStr(a, "%") = 0 Then URLDecode = a : Exit Function
-    For b = 1 To Len(a)
-        If Mid(a, b, 1) = "%" Then
-            If Val("&H" & Mid(a, b + 1, 2)) > 127 Then
-                URLDecode = URLDecode & Chr(Val("&H" & Mid(a, b + 1, 2) & Mid(a, b + 4, 2)))
-                b = b + 5
+ 
+'URL解码   这个好用
+Function URLDecode(ByRef StrUrl)
+    Dim I 
+    If InStr(StrUrl, "%") = 0 Then URLDecode = StrUrl : Exit Function 
+    For I = 1 To Len(StrUrl)
+        If Mid(StrUrl, I, 1) = "%" Then
+            If Val("&H" & Mid(StrUrl, I + 1, 2)) > 127 Then
+                URLDecode = URLDecode & Chr(Val("&H" & Mid(StrUrl, I + 1, 2) & Mid(StrUrl, I + 4, 2))) 
+                I = I + 5 
             Else
-                URLDecode = URLDecode & Chr(Val("&H" & Mid(a, b + 1, 2)))
-                b = b + 2
-            End If
+                URLDecode = URLDecode & Chr(Val("&H" & Mid(StrUrl, I + 1, 2))) 
+                I = I + 2 
+            End If 
         Else
-            URLDecode = URLDecode & Mid(a, b, 1)
-        End If
-    Next
+            URLDecode = URLDecode & Mid(StrUrl, I, 1) 
+        End If 
+    Next 
 End Function
-
-
-Function GBtoUTF8(a)
-    Dim b, c, d
-    Dim e
-    Dim f
-
-    If a = "" Then
-        GBtoUTF8 = a
-        Exit Function
-    End If
-
-    For e = 1 To Len(a)
-        b = Mid(a, e, 1)
-        f = AscW(b)
-        If f < 0 Then f = f + 65536
-        If(f And &HFF80) = 0 Then
-            d = d & b
+ 
+'GB2312到UTF-8
+Function GBtoUTF8(szInput)
+    Dim wch, uch, szRet 
+    Dim X 
+    Dim nAsc 
+    '如果输入参数为空，则退出函数
+    If szInput = "" Then
+        GBtoUTF8 = szInput 
+        Exit Function 
+    End If 
+    '开始转换
+    For X = 1 To Len(szInput)
+        wch = Mid(szInput, X, 1) 
+        nAsc = AscW(wch) 
+        If nAsc < 0 Then nAsc = nAsc + 65536 
+        If(nAsc And &HFF80) = 0 Then
+            szRet = szRet & wch 
         Else
-            If(f And &HF000) = 0 Then
-                c = "%" & Hex(((f \ 2 ^ 6)) Or &HC0) & Hex(f And &H3F Or &H80)
-                d = d & c
+            If(nAsc And &HF000) = 0 Then
+                uch = "%" & Hex(((nAsc \ 2 ^ 6)) Or &HC0) & Hex(nAsc And &H3F Or &H80) 
+                szRet = szRet & uch 
             Else
-                c = "%" & Hex((f \ 2 ^ 12) Or &HE0) & "%" & _
-                Hex((f \ 2 ^ 6) And &H3F Or &H80) & "%" & _
-                Hex(f And &H3F Or &H80)
-                d = d & c
-            End If
-        End If
-    Next
-    GBtoUTF8 = d
+                uch = "%" & Hex((nAsc \ 2 ^ 12) Or &HE0) & "%" & _ 
+                Hex((nAsc \ 2 ^ 6) And &H3F Or &H80) & "%" & _ 
+                Hex(nAsc And &H3F Or &H80) 
+                szRet = szRet & uch 
+            End If 
+        End If 
+    Next 
+    GBtoUTF8 = szRet 
 End Function
-
-
-Function EncDecURL(ByVal a, ByVal b)
-    Dim c, d, e, f, g, h
-    c = "abcdefghijklmnopqrstuvwxyz0123456789:/.=& ()%"
-    d = "9ab1cdefghij234klmnopqrst678uvwxyz:/.05*-$[]@"
-    If b = "解密" Or b = "0" Then
-        e = c
-        c = d
-        d = e
-    End If
-    For f = 1 To Len(a)
-        g = Mid(a, f, 1)
-        If InStr(c, g) > 0 Then
-            g = Mid(d, InStr(c, g), 1)
-        End If
-        h = h & g
-    Next
-    EncDecURL = h
+ 
+'加密解密URL
+Function EncDecURL(ByVal Content, ByVal SType)
+    Dim Ystr, TStr, Temp, I, S, C 
+    Ystr = "abcdefghijklmnopqrstuvwxyz0123456789:/.=& ()%" 
+    TStr = "9ab1cdefghij234klmnopqrst678uvwxyz:/.05*-$[]@" 
+    If SType = "解密" Or SType = "0" Then
+        Temp = Ystr 
+        Ystr = TStr 
+        TStr = Temp 
+    End If 
+    For I = 1 To Len(Content)
+        S = Mid(Content, I, 1) 
+        If InStr(Ystr, S) > 0 Then
+            S = Mid(TStr, InStr(Ystr, S), 1) 
+        End If 
+        C = C & S 
+    Next 
+    EncDecURL = C 
 End Function
-
-
-Function EncURL(a)
-    EncURL = EncDecURL(a, "加密")
+ 
+'加密URL (辅助)
+Function EncURL(Content)
+    EncURL = EncDecURL(Content, "加密") 
 End Function
-
-
-Function DecURL(a)
-    DecURL = EncDecURL(a, "解密")
+ 
+'解密URL (辅助)
+Function DecURL(Content)
+    DecURL = EncDecURL(Content, "解密") 
 End Function
-
-%>
-
+ 
+%> 
 

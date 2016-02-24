@@ -1,5 +1,5 @@
 ASPPHPCMS v1.0 ÊÇÒ»¸öÃâ·Ñ¿ªÔ´µÄ£¬¿ìËÙ¡¢¼òµ¥µÄÍøÕ¾¹ÜÀíÏµÍ³£¬ÓÐASPºÍPHPÁ½ÖÖ°æ±¾£¬²¢ÇÒÊÇÍ¨ÓÃµÄ £¬´´Á¢ÓÚ2015Äê¡£
-
+Ä¬ÈÏÌá¹©ÈýÌ×Ä£°å°¸Àý
 
 
 ×÷Õß£ºÔÆ¶Ë (¾«Í¨ASP/VB/PHP/JS/Flash£¬½»Á÷ºÏ×÷¿ÉÁªÏµ±¾ÈË)
@@ -9,18 +9,7 @@ ASPPHPCMS v1.0 ÊÇÒ»¸öÃâ·Ñ¿ªÔ´µÄ£¬¿ìËÙ¡¢¼òµ¥µÄÍøÕ¾¹ÜÀíÏµÍ³£¬ÓÐASPºÍPHPÁ½ÖÖ°æ±¾£¬²
 ¸ü¶à°ïÖú£¬ÎÄµµ£¬¸üÐÂ¡¡Çë¼ÓÈº(35915100)»òä¯ÀÀ(http://sharembweb.com)
 *                                    Powered By ÔÆ¶Ë 
 
-
-
-
-ASPPHPCMS v1.1
-
-1¡¢Ä£°åÔ¤ÀÀ£¨sharembweb£©
-
-2¡¢Ä£°åÔ¤ÀÀ£¨ufoer£©
-
-3¡¢ÍøÕ¾ºóÌ¨/admin/index.asp ÕËºÅ£ºadmin ÃÜÂë£ºadmin
-
-4¡¢¹¦ÄÜ£ºÉú³É´¿html¾²Ì¬ÍøÒ³£¬³ÌÐòÓëÄ£°å·ÖÏí¼¼Êõ£¬±êÇ©¼°Æä¼òµ¥Ò×ÓÃ
+ 
 
 ASPPHPCMS¹ÜÍø
 ½»Á÷Ñ§Ï°QQ£¨313801120£© Èº£¨35915100£©(ÈºÀïÒÑÓÐ¼¸°ÙÈË)    ÓÊÏä313801120@qq.com
@@ -30,9 +19,25 @@ ASPPHPCMS¹ÜÍø
 
 
 
-ASPPHPCMS Éý¼¶µ½ v1.1
-¸üÐÂÊ±¼ä£º20160216
-1¡¢Ôö¼ÓÁËPHP°æ±¾
+¡ª¡ª- 20016.02.02 update ¡ª¡ª
+1¡¢¼Ó¸öÎÄÕÂÆÀÂÛ¹¦ÄÜ£¬Ç°¶ËÓëºóÌ¨°üÀ¨Êý¾Ý¿âÉè¼Æ¶¼OK
+2¡¢handleRGVº¯Êý¹¦ÄÜ¼ÓÇ¿£¬¿É¶ÔÌæ»»±äÁ¿½øÐÐ¶¯×÷´¦Àí
+3¡¢Ä£°åÖÇÄÜÆ¥ÅäÈç News_List.html Æ¥ÅäÐÂÎÅÁÐ±í News_Detail.html Æ¥ÅäÐÂÎÅÏ¸½Ú ×Ô¶¨ÒåÄ£°å¿ÉÊÖ¶¯ÐÞ¸ÄÄ£ÑùÎÄ¼þ
+4¡¢[$cfg_webtitle fontcolor='red'$] È«¾Ö±äÁ¿Ìí¼ÓÁËº¯Êý¹¦ÄÜ
+
+¡ª¡ª- 20016.01.01 update ¡ª¡ª
+1¡¢ASPPHPCMSÉý¼¶µ½ ASPPHPCMS v1.1
 2¡¢ºóÌ¨Ôö¼Ó robotes.txtÉú³É
 3¡¢ºóÌ¨Ôö¼Ósitemap.xmlÓësitemap.htmlÉú³É 
 4¡¢Ç°¶ËÌí¼ÓÔÚÏßÐÞ¸ÄÍøÕ¾¹¦ÄÜ
+
+¡ª¡ª- 20015.11.11 update ¡ª¡ª
+1¡¢ASPPHPCMSµÄPHP°æ ¿ª·¢Íê³É
+2¡¢¼ÓÈëÁËÉú³É´¿html¾²Ì¬ÍøÒ³¹¦ÄÜ
+3¡¢ASPÓëPHP¿ÉÇÐ»»
+
+¡ª¡ª- 20015.10.10 update ¡ª¡ª
+1¡¢ASPPHPCMS v1.0 ÕýÊ½ÉÏÏß
+2¡¢×Ô´øÄ£°å£¨sharembwebºÍufoer£©
+3¡¢ÍøÕ¾ºóÌ¨/admin/index.asp ÕËºÅ£ºadmin ÃÜÂë£ºadmin
+4¡¢ASP°æ¿ª·¢Íê³É£¬²âÊÔÍ¨¹ý£¬PHP´ý¿ª·¢

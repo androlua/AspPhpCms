@@ -1,3 +1,13 @@
+<?php 
+/************************************************************
+作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
+版权：源代码公开，各种用途均可免费使用。 
+创建：2016-02-24
+联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
+更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
+*                                    Powered By 云端 
+************************************************************/
+?>
 <?PHP
 //系统
 require_once './ASP.php';
@@ -317,7 +327,7 @@ if(isset($_GET['act'])){
 			}else{
 				echo("出错，没有权限操作文件，手动配置<hr>".handlePath('conn.php').'<hr>配置完成后再点下一步<hr>');
 			}
-			echo '<a href="install.php">创建数据库成功，下一步创建表</a>';
+			step2();
 			 
 			 
 			exit();
@@ -373,7 +383,7 @@ function GetStrCut( $Content, $StartStr, $EndStr, $CutType){
 ?>
 <form id="form1" name="form1" method="post" action="?act=install">
 <div class="pright">
-    <div class="pr-title"><h3>数据库设定</h3></div>
+    <div class="pr-title"><h3>数据库设定 第一步</h3></div>
     <table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
         <tbody>
             <tr>
@@ -499,7 +509,26 @@ function GetStrCut( $Content, $StartStr, $EndStr, $CutType){
     </div>
 </div>
 </form>
-
+<?php
+function step2(){
+?>
+<div class="pright">
+    <div class="pr-title"><h3>数据库设定 第二步</h3></div>
+    <table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
+        <tbody>
+            <tr>
+                <td class="onetd"><strong>提示：</strong></td>
+                <td> <small>创建数据库成功。(如果不恢复数据库将退出)</small> </td>
+            </tr> 
+      </tbody>
+    </table>
+    <div class="btn-box"> 
+        <input name="提交" type="button" class="btnclick1" onclick="window.location.href='install.php';" value="下一步创建表">
+    </div>
+</div>
+<?PHP
+}
+?>
 
 
 </body>

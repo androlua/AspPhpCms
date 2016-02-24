@@ -42,4 +42,3 @@
 [txtIsCodeCssTemplate]{1}
 [txtIsDeleteRepeatCssClass]{1}
 [txtCopyImageEncryption]{|left|nav|module| }
-

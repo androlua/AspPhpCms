@@ -2,48 +2,48 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
+'删除这种多余标签 <R#读出内容BlockName网站公告 start#>  <R#读出内容BlockName网站公告 end#>
+'对模板处理 
 
-
-
-
-
-Function ReadColumeSetTitle(a,b,c,d)
-	Dim TitleWidth											
-	Dim TitleHeight											
-	Dim ContentHeight										
-	Dim ContentWidth										
+'VB不引用 Start
+'读栏目并赋标题与内容值
+Function ReadColumeSetTitle(Action,ID,ColumeTitle,ColumeContent)
+	Dim TitleWidth											'标题宽度
+	Dim TitleHeight											'标题高度
+	Dim ContentHeight										'内容高度
+	Dim ContentWidth										'内容宽度
 	Dim ContentCss	
 	
-	TitleWidth = RParam(a,"TitleWidth")				
-	TitleHeight = RParam(a,"TitleHeight")				
-	ContentWidth = RParam(a,"ContentWidth")			
-	ContentHeight = RParam(a,"ContentHeight")			
+	TitleWidth = RParam(Action,"TitleWidth")				'获得标题高度	待应用20150715
+	TitleHeight = RParam(Action,"TitleHeight")				'获得标题宽度
+	ContentWidth = RParam(Action,"ContentWidth")			'获得内容宽度
+	ContentHeight = RParam(Action,"ContentHeight")			'获得内容高度
 	
-	
+	'标题宽
 	TitleWidth=Trim(TitleWidth)
-	
+	'自动加px单位，不加会无效果 20150115
 	If Right(TitleHeight,1)<>"%" And Right(TitleHeight,2)<>"px" and TitleHeight<>"" and TitleHeight<>"auto" Then
 		TitleHeight = TitleHeight & "px"
 	End If
 	If Right(TitleWidth,1)<>"%" And Right(TitleWidth,2)<>"px" and TitleWidth<>"" and TitleWidth<>"auto" Then
 		TitleWidth = TitleWidth & "px"
 	End If
-	
+	'内容高
 	ContentHeight=Trim(ContentHeight)
-	
+	'自动加px单位，不加会无效果 20150115
 	If Right(ContentHeight,1)<>"%" And Right(ContentHeight,2)<>"px" and ContentHeight<>"" and ContentHeight<>"auto" Then
 		ContentHeight = ContentHeight & "px"
 	End If
-	
+	'内容宽
 	ContentWidth=Trim(ContentWidth)
-	
+	'自动加px单位，不加会无效果 20150115
 	If Right(ContentWidth,1)<>"%" And Right(ContentWidth,2)<>"px" and ContentWidth<>"" and ContentWidth<>"auto" Then
 		ContentWidth = ContentWidth & "px"
 	End If
@@ -53,539 +53,538 @@ Function ReadColumeSetTitle(a,b,c,d)
 	End If
 	If ContentWidth<>"" Then
 		ContentCss = ContentCss & "width:"& ContentWidth &";"
-	End If
+	End If 
 	
-	Dim j
-	j = ReadColumn(b)
-	
+	Dim Content
+	Content = ReadColumn(ID)
+	'标题宽
 	If TitleWidth<>"" Then
-		j=Replace(j,"<div class=""tvalue"">", "<div class=""tvalue"" style='width:"& TitleWidth &";'>")
-	End If
-	
+		Content=Replace(Content,"<div class=""tvalue"">", "<div class=""tvalue"" style='width:"& TitleWidth &";'>")
+	End If 
+	'内容高
 	If ContentCss<>"" Then
-		j=Replace(j,"<div class=""ccontent"">", "<div class=""ccontent"" style='"& ContentCss &"'>")
-	End If
+		Content=Replace(Content,"<div class=""ccontent"">", "<div class=""ccontent"" style='"& ContentCss &"'>")
+	End If 
+	'call echo(ContentWidth,ContentCss)
 	
-	
-	j=Replace(j,"栏目标题",c)
-	j=Replace(j,"栏目内容",d)
-	ReadColumeSetTitle = j
+	Content=Replace(Content,"栏目标题",ColumeTitle)
+	Content=Replace(Content,"栏目内容",ColumeContent)
+	ReadColumeSetTitle = Content
 End Function
 
-
-Function ReadColumn(a)
-	Dim b,c,d,e
-	
-	b = WebTemplate & "\Template_Left.html"
-	c = "/*columnlist"& a &"Start*/"
-	d = "/*columnlist"& a &"End*/"
-	e = ReadTemplateFileModular(b,c,d)
-	If e = "[$NO$]" Then
-		e = "Left样式ID["& a &"]不存在"
+'读栏目模块
+Function ReadColumn(ID)
+	Dim TemplateFilePath,StartStr,EndStr,S
+	'Call Echo("WebTemplate",WebTemplate)
+	TemplateFilePath = WebTemplate & "\Template_Left.html"
+	StartStr = "/*columnlist"& ID &"Start*/"
+	EndStr = "/*columnlist"& ID &"End*/"
+	S = ReadTemplateFileModular(TemplateFilePath,StartStr,EndStr)
+	If S = "[$NO$]" Then
+		S = "Left样式ID["& ID &"]不存在"
 	End If
-	ReadColumn = e
+	ReadColumn = S
 End Function
 
-
-Function ReadTemplateModuleStr(a,b,c)
-	Dim d,e,f,g
-	d = "<!--#Module "& c &" Start#-->"
-	e = "<!--#Module "& c &" End#-->"	
-	a = ReplaceGlobleLable(a)				
+'读模块内容
+Function ReadTemplateModuleStr(FilePath,DefaultContent,ModuleId)
+	Dim StartStr,EndStr,Content,S 
+	StartStr = "<!--#Module "& ModuleId &" Start#-->"
+	EndStr = "<!--#Module "& ModuleId &" End#-->"	
+	FilePath = ReplaceGlobleLable(FilePath)				'替换全部标签		'添加于2014 12 11
 	
-	
-	if checkFile(a)=false then
-		a=WebTemplate & a
+	'文件不存在，则追加模板路径 20150616 给VB软件里用
+	if checkFile(FilePath)=false then
+		FilePath=WebTemplate & FilePath
 	end if
 	
-	If b <>"" Then
-		f = b
-	ElseIf CheckFile(a)=True Then
-		f = GetFText(a)
+	If DefaultContent <>"" Then
+		Content = DefaultContent
+	ElseIf CheckFile(FilePath)=True Then
+		Content = GetFText(FilePath)
 	Else
-		f = Code				
+		Content = Code				'默认用内容指定内容
 	End If
-
-	
-	If InStr(f,d)>0 And InStr(f,e)>0 Then
-		ReadTemplateModuleStr = StrCut(f, d, e,2)
+'	Call Die("显示" & ModuleId & "," & Content)
+	'Call Eerr(filepath & checkfile(filepath), Content)
+	If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then
+		ReadTemplateModuleStr = StrCut(Content, StartStr, EndStr,2) 
 	Else
-		ReadTemplateModuleStr = "模块["& c &"]不存在,路径=" & a
-	End If
+		ReadTemplateModuleStr = "模块["& ModuleId &"]不存在,路径=" & FilePath
+	End If 
 End Function
-
-Function FindModuleStr(a,b)
-	Dim c,d,e,f,g,h,i,j
-	For g=1 To 9
-		c = "[$读出内容 " : d = "$]"
-		If InStr(b,c)>0 And InStr(b,d)>0 Then
-			j = StrCut(b,c,d,2)
-			h = RParam(j,"Block")
-			i = RParam(j,"File")
-			If InStr(vbCrlf & ReadBlockList & vbCrlf, vbCrlf & h & vbCrlf)=False Then
-				ReadBlockList = ReadBlockList & h & vbCrlf
+'找模块对应内容
+Function FindModuleStr(Content,ValueStr)
+	Dim StartStr,EndStr,YuanStr,ReplaceStr,I,Block,BlockFile,Action
+	For I=1 To 9
+		StartStr = "[$读出内容 " : EndStr = "$]" 
+		If InStr(ValueStr,StartStr)>0 And InStr(ValueStr,EndStr)>0 Then 
+			Action = StrCut(ValueStr,StartStr,EndStr,2)
+			Block = RParam(Action,"Block")
+			BlockFile = RParam(Action,"File")
+			If InStr(vbCrlf & ReadBlockList & vbCrlf, vbCrlf & Block & vbCrlf)=False Then
+				ReadBlockList = ReadBlockList & Block & vbCrlf
 			End If
-			
-			If i<>"" Then
-				a = GetFText(i)
+			'块文件存在 则读出内容
+			If BlockFile<>"" Then
+				Content = GetFText(BlockFile)
 			End If			
-			e = c & j & d
-			f = ""
+			YuanStr = StartStr & Action & EndStr
+			ReplaceStr = ""
 			
-			c = "<R#读出内容"& h &" start#>" : d = "<R#读出内容"& h &" end#>"
-			If InStr(a,c)>0 And InStr(a,d)>0 Then	
-				f = StrCut(a,c,d,2)
+			StartStr = "<R#读出内容"& Block &" start#>" : EndStr = "<R#读出内容"& Block &" end#>"
+			If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then	
+				ReplaceStr = StrCut(Content,StartStr,EndStr,2)
 			Else
-				c = "<!--#读出内容" & h :  d = "#-->"
-				If InStr(a,c)>0 And InStr(a,d)>0 Then	
-					f = StrCut(a,c,d,2)			
+				StartStr = "<!--#读出内容" & Block :  EndStr = "#-->"
+				If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then	
+					ReplaceStr = StrCut(Content,StartStr,EndStr,2)			
 				End If			
 			End If
-			
-			b = Replace(b,e,f)
-			
+			'Call Eerr(YuanStr,ReplaceStr)
+			ValueStr = Replace(ValueStr,YuanStr,ReplaceStr)
+			'Call Echo("ValueStr",ValueStr)
 		Else
-			
+			'没有模块要处理了 则退出
 			Exit For
 		End If
 	Next
-	FindModuleStr = b
+	FindModuleStr = ValueStr
 End Function
+'VB不引用 End
 
 
-
-
-Function ReadTemplateSource(a)
-	Dim b,c,d,e
-	b = WebTemplate & "\TemplateSource.html"
-	c = "<!--#sourceHtml"& a &"Start#-->"
-	d = "<!--#sourceHtml"& a &"End#-->"	
-	e = ReadTemplateFileModular(b,c,d)
-	If e = "[$NO$]" Then
-		e = "模板资源ID["& a &"]不存在"
+'读模板素材
+Function ReadTemplateSource(ID)
+	Dim TemplateFilePath,StartStr,EndStr,S
+	TemplateFilePath = WebTemplate & "\TemplateSource.html"
+	StartStr = "<!--#sourceHtml"& ID &"Start#-->"
+	EndStr = "<!--#sourceHtml"& ID &"End#-->"	
+	S = ReadTemplateFileModular(TemplateFilePath,StartStr,EndStr)
+	If S = "[$NO$]" Then
+		S = "模板资源ID["& ID &"]不存在"
 	End If
-	ReadTemplateSource = e
+	ReadTemplateSource = S
 End Function
 
 
 
-
-Function ReadTemplateFileModular(a,b,c)
-	Dim d
+'读模板文件中某模块
+Function ReadTemplateFileModular(TemplateFilePath,StartStr,EndStr)
+	Dim Content
 	ReadTemplateFileModular = ""
-	d = GetFText(a)
-	If InStr(d,b)>0 And InStr(d,c)>0 Then
-		ReadTemplateFileModular = StrCut(d, b, c,2)
+	Content = GetFText(TemplateFilePath)
+	If InStr(Content,StartStr)>0 And InStr(Content,EndStr)>0 Then
+		ReadTemplateFileModular = StrCut(Content, StartStr, EndStr,2) 
 	Else
 		ReadTemplateFileModular = "[$NO$]"
 	End If
-End Function
-
-Function GetNavTemplateText(a, b, c)
-    Dim d, e, f, g, h, i
-    If b <> "" Then
-        d = " Where BigClassName='" & a & "' And SmallClassName='"& b &"'"
-	ElseIf a <> "" Then
-        d = " Where BigClassName='" & a & "'"
+End Function 
+'获得导航类别模板内容 
+Function GetNavTemplateText(NavDid, NavSid, NavType)
+    Dim AddSql, TemplateFileName, FileName, Url, NavBigFolderName, NavSmallFolder
+    If NavSid <> "" Then
+        AddSql = " Where BigClassName='" & NavDid & "' And SmallClassName='"& NavSid &"'" 
+	ElseIf NavDid <> "" Then
+        AddSql = " Where BigClassName='" & NavDid & "'" 
     Else
-        d = " Where NavType='" & c & "'"
+        AddSql = " Where NavType='" & NavType & "'" 
     End If
-	
-	If a <> "" Then
-		TempRs.Open"Select * From [NavBigClass] Where BigClassName='"& a &"'",Conn,1,1
+	'导航大类
+	If NavDid <> "" Then
+		TempRs.Open"Select * From [NavBigClass] Where BigClassName='"& NavDid &"'",Conn,1,1
 		If Not TempRs.Eof Then			
-			h = "/" & TempRs("FolderName") & "/"
-			WebNavType = TempRs("NavType")		
-			MainTitle = TempRs("BigClassName")					
+			NavBigFolderName = "/" & TempRs("FolderName") & "/"
+			WebNavType = TempRs("NavType")		'获得网站导航类型			
+			MainTitle = TempRs("BigClassName")					'信息标题名称
 		End If:TempRs.Close
 	End If
-	
-	If b <> "" Then
-		TempRs.Open"Select * From [NavSmallClass]  " & d,Conn,1,1
+	'导航小类
+	If NavSid <> "" Then
+		TempRs.Open"Select * From [NavSmallClass]  " & AddSql,Conn,1,1
 		If Not TempRs.Eof Then
-			
+			'自定义模板
 			If Trim(TempRs("TemplatePath"))<>"" Then
-				e = TempRs("TemplatePath")
+				TemplateFileName = TempRs("TemplatePath") 
 			Else
-				e = "Main_Model.Html"
+				TemplateFileName = "Main_Model.Html"
 			End If
-			f = GetHandleFileName(TempRs("FileName"))
+			FileName = GetHandleFileName(TempRs("FileName"))
 			
 			If TempRs("FolderName") = "" Then
-				i = h
+				NavSmallFolder = NavBigFolderName
 			Else
-				i = Trim(Replace(TempRs("FolderName"),"\","/"))
-				If Left(i,1)<>"/" Then
-					i = h & "/" & i
+				NavSmallFolder = Trim(Replace(TempRs("FolderName"),"\","/"))
+				If Left(NavSmallFolder,1)<>"/" Then
+					NavSmallFolder = NavBigFolderName & "/" & NavSmallFolder
 				End If
 			End If
-			CreateHTMLPath = LocalTestFolder & i & f
+			CreateHTMLPath = LocalTestFolder & NavSmallFolder & FileName
 			
 		
-			
+			'有跳转网址则为空(20151022)
 			if trim(TempRs("CustomAUrl"))<>"" then
 				CreateHTMLPath=""
 			end if
+			'call echo("LocalTestFolder", LocalTestFolder)
+			'call EErr("CreateHTMLPath",CreateHTMLPath)
+			 
+			'CreateHTMLPath = GetHandleUrl(NavSmallFolder)	'处理URL   已经处理过了，无需再处理了
 			
+			'Call eerr(NavBigFolderName & ",CreateHTMLPath",CreateHTMLPath)
 			
-			
-			
-			
-			
-			
-			MainContent = TempRs("Content")		
-			
+			MainContent = TempRs("Content")		'获得文本中内容
+			'添加在线修改
 			MainContent = DisplayOnlineEditDialog(""& adminDir &"NavManage.Asp?act=SmallNavInfo&Id=" & TempRs("Id") & "&n=" & GetRnd(11), MainContent)
 			
 			
 
-			
+			'显示这篇文章的网站标题关键词描述 
 			WebTitle = IIf(TempRs("WebTitle")<>"",TempRs("WebTitle"),WebTitle)
 			WebKeywords = IIf(TempRs("WebKeywords")<>"",TempRs("WebKeywords"),WebKeywords)
-			WebDescription = IIf(TempRs("WebDescription")<>"",TempRs("WebDescription"),WebDescription)
+			WebDescription = IIf(TempRs("WebDescription")<>"",TempRs("WebDescription"),WebDescription) 
 		
-			MainTitle = TempRs("SmallClassName")					
+			MainTitle = TempRs("SmallClassName")					'信息标题名称(20151013)   程序写得非常的乱了，等深度改进
 		End If:TempRs.Close
-		GetNavTemplateText = e:Exit Function
+		GetNavTemplateText = TemplateFileName:Exit Function
 	End If
-	
-    Rs.Open "Select * From [NavBigClass] " & d, Conn, 1, 1
+	'导航大类
+    Rs.Open "Select * From [NavBigClass] " & AddSql, Conn, 1, 1 
     If Not Rs.Eof Then
-		
+		'自定义模板
 		If Trim(Rs("TemplatePath"))<>"" Then
-            e = Rs("TemplatePath")
+            TemplateFileName = Rs("TemplatePath") 
         Else
             Select Case Rs("NavType")
-                Case "首页" : e = "Index_Model.Html"
-                Case "文本" :
-					e = "Main_Model.Html" : MainContent = Rs("Content")	
-					
+                Case "首页" : TemplateFileName = "Index_Model.Html"
+                Case "文本" : 
+					TemplateFileName = "Main_Model.Html" : MainContent = Rs("Content")	'获得文本中内容					
+					'添加在线修改
 					MainContent = DisplayOnlineEditDialog(""& adminDir &"NavManage.Asp?act=EditInformation&Id=" & Rs("Id") & "&n=" & GetRnd(11), MainContent)
-					
-				Case Else : e = "Main_Model.Html"		
+					 
+				Case Else : TemplateFileName = "Main_Model.Html"		'默认为这个模板
             End Select
         End If
-		MainTitle = Rs("BigClassName")					
-		
-		f = GetHandleFileName(Rs("FileName"))
-
+		MainTitle = Rs("BigClassName")					'信息标题名称
+		'获得文件名称
+		FileName = GetHandleFileName(Rs("FileName"))
+        '创建一组文件夹(导航文件夹路径)
         Call CreateDirFolder("/" & LocalTestFolder & Rs("FolderName"))
-        CreateHTMLPath = "/" & LocalTestFolder & Rs("FolderName") & "/" & f
-		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	
+        CreateHTMLPath = "/" & LocalTestFolder & Rs("FolderName") & "/" & FileName  
+		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	'处理URL    
 		
-			
+			'有跳转网址则为空(20151022)
 			if trim(rs("CustomAUrl"))<>"" then
 				CreateHTMLPath=""
 			end if
 		
 		
-		
+		'显示这篇文章的网站标题关键词描述 
 		WebTitle = IIf(Rs("WebTitle")<>"",Rs("WebTitle"),WebTitle)
 		WebKeywords = IIf(Rs("WebKeywords")<>"",Rs("WebKeywords"),WebKeywords)
-		WebDescription = IIf(Rs("WebDescription")<>"",Rs("WebDescription"),WebDescription)
+		WebDescription = IIf(Rs("WebDescription")<>"",Rs("WebDescription"),WebDescription) 
 	Else
-		
-		e = "Index_Model.Html"
-		Call Echo("没有导航大类【"& a &"】此导航模板为默认",e)
+		'没有此导航 则为默认模板
+		TemplateFileName = "Index_Model.Html"
+		Call Echo("没有导航大类【"& NavDid &"】此导航模板为默认",TemplateFileName)
     End If : Rs.Close
-    GetNavTemplateText = e
-End Function
-
-Function GetClassTemplateText(a,b,c)
-    Dim d, e, f, g,h, i
-    If c <> "" Then
-        d = "Select * From [ThreeClass] Where BigClassName='" & a & "' And SmallClassName='"& b &"' And ThreeClassName='"& c &"'"
-	ElseIf b <> "" Then
-        d = "Select * From [SmallClass] Where BigClassName='" & a & "' And SmallClassName='"& b &"'"
+    GetNavTemplateText = TemplateFileName
+End Function 
+'获得信息类别模板内容 
+Function GetClassTemplateText(ProDid,ProSid,ProTid) 
+    Dim Sql, TemplateFileName, FileName, Url,RootFolder, dirNameStr
+    If ProTid <> "" Then
+        Sql = "Select * From [ThreeClass] Where BigClassName='" & ProDid & "' And SmallClassName='"& ProSid &"' And ThreeClassName='"& ProTid &"'" 
+	ElseIf ProSid <> "" Then
+        Sql = "Select * From [SmallClass] Where BigClassName='" & ProDid & "' And SmallClassName='"& ProSid &"'" 
     Else
-        d = "Select * From [BigClass] Where BigClassName='" & a & "'"
+        Sql = "Select * From [BigClass] Where BigClassName='" & ProDid & "'"
     End If
 	
-	
-	If a <> "" Then
-		TempRs.Open"Select * From [BigClass] Where BigClassName='"& a &"'",Conn,1,1
+	'类别大类
+	If ProDid <> "" Then
+		TempRs.Open"Select * From [BigClass] Where BigClassName='"& ProDid &"'",Conn,1,1
 		If Not TempRs.Eof Then			
-			h = "/" & TempRs("FolderName") & "/"
+			RootFolder = "/" & TempRs("FolderName") & "/"
 		End If:TempRs.Close
 	End If
-	
-	If a <> "" Then
-		TempRs.Open"Select * From [SmallClass] Where BigClassName='"& a &"' And SmallClassName='"& b &"'",Conn,1,1
+	'类别小类
+	If ProDid <> "" Then
+		TempRs.Open"Select * From [SmallClass] Where BigClassName='"& ProDid &"' And SmallClassName='"& ProSid &"'",Conn,1,1
 		If Not TempRs.Eof Then
-				i = Trim(Replace(TempRs("FolderName"),"\","/"))
-				If Left(i,1)<>"/" Then
-					h = h & "/" & i & "/"
+				dirNameStr = Trim(Replace(TempRs("FolderName"),"\","/"))
+				If Left(dirNameStr,1)<>"/" Then
+					RootFolder = RootFolder & "/" & dirNameStr & "/"
 				Else
-					h = "/" & TempRs("FolderName") & "/"
+					RootFolder = "/" & TempRs("FolderName") & "/"
 				End If
 			
 		End If:TempRs.Close
 	End If
-	
-	If c <> "" Then
-		TempRs.Open"Select * From [ThreeClass] Where BigClassName='"& a &"' And SmallClassName='"& b &"' And ThreeClassName='"& c &"'",Conn,1,1
+	'类别子类
+	If ProTid <> "" Then
+		TempRs.Open"Select * From [ThreeClass] Where BigClassName='"& ProDid &"' And SmallClassName='"& ProSid &"' And ThreeClassName='"& ProTid &"'",Conn,1,1
 		If Not TempRs.Eof Then		
 			
-			i = Trim(Replace(TempRs("FolderName"),"\","/"))
-			If Left(i,1)<>"/" Then
-				h = h & "/" & i & "/"
+			dirNameStr = Trim(Replace(TempRs("FolderName"),"\","/"))
+			If Left(dirNameStr,1)<>"/" Then
+				RootFolder = RootFolder & "/" & dirNameStr & "/"
 			Else
-				h = "/" & TempRs("FolderName") & "/"
-			End If
+				RootFolder = "/" & TempRs("FolderName") & "/"
+			End If 
 			
 		End If:TempRs.Close
-	End If
-	If a<>"" And b = "" And c="" Then
-		TempRs.Open"Select * From[NavBigClass] Where (NavType='产品' Or NavType='新闻' Or NavType='下载') And BigClassName='"& a &"'",Conn,1,1
+	End If 
+	If ProDid<>"" And ProSid = "" And ProTid="" Then
+		TempRs.Open"Select * From[NavBigClass] Where (NavType='产品' Or NavType='新闻' Or NavType='下载') And BigClassName='"& ProDid &"'",Conn,1,1
 		
-
+'之前为了省事，这里面加了CheckMakeHtmlFile(TempRs("FileName"))判断 出错了，多年程序员了，还这样 不应该呀。20141223
 		If Not TempRs.Eof Then										
 			If CheckMakeHtmlFile(TempRs("FileName"))=True Then
-				h = "/" & TempRs("FolderName") & "/"
+				RootFolder = "/" & TempRs("FolderName") & "/"
 			Else
 				TempRs.Close
-				TempRs.Open d,Conn,1,1
+				TempRs.Open Sql,Conn,1,1
 			End If
 		Else
 			TempRs.Close
-			TempRs.Open d,Conn,1,1
+			TempRs.Open Sql,Conn,1,1
 		End If
 	Else
-		TempRs.Open d,Conn,1,1
+		TempRs.Open Sql,Conn,1,1
 	End If
 	
 	If Not TempRs.Eof Then
-		
+		'自定义模板
 		If Trim(TempRs("TemplatePath"))<>"" Then
-			e = TempRs("TemplatePath")
+			TemplateFileName = TempRs("TemplatePath") 
 		Else
-			e = "Main_Model.Html"
+			TemplateFileName = "Main_Model.Html"
 		End If
-		f = GetHandleFileName(TempRs("FileName"))
-		
-		Call CreateDirFolder("/" & LocalTestFolder &  h )
-		CreateHTMLPath = "/" & LocalTestFolder & h & "/" & f
-		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	
-		
-		
+		FileName = GetHandleFileName(TempRs("FileName"))
+		'创建一组文件夹(导航文件夹路径)
+		Call CreateDirFolder("/" & LocalTestFolder &  RootFolder )
+		CreateHTMLPath = "/" & LocalTestFolder & RootFolder & "/" & FileName
+		CreateHTMLPath = GetHandleUrl(CreateHTMLPath)	'处理URL
+		 
+		'MainContent = TempRs("Content")		'获得文本中内容
 		If TempRs("WebTitle") <> "" Then WebTitle = TempRs("WebTitle")
 		If TempRs("WebKeywords") <> "" Then WebKeywords = TempRs("WebKeywords")
 		If TempRs("WebDescription") <> "" Then WebDescription = TempRs("WebDescription")
 	End If:TempRs.Close
-	
-	GetClassTemplateText = e
+	 
+	GetClassTemplateText = TemplateFileName
 End Function
 
+ 
+
+'================================== 2015年 ==================================
 
 
-
-
-
-
-Function GetArticleInfoStyle(a,b,c,d)
-	Dim e,f
-	Set e = CreateObject("Adodb.RecordSet")
-	
-	f = " Where BigClassName='"& a &"' And ArticleInfoStyle<>'' And ArticleInfoStyle<>'0'"
-	e.Open"Select * From [BigClass]" & f,Conn,1,1
-	If Not e.Eof Then
-		GetArticleInfoStyle = e("ArticleInfoStyle")
-	End If:e.Close
-	
-	If b <>"" Then
-		f = f & " And SmallClassName='"& b &"'"
-		e.Open"Select * From [SmallClass]" & f,Conn,1,1
-		If Not e.Eof Then
-			GetArticleInfoStyle = e("ArticleInfoStyle")
-		End If:e.Close
+'获得文章详细页样式 20150114  
+Function GetArticleInfoStyle(Did,Sid,Tid,Id)
+	Dim Rs,AddSql
+	Set Rs = CreateObject("Adodb.RecordSet") 
+	'大类
+	AddSql = " Where BigClassName='"& Did &"' And ArticleInfoStyle<>'' And ArticleInfoStyle<>'0'"
+	Rs.Open"Select * From [BigClass]" & AddSql,Conn,1,1
+	If Not Rs.Eof Then
+		GetArticleInfoStyle = Rs("ArticleInfoStyle")
+	End If:Rs.Close
+	'小类
+	If Sid <>"" Then
+		AddSql = AddSql & " And SmallClassName='"& Sid &"'"
+		Rs.Open"Select * From [SmallClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			GetArticleInfoStyle = Rs("ArticleInfoStyle")
+		End If:Rs.Close
 	End If
-	
-	If b <>"" Then
-		f = f & " And ThreeClassName='"& c &"'"
-		e.Open"Select * From [ThreeClass]" & f,Conn,1,1
-		If Not e.Eof Then
-			GetArticleInfoStyle = e("ArticleInfoStyle")
-		End If:e.Close
+	'子类
+	If Sid <>"" Then
+		AddSql = AddSql & " And ThreeClassName='"& Tid &"'"
+		Rs.Open"Select * From [ThreeClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			GetArticleInfoStyle = Rs("ArticleInfoStyle")
+		End If:Rs.Close
 	End If
-	
-	If d <>"" Then
-		e.Open"Select * From [Product] Where Id=" & d,Conn,1,1
-		If Not e.Eof Then
-			If e("ArticleInfoStyle")<>"" And e("ArticleInfoStyle")<>"0" Then
-				GetArticleInfoStyle = e("ArticleInfoStyle")
+	'产品
+	If Id <>"" Then
+		Rs.Open"Select * From [Product] Where Id=" & Id,Conn,1,1
+		If Not Rs.Eof Then
+			If Rs("ArticleInfoStyle")<>"" And Rs("ArticleInfoStyle")<>"0" Then
+				GetArticleInfoStyle = Rs("ArticleInfoStyle")
 			End If
-		End If:e.Close
-	End If
-	
+		End If:Rs.Close
+	End If 
+	'最后为空则用默认展示样式
 	If GetArticleInfoStyle="" Then
 		GetArticleInfoStyle = "默认新闻详细.html"
 	End If	
 End Function
-
-Function GetArticleInfoPhotoWidth(a,b,c,d)
-	Dim e,f
-	Set e = CreateObject("Adodb.RecordSet")
-	
-	f = " Where BigClassName='"& a &"' And ArticleInfoPhotoWidth<>'' And ArticleInfoPhotoWidth<>'0'"
-	e.Open"Select * From [BigClass]" & f,Conn,1,1
-	If Not e.Eof Then
-		If Cint(e("ArticleInfoPhotoWidth"))>0 Then
-			GetArticleInfoPhotoWidth = e("ArticleInfoPhotoWidth")
+'获得文章详细页宽 20150114  
+Function GetArticleInfoPhotoWidth(Did,Sid,Tid,Id)
+	Dim Rs,AddSql
+	Set Rs = CreateObject("Adodb.RecordSet")  
+	'大类
+	AddSql = " Where BigClassName='"& Did &"' And ArticleInfoPhotoWidth<>'' And ArticleInfoPhotoWidth<>'0'"
+	Rs.Open"Select * From [BigClass]" & AddSql,Conn,1,1
+	If Not Rs.Eof Then
+		If Cint(Rs("ArticleInfoPhotoWidth"))>0 Then
+			GetArticleInfoPhotoWidth = Rs("ArticleInfoPhotoWidth")
 		End If
-	End If:e.Close
-	
-	If b <>"" Then
-		f = f & " And SmallClassName='"& b &"'"
-		e.Open"Select * From [SmallClass]" & f,Conn,1,1
-		If Not e.Eof Then
-			If Cint(e("ArticleInfoPhotoWidth"))>0 Then
-				GetArticleInfoPhotoWidth = e("ArticleInfoPhotoWidth")
+	End If:Rs.Close
+	'小类
+	If Sid <>"" Then
+		AddSql = AddSql & " And SmallClassName='"& Sid &"'"
+		Rs.Open"Select * From [SmallClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			If Cint(Rs("ArticleInfoPhotoWidth"))>0 Then
+				GetArticleInfoPhotoWidth = Rs("ArticleInfoPhotoWidth")
 			End If
-		End If:e.Close
+		End If:Rs.Close
 	End If
-	
-	If b <>"" Then
-		f = f & " And ThreeClassName='"& c &"'"
-		e.Open"Select * From [ThreeClass]" & f,Conn,1,1
-		If Not e.Eof Then
-			If Cint(e("ArticleInfoPhotoWidth"))>0 Then
-				GetArticleInfoPhotoWidth = e("ArticleInfoPhotoWidth")
+	'子类
+	If Sid <>"" Then
+		AddSql = AddSql & " And ThreeClassName='"& Tid &"'"
+		Rs.Open"Select * From [ThreeClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			If Cint(Rs("ArticleInfoPhotoWidth"))>0 Then
+				GetArticleInfoPhotoWidth = Rs("ArticleInfoPhotoWidth")
 			End If
-		End If:e.Close
+		End If:Rs.Close
 	End If
-	
-	If d <>"" Then
-		e.Open"Select * From [Product] Where Id=" & d,Conn,1,1
-		If Not e.Eof Then
-			If (e("ArticleInfoPhotoWidth")<>"" And e("ArticleInfoPhotoWidth")<>"0") Or e("ArticleInfoPhotoWidth")="-1" Then
-				GetArticleInfoPhotoWidth = e("ArticleInfoPhotoWidth")
+	'产品
+	If Id <>"" Then
+		Rs.Open"Select * From [Product] Where Id=" & Id,Conn,1,1
+		If Not Rs.Eof Then
+			If (Rs("ArticleInfoPhotoWidth")<>"" And Rs("ArticleInfoPhotoWidth")<>"0") Or Rs("ArticleInfoPhotoWidth")="-1" Then
+				GetArticleInfoPhotoWidth = Rs("ArticleInfoPhotoWidth")
 			End If
-		End If:e.Close
-	End If
+		End If:Rs.Close
+	End If 
 	If GetArticleInfoPhotoWidth = "0" Or GetArticleInfoPhotoWidth = "" Then GetArticleInfoPhotoWidth=600
 End Function
 
 
-
-Function GetArticlePageSize(a,b,c)
-	Dim d,e
-	Set d = CreateObject("Adodb.RecordSet")
-	
-	e = " Where BigClassName='"& a &"' And ArticleListStyle<>''"
-	d.Open"Select * From [BigClass]" & e,Conn,1,1
-	If Not d.Eof Then
-		GetArticlePageSize = d("ArticlePageSize")
-	End If:d.Close
-	
-	If b <>"" Then
-		e = e & " And SmallClassName='"& b &"'"
-		d.Open"Select * From [SmallClass]" & e,Conn,1,1
-		If Not d.Eof Then
-			GetArticlePageSize = d("ArticlePageSize")
-		End If:d.Close
+'获得文章展示列表每页显示条数 20150114
+Function GetArticlePageSize(Did,Sid,Tid)
+	Dim Rs,AddSql
+	Set Rs = CreateObject("Adodb.RecordSet") 
+	'大类
+	AddSql = " Where BigClassName='"& Did &"' And ArticleListStyle<>''"
+	Rs.Open"Select * From [BigClass]" & AddSql,Conn,1,1
+	If Not Rs.Eof Then
+		GetArticlePageSize = Rs("ArticlePageSize")
+	End If:Rs.Close
+	'小类
+	If Sid <>"" Then
+		AddSql = AddSql & " And SmallClassName='"& Sid &"'"
+		Rs.Open"Select * From [SmallClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			GetArticlePageSize = Rs("ArticlePageSize")
+		End If:Rs.Close
 	End If
-	
-	If b <>"" Then
-		e = e & " And ThreeClassName='"& c &"'"
-		d.Open"Select * From [ThreeClass]" & e,Conn,1,1
-		If Not d.Eof Then
-			GetArticlePageSize = d("ArticlePageSize")
-		End If:d.Close
+	'子类
+	If Sid <>"" Then
+		AddSql = AddSql & " And ThreeClassName='"& Tid &"'"
+		Rs.Open"Select * From [ThreeClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			GetArticlePageSize = Rs("ArticlePageSize")
+		End If:Rs.Close
 	End If
-	
+	'当前每页显示数为空或0时则为默认显示9条
 	If GetArticlePageSize = "" Or GetArticlePageSize="0" Then	
 		GetArticlePageSize = 9
 	End If
 End Function
 
 
-
-Function GetArticleListStyle(a,b,c)
-	Dim d,e
-	Set d = CreateObject("Adodb.RecordSet")
- 	
-	d.Open"Select * From [NavBigClass] Where BigClassName='"& a &"'",Conn,1,1
-	If Not d.Eof Then
-		If InStr("|产品|新闻|下载|","|"& d("NavType") &"|")>0 Then
-			GetArticleListStyle = "默认"& d("NavType") &"列表.html"
+'获得文章展示列表样式 20150114   配置 S = ReadTemplateFileSource("产品详细") 使用
+Function GetArticleListStyle(Did,Sid,Tid)
+	Dim Rs,AddSql
+	Set Rs = CreateObject("Adodb.RecordSet")
+ 	'导航大类 默认大类类型
+	Rs.Open"Select * From [NavBigClass] Where BigClassName='"& Did &"'",Conn,1,1
+	If Not Rs.Eof Then
+		If InStr("|产品|新闻|下载|","|"& Rs("NavType") &"|")>0 Then
+			GetArticleListStyle = "默认"& Rs("NavType") &"列表.html"
 		End If
-	End If:d.Close	
-	
-	e = " Where BigClassName='"& a &"' And ArticleListStyle<>''"
-	d.Open"Select * From [BigClass]" & e,Conn,1,1
-	If Not d.Eof Then
-		GetArticleListStyle = d("ArticleListStyle")
-	End If:d.Close
-	
-	If b <>"" Then
-		e = e & " And SmallClassName='"& b &"'"
-		d.Open"Select * From [SmallClass]" & e,Conn,1,1
-		If Not d.Eof Then
-			GetArticleListStyle = d("ArticleListStyle")
-		End If:d.Close
+	End If:Rs.Close	
+	'大类
+	AddSql = " Where BigClassName='"& Did &"' And ArticleListStyle<>''"
+	Rs.Open"Select * From [BigClass]" & AddSql,Conn,1,1
+	If Not Rs.Eof Then
+		GetArticleListStyle = Rs("ArticleListStyle")
+	End If:Rs.Close
+	'小类
+	If Sid <>"" Then
+		AddSql = AddSql & " And SmallClassName='"& Sid &"'"
+		Rs.Open"Select * From [SmallClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			GetArticleListStyle = Rs("ArticleListStyle")
+		End If:Rs.Close
 	End If
-	
-	If b <>"" Then
-		e = e & " And ThreeClassName='"& c &"'"
-		d.Open"Select * From [ThreeClass]" & e,Conn,1,1
-		If Not d.Eof Then
-			GetArticleListStyle = d("ArticleListStyle")
-		End If:d.Close
+	'子类
+	If Sid <>"" Then
+		AddSql = AddSql & " And ThreeClassName='"& Tid &"'"
+		Rs.Open"Select * From [ThreeClass]" & AddSql,Conn,1,1
+		If Not Rs.Eof Then
+			GetArticleListStyle = Rs("ArticleListStyle")
+		End If:Rs.Close
 	End If
-	
+	'最后为空则用默认展示样式
 	If GetArticleListStyle="" Then
 		GetArticleListStyle = "默认新闻列表.html"
 	End If	
 End Function
 
-
-Function ReadTemplateFileSource(a,b)
-	Dim c,d,e,f
-	c = "<!--#sourceHtml"& Replace(b,".html","") &"Start#-->"
-	d = "<!--#sourceHtml"& Replace(b,".html","") &"End#-->"	
-	e = ReadTemplateFileModular(a,c,d)
-	If e = "[$NO$]" Then
-		
-		f=GetStrCut(pubCode,c,d,2)
-		if f<>"" then
-			ReadTemplateFileSource=f
-		
+'读文件模板素材 
+Function ReadTemplateFileSource(TemplateFilePath,ID)
+	Dim StartStr,EndStr,S,c
+	StartStr = "<!--#sourceHtml"& Replace(ID,".html","") &"Start#-->"
+	EndStr = "<!--#sourceHtml"& Replace(ID,".html","") &"End#-->"	
+	S = ReadTemplateFileModular(TemplateFilePath,StartStr,EndStr)
+	If S = "[$NO$]" Then
+		'加一个读取本文本里配置列表(20150815)
+		c=GetStrCut(pubCode,StartStr,EndStr,2)
+		if c<>"" then
+			ReadTemplateFileSource=c
+		'	call rwend(c)
 			exit function
 		end if
-		f=getftext(a)
-		
-		if instr(f,"<!--#DialogStart#-->")>0 then
-			ReadTemplateFileSource=f
+		c=getftext(TemplateFilePath)
+		'存在 <!--#TemplateSplitStart#-->  就返回当前全部内容
+		if instr(c,"<!--#DialogStart#-->")>0 then
+			ReadTemplateFileSource=c
 			exit function
 		end if
 		
-		e = "模板资源ID["& b &"]不存在,路径TemplateFilePath=" & handlePath(a)
+		S = "模板资源ID["& ID &"]不存在,路径TemplateFilePath=" & handlePath(TemplateFilePath)
 	End If
-	ReadTemplateFileSource = e
+	ReadTemplateFileSource = S
 End Function
-
-Function ReadArticleListStyleSource(a)
-	dim b
-	b = getWebImages() & "\文章展示样式\" & a
-	if checkFile(b)=false then
-		b = WebTemplate & "\Resources\" & a
+'读出文件展示列表资源
+Function ReadArticleListStyleSource(ID)
+	dim filePath
+	filePath = getWebImages() & "\文章展示样式\" & ID
+	if checkFile(filePath)=false then
+		filePath = WebTemplate & "\Resources\" & ID
 	end if
-	
-	ReadArticleListStyleSource = ReadTemplateFileSource(b ,a)
+	'call echo(checkfile(filePath),filePath)
+	ReadArticleListStyleSource = ReadTemplateFileSource(filePath ,ID)
 	
 End Function
-
-Function ReadArticleInfoStyleSource(a)
-	dim b
-	b = getWebImages() & "\文章信息展示样式\" & a
-	if checkFile(b)=false then
-		b = WebTemplate & "\Resources\" & a
+'读出文件信息列表资源
+Function ReadArticleInfoStyleSource(ID)
+	dim filePath
+	filePath = getWebImages() & "\文章信息展示样式\" & ID
+	if checkFile(filePath)=false then
+		filePath = WebTemplate & "\Resources\" & ID
 	end if
-	ReadArticleInfoStyleSource = ReadTemplateFileSource(b ,a)
+	ReadArticleInfoStyleSource = ReadTemplateFileSource(filePath ,ID)
 End Function
 
 %>
-
 
 
 

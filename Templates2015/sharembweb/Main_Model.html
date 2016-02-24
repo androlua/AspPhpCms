@@ -35,9 +35,9 @@
             
                 <ul class="list"> 
  
-                    <sPAn class="testhidde">{$DetailList columnname='常用工具' topnumb='8' addsql='order by sortrank asc' default='[_2016年01月15日 常用工具]'$}</sPAn>
+                    <sPAn class="testhidde">{$ArticleList columnname='常用工具' topnumb='8' addsql='order by sortrank asc' default='[_2016年01月15日 常用工具]'$}</sPAn>
                     <!--#[_2016年01月15日 常用工具]
-                        [list]<li><a href="[$url$]" title="[$title$]">[$title len='20'$]</a></li>
+                        [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a></li>
                         [/list]
                     [/list]
                     #-->
@@ -54,9 +54,9 @@
             
                 <ul class="list"> 
 
-                    <sPAn class="testhidde">{$DetailList  topnumb='8' addsql='where flags like\'%|c|%\' order by sortrank desc' default='[_2016年01月15日 14时10分]'$}</sPAn>
+                    <sPAn class="testhidde">{$ArticleList  topnumb='8' addsql='where flags like\'%|c|%\' order by sortrank desc' default='[_2016年01月15日 14时10分]'$}</sPAn>
                     <!--#[_2016年01月15日 14时10分]
-                                    [list]<li><a href="[$url$]" title="[$title$]">[$title len='20'$]</a></li>
+                                    [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a></li>
                                     [/list]
                     [/list]
                     #-->
@@ -76,14 +76,14 @@
  
         
         <ul class="columnbox">
-            <li class="title">更多[$detailTitle$]</li>
+            <li class="title">更多[$gbl_columnname$]</li>
             <li class="content">
             
                 <ul class="list"> 
 
-                    <sPAn class="testhidde">{$DetailList columnname='[$detailTitle$]' topnumb='8' addsql=' order by sortrank desc' default='[_2016年01月15日 xg]'$}</sPAn>
+                    <sPAn class="testhidde">{$ArticleList columnname='[$gbl_columnname$]' topnumb='8' addsql=' order by sortrank desc' default='[_2016年01月15日 xg]'$}</sPAn>
                     <!--#[_2016年01月15日 xg]
-                                    [list]<li><a href="[$url$]" title="[$title$]">[$title len='20'$]</a></li>
+                                    [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a></li>
                                     [/list]
                     [/list]
                     #-->

@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="gb2312">
+<title>{$Web_Title$}</title> 
+<link href="/Templates/legendstu/css/style.css" rel="stylesheet" type="text/css">
+<script src="/Templates/legendstu/js/uaredirect.js" type="text/javascript"></script>     
+<script type="text/javascript" src="/Templates/legendstu/js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/Templates/legendstu/js/jquery.jslides.js"></script> 
+</head>
+<body>
+  <!--头部开始-->
+<div class="container">
+	<div class="progress">
+		<div class="progress-bar">
+			<div class="progress-shadow"></div>
+		</div>
+	</div>
+</div>
+<!--头部开始-->
+	<div class="top_line">
+    <div class="top_line1"></div>
+  </div>
+	<div class="all_top">
+
+	    <a href=""><img alt="LEGEND工作室" src="/Templates/legendstu/images/index_05.jpg" class=" left"><!--h1>LEGEND工作室</h1--></a>
+	      <ul  class="right" id="nav">
+          
+<sPAn class="testhidde">{$ColumnList topnumb='4'  default='[_2016年01月14日 10时03分]'$}</sPAn>
+<!--#[_2016年01月14日 10时03分]
+[list]<li><a href="[$url$]" title="[$labletitle$]" target="[$target$]">[$columnname$]</a></li>
+[/list]
+[list-focus]<li><a href="[$url$]"  title="[$labletitle$]" target="[$target$]" class="cur">[$columnname$]</a></li>
+[/list-focus]
+#-->
+           
+	       
+            
+	      </ul>
+	      <div class="clear"></div>
+	</div>
+	<div class="top_line2"></div>
+ 
+  <!--banner开始-->
+<div id="full-screen-slider">
+	<ul id="slides">
+    <li class="slides_li1">
+       <div class="slides_content">
+         <img alt="LEGEND工作室" src="/Templates/legendstu/images/index_banner1_03.jpg">
+         <div class="slides_wenzi1">
+           <p class="slides_wenzi_first1 "><font class="wenzi_first_color">仿站</font>模板分享网站</p>
+           <p class="slides_wenzi_secend2">模板分享网站</p>
+           <a rel="nofollow" href="abouts"  class="slides_content_d right img123">关于仿站</a>
+           <a rel="nofollow" href="msgrd？v=3&uin=313801120&site=legend%b9%a4%d7%f7%ca%d2&menu=yes"  class="slides_content_buy right img123">联系我们</a>
+         </div>
+       </div>
+     </li>
+     <li>
+      <a href=""><img alt="模板分享网站" src="/Templates/legendstu/images/index_banner2.jpg" /></a>
+    </li>
+     <li>
+      <a href=""><img alt="模板分享网站" src="/Templates/legendstu/images/index_banner3.jpg" /></a>
+    </li>
+	</ul>
+</div>
+
+  <!--banner结束-->
+  <!--内容开始-->
+     <div class="title_h">
+    <div class="title_line left"></div>
+    <div class="left title_c" ><h2>[$detailTitle$]</h2></div>
+    <div class="title_line right"></div>
+  </div>
+
+    <div class="content">
+  [$detailContent$] 
+    
+    
+ <div class="title_h">
+    <div class="title_line left"></div>
+    <div class="left title_c" ><h2>仿站流程</h2><font>About CopyWeb</font></div>
+    <div class="title_line right"></div>
+  </div>
+   <div class="liuc">
+     <a href="http://wpa.qq.com/msgrd?v=3&uin=313801120&site=qq&menu=yes" rel="nofollow" target="_blank" class="lc1"><span>在线联系我们</span></a>
+     <i></i>
+      <a href="#" target="_blank" class="lc2" rel="nofollow"><span>提交您的需求</span></a>
+     <i></i>
+      <a href="#" class="lc3" target="_blank" rel="nofollow"><span>预付定金</span></a>
+     <i></i>
+      <a href="#" class="lc4" target="_blank" rel="nofollow"><span>成品验收</span></a>
+     <i></i>
+      <a href="#" class="lc5" target="_blank" rel="nofollow"><span>付余款完成交易</span></a>
+     <i></i>
+      <a href="#" class="lc6" target="_blank" rel="nofollow"><span>售后服务</span></a>
+   </div>
+  <div class="clear"></div>
+      <a href="http://wpa.qq.com/msgrd?v=3&uin=313801120&site=LEGEND工作室&menu=yes" rel="nofollow" target="_blank"><h2 class="bannerad">需了解更多？联系客服Q Q：313801120</h2></a>
+      <div class=" clear"></div>
+    </div>
+  <!--内容结束-->
+
+
+<div class="footer">
+  <div class="footer_content">
+    <div class="footer_left left">
+     <div class="footer_left_top">
+      <dl class="about_usf">
+        <dt>关于我们</dt>
+        <dd><sPAn class="testhidde">{$MainInfo title='最新公告' default='没有最新公告' fieldname='simpleintroduction' $}</sPAn>
+        </dd>
+      </dl>
+      <dl>
+        <dt>常用工具</dt>
+        
+ 
+                    <sPAn class="testhidde">{$ArticleList columnname='常用工具' topnumb='8' addsql='order by sortrank asc' default='[_2016年01月15日 常用工具]'$}</sPAn>
+                    <!--#[_2016年01月15日 常用工具]
+                        [list]<dd><a href="[$url$]" title="[$title$]">[$title len='20'$]</a></dd>
+                        [/list]
+                    [/list]
+                    #-->
+
+        </dd>
+      </dl>
+      <dl class="soft_downf">
+        <dt>推荐文章</dt>
+
+                    <sPAn class="testhidde">{$ArticleList  topnumb='8' addsql='where flags like\'%|c|%\' order by sortrank desc' default='[_2016年01月15日 14时10分]'$}</sPAn>
+                    <!--#[_2016年01月15日 14时10分]
+                        [list]<dd><a href="[$url$]" title="[$title$]">[$title len='920'$]</a></dd>
+                        [/list]
+                    [/list]
+                    #-->    
+      </dl>
+      <div class="clear"></div>
+      </div>
+    </div>
+    <div class="footer_right right">
+      <a rel="nofollow" href="msgrd？v=3&uin=313801120&site=legend工作室&menu=yes" target="_blank"><img src="/Templates/legendstu/images/index_64.jpg" alt="在线联系"  /></a>
+      <p>在线联系Q Q：313801120<br />
+     技术邮箱：legendstu@foxmail.com</p>
+      <a rel="nofollow" href="msgrd？v=3&uin=313801120&site=legend工作室&menu=yes" target="_blank" class="online_qq">在线咨询</a>
+<img src="/Templates/legendstu/images/360safe.png" style="width: 150px; height: 40px;float:left;">
+<img src="/Templates/legendstu/images/bottom_small_img.png" style="width: 110px; height: 40px;float:right;">
+	</div>
+    <div class="clear"></div>
+    <div class="footer_line"> </div>
+    <div class="footer_left  footer_left2  left">
+     <p class="footer_p_nav">
+     
+     
+     
+<sPAn class="testhidde">{$ColumnList  default='[_2016年01月14日 10时aa分]'$}</sPAn>
+<!--#[_2016年01月14日 10时aa分]
+[list]<li><a href="[$url$]" title="[$labletitle$]" target="[$target$]">[$columnname$]</a></li>
+[/list]
+#-->
+     
+ 
+    </div>
+    <div class="footer_right right">
+      <h3>友情链接( <a rel="nofollow" href="" target="_blank" style="font-size:12px;color:#D0D6D9;">申请链接</a>)</h3>
+      <div id="demoa">
+      <div id="demo1a">
+        <p class="footer_rig_nav">
+        <a href='http://sharmbweb.com/' target='_blank'>分享模板网站</a><a href='http://sharmbweb.com/' target='_blank'>分享模板网站</a><a href='http://sharmbweb.com/' target='_blank'>分享模板网站</a><a href='http://sharmbweb.com/' target='_blank'>分享模板网站</a><a href='http://sharmbweb.com/' target='_blank'>分享模板网站</a>
+</p>
+       </div>
+    <div id="demo2a"></div>
+    </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+ </div>
+
+
+ <!--tongji-->
+ <div display="none">  <script>
+var _hmt = _hmt || []; (function() {   var hm = document.createElement("script");   hm.src = "//hm.baidu.com/hm.js?77d899627e99b6602ea3864b448836cb";   var s = document.getElementsByTagName("script")[0];    s.parentNode.insertBefore(hm, s); })(); </script></div>
+  <!--页脚结束-->
+  
+   <!--客服悬浮框-->
+   <div class="toolbar">
+   <a href="http://wpa.qq.com/msgrd?v=3&uin=313801120&site=qq&menu=yes" class="toolbar-item toolbar-item-qq" rel="nofollow" target="_blank"></a>
+   <a href="http://www.legendstu.com" class="toolbar-item toolbar-item-index" rel="follow"></a>
+   <a href="javascript:addFavorite('http://www.legendstu.com','LEGEND工作室');" class="toolbar-item toolbar-item-feedback"></a>
+   <a href="http://so.legendstu.com" class="toolbar-item toolbar-item-app">
+    <span class="toolbar-layer"></span>
+   </a>
+   <a href="javascript:scroll(0,0)" id="top" class="toolbar-item toolbar-item-top"></a>
+  </div> 
+ 
+</body>
+</html>
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"legendstu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'gb2312';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+ <script type="text/javascript">
+ $("#nav li a").click(function(){
+	   $("#nav li a").removeClass("cur");
+	   $(this).addClass("cur");
+	 
+	 })
+	 </script>
+       <!--[IF IE 6]> 
+<script src="/Templates/legendstu/js/dd_belatedpng.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+DD_belatedPNG.fix(".img123,img123 background,");
+</script>
+<![ENDIF]-->
+ <script type="text/javascript">
+    <!--
+    var speeda=200; //数字越大速度越慢
+    var taba=document.getElementById("demoa");
+    var tab1a=document.getElementById("demo1a");
+    var tab2a=document.getElementById("demo2a");
+    tab2a.innerHTML=tab1a.innerHTML; //克隆demo1为demo2
+    function Marqueea(){
+    if(tab2a.offsetHeight-taba.scrollTop<=0)//当滚动至demo1与demo2交界时
+    taba.scrollTop-=tab1a.offsetHeight //demo跳到最顶端
+    else{
+    taba.scrollTop++
+    }
+    }
+    var MyMara=setInterval(Marqueea,speeda);
+    taba.onmouseover=function() {clearInterval(MyMara)};//鼠标移上时清除定时器达到滚动停止的目的
+    taba.onmouseout=function() {MyMara=setInterval(Marqueea,speeda)};//鼠标移开时重设定时器
+    -->
+    </script>
+ <script type="text/javascript" src="/Templates/legendstu/js/cjx.js"></script>   
+ <!--头部js-->
+ <script>
+var thisHREF = document.URL;
+tmpHPage = thisHREF.split( "/" );
+curpage = tmpHPage[3];
+if(curpage == 'buy.html') {
+	 $(".nav_buy").addClass("cur");
+}else if(curpage == 'product.html') {
+	 $(".nav_product").addClass("cur");
+}else if(curpage == 'service.html') {
+	 $(".nav_service").addClass("cur");
+}else if(curpage == 'help.html' || curpage == 'syjc' || curpage == 'hyzx') {
+	 $(".nav_help").addClass("cur");
+}else if(curpage == 'download') {
+	 $(".nav_download").addClass("cur");
+}else if(curpage == 'praise.html') {
+	 $(".nav_praise").addClass("cur");
+}
+</script>
+<!---->
+<script type="text/javascript">
+ $(document).ready(function(){
+		$(".tabs li").click(function(){
+		
+		var $id=$(this).attr("tip"); 
+		 $($id).show().siblings().hide();
+		 $(".tabs li").removeClass("current");
+		 $(this).addClass("current");
+		 return false;
+		
+		});
+
+	  });
+ 
+startList = function() {
+if (document.all&&document.getElementById) {
+navRoot = document.getElementById("nav");
+var allli = navRoot.getElementsByTagName("li")
+for (i=0; i<allli.length; i++) {
+node = allli[i];
+node.onmouseover=function() {
+this.className+=" currenta";
+}
+node.onmouseout=function() {
+this.className=this.className.replace("currenta", "");
+}
+}	
+}
+}
+window.onload=startList;
+/*
+$(document).ready(function(){
+	$("#tabsholder").tytabs({
+							tabinit:"2",
+							fadespeed:"fast"
+							});
+	$("#tabsholder2").tytabs({
+							prefixtabs:"tabz",
+							prefixcontent:"contentz",
+							classcontent:"tabscontent",
+							tabinit:"3",
+							catchget:"tab2",
+							fadespeed:"normal"
+							});
+});
+*/
+</script>

@@ -8,15 +8,16 @@
 <script src="js/runAction.js"></script>
 </head>
 <body>
-<!--#editor start#-->
 <script charset="utf-8" src="Keditor/kindeditor.js"></script> 
-<script charset="utf-8" src="Keditor/lang/zh_CN.js"></script>  
+<script charset="utf-8" src="Keditor/lang/zh_CN.js"></script>
+<link rel="stylesheet" href="Keditor/themes/default/default.css" />
 <script language="javascript">
 KindEditor.ready(function(K) {
+	//<!--#editor start#-->
 	var editor1 = K.create('textarea[name="bodycontent"]', {		//处理让文本域
 		cssPath : 'Keditor/plugins/code/prettify.css',
-		uploadJson : 'Keditor/asp/upload_json.asp',
-		fileManagerJson : 'Keditor/asp/file_manager_json.asp',
+		uploadJson : 'Keditor/{$EDITORTYPE$}/upload_json.{$EDITORTYPE$}',
+		fileManagerJson : 'Keditor/{$EDITORTYPE$}/file_manager_json.{$EDITORTYPE$}',
 		allowFileManager : true,
 		afterCreate : function() {
 			var self = this;
@@ -27,13 +28,56 @@ KindEditor.ready(function(K) {
 			K.ctrl(self.edit.doc, 13, function() {
 				self.sync();
 				K('form[name=example]')[0].submit();
-			});
+			});  
 		}
+	}); 
+	//<!--#editor end#-->
+	
+	var editor2 = K.editor({
+		uploadJson : 'Keditor/{$EDITORTYPE$}/upload_json.{$EDITORTYPE$}',
+		fileManagerJson : 'Keditor/{$EDITORTYPE$}/file_manager_json.{$EDITORTYPE$}',
+		allowFileManager : true
 	});
-	//prettyPrint();				//因为这个出错，所以给它注释掉 2013,12,12
-});
-</script>
-<!--#editor end#-->
+
+
+	K('#btnsmallimage').click(function() {
+		editor2.loadPlugin('image', function() {
+			editor2.plugin.imageDialog({
+				showRemote : false,
+				imageUrl : K('#smallimage').val(),
+				clickFn : function(url, title, width, height, border, align) {
+					K('#smallimage').val(url);
+					editor2.hideDialog();
+				}
+			});
+		});
+	});
+	K('#btnbigimage').click(function() {
+		editor2.loadPlugin('image', function() {
+			editor2.plugin.imageDialog({
+				showRemote : false,
+				imageUrl : K('#bigimage').val(),
+				clickFn : function(url, title, width, height, border, align) {
+					K('#bigimage').val(url);
+					editor2.hideDialog();
+				}
+			});
+		});
+	});
+	K('#btnbannerimage').click(function() {
+		editor2.loadPlugin('image', function() {
+			editor2.plugin.imageDialog({
+				showRemote : false,
+				imageUrl : K('#bannerimage').val(),
+				clickFn : function(url, title, width, height, border, align) {
+					K('#bannerimage').val(url);
+					editor2.hideDialog();
+				}
+			});
+		});
+	}); 
+}); 
+</script> 
 <div id="positionwrap">
     <div class="msg">当前位置：{$position$}</div>
 </div>
@@ -159,17 +203,22 @@ KindEditor.ready(function(K) {
                         <td>labletitle</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
+                        <td>Banner图片</td>
+                        <td align="left" style="padding:3px;">[$input_bannerimage$]<input type="button" class="btnclick1" id="btnbannerimage" value="选择图片" />（本地上传）</td>
+                        <td>bannerimage</td>
+                    </tr>
+                    <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>不追踪链接</td>
                         <td align="left" style="padding:3px;"><label for="nofollow"><input type="checkbox" name="nofollow" id="nofollow"[$nofollow if='1' value=' checked' else='' $] value="1" class="inputstyle">不追踪链接</label></td>
                         <td>nofollow</td>
                     </tr>
-                    <tr align="center" height="25" bgcolor="#F9FCEF">
+                    <tr align="center" height="25" bgcolor="#ffffff">
                         <td>生成静态文件</td>
                         <td align="left" style="padding:3px;">
                         <label for='isonhtml'><input type='checkbox' name='isonhtml' id='isonhtml' [$isonhtml if='False' elseif='0' value='' else=' checked'$]  value='1'>生成静态网页</label>                        </td>
                         <td>isonhtml</td>
                     </tr>
-                    <tr align="center" height="25" bgcolor="#ffffff">
+                    <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>显示条数</td>
                         <td align="left" style="padding:3px;"><input name="npagesize" type="text" id="npagesize" value="[$npagesize$]" style="width:80px; text-align:center;" class="input-text"></td>
                         <td>npagesize</td>

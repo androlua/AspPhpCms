@@ -2,196 +2,195 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'Time 时间操作类 (2013,9,27)
 
-
-
-Function format_Time(a, b)
-    Dim c, d, e, f, g, h
-    format_Time = ""
-    If IsDate(a) = False Then Exit Function
-    c = CStr(Year(a))
-    d = CStr(Month(a))
-    If Len(d) = 1 Then d = "0" & d
-    e = CStr(Day(a))
-    If Len(e) = 1 Then e = "0" & e
-    f = CStr(Hour(a))
-    If Len(f) = 1 Then f = "0" & f
-    g = CStr(Minute(a))
-    If Len(g) = 1 Then g = "0" & g
-    h = CStr(Second(a))
-    If Len(h) = 1 Then h = "0" & h
-    Select Case b
+'时间处理
+Function format_Time(timeStr, nType)
+    Dim y, m, d, h, mi, s 
+    format_Time = "" 
+    If IsDate(timeStr) = False Then Exit Function 
+    y = CStr(Year(timeStr)) 
+    m = CStr(Month(timeStr)) 
+    If Len(m) = 1 Then m = "0" & m 
+    d = CStr(Day(timeStr))                                                          '在vb.net里要这样用  D = CStr(CDate(timeStr).Day)
+    If Len(d) = 1 Then d = "0" & d 
+    h = CStr(Hour(timeStr)) 
+    If Len(h) = 1 Then h = "0" & h 
+    mi = CStr(Minute(timeStr)) 
+    If Len(mi) = 1 Then mi = "0" & mi 
+    s = CStr(Second(timeStr)) 
+    If Len(s) = 1 Then s = "0" & s 
+    Select Case nType
         Case 1
-
-            format_Time = c & "-" & d & "-" & e & " " & f & ":" & g & ":" & h
+            'yyyy-mm-dd hh:mm:ss
+            format_Time = y & "-" & m & "-" & d & " " & h & ":" & mi & ":" & s 
         Case 2
-
-            format_Time = c & "-" & d & "-" & e
+            'yyyy-mm-dd
+            format_Time = y & "-" & m & "-" & d 
         Case 3
-
-            format_Time = f & ":" & g & ":" & h
+            'hh:mm:ss
+            format_Time = h & ":" & mi & ":" & s 
         Case 4
-
-            format_Time = c & "年" & d & "月" & e & "日"
+            'yyyy年mm月dd日
+            format_Time = y & "年" & m & "月" & d & "日" 
         Case 5
-
-            format_Time = c & d & e
+            'yyyymmdd
+            format_Time = y & m & d 
         Case 6
-
-            format_Time = c & d & e & f & g & h
+            'yyyymmddhhmmss
+            format_Time = y & m & d & h & mi & s 
         Case 7
-
-            format_Time = d & "-" & e
+            'mm-dd
+            format_Time = m & "-" & d 
         Case 8
-
-            format_Time = c & "年" & d & "月" & e & "日" & " " & f & ":" & g & ":" & h
+            'yyyy年mm月dd日
+            format_Time = y & "年" & m & "月" & d & "日" & " " & h & ":" & mi & ":" & s 
         Case 9
-
-            format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒，" & GetDayStatus(f, 1)
+            'yyyy年mm月dd日H时mi分S秒 早上
+            format_Time = y & "年" & m & "月" & d & "日" & " " & h & "时" & mi & "分" & s & "秒，" & GetDayStatus(h, 1) 
         Case 10
-
-            format_Time = c & "年" & d & "月" & e & "日" & f & "时"
+            'yyyy年mm月dd日H时
+            format_Time = y & "年" & m & "月" & d & "日" & h & "时" 
         Case 11
-
-            format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒"
+            'yyyy年mm月dd日H时mi分S秒
+            format_Time = y & "年" & m & "月" & d & "日" & " " & h & "时" & mi & "分" & s & "秒" 
         Case 12
-
-            format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分"
+            'yyyy年mm月dd日H时mi分
+            format_Time = y & "年" & m & "月" & d & "日" & " " & h & "时" & mi & "分" 
         Case 13
-
-            format_Time = d & "月" & e & "日" & " " & f & ":" & g & " " & GetDayStatus(f, 0)
+            'yyyy年mm月dd日H时mi分 早上
+            format_Time = m & "月" & d & "日" & " " & h & ":" & mi & " " & GetDayStatus(h, 0) 
         Case 14
-
-            format_Time = c & "/" & d & "/" & e
+            'yyyy年mm月dd日
+            format_Time = y & "/" & m & "/" & d 
         Case 15
-
-            format_Time = c & "年" & d & "月 第" & GetCountPage(e, 7) & "周"
+            'yyyy年mm月 第1周
+            format_Time = y & "年" & m & "月 第" & GetCountPage(d, 7) & "周" 
     End Select
-End Function
-
-Function getDayStatus(a, b)
-    Dim c
-    If Left(a, 1) = "0" Then
-        a = Right(a, 1)
-    End If
-    a = CInt(a)
-    If a >= 0 And a <= 5 Then
-        c = "凌晨"
-    ElseIf a >= 6 And a <= 8 Then
-        c = "早上"
-    ElseIf a >= 9 And a <= 12 Then
-        c = "上午"
-    ElseIf a >= 13 And a <= 18 Then
-        c = "下午"
-    ElseIf a >= 19 And a <= 24 Then
-        c = "晚上"
+End Function 
+'获得当前天状态
+Function getDayStatus(h, SType)
+    Dim c 
+    If Left(h, 1) = "0" Then
+        h = Right(h, 1) 
+    End If 
+    h = CInt(h) 
+    If h >= 0 And h <= 5 Then
+        c = "凌晨" 
+    ElseIf h >= 6 And h <= 8 Then
+        c = "早上" 
+    ElseIf h >= 9 And h <= 12 Then
+        c = "上午" 
+    ElseIf h >= 13 And h <= 18 Then
+        c = "下午" 
+    ElseIf h >= 19 And h <= 24 Then
+        c = "晚上" 
     Else
-        c = "深夜"
-    End If
-    If b = 1 Then c = "<b>" & c & "</b>"
-    getDayStatus = c
-End Function
+        c = "深夜" 
+    End If 
+    If SType = 1 Then c = "<b>" & c & "</b>" 
+    getDayStatus = c 
+End Function 
+'时间计算
+Function printTimeValue(vv)
+    On Error Resume Next 
+    Dim v, c, n 
+    v = vv : c = "" 
+    If v >= 86400 Then
+        n = v Mod 86400 
+        v = Fix(v / 60 / 60 / 24)        '这里面是除24，不是60，因为一天有24个小时，小云你这个傻X  20150119
+        c = c & v & "天" 
+        v = n 
+    End If 
+    If v >= 3600 Then
+        n = v Mod 3600 
+        v = Fix(v / 60 / 60) 
+        c = c & v & "小时" 
+        v = n 
+    End If 
 
-Function printTimeValue(a)
-    On Error Resume Next
-    Dim b, c, d
-    b = a : c = ""
-    If b >= 86400 Then
-        d = b Mod 86400
-        b = Fix(b / 60 / 60 / 24)
-        c = c & b & "天"
-        b = d
-    End If
-    If b >= 3600 Then
-        d = b Mod 3600
-        b = Fix(b / 60 / 60)
-        c = c & b & "小时"
-        b = d
-    End If
-
-    If b >= 60 Then
-        d = b Mod 60
-        b = Fix(b / 60)
-        c = c & b & "分"
-        b = d
-    End If
-    If b >= 0 Then
-        c = c & b & "秒"
-    End If
-    If Err.Number <> 0 Then MsgBox(a)
-    printTimeValue = c
-End Function
-
-Function printAskTime(a)
-    On Error Resume Next
-    Dim b, c, d
-    b = a
-    c = ""
-    If b >= 3600 Then
-        d = b Mod 3600
-        b = Fix(b / 60 / 60)
-        c = c & b & "小时"
-        b = d
-        printAskTime = c : Exit Function
-    End If
-    If b >= 60 Then
-        d = b Mod 60
-        b = Fix(b / 60)
-        c = c & b & "分钟"
-        b = d
-        printAskTime = c : Exit Function
-    End If
-    If b >= 0 Then
-        c = c & b & "秒钟"
-        printAskTime = c : Exit Function
-    End If
-End Function
-
+    If v >= 60 Then
+        n = v Mod 60 
+        v = Fix(v / 60) 
+        c = c & v & "分" 
+        v = n 
+    End If 
+    If v >= 0 Then
+        c = c & v & "秒" 
+    End If 
+    If Err.Number <> 0 Then MsgBox(vv) 
+    printTimeValue = c 
+End Function 
+'计算整时  (问答以小时或分钟显示)
+Function printAskTime(vv)
+    On Error Resume Next 
+    Dim v, c, n 
+    v = vv 
+    c = "" 
+    If v >= 3600 Then
+        n = v Mod 3600 
+        v = Fix(v / 60 / 60) 
+        c = c & v & "小时" 
+        v = n 
+        printAskTime = c : Exit Function 
+    End If 
+    If v >= 60 Then
+        n = v Mod 60 
+        v = Fix(v / 60) 
+        c = c & v & "分钟" 
+        v = n 
+        printAskTime = c : Exit Function 
+    End If 
+    If v >= 0 Then
+        c = c & v & "秒钟" 
+        printAskTime = c : Exit Function 
+    End If 
+End Function 
+'获得时间
 Function getTimerSet()
-    Dim b
-    b = FormatNumber((Timer() - PubTimer) * 1000, 2, - 1) / 1000
-    getTimerSet = toNumber(b, 3)
-End Function
+    Dim n 
+    n = FormatNumber((Timer() - PubTimer) * 1000, 2, - 1) / 1000 
+    getTimerSet = toNumber(n, 3) 
+End Function 
+'计算时间
+Function calculationTimer(PubTimer)
+    Dim n 
+    n = FormatNumber((Timer() - PubTimer) * 1000, 2, - 1) / 1000 
+    calculationTimer = toNumber(n, 3) 
+End Function 
 
-Function calculationTimer(a)
-    Dim b
-    b = FormatNumber((Timer() - a) * 1000, 2, - 1) / 1000
-    calculationTimer = toNumber(b, 3)
-End Function
-
-
+'获得时间
 Function getTimer()
-    getTimer = "<br>------------------------------------<br>页面执行时间：" & getTimerSet() & " 秒"
-End Function
-
+    getTimer = "<br>------------------------------------<br>页面执行时间：" & getTimerSet() & " 秒" 
+End Function 
+'获得时间
 Function vBGetTimer()
-    Dim b
-    b = DateDiff("s", PubTimer, Now())
-    b = printTimeValue(b)
-    vBGetTimer = vbCrLf & "------------------------------------" & vbCrLf & "运行时间：" & b
-End Function
-
+    Dim n 
+    n = DateDiff("s", PubTimer, Now()) 
+    n = printTimeValue(n) 
+    vBGetTimer = vbCrLf & "------------------------------------" & vbCrLf & "运行时间：" & n 
+End Function 
+'获得第三种
 Function vBEchoTimer()
-    Dim b
-    b = DateDiff("s", PubTimer, Now())
-    b = printTimeValue(b)
-    vBEchoTimer = "运行时间：" & b
-End Function
-
-Function vBRunTimer(a)
-    Dim b
-    b = DateDiff("s", a, Now())
-    b = printTimeValue(b)
-    vBRunTimer = "运行时间：" & b
-End Function
-%>
-
+    Dim n 
+    n = DateDiff("s", PubTimer, Now()) 
+    n = printTimeValue(n) 
+    vBEchoTimer = "运行时间：" & n 
+End Function 
+'获得时间第四种
+Function vBRunTimer(startTime)
+    Dim n 
+    n = DateDiff("s", startTime, Now()) 
+    n = printTimeValue(n) 
+    vBRunTimer = "运行时间：" & n 
+End Function 
+%>  
 
 

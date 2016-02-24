@@ -2,80 +2,79 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
 <%
+'ASP PHP数据操作通用文件
 
-
-
-Function getWhereAnd(ByVal a, ByVal b)
-    Dim c, d
-
-    If Trim(b) = "" Then getWhereAnd = a : Exit Function
-    If InStr(LCase(a), " where ") > 0 Then
-        d = " And "
+'判断追加Sql是加Where 还是And   Sql = GetWhereAnd(Sql,AddSql)        修改于20141007 加强版
+Function getWhereAnd(ByVal sql, ByVal addSql)
+    Dim LCaseAddSql, AddType 
+    '追加SQl为空则退出
+    If Trim(addSql) = "" Then getWhereAnd = sql : Exit Function 
+    If InStr(LCase(sql), " where ") > 0 Then
+        AddType = " And " 
     Else
-        d = " Where "
-    End If
-    If b <> "" Then
-        b = Trim(b)
-        c = LCase(b)
-        If Left(c, 6) = "order " Or Left(c, 6) = "group " Then
-            getWhereAnd = a & " " & b : Exit Function 								
-        ElseIf Left(c, 6) = "where " Then
-            b = Mid(b, 7)
-        ElseIf Left(c, 4) = "and " Then
-            b = Mid(b, 5)
-        End If
-        a = a & d & b
-    End If
-    getWhereAnd = a
-End Function
-
-Function orAndSearch(a, b, c)
-    Dim d, e, f
-    c = RegExp_Replace(c, " or ", " Or ")
-    c = RegExp_Replace(c, " and ", " And ")
-    If InStr(c, " Or ") > 0 Then
-        d = Split(c, " Or ")
-        For Each e In d
-            If e <> "" Then
-                If f <> "" Then f = f & " Or "
-                f = f & " " & b & " Like '%" & e & "%'"
-            End If
-        Next
-    ElseIf InStr(c, " And ") > 0 Then
-        d = Split(c, " And ")
-        For Each e In d
-            If e <> "" Then
-                If f <> "" Then f = f & " And "
-                f = f & " " & b & " Like '%" & e & "%'"
-            End If
-        Next
-    ElseIf c <> "" Then
-        d = Split(c, " And ")
-        For Each e In d
-            If e <> "" Then
-                If f <> "" Then f = f & " And "
-                f = f & " " & b & " Like '%" & e & "%'"
-            End If
-        Next
-    End If
-    If f <> "" Then
-        If InStr(LCase(a), " where ") = 0 Then
-            f = " Where " & f
+        AddType = " Where " 
+    End If 
+    If addSql <> "" Then 
+        addSql = Trim(addSql) 
+        LCaseAddSql = LCase(addSql) 
+        If Left(LCaseAddSql, 6) = "order " Or Left(LCaseAddSql, 6) = "group " Then
+            getWhereAnd = sql & " " & addSql : Exit Function 								'改进必需加空格，因为前面已经删除了20160115
+        ElseIf Left(LCaseAddSql, 6) = "where " Then
+            addSql = Mid(addSql, 7) 
+        ElseIf Left(LCaseAddSql, 4) = "and " Then
+            addSql = Mid(addSql, 5)
+        End If 
+        sql = sql & AddType & addSql 
+    End If   
+    getWhereAnd = sql 
+End Function 
+'多个查询 Or 与 And        二次修改于20140703
+Function orAndSearch(addSql, SeectField, SearchValue)
+    Dim splStr, s, c 
+    SearchValue = RegExp_Replace(SearchValue, " or ", " Or ") 
+    SearchValue = RegExp_Replace(SearchValue, " and ", " And ") 
+    If InStr(SearchValue, " Or ") > 0 Then
+        splStr = Split(SearchValue, " Or ") 
+        For Each s In splStr
+            If s <> "" Then
+                If c <> "" Then c = c & " Or " 
+                c = c & " " & SeectField & " Like '%" & s & "%'" 
+            End If 
+        Next 
+    ElseIf InStr(SearchValue, " And ") > 0 Then
+        splStr = Split(SearchValue, " And ") 
+        For Each s In splStr
+            If s <> "" Then
+                If c <> "" Then c = c & " And " 
+                c = c & " " & SeectField & " Like '%" & s & "%'" 
+            End If 
+        Next 
+    ElseIf SearchValue <> "" Then
+        splStr = Split(SearchValue, " And ") 
+        For Each s In splStr
+            If s <> "" Then
+                If c <> "" Then c = c & " And " 
+                c = c & " " & SeectField & " Like '%" & s & "%'" 
+            End If 
+        Next 
+    End If 
+    If c <> "" Then
+        If InStr(LCase(addSql), " where ") = 0 Then
+            c = " Where " & c 
         Else
-            f = " And " & f
-        End If
-        a = a & f
-    End If
-    orAndSearch = a
-End Function
+            c = " And " & c 
+        End If 
+        addSql = addSql & c 
+    End If 
+    orAndSearch = addSql 
+End Function 
 
 
 %>
-

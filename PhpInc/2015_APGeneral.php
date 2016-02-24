@@ -1,317 +1,256 @@
+<?php 
+/************************************************************
+作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
+版权：源代码公开，各种用途均可免费使用。 
+创建：2016-02-24
+联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
+更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
+*                                    Powered By 云端 
+************************************************************/
+?>
 <?PHP
 //ASP和PHP通用函数
 
 
-
-//加载文件
-function XY_Include($action){
-    $templateFilePath=''; $Block=''; $startStr=''; $endStr=''; $content ='';
-    $templateFilePath = LCase(RParam($action, 'File')) ;
-    $Block = LCase(RParam($action, 'Block')) ;
-
-    $findstr=''; $replaceStr ='';//查找字符，替换字符
-    $findstr = RParam($action, 'findstr') ;
-    $replaceStr = RParam($action, 'replacestr') ;
-
-    $templateFilePath = HandleFileUrl($templateFilePath) ;//处理文件路径
-    if( checkFile($templateFilePath) == false ){
-        $templateFilePath = $GLOBALS['webTemplate'] . $templateFilePath ;
-    }
-    $content = GetFText($templateFilePath) ;
-    if( $Block <> '' ){
-        $startStr = '<!--#' . $Block . ' start#-->' ;
-        $endStr = '<!--#' . $Block . ' end#-->' ;
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-            $content = StrCut($content, $startStr, $endStr, 2) ;
-        }
-    }
-    //替换读出来的内容
-    if( $findstr <> '' ){
-        $content = Replace($content, $findstr, $replaceStr) ;
-    }
-
-    $XY_Include = $content ;
-    return @$XY_Include;
-}
-
-
-//处理模块替换数组
-function handleModuleReplaceArray( $content){
-    $i=''; $startStr=''; $endStr=''; $s=''; $lableName ='';
-    for( $i = 1 ; $i<= UBound($GLOBALS['ModuleReplaceArray']) - 1; $i++){
-        if( $GLOBALS['ModuleReplaceArray'][$i][ 0] == '' ){
-            break;
-        }
-        //call echo(ModuleReplaceArray(i,0),ModuleReplaceArray(0,i))
-        $lableName = $GLOBALS['ModuleReplaceArray'][$i][ 0] ;
-        $s = $GLOBALS['ModuleReplaceArray'][0][ $i] ;
-        if( $lableName == '【删除】' ){
-            $content = Replace($content, $s, '') ;
-        }else{
-            $startStr = '<replacestrname ' . $lableName . '>' ; $endStr = '</replacestrname ' . $lableName . '>' ;
-            if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-                $content = replaceContentModule($content, $startStr, $endStr, $s, '') ;
-            }
-            $startStr = '<replacestrname ' . $lableName . '/>' ;
-            if( instr($content, $startStr) > 0 ){
-                $content = replaceContentRowModule($content, '<replacestrname ' . $lableName . '/>', $s, '') ;
-            }
-        }
-    }
-    $handleModuleReplaceArray = $content ;
-    return @$handleModuleReplaceArray;
-}
-
-//去掉模板里不需要显示内容 删除模板中我的注释代码
-function delTemplateMyNote($code){
-    $startStr=''; $endStr=''; $i=''; $s=''; $handleNumb=''; $splStr=''; $Block=''; $id ='';
-    $content=''; $DragSortCssStr=''; $DragSortStart=''; $DragSortEnd=''; $DragSortValue=''; $c ='';
-    $handleNumb = 99 ;//这里定义很重要
-
-    //清除ReadBlockList读出块列表内容  不过有个不足的地方，读出内容可以从外部读出内容，这个以后考虑
-    //Call Eerr("ReadBlockList",ReadBlockList)
-    //写于20141118
-    //splStr = Split(ReadBlockList, vbCrLf)                 '不用这种，复杂了
-    //修改于20151230
-    for( $i = 1 ; $i<= $handleNumb; $i++){
-        $startStr = '<R#读出内容' ; $endStr = ' start#>' ;
-        $Block = StrCut($code, $startStr, $endStr, 2) ;
-        if( $Block <> '' ){
-            $startStr = '<R#读出内容' . $Block . ' start#>' ; $endStr = '<R#读出内容' . $Block . ' end#>' ;
-            if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
-                $s = StrCut($code, $startStr, $endStr, 1) ;
-                $code = Replace($code, $s, '') ;//移除
-            }
-        }else{
-            break;
-        }
-    }
-
-
-    if( @$_REQUEST['gl'] == 'yun' ){
-        $content = GetFText('/Jquery/dragsort/Config.html') ;
-        $content = GetFText('/Jquery/dragsort/模块拖拽.html') ;
-        //Css样式
-        $startStr = '<style>' ;
-        $endStr = '</style>' ;
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-            $DragSortCssStr = StrCut($content, $startStr, $endStr, 1) ;
-        }
-        //开始部分
-        $startStr = '<!--#top start#-->' ;
-        $endStr = '<!--#top end#-->' ;
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-            $DragSortStart = StrCut($content, $startStr, $endStr, 2) ;
-        }
-        //结束部分
-        $startStr = '<!--#foot start#-->' ;
-        $endStr = '<!--#foot end#-->' ;
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-            $DragSortEnd = StrCut($content, $startStr, $endStr, 2) ;
-        }
-        //显示块内容
-        $startStr = '<!--#value start#-->' ;
-        $endStr = '<!--#value end#-->' ;
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-            $DragSortValue = StrCut($content, $startStr, $endStr, 2) ;
-        }
-
-
-
-        //控制处理
-        $startStr = '<dIv datid=\'' ;
-        $endStr = '</dIv>' ;
-        $content = GetArray($code, $startStr, $endStr, false, false) ;
-        $splStr = aspSplit($content, '$Array$') ;
-        foreach( $splStr as $s){
-            $startStr = '【DatId】\'' ;
-            $id = mid($s, 1, instr($s, $startStr) - 1) ;
-            $s = mid($s, instr($s, $startStr) + strlen($startStr),-1) ;
-            //C=C & "<li><div title='"& Id &"'>" & vbcrlf & "<div " & S & "</div>"& vbcrlf &"<div class='clear'></div></div><div class='clear'></div></li>"
-            $s = '<div' . $s . '</div>' ;
-            //Call Die(S)
-            $c = $c . Replace(Replace($DragSortValue, '{$value$}', $s), '{$id$', $id) ;
-        }
-        $c = Replace($c, '【换行】', "\n") ;
-        $c = $DragSortStart . $c . $DragSortEnd ;
-        $code = mid($code, 1, instr($code, '<body>') - 1) ;
-        $code = Replace($code, '</head>', $DragSortCssStr . '</head></body>' . $c . '</body></html>') ;
-    }
-
-    //删除VB软件生成的垃圾代码
-    $startStr = '<dIv datid=\'' ; $endStr = '【DatId】\'' ;
-    for( $i = 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
-            $id = StrCut($code, $startStr, $endStr, 2) ;
-            $code = Replace2($code, $startStr . $id . $endStr, '<div ') ;
-        }else{
-            break;
-        }
-    }
-    $code = Replace($code, '</dIv>', '</div>') ;//替换成这个结束div
-
-    //最外围清除
-    $startStr = '<!--#dialogteststart#-->' ; $endStr = '<!--#dialogtestend#-->' ;
-    $code = Replace($code, '<!--#dialogtest start#-->', $startStr) ;
-    $code = Replace($code, '<!--#dialogtest end#-->', $endStr) ;
-    for( $i = 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
-            $s = StrCut($code, $startStr, $endStr, 1) ;
-            $code = Replace2($code, $s, '') ;
-        }else{
-            break;
-        }
-    }
-    //内转清除
-    $startStr = '<!--#teststart#-->' ; $endStr = '<!--#testend#-->' ;
-    $code = Replace($code, '<!--#del start#-->', $startStr) ;//与下面一样
-    $code = Replace($code, '<!--#del end#-->', $endStr) ;//与下面一样 多样式
-    $code = Replace($code, '<!--#test start#-->', $startStr) ;
-    $code = Replace($code, '<!--#test end#-->', $endStr) ;
-
-    for( $i = 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
-            $s = StrCut($code, $startStr, $endStr, 1) ;
-            $code = Replace2($code, $s, '') ;
-        }else{
-            break;
-        }
-    }
-    //删除注释的span
-    $code = Replace($code, '<sPAn class="testspan">', '') ;//测试Span
-    $code = Replace($code, '<sPAn class="testhidde">', '') ;//隐藏Span
-    $code = Replace($code, '</sPAn>', '') ;
-
-    //delTemplateMyNote = Code:Exit Function
-
-    $startStr = '<!--#' ; $endStr = '#-->' ;
-    for( $i = 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
-            $s = StrCut($code, $startStr, $endStr, 1) ;
-            $code = Replace2($code, $s, '') ;
-        }else{
-            break;
-        }
-    }
-
-
-    $delTemplateMyNote = $code ;
-    return @$delTemplateMyNote;
-}
-
-
-//处理常用函数附加参数    辅助类
-//Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
-//Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
-function handleFunParameter($action, $did, $sid, $tid, $title, $topNumb, $cutStrNumb, $addSql){
-    $startStr=''; $endStr ='';
-    $did = RParam($action, 'Did') ;
-    $sid = RParam($action, 'Sid') ;
-    $tid = RParam($action, 'Tid') ;
-
-    $did = IIF($did == '[$PubProDid$]', $GLOBALS['PubProDid'], $did) ;
-    $sid = IIF($sid == '[$PubProSid$]', $GLOBALS['PubProSid'], $sid) ;
-    $tid = IIF($tid == '[$PubProTid$]', $GLOBALS['PubProTid'], $tid) ;
-
-    $title = RParam($action, 'Title') ;
-    $topNumb = RParam($action, 'TopNumb') ;
-    $cutStrNumb = RParam($action, 'CutStrNumb') ;
-    if( $cutStrNumb == '' ){ $cutStrNumb = 28 ;}//默认截取字符为32
-    $addSql = RParam($action, 'AddSql') ;
-}
-//处理替换参数值 20160114
-function handleReplaceValueParam($content, $paramName, $replaceStr){
-    if( instr($content, '[$' . $paramName)==false ){
-        $paramName=lcase($paramName);
-    }
-    $handleReplaceValueParam=replaceValueParam($content, $paramName, $replaceStr);
-    return @$handleReplaceValueParam;
-}
-
-//替换参数值 2014  12 01
-function replaceValueParam($content, $paramName, $replaceStr){
-    $startStr=''; $endStr=''; $labelStr='';$tempLabelStr=''; $nLen=''; $nTimeFormat=''; $delHtmlYes=''; $funStr=''; $trimYes=''; $s='';
-    $ifStr		='';//判断字符
-    $valueStr	='';//显示字符
-    $elseStr		='';//否则字符
-    $instrStr	='';//查找字符
-    //ReplaceStr = ReplaceStr & "这里面放上内容在这时碳呀。"
-    //ReplaceStr = CStr(ReplaceStr)            '转成字符类型
-    if( IsNul($replaceStr) == true ){ $replaceStr = '' ;}
-
-    $startStr = '[$' . $paramName ; $endStr = '$]' ;
-
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        //获得对应字段加强版20151231
-        if( instr($content, $startStr . $endStr) > 0 ){
-            $labelStr = $startStr . $endStr ;
-        }else if( instr($content, $startStr . ' ') > 0 ){
-            $labelStr = StrCut($content, $startStr . ' ', $endStr, 1) ;
-        }else{
-            $labelStr = StrCut($content, $startStr, $endStr, 1) ;
-        }
-        $tempLabelStr=$labelStr;
-        $labelStr=handleInModule($labelStr,'start');
-        //删除Html
-        $delHtmlYes = RParam($labelStr, 'delHtml') ;//是否删除Html
-        if( $delHtmlYes == 'true' ){ $replaceStr = Replace(DelHtml($replaceStr), '<', '&lt;') ;}//HTML处理
-        //删除两边空格
-        $trimYes = RParam($labelStr, 'trim') ;//是否删除两边空格
-        if( $trimYes == 'true' ){ $replaceStr = TrimVbCrlf($replaceStr) ;}
-
-        //截取字符处理
-        $nLen = RParam($labelStr, 'len') ;//字符长度值
-        $nLen = HandleNumber($nLen) ;
-        //If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
-        if( $nLen <> '' ){ $replaceStr = CutStr($replaceStr, $nLen, '...') ;}//Left(ReplaceStr,nLen)
-
-        //时间处理
-        $nTimeFormat = RParam($labelStr, 'format_Time') ;//时间处理值
-        if( $nTimeFormat <> '' ){
-            $replaceStr = Format_Time($replaceStr, $nTimeFormat);
-        }
-
-        //获得栏目名称
-        $s = RParam($labelStr, 'getcolumnname');
+//文章相关标签
+function aritcleRelatedTags($relatedTags){
+    $c=''; $splStr=''; $s=''; $url ='';
+    $splStr = aspSplit($relatedTags, ',') ;
+    foreach( $splStr as $s){
         if( $s <> '' ){
-            $replaceStr = getcolumnname($replaceStr);
+            if( $c <> '' ){
+                $c = $c . ',' ;
+            }
+            $url = getColumnUrl($s, 'name') ;
+            $c = $c . '<a href="' . $url . '" rel="category tag" class="ablue">' . $s . '</a>' . vbCrlf() ;
         }
+    }
 
-        $ifStr=RParam($labelStr,'if');
-        $valueStr=RParam($labelStr,'value');
-        $elseStr=RParam($labelStr,'else');
-        $instrStr=RParam($labelStr,'instr');
-        //call echo("ifStr",ifStr)
-        //call echo("valueStr",valueStr)
-        //call echo("elseStr",elseStr)
-        if( $ifStr<>'' || $instrStr<>'' ){
-            //call echo(ifstr,replaceStr)
-            if( $ifStr==CStr($replaceStr) && $ifStr<>'' ){
-                $replaceStr=$valueStr;
-            }else if( instr(CStr($replaceStr),$instrStr)>0 && $instrStr<>'' ){
-                $replaceStr=$valueStr;
-            }else{
-                if( $elseStr<>'@ME' ){
-                    $replaceStr=$elseStr;
-                }
+    $c = '<footer class="articlefooter">' . vbCrlf() . '标签： ' . $c . '</footer>' . vbCrlf() ;
+    $aritcleRelatedTags = $c ;
+    return @$aritcleRelatedTags;
+}
+
+
+//获得随机文章id列表
+function getRandArticleId($addSql, $topNumb){
+    $splStr=''; $s=''; $c=''; $nIndex ='';
+    $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail ' . $addSql);
+    while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
+        if( $c <> '' ){ $c = $c . ',' ;}
+        $c = $c . $rs['id'] ;
+    }
+    $getRandArticleId = RandomShow($c, ',', 4) ;
+    $splStr = aspSplit($c, ',') ; $c = '' ; $nIndex = 0 ;
+    foreach( $splStr as $s){
+        if( $c <> '' ){ $c = $c . ',' ;}
+        $c = $c . $s ;
+        $nIndex = $nIndex + 1 ;
+        if( $nIndex >= $topNumb ){ break; }
+    }
+    $getRandArticleId = $c ;
+    return @$getRandArticleId;
+}
+
+//上一篇文章 这里面的sortrank(排序)也可以改为id,在引用的时候就要用id
+function upArticle($parentid, $lableName, $lableValue){
+    $sql ='';
+    $sql = 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid=' . $parentid . ' and ' . $lableName . '<' . $lableValue . ' order by ' . $lableName . ' desc' ;
+    $upArticle = handleUpDownArticle('上一篇：', $sql) ;
+    return @$upArticle;
+}
+//下一篇文章
+function downArticle($parentid, $lableName, $lableValue){
+    $sql ='';
+    $sql = 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid=' . $parentid . ' and ' . $lableName . '>' . $lableValue . ' order by ' . $lableName . ' asc' ;
+    $downArticle = handleUpDownArticle('下一篇：', $sql) ;
+    return @$downArticle;
+}
+//处理上下页
+function handleUpDownArticle($lableTitle, $sql){
+    $c=''; $url ='';
+    //call echo("sql",sql)
+    $rsxObj=$GLOBALS['conn']->query( $sql);
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        if( $GLOBALS['isMakeHtml'] == true ){
+            $url = getRsUrl($rsx['filename'], $rsx['customaurl'], '/html/detail' . $rsx['id']) ;
+        }else{
+            $url = handleWebUrl('?act=detail&id=' . $rsx['id']) ;
+        }
+        $c = '<a href="' . $url . '">' . $lableTitle . $rsx['title'] . '</a>';
+    }else{
+        $c = $lableTitle . '没有' ;
+    }
+    $handleUpDownArticle = $c ;
+    return @$handleUpDownArticle;
+}
+
+//获得单页url 20160114
+function getOnePageUrl($title){
+    $url ='';
+    $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'onepage where title=\'' . $title . '\'');
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        if( $GLOBALS['isMakeHtml'] == true ){
+            $url = getRsUrl($rsx['filename'], $rsx['customaurl'], '/page/page' . $rsx['id']) ;
+        }else{
+            $url = handleWebUrl('?act=onepage&id=' . $rsx['id']) ;
+            if( $rsx['customaurl'] <> '' ){
+                $url = $rsx['customaurl'] ;
             }
         }
-
-        //函数处理20151231    [$title  function='left(@ME,40)'$]
-        $funStr = RParam($labelStr, 'function') ;//函数
-        if( $funStr <> '' ){
-            $funStr=replace($funStr,'@ME',$replaceStr);
-            $replaceStr=handleContentCode($funStr,'');
-        }
-        $content = Replace($content, $tempLabelStr, $replaceStr) ;
     }
-    $replaceValueParam = $content ;
-    return @$replaceValueParam;
+
+    $getOnePageUrl = $url ;
+    return @$getOnePageUrl;
 }
-//call rwend(execute("replaceStr=testfunction(""ME"")") & replaceStr)
-function testfunction($s){
-    $testfunction=$s . '(end)';
-    return @$testfunction;
+//获得RS网址
+function getRsUrl($fileName, $customAUrl, $defaultFileName){
+    $url ='';
+    //用默认文件名称
+    if( $fileName == '' ){
+        $fileName = $defaultFileName ;
+    }
+    //网址
+    if( $fileName <> '' ){
+        $url = $fileName ;
+        if( instr(LCase($url), '.html') == false && substr($url, - 1) <> '/' ){
+            $url = $url . '.html' ;
+        }
+    }
+    if( AspTrim($customAUrl) <> '' ){
+        $url = AspTrim($customAUrl) ;
+    }
+    if( instr($GLOBALS['cfg_flags'], '|addwebsite|') > 0 ){
+        $url = urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url) ;
+    }
+    $getRsUrl = $url ;
+    return @$getRsUrl;
+}
+
+//获得栏目名称对应的id
+function getColumnId($columnName){
+    $columnName = Replace($columnName, '\'', '') ;//注意，这个不能留
+    $getColumnId = -1 ;
+    $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where columnName=\'' . $columnName . '\'');
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        $getColumnId = $rsx['id'] ;
+    }
+    return @$getColumnId;
+}
+
+
+//获得栏目ID对应的名称
+function getColumnName($columnID){
+    $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $columnID);
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        $getColumnName = $rsx['columnname'] ;
+    }
+    return @$getColumnName;
+}
+
+
+//获得栏目url 20160114
+function getColumnUrl($columnNameOrId, $sType){
+    $url=''; $addSql ='';
+
+    $columnNameOrId=replaceGlobleVariable($columnNameOrId)			;//处理动作 <a href="{$GetColumnUrl columnname='[$gbl_columnName$]' $}" >更多图片</a>
+
+    if( $sType == 'name' ){
+        $addSql = ' where columnname=\'' . $columnNameOrId . '\'' ;
+    }else{
+        $addSql = ' where id=' . $columnNameOrId . '' ;
+    }
+    $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn' . $addSql);
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        if( $GLOBALS['isMakeHtml'] == true ){
+            $url = getRsUrl($rsx['filename'], $rsx['customaurl'], '/nav' . $rsx['id']) ;
+        }else{
+            $url = handleWebUrl('?act=nav&columnName=' . $rsx['columnname']) ;
+            if( $rsx['customaurl'] <> '' ){
+                $url = $rsx['customaurl'] ;
+            }
+        }
+    }
+
+    $getColumnUrl = $url ;
+    return @$getColumnUrl;
+}
+
+//获得栏目ID对应的类型
+function getColumnType($columnID){
+    $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $columnID);
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        $getColumnType = $rsx['columntype'] ;
+    }
+    return @$getColumnType;
+}
+
+//获得栏目ID对应的内容
+function getColumnBodyContent($columnID){
+    $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $columnID);
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        $getColumnBodyContent = $rsx['bodycontent'] ;
+    }
+    return @$getColumnBodyContent;
+}
+
+
+
+
+
+
+
+//网站统计2014
+function webStat($folderPath){
+    $dateTime=''; $content=''; $splStr ='';
+    $thisUrl=''; $goToUrl=''; $caiShu=''; $c=''; $fileName=''; $co=''; $IE=''; $XP ='';
+    $goToUrl = ServerVariables('HTTP_REFERER') ;
+    $thisUrl = 'http://' . ServerVariables('HTTP_HOST') . ServerVariables('SCRIPT_NAME') ;
+    $caiShu = ServerVariables('QUERY_STRING') ;
+    if( $caiShu <> '' ){
+        $thisUrl = $thisUrl . '?' . $caiShu ;
+    }
+    $goToUrl = @$_REQUEST['GoToUrl'] ;
+    $thisUrl = @$_REQUEST['ThisUrl'] ;
+    $co = @$_GET['co'] ;
+    $dateTime = Now() ;
+    $content = ServerVariables('HTTP_USER_AGENT') ;
+    $content = Replace($content, 'MSIE', 'Internet Explorer') ;
+    $content = Replace($content, 'NT 5.0', '2000') ;
+    $content = Replace($content, 'NT 5.1', 'XP') ;
+    $content = Replace($content, 'NT 5.2', '2003') ;
+
+    $splStr = aspSplit($content . ';;;;', ';') ;
+    $IE = $splStr[1] ;
+    $XP = AspTrim($splStr[2]) ;
+    if( substr($XP, - 1) == ')' ){ $XP = mid($XP, 1, strlen($XP) - 1) ;}
+    $c = '来访' . $goToUrl . vbCrlf() ;
+    $c = $c . '当前：' . $thisUrl . vbCrlf() ;
+    $c = $c . '时间：' . $dateTime . vbCrlf() ;
+    $c = $c . 'IP:' . getIP() . vbCrlf() ;
+    $c = $c . 'IE:' . getBrType('') . vbCrlf() ;
+    $c = $c . 'Cookies=' . $co . vbCrlf() ;
+    $c = $c . 'XP=' . $XP . vbCrlf() ;
+    $c = $c . 'Screen=' . @$_REQUEST['screen'] . vbCrlf() ;//屏幕分辨率
+    $c = $c . '用户信息=' . ServerVariables('HTTP_USER_AGENT') . vbCrlf() ;//用户信息
+
+    $c = $c . '-------------------------------------------------' . vbCrlf() ;
+    //c=c & "CaiShu=" & CaiShu & vbcrlf
+    $fileName = $folderPath . format_Time(Now(), 2) . '.txt' ;
+    createAddFile($fileName, $c) ;
+    $c = $c . vbCrlf() . $fileName ;
+    $c = Replace($c, vbCrlf(), '\\n') ;
+    $c = Replace($c, '"', '\\"') ;
+    //Response.Write("eval(""var MyWebStat=\""" & C & "\"""")")
+    $webStat = $c ;
+    return @$webStat;
 }
 ?>
 

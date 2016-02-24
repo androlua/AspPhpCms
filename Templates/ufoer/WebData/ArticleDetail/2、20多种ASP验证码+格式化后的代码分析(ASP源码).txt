@@ -1,0 +1,64 @@
+【parentid】ASP
+【title】20多种ASP验证码+格式化后的代码分析(ASP源码)
+【webtitle】20多种ASP验证码+格式化后的代码分析(ASP源码) - 分享模板网站
+【webkeywords】20多种ASP验证码+格式化后的代码分析(ASP源码) - 分享模板网站
+【webdescription】20多种ASP验证码+格式化后的代码分析(ASP源码) - 分享模板网站
+【sortrank】898
+【author】sharembweb
+【adddatetime】2016-01-16 11:11:11
+【filename】/asp/20aspverificationdown.html
+【flags】|c|
+【relatedtags】ASP,PHP,在线ASP转PHP
+【bodycontent】
+
+
+<strong>20多种ASP验证码+格式化后的代码分析(ASP源码)</strong>，
+这是我2013年发布的一个asp类源码程序，里面有几十种asp验证码源码代码，有纯数字的，有纯字母的，有汉字类的，还有数字字母混合类的，非常的全和丰富。我把全部代码用自己写的ASP格式 化程序处理了一下，使得代码更易看懂。当时自己在开发网站时需要用到这些验证码，所以就花了一点时间把网上asp类验证码收集起来了，整理了一个下载包，供大家下载使用。直到今天还有很多人加我QQ，问我这个asp验证码之类的问题，我也会很认真一个一个回答他们，感觉挺有意思的，也很有成就感，也被很多网站所收录。
+<br>
+<br>
+<img src="http://www.codesky.net/codedown/viewpic/201310147505802.jpg" title="20多种ASP验证码+格式化后的代码分析(ASP源码)" alt="20多种ASP验证码+格式化后的代码分析(ASP源码)" width="100%">
+ 
+<br>
+
+
+<br>
+<p>本文版权归作者所有，转摘请注明作者和出处！<br />
+作者：云端<br />
+首发：<a href="http://sharembweb.com/" target="_blank" class="ablue">http://sharembweb.com</a></p>
+<br>
+
+<b>下面是作者在各大源码下载类网站发布本作品的链接：</b><br>
+<ul class="list"> 
+ 
+<li><a href="/url.asp?down=admin5_20vericode" target="_blank">【admin5】20多种ASP验证码 v1.0(ASP源码)</a></li> 
+<li><a href="/url.asp?down=chinaz_20vericode" target="_blank">【chinaz】20多种ASP验证码 v1.0(ASP源码)</a></li> 
+<li><a href="/url.asp?down=csdn_20vericode" target="_blank">【csdn】20多种ASP验证码+代码完美分析(ASP源码)</a></li> 
+<li><a href="/url.asp?down=codesky_20vericode" rel="nofollow" target="_blank">【codesky】12个ASP验证码+代码超美化分析(ASP源码)</a></li>  
+
+</ul>
+<br>
+<b>下面这些下载地址我没有发布过，可能是从上面引用过来，链接：</b><br>
+ 
+<ul class="list">
+<li><a href="/url.asp?down=jb51_20vericode" target="_blank">【jb51】20多种ASP验证码 v1.0(ASP源码)</a></li>
+<li><a href="/url.asp?down=onlinedown_20vericode" target="_blank">【onlinedown】20多种ASP验证码 1.0(ASP源码)</a></li> 
+<li><a href="/url.asp?down=mycodes_20vericode" target="_blank">【mycodes】25种ASP验证码代码(ASP源码)</a></li> 
+<li><a href="/url.asp?down=fwvv_20vericode" rel="nofollow" target="_blank">【fwvv】20多种ASP验证码源码 v1.0 (ASP源码)</a></li>
+</ul>
+ 
+ 
+<br>
+<b>下面为在各大搜索引擎中的搜索结果：</b><br>
+<ul class="list"> 
+<li><a href="/url.asp?baidu=ASP验证码代码" target="_blank">【baidu搜索】在百度里搜索(ASP验证码代码)</a></li>
+<li><a href="/url.asp?haosou=ASP验证码代码" target="_blank">【haosou搜索】在好搜里搜索(ASP验证码代码)</a></li>
+<li><a href="/url.asp?sogou=ASP验证码代码" target="_blank">【sogou搜索】在搜狗里搜索(ASP验证码代码)</a></li>
+<li><a href="/url.asp?yahoo=20多种ASP验证码" target="_blank">【yahoo搜索】在搜狗里搜索(20多种ASP验证码)</a></li>
+</ul>
+
+<br>
+
+【/bodycontent】
+
+
+

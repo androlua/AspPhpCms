@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -10,99 +10,98 @@
 %>
 <!--#Include File="Config.Asp"-->
 <%
-Call UpWeb()
+Call UpWeb() 
 Sub UpWeb()
-    Dim b, c, d, e, f, g, h, i, j, k, l, m
+    Dim FilePath, Content, FileType, FileStr, SplStr, Splxx, S, C, fCharSet, fEditTime, sEditTime, UpCharSet 
 
-	
+	'处理版本号
     If Request("act") = "getVersionNumber" Then
-        Call Die("V1.1")
-    End If
+        Call Die("V1.1") 
+    End If 
 
-	
+	'判断本地
     If GetIP = "127.0.0.1" Or InStr(GetIP, "192.168.") > 0 Then
-        Call Die("为本地，不可以上传文件")
-    End If
-	
+        Call Die("为本地，不可以上传文件") 
+    End If 
+	'密码判断
     If MD5(Request("UPEV"), 2) & MD5(Request("UPEV"), 4) <> "6178bbf3bfe62a59" Then
-        Call Die("UPEV=" & Request("UPEV") & "(" & MD5(Request("UPEV"), 2) & MD5(Request("UPEV"), 4) & ")")
-    End If
+        Call Die("UPEV=" & Request("UPEV") & "(" & MD5(Request("UPEV"), 2) & MD5(Request("UPEV"), 4) & ")") 
+    End If 
 
-	
+	'下载运程文件
     If Request("DownFile") <> "" Then
-        Call DownRemoteFile(Request("DownFile"))
-        Response.End()
-	
+        Call DownRemoteFile(Request("DownFile")) 
+        Response.End() 
+	'删除无需文件
     ElseIf Request("act") = "delWithout" Then
-        c = Rf("Content")
-		
-        f = Split(c, vbCrLf)
-        For Each b In f
-			If b<>"" Then
-				If CheckFile(b)=True Then
-					Call DeleteFile(b)
-					i=i & b & "(Del True)" & vbCrlf
+        Content = Rf("Content") 
+		'Call Die("显示" & Content)
+        SplStr = Split(Content, vbCrLf) 
+        For Each FilePath In SplStr
+			If FilePath<>"" Then
+				If CheckFile(FilePath)=True Then
+					Call DeleteFile(FilePath)
+					C=C & FilePath & "(Del True)" & vbCrlf
 				Else
-					i=i & b & "(Del NoFile)" & vbCrlf
+					C=C & FilePath & "(Del NoFile)" & vbCrlf
 				End If
 			End If
 		Next
 
-		Call Die(i)
-    End If
+		Call Die(C)
+    End If 
 
-	
+	'文件比较
     If Request("act") = "Comparison" Then
-        c = Rf("Content")
-        f = Split(c, vbCrLf)
-        For Each e In f
-            If e <> "" Then
-                g = Split(e, "|")
-                b = g(0)
-                l = g(1)
-            	
-                If CheckFile(b) = True Then
-                    k = GetFileEditDate(b)
-                    k = Format_Time(k, 1)
-                	
-                	
-                    If DateDiff("s", l, k) <= 0 Then
-                        i = i & b & vbCrLf
-                    End If
-            	
+        Content = Rf("Content") 
+        SplStr = Split(Content, vbCrLf) 
+        For Each FileStr In SplStr
+            If FileStr <> "" Then
+                Splxx = Split(FileStr, "|") 
+                FilePath = Splxx(0) 
+                sEditTime = Splxx(1) 
+            	'文件存在 则比较
+                If CheckFile(FilePath) = True Then
+                    fEditTime = GetFileEditDate(FilePath) 
+                    fEditTime = Format_Time(fEditTime, 1) 
+                	'S = FilePath & "("& sEditTime &")/" & fEditTime & "," & (DateDiff("s", sEditTime, fEditTime))
+                	'C=C & S & vbCrlf
+                    If DateDiff("s", sEditTime, fEditTime) <= 0 Then
+                        C = C & FilePath & vbCrLf 
+                    End If 
+            	'文件不存在 则返回
                 Else
-                    i = i & b & vbCrLf
-                End If
-            End If
-        Next
-        Call Rw(i)
-    	
-        Response.End()
-    End If
+                    C = C & FilePath & vbCrLf 
+                End If 
+            End If 
+        Next 
+        Call Rw(C) 
+    	'Call Rw("返回比较：" & C)
+        Response.End() 
+    End If 
 
 
 
-    b = Request.Form("FilePath")
-    c = Request.Form("Content")
-    m = Request.Form("CharSet")
+    FilePath = Request.Form("FilePath") 
+    Content = Request.Form("Content") 
+    UpCharSet = Request.Form("CharSet") 
 
-    d = LCase(getFileExtName(b))
+    FileType = LCase(getFileExtName(FilePath))                                      '文件类型
 
-    b = HandlePath(b)
-    Call CreateDirFolder(b)
+    FilePath = HandlePath(FilePath) 
+    Call CreateDirFolder(FilePath)                                                  '创建一组文件夹20141215
 
-	
+	'二进制保存
     If Request("UpType") = "binary" Then
-        Call DecSaveBinary(b, c, 2)
-        Call Rw(b & "|二进制保存")
+        Call DecSaveBinary(FilePath, Content, 2) 
+        Call Rw(FilePath & "|二进制保存") 
     Else
-        c = SpecialHtmlUploadEncryptionDecrypt(c, "Decrypt")
-        Call WriteToFile(b, c, m)
-        Call Rw(b & "|普通保存")
-    End If
-End Sub
-%>
-
+        Content = SpecialHtmlUploadEncryptionDecrypt(Content, "Decrypt")                '解密Html内容特殊字符
+        Call WriteToFile(FilePath, Content, UpCharSet) 
+        Call Rw(FilePath & "|普通保存") 
+    End If 
+End Sub 
+%> 
 
 
 

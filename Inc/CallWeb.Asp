@@ -2,131 +2,131 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<!--#Include File = "Config.Asp"-->
+<!--#Include File = "Config.Asp"--> 
 <%
-
+'管理 
 Dim Temp,Add,Sql,X,I
 Dim ThisWebSite
-ThisWebSite = Host			
+ThisWebSite = Host			'当前域名 
 
 Session("Administrator") = "admin"
 
 Call OpenConn()
-
+'选择处理
 Select Case Request("act")
     Case "nav" :  Call Rw(DivNavigation("Where NavTop=True  Order By Sort Asc"))
     Case "foot" :  Call Rw(DivWebBottom())
 	Case "article" : Call Rw(DivArticle)
-	Case "JSShowWeb" : Call JSShowWeb()				
-	Case "articleList","ShowProduct"
+	Case "JSShowWeb" : Call JSShowWeb()				'以JS方法显示网站一些信息，变动的
+	Case "articleList","ShowProduct" 
 		Session("BigClassName")=""
 		Session("SmallClassName")=""
 		Session("ThreeClassName")=""
 		If Rq("Bid")<>"" Then ShowBidId(Rq("Bid"))
 		If Rq("Sid")<>"" Then ShowSidId(Rq("Sid"))
 		If Rq("Tid")<>"" Then ShowTidId(Rq("Tid"))
-		ShowProduct():ArticleList()
+		ShowProduct():ArticleList() 
 End Select
-
+'JS显示网页各模块内容
 Sub JSShowWeb()
-	Dim b,c
+	Dim S,C
+	'导航
+	S = DivNavigation("Where NavTop=True  Order By Sort Asc")
+	S=Replace(S,vbCrlf,"\n")
+	S=Replace(S,"/","\/")
+	C=C & "document.all.nav.innerHTML="""& S &"""" & vbCrlf 
+	'底部
+	S=Replace(DivWebBottom,vbCrlf,"\n")
+	S=Replace(Replace(S,"/","\/"),"""","\""")
+	C=C & "document.all.foot.innerHTML="""& S &"""" & vbCrlf
 	
-	b = DivNavigation("Where NavTop=True  Order By Sort Asc")
-	b=Replace(b,vbCrlf,"\n")
-	b=Replace(b,"/","\/")
-	c=c & "document.all.nav.innerHTML="""& b &"""" & vbCrlf
-	
-	b=Replace(DivWebBottom,vbCrlf,"\n")
-	b=Replace(Replace(b,"/","\/"),"""","\""")
-	c=c & "document.all.foot.innerHTML="""& b &"""" & vbCrlf
-	
-	Call Rw(c)
+	Call Rw(C)
 End Sub
-
-Function DivNavigation(a)
-	Dim b, c, d, e, f, g, h, i
-	Rs.Open "Select * From [NavBigClass] " & a, Conn, 1, 1
-	c = c & "<li class=left></li>" & vbCrlf
-	For b = 1 To Rs.RecordCount
-		e = Rs("FileName")
-		If e <> "" And Right(e,1)<>"/" Then e = e & ".html"
+'Div版网站导航
+Function DivNavigation(AddSql)
+	Dim I, C, Url, FileName, BigFolder, Did, ShowDid, Target 
+	Rs.Open "Select * From [NavBigClass] " & AddSql, Conn, 1, 1 
+	C = C & "<li class=left></li>" & vbCrlf
+	For I = 1 To Rs.RecordCount
+		FileName = Rs("FileName") 
+		If FileName <> "" And Right(FileName,1)<>"/" Then FileName = FileName & ".html"  
 	
-		f = "/" & Rs("FolderName") & "/" 	
-		g = Rs("BigClassName")
-		h = FontColorFontB(g, Rs("FontB"), Rs("FontColor"))
-		i = Rs("Target")
+		BigFolder = "/" & Rs("FolderName") & "/" 	
+		Did = Rs("BigClassName") 
+		ShowDid = FontColorFontB(Did, Rs("FontB"), Rs("FontColor")) 
+		Target = Rs("Target") 
 		
-		d = Rs("FileName")
-		If CheckRemoteUrl(d)=False Then		
-			d = f & e
-			d = Replace(Replace(d, "//", "/"), "//", "/")
-			d = FullHttpUrl(ThisWebSite,d)	
-			Call WebDebug(d,"act=Nav&NavDid=" & g)
+		Url = Rs("FileName")
+		If CheckRemoteUrl(Url)=False Then		
+			Url = BigFolder & FileName 
+			Url = Replace(Replace(Url, "//", "/"), "//", "/")
+			Url = FullHttpUrl(ThisWebSite,Url)	
+			Call WebDebug(Url,"act=Nav&NavDid=" & Did)'调试
 		End If
 		
-		c = c & "<li><a " & AHref(d, "", i) & ">" & h & "</a></li>" &vbCrlf
-		c = c & "<li class=line></li>" & vbCrlf
-	Rs.MoveNext : Next : Rs.Close
-	c = c & "<li class=right></li>" & vbCrlf
-	DivNavigation = c
+		C = C & "<li><a " & AHref(Url, "", Target) & ">" & ShowDid & "</a></li>" &vbCrlf
+		C = C & "<li class=line></li>" & vbCrlf
+	Rs.MoveNext : Next : Rs.Close 
+	C = C & "<li class=right></li>" & vbCrlf
+	DivNavigation = C 
 End Function
-
+'Div版网站底部
 Function DivWebBottom()
 	Rs.Open"Select * From [WebSite]",Conn,1,1
 	If Not Rs.Eof Then
 		DivWebBottom=Rs("WebSiteBottom")
 	End If:Rs.Close
 End Function
-
+'Div版显示文章
 Function DivArticle()
-    Dim b,c
-	c=Trim(Request("Id"))
-	Rs.Open"Select * From [Product] Where Id=" & c,Conn,1,1
+    Dim C,Id
+	Id=Trim(Request("Id"))
+	Rs.Open"Select * From [Product] Where Id=" & Id,Conn,1,1
 	If Not Rs.Eof Then
-		b=b & "<div class=""your_position"">首页 ><Span>信息中心</Span></div>" & vbCrlf
-		b=b & "<div class=""allpagenewstitle"">"& Rs("Title") &"</div>" & vbCrlf
-		b=b & "<div  class=""allpagenewsinfo"">作者："& Rs("Author") &"　　发布时间："& Rs("AddDateTime") &"</div>" & vbCrlf
-		b=b & "<div class=""allpagenewscontent"">" & vbCrlf
-		b=b & Rs("Content") & vbCrlf
-		b=b & "</div>" & vbCrlf
+		C=C & "<div class=""your_position"">首页 ><Span>信息中心</Span></div>" & vbCrlf
+		C=C & "<div class=""allpagenewstitle"">"& Rs("Title") &"</div>" & vbCrlf
+		C=C & "<div  class=""allpagenewsinfo"">作者："& Rs("Author") &"　　发布时间："& Rs("AddDateTime") &"</div>" & vbCrlf
+		C=C & "<div class=""allpagenewscontent"">" & vbCrlf
+		C=C & Rs("Content") & vbCrlf
+		C=C & "</div>" & vbCrlf
 	Else
-		b = "没有文章"
+		C = "没有文章"
 	End If:Rs.Close
-	DivArticle = b
+	DivArticle = C
 End Function
-Function ShowTidId(a)
-	Rs.Open"Select * From [ThreeClass] Where Id="&a,Conn,1,1
+Function ShowTidId(Id)
+	Rs.Open"Select * From [ThreeClass] Where Id="&Id,Conn,1,1
 	If Not Rs.Eof Then
 		Session("BigClassName")=Rs("BigClassName")
 		Session("SmallClassName")=Rs("SmallClassName")
 		Session("ThreeClassName")=Rs("ThreeClassName")
 	End If:Rs.Close
 End Function
-
-Function ShowSidId(a)
-	Rs.Open"Select * From [SmallClass] Where Id="&a,Conn,1,1
+'ShowSigId子类信息
+Function ShowSidId(Id)
+	Rs.Open"Select * From [SmallClass] Where Id="&Id,Conn,1,1
 	If Not Rs.Eof Then
 		Session("BigClassName")=Rs("BigClassName")
 		Session("SmallClassName")=Rs("SmallClassName")
 		Session("ThreeClassName")=""
 	End If:Rs.Close
 End Function
-
-Function ShowBidId(a)
-	Rs.Open"Select * From [BigClass] Where Id="&a,Conn,1,1
+'ShowBigId大类信息
+Function ShowBidId(Id)
+	Rs.Open"Select * From [BigClass] Where Id="&Id,Conn,1,1
 	If Not Rs.Eof Then
 		Session("BigClassName")=Rs("BigClassName")
 		Session("ThreeClassName")=""
 		Session("SmallClassName")=""
 	End If:Rs.Close
 End Function
-
+'ShowProduct
 Function ShowProduct()
 	If Session("ThreeClassName")<>"" Then
 		Add=" Where BigClassName='"&Session("BigClassName")&"' And SmallClassName='"&Session("SmallClassName")&"' And ThreeClassName='"&Session("ThreeClassName")&"'"
@@ -137,7 +137,7 @@ Function ShowProduct()
 	End If
 End Function
 
-
+'文章展示
 Function ArticleList()
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -147,7 +147,7 @@ Function ArticleList()
 <title>文章列表</title>
 </head>
 <body>
-<script language="javascript" src=""& adminDir &"Images/Function.Js"></script>
+<script language="javascript" src=""& adminDir &"Images/Function.Js"></script> 
 <link href=""& adminDir &"Css/Main.Css" rel="stylesheet"  type="text/css">
 <link href=""& adminDir &"Css/BodyCss.Css" rel="stylesheet"  type="text/css">
 <div class="ClickYes">
@@ -195,7 +195,7 @@ End If
 <td width="78" align="center" bgcolor="A4B6D7"><span style="font-weight: bold">信息小类</span></td>
 <td width="78" align="center"><span style="font-weight: bold">信息子类</span></td>
 <td align="center"><span style="font-weight: bold">信息名称</span></td>
-
+ 
 <td width="40" align="center"><b>审核</b></td>
 <td width="81" align="center"><span style="font-weight: bold">发布时间</span></td>
 <td width="92" align="center"><b>操作选项</b></td>
@@ -211,16 +211,16 @@ ElseIf Rf("Search")<>"" Then
 ElseIf Rf("Sql")<>"" Then
 	Add=" "&Rf("Sql")
 End If
-If Rq("page") <> "" Then Temp = "&page=" & Rq("page") Else Temp = ""
+If Rq("page") <> "" Then Temp = "&page=" & Rq("page") Else Temp = "" 
 Sql="Select * From [Product]"&Add&" Order By Sort"
 Rs.Open Sql,Conn,1,1
 If Rs.Eof Then
-
+'Rw "暂无信息……"
 Else
-Rs.PageSize = 11
-nCount=Rs.RecordCount
+Rs.PageSize = 11 '每页记录条数
+nCount=Rs.RecordCount '记录总数
 nPageSize=Rs.PageSize
-MaxPage=Rs.PageCount
+MaxPage=Rs.PageCount 
 Page=request("page")
 If Not IsNumeric(Page) Or Page="" Then
 	Page=1
@@ -248,11 +248,11 @@ For I=1 To x
 <td width="100" align="center"><%=Rs("SmallClassName")%>&nbsp;</td>
 <td width="100" align="center"><%=Rs("ThreeClassName")%>&nbsp;</td>
 <td align="left"><a href="#" title="文章标题" name="<%=Rs("ID")%>"><%=Rs("Title")%></a></td>
-
+ 
 <td align="center"><%
-
+ 
 	Call Rw(ShowOnOffImg(Rs(0), "Product", "Through", Rs("Through"), "/Inc/CallWeb.Asp?act=ShowProduct"))
-
+ 
 %></td>
 <td align="center"><%=Rs("UpDateTime")%>&nbsp;</td>
 <td align="center" bgcolor="#E8FFED"><a href="?act=ShowEditProduct&amp;Id=<%=Rs(0)&Temp%>">修改</a> | <a href="?act=DelId&Id=<%=Rs(0)&Temp%>" onClick="return CheckDel();">删除</a></td>
@@ -260,10 +260,10 @@ For I=1 To x
 <%Rs.MoveNext:Next:End If:Rs.Close%>
 <tr bgcolor="#A4B6D7" class="tdbg">
   <td height="22" colspan="9" align="left" ><a href="javascript:Checkmm('全选');">全选</a> <a href="javascript:Checkmm('反选');">反选</a><span style="text-align:center;">
-
+  
     <select name="Sel" id="Sel" onchange="javascript:PROonclick();">
       <option>请选择操作</option>
-      <%	
+      <%	  
 	  Rw("<option value=""?act=AllSave"&Temp&""">更新信息</option>")
 	  Rw("<option value=""?act=AllDel"&Temp&""">删除选择</option>")
 	  %>
@@ -277,4 +277,3 @@ For I=1 To x
 </div>
 </body></html>
 <%End Function%>
-

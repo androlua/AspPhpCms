@@ -2,197 +2,196 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
 '************************************************************
 %>
-<%
+<% 
+'格式化20150212
 
 
+'Html格式化 简单版 加强于2014 12 09，20150709
+Function htmlFormatting(content)
+    htmlFormatting = HandleHtmlFormatting(content, False, 0, "") 
+End Function 
+'处理格式化
+Function handleHtmlFormatting(ByVal content, isMsgBox, nErrLevel, action)
+    Dim splStr, s, tempS, lCaseS, c, left4Str, left5Str, left6Str, left7Str, left8Str
+    Dim nLevel                                                                      '级别
+	dim elseS,elseLable
 
+    Dim levelArray(299), keyWord 
+    Dim lableName                                                                   '标签名称
+    Dim isJavascript                                                                '为javascript
+    Dim isTextarea                                                                  '为表单文本域<textarea
+	dim isPre																		'为pre
+    isJavascript = False                                                            '默认javascript为假
+    isTextarea = False                                                              '表单文件域为假
+	isPre=False																		'默认pre为假
+    nLevel = 0                                                                      '级别数
 
-Function htmlFormatting(a)
-    htmlFormatting = HandleHtmlFormatting(a, False, 0, "")
-End Function
+    action = "|" & action & "|"                                                     '动作
+    splStr = Split(content, vbCrLf) 
+    For Each s In splStr
+        tempS = s:elseS=s
+        s = TrimVbCrlf(s) : lCaseS = LCase(s) 
+        '判断于20150710
+        If(Left(lCaseS, 8) = "<script " Or Left(lCaseS, 8) = "<script>") And InStr(s, "</script>") = False And isJavascript = False Then
+            isJavascript = True 
+            c = c & phptrim(tempS) & vbCrLf 
+        ElseIf isJavascript = True Then
 
-Function handleHtmlFormatting(ByVal a, b, c, d)
-    Dim e, f, g, h, i, j, k, l, m, n
-    Dim o
-	dim p,q
-
-    Dim levelArray(299), s
-    Dim t
-    Dim u
-    Dim v
-	dim isPre																		
-    u = False
-    v = False
-	isPre=False																		
-    o = 0
-
-    d = "|" & d & "|"
-    e = Split(a, vbCrLf)
-    For Each f In e
-        g = f:p=f
-        f = TrimVbCrlf(f) : h = LCase(f)
-
-        If(Left(h, 8) = "<script " Or Left(h, 8) = "<script>") And InStr(f, "</script>") = False And u = False Then
-            u = True
-            i = i & phptrim(g) & vbCrLf
-        ElseIf u = True Then
-
-            If Left(h, 9) = "</script>" Then
-                u = False
-                i = i & phptrim(g) & vbCrLf
+            If Left(lCaseS, 9) = "</script>" Then
+                isJavascript = False 
+                c = c & phptrim(tempS) & vbCrLf                                                 '最后清除两边空格
             Else
-                i = i & g & vbCrLf
-            End If
+                c = c & tempS & vbCrLf                                                          '为js则显示原文本  不处理清空两边空格phptrim(tempS)
+            End If 
 
-
-        ElseIf(Left(h, 10) = "<textarea " Or Left(h, 10) = "<textarea>") And InStr(f, "</textarea>") = False And v = False Then
-            v = True
-            i = i & phptrim(g) & vbCrLf
-        ElseIf v = True Then
-            i = i & phptrim(g) & vbCrLf
-            If Left(h, 11) = "</textarea>" Then
-                v = False
-            End If
-
-        ElseIf(Left(h, 5) = "<pre " Or Left(h, 5) = "<pre>") And InStr(f, "</pre>") = False And isPre = False Then
-            isPre = True
-            i = i & phptrim(g) & vbCrLf
+        '表单文本域判断于20151019
+        ElseIf(Left(lCaseS, 10) = "<textarea " Or Left(lCaseS, 10) = "<textarea>") And InStr(s, "</textarea>") = False And isTextarea = False Then
+            isTextarea = True 
+            c = c & phptrim(tempS) & vbCrLf 
+        ElseIf isTextarea = True Then
+            c = c & phptrim(tempS) & vbCrLf 
+            If Left(lCaseS, 11) = "</textarea>" Then
+                isTextarea = False 
+            End If 
+        '表单文本域判断于20151019
+        ElseIf(Left(lCaseS, 5) = "<pre " Or Left(lCaseS, 5) = "<pre>") And InStr(s, "</pre>") = False And isPre = False Then
+            isPre = True 
+            c = c & phptrim(tempS) & vbCrLf  
         ElseIf isPre = True Then
-            i = i & g & vbCrLf
-            If Left(h, 6) = "</pre>" Then
-                isPre = False
-            End If
+            c = c & tempS & vbCrLf 
+            If Left(lCaseS, 6) = "</pre>" Then
+                isPre = False 
+            End If  
 			
 
-        ElseIf f <> "" And u = False And v = False Then
-            j = "|" & Left(h, 4) & "|" : k = "|" & Left(h, 5) & "|" : l = "|" & Left(h, 6) & "|"
-            m = "|" & Left(h, 7) & "|" : n = "|" & Left(h, 8) & "|"
+        ElseIf s <> "" And isJavascript = False And isTextarea = False Then
+            left4Str = "|" & Left(lCaseS, 4) & "|" : left5Str = "|" & Left(lCaseS, 5) & "|" : left6Str = "|" & Left(lCaseS, 6) & "|" 
+            left7Str = "|" & Left(lCaseS, 7) & "|" : left8Str = "|" & Left(lCaseS, 8) & "|" 
 
-            s = ""
-            t = ""
-            If InStr("|<ul>|<ul |<li>|<li |<dt>|<dt |<dl>|<dl |<dd>|<dd |<tr>|<tr |<td>|<td |", j) > 0 Then
-                s = j
-                t = Mid(j, 3, 2)
-            ElseIf InStr("|<div>|<div |", k) > 0 Then
-                s = k
-                t = Mid(k, 3, 3)
-            ElseIf InStr("|<span>|<span |<form>|<form |", l) > 0 Then
-                s = l
-                t = Mid(l, 3, 4)
+            keyWord = ""                                                                    '关键词初始清空
+            lableName = ""                                                                  '标签名称
+            If InStr("|<ul>|<ul |<li>|<li |<dt>|<dt |<dl>|<dl |<dd>|<dd |<tr>|<tr |<td>|<td |", left4Str) > 0 Then
+                keyWord = left4Str 
+                lableName = Mid(left4Str, 3, 2) 
+            ElseIf InStr("|<div>|<div |", left5Str) > 0 Then
+                keyWord = left5Str 
+                lableName = Mid(left5Str, 3, 3) 
+            ElseIf InStr("|<span>|<span |<form>|<form |", left6Str) > 0 Then
+                keyWord = left6Str 
+                lableName = Mid(left6Str, 3, 4) 
 
-            ElseIf InStr("|<table>|<table |<tbody>|<tbody |", m) > 0 Then
-                s = m
-                t = Mid(m, 3, 5)
+            ElseIf InStr("|<table>|<table |<tbody>|<tbody |", left7Str) > 0 Then
+                keyWord = left7Str 
+                lableName = Mid(left7Str, 3, 5) 
 
-            ElseIf InStr("|<center>|<center |", n) > 0 Then
-                s = n
-                t = Mid(n, 3, 6)
-            End If
-            s = Trim(Replace(Replace(s, "<", ""), ">", ""))
-
-
-            If s <> "" Then
-                f = CopyStr("    ", o) & f
-                If Right(h, 3 + Len(t)) <> "</" & t & ">" And InStr(h, "</" & t & ">") = False Then
-                    o = o + 1
-                    If o >= 0 Then
-                        levelArray(o) = s
-                    End If
-                End If
-            ElseIf InStr("|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|", "|" & Left(h, 5) & "|") > 0 Or InStr("|</div>|", "|" & Left(h, 6) & "|") > 0 Or InStr("|</span>|</form>|", "|" & Left(h, 7) & "|") > 0 Or InStr("|</table>|</tbody>|", "|" & Left(h, 8) & "|") > 0 Or InStr("|</center>|", "|" & Left(h, 9) & "|") > 0 Then
-                o = o - 1
-                f = CopyStr("    ", o) & f
+            ElseIf InStr("|<center>|<center |", left8Str) > 0 Then
+                keyWord = left8Str 
+                lableName = Mid(left8Str, 3, 6)
+            End If 
+            keyWord = Trim(Replace(Replace(keyWord, "<", ""), ">", "")) 
+            'call echo(KeyWord,lableName)
+            '开始
+            If keyWord <> "" Then
+                s = CopyStr("    ", nLevel) & s 
+                If Right(lCaseS, 3 + Len(lableName)) <> "</" & lableName & ">" And InStr(lCaseS, "</" & lableName & ">") = False Then
+                    nLevel = nLevel + 1 
+                    If nLevel >= 0 Then
+                        levelArray(nLevel) = keyWord 
+                    End If 
+                End If 
+            ElseIf InStr("|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|", "|" & Left(lCaseS, 5) & "|") > 0 Or InStr("|</div>|", "|" & Left(lCaseS, 6) & "|") > 0 Or InStr("|</span>|</form>|", "|" & Left(lCaseS, 7) & "|") > 0 Or InStr("|</table>|</tbody>|", "|" & Left(lCaseS, 8) & "|") > 0 Or InStr("|</center>|", "|" & Left(lCaseS, 9) & "|") > 0 Then
+                nLevel = nLevel - 1 
+                s = CopyStr("    ", nLevel) & s 
             Else
-                f = CopyStr("    ", o) & f
-
-                If Right(h, 6) = "</div>" Then
-                    If checkHtmlFormatting(h) = False Then
-                        f = Left(f, Len(f) - 6)
-                        o = o - 1
-                        f = f & vbCrLf & CopyStr("    ", o) & "</div>"
-                    End If
-                ElseIf Right(h, 7) = "</span>" Then
-                    If checkHtmlFormatting(h) = False Then
-                        f = Left(f, Len(f) - 7)
-                        o = o - 1
-                        f = f & vbCrLf & CopyStr("    ", o) & "</span>"
-                    End If
-                ElseIf InStr("|</ul>|</dt>|<dl>|<dd>|", k) > 0 Then
-                    f = Left(f, Len(f) - 5)
-                    o = o - 1
-                    f = f & vbCrLf & CopyStr("    ", o) & Right(h, 5)
+                s = CopyStr("    ", nLevel) & s 
+                '最后是结束标签则减一级
+                If Right(lCaseS, 6) = "</div>" Then
+                    If checkHtmlFormatting(lCaseS) = False Then
+                        s = Left(s, Len(s) - 6) 
+                        nLevel = nLevel - 1 
+                        s = s & vbCrLf & CopyStr("    ", nLevel) & "</div>" 
+                    End If 
+                ElseIf Right(lCaseS, 7) = "</span>" Then
+                    If checkHtmlFormatting(lCaseS) = False Then
+                        s = Left(s, Len(s) - 7) 
+                        nLevel = nLevel - 1 
+                        s = s & vbCrLf & CopyStr("    ", nLevel) & "</span>" 
+                    End If 
+                ElseIf InStr("|</ul>|</dt>|<dl>|<dd>|", left5Str) > 0 Then
+                    s = Left(s, Len(s) - 5) 
+                    nLevel = nLevel - 1 
+                    s = s & vbCrLf & CopyStr("    ", nLevel) & Right(lCaseS, 5) 
                 End If
 				
 				
- 				
-				p=phptrim(lcase(p))
-				if instr(p,"</")>0 then
-					q=mid(p,instr(p,"</"))
-					if InStr("|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|</div>|</span>|<form>|", "|" & q & "|") > 0 and o>0 then
-						o = o - 1
+ 				'对   aaa</li>   这种进处理   20160106
+				elseS=phptrim(lcase(elseS))
+				if instr(elseS,"</")>0 then
+					elseLable=mid(elseS,instr(elseS,"</"))
+					if InStr("|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|</div>|</span>|<form>|", "|" & elseLable & "|") > 0 and nLevel>0 then
+						nLevel = nLevel - 1 
 					end if
 				end if
+				'call echo("s",replace(s,"<","&lt;"))
 				
 				
-				
-            End If
-
-            i = i & f & vbCrLf
-        ElseIf f = "" Then
-            If InStr(d, "|delblankline|") = False And InStr(d, "|删除空行|") = False Then
-                i = i & vbCrLf
-            End If
-        End If
-    Next
-    handleHtmlFormatting = i
-    c = o
-    If o <> 0 And(LCase(b) = "1" Or LCase(b) = "true") Then
-        Call echo("HTML标签有错误", o)
-    End If
-
-End Function
-
+            End If 
+            'call echo("",ShowHtml(temps)
+            c = c & s & vbCrLf 
+        ElseIf s = "" Then
+            If InStr(action, "|delblankline|") = False And InStr(action, "|删除空行|") = False Then'删除空行
+                c = c & vbCrLf 
+            End If 
+        End If 
+    Next 
+    handleHtmlFormatting = c 
+    nErrLevel = nLevel                                                              '获得错误级别
+    If nLevel <> 0 And(LCase(isMsgBox) = "1" Or LCase(isMsgBox) = "true") Then
+        Call echo("HTML标签有错误", nLevel) 
+    End If 
+'Call Echo("nLevel",nLevel & "," & levelArray(nLevel))                '显示错误标题20150212
+End Function 
 
 
-Function checkHtmlFormatting(ByVal a)
-    Dim b, c, d, e, f, g
-    a = LCase(a)
-    b = Split("ul|li|dt|dd|dl|div|span", "|")
-    For Each c In b
-        c = phptrim(c)
-        If c <> "" Then
-            f = 0
-            g = "<" & c & " "
-            If InStr(a, g) > 0 Then
-                e = Split(a, g)
-                f = f + UBound(e)
-            End If
-            g = "<" & c & ">"
-            If InStr(a, g) > 0 Then
-                e = Split(a, g)
-                f = f + UBound(e)
-            End If
-            g = "</" & c & ">"
-            If InStr(a, g) > 0 Then
-                e = Split(a, g)
-                f = f - UBound(e)
-            End If
+'检测HTML标签是否成对出现 如（<div><ul><li>aa</li></ul></div></div>）
+Function checkHtmlFormatting(ByVal content)
+    Dim splStr, s, c, splxx, nLable, lableStr 
+    content = LCase(content) 
+    splStr = Split("ul|li|dt|dd|dl|div|span", "|") 
+    For Each s In splStr
+        s = phptrim(s) 
+        If s <> "" Then
+            nLable = 0 
+            lableStr = "<" & s & " " 
+            If InStr(content, lableStr) > 0 Then
+                splxx = Split(content, lableStr) 
+                nLable = nLable + UBound(splxx) 
+            End If 
+            lableStr = "<" & s & ">" 
+            If InStr(content, lableStr) > 0 Then
+                splxx = Split(content, lableStr) 
+                nLable = nLable + UBound(splxx) 
+            End If 
+            lableStr = "</" & s & ">" 
+            If InStr(content, lableStr) > 0 Then
+                splxx = Split(content, lableStr) 
+                nLable = nLable - UBound(splxx) 
+            End If 
+            'call echo(ShowHtml(lableStr),nLable)
+            If nLable <> 0 Then
+                checkHtmlFormatting = False 
+                Exit Function 
+            End If 
+        End If 
+    Next 
+    checkHtmlFormatting = True 
+End Function 
 
-            If f <> 0 Then
-                checkHtmlFormatting = False
-                Exit Function
-            End If
-        End If
-    Next
-    checkHtmlFormatting = True
-End Function
-
-%>
-
+%>  
 

