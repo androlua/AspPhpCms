@@ -3,7 +3,7 @@
 【webtitle】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
 【webkeywords】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
 【webdescription】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
-【sortrank】6
+【sortrank】8
 【author】sharembweb
 【adddatetime】2016-02-18 08:51:11
 【filename】/aspphpcms/ruheaspwebtophpweb.html

@@ -2,17 +2,17 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
 'ASP和PHP通用函数
 
 
-'文章相关标签
+'文章相关标签 组  待改进
 Function aritcleRelatedTags(relatedTags)
     Dim c, splStr, s, url 
     splStr = Split(relatedTags, ",") 
@@ -73,31 +73,13 @@ Function handleUpDownArticle(lableTitle, sql)
         Else
             url = handleWebUrl("?act=detail&id=" & rsx("id")) 
         End If 
-        c = "<a href=""" & url & """>" & lableTitle & rsx("title") & "</a>"
+        c = "<a href=""" & url & """>" & lableTitle & rsx("title") & "</a>" 
     Else
         c = lableTitle & "没有" 
     End If : rsx.Close 
     handleUpDownArticle = c 
 End Function 
-
-'获得单页url 20160114
-Function getOnePageUrl(title)
-    Dim url 
-    rsx.Open "select * from " & db_PREFIX & "onepage where title='" & title & "'", conn, 1, 1 
-    If Not rsx.EOF Then
-        If isMakeHtml = True Then
-            url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/page/page" & rsx("id")) 
-        Else
-            url = handleWebUrl("?act=onepage&id=" & rsx("id")) 
-            If rsx("customAUrl") <> "" Then
-                url = rsx("customAUrl") 
-            End If 
-        End If 
-    End If : rsx.Close 
-
-    getOnePageUrl = url 
-End Function 
-'获得RS网址
+'获得RS网址 配置上一页 下一页
 Function getRsUrl(fileName, customAUrl, defaultFileName)
     Dim url 
     '用默认文件名称
@@ -120,6 +102,65 @@ Function getRsUrl(fileName, customAUrl, defaultFileName)
     getRsUrl = url 
 End Function 
 
+'获得单页url 20160114
+Function getOnePageUrl(title)
+    Dim url 
+    rsx.Open "select * from " & db_PREFIX & "onepage where title='" & title & "'", conn, 1, 1 
+    If Not rsx.EOF Then
+        If isMakeHtml = True Then
+            url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/page/page" & rsx("id")) 
+        Else
+            url = handleWebUrl("?act=onepage&id=" & rsx("id")) 
+            If rsx("customAUrl") <> "" Then
+                url = rsx("customAUrl") 
+            End If 
+        End If 
+    End If : rsx.Close 
+
+    getOnePageUrl = url 
+End Function 
+'获得文章
+Function getArticleUrl(title)
+    Dim url 
+    rsx.Open "select * from " & db_PREFIX & "articledetail where title='" & title & "'", conn, 1, 1 
+    If Not rsx.EOF Then
+        If isMakeHtml = True Then
+            url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/detail/" & rsx("id")) 
+        Else
+            url = handleWebUrl("?act=article&id=" & rsx("id")) 
+            If rsx("customAUrl") <> "" Then
+                url = rsx("customAUrl") 
+            End If 
+        End If 
+    End If : rsx.Close 
+
+    getArticleUrl = url 
+End Function 
+'获得栏目url 20160114
+Function getColumnUrl(columnNameOrId, sType)
+    Dim url, addSql 
+
+    columnNameOrId = replaceGlobleVariable(columnNameOrId)    '处理动作 <a href="{$GetColumnUrl columnname='[$glb_columnName$]' $}" >更多图片</a>
+
+    If sType = "name" Then
+        addSql = " where columnname='" & columnNameOrId & "'" 
+    Else
+        addSql = " where id=" & columnNameOrId & "" 
+    End If 
+    rsx.Open "select * from " & db_PREFIX & "webcolumn" & addSql, conn, 1, 1 
+    If Not rsx.EOF Then
+        If isMakeHtml = True Then
+            url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
+        Else
+            url = handleWebUrl("?act=nav&columnName=" & rsx("columnname")) 
+            If rsx("customAUrl") <> "" Then
+                url = rsx("customAUrl") 
+            End If 
+        End If 
+    End If : rsx.Close 
+
+    getColumnUrl = url 
+End Function 
 '获得栏目名称对应的id
 Function getColumnId(columnName)
     columnName = Replace(columnName, "'", "")                                       '注意，这个不能留
@@ -140,31 +181,7 @@ Function getColumnName(columnID)
 End Function 
 
 
-'获得栏目url 20160114
-Function getColumnUrl(columnNameOrId, sType)
-    Dim url, addSql 
-	
-	columnNameOrId=replaceGlobleVariable(columnNameOrId)			'处理动作 <a href="{$GetColumnUrl columnname='[$gbl_columnName$]' $}" >更多图片</a>
-	
-    If sType = "name" Then
-        addSql = " where columnname='" & columnNameOrId & "'" 
-    Else
-        addSql = " where id=" & columnNameOrId & "" 
-    End If 
-    rsx.Open "select * from " & db_PREFIX & "webcolumn" & addSql, conn, 1, 1 
-    If Not rsx.EOF Then
-        If isMakeHtml = True Then
-            url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
-        Else
-            url = handleWebUrl("?act=nav&columnName=" & rsx("columnname")) 
-            If rsx("customAUrl") <> "" Then
-                url = rsx("customAUrl") 
-            End If 
-        End If 
-    End If : rsx.Close 
 
-    getColumnUrl = url 
-End Function 
 
 '获得栏目ID对应的类型
 Function getColumnType(columnID)
@@ -232,6 +249,78 @@ Function webStat(folderPath)
     'Response.Write("eval(""var MyWebStat=\""" & C & "\"""")")
     webStat = c 
 End Function 
-%>   
 
+
+'读模块内容
+Function readTemplateModuleStr(filePath, defaultContent, ModuleId)
+    Dim startStr, endStr, content, s 
+    startStr = "<!--#Module " & ModuleId & " Start#-->" 
+    endStr = "<!--#Module " & ModuleId & " End#-->" 
+    'FilePath = ReplaceGlobleLable(FilePath)                '替换全部标签        '添加于2014 12 11
+
+    '文件不存在，则追加模板路径 20150616 给VB软件里用
+    If checkFile(filePath) = False Then
+        filePath = WebTemplate & filePath 
+    End If 
+
+    If defaultContent <> "" Then
+        content = defaultContent 
+    ElseIf checkFile(filePath) = True Then
+        content = GetFText(filePath) 
+    Else
+        content = code                                                               '默认用内容指定内容
+    End If 
+    'Call Die("显示" & ModuleId & "," & Content)
+    'Call Eerr(filepath & checkfile(filepath), Content)
+    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+        readTemplateModuleStr = StrCut(content, startStr, endStr, 2) 
+    Else
+        readTemplateModuleStr = "模块[" & ModuleId & "]不存在,路径=" & filePath 
+    End If 
+End Function 
+'找模块对应内容
+Function findModuleStr(content, valueStr)
+    Dim startStr, endStr, YuanStr, replaceStr, i, Block, BlockFile, action 
+    For i = 1 To 9
+        startStr = "[$读出内容 " : endStr = "$]" 
+        If InStr(valueStr, startStr) > 0 And InStr(valueStr, endStr) > 0 Then
+            action = StrCut(valueStr, startStr, endStr, 2) 
+            Block = RParam(action, "Block") 
+            BlockFile = RParam(action, "File") 
+            If InStr(vbCrLf & ReadBlockList & vbCrLf, vbCrLf & Block & vbCrLf) = False Then
+                ReadBlockList = ReadBlockList & Block & vbCrLf 
+            End If 
+            '块文件存在 则读出内容
+            If BlockFile <> "" Then
+                content = GetFText(BlockFile) 
+            End If 
+            YuanStr = startStr & action & endStr 
+            replaceStr = "" 
+
+            startStr = "<R#读出内容" & Block & " start#>" : endStr = "<R#读出内容" & Block & " end#>" 
+            If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+                replaceStr = StrCut(content, startStr, endStr, 2) 
+            Else
+                startStr = "<!--#读出内容" & Block : endStr = "#-->" 
+                If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+                    replaceStr = StrCut(content, startStr, endStr, 2) 
+                End If 
+            End If 
+            'Call Eerr(YuanStr,ReplaceStr)
+            valueStr = Replace(valueStr, YuanStr, replaceStr) 
+        'Call Echo("ValueStr",ValueStr)
+        Else
+            '没有模块要处理了 则退出
+            Exit For 
+        End If 
+    Next 
+    findModuleStr = valueStr 
+End Function 
+
+'判断传值是否相等
+Function checkFunValue(action, FunName)
+    checkFunValue =(Left(action, Len(FunName)) = FunName) 
+End Function
+
+%>    
 

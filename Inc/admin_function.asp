@@ -2,13 +2,34 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
+
+'获得处理的字段列表
+Function getHandleFieldList(tableName, sType)
+    Dim s 
+    If WEB_CACHEContent = "" Then
+        WEB_CACHEContent = getftext(WEB_CACHEFile) 
+    End If 
+    s = getConfigContentBlock(WEB_CACHEContent, "#" & tableName & sType & "#") 
+
+    If s = "" Then
+        If sType = "字段配置列表" Then
+            s = LCase(getFieldConfigList(tableName)) 
+        Else
+            s = LCase(getFieldList(tableName)) 
+        End If 
+        WEB_CACHEContent = setConfigFileBlock(WEB_CACHEFile, s, "#" & tableName & sType & "#") 
+        Call sysEcho("缓冲", tableName & sType) 
+    End If 
+    getHandleFieldList = s 
+End Function
+ 
 
 '文章列表旗
 Function flagsArticleDetail(flags)
@@ -40,7 +61,9 @@ Function flagsArticleDetail(flags)
     If c <> "" Then c = "[<font color=""red"">" & c & "</font>]" 
 
     flagsArticleDetail = c 
-End Function 
+End Function
+ 
+
 '获得标题设置颜色html
 Function getTitleSetColorHtml(sType)
     Dim c 
@@ -49,7 +72,9 @@ Function getTitleSetColorHtml(sType)
     c = c & "<span id=""title_colorpanel"" style=""position:absolute; z-index:200"" class=""colorpanel""></span>" & vbCrLf 
     c = c & "<img src=""images/bold.png"" width=""10"" height=""10"" onclick=""input_font_bold()"" style=""cursor:hand"">" & vbCrLf 
     getTitleSetColorHtml = c 
-End Function 
+End Function
+ 
+
 
 '栏目类别循环配置       showColumnList(-1, 0,defaultList)
 Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal defaultList)
@@ -96,7 +121,10 @@ Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal defaultList
         rs.MoveNext : Wend : rs.Close 
         showColumnList = c 
 End Function
+
+
 'msg1  辅助
+
 Function getMsg1(msgStr, url)
     Dim content 
     content = getFText(ROOT_PATH & "msg.html") 
@@ -104,7 +132,9 @@ Function getMsg1(msgStr, url)
     content = Replace(content, "[$msgStr$]", msgStr) 
     content = Replace(content, "[$url$]", url) 
     getMsg1 = content 
-End Function 
+End Function
+ 
+
 '栏目列表
 Function columnList(parentid, nCount)
     Dim s, c 
@@ -116,8 +146,40 @@ Function columnList(parentid, nCount)
         rs.MoveNext : Wend : rs.Close 
 End Function
 
+
+
+
+
+'检测权力
+Function checkPower(powerName)
+    If InStr("|" & Session("adminflags") & "|", "|" & powerName & "|") > 0 Or InStr("|" & Session("adminflags") & "|", "|*|") > 0 Then
+        checkPower = True 
+    Else
+        checkPower = False 
+    End If 
+End Function
+ 
+
+'处理后台管理权限
+Function handlePower(powerName)
+    If checkPower(powerName) = False Then
+        Call eerr("提示", "你没有【" & powerName & "】权限，<a href='javascript:history.go(-1);'>点击返回</a>") 
+    End If 
+End Function
+ 
+
+'回显信息
+Function sysEcho(title, content)
+    If onOffEcho = True Then
+        Call echo(title, content) 
+    End If 
+End Function
+ 
+
+
 '显示管理列表
 Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql)
+    Call handlePower("显示" & lableTitle)                                           '管理权限处理
     Call loadWebConfig() 
     Dim content, defaultList, i, s, c 
     Dim x, url, nCount, page 
@@ -126,13 +188,14 @@ Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql
     Dim tableName, j, splxx 
     Dim fieldName                                                                   '字段名称
     Dim splFieldName                                                                '分割字段
-    Dim keyWord                                                                     '搜索关键词
+    Dim searchfield, keyWord                                                        '搜索字段，搜索关键词
     Dim parentid                                                                    '栏目id
 
     Dim replaceStr                                                                  '替换字符
     tableName = LCase(actionName)                                                   '表名称
 
-    keyWord = Request("keyword") 
+    searchfield = Request("searchfield")                                            '获得搜索字段值
+    keyWord = Request("keyword")                                                    '获得搜索关键词值
     If Request.Form("parentid") <> "" Then
         parentid = Request.Form("parentid") 
     Else
@@ -143,7 +206,7 @@ Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql
     id = rq("id") 
 
     If fieldNameList = "*" Then
-        fieldNameList = LCase(getFieldList(db_PREFIX & tableName)) 
+        fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表") 
     End If 
 
     fieldNameList = specialStrReplace(fieldNameList)                                '特殊字符处理
@@ -155,15 +218,12 @@ Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql
     content = Replace(content, "{$actionName$}", actionName) 
     content = Replace(content, "{$lableTitle$}", lableTitle) 
     content = Replace(content, "{$tableName$}", tableName) 
-    content = Replace(content, "{$keyword$}", keyWord) 
     content = Replace(content, "{$parentid$}", Request("parentid"))                 '类别
 
     content = Replace(content, "{$nPageSize$}", nPageSize) 
     content = Replace(content, "{$page$}", Request("page")) 
-    content = Replace(content, "{$nPageSize" & nPageSize & "$}", " selected") 
-    For i = 1 To 9
-        content = Replace(content, "{$nPageSize" & i & "0$}", "") 
-    Next 
+
+
 
     defaultList = getStrCut(content, "[list]", "[/list]", 2) 
     '网站栏目单独处理
@@ -173,8 +233,8 @@ Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql
         '【删除此行start】
         'ASP部分
         If "ASP" = "ASP" Then
-            If keyWord <> "" Then
-                addSql = getWhereAnd(" where title like '%" & keyWord & "%' ", addSql) 
+            If keyWord <> "" And searchfield <> "" Then
+                addSql = getWhereAnd(" where " & searchfield & " like '%" & keyWord & "%' ", addSql) 
             End If 
             If parentid <> "" Then
                 addSql = getWhereAnd(" where parentid=" & parentid & " ", addSql) 
@@ -248,7 +308,7 @@ Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql
             rs.Open "select * from " & db_PREFIX & "" & tableName & " " & addSql & " limit " & nPageSize * page & "," & nPageSize & "", conn, 1, 1 
             While Not rs.EOF
                 s = Replace(defaultList, "[$id$]", rs("id")) 
-                s = Replace(s, "[$phpArray$]", "")                                         '替换为空  为要[]  因为我是通过js处理了
+                s = Replace(s, "[$phpArray$]", "[]")                                  '替换为空  为要[]  因为我是通过js处理了
                 For j = 0 To UBound(splFieldName)
                     If splFieldName(j) <> "" Then
                         splxx = Split(splFieldName(j) & "|||", "|") 
@@ -265,7 +325,7 @@ Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql
 
                 idInputName = "id" 
                 s = Replace(s, "[$selectid$]", "<input type='checkbox' name='" & idInputName & "' id='" & idInputName & "' value='" & rs("id") & "' >") 
-                s = Replace(s, "[$phpArray$]", "") 
+                s = Replace(s, "[$phpArray$]", "[]") 
 
                 If actionName = "ArticleDetail" Then
                     url = WEB_VIEWURL & "?act=detail&id=" & rs("id") 
@@ -289,70 +349,68 @@ Sub dispalyManage(actionName, lableTitle, ByVal fieldNameList, nPageSize, addSql
         content = Replace(content, "[$input_parentid$]", c)                        '上级栏目
     End If 
 
-    content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE) 
+    content = replaceValueParam(content, "searchfield", searchfield)                '搜索字段
+    content = replaceValueParam(content, "keyword", keyWord)                        '搜索关键词
+    content = replaceValueParam(content, "nPageSize", nPageSize)                    '每页显示条数
+
+
+    content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE)                        'asp与phh
+    content = Replace(content, "{$WEB_VIEWURL$}", WEB_VIEWURL)                      '前端浏览网址
+
+
     content = content & stat2016(True) 
     Call rw(content) 
-End Sub 
+End Sub
+ 
+
 '添加修改界面
 Sub addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
     Dim content, addOrEdit, splxx, i, j, s, c, tableName, url, aStr 
     Dim fieldName                                                                   '字段名称
     Dim splFieldName                                                                '分割字段
     Dim fieldSetType                                                                '字段设置类型
-    Dim fieldDefaultValue                                                           '字段默认值
     Dim fieldValue                                                                  '字段值
-    Dim splFieldValue(99)                                                           '字段值数据
     Dim sql                                                                         'sql语句
     Dim defaultList                                                                 '默认列表
     Dim flagsInputName                                                              '旗input名称给ArticleDetail用
     Dim titlecolor                                                                  '标题颜色
     Dim styleStr                                                                    '样式字符
     Dim flags                                                                       '旗
-    Dim tableFieldList                                                              '表字段列表
-    Dim storageFieldLit                                                             '存储字段列表
-    Dim tempFieldNameList                                                           '暂存字段名称列表
-    tempFieldNameList = fieldNameList 
-    tableName = LCase(actionName)                                                   '表名称
+    Dim splStr, fieldConfig, defaultFieldValue 
 
-    '加载网址配置
-    Call loadWebConfig() 
+
+
 
     Dim id 
     id = rq("id") 
-    fieldNameList = specialStrReplace(fieldNameList)                                '特殊字符处理
-
-    tableFieldList = LCase(getFieldList(db_PREFIX & tableName))                     '当前表字段列表
-    fieldNameList = fieldNameList & "," & tableFieldList 
-
-
-    splFieldName = Split(fieldNameList, ",")                                        '字段分割成数组
     addOrEdit = "添加" 
     If id <> "" Then
         addOrEdit = "修改" 
-        If id = "*" Then
-            sql = "select * from " & db_PREFIX & "" & tableName 
-        Else
-            sql = "select * from " & db_PREFIX & "" & tableName & " where id=" & id 
-        End If 
-        rs.Open sql, conn, 1, 1 
-        If Not rs.EOF Then
-            id = rs("id") 
-            For i = 0 To UBound(splFieldName)
-                splxx = Split(splFieldName(i) & "|||", "|") 
-                fieldName = splxx(0) 
-                If splFieldName(i) <> "" And InStr("," & tableFieldList & ",", "," & fieldName & ",") > 0 And InStr("," & storageFieldLit & ",", "," & fieldName & ",") = False Then
-                    splFieldValue(i) = rs(fieldName) 
-                    If actionName = "ArticleDetail" And fieldName = "titlecolor" Then
-                        titlecolor = rs(fieldName) 
-                    ElseIf fieldName = "flags" Then
-                        flags = rs(fieldName) 
-                    End If 
-                End If 
-            Next 
-        End If : rs.Close 
     End If 
+
+    If InStr(",Admin,", "," & actionName & ",") > 0 And id = Session("adminId") & "" Then
+        Call handlePower("修改自身")                                                    '管理权限处理
+    Else
+        Call handlePower(addOrEdit & lableTitle)                                        '管理权限处理
+    End If 
+
+    '加载网址配置
+    Call loadWebConfig() 
+    fieldNameList = "," & specialStrReplace(fieldNameList) & ","                    '特殊字符处理 自定义字段列表
+    tableName = LCase(actionName)                                                   '表名称
+
+    Dim systemFieldList                                                             '表字段列表
+    systemFieldList = getHandleFieldList(db_PREFIX & tableName, "字段配置列表") 
+    splStr = Split(systemFieldList, ",") 
+
+
+
+    '读模板
     content = getFText(ROOT_PATH & "addEdit" & tableName & ".html") 
     content = Replace(content, "{$Web_Title$}", cfg_webTitle) 
+
+
+
     '关闭编辑器
     If InStr(cfg_flags, "|iscloseeditor|") > 0 Then
         s = getStrCut(content, "<!--#editor start#-->", "<!--#editor end#-->", 1) 
@@ -361,96 +419,152 @@ Sub addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
         End If 
     End If 
 
-    For i = 0 To UBound(splFieldName)
-        splxx = Split(splFieldName(i) & "|||", "|") 
-        fieldName = splxx(0) 
-        fieldSetType = splxx(1) 
-        fieldDefaultValue = unSpecialStrReplace(splxx(2), "")                           '默认值
-        'call echo("fieldSetType",fieldSetType)
-        If splFieldName(i) <> "" And InStr("," & tableFieldList & ",", "," & fieldName & ",") > 0 And InStr("," & storageFieldLit & ",", "," & fieldName & ",") = False Then
-            storageFieldLit = storageFieldLit & splFieldName(i) & "," 
-            For j = 0 To 10
-                fieldValue = fieldDefaultValue 
+    'id=*  是给网站配置使用的，因为它没有管理列表，直接进入修改界面
+    If id = "*" Then
+        sql = "select * from " & db_PREFIX & "" & tableName 
+    Else
+        sql = "select * from " & db_PREFIX & "" & tableName & " where id=" & id 
+    End If 
+    If id <> "" Then
+        rs.Open sql, conn, 1, 1 
+        If Not rs.EOF Then
+            id = rs("id") 
+        End If 
+        '标题颜色
+        If InStr(systemFieldList, ",titlecolor|") > 0 Then
+            titlecolor = rs("titlecolor") 
+        End If 
+        '旗
+        If InStr(systemFieldList, ",flags|") > 0 Then
+            flags = rs("flags") 
+        End If 
+    End If 
 
-                If addOrEdit = "修改" Then
-                    fieldValue = splFieldValue(i) 
+    If InStr(",Admin,", "," & actionName & ",") > 0 Then
+        '当修改超级管理员的时间，判断他是否有超级管理员权限
+        If flags = "|*|" Then
+            Call handlePower("*")                                                           '管理权限处理
+        End If 
+        If flags = "|*|" Or(Session("adminId") = id And Session("adminflags") = "|*|") Then
+            s = getStrCut(content, "<!--普通理员-->", "<!--普通理员end-->", 1) 
+            content = Replace(content, s, "") 
+            s = getStrCut(content, "<!--用户权限-->", "<!--用户权限end-->", 1) 
+            content = Replace(content, s, "") 
+        ElseIf Session("adminflags") = "|*|" Then
+            s = getStrCut(content, "<!--超级管理员-->", "<!--超级管理员end-->", 1) 
+            content = Replace(content, s, "") 
+            s = getStrCut(content, "<!--用户权限-->", "<!--用户权限end-->", 1) 
+            content = Replace(content, s, "") 
+        Else
+            s = getStrCut(content, "<!--超级管理员-->", "<!--超级管理员end-->", 1) 
+            content = Replace(content, s, "") 
+            s = getStrCut(content, "<!--普通理员-->", "<!--普通理员end-->", 1) 
+            content = Replace(content, s, "") 
+        End If 
+    End If 
+
+
+    For Each fieldConfig In splStr
+        If fieldConfig <> "" Then
+            splxx = Split(fieldConfig & "|||", "|") 
+            fieldName = splxx(0)                                                            '字段名称
+            fieldSetType = splxx(1)                                                         '字段设置类型
+            defaultFieldValue = splxx(2)                                                    '默认字段值
+            '用自定义
+            If InStr(fieldNameList, "," & fieldName & "|") > 0 Then
+                fieldConfig = Mid(fieldNameList, InStr(fieldNameList, "," & fieldName & "|") + 1) 
+                fieldConfig = Mid(fieldConfig, 1, InStr(fieldConfig, ",") - 1) 
+                splxx = Split(fieldConfig & "|||", "|") 
+                fieldSetType = splxx(1)                                                         '字段设置类型
+                defaultFieldValue = splxx(2)                                                    '默认字段值
+            End If 
+
+            fieldValue = defaultFieldValue 
+            If addOrEdit = "修改" Then
+                fieldValue = rs(fieldName) 
+            End If 
+            'call echo(fieldConfig,fieldValue)
+
+            '密码类型则显示为空
+            If fieldSetType = "password" Then
+                fieldValue = "" 
+            End If 
+            If fieldValue <> "" Then
+                fieldValue = Replace(Replace(fieldValue, """", "&quot;"), "<", "&lt;") '在input里如果直接显示"的话就会出错了
+            End If 
+            If InStr(",ArticleDetail,WebColumn,", "," & actionName & ",") > 0 And fieldName = "parentid" Then
+                defaultList = "<option value=""[$id$]""[$selected$]>[$columnname$]</option>" 
+                If addOrEdit = "添加" Then
+                    fieldValue = Request("parentid") 
                 End If 
-                '密码类型则显示为空
-                If fieldSetType = "password" Then
-                    fieldValue = "" 
+                c = "<select name=""parentid"" id=""parentid""><option value=""-1"">≡ 作为一级栏目 ≡</option>" & showColumnList( -1, fieldValue, 0, defaultList) & vbCrLf & "</select>" 
+                content = Replace(content, "[$input_parentid$]", c)                        '上级栏目
+
+            ElseIf actionName = "WebColumn" And fieldName = "columntype" Then
+                content = Replace(content, "[$input_columntype$]", showSelectList("columntype", WEBCOLUMNTYPE, "|", fieldValue)) 
+
+            ElseIf InStr(",ArticleDetail,WebColumn,", "," & actionName & ",") > 0 And fieldName = "flags" Then
+                flagsInputName = "flags" 
+                If EDITORTYPE = "php" Then
+                    flagsInputName = "flags[]"                                                 '因为PHP这样才代表数组
                 End If 
-                If fieldValue <> "" Then
-                    fieldValue = Replace(Replace(fieldValue, """", "&quot;"), "<", "&lt;") '在input里如果直接显示"的话就会出错了
+
+                If actionName = "ArticleDetail" Then
+                    s = inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|h|") > 0, 1, 0), "h", "头条[h]") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|c|") > 0, 1, 0), "c", "推荐[c]") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|f|") > 0, 1, 0), "f", "幻灯[f]") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|a|") > 0, 1, 0), "a", "特荐[a]") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|s|") > 0, 1, 0), "s", "滚动[s]") 
+                    s = s & Replace(inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|b|") > 0, 1, 0), "b", "加粗[b]"), "", "") 
+                    s = Replace(s, " value='b'>", " onclick='input_font_bold()' value='b'>") 
+
+
+                ElseIf actionName = "WebColumn" Then
+                    s = inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|top|") > 0, 1, 0), "top", "顶部显示") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|buttom|") > 0, 1, 0), "buttom", "底部显示") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|left|") > 0, 1, 0), "left", "左边显示") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|center|") > 0, 1, 0), "center", "中间显示") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|right|") > 0, 1, 0), "right", "右边显示") 
+                    s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|other|") > 0, 1, 0), "other", "其它位置显示") 
                 End If 
-                If InStr(",ArticleDetail,WebColumn,", "," & actionName & ",") > 0 And fieldName = "parentid" Then
-                    defaultList = "<option value=""[$id$]""[$selected$]>[$columnname$]</option>" 
-                    If addOrEdit = "添加" Then
-                        fieldValue = Request("parentid") 
-                    End If 
-                    c = "<select name=""parentid"" id=""parentid""><option value=""-1"">≡ 作为一级栏目 ≡</option>" & showColumnList( -1, fieldValue, 0, defaultList) & vbCrLf & "</select>" 
-                    content = Replace(content, "[$input_parentid$]", c)                        '上级栏目
+                content = Replace(content, "[$input_flags$]", s) 
 
-                ElseIf actionName = "WebColumn" And fieldName = "columntype" Then
-                    content = Replace(content, "[$input_columntype$]", showSelectList("columntype", WEBCOLUMNTYPE, "|", fieldValue)) 
-
-                ElseIf InStr(",ArticleDetail,WebColumn,", "," & actionName & ",") > 0 And fieldName = "flags" Then
-                    flagsInputName = "flags" 
-                    If EDITORTYPE = "php" Then
-                        flagsInputName = "flags[]"                                                 '因为PHP这样才代表数组
-                    End If 
-
-                    If actionName = "ArticleDetail" Then
-                        s = inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|h|") > 0, 1, 0), "h", "头条[h]") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|c|") > 0, 1, 0), "c", "推荐[c]") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|f|") > 0, 1, 0), "f", "幻灯[f]") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|a|") > 0, 1, 0), "a", "特荐[a]") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|s|") > 0, 1, 0), "s", "滚动[s]") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|b|") > 0, 1, 0), "b", "加粗[b]") 
-                        s = Replace(s, " value='b'>", " onclick='input_font_bold()' value='b'>") 
-
-                    ElseIf actionName = "WebColumn" Then
-                        s = inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|top|") > 0, 1, 0), "top", "顶部显示") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|buttom|") > 0, 1, 0), "buttom", "底部显示") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|left|") > 0, 1, 0), "left", "左边显示") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|center|") > 0, 1, 0), "center", "中间显示") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|right|") > 0, 1, 0), "right", "右边显示") 
-                        s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|other|") > 0, 1, 0), "other", "其它位置显示") 
-                    End If 
-                    content = Replace(content, "[$input_flags$]", s) 
-
-                ElseIf actionName = "ArticleDetail" And fieldName = "title" Then
-                    s = "<input name='title' type='text' id='title' value=""" & fieldValue & """ style='width:66%;' class='measure-input' alt='请输入标题'>" 
-                    styleStr = " style='color:" & titlecolor & ";" 
-                    If InStr("|" & flags & "|", "|b|") > 0 Then
-                        styleStr = styleStr & "font-weight: bold;" 
-                    End If 
-                    s = Replace(s, " style='", styleStr) 
-                    content = Replace(content, "[$input_title$]", s & inputHiddenText("titlecolor", titlecolor) & getTitleSetColorHtml("")) 
-
-
-                ElseIf fieldSetType = "textarea1" Then
-                    content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "120px", "input-text", "")) 
-                ElseIf fieldSetType = "textarea2" Then
-                    content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "300px", "input-text", "")) 
-                ElseIf fieldSetType = "textarea3" Then
-                    content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "500px", "input-text", "")) 
-                ElseIf fieldSetType = "password" Then
-                    content = Replace(content, "[$input_" & fieldName & "$]", "<input name='" & fieldName & "' type='password' id='" & fieldName & "' value='" & fieldValue & "' style='width:97%;' class='input-text'>") 
-                Else
-                    content = Replace(content, "[$input_" & fieldName & "$]", inputText2(fieldName, fieldValue, "97%", "input-text", "")) 
+            ElseIf actionName = "ArticleDetail" And fieldName = "title" Then
+                s = "<input name='title' type='text' id='title' value=""" & fieldValue & """ style='width:66%;' class='measure-input' alt='请输入标题'>" 
+                styleStr = " style='color:" & titlecolor & ";" 
+                If InStr("|" & flags & "|", "|b|") > 0 Then
+                    styleStr = styleStr & "font-weight: bold;" 
                 End If 
-                'content = Replace(content, "[$" & fieldName & "$]", fieldValue)
-                content = replaceValueParam(content, fieldName, fieldValue) 
-            Next 
+                s = Replace(s, " style='", styleStr) 
+                content = Replace(content, "[$input_title$]", s & inputHiddenText("titlecolor", titlecolor) & getTitleSetColorHtml("")) 
+
+
+            ElseIf fieldSetType = "textarea1" Then
+                content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "120px", "input-text", "")) 
+            ElseIf fieldSetType = "textarea2" Then
+                content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "300px", "input-text", "")) 
+            ElseIf fieldSetType = "textarea3" Then
+                content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "500px", "input-text", "")) 
+            ElseIf fieldSetType = "password" Then
+                content = Replace(content, "[$input_" & fieldName & "$]", "<input name='" & fieldName & "' type='password' id='" & fieldName & "' value='" & fieldValue & "' style='width:97%;' class='input-text'>") 
+            Else
+                content = Replace(content, "[$input_" & fieldName & "$]", inputText2(fieldName, fieldValue, "97%", "input-text", "")) 
+            End If 
+            content = replaceValueParam(content, fieldName, fieldValue) 
         End If 
     Next 
+    If id <> "" Then
+        rs.Close 
+    End If 
+    'call die("")
+
     content = Replace(content, "[$id$]", id) 
     content = Replace(content, "[$inputId$]", inputHiddenText("id", id) & inputHiddenText("actionType", Request("actionType"))) '隐藏表单 ID与动作
     content = Replace(content, "[$switchId$]", Request("switchId")) 
-    content = Replace(content, "[$fieldNameList$]", tempFieldNameList)         '字段名称列表
 
 
     url = "?act=dispalyManageHandle&actionType=" & actionName & "&lableTitle=" & Request("lableTitle") & "&nPageSize=" & Request("nPageSize") & "&page=" & Request("page") & "&parentid=" & Request("parentid") 
+    url = url & "&searchfield=" & Request("searchfield") & "&keyword=" & Request("keyword") 
 
     If InStr("|WebSite|", "|" & actionName & "|") = False Then
         aStr = "<a href='" & url & "'>" & lableTitle & "列表</a> > " 
@@ -465,7 +579,8 @@ Sub addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
     content = Replace(content, "{$nPageSize$}", Request("nPageSize")) 
     content = Replace(content, "{$page$}", Request("page")) 
     content = Replace(content, "{$parentid$}", Request("parentid")) 
-
+    content = Replace(content, "{$searchfield$}", Request("searchfield")) 
+    content = Replace(content, "{$keyword$}", Request("keyword")) 
 
     content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE)                        'asp与phh
     content = Replace(content, "{$WEB_VIEWURL$}", WEB_VIEWURL)                      '前端浏览网址
@@ -473,31 +588,136 @@ Sub addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
 
     '20160113
     If EDITORTYPE = "asp" Then
-        content = Replace(content, "[PHP]", "") 
+        content = Replace(content, "[$phpArray$]", "") 
     ElseIf EDITORTYPE = "php" Then
-        content = Replace(content, "[PHP]", "[]") 
+        content = Replace(content, "[$phpArray$]", "[]") 
     End If 
 
     Call rw(content) 
-End Sub 
+End Sub
+ 
+
+
 '保存模块
 Sub saveAddEdit(actionName, lableTitle, ByVal fieldNameList)
     Dim valueStr, editValueStr, tableName, url, listUrl 
     Dim id 
-    Dim splxx, i, s, c, fieldList 
-    Dim fieldName                                                                   '字段名称
-    Dim splFieldName                                                                '分割字段
+    Dim splStr, splxx, s, fieldList 
+    Dim fieldName, defaultFieldValue                                                '字段名称
     Dim fieldSetType                                                                '字段设置类型
     Dim fieldValue                                                                  '字段值
-    Dim splFieldValue(99)                                                           '字段值数据
+    Dim postFieldList                                                               'post字段列表
 
-    fieldNameList = specialStrReplace(fieldNameList)                                '特殊字符处理
-    splFieldName = Split(fieldNameList, ",")                                        '字段分割成数组
+
+    id = rf("id") 
+
+    Call handlePower(IIF(id = "", "添加", "修改") & lableTitle)                     '管理权限处理
+
+    Call OpenConn() 
+
+    fieldNameList = "," & specialStrReplace(fieldNameList) & ","                    '特殊字符处理 自定义字段列表
     tableName = LCase(actionName)                                                   '表名称
 
-    'dim tableFieldList                                                                '表字段列表
-    'tableFieldList = LCase(getFieldList(db_PREFIX & tableName))                     '当前表字段列表
-    'call eerr("",tableFieldList)
+    Dim systemFieldList                                                             '表字段列表
+
+    systemFieldList = getHandleFieldList(db_PREFIX & tableName, "字段配置列表") 
+
+    Dim splPost, fieldContent, fieldConfig 
+    postFieldList = getFormFieldName() 
+    splPost = Split(postFieldList, "|") 
+    For Each fieldName In splPost
+        fieldContent = Request.Form(fieldName) 
+        If InStr(systemFieldList, "," & fieldName & "|") > 0 And InStr("," & fieldList & ",", "," & fieldName & ",") = False Then
+            '为自定义的
+            If InStr(fieldNameList, "," & fieldName & "|") > 0 Then
+                fieldConfig = Mid(fieldNameList, InStr(fieldNameList, "," & fieldName & "|") + 1) 
+            Else
+                fieldConfig = Mid(systemFieldList, InStr(systemFieldList, "," & fieldName & "|") + 1) 
+            End If 
+            fieldConfig = Mid(fieldConfig, 1, InStr(fieldConfig, ",") - 1) 
+            'call echo("config",fieldConfig)
+            'call echo(fieldName,fieldContent)
+
+            splxx = Split(fieldConfig & "|||", "|") 
+            fieldName = splxx(0)                                                            '字段名称
+            fieldSetType = splxx(1)                                                         '字段设置类型
+            defaultFieldValue = splxx(2)                                                    '默认字段值
+            fieldValue = ADSqlRf(fieldName)                                                 '代替上面，因为它处理了'符号
+            'md5加密
+            If fieldSetType = "md5" Then
+                fieldValue = myMD5(fieldValue) 
+            End If 
+
+            If fieldSetType = "yesno" Then
+                If fieldValue = "" Then
+                    fieldValue = defaultFieldValue 
+                End If 
+            '不为数字类型加单引号
+            ElseIf fieldSetType = "numb" Then
+                If fieldValue = "" Then
+                    fieldValue = defaultFieldValue 
+                End If 
+
+            ElseIf fieldName = "flags" Then
+                'PHP里用法
+                '【删除此行start】
+                If EDITORTYPE = "php" Then
+                    '【删除此行end】
+                    If fieldValue <> "" Then
+                        fieldValue = "|" & arrayToString(fieldValue, "|") 
+                    End If 
+                '【删除此行start】
+                End If 
+                fieldValue = "|" & arrayToString(Split(fieldValue, ", "), "|") 
+                '【删除此行end】
+                fieldValue = "'" & fieldValue & "'" 
+
+            '为时期
+            ElseIf fieldSetType = "date" Then
+                If fieldValue = "" Then
+                    fieldValue = Date() 
+                End If 
+
+            Else
+                fieldValue = "'" & fieldValue & "'" 
+            End If 
+            If fieldList <> "" Then
+                fieldList = fieldList & "," 
+                valueStr = valueStr & "," 
+                editValueStr = editValueStr & "," 
+            End If 
+            fieldList = fieldList & fieldName 
+            valueStr = valueStr & fieldValue 
+            editValueStr = editValueStr & fieldName & "=" & fieldValue 
+        End If 
+    Next 
+
+    '默认
+    splStr = Split(fieldNameList, ",") 
+    For Each s In splStr
+        If InStr(s, "|") > 0 Then
+            splxx = Split(s & "|||", "|") 
+            fieldName = splxx(0)                                                            '字段名称
+            fieldSetType = splxx(1)                                                         '字段设置类型
+            fieldValue = splxx(2)                                                           '默认字段值
+
+            If InStr(systemFieldList, "," & fieldName & "|") > 0 And InStr("," & fieldList & ",", "," & fieldName & ",") = False Then
+                If fieldSetType <> "yesno" And fieldSetType <> "numb" Then
+                    fieldValue = "'" & fieldValue & "'" 
+                End If 
+                If fieldList <> "" Then
+                    fieldList = fieldList & "," 
+                    valueStr = valueStr & "," 
+                    editValueStr = editValueStr & "," 
+                End If 
+                fieldList = fieldList & fieldName 
+                valueStr = valueStr & fieldValue 
+                editValueStr = editValueStr & fieldName & "=" & fieldValue 
+            'call echo(fieldName,fieldSetType)
+            End If 
+        End If 
+    Next 
+    'call eerr(fieldList,valueStr)
 
     '对网站配置单独处理，为动态运行时删除，index.html     动，静，切换20160216
     If LCase(actionName) = "website" Then
@@ -506,74 +726,21 @@ Sub saveAddEdit(actionName, lableTitle, ByVal fieldNameList)
         End If 
     End If 
 
-    id = rf("id") 
-    Call OpenConn() 
-
-    For i = 0 To UBound(splFieldName)
-        splxx = Split(splFieldName(i) & "|||", "|") 
-        fieldName = splxx(0)                                                            '字段名称
-        fieldSetType = splxx(1)                                                         '字段设置类型
-        'fieldValue = Request.Form(fieldName)                                            '字段对应内容
-        fieldValue = ADSqlRf(fieldName)                                                 '代替上面，因为它处理了'符号
-        'md5加密
-        If fieldSetType = "md5" Then
-            fieldValue = myMD5(fieldValue) 
-        End If 
-
-        If fieldSetType = "yesno" Then
-            If fieldValue = "" Then
-                fieldValue = "0" 
-            End If 
-        '不为数字类型加单引号
-        ElseIf fieldSetType = "numb" Then
-            If fieldValue = "" Then
-                fieldValue = "0" 
-            End If 
-
-        ElseIf fieldName = "flags" Then
-            'PHP里用法
-            '【删除此行start】
-            If EDITORTYPE = "php" Then
-                '【删除此行end】
-                If fieldValue <> "" Then
-                    fieldValue = "|" & arrayToString(fieldValue, "|") 
-                End If 
-            '【删除此行start】
-            End If 
-            fieldValue = "|" & arrayToString(Split(fieldValue, ", "), "|") 
-            '【删除此行end】
-            fieldValue = "'" & fieldValue & "'" 
-
-        '为时期
-        ElseIf fieldSetType = "date" Then
-            If fieldValue = "" Then
-                fieldValue = Date() 
-            End If 
-
-        Else
-            fieldValue = "'" & fieldValue & "'" 
-        End If 
-        If fieldList <> "" Then
-            fieldList = fieldList & "," 
-            valueStr = valueStr & "," 
-            editValueStr = editValueStr & "," 
-        End If 
-        fieldList = fieldList & fieldName 
-        valueStr = valueStr & fieldValue 
-        editValueStr = editValueStr & fieldName & "=" & fieldValue 
-    'call echo(fieldname,fieldvalue)
-    Next 
-
     listUrl = "?act=dispalyManageHandle&actionType=" & actionName & "&lableTitle=" & Request.QueryString("lableTitle") & "&nPageSize=" & Request("nPageSize") & "&page=" & Request("page") & "&parentid=" & Request("parentid") 
+    listUrl = listUrl & "&searchfield=" & Request("searchfield") & "&keyword=" & Request("keyword") 
+
     '添加
     If id = "" Then
         conn.Execute("insert into " & db_PREFIX & "" & tableName & " (" & fieldList & ",updatetime) values(" & valueStr & ",'" & Now() & "')") 
         url = "?act=addEditHandle&actionType=" & actionName & "&lableTitle=" & Request.QueryString("lableTitle") & "&nPageSize=" & Request("nPageSize") & "&page=" & Request("page") & "&parentid=" & Request("parentid") 
+        url = url & "&searchfield=" & Request("searchfield") & "&keyword=" & Request("keyword") 
 
         Call rw(getMsg1("数据添加成功，返回继续添加" & lableTitle & "...<br><a href='" & listUrl & "'>返回" & lableTitle & "列表</a>", url)) 
     Else
         conn.Execute("update " & db_PREFIX & "" & tableName & " set " & editValueStr & ",updatetime='" & Now() & "' where id=" & id) 
         url = "?act=addEditHandle&actionType=" & actionName & "&lableTitle=" & Request.QueryString("lableTitle") & "&id=" & id & "&switchId=" & Request("switchId") & "&nPageSize=" & Request("nPageSize") & "&page=" & Request("page") 
+        url = url & "&searchfield=" & Request("searchfield") & "&keyword=" & Request("keyword") 
+
         '没有返回列表管理设置
         If InStr("|WebSite|", "|" & actionName & "|") > 0 Then
             Call rw(getMsg1("数据修改成功", url)) 
@@ -581,20 +748,40 @@ Sub saveAddEdit(actionName, lableTitle, ByVal fieldNameList)
             Call rw(getMsg1("数据修改成功，正在进入" & lableTitle & "列表...<br><a href='" & url & "'>继续编辑</a>", listUrl)) 
         End If 
     End If 
-End Sub 
+End Sub
+ 
+
 '删除
 Sub del(actionName, lableTitle)
     Dim tableName, url 
     tableName = LCase(actionName)                                                   '表名称
     Dim id 
+
+    Call handlePower("删除" & lableTitle)                                           '管理权限处理
+
+
+
     id = Request("id") 
     If id <> "" Then
-        Call OpenConn() 
-        conn.Execute("delete from " & db_PREFIX & "" & tableName & " where id in(" & id & ")") 
         url = "?act=dispalyManageHandle&actionType=" & actionName & "&nPageSize=" & Request("nPageSize") & "&parentid=" & Request("parentid") & "&lableTitle=" & Request("lableTitle") 
+        url = url & "&searchfield=" & Request("searchfield") & "&keyword=" & Request("keyword") & "&page=" & Request("page") 
+
+        Call OpenConn() 
+
+
+        '管理员
+        If actionName = "Admin" Then
+            rs.Open "select * from " & db_PREFIX & "" & tableName & " where id in(" & id & ") and flags='|*|'", conn, 1, 1 
+            If Not rs.EOF Then
+                Call rwend(getMsg1("删除失败，系统管理员不可以删除，正在进入" & lableTitle & "列表...", url)) 
+            End If : rs.Close 
+        End If 
+        conn.Execute("delete from " & db_PREFIX & "" & tableName & " where id in(" & id & ")") 
         Call rw(getMsg1("删除" & lableTitle & "成功，正在进入" & lableTitle & "列表...", url)) 
     End If 
-End Sub 
+End Sub
+ 
+
 '排序处理
 Function sortHandle(actionType)
     Dim splId, splValue, i, id, sortrank, tableName, url 
@@ -612,26 +799,33 @@ Function sortHandle(actionType)
         conn.Execute("update " & db_PREFIX & tableName & " set sortrank=" & sortrank & " where id=" & id) 
     Next 
     url = "?act=dispalyManageHandle&actionType=" & actionType & "&nPageSize=" & Request("nPageSize") & "&parentid=" & Request("parentid") & "&lableTitle=" & Request("lableTitle") 
+    url = url & "&searchfield=" & Request("searchfield") & "&keyword=" & Request("keyword") & "&page=" & Request("page") 
     Call rw(getMsg1("更新排序完成，正在返回列表...", url)) 
-End Function 
-
-
+End Function
+ 
 
 
 '保存robots.txt 20160118
 Sub saveRobots()
     Dim bodycontent, url 
+
+    Call handlePower("修改生成Robots")                                              '管理权限处理
+
     bodycontent = Request("bodycontent") 
     Call createfile("/robots.txt", bodycontent) 
     url = "?act=displayLayout&templateFile=makeRobots.html&lableTitle=生成Robots" 
     Call rw(getMsg1("保存Robots成功，正在进入Robots界面...", url)) 
-End Sub 
+End Sub
+ 
+
 '保存sitemap.txt 20160118
 Sub saveSiteMap()
     Dim isWebRunHtml                                                                '是否为html方式显示网站
     Dim changefreg                                                                  '更新频率
     Dim priority                                                                    '优先级
     Dim c, url 
+    Call handlePower("修改生成SiteMap")                                             '管理权限处理
+
     changefreg = Request("changefreg") 
     priority = Request("priority") 
     Call loadWebConfig()                                                            '加载配置
@@ -774,7 +968,9 @@ Sub saveSiteMap()
         templateContent = Replace(templateContent, "{$Web_Title$}", cfg_webTitle) 
         Call createfile("../sitemap.html", templateContent) 
     End If 
-End Sub 
+End Sub
+ 
+
 
 '统计2016 stat2016(true)
 Function stat2016(isHide)
@@ -787,14 +983,16 @@ Function stat2016(isHide)
         End If 
     End If 
     stat2016 = c 
-End Function 
+End Function
+ 
+
 '更新网站统计 20160203
 Function updateWebsiteStat()
     Dim content, splStr, splxx, filePath 
     Dim url, s, visitUrl, viewUrl, viewdatetime, iP, browser, operatingsystem, cookie, screenwh, moreInfo, ipList, dateClass, nCount 
 
     conn.Execute("delete from " & db_PREFIX & "websitestat") 
-    content = getDirTxtList("/admin/data/stat/") 
+    content = getDirTxtList(adminDir & "/data/stat/") 
     splStr = Split(content, vbCrLf) 
     nCount = 1 
     For Each filePath In splStr
@@ -841,7 +1039,43 @@ Function updateWebsiteStat()
 
     url = "?act=dispalyManageHandle&actionType=" & Request("actionType") & "&lableTitle=" & Request("lableTitle") & "&nPageSize=" & Request("nPageSize") & "&page=" & Request("page") & "&parentid=" & Request("parentid") 
     Call rw(getMsg1("更新网站统计成功，正在进入" & Request("lableTitle") & "列表...", url)) 
-End Function 
+End Function
+ 
+
+
+'详细网站统计
+Function websiteDetail()
+    Dim content, splxx, filePath 
+    Dim s, iP, ipList 
+    Dim nIP, i, timeStr, c 
+    For i = 1 To 30
+        timeStr = getHandleDate((i - 1) * - 1)                                          'format_Time(Now() - i + 1, 2)
+        filePath = adminDir & "/data/stat/" & timeStr & ".txt" 
+        content = getftext(filePath) 
+        splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
+        nIP = 0 
+        ipList = "" 
+        For Each s In splxx
+            If InStr(s, "当前：") > 0 Then
+                s = vbCrLf & s & vbCrLf 
+                iP = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
+                If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & iP & vbCrLf) = False Then
+                    ipList = ipList & iP & vbCrLf 
+                    nIP = nIP + 1 
+                End If 
+            End If 
+        Next 
+        Call echo(timeStr, "IP(" & nIP & ")") 
+        If i < 4 Then
+            c = c & timeStr & " IP(" & nIP & ")" & "<br>" 
+        End If 
+    Next 
+
+    Call setConfigFileBlock(WEB_CACHEFile, c, "#访客信息#") 
+
+End Function
+ 
+
 
 '显示指定布局
 Sub displayLayout()
@@ -855,13 +1089,17 @@ Sub displayLayout()
     content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE) 
     content = Replace(content, "{$WEB_VIEWURL$}", WEB_VIEWURL) 
 
+    Call handlePower("显示" & lableTitle)                                           '管理权限处理
+
     If lableTitle = "生成Robots" Then
         content = Replace(content, "[$bodycontent$]", getftext("/robots.txt")) 
     ElseIf lableTitle = "模板管理" Then
         content = displayTemplatesList(content) 
     End If 
     Call rw(content) 
-End Sub 
+End Sub
+ 
+
 '处理模板列表
 Function displayTemplatesList(content)
     Dim templatesFolder, templatePath, templatePath2, templateName, defaultList, folderList, splStr, s, c 
@@ -898,10 +1136,15 @@ Function displayTemplatesList(content)
     Next 
     content = Replace(content, "[list]" & defaultList & "[/list]", c) 
     displayTemplatesList = content 
-End Function 
+End Function
+ 
+
 '应用模板
 Function isOpenTemplate()
     Dim templatePath, templateName, editValueStr, url 
+
+    Call handlePower("启用模板")                                                    '管理权限处理
+
     templatePath = Request("templatepath") 
     templateName = Request("templatename") 
 
@@ -915,6 +1158,8 @@ Function isOpenTemplate()
     conn.Execute("update " & db_PREFIX & "website set " & editValueStr) 
     url = "?act=displayLayout&templateFile=manageTemplates.html&lableTitle=模板管理" 
     Call rw(getMsg1("启用模板成功，正在进入模板管理界面...", url)) 
-End Function 
-%>    
+End Function
+ 
+
+%>        
 

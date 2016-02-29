@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-24
+创建：2016-02-29
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By 云端 
+*                                    Powered By AspPhpCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -110,7 +110,7 @@ function delTemplateMyNote($code){
             //Call Die(S)
             $c = $c . Replace(Replace($DragSortValue, '{$value$}', $s), '{$id$', $id) ;
         }
-        $c = Replace($c, '【换行】', "\n") ;
+        $c = Replace($c, '【换行】', vbCrlf()) ;
         $c = $DragSortStart . $c . $DragSortEnd ;
         $code = mid($code, 1, instr($code, '<body>') - 1) ;
         $code = Replace($code, '</head>', $DragSortCssStr . '</head></body>' . $c . '</body></html>') ;
@@ -208,110 +208,121 @@ function handleReplaceValueParam($content, $paramName, $replaceStr){
 
 //替换参数值 2014  12 01
 function replaceValueParam($content, $paramName, $replaceStr){
-    $startStr=''; $endStr=''; $labelStr=''; $tempLabelStr=''; $nLen=''; $nTimeFormat=''; $delHtmlYes=''; $funStr=''; $trimYes=''; $s ='';
+    $startStr=''; $endStr=''; $labelStr=''; $tempLabelStr=''; $nLen=''; $nTimeFormat=''; $delHtmlYes=''; $funStr=''; $trimYes=''; $s ='';$i='';
     $ifStr ='';//判断字符
     $elseIfStr ='';//第二判断字符
     $valueStr ='';//显示字符
     $elseStr ='';//否则字符
     $instrStr ='';//查找字符
+    $tempReplaceStr																='';//暂存
     //ReplaceStr = ReplaceStr & "这里面放上内容在这时碳呀。"
     //ReplaceStr = CStr(ReplaceStr)            '转成字符类型
     if( IsNul($replaceStr) == true ){ $replaceStr = '' ;}
+    $tempReplaceStr=$replaceStr;
 
-    $startStr = '[$' . $paramName ; $endStr = '$]' ;
-
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        //获得对应字段加强版20151231
-        if( instr($content, $startStr . $endStr) > 0 ){
-            $labelStr = $startStr . $endStr ;
-        }else if( instr($content, $startStr . ' ') > 0 ){
-            $labelStr = StrCut($content, $startStr . ' ', $endStr, 1) ;
-        }else{
-            $labelStr = StrCut($content, $startStr, $endStr, 1) ;
-        }
-        $tempLabelStr = $labelStr ;
-        $labelStr = handleInModule($labelStr, 'start') ;
-        //删除Html
-        $delHtmlYes = RParam($labelStr, 'delHtml') ;//是否删除Html
-        if( $delHtmlYes == 'true' ){ $replaceStr = Replace(DelHtml($replaceStr), '<', '&lt;') ;}//HTML处理
-        //删除两边空格
-        $trimYes = RParam($labelStr, 'trim') ;//是否删除两边空格
-        if( $trimYes == 'true' ){ $replaceStr = TrimVbCrlf($replaceStr) ;}
-
-        //截取字符处理
-        $nLen = RParam($labelStr, 'len') ;//字符长度值
-        $nLen = HandleNumber($nLen) ;
-        //If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
-        if( $nLen <> '' ){ $replaceStr = CutStr($replaceStr, $nLen, '...') ;}//Left(ReplaceStr,nLen)
-
-        //时间处理
-        $nTimeFormat = RParam($labelStr, 'format_Time') ;//时间处理值
-        if( $nTimeFormat <> '' ){
-            $replaceStr = Format_Time($replaceStr, $nTimeFormat) ;
-        }
-
-        //获得栏目名称
-        $s = RParam($labelStr, 'getcolumnname') ;
-        if( $s <> '' ){
-            if( $s == '@ME' ){
-                $s = $replaceStr ;
-            }
-            $replaceStr = getcolumnname($s) ;
-        }
-        //获得栏目URL
-        $s = RParam($labelStr, 'getcolumnurl') ;
-        if( $s <> '' ){
-            if( $s == '@ME' ){
-                $s = $replaceStr ;
-            }
-            $replaceStr = getcolumnurl($s, 'id') ;
-        }
-
-        $ifStr = RParam($labelStr, 'if') ;
-        $elseIfStr = RParam($labelStr, 'elseif') ;
-        $valueStr = RParam($labelStr, 'value') ;
-        $elseStr = RParam($labelStr, 'else') ;
-        $instrStr = RParam($labelStr, 'instr') ;
-        //call echo("ifStr",ifStr)
-        //call echo("valueStr",valueStr)
-        //call echo("elseStr",elseStr)
-        //call echo("elseIfStr",elseIfStr)
-        if( $ifStr <> '' || $instrStr <> '' ){
-            if(($ifStr == CStr($replaceStr) && $ifStr <> '') ||($elseIfStr == CStr($replaceStr) && $elseIfStr <> '') ){
-                $replaceStr = $valueStr ;
-            }else if( instr(CStr($replaceStr), $instrStr) > 0 && $instrStr <> '' ){
-                $replaceStr = $valueStr ;
+    //最多处理99个  20160225
+    for( $i =1 ; $i<= 99 ; $i++){
+        $replaceStr=$tempReplaceStr													;//恢复
+        $startStr = '[$' . $paramName ; $endStr = '$]' ;
+        //字段名称严格判断 20160226
+        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 && (instr($content, $startStr . ' ') > 0 || instr($content, $startStr . $endStr) > 0) ){
+            //获得对应字段加强版20151231
+            if( instr($content, $startStr . $endStr) > 0 ){
+                $labelStr = $startStr . $endStr ;
+            }else if( instr($content, $startStr . ' ') > 0 ){
+                $labelStr = StrCut($content, $startStr . ' ', $endStr, 1) ;
             }else{
-                if( $elseStr <> '@ME' ){
-                    $replaceStr = $elseStr ;
+                $labelStr = StrCut($content, $startStr, $endStr, 1) ;
+            }
+
+            $tempLabelStr = $labelStr ;
+            $labelStr = handleInModule($labelStr, 'start') ;
+            //删除Html
+            $delHtmlYes = RParam($labelStr, 'delHtml') ;//是否删除Html
+            if( $delHtmlYes == 'true' ){ $replaceStr = Replace(DelHtml($replaceStr), '<', '&lt;') ;}//HTML处理
+            //删除两边空格
+            $trimYes = RParam($labelStr, 'trim') ;//是否删除两边空格
+            if( $trimYes == 'true' ){ $replaceStr = TrimVbCrlf($replaceStr) ;}
+
+            //截取字符处理
+            $nLen = RParam($labelStr, 'len') ;//字符长度值
+            $nLen = HandleNumber($nLen) ;
+            //If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
+            if( $nLen <> '' ){ $replaceStr = CutStr($replaceStr, $nLen, '...') ;}//Left(ReplaceStr,nLen)
+
+            //时间处理
+            $nTimeFormat = RParam($labelStr, 'format_Time') ;//时间处理值
+            if( $nTimeFormat <> '' ){
+                $replaceStr = Format_Time($replaceStr, $nTimeFormat) ;
+            }
+
+            //获得栏目名称
+            $s = RParam($labelStr, 'getcolumnname') ;
+            if( $s <> '' ){
+                if( $s == '@ME' ){
+                    $s = $replaceStr ;
+                }
+                $replaceStr = getcolumnname($s) ;
+            }
+            //获得栏目URL
+            $s = RParam($labelStr, 'getcolumnurl') ;
+            if( $s <> '' ){
+                if( $s == '@ME' ){
+                    $s = $replaceStr ;
+                }
+                $replaceStr = getcolumnurl($s, 'id') ;
+            }
+
+            $ifStr = RParam($labelStr, 'if') ;
+            $elseIfStr = RParam($labelStr, 'elseif') ;
+            $valueStr = RParam($labelStr, 'value') ;
+            $elseStr = RParam($labelStr, 'else') ;
+            $instrStr = RParam($labelStr, 'instr');
+
+            //call echo("ifStr",ifStr)
+            //call echo("valueStr",valueStr)
+            //call echo("elseStr",elseStr)
+            //call echo("elseIfStr",elseIfStr)
+            //call echo("replaceStr",replaceStr)
+            if( $ifStr <> '' || $instrStr <> '' ){
+                if(($ifStr == CStr($replaceStr) && $ifStr <> '') ||($elseIfStr == CStr($replaceStr) && $elseIfStr <> '') ){
+                    $replaceStr = $valueStr ;
+                }else if( instr(CStr($replaceStr), $instrStr) > 0 && $instrStr <> '' ){
+                    $replaceStr = $valueStr ;
+                }else{
+                    if( $elseStr <> '@ME' ){
+                        $replaceStr = $elseStr ;
+                    }
                 }
             }
-        }
 
-        //函数处理20151231    [$title  function='left(@ME,40)'$]
-        $funStr = RParam($labelStr, 'function') ;//函数
-        if( $funStr <> '' ){
-            $funStr = Replace($funStr, '@ME', $replaceStr) ;
-            $replaceStr = handleContentCode($funStr, '') ;
-        }
-
-        //默认值
-        $s = RParam($labelStr, 'default') ;
-        if( $s <> '' ){
-            if( $replaceStr == '' ){
-                $replaceStr = $s ;
+            //函数处理20151231    [$title  function='left(@ME,40)'$]
+            $funStr = RParam($labelStr, 'function') ;//函数
+            if( $funStr <> '' ){
+                $funStr = Replace($funStr, '@ME', $replaceStr) ;
+                $replaceStr = handleContentCode($funStr, '') ;
             }
+
+            //默认值
+            $s = RParam($labelStr, 'default') ;
+            if( $s <> '' ){
+                if( $replaceStr == '' ){
+                    $replaceStr = $s ;
+                }
+            }
+
+
+
+            //文本颜色
+            $s = RParam($labelStr, 'fontcolor') ;//函数
+            if( $s <> '' ){
+                $replaceStr = '<font color="' . $s . '">' . $replaceStr . '</font>' ;
+            }
+            //call echo(tempLabelStr,replaceStr)
+            $content = Replace($content, $tempLabelStr, $replaceStr) ;
+        }else{
+            break;
         }
-
-
-
-        //文本颜色
-        $s = RParam($labelStr, 'fontcolor') ;//函数
-        if( $s <> '' ){
-            $replaceStr = '<font color="' . $s . '">' . $replaceStr . '</font>' ;
-        }
-
-        $content = Replace($content, $tempLabelStr, $replaceStr) ;
     }
     $replaceValueParam = $content ;
     return @$replaceValueParam;
@@ -327,16 +338,16 @@ function testfunction($s){
 //显示编辑器20160115
 function displayEditor($action){
     $c ='';
-    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shCore.js"></script> ' . "\n" ;
-    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shBrushJScript.js"></script>' . "\n" ;
-    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shBrushPhp.js"></script> ' . "\n" ;
-    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shBrushVb.js"></script> ' . "\n" ;
-    $c = $c . '<link type="text/css" rel="stylesheet" href="\\Jquery\\syntaxhighlighter\\styles/shCore.css"/>' . "\n" ;
-    $c = $c . '<link type="text/css" rel="stylesheet" href="\\Jquery\\syntaxhighlighter\\styles/shThemeDefault.css"/>' . "\n" ;
-    $c = $c . '<script type="text/javascript">' . "\n" ;
-    $c = $c . '    SyntaxHighlighter.config.clipboardSwf = \'\\Jquery\\syntaxhighlighter\\scripts/clipboard.swf\';' . "\n" ;
-    $c = $c . '    SyntaxHighlighter.all();' . "\n" ;
-    $c = $c . '</script>' . "\n" ;
+    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shCore.js"></script> ' . vbCrlf() ;
+    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shBrushJScript.js"></script>' . vbCrlf() ;
+    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shBrushPhp.js"></script> ' . vbCrlf() ;
+    $c = $c . '<script type="text/javascript" src="\\Jquery\\syntaxhighlighter\\scripts/shBrushVb.js"></script> ' . vbCrlf() ;
+    $c = $c . '<link type="text/css" rel="stylesheet" href="\\Jquery\\syntaxhighlighter\\styles/shCore.css"/>' . vbCrlf() ;
+    $c = $c . '<link type="text/css" rel="stylesheet" href="\\Jquery\\syntaxhighlighter\\styles/shThemeDefault.css"/>' . vbCrlf() ;
+    $c = $c . '<script type="text/javascript">' . vbCrlf() ;
+    $c = $c . '    SyntaxHighlighter.config.clipboardSwf = \'\\Jquery\\syntaxhighlighter\\scripts/clipboard.swf\';' . vbCrlf() ;
+    $c = $c . '    SyntaxHighlighter.all();' . vbCrlf() ;
+    $c = $c . '</script>' . vbCrlf() ;
 
     $displayEditor = $c ;
     return @$displayEditor;
@@ -420,4 +431,3 @@ function htmlAddAction($content, $jsAction){
 
 
 ?>
-

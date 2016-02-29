@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
@@ -52,29 +52,14 @@ Function XY_AP_ColumnList(action)
     XY_AP_ColumnList = XY_AP_GeneralList(action, "WebColumn", sql) 
 End Function 
 
-'显示评论列表
-Function XY_AP_CommentList(action)
-    Dim sql, itemID 
-    sql = RParam(action, "sql") 
-    itemID = RParam(action, "itemID") 
-    itemID = replaceGlobleVariable(itemID) 
-    'call eerr("itemID",itemID)
-
-    If sql = "" Then
-        sql = "select * from " & db_PREFIX & "TableComment where itemID=" & itemID & " and through=1 order by adddatetime asc" 
-    End If 
-    sql = replaceGlobleVariable(sql) 
-    XY_AP_CommentList = XY_AP_GeneralList(action, "TableComment", sql) 
-End Function 
-
 '显示文章列表
 Function XY_AP_ArticleList(action)
     Dim sql, addSql, columnName, columnId, topNumb, idRand, splStr, s, columnIdList 
 
-    'action = Replace(action, "[$detailTitle$]", gbl_detailTitle)               '处理当前标题
+    'action = Replace(action, "[$detailTitle$]", glb_detailTitle)               '处理当前标题
     action = replaceGlobleVariable(action)                                          '处理下替换标签
 
-    'call echo(gbl_detailTitle,action)
+    'call echo(glb_detailTitle,action)
     sql = RParam(action, "sql") 
     topNumb = RParam(action, "topNumb") 
     If sql = "" Then
@@ -115,6 +100,20 @@ Function XY_AP_ArticleList(action)
     'call echo(RParam(action, "columnName") ,sql)
     XY_AP_ArticleList = XY_AP_GeneralList(action, "ArticleDetail", sql) 
 End Function 
+'显示评论列表
+Function XY_AP_CommentList(action)
+    Dim sql, itemID 
+    sql = RParam(action, "sql") 
+    itemID = RParam(action, "itemID") 
+    itemID = replaceGlobleVariable(itemID) 
+    'call eerr("itemID",itemID)
+
+    If sql = "" Then
+        sql = "select * from " & db_PREFIX & "TableComment where itemID=" & itemID & " and through=1 order by adddatetime asc" 
+    End If 
+    sql = replaceGlobleVariable(sql) 
+    XY_AP_CommentList = XY_AP_GeneralList(action, "TableComment", sql) 
+End Function 
 '显示搜索统计
 Function XY_AP_SearchStatList(action)
     Dim sql, addSql, topNumb 
@@ -153,7 +152,7 @@ Function XY_AP_GeneralList(action, tableName, sql)
     Dim fieldNameList                                                               '字段列表
     Dim splFieldName, fieldName, replaceStr, k 
 
-    fieldNameList = LCase(getFieldList(db_PREFIX & tableName)) 
+    fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表") 
     splFieldName = Split(fieldNameList, ",") 
 
     'call echo("sql",sql)
@@ -184,10 +183,10 @@ Function XY_AP_GeneralList(action, tableName, sql)
                 End If 
             End If 
             '全局栏目名称为空则为自动定位首页 追加(20160128)
-            If gbl_columnName = "" And rs("columnType") = "首页" Then
-                gbl_columnName = rs("columnName") 
+            If glb_columnName = "" And rs("columnType") = "首页" Then
+                glb_columnName = rs("columnName") 
             End If 
-            If rs("columnName") = gbl_columnName Then
+            If rs("columnName") = glb_columnName Then
                 isFocus = True 
             End If 
 
@@ -219,7 +218,7 @@ Function XY_AP_GeneralList(action, tableName, sql)
         End If 
 
         '网址判断
-        If url = WEBURLFILEPATH Or isFocus = True Then
+        If isFocus = True Then
             startStr = "[list-focus]" : endStr = "[/list-focus]" 
         Else
             startStr = "[list-" & i & "]" : endStr = "[/list-" & i & "]" 
@@ -305,23 +304,27 @@ Function XY_AP_GeneralList(action, tableName, sql)
     XY_AP_GeneralList = c 
 End Function 
 
-
-
-'获得文本内容 这个是干什么用得？？？20150121           改进加在线管理(20160127)
-Function XY_AP_SinglePage(action)
-    Dim title, url, content, id, sql, fieldName 
+'处理获得表内容
+Function XY_handleGetTableBody(action, tableName, fieldParamName, defaultFileName, adminUrl)
+    Dim url, content, id, sql, addSql, fieldName, fieldParamValue 
     fieldName = RParam(action, "fieldname")                                         '字段名称
     If fieldName = "" Then
-        fieldName = "bodycontent" 
+        fieldName = defaultFileName 
     End If 
-    title = RParam(action, "title")                                                 '获得标题
+    fieldParamValue = RParam(action, fieldParamName)                                '截取字段内容
+    id = handleNumber(RParam(action, "id"))                                         '获得ID
+    addSql = " where " & fieldParamName & "='" & fieldParamValue & "'" 
+    If id <> "" Then
+        addSql = " where id=" & id 
+    End If 
+
     content = GetDefaultValue(action)                                               '获得默认内容
-    sql = "select * from " & db_PREFIX & "onepage where title='" & title & "'" 
+    sql = "select * from " & db_PREFIX & tableName & addSql 
     rs.Open sql, conn, 1, 1 
     If rs.EOF Then
         '自动添加 20160113
         If RParam(action, "autoadd") = "true" Then
-            conn.Execute("insert into " & db_PREFIX & "onepage (title,displaytitle," & fieldName & ") values('" & title & "','" & title & "','" & ADSql(content) & "')") 
+            conn.Execute("insert into " & db_PREFIX & tableName & " (" & fieldParamName & "," & fieldName & ") values('" & fieldParamValue & "','" & ADSql(content) & "')") 
         End If 
     Else
         id = rs("id") 
@@ -330,39 +333,65 @@ Function XY_AP_SinglePage(action)
     If id = "" Then
         id = XY_AP_GetFieldValue("", sql, "id") 
     End If 
-    url = WEB_ADMINURL & "?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&switchId=2&id=" & id & "&n=" & getRnd(11) 
+    url = adminUrl & "&id=" & id & "&n=" & getRnd(11) 
     If Request("gl") = "edit" Then
         content = "<span>" & content & "</span>" 
     End If 
 
+    'call echo(sql,url)
     content = HandleDisplayOnlineEditDialog(url, content, "", "span") 
-    XY_AP_SinglePage = content 
+    XY_handleGetTableBody = content 
+
+End Function 
+'获得单页内容
+Function XY_AP_GetOnePageBody(action)
+    Dim adminUrl 
+    adminUrl = WEB_ADMINURL & "?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&switchId=2" 
+    XY_AP_GetOnePageBody = XY_handleGetTableBody(action, "onepage", "title", "bodycontent", adminUrl) 
 End Function 
 '获得导航内容
-Function XY_AP_GetColumnContent(action)
-    Dim columnname, url, content, id, sql, fieldName 
-    fieldName = RParam(action, "fieldname")                                         '字段名称
-    If fieldName = "" Then
-        fieldName = "bodycontent" 
-    End If 
-    columnname = RParam(action, "columnname")                                       '栏目名称
-    content = GetDefaultValue(action)                                               '获得默认内容
-    sql = "select * from " & db_PREFIX & "webcolumn where columnname='" & columnname & "'" 
-    rs.Open sql, conn, 1, 1 
-    If Not rs.EOF Then
-        id = rs("id") 
-        content = rs(fieldName) 
-    End If : rs.Close 
-    If id = "" Then
-        id = XY_AP_GetFieldValue("", sql, "id") 
-    End If 
-    url = WEB_ADMINURL & "?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&switchId=2&id=" & id & "&n=" & getRnd(11) 
-    If Request("gl") = "edit" Then
-        content = "<span>" & content & "</span>" 
-    End If 
+Function XY_AP_GetColumnBody(action)
+    Dim adminUrl 
+    adminUrl = WEB_ADMINURL & "?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&switchId=2" 
+    XY_AP_GetColumnBody = XY_handleGetTableBody(action, "webcolumn", "columnname", "bodycontent", adminUrl) 
+End Function 
+'显示文章内容
+Function XY_AP_GetArticleBody(action)
+    Dim adminUrl 
+    adminUrl = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&switchId=2" 
+    XY_AP_GetArticleBody = XY_handleGetTableBody(action, "articledetail", "title", "bodycontent", adminUrl) 
+End Function 
 
-    content = HandleDisplayOnlineEditDialog(url, content, "", "span") 
-    XY_AP_GetColumnContent = content 
+'获得栏目URL
+Function XY_GetColumnUrl(action)
+    Dim columnName, url 
+    columnName = RParam(action, "columnName") 
+    url = getColumnUrl(columnName, "name") 
+    If Request("gl") <> "" Then
+        url = url & "&gl=" & Request("gl") 
+    End If 
+    XY_GetColumnUrl = url 
+
+End Function 
+'获得文章URL
+Function XY_GetArticleUrl(action)
+    Dim title, url 
+    title = RParam(action, "title") 
+    url = getArticleUrl(title) 
+    If Request("gl") <> "" Then
+        url = url & "&gl=" & Request("gl") 
+    End If 
+    XY_GetArticleUrl = url 
+End Function 
+'获得单页URL
+Function XY_GetOnePageUrl(action)
+    Dim title, url 
+    title = RParam(action, "title") 
+    url = getOnePageUrl(title) 
+    If Request("gl") <> "" Then
+        url = url & "&gl=" & Request("gl") 
+    End If 
+    XY_GetOnePageUrl = url 
 End Function 
 
 '获得单个字段内容
@@ -375,29 +404,6 @@ Function XY_AP_GetFieldValue(action, sql, fieldName)
     XY_AP_GetFieldValue = content 
 End Function 
 
-'布局20151231
-Function XY_Layout(action)
-    Dim layoutName, s, c 
-    layoutName = RParam(action, "layoutname") 
-    rs.Open "select * from " & db_PREFIX & "weblayout where layoutname='" & layoutName & "'", conn, 1, 1 
-    If Not rs.EOF Then
-        XY_Layout = rs("bodycontent") 
-    End If : rs.Close 
-    'rs.open"select * from webmodule where moduletype='"& layoutname &"'",conn,1,1
-    'while not rs.eof
-    'c=c & rs("bodycontent")
-    'rs.movenext:wend:rs.close
-'XY_Layout=c
-End Function 
-'模块20151231
-Function XY_Module(action)
-    Dim moduleName, s, c 
-    moduleName = RParam(action, "modulename") 
-    rs.Open "select * from " & db_PREFIX & "webmodule where modulename='" & moduleName & "'", conn, 1, 1 
-    If Not rs.EOF Then
-        XY_Module = rs("bodycontent") 
-    End If : rs.Close 
-End Function 
 'Js版网站统计
 Function XY_JsWebStat(action)
     Dim s, fileName 
@@ -412,59 +418,6 @@ Function XY_JsWebStat(action)
     s = s & "+"" \'><\/script>"");</script>" 
     XY_JsWebStat = s 
 End Function 
-
-
-'显示包裹块20160127
-Function XY_DisplayWrap(ByVal action)
-    Dim content 
-    content = GetDefaultValue(action) 
-    XY_DisplayWrap = content 
-End Function 
-'获得栏目Url20160126
-Function XY_GetColumnUrl(action)
-    Dim columnName, url 
-    columnName = RParam(action, "columnName") 
-    url = getColumnUrl(columnName, "name") 
-    If Request("gl") <> "" Then
-        url = url & "&gl=" & Request("gl") 
-    End If 
-    XY_GetColumnUrl = url 
-End Function 
-'获得单页Url20160128
-Function XY_GetOnePageUrl(action)
-    Dim title, url 
-    title = RParam(action, "title") 
-    url = getOnePageUrl(title) 
-    If Request("gl") <> "" Then
-        url = url & "&gl=" & Request("gl") 
-    End If 
-    XY_GetOnePageUrl = url 
-End Function 
-'获得标签内容 测试
-Function XY_getLableValue(action)
-    Dim title, content, c 
-    'call echo("Action",Action)
-    title = RParam(action, "title") 
-    content = RParam(action, "content") 
-    c = c & "title=" & GetContentRunStr(title) & "<hr>" 
-    c = c & "content=" & GetContentRunStr(content) & "<hr>" 
-    XY_getLableValue = c 
-    Call echo("title", title) 
-    XY_getLableValue = "【title=】【" & title & "】" 
-End Function 
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 '普通链接A
@@ -492,6 +445,70 @@ Function XY_HrefA(action)
 
     XY_HrefA = c 
 End Function 
-%>     
 
 
+'布局20151231
+Function XY_Layout(action)
+    Dim layoutName, s, c 
+    layoutName = RParam(action, "layoutname") 
+    rs.Open "select * from " & db_PREFIX & "weblayout where layoutname='" & layoutName & "'", conn, 1, 1 
+    If Not rs.EOF Then
+        XY_Layout = rs("bodycontent") 
+    End If : rs.Close 
+    'rs.open"select * from webmodule where moduletype='"& layoutname &"'",conn,1,1
+    'while not rs.eof
+    'c=c & rs("bodycontent")
+    'rs.movenext:wend:rs.close
+'XY_Layout=c
+End Function 
+'模块20151231
+Function XY_Module(action)
+    Dim moduleName, s, c 
+    moduleName = RParam(action, "modulename") 
+    rs.Open "select * from " & db_PREFIX & "webmodule where modulename='" & moduleName & "'", conn, 1, 1 
+    If Not rs.EOF Then
+        XY_Module = rs("bodycontent") 
+    End If : rs.Close 
+End Function 
+'显示包裹块20160127
+Function XY_DisplayWrap(ByVal action)
+    Dim content 
+    content = GetDefaultValue(action) 
+    XY_DisplayWrap = content 
+End Function 
+'读模块内容
+Function XY_ReadTemplateModule(action)
+    Dim ModuleId, filePath 
+    Dim SourceList                                                                  '源内容列表 20150109
+    Dim ReplaceList                                                                 '替换内容列表
+    Dim SplSource, SplReplace, i, SourceStr, replaceStr 
+    'Call die(Action)
+
+    filePath = RParam(action, "File") 
+    ModuleId = RParam(action, "ModuleId") 
+    SourceList = RParam(action, "SourceList") 
+    ReplaceList = RParam(action, "ReplaceList") 
+    'Call Echo(SourceList,ReplaceList)
+
+    If ModuleId = "" Then ModuleId = RParam(action, "ModuleName")                   '用块名称
+    filePath = filePath & ".html" 
+    'Call Echo("FilePath",FilePath)
+    'Call Echo("ModuleId",ModuleId)
+    XY_ReadTemplateModule = ReadTemplateModuleStr(filePath, "", ModuleId) 
+End Function 
+
+
+
+'嵌套标题 测试
+Function XY_getLableValue(action)
+    Dim title, content, c 
+    'call echo("Action",Action)
+    title = RParam(action, "title") 
+    content = RParam(action, "content") 
+    c = c & "title=" & GetContentRunStr(title) & "<hr>" 
+    c = c & "content=" & GetContentRunStr(content) & "<hr>" 
+    XY_getLableValue = c 
+    Call echo("title", title) 
+    XY_getLableValue = "【title=】【" & title & "】" 
+End Function 
+%>       

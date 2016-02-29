@@ -83,7 +83,7 @@ KindEditor.ready(function(K) {
 <div id="positionwrap">
     <div class="msg">当前位置：{$position$}</div>
 </div>
-<form action="?act=saveAddEditHandle&lableTitle={$lableTitle$}&nPageSize={$nPageSize$}&page={$page$}&parentid={$parentid$}" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+<form action="?act=saveAddEditHandle&lableTitle={$lableTitle$}&nPageSize={$nPageSize$}&page={$page$}&parentid={$parentid$}&searchfield={$searchfield$}&keyword={$keyword$}" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
 <div class="mg10">
 	<ul class="tabbut noselect">
         <li>基本设置</li>
@@ -100,7 +100,7 @@ KindEditor.ready(function(K) {
             	<tbody>
                 <tr align="center" bgcolor="#FBFCE2" height="25">
                    <td width="220">参数说明</td>
-                  <td>参数值</td>
+                  <td>参数值[$titlecolor$]</td>
                    <td width="180">变量名</td>
                 </tr>
                 </tbody>
@@ -248,4 +248,3 @@ KindEditor.ready(function(K) {
 <script language="javascript" type="text/javascript" src="js/formBottom.js"></script>
 </body>
 </html> 
-

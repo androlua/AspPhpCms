@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
@@ -75,6 +75,13 @@ Function format_Time(timeStr, nType)
             format_Time = y & "年" & m & "月 第" & GetCountPage(d, 7) & "周" 
     End Select
 End Function 
+'获得当前时期还可以计算
+function getHandleDate(numb)
+	if numb="" then
+		numb=0 
+	end if
+	getHandleDate=format_Time(now()+numb,2)	
+end function
 '获得当前天状态
 Function getDayStatus(h, SType)
     Dim c 
@@ -192,5 +199,4 @@ Function vBRunTimer(startTime)
     vBRunTimer = "运行时间：" & n 
 End Function 
 %>  
-
 

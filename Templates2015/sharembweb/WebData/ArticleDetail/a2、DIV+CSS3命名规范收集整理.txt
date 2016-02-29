@@ -7,7 +7,7 @@
 【author】sharembweb
 【adddatetime】2016-01-26 16:51:18
 【filename】/asp/cssdivsetname.html
-【flags】|c|
+【flags】|
 【relatedtags】ASP,在线ASP转PHP 
 【bodycontent】
 [&全部换行&]  

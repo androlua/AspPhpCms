@@ -2,13 +2,18 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-24
+创建：2016-02-29
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By 云端 
+*                                    Powered By AspPhpCMS 
 ************************************************************/
 ?>
-<?php 
+<?php
+
+
+define('ROOT_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR); 		//当前文件路径
+
+ 
 //系统
 require_once './../phpInc/ASP.php';
 require_once './../phpInc/sys_FSO.php';
@@ -37,8 +42,7 @@ require_once './../phpInc/2015_ToMyPHP.php';
 //require_once './phpInc/2015_ToPhpCms.php';
 require_once './../phpInc/Cai.php';
 require_once './../phpInc/Check.php';
-require_once './../phpInc/Common.php';
-require_once './../phpInc/Config.php';
+require_once './../phpInc/Common.php'; 
 require_once './../phpInc/Incpage.php';
 require_once './../phpInc/Print.php';
 require_once './../phpInc/StringNumber.php';
@@ -52,33 +56,16 @@ require_once './../phpInc/2016_WebControl.php';
 require_once './../phpInc/ASPPHPAccess.php'; 
 require_once './../phpInc/IE.php'; 
 
-
-//                                                  http://127.0.0.1/web/1.php?act=displayAdminLogin
-
-define('ROOT_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR); 		//当前文件路径
-define('WEBCOLUMNTYPE','首页|文本|产品|新闻|视频|下载|案例|留言|反馈|招聘|订单'); 		//网站栏目类型列表
-define('EDITORTYPE','php'); 		//编辑器类型，是ASP,或PHP,或jSP,或.NET
-define('WEB_VIEWURL','../index.php'); 		//网站显示URL
-
-
-if(checkfile(ROOT_PATH.'../phpInc/admin_setAccess.php')){
-	require_once './../phpInc/admin_setAccess.php'; 
-}
+require_once './../phpInc/config.php'; 
+require_once './../phpInc/admin_setAccess.php';
 require_once './../phpInc/admin_function.php';
-//处理恢复数据
-function handleResetAccessData(){
-	if(checkfile(ROOT_PATH.'../phpInc/admin_setAccess.php')==false){
-		eerr("恢复默认数据失败","../phpInc/admin_setAccess.php 文件不存在");
-	}else{
-		resetAccessData();
-	}
-} 
-//=========
-$db_PREFIX =''; $db_PREFIX = 'xy_' ;//表前缀
-$WEB_VIEWURL =''; $WEB_VIEWURL = '../aspweb.asp' ;//网站显示URL
 
-$webVersion = 'v1.0011' ;
+ 
+
+//=========
 $cfg_webSiteUrl=''; $cfg_webTitle=''; $cfg_flags=''; $cfg_webtemplate ='';
+
+
 
 //加载网址配置
 function loadWebConfig(){
@@ -112,6 +99,8 @@ function displayAdminLogin(){
         $content = getFText(ROOT_PATH . 'login.html') ;
         $content = Replace($content, '{$webVersion$}', $GLOBALS['webVersion']) ;
         $content = Replace($content, '{$Web_Title$}', $GLOBALS['cfg_webTitle']) ;
+        $content = Replace($content, '{$EDITORTYPE$}', EDITORTYPE) ;
+
         rw($content) ;
     }
 
@@ -127,6 +116,7 @@ function login(){
         @$_SESSION['adminusername'] = 'aspphpcms' ;
         @$_SESSION['adminId'] = 99999 ;//当前登录管理员ID
         @$_SESSION['DB_PREFIX'] = $GLOBALS['db_PREFIX'] ;
+        @$_SESSION['adminflags'] = '|*|'		;
         rwend(getMsg1('登录成功，正在进入后台...', '?act=adminIndex')) ;
     }
 
@@ -147,6 +137,7 @@ function login(){
         @$_SESSION['adminusername'] = $userName ;
         @$_SESSION['adminId'] = $rs['id'] ;//当前登录管理员ID
         @$_SESSION['DB_PREFIX'] = $GLOBALS['db_PREFIX'] ;//保存前缀
+        @$_SESSION['adminflags'] = $rs['flags'];
         $valueStr = 'addDateTime=\'' . $rs['updatetime'] . '\',UpDateTime=\'' . Now() . '\',RegIP=\'' . Now() . '\',UpIP=\'' . getIP() . '\'' ;
         connExecute('update ' . $GLOBALS['db_PREFIX'] . 'admin set ' . $valueStr . ' where id=' . $rs['id']) ;
         rw(getMsg1('登录成功，正在进入后台...', '?act=adminIndex')) ;
@@ -156,7 +147,8 @@ function login(){
 //退出登录
 function adminOut(){
     @$_SESSION['adminusername'] = '' ;
-    @$_SESSION['adminId'] = '' ;
+    @$_SESSION['adminId'] = '';
+    @$_SESSION['adminflags'] = '' ;
     rw(getMsg1('退出成功，正在进入登录界面...', '?act=displayAdminLogin')) ;
 }
 
@@ -166,13 +158,18 @@ function adminIndex(){
     $content ='';
     $content = getFText(ROOT_PATH . 'adminIndex.html') ;
     $content = Replace($content, '{$adminusername$}', @$_SESSION['adminusername']) ;
-    $content = Replace($content, '{$EDITORTYPE$}', EDITORTYPE) ;
-    $content = Replace($content, '{$WEB_VIEWURL$}', WEB_VIEWURL) ;
+    $content = Replace($content, '{$EDITORTYPE$}', EDITORTYPE) 			;//程序类型
+    $content = Replace($content, '{$WEB_VIEWURL$}', WEB_VIEWURL) 			;//前台
+    $content = Replace($content, '{$webVersion$}', $GLOBALS['webVersion']) 				;//版本
+
+    $content = Replace($content, '{$WebsiteStat$}', getConfigFileBlock($GLOBALS['WEB_CACHEFile'], '#访客信息#'))			;//最近访客信息
 
 
+    $content = Replace($content, '[$adminId$]', @$_SESSION['adminId']) 				;//管理员ID
 
-    $content = Replace($content, '{$Web_Title$}', $GLOBALS['cfg_webTitle']) ;
+    $content = Replace($content, '{$Web_Title$}', $GLOBALS['cfg_webTitle']) 						;//网站标题
     $content = Replace($content, '{$DB_PREFIX$}', $GLOBALS['db_PREFIX']) ;//表前缀
+    $content = Replace($content, '{$adminflags$}', IIF(@$_SESSION['adminflags']=='|*|','超级管理员','普通管理员'))		;//管理员类型
 
     rw($content) ;
 }
@@ -202,67 +199,18 @@ function dispalyManageHandle($actionType){
 
 //添加修改处理
 function addEditHandle($actionType, $lableTitle){
-    if( $actionType == 'Admin' ){
-        addEditDisplay($actionType, $lableTitle, '') ;
-    }else if( $actionType == 'WebSite' ){
-        addEditDisplay($actionType, $lableTitle, 'webdescription,websitebottom|textarea2') ;
-
-    }else if( $actionType == 'ArticleDetail' ){
-        addEditDisplay($actionType, $lableTitle, 'sortrank||0,simpleintroduction|textarea1,bodycontent|textarea2') ;
-    }else if( $actionType == 'WebColumn' ){
-        addEditDisplay($actionType, $lableTitle, 'npagesize|numb|10,sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2') ;
-    }else if( $actionType == 'OnePage' ){
-        addEditDisplay($actionType, $lableTitle, 'sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2') ;
-
-    }else if( $actionType == 'TableComment' ){
-        addEditDisplay($actionType, $lableTitle, 'reply|textarea2,bodycontent|textarea2') ;
-
-
-    }else if( $actionType == 'WebLayout' ){
-        addEditDisplay($actionType, $lableTitle, 'sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2,actioncontent|textarea2') ;//||网站公告\|关于我们\|新闻中心
-    }else if( $actionType == 'WebModule' ){
-        addEditDisplay($actionType, $lableTitle, 'sortrank|numb|0,simpleintroduction|textarea1,bodycontent|textarea2') ;
-
-        //ElseIf actionType = "WebsiteStat" Then
-        //默认用这种
-    }else{
-        addEditDisplay($actionType, $lableTitle, '') ;
-
-    }
+    addEditDisplay($actionType, $lableTitle, 'websitebottom|textarea2,simpleintroduction|textarea1,bodycontent|textarea2');
 }
 //保存模块处理
 function saveAddEditHandle($actionType, $lableTitle){
     if( $actionType == 'Admin' ){
-        saveAddEdit($actionType, $lableTitle, 'username,pseudonym,pwd|md5') ;
-    }else if( $actionType == 'WebSite' ){
-        saveAddEdit($actionType, $lableTitle, 'flags,websiteurl,webtemplate,webimages,webcss,webjs,webtitle,webkeywords,webdescription,websitebottom') ;
-    }else if( $actionType == 'ArticleDetail' ){
-        saveAddEdit($actionType, $lableTitle, 'relatedtags,labletitle,target,nofollow|numb|0,isonhtml|numb|0,parentid,title,foldername,filename,customaurl,smallimage,bigimage,author,sortrank||0,flags,webtitle,webkeywords,webdescription,bannerimage,simpleintroduction,bodycontent,titlecolor,noteinfo,templatepath') ;
+        saveAddEdit($actionType, $lableTitle, 'pwd|md5,flags||') ;
     }else if( $actionType == 'WebColumn' ){
-        saveAddEdit($actionType, $lableTitle, 'npagesize|numb|10,labletitle,target,nofollow|numb|0,isonhtml|numb|0,columntype,parentid,columnname,columnenname,foldername,filename,customaurl,sortrank||0,webtitle,webkeywords,webdescription,showtitle,flags,simpleintroduction,bodycontent,noteinfo,templatepath') ;
-    }else if( $actionType == 'OnePage' ){
-        saveAddEdit($actionType, $lableTitle, 'labletitle,target,nofollow|numb|0,isonhtml|numb|0,title,displaytitle,foldername,filename,customaurl,webtitle,webkeywords,webdescription,simpleintroduction,bodycontent,noteinfo,templatepath') ;
-
-    }else if( $actionType == 'TableComment' ){
-        saveAddEdit($actionType, $lableTitle, 'through|numb|0,reply,bodycontent') ;
-
-    }else if( $actionType == 'WebLayout' ){
-        saveAddEdit($actionType, $lableTitle, 'layoutlist,layoutname,sortrank|numb,isdisplay|yesno,simpleintroduction,bodycontent,actioncontent,replacestyle') ;
-    }else if( $actionType == 'WebModule' ){
-        saveAddEdit($actionType, $lableTitle, 'modulename,moduletype,sortrank|numb,simpleintroduction,bodycontent') ;
-
-    }else if( $actionType == 'WebsiteStat' ){
-        saveAddEdit($actionType, $lableTitle, 'visiturl,viewurl,browser,operatingsystem,screenwh,moreinfo,viewdatetime|date,ip,dateclass,noteinfo') ;
-    }else if( $actionType == 'SearchStat' ){
-        saveAddEdit($actionType, $lableTitle, 'title,foldername,filename,customaurl,target,templatepath,author,nofollow|numb|0,through|numb,isonhtml|numb|0,sortrank|numb|0,views|numb|0,webtitle,webkeywords,webdescription,simpleintroduction,bodycontent') ;
+        saveAddEdit($actionType, $lableTitle, 'npagesize|numb|10,nofollow|numb|0,isonhtml|numb|0,isonhtsdfasdfml|numb|0,flags||') ;
+    }else{
+        saveAddEdit($actionType, $lableTitle, 'flags||,nofollow|numb|0,isonhtml|numb|0,through|numb|0') ;
     }
 }
-
-
-
-
-
-
 
 
 
@@ -279,7 +227,9 @@ switch ( @$_REQUEST['act'] ){
     case 'saveRobots' ; saveRobots() ;break;//保存robots.txt
     case 'saveSiteMap' ; saveSiteMap() ;break;//保存sitemap.xml
     case 'isOpenTemplate' ; isOpenTemplate() ;break;//更换模板
-    case 'updateWebsiteStat' ; updateWebsiteStat() ;//更新网站统计
+    case 'updateWebsiteStat' ; updateWebsiteStat() ;break;//更新网站统计
+    case 'websiteDetail' ; websiteDetail() 		;//详细网站统计
+
 
 
     break;
@@ -292,7 +242,5 @@ switch ( @$_REQUEST['act'] ){
 }
 
 ?>
-
-
 
 

@@ -48,10 +48,23 @@ function clear_title() {
 function input_font_bold() {
 	if($('#title').css('font-weight') == '700' || $('#title').css('font-weight')=='bold') {
 		$('#title').css('font-weight','normal');
-		$("input[value='b']").attr("checked",false); 
-		
-	} else {
+		//$("input[value='b']").attr("checked",false);							//这咱方法会出错，在IE8
+		var ctxB=false
+	}else{
 		$('#title').css('font-weight','bold')
-		$("input[value='b']").attr("checked",true);
+		//$("input[value='b']").attr("checked",true);
+		var ctxB=true
 	}
+	//这样做是为了兼容
+	var a = document.getElementsByTagName("input"); 
+	for (var i=0; i<a.length; i++){
+		if(a[i].type=="checkbox"){
+			if(a[i].value=="b"){
+				a[i].checked = ctxB;
+				break;
+			} 
+		}
+	} 
+
 }
+

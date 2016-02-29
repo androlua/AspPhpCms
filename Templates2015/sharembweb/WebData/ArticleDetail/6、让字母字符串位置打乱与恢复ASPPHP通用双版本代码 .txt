@@ -7,7 +7,7 @@
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2016-01-19 13:36:41
 ¡¾filename¡¿/asp/azstrwzdl.html
-¡¾flags¡¿|c|
+¡¾flags¡¿|
 ¡¾relatedtags¡¿ASP,PHP,ÔÚÏßASP×ªPHP
 ¡¾bodycontent¡¿
 {$displayEditor $}

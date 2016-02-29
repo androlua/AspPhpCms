@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-24
+创建：2016-02-29
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By 云端 
+*                                    Powered By AspPhpCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -54,30 +54,14 @@ function XY_AP_ColumnList($action){
     return @$XY_AP_ColumnList;
 }
 
-//显示评论列表
-function XY_AP_CommentList($action){
-    $sql=''; $itemID ='';
-    $sql = RParam($action, 'sql') ;
-    $itemID = RParam($action, 'itemID') ;
-    $itemID = replaceGlobleVariable($itemID) ;
-    //call eerr("itemID",itemID)
-
-    if( $sql == '' ){
-        $sql = 'select * from ' . $GLOBALS['db_PREFIX'] . 'TableComment where itemID=' . $itemID . ' and through=1 order by adddatetime asc' ;
-    }
-    $sql = replaceGlobleVariable($sql) ;
-    $XY_AP_CommentList = XY_AP_GeneralList($action, 'TableComment', $sql) ;
-    return @$XY_AP_CommentList;
-}
-
 //显示文章列表
 function XY_AP_ArticleList($action){
     $sql=''; $addSql=''; $columnName=''; $columnId=''; $topNumb=''; $idRand=''; $splStr=''; $s=''; $columnIdList ='';
 
-    //action = Replace(action, "[$detailTitle$]", gbl_detailTitle)               '处理当前标题
+    //action = Replace(action, "[$detailTitle$]", glb_detailTitle)               '处理当前标题
     $action = replaceGlobleVariable($action) ;//处理下替换标签
 
-    //call echo(gbl_detailTitle,action)
+    //call echo(glb_detailTitle,action)
     $sql = RParam($action, 'sql') ;
     $topNumb = RParam($action, 'topNumb') ;
     if( $sql == '' ){
@@ -119,6 +103,21 @@ function XY_AP_ArticleList($action){
     $XY_AP_ArticleList = XY_AP_GeneralList($action, 'ArticleDetail', $sql) ;
     return @$XY_AP_ArticleList;
 }
+//显示评论列表
+function XY_AP_CommentList($action){
+    $sql=''; $itemID ='';
+    $sql = RParam($action, 'sql') ;
+    $itemID = RParam($action, 'itemID') ;
+    $itemID = replaceGlobleVariable($itemID) ;
+    //call eerr("itemID",itemID)
+
+    if( $sql == '' ){
+        $sql = 'select * from ' . $GLOBALS['db_PREFIX'] . 'TableComment where itemID=' . $itemID . ' and through=1 order by adddatetime asc' ;
+    }
+    $sql = replaceGlobleVariable($sql) ;
+    $XY_AP_CommentList = XY_AP_GeneralList($action, 'TableComment', $sql) ;
+    return @$XY_AP_CommentList;
+}
 //显示搜索统计
 function XY_AP_SearchStatList($action){
     $sql=''; $addSql=''; $topNumb ='';
@@ -158,7 +157,7 @@ function XY_AP_GeneralList($action, $tableName, $sql){
     $fieldNameList ='';//字段列表
     $splFieldName=''; $fieldName=''; $replaceStr=''; $k ='';
 
-    $fieldNameList = LCase(getFieldList($GLOBALS['db_PREFIX'] . $tableName)) ;
+    $fieldNameList = getHandleFieldList($GLOBALS['db_PREFIX'] . $tableName, '字段列表') ;
     $splFieldName = aspSplit($fieldNameList, ',') ;
 
     //call echo("sql",sql)
@@ -190,10 +189,10 @@ function XY_AP_GeneralList($action, $tableName, $sql){
                 }
             }
             //全局栏目名称为空则为自动定位首页 追加(20160128)
-            if( $GLOBALS['gbl_columnName'] == '' && $rs['columntype'] == '首页' ){
-                $GLOBALS['gbl_columnName'] = $rs['columnname'] ;
+            if( $GLOBALS['glb_columnName'] == '' && $rs['columntype'] == '首页' ){
+                $GLOBALS['glb_columnName'] = $rs['columnname'] ;
             }
-            if( $rs['columnname'] == $GLOBALS['gbl_columnName'] ){
+            if( $rs['columnname'] == $GLOBALS['glb_columnName'] ){
                 $isFocus = true ;
             }
 
@@ -225,7 +224,7 @@ function XY_AP_GeneralList($action, $tableName, $sql){
         }
 
         //网址判断
-        if( $url == WEBURLFILEPATH || $isFocus == true ){
+        if( $isFocus == true ){
             $startStr = '[list-focus]' ; $endStr = '[/list-focus]' ;
         }else{
             $startStr = '[list-' . $i . ']' ; $endStr = '[/list-' . $i . ']' ;
@@ -312,24 +311,28 @@ function XY_AP_GeneralList($action, $tableName, $sql){
     return @$XY_AP_GeneralList;
 }
 
-
-
-//获得文本内容 这个是干什么用得？？？20150121           改进加在线管理(20160127)
-function XY_AP_SinglePage($action){
-    $title=''; $url=''; $content=''; $id=''; $sql=''; $fieldName ='';
+//处理获得表内容
+function XY_handleGetTableBody($action, $tableName, $fieldParamName, $defaultFileName, $adminUrl){
+    $url=''; $content=''; $id=''; $sql=''; $addSql=''; $fieldName=''; $fieldParamValue ='';
     $fieldName = RParam($action, 'fieldname') ;//字段名称
     if( $fieldName == '' ){
-        $fieldName = 'bodycontent' ;
+        $fieldName = $defaultFileName ;
     }
-    $title = RParam($action, 'title') ;//获得标题
+    $fieldParamValue = RParam($action, $fieldParamName) ;//截取字段内容
+    $id = handleNumber(RParam($action, 'id')) ;//获得ID
+    $addSql = ' where ' . $fieldParamName . '=\'' . $fieldParamValue . '\'' ;
+    if( $id <> '' ){
+        $addSql = ' where id=' . $id ;
+    }
+
     $content = GetDefaultValue($action) ;//获得默认内容
-    $sql = 'select * from ' . $GLOBALS['db_PREFIX'] . 'onepage where title=\'' . $title . '\'' ;
+    $sql = 'select * from ' . $GLOBALS['db_PREFIX'] . $tableName . $addSql ;
     $rsObj=$GLOBALS['conn']->query( $sql);
     $rs=mysql_fetch_array($rsObj);
     if( @mysql_num_rows($rsObj)==0 ){
         //自动添加 20160113
         if( RParam($action, 'autoadd') == 'true' ){
-            connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'onepage (title,displaytitle,' . $fieldName . ') values(\'' . $title . '\',\'' . $title . '\',\'' . ADSql($content) . '\')') ;
+            connExecute('insert into ' . $GLOBALS['db_PREFIX'] . $tableName . ' (' . $fieldParamName . ',' . $fieldName . ') values(\'' . $fieldParamValue . '\',\'' . ADSql($content) . '\')') ;
         }
     }else{
         $id = $rs['id'] ;
@@ -338,42 +341,72 @@ function XY_AP_SinglePage($action){
     if( $id == '' ){
         $id = XY_AP_GetFieldValue('', $sql, 'id') ;
     }
-    $url = WEB_ADMINURL . '?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&switchId=2&id=' . $id . '&n=' . getRnd(11) ;
+    $url = $adminUrl . '&id=' . $id . '&n=' . getRnd(11) ;
     if( @$_REQUEST['gl'] == 'edit' ){
         $content = '<span>' . $content . '</span>' ;
     }
 
+    //call echo(sql,url)
     $content = HandleDisplayOnlineEditDialog($url, $content, '', 'span') ;
-    $XY_AP_SinglePage = $content ;
-    return @$XY_AP_SinglePage;
+    $XY_handleGetTableBody = $content ;
+
+    return @$XY_handleGetTableBody;
+}
+//获得单页内容
+function XY_AP_GetOnePageBody($action){
+    $adminUrl ='';
+    $adminUrl = WEB_ADMINURL . '?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&switchId=2' ;
+    $XY_AP_GetOnePageBody = XY_handleGetTableBody($action, 'onepage', 'title', 'bodycontent', $adminUrl) ;
+    return @$XY_AP_GetOnePageBody;
 }
 //获得导航内容
-function XY_AP_GetColumnContent($action){
-    $columnname=''; $url=''; $content=''; $id=''; $sql=''; $fieldName ='';
-    $fieldName = RParam($action, 'fieldname') ;//字段名称
-    if( $fieldName == '' ){
-        $fieldName = 'bodycontent' ;
-    }
-    $columnname = RParam($action, 'columnname') ;//栏目名称
-    $content = GetDefaultValue($action) ;//获得默认内容
-    $sql = 'select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where columnname=\'' . $columnname . '\'' ;
-    $rsObj=$GLOBALS['conn']->query( $sql);
-    $rs=mysql_fetch_array($rsObj);
-    if( @mysql_num_rows($rsObj)!=0 ){
-        $id = $rs['id'] ;
-        $content = $rs[$fieldName] ;
-    }
-    if( $id == '' ){
-        $id = XY_AP_GetFieldValue('', $sql, 'id') ;
-    }
-    $url = WEB_ADMINURL . '?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&switchId=2&id=' . $id . '&n=' . getRnd(11) ;
-    if( @$_REQUEST['gl'] == 'edit' ){
-        $content = '<span>' . $content . '</span>' ;
-    }
+function XY_AP_GetColumnBody($action){
+    $adminUrl ='';
+    $adminUrl = WEB_ADMINURL . '?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&switchId=2' ;
+    $XY_AP_GetColumnBody = XY_handleGetTableBody($action, 'webcolumn', 'columnname', 'bodycontent', $adminUrl) ;
+    return @$XY_AP_GetColumnBody;
+}
+//显示文章内容
+function XY_AP_GetArticleBody($action){
+    $adminUrl ='';
+    $adminUrl = WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&switchId=2' ;
+    $XY_AP_GetArticleBody = XY_handleGetTableBody($action, 'articledetail', 'title', 'bodycontent', $adminUrl) ;
+    return @$XY_AP_GetArticleBody;
+}
 
-    $content = HandleDisplayOnlineEditDialog($url, $content, '', 'span') ;
-    $XY_AP_GetColumnContent = $content ;
-    return @$XY_AP_GetColumnContent;
+//获得栏目URL
+function XY_GetColumnUrl($action){
+    $columnName=''; $url ='';
+    $columnName = RParam($action, 'columnName') ;
+    $url = getColumnUrl($columnName, 'name') ;
+    if( @$_REQUEST['gl'] <> '' ){
+        $url = $url . '&gl=' . @$_REQUEST['gl'] ;
+    }
+    $XY_GetColumnUrl = $url ;
+
+    return @$XY_GetColumnUrl;
+}
+//获得文章URL
+function XY_GetArticleUrl($action){
+    $title=''; $url ='';
+    $title = RParam($action, 'title') ;
+    $url = getArticleUrl($title) ;
+    if( @$_REQUEST['gl'] <> '' ){
+        $url = $url . '&gl=' . @$_REQUEST['gl'] ;
+    }
+    $XY_GetArticleUrl = $url ;
+    return @$XY_GetArticleUrl;
+}
+//获得单页URL
+function XY_GetOnePageUrl($action){
+    $title=''; $url ='';
+    $title = RParam($action, 'title') ;
+    $url = getOnePageUrl($title) ;
+    if( @$_REQUEST['gl'] <> '' ){
+        $url = $url . '&gl=' . @$_REQUEST['gl'] ;
+    }
+    $XY_GetOnePageUrl = $url ;
+    return @$XY_GetOnePageUrl;
 }
 
 //获得单个字段内容
@@ -388,33 +421,6 @@ function XY_AP_GetFieldValue($action, $sql, $fieldName){
     return @$XY_AP_GetFieldValue;
 }
 
-//布局20151231
-function XY_Layout($action){
-    $layoutName=''; $s=''; $c ='';
-    $layoutName = RParam($action, 'layoutname') ;
-    $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weblayout where layoutname=\'' . $layoutName . '\'');
-    $rs=mysql_fetch_array($rsObj);
-    if( @mysql_num_rows($rsObj)!=0 ){
-        $XY_Layout = $rs['bodycontent'] ;
-    }
-    //rs.open"select * from webmodule where moduletype='"& layoutname &"'",conn,1,1
-    //while not rs.eof
-    //c=c & rs("bodycontent")
-    //rs.movenext:wend:rs.close
-    //XY_Layout=c
-    return @$XY_Layout;
-}
-//模块20151231
-function XY_Module($action){
-    $moduleName=''; $s=''; $c ='';
-    $moduleName = RParam($action, 'modulename') ;
-    $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webmodule where modulename=\'' . $moduleName . '\'');
-    $rs=mysql_fetch_array($rsObj);
-    if( @mysql_num_rows($rsObj)!=0 ){
-        $XY_Module = $rs['bodycontent'] ;
-    }
-    return @$XY_Module;
-}
 //Js版网站统计
 function XY_JsWebStat($action){
     $s=''; $fileName ='';
@@ -430,63 +436,6 @@ function XY_JsWebStat($action){
     $XY_JsWebStat = $s ;
     return @$XY_JsWebStat;
 }
-
-
-//显示包裹块20160127
-function XY_DisplayWrap( $action){
-    $content ='';
-    $content = GetDefaultValue($action) ;
-    $XY_DisplayWrap = $content ;
-    return @$XY_DisplayWrap;
-}
-//获得栏目Url20160126
-function XY_GetColumnUrl($action){
-    $columnName=''; $url ='';
-    $columnName = RParam($action, 'columnName') ;
-    $url = getColumnUrl($columnName, 'name') ;
-    if( @$_REQUEST['gl'] <> '' ){
-        $url = $url . '&gl=' . @$_REQUEST['gl'] ;
-    }
-    $XY_GetColumnUrl = $url ;
-    return @$XY_GetColumnUrl;
-}
-//获得单页Url20160128
-function XY_GetOnePageUrl($action){
-    $title=''; $url ='';
-    $title = RParam($action, 'title') ;
-    $url = getOnePageUrl($title) ;
-    if( @$_REQUEST['gl'] <> '' ){
-        $url = $url . '&gl=' . @$_REQUEST['gl'] ;
-    }
-    $XY_GetOnePageUrl = $url ;
-    return @$XY_GetOnePageUrl;
-}
-//获得标签内容 测试
-function XY_getLableValue($action){
-    $title=''; $content=''; $c ='';
-    //call echo("Action",Action)
-    $title = RParam($action, 'title') ;
-    $content = RParam($action, 'content') ;
-    $c = $c . 'title=' . GetContentRunStr($title) . '<hr>' ;
-    $c = $c . 'content=' . GetContentRunStr($content) . '<hr>' ;
-    $XY_getLableValue = $c ;
-    ASPEcho('title', $title) ;
-    $XY_getLableValue = '【title=】【' . $title . '】' ;
-    return @$XY_getLableValue;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //普通链接A
@@ -515,5 +464,77 @@ function XY_HrefA($action){
     $XY_HrefA = $c ;
     return @$XY_HrefA;
 }
-?>
 
+
+//布局20151231
+function XY_Layout($action){
+    $layoutName=''; $s=''; $c ='';
+    $layoutName = RParam($action, 'layoutname') ;
+    $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weblayout where layoutname=\'' . $layoutName . '\'');
+    $rs=mysql_fetch_array($rsObj);
+    if( @mysql_num_rows($rsObj)!=0 ){
+        $XY_Layout = $rs['bodycontent'] ;
+    }
+    //rs.open"select * from webmodule where moduletype='"& layoutname &"'",conn,1,1
+    //while not rs.eof
+    //c=c & rs("bodycontent")
+    //rs.movenext:wend:rs.close
+    //XY_Layout=c
+    return @$XY_Layout;
+}
+//模块20151231
+function XY_Module($action){
+    $moduleName=''; $s=''; $c ='';
+    $moduleName = RParam($action, 'modulename') ;
+    $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webmodule where modulename=\'' . $moduleName . '\'');
+    $rs=mysql_fetch_array($rsObj);
+    if( @mysql_num_rows($rsObj)!=0 ){
+        $XY_Module = $rs['bodycontent'] ;
+    }
+    return @$XY_Module;
+}
+//显示包裹块20160127
+function XY_DisplayWrap( $action){
+    $content ='';
+    $content = GetDefaultValue($action) ;
+    $XY_DisplayWrap = $content ;
+    return @$XY_DisplayWrap;
+}
+//读模块内容
+function XY_ReadTemplateModule($action){
+    $ModuleId=''; $filePath ='';
+    $SourceList ='';//源内容列表 20150109
+    $ReplaceList ='';//替换内容列表
+    $SplSource=''; $SplReplace=''; $i=''; $SourceStr=''; $replaceStr ='';
+    //Call die(Action)
+
+    $filePath = RParam($action, 'File') ;
+    $ModuleId = RParam($action, 'ModuleId') ;
+    $SourceList = RParam($action, 'SourceList') ;
+    $ReplaceList = RParam($action, 'ReplaceList') ;
+    //Call Echo(SourceList,ReplaceList)
+
+    if( $ModuleId == '' ){ $ModuleId = RParam($action, 'ModuleName') ;}//用块名称
+    $filePath = $filePath . '.html' ;
+    //Call Echo("FilePath",FilePath)
+    //Call Echo("ModuleId",ModuleId)
+    $XY_ReadTemplateModule = ReadTemplateModuleStr($filePath, '', $ModuleId) ;
+    return @$XY_ReadTemplateModule;
+}
+
+
+
+//嵌套标题 测试
+function XY_getLableValue($action){
+    $title=''; $content=''; $c ='';
+    //call echo("Action",Action)
+    $title = RParam($action, 'title') ;
+    $content = RParam($action, 'content') ;
+    $c = $c . 'title=' . GetContentRunStr($title) . '<hr>' ;
+    $c = $c . 'content=' . GetContentRunStr($content) . '<hr>' ;
+    $XY_getLableValue = $c ;
+    ASPEcho('title', $title) ;
+    $XY_getLableValue = '【title=】【' . $title . '】' ;
+    return @$XY_getLableValue;
+}
+?>

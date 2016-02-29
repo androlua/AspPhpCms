@@ -1066,10 +1066,18 @@ function checkmm(Str){
 		}
 	}
 }
+//获得表单值，并判断
+function getInputValue(fieldName){
+	try{
+		return document.all(fieldName).value
+	}catch(exception){
+		return ""
+	}
+}
  
 //删除
-function delArc(actionName,lableTitle){
-	var idList="",nPageSize=10,page=0
+function delArc(actionName,lableTitle,page){
+	var idList=""
 	
 	var a = document.listform.getElementsByTagName("input"); 
 	for (var i=0; i<a.length; i++){ 
@@ -1084,47 +1092,62 @@ function delArc(actionName,lableTitle){
 	if(idList==""){
 		alert("请先选择要删除的ID")
 	}else{
-		if(confirm("你确定要删除吗？\n删除后将不可恢复")){
-			
-			if($("#nPageSize").val()!=undefined){
-				nPageSize=$("#nPageSize").val()
-			}
-			if($("#page").val()!=undefined){
-				page=$("#page").val()
-			} 
-			var url="?act=delHandle&actionType="+actionName+"&lableTitle="+lableTitle+"&id="+idList+"&nPageSize="+nPageSize+"&page="+page
+		if(confirm("你确定要删除吗？\n删除后将不可恢复")){ 
+			var url="?act=delHandle&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect")+"&parentid="+getInputValue("parentid")			
+			url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&page="+page+"&id="+idList 
 			window.location.href=url 
 		} 
 	}
 }
 //排序
-function sortArc(actionName,lableTitle){
-	var value='',id='',nPageSize=10,page=0,parentid=''
+function sortArc(actionName,lableTitle,page){
+	var value='',idList='' 
 	$("form[name='listform'] input[name='sortrank']").each(function (index,obj) {
-		if(id!=""){
+		if(idList!=""){
 			value+=","
-			id+=","
+			idList+=","
 		}
 		value+=$(this).val()
-		id+=$("input[name='id']:eq("+index+")").val()
+		idList+=$("input[name='id']:eq("+index+")").val()
 	})
-	if($("#nPageSize").val()!=undefined){
-		nPageSize=$("#nPageSize").val()
-	}
-	if($("#page").val()!=undefined){
-		page=$("#page").val()
-	}
-	if($("#parentid").val()!=undefined){
-		parentid=$("#parentid").val() 
-	}
-	
-	
-	
+  
 	if(value==""){
 		alert("没有记录，无需更新排序")
-	}else{
-		var url="?act=sortHandle&actionType="+actionName+"&lableTitle="+ lableTitle +"&id="+id+"&value="+value+"&nPageSize="+nPageSize+"&page="+page+"&parentid=" + parentid
+	}else{ 
+		var url="?act=sortHandle&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect")+"&parentid="+getInputValue("parentid")			
+		url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&page="+page+"&id="+idList+"&value="+value
+		//document.write(url)		
 		window.location.href=url 
-		//alert(url)
 	}
+}
+//更新当前页面 20160225
+function refreshPage(actionName,lableTitle){
+	var url="?act=dispalyManageHandle&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect") + "&parentid="+getInputValue("parentid")			
+	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&page=1"
+	//document.write(url)
+	location.href=url
+}
+
+//更新当前页面 20160225
+function addEditHandle(actionName,lableTitle,page,id){ 
+	clickControl("?act=addEditHandle",actionName,lableTitle,page,id)
+}
+//删除单个
+function delHandle(actionName,lableTitle,page,id){ 
+	clickControl("?act=delHandle",actionName,lableTitle,page,id)
+}
+//点击控件
+function clickControl(url,actionName,lableTitle,page,id){
+	url+="&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect")+"&parentid="+getInputValue("parentid")			
+	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&page="+page+"&id="+id 
+	window.location.href=url 
+}
+//搜索回车
+function formSearchSubmit(){
+	try{
+		document.all.dosubmit.click();
+	}catch(exception){
+		return false
+	}
+	return false;
 }

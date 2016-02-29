@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-24
+创建：2016-02-29
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By 云端 
+*                                    Powered By AspPhpCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -240,6 +240,13 @@ function Mid2($content,$nStart,$nLength=-1){
 }
 //查找字符所在位置
 function InStr($content,$search){
+	 
+	if(is_array($content)){
+ 
+		$content=arrayToString($content,"");
+	
+	} 
+	
 	if( $search!=""){
 		if(strstr($content,$search)){
 			return strpos($content,$search)+1;
@@ -299,27 +306,27 @@ function isDate($timeStr){
 }
 //获得年
 function Year($timeStr){
-	return getYMDHMS($timeStr,0);
+	return (int)getYMDHMS($timeStr,0);
 }
 //获得月
 function Month($timeStr){
-	return getYMDHMS($timeStr,1);
+	return (int)getYMDHMS($timeStr,1);
 }
 //获得日
 function Day($timeStr){
-	return getYMDHMS($timeStr,2);
+	return (int)getYMDHMS($timeStr,2);
 }
 //获得时
 function Hour($timeStr){
-	return getYMDHMS($timeStr,3);
+	return (int)getYMDHMS($timeStr,3);
 }
 //获得分
 function Minute($timeStr){
-	return getYMDHMS($timeStr,4);
+	return (int)getYMDHMS($timeStr,4);
 }
 //获得秒
 function Second($timeStr){
-	return getYMDHMS($timeStr,5);
+	return (int)getYMDHMS($timeStr,5);
 }
 
 //功能:ASP里的IIF 如：IIf(1 = 2, "a", "b") 
@@ -478,6 +485,18 @@ function connExecute($sql){
 	return array("1","22");
 }
 
+//获得POST字段名称列表 20160226
+function getFormFieldName(){
+	$c='';
+	foreach($_POST as $key =>$val){
+		if($c!=''){
+			$c.='|';
+		}
+		$c.=$key;
+	} 
+	return $c;
+}
+
 
 //判断传值是否相等
 function  checkFunValue($Action,$FunName){
@@ -547,7 +566,30 @@ function getFieldList($tableName){
 	while($row = mysql_fetch_array($rescolumns)){
 		//  echo '字段名称：'.$row['Field'].'-数据类型：'.$row['Type'].'-注释：'.$row['Comment'];
 		//  print_r($row);
-		$c.=$row['Field'].',';
+		if($row['Field']!='id'){
+			$c.=$row['Field'].',';
+		}
+	}
+	return $c;
+}
+//获得表字段列表20160226 exit(getFieldConfigList('website'));
+function getFieldConfigList($tableName){
+	$rescolumns = mysql_query("SHOW FULL COLUMNS FROM $tableName") ;
+	$c=',';$s='';
+	while($row = mysql_fetch_array($rescolumns)){
+		//  echo '字段名称：'.$row['Field'].'-数据类型：'.$row['Type'].'-注释：'.$row['Comment'];
+		//  print_r($row);
+		
+		if( instr($row['Type'],'int(')>0 ){
+			$s='|numb|0';
+		}else if(instr($row['Type'],'mediumtext')>0){		
+			$s="|textarea|";
+		}else{
+			$s="||";
+		}
+		if($row['Field']!='id'){
+			$c.=$row['Field'].$s.',';
+		}
 	}
 	return $c;
 }
@@ -569,6 +611,14 @@ function escape($str){
     }
     return $retrunString;
 }
+//获得当前时期还可以计算
+function getHandleDate($numb){
+	if($numb<>''){ 
+		return date("Y-m-d",strtotime($numb.' day')); 
+	}else{
+		return date("Y-m-d" );
+	}
+} 
 
 //删除Html
 function delHtml($str){

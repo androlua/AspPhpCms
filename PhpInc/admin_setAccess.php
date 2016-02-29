@@ -2,13 +2,12 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-24
+创建：2016-02-29
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By 云端 
+*                                    Powered By AspPhpCMS 
 ************************************************************/
 ?>
-
 <?PHP
 
 //新的截取字符20160216
@@ -26,6 +25,9 @@ function newGetStrCut($content, $title){
 
 //重置数据库数据
 function resetAccessData(){
+
+    handlePower('恢复模板数据')						;//管理权限处理
+
     $GLOBALS['conn=']=OpenConn() ;
     $splStr=''; $i=''; $s=''; $columnname=''; $title=''; $nCount=''; $webdataDir ='';
     $webdataDir = @$_REQUEST['webdataDir'] ;
@@ -384,7 +386,3 @@ function contentTranscoding( $content){
     return @$contentTranscoding;
 }
 ?>
-
-
-
-

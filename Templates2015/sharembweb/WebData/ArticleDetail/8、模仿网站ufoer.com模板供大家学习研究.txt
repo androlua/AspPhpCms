@@ -7,7 +7,7 @@
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2016-01-20 11:10:05
 ¡¾filename¡¿/mobandown/mofangufoercom.html
-¡¾flags¡¿|c|
+¡¾flags¡¿|
 ¡¾relatedtags¡¿ASP,PHP,ÔÚÏßASP×ªPHP
 ¡¾bodycontent¡¿
 

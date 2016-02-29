@@ -236,6 +236,7 @@ function formSubmit(){
 【columntype】新闻
 【sortrank】5
 【filename】/aspphpcms/
+【templatepath】Article_AspPhpCms.html
 【flags】|top|
 【parentid】-1
 【labletitle】AspPhpCMS通用双系统CMS

@@ -1,5 +1,12 @@
-ASPPHPCMS v1.0 ÊÇÒ»¸öÃâ·Ñ¿ªÔ´µÄ£¬¿ìËÙ¡¢¼òµ¥µÄÍøÕ¾¹ÜÀíÏµÍ³£¬ÓĞASPºÍPHPÁ½ÖÖ°æ±¾£¬²¢ÇÒÊÇÍ¨ÓÃµÄ £¬´´Á¢ÓÚ2015Äê¡£
-Ä¬ÈÏÌá¹©ÈıÌ×Ä£°å°¸Àı
+ASPPHPCMS v1.0 ÊÇÒ»¸öÃâ·Ñ¿ªÔ´ÍøÕ¾ÄÚÈİ¹ÜÀíÏµÍ³£¬ÓĞASPºÍPHPÁ½ÖÖ°æ±¾£¬²¢ÇÒÊÇÍ¨ÓÃµÄ £¬´´Á¢ÓÚ2015Äê¡£
+1¡¢ÍøÕ¾ºóÌ¨/admin/index.asp ÕËºÅ£ºadmin ÃÜÂë£ºadmin
+2¡¢inc/,index.asp,admin/index.aspÎªASP°æ
+3¡¢phpinc/,index.php,admin/index.phpÎªPHP°æ
+4¡¢sharembweb.com.aspÎª²âÊÔ³ÌĞò
+5¡¢¸ü¶à°ïÖú¼ÓÈº(35915100)»òä¯ÀÀ(http://sharembweb.com)
+
+AspPhpCmsÄÚÈİ¹ÜÀíÏµÍ³ v1.0
+http://sharembweb.com/aspphpcms/
 
 
 ×÷Õß£ºÔÆ¶Ë (¾«Í¨ASP/VB/PHP/JS/Flash£¬½»Á÷ºÏ×÷¿ÉÁªÏµ±¾ÈË)
@@ -7,7 +14,7 @@ ASPPHPCMS v1.0 ÊÇÒ»¸öÃâ·Ñ¿ªÔ´µÄ£¬¿ìËÙ¡¢¼òµ¥µÄÍøÕ¾¹ÜÀíÏµÍ³£¬ÓĞASPºÍPHPÁ½ÖÖ°æ±¾£¬²
 ´´½¨£º20160111 
 ÁªÏµ£ºQQ313801120  ½»Á÷Èº35915100(ÈºÀïÒÑÓĞ¼¸°ÙÈË)    ÓÊÏä313801120@qq.com   ¸öÈËÖ÷Ò³ http://sharembweb.com
 ¸ü¶à°ïÖú£¬ÎÄµµ£¬¸üĞÂ¡¡Çë¼ÓÈº(35915100)»òä¯ÀÀ(http://sharembweb.com)
-*                                    Powered By ÔÆ¶Ë 
+*                                    Powered By AspPhpCMS
 
  
 
@@ -17,7 +24,10 @@ ASPPHPCMS¹ÜÍø
 Ïë»ñµÃ¸ü¶à°ïÖúºÍÏÂÔØ×îĞÂ°æ¡¡Çëä¯ÀÀ(http://sharembweb.com)
 ÔÚÏßÑİÊ¾£ºhttp://sharembweb.com/
 
-
+¡ª¡ª- 20016.02.29 update ¡ª¡ª
+1¡¢ºóÌ¨¹ÜÀíÔ±¼ÓÈëÈ¨ÏŞ¹ÜÀí
+2¡¢¼ÓÈëXY_AP_GetOnePageBody  XY_AP_GetArticleBody XY_AP_GetColumnBody º¯Êı
+3¡¢³ÌĞò½øĞĞÁËÓÅ»¯
 
 ¡ª¡ª- 20016.02.02 update ¡ª¡ª
 1¡¢¼Ó¸öÎÄÕÂÆÀÂÛ¹¦ÄÜ£¬Ç°¶ËÓëºóÌ¨°üÀ¨Êı¾İ¿âÉè¼Æ¶¼OK

@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
@@ -205,111 +205,122 @@ End Function
 
 '替换参数值 2014  12 01
 Function replaceValueParam(content, paramName, replaceStr)
-    Dim startStr, endStr, labelStr, tempLabelStr, nLen, nTimeFormat, delHtmlYes, funStr, trimYes, s 
+    Dim startStr, endStr, labelStr, tempLabelStr, nLen, nTimeFormat, delHtmlYes, funStr, trimYes, s ,i
     Dim ifStr                                                                       '判断字符
     Dim elseIfStr                                                                   '第二判断字符
     Dim valueStr                                                                    '显示字符
     Dim elseStr                                                                     '否则字符
     Dim instrStr                                                                    '查找字符
+	dim tempReplaceStr																'暂存
     'ReplaceStr = ReplaceStr & "这里面放上内容在这时碳呀。"
     'ReplaceStr = CStr(ReplaceStr)            '转成字符类型
     If IsNul(replaceStr) = True Then replaceStr = "" 
-
-    startStr = "[$" & paramName : endStr = "$]" 
-
-    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-        '获得对应字段加强版20151231
-        If InStr(content, startStr & endStr) > 0 Then
-            labelStr = startStr & endStr 
-        ElseIf InStr(content, startStr & " ") > 0 Then
-            labelStr = StrCut(content, startStr & " ", endStr, 1) 
-        Else
-            labelStr = StrCut(content, startStr, endStr, 1) 
-        End If 
-        tempLabelStr = labelStr 
-        labelStr = handleInModule(labelStr, "start") 
-        '删除Html
-        delHtmlYes = RParam(labelStr, "delHtml")                                        '是否删除Html
-        If delHtmlYes = "true" Then replaceStr = Replace(DelHtml(replaceStr), "<", "&lt;") 'HTML处理
-        '删除两边空格
-        trimYes = RParam(labelStr, "trim")                                              '是否删除两边空格
-        If trimYes = "true" Then replaceStr = TrimVbCrlf(replaceStr) 
-
-        '截取字符处理
-        nLen = RParam(labelStr, "len")                                                  '字符长度值
-        nLen = HandleNumber(nLen) 
-        'If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
-        If nLen <> "" Then replaceStr = CutStr(replaceStr, nLen, "...")                 'Left(ReplaceStr,nLen)
-
-        '时间处理
-        nTimeFormat = RParam(labelStr, "format_Time")                                   '时间处理值
-        If nTimeFormat <> "" Then
-            replaceStr = Format_Time(replaceStr, nTimeFormat) 
-        End If 
-
-        '获得栏目名称
-        s = RParam(labelStr, "getcolumnname") 
-        If s <> "" Then
-            If s = "@ME" Then
-                s = replaceStr 
-            End If 
-            replaceStr = getcolumnname(s) 
-        End If 
-        '获得栏目URL
-        s = RParam(labelStr, "getcolumnurl") 
-        If s <> "" Then
-            If s = "@ME" Then
-                s = replaceStr 
-            End If 
-            replaceStr = getcolumnurl(s, "id") 
-        End If 
-
-        ifStr = RParam(labelStr, "if") 
-        elseIfStr = RParam(labelStr, "elseif") 
-        valueStr = RParam(labelStr, "value") 
-        elseStr = RParam(labelStr, "else") 
-        instrStr = RParam(labelStr, "instr") 
-        'call echo("ifStr",ifStr)
-        'call echo("valueStr",valueStr)
-        'call echo("elseStr",elseStr)
-        'call echo("elseIfStr",elseIfStr)
-        If ifStr <> "" Or instrStr <> "" Then
-            If(ifStr = CStr(replaceStr) And ifStr <> "") Or(elseIfStr = CStr(replaceStr) And elseIfStr <> "") Then
-                replaceStr = valueStr 
-            ElseIf InStr(CStr(replaceStr), instrStr) > 0 And instrStr <> "" Then
-                replaceStr = valueStr 
-            Else
-                If elseStr <> "@ME" Then
-                    replaceStr = elseStr 
-                End If 
-            End If 
-        End If 
-
-        '函数处理20151231    [$title  function='left(@ME,40)'$]
-        funStr = RParam(labelStr, "function")                                           '函数
-        If funStr <> "" Then
-            funStr = Replace(funStr, "@ME", replaceStr) 
-            replaceStr = handleContentCode(funStr, "") 
-        End If 
-
-        '默认值
-        s = RParam(labelStr, "default") 
-        If s <> "" Then
-            If replaceStr = "" Then
-                replaceStr = s 
-            End If 
-        End If 
-
-
-
-        '文本颜色
-        s = RParam(labelStr, "fontcolor")                                               '函数
-        If s <> "" Then
-            replaceStr = "<font color=""" & s & """>" & replaceStr & "</font>" 
-        End If 
-
-        content = Replace(content, tempLabelStr, replaceStr) 
-    End If 
+	tempReplaceStr=replaceStr
+	
+	'最多处理99个  20160225
+	for i =1 to 99 
+		replaceStr=tempReplaceStr													'恢复
+		startStr = "[$" & paramName : endStr = "$]" 
+		'字段名称严格判断 20160226
+		If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 and (InStr(content, startStr & " ") > 0 or InStr(content, startStr & endStr) > 0) Then
+			'获得对应字段加强版20151231
+			If InStr(content, startStr & endStr) > 0 Then
+				labelStr = startStr & endStr 
+			ElseIf InStr(content, startStr & " ") > 0 Then
+				labelStr = StrCut(content, startStr & " ", endStr, 1) 
+			Else
+				labelStr = StrCut(content, startStr, endStr, 1) 
+			End If 
+	 
+			tempLabelStr = labelStr 
+			labelStr = handleInModule(labelStr, "start") 
+			'删除Html
+			delHtmlYes = RParam(labelStr, "delHtml")                                        '是否删除Html
+			If delHtmlYes = "true" Then replaceStr = Replace(DelHtml(replaceStr), "<", "&lt;") 'HTML处理
+			'删除两边空格
+			trimYes = RParam(labelStr, "trim")                                              '是否删除两边空格
+			If trimYes = "true" Then replaceStr = TrimVbCrlf(replaceStr) 
+	
+			'截取字符处理
+			nLen = RParam(labelStr, "len")                                                  '字符长度值
+			nLen = HandleNumber(nLen) 
+			'If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
+			If nLen <> "" Then replaceStr = CutStr(replaceStr, nLen, "...")                 'Left(ReplaceStr,nLen)
+	
+			'时间处理
+			nTimeFormat = RParam(labelStr, "format_Time")                                   '时间处理值
+			If nTimeFormat <> "" Then
+				replaceStr = Format_Time(replaceStr, nTimeFormat) 
+			End If 
+	
+			'获得栏目名称
+			s = RParam(labelStr, "getcolumnname") 
+			If s <> "" Then
+				If s = "@ME" Then
+					s = replaceStr 
+				End If 
+				replaceStr = getcolumnname(s) 
+			End If 
+			'获得栏目URL
+			s = RParam(labelStr, "getcolumnurl") 
+			If s <> "" Then
+				If s = "@ME" Then
+					s = replaceStr 
+				End If 
+				replaceStr = getcolumnurl(s, "id") 
+			End If 
+	
+			ifStr = RParam(labelStr, "if") 
+			elseIfStr = RParam(labelStr, "elseif") 
+			valueStr = RParam(labelStr, "value") 
+			elseStr = RParam(labelStr, "else") 
+			instrStr = RParam(labelStr, "instr")
+			
+			'call echo("ifStr",ifStr)
+			'call echo("valueStr",valueStr)
+			'call echo("elseStr",elseStr)
+			'call echo("elseIfStr",elseIfStr)
+			'call echo("replaceStr",replaceStr)
+			If ifStr <> "" Or instrStr <> "" Then
+				If(ifStr = CStr(replaceStr) And ifStr <> "") Or(elseIfStr = CStr(replaceStr) And elseIfStr <> "") Then
+					replaceStr = valueStr 
+				ElseIf InStr(CStr(replaceStr), instrStr) > 0 And instrStr <> "" Then
+					replaceStr = valueStr 
+				Else
+					If elseStr <> "@ME" Then
+						replaceStr = elseStr 
+					End If 
+				End If 
+			End If 
+	
+			'函数处理20151231    [$title  function='left(@ME,40)'$]
+			funStr = RParam(labelStr, "function")                                           '函数
+			If funStr <> "" Then
+				funStr = Replace(funStr, "@ME", replaceStr) 
+				replaceStr = handleContentCode(funStr, "") 
+			End If 
+	
+			'默认值
+			s = RParam(labelStr, "default") 
+			If s <> "" Then
+				If replaceStr = "" Then
+					replaceStr = s 
+				End If 
+			End If 
+	
+	
+	
+			'文本颜色
+			s = RParam(labelStr, "fontcolor")                                               '函数
+			If s <> "" Then
+				replaceStr = "<font color=""" & s & """>" & replaceStr & "</font>" 
+			End If 
+			'call echo(tempLabelStr,replaceStr)
+			content = Replace(content, tempLabelStr, replaceStr) 
+		else
+			exit for
+		End If 
+	next
     replaceValueParam = content 
 End Function 
 'call rwend(execute("replaceStr=testfunction(""ME"")") & replaceStr)
@@ -410,4 +421,3 @@ End Function
 
 
 %> 
-

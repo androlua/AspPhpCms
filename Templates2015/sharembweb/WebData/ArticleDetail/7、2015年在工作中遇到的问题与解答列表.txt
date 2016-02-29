@@ -7,7 +7,7 @@
 【author】sharembweb
 【adddatetime】2016-01-17 08:10:12
 【filename】/ask/2015yerwordwd.html
-【flags】|c|
+【flags】
 【relatedtags】联系作者
 【bodycontent】
 [&全部换行&]

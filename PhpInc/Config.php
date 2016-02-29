@@ -1,12 +1,32 @@
 <?php 
-/************************************************************
-作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-24
-联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By 云端 
-************************************************************/
+
+
+define('WEBCOLUMNTYPE','首页|文本|产品|新闻|视频|下载|案例|留言|反馈|招聘|订单'); 		//网站栏目类型列表
+define('EDITORTYPE','php'); 		//编辑器类型，是ASP,或PHP,或jSP,或.NET
+define('WEB_VIEWURL','../index.php'); 		//网站显示URL
+define('WEB_ADMINURL','/admin/index.php'); 		//后端网站，在线编辑用到20160216
+//=========
+
+
+$SysStyle=array(9);
+$SysStyle[0] = '#999999';
+$makeHtmlFileToLCase	 =''; $makeHtmlFileToLCase=true		;//生成HTML文件转小写
+$isWebLabelClose =''; $isWebLabelClose=true					;//闭合标签(20150831)
+
+$HandleisCache =''; $HandleisCache=false						;//缓冲是否处理了
+$db_PREFIX =''; $db_PREFIX = 'xy_' 		 ;//表前缀
+$adminDir ='';$adminDir='/admin/'							;//后台目录
+
+$onOffEcho=''; $onOffEcho=true											;//开关测试回显
+$webVersion =''; $webVersion='ASPPHPCMS V1.01'												;//网站版本
+
+
+$WEB_CACHEFile =''; $WEB_CACHEFile='/admin/'. EDITORTYPE .'cachedata.txt'								;//缓冲文件
+$WEB_CACHEContent =''; $WEB_CACHEContent=''								;//缓冲文件内容
+
+
+
 ?>
+
 
 

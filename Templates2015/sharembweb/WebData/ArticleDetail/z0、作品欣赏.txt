@@ -6,7 +6,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=手机B站
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=手机B站
 -------------------------------
 【parentid】作品欣赏
 【title】手机C站
@@ -16,7 +16,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=手机C站
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=手机C站
 -------------------------------
 【parentid】作品欣赏
 【title】东方紫(2015)
@@ -26,7 +26,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=东方紫(2015)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=东方紫(2015)
 -------------------------------
 【parentid】作品欣赏
 【title】南京微战略(2014)
@@ -36,7 +36,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=南京微战略(2014)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=南京微战略(2014)
 -------------------------------
 【parentid】作品欣赏
 【title】南京瑞谷安隆(2014)
@@ -46,7 +46,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=南京瑞谷安隆(2014)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=南京瑞谷安隆(2014)
 -------------------------------
 【parentid】作品欣赏
 【title】南京元朗(2014)
@@ -56,7 +56,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=南京元朗(2014)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=南京元朗(2014)
 -------------------------------
 【parentid】作品欣赏
 【title】金凤凰(2014)
@@ -66,7 +66,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=金凤凰(2014)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=金凤凰(2014)
 -------------------------------
 【parentid】作品欣赏
 【title】南京麦思德(2013)
@@ -76,7 +76,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=南京麦思德(2013)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=南京麦思德(2013)
 -------------------------------
 【parentid】作品欣赏
 【title】企业模板网站一(2010)
@@ -86,7 +86,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=企业模板网站一(2010)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=企业模板网站一(2010)
 -------------------------------
 【parentid】作品欣赏
 【title】企业模板网站二(2010)
@@ -96,7 +96,7 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=企业模板网站二(2010)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=企业模板网站二(2010)
 -------------------------------
 【parentid】作品欣赏
 【title】企业模板网站三(2010)
@@ -106,4 +106,4 @@
 【nofollow】1
 【isonhtml】0
 【target】_blank
-【customaurl】/url.asp?title=企业模板网站三(2010)
+【customaurl】{$cfg_webSiteUrl$}url.asp?title=企业模板网站三(2010)

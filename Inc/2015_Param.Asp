@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
@@ -18,34 +18,34 @@
 '**************************************** 给php用 通用 ****************************************
 
 '替换参数值 2014  12 01
-Function newReplaceValueParam(content, ParamName, ReplaceStr)
-    Dim StartStr, EndStr, LabelStr, nLen, nTimeFormat, DelHtmlYes, TrimYes 
+Function newReplaceValueParam(content, paramName, replaceStr)
+    Dim startStr, endStr, labelStr, nLen, nTimeFormat, delHtmlYes, trimYes 
     'ReplaceStr = ReplaceStr & "这里面放上内容在这时碳呀。"
     'ReplaceStr = CStr(ReplaceStr)            '转成字符类型
-    If IsNul(ReplaceStr) = True Then ReplaceStr = "" 
+    If IsNul(replaceStr) = True Then replaceStr = "" 
 
-    StartStr = "[$" & ParamName : EndStr = "$]" 
-    If InStr(content, StartStr) > 0 And InStr(content, EndStr) > 0 Then
-        LabelStr = StrCut(content, StartStr, EndStr, 1) 
+    startStr = "[$" & paramName : endStr = "$]" 
+    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+        labelStr = StrCut(content, startStr, endStr, 1) 
         '删除Html
-        DelHtmlYes = RParam(LabelStr, "DelHtml")                                        '是否删除Html
-        If DelHtmlYes = "true" Then ReplaceStr = Replace(DelHtml(ReplaceStr), "<", "&lt;") 'HTML处理
+        delHtmlYes = RParam(labelStr, "DelHtml")                                        '是否删除Html
+        If delHtmlYes = "true" Then replaceStr = Replace(DelHtml(replaceStr), "<", "&lt;") 'HTML处理
         '删除两边空格
-        TrimYes = RParam(LabelStr, "Trim")                                              '是否删除两边空格
-        If TrimYes = "true" Then ReplaceStr = TrimVbCrlf(ReplaceStr) 
+        trimYes = RParam(labelStr, "Trim")                                              '是否删除两边空格
+        If trimYes = "true" Then replaceStr = TrimVbCrlf(replaceStr) 
 
         '截取字符处理
-        nLen = RParam(LabelStr, "Len")                                                  '字符长度值
+        nLen = RParam(labelStr, "Len")                                                  '字符长度值
         nLen = HandleNumber(nLen) 
         'If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
-        If nLen <> "" Then ReplaceStr = CutStr(ReplaceStr, nLen, "...")                 'Left(ReplaceStr,nLen)
+        If nLen <> "" Then replaceStr = CutStr(replaceStr, nLen, "...")                 'Left(ReplaceStr,nLen)
 
         '时间处理
-        nTimeFormat = RParam(LabelStr, "Format_Time")                                   '时间处理值
+        nTimeFormat = RParam(labelStr, "Format_Time")                                   '时间处理值
         If nTimeFormat <> "" Then
-            ReplaceStr = Format_Time(ReplaceStr, nTimeFormat) 
+            replaceStr = format_Time(replaceStr, nTimeFormat) 
         End If 
-        content = Replace(content, LabelStr, ReplaceStr) 
+        content = Replace(content, labelStr, replaceStr) 
 
     End If 
     newReplaceValueParam = content 
@@ -53,20 +53,20 @@ End Function
 
 '根据标签找到对应内容
 Function newRParam(dataCode, action, ModuleName)
-    Dim defaultStr, StartStr, EndStr 
+    Dim defaultStr, startStr, endStr 
     defaultStr = RParam(action, ModuleName) 
-    StartStr = "<!--#" & defaultStr & " start#-->" 
-    EndStr = "<!--#" & defaultStr & " end#-->" 
+    startStr = "<!--#" & defaultStr & " start#-->" 
+    endStr = "<!--#" & defaultStr & " end#-->" 
 
     If defaultStr <> "" Then
         '判断是否存在
-        If InStr(dataCode, StartStr) > 0 And InStr(dataCode, EndStr) > 0 Then
-            defaultStr = StrCut(dataCode, StartStr, EndStr, 2) 
+        If InStr(dataCode, startStr) > 0 And InStr(dataCode, endStr) > 0 Then
+            defaultStr = StrCut(dataCode, startStr, endStr, 2) 
         Else
-            StartStr = "<!--#" & defaultStr 
-            EndStr = "#-->" 
-            If InStr(dataCode, StartStr) > 0 And InStr(dataCode, EndStr) > 0 Then
-                defaultStr = StrCut(dataCode, StartStr, EndStr, 2) 
+            startStr = "<!--#" & defaultStr 
+            endStr = "#-->" 
+            If InStr(dataCode, startStr) > 0 And InStr(dataCode, endStr) > 0 Then
+                defaultStr = StrCut(dataCode, startStr, endStr, 2) 
 
             'Call Echo("有","StartStr=" & StartStr & ",EndStr=" & EndStr  & ",Default=" & Default)
             End If 
@@ -132,68 +132,68 @@ Function handleToArray(content)
     handleToArray = splStr 
 End Function 
 '处理内容里代码 引擎20150324   http://127.0.0.1/函数/ClassAspCode.Asp?act=GetFileFunctionStrList  获得最新    version 1.0
-Function handleContentCode(ByVal content, SType)
-    Dim StartStr, EndStr, s, YunStr, splStr, splxx, SplContent 
+Function handleContentCode(ByVal content, sType)
+    Dim startStr, endStr, s, YunStr, splStr, splxx, SplContent 
     Dim LabelName                                                                   '标签名称
     Dim nStartStr                                                                   '开始字符
 
     Dim ContentLCase                                                                '定义内容小写
     ContentLCase = LCase(content)                                                   '内容小写
 
-    If SType = "check" Or SType = "检测" Then
+    If sType = "check" Or sType = "检测" Then
         handleContentCode = False 
     End If 
 
     'head start
-SplContent = "|printpre|foldingmenu|returnren|returnhr|returnrenhr|showerr|printforminfo|dedecmsmsg|handleaccessdata|adsql|checkaccesspass|checksql|createtable|showistable|getrecordcount|tablecount|opentable|inserttable|"
-SplContent = SplContent & "|gettabletext|createmdb|deletetable|deletealltable|checktable|existstable|edittable|checkfield|existsfield|editfield|getfieldalt|gettablelist_conn|gettablelist|getfieldlist|getdifferenttablefieldlist|compactdb|"
-SplContent = SplContent & "|editaccesspassword|handlesqlserver|exporttoexcel|importtodatabase|getdatatablelist|settablefield|gettypestring|getproductrndidlist|getfieldvalue|getconnfieldvalue|setfieldvalue|filebinaryaddaccess|showaccessstream|"
-SplContent = SplContent & "|gethttppage|handlegethttppage|geturlcontent|gethttpurl|bytestobstr|strcut|getstrcut|cutstr|cutstrnolu|setcuttdstr|cuttdstr|getarraylist|getarray|getarray1|getsplit|getsplitcount|agent|specialhtmluploadencryptiondecrypt|"
-SplContent = SplContent & "|encaspcontent|uppercaseorlowercase|enccode|deccode|tounicode|japan|japan26|unjapan26|handlehtml|unhandlehtml|lcaseenc|lcasedec|htmltojs|jstohtml|htmltoasp|htmltoaspdim|asptohtml|setfilename|unsetfilename|"
-SplContent = SplContent & "|htmltoascchr|unhtmltoascchr|variabledisplacement|xorenc|xordec|handleevaladddec|evaladddec|vbevaladddec|xdec|tohexcolor|colorrgb|simpleenc|simpledec|encaspevalrun|send_email|serversend_email|findaspcode|"
-SplContent = SplContent & "|findaspfunlist|findaspfunctioncode|handlereplacelist|getfunnamedim|leftspace|rightspace|infunadddim|getqq|gettel|getmail|getimgstr|getcssstr|getjsstr|handleaspexecute|geturlstr|getpageconfig|getsqlinurl|"
-SplContent = SplContent & "|handlsqlinurl|getscanfunctionnamelist|getfunname|getfundimname|getdimname|getsetname|replacedim|replacedim2|findfolderrepeatfunction|findfilerepeatfunction|findcontentrepeatfunction|handlecontentrepeatfunction|"
-SplContent = SplContent & "|replace2|allreplace|replaceonenolu|optimizeaspcode|aspcodeconfusion|aspvariablegarbled|lucasegarbled|aspfunctionconfusion|getaspfunnamelist|aspcodesafe|cutdakuohao|cutxiankuohao|cutfunctionvvalue|getstrintcontentnumb|"
-SplContent = SplContent & "|getkeyword|gethandlekeyword|getchinastr|checkstr|regexp_checkstr|existsstr|regexp_instr|regexp_replace|replacecolor|delhtml|regexp_delhtml|getaurltitlelist|getaurl|getatitle|getaurltitle|getcontentaurllist|"
-SplContent = SplContent & "|regexp_getimgurllist|getimg|getimgjpg|getimggif|getimgbmp|getaspfunctionlist|getaspdimfunction|strlength|regexpgetlenght|stringlength|getcsshref|getjssrc|delhtmlscript|getmeta|delhtmlnote|delhtmlmynote|"
-SplContent = SplContent & "|getstrimglist|getemaillist|oflink_lcasetag|scripthtml|getregexp|getimgjsurl|regexpgetstr|newgetpingip|getpingip|getpinginfo|regexptest|getregexpstr|regexpreplacecssdir|deletenullrow|isstrtransferred|getbl|"
-SplContent = SplContent & "|getcountstep|getchina|ischina|checkchina|phprand|phprnd|deleterepeatstr|replacen|fillzero|caseinsensitivereplace|array_sort|handlezipsize|getrnd|mathrandom|getrndaz|getrand|copystrnumb|str_repeat|copystr|"
-SplContent = SplContent & "|contentaddtab|deleteendstr|tonumber|handlenumber|strdrawint|getfirstnegativenumber|checknumbertype|checkstrisnumbertype|handlenumbertype|getnumber|checknumb|getdiannumb|getcountpage|getpagenumb|getcaihandlecountpage|"
-SplContent = SplContent & "|getcaisortcountpage|minmaxbetween|getstrfiletype|val|strlen|addindent|getnumberbeforestr|makepassword|rndcode|getrandomphonenumber|lenstr|tostring|remotenumber|handlehavestr|havelowercase|haveuppercase|"
-SplContent = SplContent & "|havenumber|havechina|saveremotefile|downfile|popupdownfile|xmlgetstatus|xmlpost|utfxmlpost|handlexmlpost|xmlget|handlexmlget|cookiespost|handlecookiespost|getremotefilesize|downremotefile|imagestobase64|"
-SplContent = SplContent & "|base64toimages|getsqlincontent|handlesqlin|sqlinurl|handlurlcanshu|handlestrcharset|urlencoding|getwinhttp|format_time|getdaystatus|printtimevalue|printasktime|gettimerset|calculationtimer|gettimer|vbgettimer|"
-SplContent = SplContent & "|vbechotimer|vbruntimer|getthisurlnoparam|getgotourl|getgotourlnoparam|getgotourlnofilename|getip2|getip|getservicerip|getremoteip|handlehttpurl|handlefileurl|handleurlcomplete|urladdhttpurl|webdomain|host|"
-SplContent = SplContent & "|httphost|gethost|geturl|getthisurl|getthisurlnofilename|getwebsite|checkurl|checkhttpurl|isurl|ishttpurl|fullhttpurl|batchfullhttpurl|urljianjiehandle|urltoasc|getwebtitle|mystrcut|getcontentahref|getcontentimgsrc|"
-SplContent = SplContent & "|handleconenturl|replacecontentjsdir|handlelink|getendurlhandlename|getwebfoldername|getwebhome|geturllistinwebsitelist|getthisurlfilename|handlewebhtmlimg|handlewebcssimg|batchhandleurlintegrity|replacecontentimagepath|"
-SplContent = SplContent & "|getcsslinklist|gethtmlbackgroundurllist|getimgurllist|getlinkurl|localurlorremoteurl|checkremoteurl|gethandleurl|webdebug|asailinkadd|asailinkdel|iswww|geturladdtoparam|groupurl|handlepostcookiesparame|"
-SplContent = SplContent & "|remotehttpurlparameter|checkurlname|handlehttpurlarray|remotejscssparam|handleremotejscssparam|batchhandlehttpurlcomplete|iswebsite|issonwebsite|handleiswebsite|getcontenturllist|handlegetcontenturllist|"
-SplContent = SplContent & "|getinchain|getfiletext|getftext|getfiletype|checkfile|existsfile|createfile|savefile|createaddfile|createaddupfile|addtofile|savebytefile|createbytefile|movefile|editfile|copyfile|deletefile|delselfile|"
-SplContent = SplContent & "|delfilelist|batchdelfile|deleteappointfilelist|getfilesize|filesize|getfsize|getfilecreatedate|filecreatedate|getfileeditdate|fileeditdate|getfileedittime|getdatelastaccessed|modifyfilemodifydate|editfileeditdate|"
-SplContent = SplContent & "|existszhidufile|getfileattribute|editfileattribute|existsfileday|checkfileday|createfolder|createdirfolder|createdomain|createdomainfolder|movefolder|editfolder|copyfolder|deletefolder|getfoldersize|checkfolder|"
-SplContent = SplContent & "|existsfolder|getfoldercreatedate|getfoldereditdate|getfoldertime|getfolderattribute|editfolderattribute|existsfolderday|checkfolderday|getfilefolderlist|getdirjpglist|getdirinilist|getdirtxtlist|getdirhtmllist|"
-SplContent = SplContent & "|getdircsslist|getdirjslist|getdirfilelist|getdirhtmllistname|getdirfilenamelist|getdirallfilenamelist|getdirfolderlist|getdirfoldernamelist|getthisallfolder|getthisallfoldername|getfilefoldernumb|getdirfoldernumb|"
-SplContent = SplContent & "|getdirfoldersize|getdirfilenumb|getdirallfilenumb|getdirallfoldernumb|getfolderlist|getdirfilesort|getdirfoldersort|deldirallfile|deleteallfile|getupdatefile|handlepath|realpath|fullpath|handlerelativepath|"
-SplContent = SplContent & "|dirname|isobjinstalled|existsobject|getfileobject|getdictionary|getstream|showattributetip|printspacevalue|printspacesize|printfilesize|getdeskpath|createurlshortcut|createfoldershortcut|finddirfilename|"
-SplContent = SplContent & "|findsubdirfilename|getarticlefillcontent|getfilepathname|getextension|removefiledir|basename|getfileextname|handlefilepatharray|getstrfilename|getfilename|getfileattr|getfileext|getparentpath|isucase|islcase|"
-SplContent = SplContent & "|checkerr|strtotruefalse|strtruefalsetoint|checkvbcrlf|checkbr|isparity|checkeval|replace_sqltext|chkpost|ismail|isvalidemail|iscode|checknumber|isnumber|checkabc|getlen|checktime|isnul|foundinarr|showhtmlcode|"
-SplContent = SplContent & "|showhtml|unhtmlcode|echohtml|errortext|testhtml|htmldecode|htmlencode|htmlfilter|regreplace|easp_replace|handlehtmllabelclose|handleimgclose|handlebrclose|handlehrclose|handleclosehtml|htmllabeltoclean|"
-SplContent = SplContent & "|addtooraddhttpurl|removeblanklines|removeblanklines_test1|blankhtmlbody|checkcode|getfilecharset|seniorcheckcode|readfile|getstext|getftextutf|writetofile|createfileutf|getugtext|checkcontentcharset|checkfilecode|"
-SplContent = SplContent & "|getfilebinarycontent|binaryreadfile|readbinary|decsavebinary|writebinary|getfilecharset2|bintohex|base64encode|base64decode|asphelptip|handlewrite|jiantitabfanti|jiyicireplace|cireplace|testgetpy|pinyin|"
-SplContent = SplContent & "|pinyin2|entocompany|remotecontentjinghao|remotearrayjinghao|geteachstraddvalue|getvalueinarrayid|checkvalueinarray|deleterepeatarray|deleterepeatcontent|getarraycount|randomshow|arrayrandomshow|printarray|"
-SplContent = SplContent & "|echoarray|str_shuffle|characterupset|str_split|removenullvaluearray|removerepeatvaluearray|handlearray|arraytostring|testarraydata|selectsort|quicksort|bubblesort|insertsort|requicksort|arrayreverse|responsearray|"
-SplContent = SplContent & "|max|min|testtwodimensionalarray|handlesplitarray|twodimensionalarrayasc|twodimensionalarraydesc|csscompression|deletecssnote|uncsscompression|trimvbcrlf|phptrim|ltrimvbcrlf|rtrimvbcrlf|trimvbtab|ltrimvbtab|"
-SplContent = SplContent & "|rtrimvbtab|gethtmlcssstyle|handlecleancss|removeexcessrow|cssaddtostyle|checkcssstyle|cssstyleaddtoparam|findcssstyle|handlecutcsscode|handlecutdivcode|gethtmlbackgroundimglist|gethandlewebhtmllink|getcsslisturllist|"
-SplContent = SplContent & "|handlereadcsscontent|handlecsspx|handlehtmlstyle|utf2gb|checkutftogb2312|convchinese|utf8_urlencoding|toutf8|chinese2unicode|isvalidhex|escape|unescape|chinesetounicode|unicodetochinese|urlencode|urldecode|"
-SplContent = SplContent & "|gbtoutf8|encdecurl|encurl|decurl|infocolor|imgerror|targetstr|atarget|atitle|imgalt|imgtitlealt|arel|styleclass|textfontb|textfontcolor|fontcolorfontb|getdefaultfilename|ahref|imgsrc|selecttarget|selectfontcolor|"
-SplContent = SplContent & "|selectsex|selectsessioncookies|showselectlist|showarticleliststyle|showarticleinfostyle|handlearticleliststyleorinfostyle|showwebmoduleskins|showradiolist|inputcheckbox|inputcheckbox3|handleinputcheckbox|"
-SplContent = SplContent & "|inputtext|inputtext2|inputlefttext|inputlefttexthelptextright|inputlefttextcontent|inputrighttextcontent|handleinputleftrighttextcontent|inputleftpasstext|inputleftpasstextcontent|inputhiddentext|inputtextarea|"
-SplContent = SplContent & "|inputhiddentextarea|handleinputhiddentextarea|showselectdirlist|inputdisabled|inputaddalt|webtitle_inputtextarea|webkeywords_inputtext|webdescription_inputtextarea|foldername_inputtext|filename_inputtext|"
-SplContent = SplContent & "|templatepath_inputtext|clickpinyinhtmlstr|showfontcolorfontb|showsort|showwebnavtype|showonhtml|showthrough|showrecommend|showonoffimg|newshowonoffimg|controldialogcss|batchdeletetempstr|htmlformatting|"
-SplContent = SplContent & "|handlehtmlformatting|checkhtmlformatting|newreplacevalueparam|newrparam|getcontentallrunstr|getcontentrunstr|checkcontentrunstr|handledoublequotation|strdq|handletoarray|handlecontentcode|handleinmodule|"
-SplContent = SplContent & "|clearrparam|atrparam|rparam|handlerparam|getconfigblock|getconfigblock2|getconfigblock3|getcutconfigblock|getconfigcontentblock|getconfigfileblock|setconfigfileblock|delconfigblock|delconfigblock2|delconfigblock3|"
-SplContent = SplContent & "|delcutconfigblock|getfileparamvalue|setfileparamvalue|handlegetsetfileparamevalue|setrparam|addreplacerparam|deletestrcut|replacecontentmodule|replacecontentrowmodule|handleconfigfile|getrparam|getdefaultvalue|"
-SplContent = SplContent & "|addmodulereplacearray|modulefindcontent|batchfindfunction|getfindfilefunction|getaspcode|handlegetaspcode|delaspnote|findaspfunction|firstletteruppercase|contentlushow|asptovb|asptovbnet|dimadddefaultvalue|"
-'head end
+    SplContent = "|printpre|foldingmenu|returnren|returnhr|returnrenhr|showerr|printforminfo|dedecmsmsg|handleaccessdata|adsql|checkaccesspass|checksql|createtable|showistable|getrecordcount|tablecount|opentable|inserttable|" 
+    SplContent = SplContent & "|gettabletext|createmdb|deletetable|deletealltable|checktable|existstable|edittable|checkfield|existsfield|editfield|getfieldalt|gettablelist_conn|gettablelist|getfieldlist|getdifferenttablefieldlist|compactdb|" 
+    SplContent = SplContent & "|editaccesspassword|handlesqlserver|exporttoexcel|importtodatabase|getdatatablelist|settablefield|gettypestring|getproductrndidlist|getfieldvalue|getconnfieldvalue|setfieldvalue|filebinaryaddaccess|showaccessstream|" 
+    SplContent = SplContent & "|gethttppage|handlegethttppage|geturlcontent|gethttpurl|bytestobstr|strcut|getstrcut|cutstr|cutstrnolu|setcuttdstr|cuttdstr|getarraylist|getarray|getarray1|getsplit|getsplitcount|agent|specialhtmluploadencryptiondecrypt|" 
+    SplContent = SplContent & "|encaspcontent|uppercaseorlowercase|enccode|deccode|tounicode|japan|japan26|unjapan26|handlehtml|unhandlehtml|lcaseenc|lcasedec|htmltojs|jstohtml|htmltoasp|htmltoaspdim|asptohtml|setfilename|unsetfilename|" 
+    SplContent = SplContent & "|htmltoascchr|unhtmltoascchr|variabledisplacement|xorenc|xordec|handleevaladddec|evaladddec|vbevaladddec|xdec|tohexcolor|colorrgb|simpleenc|simpledec|encaspevalrun|send_email|serversend_email|findaspcode|" 
+    SplContent = SplContent & "|findaspfunlist|findaspfunctioncode|handlereplacelist|getfunnamedim|leftspace|rightspace|infunadddim|getqq|gettel|getmail|getimgstr|getcssstr|getjsstr|handleaspexecute|geturlstr|getpageconfig|getsqlinurl|" 
+    SplContent = SplContent & "|handlsqlinurl|getscanfunctionnamelist|getfunname|getfundimname|getdimname|getsetname|replacedim|replacedim2|findfolderrepeatfunction|findfilerepeatfunction|findcontentrepeatfunction|handlecontentrepeatfunction|" 
+    SplContent = SplContent & "|replace2|allreplace|replaceonenolu|optimizeaspcode|aspcodeconfusion|aspvariablegarbled|lucasegarbled|aspfunctionconfusion|getaspfunnamelist|aspcodesafe|cutdakuohao|cutxiankuohao|cutfunctionvvalue|getstrintcontentnumb|" 
+    SplContent = SplContent & "|getkeyword|gethandlekeyword|getchinastr|checkstr|regexp_checkstr|existsstr|regexp_instr|regexp_replace|replacecolor|delhtml|regexp_delhtml|getaurltitlelist|getaurl|getatitle|getaurltitle|getcontentaurllist|" 
+    SplContent = SplContent & "|regexp_getimgurllist|getimg|getimgjpg|getimggif|getimgbmp|getaspfunctionlist|getaspdimfunction|strlength|regexpgetlenght|stringlength|getcsshref|getjssrc|delhtmlscript|getmeta|delhtmlnote|delhtmlmynote|" 
+    SplContent = SplContent & "|getstrimglist|getemaillist|oflink_lcasetag|scripthtml|getregexp|getimgjsurl|regexpgetstr|newgetpingip|getpingip|getpinginfo|regexptest|getregexpstr|regexpreplacecssdir|deletenullrow|isstrtransferred|getbl|" 
+    SplContent = SplContent & "|getcountstep|getchina|ischina|checkchina|phprand|phprnd|deleterepeatstr|replacen|fillzero|caseinsensitivereplace|array_sort|handlezipsize|getrnd|mathrandom|getrndaz|getrand|copystrnumb|str_repeat|copystr|" 
+    SplContent = SplContent & "|contentaddtab|deleteendstr|tonumber|handlenumber|strdrawint|getfirstnegativenumber|checknumbertype|checkstrisnumbertype|handlenumbertype|getnumber|checknumb|getdiannumb|getcountpage|getpagenumb|getcaihandlecountpage|" 
+    SplContent = SplContent & "|getcaisortcountpage|minmaxbetween|getstrfiletype|val|strlen|addindent|getnumberbeforestr|makepassword|rndcode|getrandomphonenumber|lenstr|tostring|remotenumber|handlehavestr|havelowercase|haveuppercase|" 
+    SplContent = SplContent & "|havenumber|havechina|saveremotefile|downfile|popupdownfile|xmlgetstatus|xmlpost|utfxmlpost|handlexmlpost|xmlget|handlexmlget|cookiespost|handlecookiespost|getremotefilesize|downremotefile|imagestobase64|" 
+    SplContent = SplContent & "|base64toimages|getsqlincontent|handlesqlin|sqlinurl|handlurlcanshu|handlestrcharset|urlencoding|getwinhttp|format_time|getdaystatus|printtimevalue|printasktime|gettimerset|calculationtimer|gettimer|vbgettimer|" 
+    SplContent = SplContent & "|vbechotimer|vbruntimer|getthisurlnoparam|getgotourl|getgotourlnoparam|getgotourlnofilename|getip2|getip|getservicerip|getremoteip|handlehttpurl|handlefileurl|handleurlcomplete|urladdhttpurl|webdomain|host|" 
+    SplContent = SplContent & "|httphost|gethost|geturl|getthisurl|getthisurlnofilename|getwebsite|checkurl|checkhttpurl|isurl|ishttpurl|fullhttpurl|batchfullhttpurl|urljianjiehandle|urltoasc|getwebtitle|mystrcut|getcontentahref|getcontentimgsrc|" 
+    SplContent = SplContent & "|handleconenturl|replacecontentjsdir|handlelink|getendurlhandlename|getwebfoldername|getwebhome|geturllistinwebsitelist|getthisurlfilename|handlewebhtmlimg|handlewebcssimg|batchhandleurlintegrity|replacecontentimagepath|" 
+    SplContent = SplContent & "|getcsslinklist|gethtmlbackgroundurllist|getimgurllist|getlinkurl|localurlorremoteurl|checkremoteurl|gethandleurl|webdebug|asailinkadd|asailinkdel|iswww|geturladdtoparam|groupurl|handlepostcookiesparame|" 
+    SplContent = SplContent & "|remotehttpurlparameter|checkurlname|handlehttpurlarray|remotejscssparam|handleremotejscssparam|batchhandlehttpurlcomplete|iswebsite|issonwebsite|handleiswebsite|getcontenturllist|handlegetcontenturllist|" 
+    SplContent = SplContent & "|getinchain|getfiletext|getftext|getfiletype|checkfile|existsfile|createfile|savefile|createaddfile|createaddupfile|addtofile|savebytefile|createbytefile|movefile|editfile|copyfile|deletefile|delselfile|" 
+    SplContent = SplContent & "|delfilelist|batchdelfile|deleteappointfilelist|getfilesize|filesize|getfsize|getfilecreatedate|filecreatedate|getfileeditdate|fileeditdate|getfileedittime|getdatelastaccessed|modifyfilemodifydate|editfileeditdate|" 
+    SplContent = SplContent & "|existszhidufile|getfileattribute|editfileattribute|existsfileday|checkfileday|createfolder|createdirfolder|createdomain|createdomainfolder|movefolder|editfolder|copyfolder|deletefolder|getfoldersize|checkfolder|" 
+    SplContent = SplContent & "|existsfolder|getfoldercreatedate|getfoldereditdate|getfoldertime|getfolderattribute|editfolderattribute|existsfolderday|checkfolderday|getfilefolderlist|getdirjpglist|getdirinilist|getdirtxtlist|getdirhtmllist|" 
+    SplContent = SplContent & "|getdircsslist|getdirjslist|getdirfilelist|getdirhtmllistname|getdirfilenamelist|getdirallfilenamelist|getdirfolderlist|getdirfoldernamelist|getthisallfolder|getthisallfoldername|getfilefoldernumb|getdirfoldernumb|" 
+    SplContent = SplContent & "|getdirfoldersize|getdirfilenumb|getdirallfilenumb|getdirallfoldernumb|getfolderlist|getdirfilesort|getdirfoldersort|deldirallfile|deleteallfile|getupdatefile|handlepath|realpath|fullpath|handlerelativepath|" 
+    SplContent = SplContent & "|dirname|isobjinstalled|existsobject|getfileobject|getdictionary|getstream|showattributetip|printspacevalue|printspacesize|printfilesize|getdeskpath|createurlshortcut|createfoldershortcut|finddirfilename|" 
+    SplContent = SplContent & "|findsubdirfilename|getarticlefillcontent|getfilepathname|getextension|removefiledir|basename|getfileextname|handlefilepatharray|getstrfilename|getfilename|getfileattr|getfileext|getparentpath|isucase|islcase|" 
+    SplContent = SplContent & "|checkerr|strtotruefalse|strtruefalsetoint|checkvbcrlf|checkbr|isparity|checkeval|replace_sqltext|chkpost|ismail|isvalidemail|iscode|checknumber|isnumber|checkabc|getlen|checktime|isnul|foundinarr|showhtmlcode|" 
+    SplContent = SplContent & "|showhtml|unhtmlcode|echohtml|errortext|testhtml|htmldecode|htmlencode|htmlfilter|regreplace|easp_replace|handlehtmllabelclose|handleimgclose|handlebrclose|handlehrclose|handleclosehtml|htmllabeltoclean|" 
+    SplContent = SplContent & "|addtooraddhttpurl|removeblanklines|removeblanklines_test1|blankhtmlbody|checkcode|getfilecharset|seniorcheckcode|readfile|getstext|getftextutf|writetofile|createfileutf|getugtext|checkcontentcharset|checkfilecode|" 
+    SplContent = SplContent & "|getfilebinarycontent|binaryreadfile|readbinary|decsavebinary|writebinary|getfilecharset2|bintohex|base64encode|base64decode|asphelptip|handlewrite|jiantitabfanti|jiyicireplace|cireplace|testgetpy|pinyin|" 
+    SplContent = SplContent & "|pinyin2|entocompany|remotecontentjinghao|remotearrayjinghao|geteachstraddvalue|getvalueinarrayid|checkvalueinarray|deleterepeatarray|deleterepeatcontent|getarraycount|randomshow|arrayrandomshow|printarray|" 
+    SplContent = SplContent & "|echoarray|str_shuffle|characterupset|str_split|removenullvaluearray|removerepeatvaluearray|handlearray|arraytostring|testarraydata|selectsort|quicksort|bubblesort|insertsort|requicksort|arrayreverse|responsearray|" 
+    SplContent = SplContent & "|max|min|testtwodimensionalarray|handlesplitarray|twodimensionalarrayasc|twodimensionalarraydesc|csscompression|deletecssnote|uncsscompression|trimvbcrlf|phptrim|ltrimvbcrlf|rtrimvbcrlf|trimvbtab|ltrimvbtab|" 
+    SplContent = SplContent & "|rtrimvbtab|gethtmlcssstyle|handlecleancss|removeexcessrow|cssaddtostyle|checkcssstyle|cssstyleaddtoparam|findcssstyle|handlecutcsscode|handlecutdivcode|gethtmlbackgroundimglist|gethandlewebhtmllink|getcsslisturllist|" 
+    SplContent = SplContent & "|handlereadcsscontent|handlecsspx|handlehtmlstyle|utf2gb|checkutftogb2312|convchinese|utf8_urlencoding|toutf8|chinese2unicode|isvalidhex|escape|unescape|chinesetounicode|unicodetochinese|urlencode|urldecode|" 
+    SplContent = SplContent & "|gbtoutf8|encdecurl|encurl|decurl|infocolor|imgerror|targetstr|atarget|atitle|imgalt|imgtitlealt|arel|styleclass|textfontb|textfontcolor|fontcolorfontb|getdefaultfilename|ahref|imgsrc|selecttarget|selectfontcolor|" 
+    SplContent = SplContent & "|selectsex|selectsessioncookies|showselectlist|showarticleliststyle|showarticleinfostyle|handlearticleliststyleorinfostyle|showwebmoduleskins|showradiolist|inputcheckbox|inputcheckbox3|handleinputcheckbox|" 
+    SplContent = SplContent & "|inputtext|inputtext2|inputlefttext|inputlefttexthelptextright|inputlefttextcontent|inputrighttextcontent|handleinputleftrighttextcontent|inputleftpasstext|inputleftpasstextcontent|inputhiddentext|inputtextarea|" 
+    SplContent = SplContent & "|inputhiddentextarea|handleinputhiddentextarea|showselectdirlist|inputdisabled|inputaddalt|webtitle_inputtextarea|webkeywords_inputtext|webdescription_inputtextarea|foldername_inputtext|filename_inputtext|" 
+    SplContent = SplContent & "|templatepath_inputtext|clickpinyinhtmlstr|showfontcolorfontb|showsort|showwebnavtype|showonhtml|showthrough|showrecommend|showonoffimg|newshowonoffimg|controldialogcss|batchdeletetempstr|htmlformatting|" 
+    SplContent = SplContent & "|handlehtmlformatting|checkhtmlformatting|newreplacevalueparam|newrparam|getcontentallrunstr|getcontentrunstr|checkcontentrunstr|handledoublequotation|strdq|handletoarray|handlecontentcode|handleinmodule|" 
+    SplContent = SplContent & "|clearrparam|atrparam|rparam|handlerparam|getconfigblock|getconfigblock2|getconfigblock3|getcutconfigblock|getconfigcontentblock|getconfigfileblock|setconfigfileblock|delconfigblock|delconfigblock2|delconfigblock3|" 
+    SplContent = SplContent & "|delcutconfigblock|getfileparamvalue|setfileparamvalue|handlegetsetfileparamevalue|setrparam|addreplacerparam|deletestrcut|replacecontentmodule|replacecontentrowmodule|handleconfigfile|getrparam|getdefaultvalue|" 
+    SplContent = SplContent & "|addmodulereplacearray|modulefindcontent|batchfindfunction|getfindfilefunction|getaspcode|handlegetaspcode|delaspnote|findaspfunction|firstletteruppercase|contentlushow|asptovb|asptovbnet|dimadddefaultvalue|" 
+    'head end
 
     '系统自带 不可删除
     SplContent = SplContent & "|now|date|len|left|right|mid|lcase|ucase|ltrim|rtrim|trim|" 
@@ -202,10 +202,10 @@ SplContent = SplContent & "|addmodulereplacearray|modulefindcontent|batchfindfun
     splStr = Split(SplContent, "|") 
     For Each LabelName In splStr
         If LabelName <> "" Then
-            StartStr = LCase(LabelName & "(") : EndStr = ")" 
-            nStartStr = InStr(" " & ContentLCase, " " & StartStr) 
-            If nStartStr > 0 And InStr(ContentLCase, EndStr) > 0 Then
-                If SType = "check" Or SType = "检测" Then
+            startStr = LCase(LabelName & "(") : endStr = ")" 
+            nStartStr = InStr(" " & ContentLCase, " " & startStr) 
+            If nStartStr > 0 And InStr(ContentLCase, endStr) > 0 Then
+                If sType = "check" Or sType = "检测" Then
                     handleContentCode = True                 '为检测 有函数  退出
                     Exit Function 
                 End If 
@@ -214,7 +214,7 @@ SplContent = SplContent & "|addmodulereplacearray|modulefindcontent|batchfindfun
         End If 
     Next 
     If LabelName = "" Then
-        If SType <> "check" And SType <> "检测" Then
+        If sType <> "check" And sType <> "检测" Then
             handleContentCode = content 
         End If 
         Exit Function 
@@ -222,15 +222,15 @@ SplContent = SplContent & "|addmodulereplacearray|modulefindcontent|batchfindfun
 
     LabelName = LCase(LabelName)                                                    '小写
 
-    StartStr = LabelName & "(" : EndStr = ")" 
-    nStartStr = InStr(ContentLCase, StartStr) 
+    startStr = LabelName & "(" : endStr = ")" 
+    nStartStr = InStr(ContentLCase, startStr) 
     '记录查的原值，不分大小写
-    YunStr = Mid(content, InStr(ContentLCase, StartStr)) 
-    YunStr = Mid(YunStr, 1, InStrRev(YunStr, EndStr)) 
+    YunStr = Mid(content, InStr(ContentLCase, startStr)) 
+    YunStr = Mid(YunStr, 1, InStrRev(YunStr, endStr)) 
 
-    s = Mid(content, InStr(ContentLCase, StartStr) + Len(StartStr)) 
+    s = Mid(content, InStr(ContentLCase, startStr) + Len(startStr)) 
 
-    s = Mid(s, 1, InStrRev(s, EndStr) - 1) 
+    s = Mid(s, 1, InStrRev(s, endStr) - 1) 
     '多次处理 注意和下面的判断
     If checkContentRunStr(content) = True Then
         s = getContentRunStr(s) 
@@ -244,1450 +244,1451 @@ SplContent = SplContent & "|addmodulereplacearray|modulefindcontent|batchfindfun
 
     'footer start
     If LabelName = "printpre" Then
-        S = printPre(strDQ(S))
+        s = printPre(strDQ(s)) 
     ElseIf LabelName = "foldingmenu" Then
-        S = foldingMenu(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = foldingMenu(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "returnren" Then
-        S = returnRen(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = returnRen(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "returnhr" Then
-        S = returnHr()
+        s = returnHr() 
     ElseIf LabelName = "returnrenhr" Then
-        S = returnRenHr()
+        s = returnRenHr() 
     ElseIf LabelName = "showerr" Then
-        Call showErr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        Call showErr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "printforminfo" Then
-        Call printFormInfo()
+        Call printFormInfo() 
     ElseIf LabelName = "dedecmsmsg" Then
-        S = dedeCMSMsg()
+        s = dedeCMSMsg() 
     ElseIf LabelName = "handleaccessdata" Then
-        S = handleAccessData(strDQ(S))
+        s = handleAccessData(strDQ(s)) 
     ElseIf LabelName = "adsql" Then
-        S = aDSql(strDQ(S))
+        s = aDSql(strDQ(s)) 
     ElseIf LabelName = "checkaccesspass" Then
-        S = checkAccessPass(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkAccessPass(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checksql" Then
-        S = checkSql(strDQ(S))
+        s = checkSql(strDQ(s)) 
     ElseIf LabelName = "createtable" Then
-        S = createTable(strDQ(S))
+        s = createTable(strDQ(s)) 
     ElseIf LabelName = "showistable" Then
-        S = showIsTable(strDQ(S))
+        s = showIsTable(strDQ(s)) 
     ElseIf LabelName = "getrecordcount" Then
-        S = getRecordCount(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getRecordCount(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "tablecount" Then
-        S = tableCount(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = tableCount(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "opentable" Then
-        S = openTable(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = openTable(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "inserttable" Then
-        S = insertTable(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = insertTable(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "gettabletext" Then
-        S = getTableText(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getTableText(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "createmdb" Then
-        S = createMdb(strDQ(S))
+        s = createMdb(strDQ(s)) 
     ElseIf LabelName = "deletetable" Then
-        S = deleteTable(strDQ(S))
+        s = deleteTable(strDQ(s)) 
     ElseIf LabelName = "deletealltable" Then
-        S = deleteAllTable(strDQ(S))
+        s = deleteAllTable(strDQ(s)) 
     ElseIf LabelName = "checktable" Then
-        S = checkTable(strDQ(S))
+        s = checkTable(strDQ(s)) 
     ElseIf LabelName = "existstable" Then
-        S = existsTable(strDQ(S))
+        s = existsTable(strDQ(s)) 
     ElseIf LabelName = "edittable" Then
-        S = editTable(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = editTable(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "checkfield" Then
-        S = checkField(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkField(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "existsfield" Then
-        S = existsField(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = existsField(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "editfield" Then
-        S = editField(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = editField(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getfieldalt" Then
-        S = getFieldAlt(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getFieldAlt(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "gettablelist_conn" Then
-        S = getTableList_Conn(strDQ(S))
+        s = getTableList_Conn(strDQ(s)) 
     ElseIf LabelName = "gettablelist" Then
-        S = getTableList()
+        s = getTableList() 
     ElseIf LabelName = "getfieldlist" Then
-        S = getFieldList(strDQ(S))
+        s = getFieldList(strDQ(s)) 
     ElseIf LabelName = "getdifferenttablefieldlist" Then
-        S = getDifferentTableFieldList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getDifferentTableFieldList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "compactdb" Then
-        S = compactDB(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = compactDB(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "editaccesspassword" Then
-        S = editAccessPassWord(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = editAccessPassWord(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "handlesqlserver" Then
-        S = handleSqlServer(strDQ(S))
+        s = handleSqlServer(strDQ(s)) 
     ElseIf LabelName = "exporttoexcel" Then
-        Call exportToExcel(strDQ(S))
+        Call exportToExcel(strDQ(s)) 
     ElseIf LabelName = "importtodatabase" Then
-        Call importToDatabase()
+        Call importToDatabase() 
     ElseIf LabelName = "getdatatablelist" Then
-        S = getDataTableList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getDataTableList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "settablefield" Then
-        S = setTableField(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = setTableField(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "gettypestring" Then
-        S = getTypeString(strDQ(S))
+        s = getTypeString(strDQ(s)) 
     ElseIf LabelName = "getproductrndidlist" Then
-        S = getProductRndIdList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getProductRndIdList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getfieldvalue" Then
-        S = getFieldValue(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getFieldValue(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getconnfieldvalue" Then
-        S = getConnFieldValue(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = getConnFieldValue(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "setfieldvalue" Then
-        S = setFieldValue(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = setFieldValue(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "filebinaryaddaccess" Then
-        S = fileBinaryAddAccess(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)),strDQ(Splxx(5)))
+        s = fileBinaryAddAccess(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4)), strDQ(splxx(5))) 
     ElseIf LabelName = "showaccessstream" Then
-        S = showAccessStream(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = showAccessStream(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "gethttppage" Then
-        S = getHttpPage(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getHttpPage(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlegethttppage" Then
-        S = handleGetHttpPage(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleGetHttpPage(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "geturlcontent" Then
-        S = getURLContent(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getURLContent(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "gethttpurl" Then
-        S = getHttpUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getHttpUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "bytestobstr" Then
-        S = bytesToBstr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = bytesToBstr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "strcut" Then
-        S = strCut(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = strCut(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "getstrcut" Then
-        S = getStrCut(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = getStrCut(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "cutstr" Then
-        S = cutStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = cutStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "cutstrnolu" Then
-        S = cutStrNOLU(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = cutStrNOLU(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "setcuttdstr" Then
-        S = setCutTDStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = setCutTDStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "cuttdstr" Then
-        S = cutTDStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = cutTDStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getarraylist" Then
-        S = getArrayList(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)),strDQ(Splxx(5)))
+        s = getArrayList(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4)), strDQ(splxx(5))) 
     ElseIf LabelName = "getarray" Then
-        S = getArray(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = getArray(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "getarray1" Then
-        S = getArray1(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = getArray1(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "getsplit" Then
-        S = getSplit(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getSplit(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getsplitcount" Then
-        S = getSplitCount(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getSplitCount(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "agent" Then
-        S = agent(strDQ(S))
+        s = agent(strDQ(s)) 
     ElseIf LabelName = "specialhtmluploadencryptiondecrypt" Then
-        S = specialHtmlUploadEncryptionDecrypt(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = specialHtmlUploadEncryptionDecrypt(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "encaspcontent" Then
-        S = encAspContent(strDQ(S))
+        s = encAspContent(strDQ(s)) 
     ElseIf LabelName = "uppercaseorlowercase" Then
-        S = upperCaseORLowerCase(strDQ(S))
+        s = upperCaseORLowerCase(strDQ(s)) 
     ElseIf LabelName = "enccode" Then
-        S = encCode(strDQ(S))
+        s = encCode(strDQ(s)) 
     ElseIf LabelName = "deccode" Then
-        S = decCode(strDQ(S))
+        s = decCode(strDQ(s)) 
     ElseIf LabelName = "tounicode" Then
-        S = toUnicode(strDQ(S))
+        s = toUnicode(strDQ(s)) 
     ElseIf LabelName = "japan" Then
-        S = japan(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = japan(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "japan26" Then
-        S = japan26(strDQ(S))
+        s = japan26(strDQ(s)) 
     ElseIf LabelName = "unjapan26" Then
-        S = unJapan26(strDQ(S))
+        s = unJapan26(strDQ(s)) 
     ElseIf LabelName = "handlehtml" Then
-        S = handleHTML(strDQ(S))
+        s = handleHTML(strDQ(s)) 
     ElseIf LabelName = "unhandlehtml" Then
-        S = unHandleHTML(strDQ(S))
+        s = unHandleHTML(strDQ(s)) 
     ElseIf LabelName = "lcaseenc" Then
-        S = lcaseEnc(strDQ(S))
+        s = lcaseEnc(strDQ(s)) 
     ElseIf LabelName = "lcasedec" Then
-        S = lcaseDec(strDQ(S))
+        s = lcaseDec(strDQ(s)) 
     ElseIf LabelName = "htmltojs" Then
-        S = htmlToJs(strDQ(S))
+        s = htmlToJs(strDQ(s)) 
     ElseIf LabelName = "jstohtml" Then
-        S = jsToHtml(strDQ(S))
+        s = jsToHtml(strDQ(s)) 
     ElseIf LabelName = "htmltoasp" Then
-        S = htmlToAsp(strDQ(S))
+        s = htmlToAsp(strDQ(s)) 
     ElseIf LabelName = "htmltoaspdim" Then
-        S = htmlToAspDim(strDQ(S))
+        s = htmlToAspDim(strDQ(s)) 
     ElseIf LabelName = "asptohtml" Then
-        S = aspToHtml(strDQ(S))
+        s = aspToHtml(strDQ(s)) 
     ElseIf LabelName = "setfilename" Then
-        S = setFileName(strDQ(S))
+        s = setFileName(strDQ(s)) 
     ElseIf LabelName = "unsetfilename" Then
-        S = unSetFileName(strDQ(S))
+        s = unSetFileName(strDQ(s)) 
     ElseIf LabelName = "htmltoascchr" Then
-        S = HTMLToAscChr(strDQ(S))
+        s = HTMLToAscChr(strDQ(s)) 
     ElseIf LabelName = "unhtmltoascchr" Then
-        S = unHTMLToAscChr(strDQ(S))
+        s = unHTMLToAscChr(strDQ(s)) 
     ElseIf LabelName = "variabledisplacement" Then
-        S = variableDisplacement(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = variableDisplacement(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "xorenc" Then
-        S = xorEnc(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = xorEnc(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "xordec" Then
-        S = xorDec(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = xorDec(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handleevaladddec" Then
-        S = handleEvalAddDec(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleEvalAddDec(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "evaladddec" Then
-        S = evalAddDec(strDQ(S))
+        s = evalAddDec(strDQ(s)) 
     ElseIf LabelName = "vbevaladddec" Then
-        S = VBEvalAddDec(strDQ(S))
+        s = VBEvalAddDec(strDQ(s)) 
     ElseIf LabelName = "xdec" Then
-        S = XDec(strDQ(S))
+        s = XDec(strDQ(s)) 
     ElseIf LabelName = "tohexcolor" Then
-        S = toHexColor(strDQ(S))
+        s = toHexColor(strDQ(s)) 
     ElseIf LabelName = "colorrgb" Then
-        S = colorRGB(strDQ(S))
+        s = colorRGB(strDQ(s)) 
     ElseIf LabelName = "simpleenc" Then
-        S = simpleEnc(strDQ(S))
+        s = simpleEnc(strDQ(s)) 
     ElseIf LabelName = "simpledec" Then
-        S = simpleDec(strDQ(S))
+        s = simpleDec(strDQ(s)) 
     ElseIf LabelName = "encaspevalrun" Then
-        S = encAspEvalRun(strDQ(S))
+        s = encAspEvalRun(strDQ(s)) 
     ElseIf LabelName = "send_email" Then
-        S = Send_Email(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = Send_Email(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "serversend_email" Then
-        S = ServerSend_Email(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)),strDQ(Splxx(5)))
+        s = ServerSend_Email(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4)), strDQ(splxx(5))) 
     ElseIf LabelName = "findaspcode" Then
-        S = FindAspCode(strDQ(S))
+        s = FindAspCode(strDQ(s)) 
     ElseIf LabelName = "findaspfunlist" Then
-        S = FindAspFunList(strDQ(S))
+        s = FindAspFunList(strDQ(s)) 
     ElseIf LabelName = "findaspfunctioncode" Then
-        S = FindAspFunctionCode(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = FindAspFunctionCode(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlereplacelist" Then
-        S = handleReplaceList(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleReplaceList(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getfunnamedim" Then
-        S = GetFunNameDim(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = GetFunNameDim(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "leftspace" Then
-        S = LeftSpace(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = LeftSpace(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "rightspace" Then
-        S = RightSpace(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = RightSpace(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "infunadddim" Then
-        S = InFunAddDim(strDQ(S))
+        s = InFunAddDim(strDQ(s)) 
     ElseIf LabelName = "getqq" Then
-        S = GetQQ(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = GetQQ(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "gettel" Then
-        S = GetTel(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = GetTel(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getmail" Then
-        S = GetMail(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = GetMail(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getimgstr" Then
-        S = GetImgStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = GetImgStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getcssstr" Then
-        S = GetCssStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = GetCssStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getjsstr" Then
-        S = GetJsStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = GetJsStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "handleaspexecute" Then
-        S = HandleAspExecute(strDQ(S))
+        s = HandleAspExecute(strDQ(s)) 
     ElseIf LabelName = "geturlstr" Then
-        S = GetUrlStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = GetUrlStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "getpageconfig" Then
-        S = GetPageConfig(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = GetPageConfig(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getsqlinurl" Then
-        S = GetSqlInUrl(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = GetSqlInUrl(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "handlsqlinurl" Then
-        S = HandlSqlInUrl(strDQ(S))
+        s = HandlSqlInUrl(strDQ(s)) 
     ElseIf LabelName = "getscanfunctionnamelist" Then
-        S = GetScanFunctionNameList(strDQ(S))
+        s = GetScanFunctionNameList(strDQ(s)) 
     ElseIf LabelName = "getfunname" Then
-        S = GetFunName(strDQ(S))
+        s = GetFunName(strDQ(s)) 
     ElseIf LabelName = "getfundimname" Then
-        S = GetFunDimName(strDQ(S))
+        s = GetFunDimName(strDQ(s)) 
     ElseIf LabelName = "getdimname" Then
-        S = GetDimName(strDQ(S))
+        s = GetDimName(strDQ(s)) 
     ElseIf LabelName = "getsetname" Then
-        S = GetSetName(strDQ(S))
+        s = GetSetName(strDQ(s)) 
     ElseIf LabelName = "replacedim" Then
-        S = ReplaceDim(strDQ(S))
+        s = ReplaceDim(strDQ(s)) 
     ElseIf LabelName = "replacedim2" Then
-        S = ReplaceDim2(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = ReplaceDim2(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "findfolderrepeatfunction" Then
-        S = FindFolderRepeatFunction(strDQ(S))
+        s = FindFolderRepeatFunction(strDQ(s)) 
     ElseIf LabelName = "findfilerepeatfunction" Then
-        S = FindFileRepeatFunction(strDQ(S))
+        s = FindFileRepeatFunction(strDQ(s)) 
     ElseIf LabelName = "findcontentrepeatfunction" Then
-        S = FindContentRepeatFunction(strDQ(S))
+        s = FindContentRepeatFunction(strDQ(s)) 
     ElseIf LabelName = "handlecontentrepeatfunction" Then
-        S = HandleContentRepeatFunction(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = HandleContentRepeatFunction(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "replace2" Then
-        S = Replace2(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = Replace2(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "allreplace" Then
-        S = AllReplace(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = AllReplace(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "replaceonenolu" Then
-        S = ReplaceOneNOLU(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = ReplaceOneNOLU(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "optimizeaspcode" Then
-        S = OptimizeAspCode(strDQ(S))
+        s = OptimizeAspCode(strDQ(s)) 
     ElseIf LabelName = "aspcodeconfusion" Then
-        S = AspCodeConfusion(strDQ(S))
+        s = AspCodeConfusion(strDQ(s)) 
     ElseIf LabelName = "aspvariablegarbled" Then
-        S = ASPVariableGarbled(strDQ(S))
+        s = ASPVariableGarbled(strDQ(s)) 
     ElseIf LabelName = "lucasegarbled" Then
-        S = LUCaseGarbled(strDQ(S))
+        s = LUCaseGarbled(strDQ(s)) 
     ElseIf LabelName = "aspfunctionconfusion" Then
-        S = AspFunctionConfusion(strDQ(S))
+        s = AspFunctionConfusion(strDQ(s)) 
     ElseIf LabelName = "getaspfunnamelist" Then
-        S = getAspFunNameList(strDQ(S))
+        s = getAspFunNameList(strDQ(s)) 
     ElseIf LabelName = "aspcodesafe" Then
-        S = AspCodeSafe(strDQ(S))
+        s = AspCodeSafe(strDQ(s)) 
     ElseIf LabelName = "cutdakuohao" Then
-        S = cutDaKuoHao(strDQ(S))
+        s = cutDaKuoHao(strDQ(s)) 
     ElseIf LabelName = "cutxiankuohao" Then
-        S = cutXianKuoHao(strDQ(S))
+        s = cutXianKuoHao(strDQ(s)) 
     ElseIf LabelName = "cutfunctionvvalue" Then
-        S = cutFunctionvValue(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = cutFunctionvValue(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getstrintcontentnumb" Then
-        S = getStrIntContentNumb(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getStrIntContentNumb(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getkeyword" Then
-        S = GetKeyWord(strDQ(S))
+        s = GetKeyWord(strDQ(s)) 
     ElseIf LabelName = "gethandlekeyword" Then
-        S = GetHandleKeyWord(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = GetHandleKeyWord(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getchinastr" Then
-        S = GetChinaStr(strDQ(S))
+        s = GetChinaStr(strDQ(s)) 
     ElseIf LabelName = "checkstr" Then
-        S = checkStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "regexp_checkstr" Then
-        S = regExp_CheckStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = regExp_CheckStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "existsstr" Then
-        S = existsStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = existsStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "regexp_instr" Then
-        S = regExp_Instr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = regExp_Instr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "regexp_replace" Then
-        S = regExp_Replace(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = regExp_Replace(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "replacecolor" Then
-        S = replaceColor(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = replaceColor(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "delhtml" Then
-        S = delHtml(strDQ(S))
+        s = delHtml(strDQ(s)) 
     ElseIf LabelName = "regexp_delhtml" Then
-        S = regExp_DelHtml(strDQ(S))
+        s = regExp_DelHtml(strDQ(s)) 
     ElseIf LabelName = "getaurltitlelist" Then
-        S = getAUrlTitleList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getAUrlTitleList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getaurl" Then
-        S = getAURL(strDQ(S))
+        s = getAURL(strDQ(s)) 
     ElseIf LabelName = "getatitle" Then
-        S = getATitle(strDQ(S))
+        s = getATitle(strDQ(s)) 
     ElseIf LabelName = "getaurltitle" Then
-        S = getAURLTitle(strDQ(S))
+        s = getAURLTitle(strDQ(s)) 
     ElseIf LabelName = "getcontentaurllist" Then
-        S = getContentAUrlList(strDQ(S))
+        s = getContentAUrlList(strDQ(s)) 
     ElseIf LabelName = "regexp_getimgurllist" Then
-        S = regExp_GetImgUrlList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = regExp_GetImgUrlList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getimg" Then
-        S = getIMG(strDQ(S))
+        s = getIMG(strDQ(s)) 
     ElseIf LabelName = "getimgjpg" Then
-        S = getIMGJpg(strDQ(S))
+        s = getIMGJpg(strDQ(s)) 
     ElseIf LabelName = "getimggif" Then
-        S = getIMGGif(strDQ(S))
+        s = getIMGGif(strDQ(s)) 
     ElseIf LabelName = "getimgbmp" Then
-        S = getIMGBmp(strDQ(S))
+        s = getIMGBmp(strDQ(s)) 
     ElseIf LabelName = "getaspfunctionlist" Then
-        S = getASPFunctionList(strDQ(S))
+        s = getASPFunctionList(strDQ(s)) 
     ElseIf LabelName = "getaspdimfunction" Then
-        S = getASPDimFunction(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = getASPDimFunction(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "strlength" Then
-        S = strLength(strDQ(S))
+        s = strLength(strDQ(s)) 
     ElseIf LabelName = "regexpgetlenght" Then
-        S = regExpGetLenght(strDQ(S))
+        s = regExpGetLenght(strDQ(s)) 
     ElseIf LabelName = "stringlength" Then
-        S = stringLength(strDQ(S))
+        s = stringLength(strDQ(s)) 
     ElseIf LabelName = "getcsshref" Then
-        S = getCssHref(strDQ(S))
+        s = getCssHref(strDQ(s)) 
     ElseIf LabelName = "getjssrc" Then
-        S = getJsSrc(strDQ(S))
+        s = getJsSrc(strDQ(s)) 
     ElseIf LabelName = "delhtmlscript" Then
-        S = delHTMLScript(strDQ(S))
+        s = delHTMLScript(strDQ(s)) 
     ElseIf LabelName = "getmeta" Then
-        S = getMeta(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getMeta(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "delhtmlnote" Then
-        S = delHtmlNote(strDQ(S))
+        s = delHtmlNote(strDQ(s)) 
     ElseIf LabelName = "delhtmlmynote" Then
-        S = delHtmlMyNote(strDQ(S))
+        s = delHtmlMyNote(strDQ(s)) 
     ElseIf LabelName = "getstrimglist" Then
-        S = getStrImgList(strDQ(S))
+        s = getStrImgList(strDQ(s)) 
     ElseIf LabelName = "getemaillist" Then
-        S = getEMailList(strDQ(S))
+        s = getEMailList(strDQ(s)) 
     ElseIf LabelName = "oflink_lcasetag" Then
-        S = oflink_lcasetag(strDQ(S))
+        s = oflink_lcasetag(strDQ(s)) 
     ElseIf LabelName = "scripthtml" Then
-        S = scriptHtml(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = scriptHtml(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getregexp" Then
-        S = getRegExp(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = getRegExp(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "getimgjsurl" Then
-        S = getImgJsUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getImgJsUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "regexpgetstr" Then
-        S = regExpGetStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = regExpGetStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "newgetpingip" Then
-        S = newGetPingIP(strDQ(S))
+        s = newGetPingIP(strDQ(s)) 
     ElseIf LabelName = "getpingip" Then
-        S = getPingIP(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getPingIP(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getpinginfo" Then
-        S = getPingInfo(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getPingInfo(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "regexptest" Then
-        S = regExpTest(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = regExpTest(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getregexpstr" Then
-        S = getRegExpStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getRegExpStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "regexpreplacecssdir" Then
-        S = regExpReplaceCssDir(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = regExpReplaceCssDir(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deletenullrow" Then
-        S = deleteNullRow(strDQ(S))
+        s = deleteNullRow(strDQ(s)) 
     ElseIf LabelName = "isstrtransferred" Then
-        S = isStrTransferred(strDQ(S))
+        s = isStrTransferred(strDQ(s)) 
     ElseIf LabelName = "getbl" Then
-        S = getBL(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getBL(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getcountstep" Then
-        S = getCountStep(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = getCountStep(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "getchina" Then
-        S = getChina(strDQ(S))
+        s = getChina(strDQ(s)) 
     ElseIf LabelName = "ischina" Then
-        S = isChina(strDQ(S))
+        s = isChina(strDQ(s)) 
     ElseIf LabelName = "checkchina" Then
-        S = checkChina(strDQ(S))
+        s = checkChina(strDQ(s)) 
     ElseIf LabelName = "phprand" Then
-        S = pHPRand(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = pHPRand(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "phprnd" Then
-        S = pHPRnd(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = pHPRnd(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deleterepeatstr" Then
-        S = deleteRepeatStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = deleteRepeatStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "replacen" Then
-        S = replaceN(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = replaceN(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "fillzero" Then
-        S = fillZero(strDQ(S))
+        s = fillZero(strDQ(s)) 
     ElseIf LabelName = "caseinsensitivereplace" Then
-        S = caseInsensitiveReplace(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = caseInsensitiveReplace(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "array_sort" Then
-        S = array_Sort(strDQ(S))
+        s = array_Sort(strDQ(s)) 
     ElseIf LabelName = "handlezipsize" Then
-        S = handleZipSize(strDQ(S))
+        s = handleZipSize(strDQ(s)) 
     ElseIf LabelName = "getrnd" Then
-        S = getRnd(strDQ(S))
+        s = getRnd(strDQ(s)) 
     ElseIf LabelName = "mathrandom" Then
-        S = mathRandom()
+        s = mathRandom() 
     ElseIf LabelName = "getrndaz" Then
-        S = getRndAZ(strDQ(S))
+        s = getRndAZ(strDQ(s)) 
     ElseIf LabelName = "getrand" Then
-        S = getRand(strDQ(S))
+        s = getRand(strDQ(s)) 
     ElseIf LabelName = "copystrnumb" Then
-        S = copyStrNumb(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = copyStrNumb(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "str_repeat" Then
-        S = str_Repeat(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = str_Repeat(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "copystr" Then
-        S = copyStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = copyStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "contentaddtab" Then
-        S = contentAddTab(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = contentAddTab(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deleteendstr" Then
-        S = deleteEndStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = deleteEndStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "tonumber" Then
-        S = toNumber(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = toNumber(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlenumber" Then
-        S = handleNumber(strDQ(S))
+        s = handleNumber(strDQ(s)) 
     ElseIf LabelName = "strdrawint" Then
-        S = strDrawInt(strDQ(S))
+        s = strDrawInt(strDQ(s)) 
     ElseIf LabelName = "getfirstnegativenumber" Then
-        S = getFirstNegativeNumber(strDQ(S))
+        s = getFirstNegativeNumber(strDQ(s)) 
     ElseIf LabelName = "checknumbertype" Then
-        S = checkNumberType(strDQ(S))
+        s = checkNumberType(strDQ(s)) 
     ElseIf LabelName = "checkstrisnumbertype" Then
-        S = checkStrIsNumberType(strDQ(S))
+        s = checkStrIsNumberType(strDQ(s)) 
     ElseIf LabelName = "handlenumbertype" Then
-        S = handleNumberType(strDQ(S))
+        s = handleNumberType(strDQ(s)) 
     ElseIf LabelName = "getnumber" Then
-        S = getNumber(strDQ(S))
+        s = getNumber(strDQ(s)) 
     ElseIf LabelName = "checknumb" Then
-        S = checkNumb(strDQ(S))
+        s = checkNumb(strDQ(s)) 
     ElseIf LabelName = "getdiannumb" Then
-        S = getDianNumb(strDQ(S))
+        s = getDianNumb(strDQ(s)) 
     ElseIf LabelName = "getcountpage" Then
-        S = getCountPage(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getCountPage(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getpagenumb" Then
-        S = getPageNumb(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getPageNumb(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getcaihandlecountpage" Then
-        S = getCaiHandleCountPage(strDQ(S))
+        s = getCaiHandleCountPage(strDQ(s)) 
     ElseIf LabelName = "getcaisortcountpage" Then
-        S = getCaiSortCountPage(strDQ(S))
+        s = getCaiSortCountPage(strDQ(s)) 
     ElseIf LabelName = "minmaxbetween" Then
-        S = minMaxBetween(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = minMaxBetween(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getstrfiletype" Then
-        S = getStrFileType(strDQ(S))
+        s = getStrFileType(strDQ(s)) 
     ElseIf LabelName = "val" Then
-        S = val(strDQ(S))
+        s = val(strDQ(s)) 
     ElseIf LabelName = "strlen" Then
-        S = strLen(strDQ(S))
+        s = strLen(strDQ(s)) 
     ElseIf LabelName = "addindent" Then
-        S = addIndent(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = addIndent(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getnumberbeforestr" Then
-        S = getNumberBeforeStr(strDQ(S))
+        s = getNumberBeforeStr(strDQ(s)) 
     ElseIf LabelName = "makepassword" Then
-        S = makePassword(strDQ(S))
+        s = makePassword(strDQ(s)) 
     ElseIf LabelName = "rndcode" Then
-        S = rndcode(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = rndcode(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getrandomphonenumber" Then
-        S = getRandomPhoneNumber(strDQ(S))
+        s = getRandomPhoneNumber(strDQ(s)) 
     ElseIf LabelName = "lenstr" Then
-        S = lenStr(strDQ(S))
+        s = lenStr(strDQ(s)) 
     ElseIf LabelName = "tostring" Then
-        S = toString(strDQ(S))
+        s = toString(strDQ(s)) 
     ElseIf LabelName = "remotenumber" Then
-        S = remoteNumber(strDQ(S))
+        s = remoteNumber(strDQ(s)) 
     ElseIf LabelName = "handlehavestr" Then
-        S = handleHaveStr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleHaveStr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "havelowercase" Then
-        S = haveLowerCase(strDQ(S))
+        s = haveLowerCase(strDQ(s)) 
     ElseIf LabelName = "haveuppercase" Then
-        S = haveUpperCase(strDQ(S))
+        s = haveUpperCase(strDQ(s)) 
     ElseIf LabelName = "havenumber" Then
-        S = haveNumber(strDQ(S))
+        s = haveNumber(strDQ(s)) 
     ElseIf LabelName = "havechina" Then
-        S = haveChina(strDQ(S))
+        s = haveChina(strDQ(s)) 
     ElseIf LabelName = "saveremotefile" Then
-        S = SaveRemoteFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = SaveRemoteFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "downfile" Then
-        S = DownFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = DownFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "popupdownfile" Then
-        S = popupDownFile(strDQ(S))
+        s = popupDownFile(strDQ(s)) 
     ElseIf LabelName = "xmlgetstatus" Then
-        S = XMLGetStatus(strDQ(S))
+        s = XMLGetStatus(strDQ(s)) 
     ElseIf LabelName = "xmlpost" Then
-        S = XMLPost(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = XMLPost(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "utfxmlpost" Then
-        S = UTFXMLPost(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = UTFXMLPost(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlexmlpost" Then
-        S = HandleXMLPost(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = HandleXMLPost(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "xmlget" Then
-        S = XmlGet(strDQ(S))
+        s = XmlGet(strDQ(s)) 
     ElseIf LabelName = "handlexmlget" Then
-        S = handleXmlGet(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleXmlGet(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "cookiespost" Then
-        S = CookiesPost(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = CookiesPost(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlecookiespost" Then
-        S = handleCookiesPost(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleCookiesPost(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getremotefilesize" Then
-        S = getRemoteFileSize(strDQ(S))
+        s = getRemoteFileSize(strDQ(s)) 
     ElseIf LabelName = "downremotefile" Then
-        S = DownRemoteFile(strDQ(S))
+        s = DownRemoteFile(strDQ(s)) 
     ElseIf LabelName = "imagestobase64" Then
-        S = ImagesToBase64(strDQ(S))
+        s = ImagesToBase64(strDQ(s)) 
     ElseIf LabelName = "base64toimages" Then
-        S = Base64ToImages(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = Base64ToImages(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getsqlincontent" Then
-        S = getSqlInContent(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = getSqlInContent(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handlesqlin" Then
-        S = handleSqlIn(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = handleSqlIn(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "sqlinurl" Then
-        S = SqlInUrl(strDQ(S))
+        s = SqlInUrl(strDQ(s)) 
     ElseIf LabelName = "handlurlcanshu" Then
-        S = HandlUrlCanShu(strDQ(S))
+        s = HandlUrlCanShu(strDQ(s)) 
     ElseIf LabelName = "handlestrcharset" Then
-        S = handleStrCharSet(strDQ(S))
+        s = handleStrCharSet(strDQ(s)) 
     ElseIf LabelName = "urlencoding" Then
-        S = URLEncoding(strDQ(S))
+        s = URLEncoding(strDQ(s)) 
     ElseIf LabelName = "getwinhttp" Then
-        S = getWinHttp(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = getWinHttp(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "format_time" Then
-        S = format_Time(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = format_Time(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getdaystatus" Then
-        S = getDayStatus(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getDayStatus(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "printtimevalue" Then
-        S = printTimeValue(strDQ(S))
+        s = printTimeValue(strDQ(s)) 
     ElseIf LabelName = "printasktime" Then
-        S = printAskTime(strDQ(S))
+        s = printAskTime(strDQ(s)) 
     ElseIf LabelName = "gettimerset" Then
-        S = getTimerSet()
+        s = getTimerSet() 
     ElseIf LabelName = "calculationtimer" Then
-        S = calculationTimer(strDQ(S))
+        s = calculationTimer(strDQ(s)) 
     ElseIf LabelName = "gettimer" Then
-        S = getTimer()
+        s = getTimer() 
     ElseIf LabelName = "vbgettimer" Then
-        S = vBGetTimer()
+        s = vBGetTimer() 
     ElseIf LabelName = "vbechotimer" Then
-        S = vBEchoTimer()
+        s = vBEchoTimer() 
     ElseIf LabelName = "vbruntimer" Then
-        S = vBRunTimer(strDQ(S))
+        s = vBRunTimer(strDQ(s)) 
     ElseIf LabelName = "getthisurlnoparam" Then
-        S = getThisUrlNoParam()
+        s = getThisUrlNoParam() 
     ElseIf LabelName = "getgotourl" Then
-        S = getGoToUrl()
+        s = getGoToUrl() 
     ElseIf LabelName = "getgotourlnoparam" Then
-        S = getGoToUrlNoParam()
+        s = getGoToUrlNoParam() 
     ElseIf LabelName = "getgotourlnofilename" Then
-        S = getGoToUrlNoFileName()
+        s = getGoToUrlNoFileName() 
     ElseIf LabelName = "getip2" Then
-        S = getIP2()
+        s = getIP2() 
     ElseIf LabelName = "getip" Then
-        S = getIP()
+        s = getIP() 
     ElseIf LabelName = "getservicerip" Then
-        S = getServicerIP()
+        s = getServicerIP() 
     ElseIf LabelName = "getremoteip" Then
-        S = getRemoteIP()
+        s = getRemoteIP() 
     ElseIf LabelName = "handlehttpurl" Then
-        S = handleHttpUrl(strDQ(S))
+        s = handleHttpUrl(strDQ(s)) 
     ElseIf LabelName = "handlefileurl" Then
-        S = handleFileUrl(strDQ(S))
+        s = handleFileUrl(strDQ(s)) 
     ElseIf LabelName = "handleurlcomplete" Then
-        S = handleUrlComplete(strDQ(S))
+        s = handleUrlComplete(strDQ(s)) 
     ElseIf LabelName = "urladdhttpurl" Then
-        S = urlAddHttpUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = urlAddHttpUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "webdomain" Then
-        S = webDoMain()
+        s = webDoMain() 
     ElseIf LabelName = "host" Then
-        S = host()
+        s = host() 
     ElseIf LabelName = "httphost" Then
-        S = httpHost()
+        s = httpHost() 
     ElseIf LabelName = "gethost" Then
-        S = getHost()
+        s = getHost() 
     ElseIf LabelName = "geturl" Then
-        S = getUrl()
+        s = getUrl() 
     ElseIf LabelName = "getthisurl" Then
-        S = getThisUrl()
+        s = getThisUrl() 
     ElseIf LabelName = "getthisurlnofilename" Then
-        S = getThisUrlNoFileName()
+        s = getThisUrlNoFileName() 
     ElseIf LabelName = "getwebsite" Then
-        S = getWebSite(strDQ(S))
+        s = getWebSite(strDQ(s)) 
     ElseIf LabelName = "checkurl" Then
-        S = checkUrl(strDQ(S))
+        s = checkUrl(strDQ(s)) 
     ElseIf LabelName = "checkhttpurl" Then
-        S = checkHttpUrl(strDQ(S))
+        s = checkHttpUrl(strDQ(s)) 
     ElseIf LabelName = "isurl" Then
-        S = isUrl(strDQ(S))
+        s = isUrl(strDQ(s)) 
     ElseIf LabelName = "ishttpurl" Then
-        S = isHttpUrl(strDQ(S))
+        s = isHttpUrl(strDQ(s)) 
     ElseIf LabelName = "fullhttpurl" Then
-        S = fullHttpUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = fullHttpUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "batchfullhttpurl" Then
-        S = batchFullHttpUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = batchFullHttpUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "urljianjiehandle" Then
-        S = uRLJianJieHandle(strDQ(S))
+        s = uRLJianJieHandle(strDQ(s)) 
     ElseIf LabelName = "urltoasc" Then
-        S = urlToAsc(strDQ(S))
+        s = urlToAsc(strDQ(s)) 
     ElseIf LabelName = "getwebtitle" Then
-        S = getWebTitle(strDQ(S))
+        s = getWebTitle(strDQ(s)) 
     ElseIf LabelName = "mystrcut" Then
-        S = myStrCut(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = myStrCut(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "getcontentahref" Then
-        S = getContentAHref(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = getContentAHref(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "getcontentimgsrc" Then
-        S = getContentImgSrc(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = getContentImgSrc(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handleconenturl" Then
-        S = handleConentUrl(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = handleConentUrl(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "replacecontentjsdir" Then
-        S = replaceContentJsDir(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = replaceContentJsDir(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handlelink" Then
-        S = handleLink(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)),strDQ(Splxx(5)),strDQ(Splxx(6)))
+        s = handleLink(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4)), strDQ(splxx(5)), strDQ(splxx(6))) 
     ElseIf LabelName = "getendurlhandlename" Then
-        S = getEndUrlHandleName(strDQ(S))
+        s = getEndUrlHandleName(strDQ(s)) 
     ElseIf LabelName = "getwebfoldername" Then
-        S = getWebFolderName()
+        s = getWebFolderName() 
     ElseIf LabelName = "getwebhome" Then
-        S = getWebHome()
+        s = getWebHome() 
     ElseIf LabelName = "geturllistinwebsitelist" Then
-        S = getUrlListInWebSiteList(strDQ(S))
+        s = getUrlListInWebSiteList(strDQ(s)) 
     ElseIf LabelName = "getthisurlfilename" Then
-        S = getThisUrlFileName()
+        s = getThisUrlFileName() 
     ElseIf LabelName = "handlewebhtmlimg" Then
-        S = handleWebHtmlImg(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = handleWebHtmlImg(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handlewebcssimg" Then
-        S = handleWebCssImg(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleWebCssImg(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "batchhandleurlintegrity" Then
-        S = batchHandleUrlIntegrity(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = batchHandleUrlIntegrity(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "replacecontentimagepath" Then
-        S = replaceContentImagePath(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = replaceContentImagePath(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getcsslinklist" Then
-        S = getCssLinkList(strDQ(S))
+        s = getCssLinkList(strDQ(s)) 
     ElseIf LabelName = "gethtmlbackgroundurllist" Then
-        S = getHtmlBackGroundUrlList(strDQ(S))
+        s = getHtmlBackGroundUrlList(strDQ(s)) 
     ElseIf LabelName = "getimgurllist" Then
-        S = getImgUrlList(strDQ(S))
+        s = getImgUrlList(strDQ(s)) 
     ElseIf LabelName = "getlinkurl" Then
-        S = getLinkUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getLinkUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "localurlorremoteurl" Then
-        S = localUrlOrRemoteUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = localUrlOrRemoteUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checkremoteurl" Then
-        S = checkRemoteUrl(strDQ(S))
+        s = checkRemoteUrl(strDQ(s)) 
     ElseIf LabelName = "gethandleurl" Then
-        S = getHandleUrl(strDQ(S))
+        s = getHandleUrl(strDQ(s)) 
     ElseIf LabelName = "webdebug" Then
-        S = webDebug(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = webDebug(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "asailinkadd" Then
-        S = asaiLinkAdd(strDQ(S))
+        s = asaiLinkAdd(strDQ(s)) 
     ElseIf LabelName = "asailinkdel" Then
-        S = asaiLinkDel(strDQ(S))
+        s = asaiLinkDel(strDQ(s)) 
     ElseIf LabelName = "iswww" Then
-        S = iswww(strDQ(S))
+        s = iswww(strDQ(s)) 
     ElseIf LabelName = "geturladdtoparam" Then
-        S = getUrlAddToParam(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getUrlAddToParam(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "groupurl" Then
-        S = groupUrl(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = groupUrl(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlepostcookiesparame" Then
-        S = handlePostCookiesParame(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handlePostCookiesParame(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "remotehttpurlparameter" Then
-        S = remoteHttpUrlParameter(strDQ(S))
+        s = remoteHttpUrlParameter(strDQ(s)) 
     ElseIf LabelName = "checkurlname" Then
-        S = checkUrlName(strDQ(S))
+        s = checkUrlName(strDQ(s)) 
     ElseIf LabelName = "handlehttpurlarray" Then
-        S = handleHttpUrlArray(strDQ(S))
+        s = handleHttpUrlArray(strDQ(s)) 
     ElseIf LabelName = "remotejscssparam" Then
-        S = remoteJsCssParam(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = remoteJsCssParam(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handleremotejscssparam" Then
-        S = handleRemoteJsCssParam(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleRemoteJsCssParam(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "batchhandlehttpurlcomplete" Then
-        S = batchHandleHttpUrlComplete(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = batchHandleHttpUrlComplete(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "iswebsite" Then
-        S = isWebSite(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = isWebSite(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "issonwebsite" Then
-        S = isSonWebSite(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = isSonWebSite(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handleiswebsite" Then
-        S = handleIsWebSite(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleIsWebSite(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getcontenturllist" Then
-        S = getContentUrlList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getContentUrlList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlegetcontenturllist" Then
-        S = handleGetContentUrlList(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleGetContentUrlList(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getinchain" Then
-        S = getInChain(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getInChain(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getfiletext" Then
-        S = getFileText(strDQ(S))
+        s = getFileText(strDQ(s)) 
     ElseIf LabelName = "getftext" Then
-        S = getFText(strDQ(S))
+        s = getFText(strDQ(s)) 
     ElseIf LabelName = "getfiletype" Then
-        S = getFileType(strDQ(S))
+        s = getFileType(strDQ(s)) 
     ElseIf LabelName = "checkfile" Then
-        S = checkFile(strDQ(S))
+        s = checkFile(strDQ(s)) 
     ElseIf LabelName = "existsfile" Then
-        S = existsFile(strDQ(S))
+        s = existsFile(strDQ(s)) 
     ElseIf LabelName = "createfile" Then
-        S = createFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "savefile" Then
-        S = saveFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = saveFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "createaddfile" Then
-        S = createAddFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createAddFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "createaddupfile" Then
-        S = createAddUpFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createAddUpFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "addtofile" Then
-        S = addToFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = addToFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "savebytefile" Then
-        S = saveByteFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = saveByteFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "createbytefile" Then
-        S = createByteFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createByteFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "movefile" Then
-        S = moveFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = moveFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "editfile" Then
-        S = editFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = editFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "copyfile" Then
-        S = copyFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = copyFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deletefile" Then
-        S = deleteFile(strDQ(S))
+        s = deleteFile(strDQ(s)) 
     ElseIf LabelName = "delselfile" Then
-        S = delSelFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = delSelFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "delfilelist" Then
-        S = delFileList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = delFileList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "batchdelfile" Then
-        S = batchDelFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = batchDelFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deleteappointfilelist" Then
-        S = deleteAppointFileList(strDQ(S))
+        s = deleteAppointFileList(strDQ(s)) 
     ElseIf LabelName = "getfilesize" Then
-        S = getFileSize(strDQ(S))
+        s = getFileSize(strDQ(s)) 
     ElseIf LabelName = "filesize" Then
-        S = fileSize(strDQ(S))
+        s = fileSize(strDQ(s)) 
     ElseIf LabelName = "getfsize" Then
-        S = getFSize(strDQ(S))
+        s = getFSize(strDQ(s)) 
     ElseIf LabelName = "getfilecreatedate" Then
-        S = getFileCreateDate(strDQ(S))
+        s = getFileCreateDate(strDQ(s)) 
     ElseIf LabelName = "filecreatedate" Then
-        S = fileCreateDate(strDQ(S))
+        s = fileCreateDate(strDQ(s)) 
     ElseIf LabelName = "getfileeditdate" Then
-        S = getFileEditDate(strDQ(S))
+        s = getFileEditDate(strDQ(s)) 
     ElseIf LabelName = "fileeditdate" Then
-        S = fileEditDate(strDQ(S))
+        s = fileEditDate(strDQ(s)) 
     ElseIf LabelName = "getfileedittime" Then
-        S = getFileEditTime(strDQ(S))
+        s = getFileEditTime(strDQ(s)) 
     ElseIf LabelName = "getdatelastaccessed" Then
-        S = getDateLastAccessed(strDQ(S))
+        s = getDateLastAccessed(strDQ(s)) 
     ElseIf LabelName = "modifyfilemodifydate" Then
-        S = modifyFileModifydate(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = modifyFileModifydate(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "editfileeditdate" Then
-        S = editFileEditDate(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = editFileEditDate(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "existszhidufile" Then
-        S = existsZhiDuFile(strDQ(S))
+        s = existsZhiDuFile(strDQ(s)) 
     ElseIf LabelName = "getfileattribute" Then
-        S = getFileAttribute(strDQ(S))
+        s = getFileAttribute(strDQ(s)) 
     ElseIf LabelName = "editfileattribute" Then
-        S = editFileAttribute(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = editFileAttribute(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "existsfileday" Then
-        S = existsFileDay(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = existsFileDay(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checkfileday" Then
-        S = checkFileDay(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkFileDay(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "createfolder" Then
-        S = createFolder(strDQ(S))
+        s = createFolder(strDQ(s)) 
     ElseIf LabelName = "createdirfolder" Then
-        S = createDirFolder(strDQ(S))
+        s = createDirFolder(strDQ(s)) 
     ElseIf LabelName = "createdomain" Then
-        S = createDomain(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createDomain(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "createdomainfolder" Then
-        S = createDomainFolder(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createDomainFolder(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "movefolder" Then
-        S = moveFolder(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = moveFolder(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "editfolder" Then
-        S = editFolder(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = editFolder(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "copyfolder" Then
-        S = copyFolder(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = copyFolder(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deletefolder" Then
-        S = deleteFolder(strDQ(S))
+        s = deleteFolder(strDQ(s)) 
     ElseIf LabelName = "getfoldersize" Then
-        S = getFolderSize(strDQ(S))
+        s = getFolderSize(strDQ(s)) 
     ElseIf LabelName = "checkfolder" Then
-        S = checkFolder(strDQ(S))
+        s = checkFolder(strDQ(s)) 
     ElseIf LabelName = "existsfolder" Then
-        S = existsFolder(strDQ(S))
+        s = existsFolder(strDQ(s)) 
     ElseIf LabelName = "getfoldercreatedate" Then
-        S = getFolderCreateDate(strDQ(S))
+        s = getFolderCreateDate(strDQ(s)) 
     ElseIf LabelName = "getfoldereditdate" Then
-        S = getFolderEditDate(strDQ(S))
+        s = getFolderEditDate(strDQ(s)) 
     ElseIf LabelName = "getfoldertime" Then
-        S = getFolderTime(strDQ(S))
+        s = getFolderTime(strDQ(s)) 
     ElseIf LabelName = "getfolderattribute" Then
-        S = getFolderAttribute(strDQ(S))
+        s = getFolderAttribute(strDQ(s)) 
     ElseIf LabelName = "editfolderattribute" Then
-        S = editFolderAttribute(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = editFolderAttribute(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "existsfolderday" Then
-        S = existsFolderDay(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = existsFolderDay(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checkfolderday" Then
-        S = checkFolderDay(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkFolderDay(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getfilefolderlist" Then
-        S = getFileFolderList(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)),strDQ(Splxx(5)),strDQ(Splxx(6)))
+        s = getFileFolderList(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4)), strDQ(splxx(5)), strDQ(splxx(6))) 
     ElseIf LabelName = "getdirjpglist" Then
-        S = getDirJpgList(strDQ(S))
+        s = getDirJpgList(strDQ(s)) 
     ElseIf LabelName = "getdirinilist" Then
-        S = getDirIniList(strDQ(S))
+        s = getDirIniList(strDQ(s)) 
     ElseIf LabelName = "getdirtxtlist" Then
-        S = getDirTxtList(strDQ(S))
+        s = getDirTxtList(strDQ(s)) 
     ElseIf LabelName = "getdirhtmllist" Then
-        S = getDirHtmlList(strDQ(S))
+        s = getDirHtmlList(strDQ(s)) 
     ElseIf LabelName = "getdircsslist" Then
-        S = getDirCssList(strDQ(S))
+        s = getDirCssList(strDQ(s)) 
     ElseIf LabelName = "getdirjslist" Then
-        S = getDirJsList(strDQ(S))
+        s = getDirJsList(strDQ(s)) 
     ElseIf LabelName = "getdirfilelist" Then
-        S = getDirFileList(strDQ(S))
+        s = getDirFileList(strDQ(s)) 
     ElseIf LabelName = "getdirhtmllistname" Then
-        S = getDirHtmlListName(strDQ(S))
+        s = getDirHtmlListName(strDQ(s)) 
     ElseIf LabelName = "getdirfilenamelist" Then
-        S = getDirFileNameList(strDQ(S))
+        s = getDirFileNameList(strDQ(s)) 
     ElseIf LabelName = "getdirallfilenamelist" Then
-        S = getDirAllFileNameList(strDQ(S))
+        s = getDirAllFileNameList(strDQ(s)) 
     ElseIf LabelName = "getdirfolderlist" Then
-        S = getDirFolderList(strDQ(S))
+        s = getDirFolderList(strDQ(s)) 
     ElseIf LabelName = "getdirfoldernamelist" Then
-        S = getDirFolderNameList(strDQ(S))
+        s = getDirFolderNameList(strDQ(s)) 
     ElseIf LabelName = "getthisallfolder" Then
-        S = getThisAllFolder(strDQ(S))
+        s = getThisAllFolder(strDQ(s)) 
     ElseIf LabelName = "getthisallfoldername" Then
-        S = getThisAllFolderName(strDQ(S))
+        s = getThisAllFolderName(strDQ(s)) 
     ElseIf LabelName = "getfilefoldernumb" Then
-        S = getFileFolderNumb(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getFileFolderNumb(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getdirfoldernumb" Then
-        S = getDirFolderNumb(strDQ(S))
+        s = getDirFolderNumb(strDQ(s)) 
     ElseIf LabelName = "getdirfoldersize" Then
-        S = getDirFolderSize(strDQ(S))
+        s = getDirFolderSize(strDQ(s)) 
     ElseIf LabelName = "getdirfilenumb" Then
-        S = getDirFileNumb(strDQ(S))
+        s = getDirFileNumb(strDQ(s)) 
     ElseIf LabelName = "getdirallfilenumb" Then
-        S = getDirAllFileNumb(strDQ(S))
+        s = getDirAllFileNumb(strDQ(s)) 
     ElseIf LabelName = "getdirallfoldernumb" Then
-        S = getDirAllFolderNumb(strDQ(S))
+        s = getDirAllFolderNumb(strDQ(s)) 
     ElseIf LabelName = "getfolderlist" Then
-        S = getFolderList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getFolderList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getdirfilesort" Then
-        S = getDirFileSort(strDQ(S))
+        s = getDirFileSort(strDQ(s)) 
     ElseIf LabelName = "getdirfoldersort" Then
-        S = getDirFolderSort(strDQ(S))
+        s = getDirFolderSort(strDQ(s)) 
     ElseIf LabelName = "deldirallfile" Then
-        Call delDirAllFile(strDQ(S))
+        Call delDirAllFile(strDQ(s)) 
     ElseIf LabelName = "deleteallfile" Then
-        Call deleteAllFile(strDQ(S))
+        Call deleteAllFile(strDQ(s)) 
     ElseIf LabelName = "getupdatefile" Then
-        S = getUpdateFile(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = getUpdateFile(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "handlepath" Then
-        S = handlePath(strDQ(S))
+        s = handlePath(strDQ(s)) 
     ElseIf LabelName = "realpath" Then
-        S = realPath(strDQ(S))
+        s = realPath(strDQ(s)) 
     ElseIf LabelName = "fullpath" Then
-        S = fullPath(strDQ(S))
+        s = fullPath(strDQ(s)) 
     ElseIf LabelName = "handlerelativepath" Then
-        S = handleRelativePath(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleRelativePath(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "dirname" Then
-        S = dirName(strDQ(S))
+        s = dirName(strDQ(s)) 
     ElseIf LabelName = "isobjinstalled" Then
-        S = isObjInstalled(strDQ(S))
+        s = isObjInstalled(strDQ(s)) 
     ElseIf LabelName = "existsobject" Then
-        S = existsObject(strDQ(S))
+        s = existsObject(strDQ(s)) 
     ElseIf LabelName = "getfileobject" Then
-        S = getFileObject()
+        s = getFileObject() 
     ElseIf LabelName = "getdictionary" Then
-        S = getDictionary()
+        s = getDictionary() 
     ElseIf LabelName = "getstream" Then
-        S = getStream()
+        s = getStream() 
     ElseIf LabelName = "showattributetip" Then
-        S = showAttributeTip(strDQ(S))
+        s = showAttributeTip(strDQ(s)) 
     ElseIf LabelName = "printspacevalue" Then
-        S = printSpaceValue(strDQ(S))
+        s = printSpaceValue(strDQ(s)) 
     ElseIf LabelName = "printspacesize" Then
-        S = printSpaceSize(strDQ(S))
+        s = printSpaceSize(strDQ(s)) 
     ElseIf LabelName = "printfilesize" Then
-        S = printFileSize(strDQ(S))
+        s = printFileSize(strDQ(s)) 
     ElseIf LabelName = "getdeskpath" Then
-        S = getDeskPath()
+        s = getDeskPath() 
     ElseIf LabelName = "createurlshortcut" Then
-        S = createUrlShortcut(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createUrlShortcut(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "createfoldershortcut" Then
-        S = createFolderShortcut(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createFolderShortcut(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "finddirfilename" Then
-        S = findDirFileName(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = findDirFileName(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "findsubdirfilename" Then
-        S = findSubDirFileName(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = findSubDirFileName(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getarticlefillcontent" Then
-        S = getArticleFillContent(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = getArticleFillContent(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getfilepathname" Then
-        S = getFilePathName(strDQ(S))
+        s = getFilePathName(strDQ(s)) 
     ElseIf LabelName = "getextension" Then
-        S = getExtension(strDQ(S))
+        s = getExtension(strDQ(s)) 
     ElseIf LabelName = "removefiledir" Then
-        S = removeFileDir(strDQ(S))
+        s = removeFileDir(strDQ(s)) 
     ElseIf LabelName = "basename" Then
-        S = baseName(strDQ(S))
+        s = baseName(strDQ(s)) 
     ElseIf LabelName = "getfileextname" Then
-        S = getFileExtName(strDQ(S))
+        s = getFileExtName(strDQ(s)) 
     ElseIf LabelName = "handlefilepatharray" Then
-        S = handleFilePathArray(strDQ(S))
+        s = handleFilePathArray(strDQ(s)) 
     ElseIf LabelName = "getstrfilename" Then
-        S = getStrFileName(strDQ(S))
+        s = getStrFileName(strDQ(s)) 
     ElseIf LabelName = "getfilename" Then
-        S = getFileName(strDQ(S))
+        s = getFileName(strDQ(s)) 
     ElseIf LabelName = "getfileattr" Then
-        S = getFileAttr(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getFileAttr(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getfileext" Then
-        S = getFileExt(strDQ(S))
+        s = getFileExt(strDQ(s)) 
     ElseIf LabelName = "getparentpath" Then
-        S = getParentPath(strDQ(S))
+        s = getParentPath(strDQ(s)) 
     ElseIf LabelName = "isucase" Then
-        S = isUCase(strDQ(S))
+        s = isUCase(strDQ(s)) 
     ElseIf LabelName = "islcase" Then
-        S = isLCase(strDQ(S))
+        s = isLCase(strDQ(s)) 
     ElseIf LabelName = "checkerr" Then
-        Call checkErr(strDQ(S))
+        Call checkErr(strDQ(s)) 
     ElseIf LabelName = "strtotruefalse" Then
-        S = strToTrueFalse(strDQ(S))
+        s = strToTrueFalse(strDQ(s)) 
     ElseIf LabelName = "strtruefalsetoint" Then
-        S = strTrueFalseToInt(strDQ(S))
+        s = strTrueFalseToInt(strDQ(s)) 
     ElseIf LabelName = "checkvbcrlf" Then
-        S = checkVbCrlf(strDQ(S))
+        s = checkVbCrlf(strDQ(s)) 
     ElseIf LabelName = "checkbr" Then
-        S = checkBr(strDQ(S))
+        s = checkBr(strDQ(s)) 
     ElseIf LabelName = "isparity" Then
-        S = isParity(strDQ(S))
+        s = isParity(strDQ(s)) 
     ElseIf LabelName = "checkeval" Then
-        S = checkEval(strDQ(S))
+        s = checkEval(strDQ(s)) 
     ElseIf LabelName = "replace_sqltext" Then
-        S = replace_SQLText(strDQ(S))
+        s = replace_SQLText(strDQ(s)) 
     ElseIf LabelName = "chkpost" Then
-        S = chkPost()
+        s = chkPost() 
     ElseIf LabelName = "ismail" Then
-        S = isMail(strDQ(S))
+        s = isMail(strDQ(s)) 
     ElseIf LabelName = "isvalidemail" Then
-        S = isValidEmail(strDQ(S))
+        s = isValidEmail(strDQ(s)) 
     ElseIf LabelName = "iscode" Then
-        S = isCode(strDQ(S))
+        s = isCode(strDQ(s)) 
     ElseIf LabelName = "checknumber" Then
-        S = checkNumber(strDQ(S))
+        s = checkNumber(strDQ(s)) 
     ElseIf LabelName = "isnumber" Then
-        S = isNumber(strDQ(S))
+        s = isNumber(strDQ(s)) 
     ElseIf LabelName = "checkabc" Then
-        S = checkABC(strDQ(S))
+        s = checkABC(strDQ(s)) 
     ElseIf LabelName = "getlen" Then
-        S = getLen(strDQ(S))
+        s = getLen(strDQ(s)) 
     ElseIf LabelName = "checktime" Then
-        S = checkTime(strDQ(S))
+        s = checkTime(strDQ(s)) 
     ElseIf LabelName = "isnul" Then
-        S = isNul(strDQ(S))
+        s = isNul(strDQ(s)) 
     ElseIf LabelName = "foundinarr" Then
-        S = foundInArr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = foundInArr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "showhtmlcode" Then
-        S = showHTMLCode(strDQ(S))
+        s = showHTMLCode(strDQ(s)) 
     ElseIf LabelName = "showhtml" Then
-        S = ShowHtml(strDQ(S))
+        s = ShowHtml(strDQ(s)) 
     ElseIf LabelName = "unhtmlcode" Then
-        S = unHTMLCode(strDQ(S))
+        s = unHTMLCode(strDQ(s)) 
     ElseIf LabelName = "echohtml" Then
-        S = EchoHTML(strDQ(S))
+        s = EchoHTML(strDQ(s)) 
     ElseIf LabelName = "errortext" Then
-        S = ErrorText(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = ErrorText(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "testhtml" Then
-        Call TestHtml()
+        Call TestHtml() 
     ElseIf LabelName = "htmldecode" Then
-        S = HtmlDecode(strDQ(S))
+        s = HtmlDecode(strDQ(s)) 
     ElseIf LabelName = "htmlencode" Then
-        S = HtmlEncode(strDQ(S))
+        s = HTMLEncode(strDQ(s)) 
     ElseIf LabelName = "htmlfilter" Then
-        S = HtmlFilter(strDQ(S))
+        s = HtmlFilter(strDQ(s)) 
     ElseIf LabelName = "regreplace" Then
-        S = regReplace(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = regReplace(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "easp_replace" Then
-        S = Easp_Replace(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = Easp_Replace(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handlehtmllabelclose" Then
-        S = handleHtmlLabelClose(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleHtmlLabelClose(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "handleimgclose" Then
-        S = handleImgClose(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleImgClose(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlebrclose" Then
-        S = handleBrClose(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleBrClose(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlehrclose" Then
-        S = handleHrClose(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleHrClose(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handleclosehtml" Then
-        S = handleCloseHtml(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleCloseHtml(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "htmllabeltoclean" Then
-        S = htmlLabelToClean(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = htmlLabelToClean(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "addtooraddhttpurl" Then
-        S = addToOrAddHttpUrl(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = addToOrAddHttpUrl(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "removeblanklines" Then
-        S = removeBlankLines(strDQ(S))
+        s = removeBlankLines(strDQ(s)) 
     ElseIf LabelName = "removeblanklines_test1" Then
-        S = removeBlankLines_test1(strDQ(S))
+        s = removeBlankLines_test1(strDQ(s)) 
     ElseIf LabelName = "blankhtmlbody" Then
-        S = blankHtmlBody(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = blankHtmlBody(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checkcode" Then
-        S = checkCode(strDQ(S))
+        s = checkCode(strDQ(s)) 
     ElseIf LabelName = "getfilecharset" Then
-        S = getFileCharset(strDQ(S))
+        s = getFileCharset(strDQ(s)) 
     ElseIf LabelName = "seniorcheckcode" Then
-        S = seniorCheckCode(strDQ(S))
+        s = seniorCheckCode(strDQ(s)) 
     ElseIf LabelName = "readfile" Then
-        S = readFile(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = readFile(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getstext" Then
-        S = getStext(strDQ(S))
+        s = getStext(strDQ(s)) 
     ElseIf LabelName = "getftextutf" Then
-        S = getFTextUTF(strDQ(S))
+        s = getFTextUTF(strDQ(s)) 
     ElseIf LabelName = "writetofile" Then
-        S = writeToFile(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = writeToFile(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "createfileutf" Then
-        S = createFileUTF(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = createFileUTF(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getugtext" Then
-        S = getUGText(strDQ(S))
+        s = getUGText(strDQ(s)) 
     ElseIf LabelName = "checkcontentcharset" Then
-        S = checkContentCharset(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkContentCharset(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checkfilecode" Then
-        S = checkFileCode(strDQ(S))
+        s = checkFileCode(strDQ(s)) 
     ElseIf LabelName = "getfilebinarycontent" Then
-        S = getFileBinaryContent(strDQ(S))
+        s = getFileBinaryContent(strDQ(s)) 
     ElseIf LabelName = "binaryreadfile" Then
-        S = binaryReadFile(strDQ(S))
+        s = binaryReadFile(strDQ(s)) 
     ElseIf LabelName = "readbinary" Then
-        S = readBinary(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = readBinary(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "decsavebinary" Then
-        S = decSaveBinary(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = decSaveBinary(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "writebinary" Then
-        Call writeBinary(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        Call writeBinary(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getfilecharset2" Then
-        S = getFileCharset2(strDQ(S))
+        s = getFileCharset2(strDQ(s)) 
     ElseIf LabelName = "bintohex" Then
-        S = binToHex(strDQ(S))
+        s = binToHex(strDQ(s)) 
     ElseIf LabelName = "base64encode" Then
-        S = Base64Encode(strDQ(S))
+        s = Base64Encode(strDQ(s)) 
     ElseIf LabelName = "base64decode" Then
-        S = Base64Decode(strDQ(S))
+        s = Base64Decode(strDQ(s)) 
     ElseIf LabelName = "asphelptip" Then
-        S = ASPHelpTip(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = ASPHelpTip(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlewrite" Then
-        S = HandleWrite(strDQ(S))
+        s = HandleWrite(strDQ(s)) 
     ElseIf LabelName = "jiantitabfanti" Then
-        S = JianTiTabFanTi(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = JianTiTabFanTi(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "jiyicireplace" Then
-        S = JiYiCiReplace(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = JiYiCiReplace(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "cireplace" Then
-        S = CiReplace(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = CiReplace(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "testgetpy" Then
-        Call testGetPY()
+        Call testGetPY() 
     ElseIf LabelName = "pinyin" Then
-        S = pinYin(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = pinYin(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "pinyin2" Then
-        S = pinYin2(strDQ(S))
+        s = pinYin2(strDQ(s)) 
     ElseIf LabelName = "entocompany" Then
-        S = enToCompany(strDQ(S))
+        s = enToCompany(strDQ(s)) 
     ElseIf LabelName = "remotecontentjinghao" Then
-        S = remoteContentJingHao(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = remoteContentJingHao(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "remotearrayjinghao" Then
-        S = remoteArrayJingHao(strDQ(S))
+        s = remoteArrayJingHao(strDQ(s)) 
     ElseIf LabelName = "geteachstraddvalue" Then
-        S = getEachStrAddValue(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getEachStrAddValue(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getvalueinarrayid" Then
-        S = getValueInArrayID(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getValueInArrayID(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checkvalueinarray" Then
-        S = checkValueInArray(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkValueInArray(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deleterepeatarray" Then
-        S = deleteRepeatArray(strDQ(S))
+        s = deleteRepeatArray(strDQ(s)) 
     ElseIf LabelName = "deleterepeatcontent" Then
-        S = deleteRepeatContent(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = deleteRepeatContent(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getarraycount" Then
-        S = getArrayCount(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getArrayCount(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "randomshow" Then
-        S = randomShow(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = randomShow(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "arrayrandomshow" Then
-        S = arrayRandomShow(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = arrayRandomShow(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "printarray" Then
-        Call printArray(strDQ(S))
+        Call printArray(strDQ(s)) 
+
     ElseIf LabelName = "echoarray" Then
-        Call echoArray(strDQ(S))
+        Call echoArray(strDQ(s)) 
     ElseIf LabelName = "str_shuffle" Then
-        S = str_Shuffle(strDQ(S))
+        s = str_Shuffle(strDQ(s)) 
     ElseIf LabelName = "characterupset" Then
-        S = characterUpset(strDQ(S))
+        s = characterUpset(strDQ(s)) 
     ElseIf LabelName = "str_split" Then
-        S = str_Split(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = str_Split(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "removenullvaluearray" Then
-        S = removeNullValueArray(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = removeNullValueArray(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "removerepeatvaluearray" Then
-        S = removeRepeatValueArray(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = removeRepeatValueArray(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlearray" Then
-        S = handleArray(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleArray(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "arraytostring" Then
-        S = arrayToString(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = arrayToString(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "testarraydata" Then
-        S = testArrayData()
+        s = testArrayData() 
     ElseIf LabelName = "selectsort" Then
-        S = selectSort(strDQ(S))
+        s = selectSort(strDQ(s)) 
     ElseIf LabelName = "quicksort" Then
-        S = quickSort(strDQ(S))
+        s = quickSort(strDQ(s)) 
     ElseIf LabelName = "bubblesort" Then
-        S = bubbleSort(strDQ(S))
+        s = bubbleSort(strDQ(s)) 
     ElseIf LabelName = "insertsort" Then
-        S = insertSort(strDQ(S))
+        s = insertSort(strDQ(s)) 
     ElseIf LabelName = "requicksort" Then
-        S = reQuickSort(strDQ(S))
+        s = reQuickSort(strDQ(s)) 
     ElseIf LabelName = "arrayreverse" Then
-        S = arrayReverse()
+        s = arrayReverse() 
     ElseIf LabelName = "responsearray" Then
-        Call responseArray(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        Call responseArray(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "max" Then
-        S = max(strDQ(S))
+        s = max(strDQ(s)) 
     ElseIf LabelName = "min" Then
-        S = min(strDQ(S))
+        s = min(strDQ(s)) 
     ElseIf LabelName = "testtwodimensionalarray" Then
-        S = testTwoDimensionalArray()
+        s = testTwoDimensionalArray() 
     ElseIf LabelName = "handlesplitarray" Then
-        S = handleSplitArray(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleSplitArray(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "twodimensionalarrayasc" Then
-        S = twoDimensionalArrayAsc(strDQ(S))
+        s = twoDimensionalArrayAsc(strDQ(s)) 
     ElseIf LabelName = "twodimensionalarraydesc" Then
-        S = twoDimensionalArrayDesc(strDQ(S))
+        s = twoDimensionalArrayDesc(strDQ(s)) 
     ElseIf LabelName = "csscompression" Then
-        S = cssCompression(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = cssCompression(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "deletecssnote" Then
-        S = deleteCssNote(strDQ(S))
+        s = deleteCssNote(strDQ(s)) 
     ElseIf LabelName = "uncsscompression" Then
-        S = unCssCompression(strDQ(S))
+        s = unCssCompression(strDQ(s)) 
     ElseIf LabelName = "trimvbcrlf" Then
-        S = trimVbCrlf(strDQ(S))
+        s = trimVbCrlf(strDQ(s)) 
     ElseIf LabelName = "phptrim" Then
-        S = pHPTrim(strDQ(S))
+        s = pHPTrim(strDQ(s)) 
     ElseIf LabelName = "ltrimvbcrlf" Then
-        S = ltrimVBcrlf(strDQ(S))
+        s = ltrimVBcrlf(strDQ(s)) 
     ElseIf LabelName = "rtrimvbcrlf" Then
-        S = rtrimVBcrlf(strDQ(S))
+        s = rtrimVBcrlf(strDQ(s)) 
     ElseIf LabelName = "trimvbtab" Then
-        S = trimVbTab(strDQ(S))
+        s = trimVbTab(strDQ(s)) 
     ElseIf LabelName = "ltrimvbtab" Then
-        S = lTrimVbTab(strDQ(S))
+        s = lTrimVbTab(strDQ(s)) 
     ElseIf LabelName = "rtrimvbtab" Then
-        S = rTrimVBTab(strDQ(S))
+        s = rTrimVBTab(strDQ(s)) 
     ElseIf LabelName = "gethtmlcssstyle" Then
-        S = getHtmlCssStyle(strDQ(S))
+        s = getHtmlCssStyle(strDQ(s)) 
     ElseIf LabelName = "handlecleancss" Then
-        S = handleCleanCss(strDQ(S))
+        s = handleCleanCss(strDQ(s)) 
     ElseIf LabelName = "removeexcessrow" Then
-        S = removeExcessRow(strDQ(S))
+        s = removeExcessRow(strDQ(s)) 
     ElseIf LabelName = "cssaddtostyle" Then
-        S = cssAddToStyle(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = cssAddToStyle(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "checkcssstyle" Then
-        S = checkCssStyle(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = checkCssStyle(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "cssstyleaddtoparam" Then
-        S = cssStyleAddToParam(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = cssStyleAddToParam(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "findcssstyle" Then
-        S = findCssStyle(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = findCssStyle(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlecutcsscode" Then
-        S = handleCutCssCode(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleCutCssCode(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlecutdivcode" Then
-        S = handleCutDivCode(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleCutDivCode(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "gethtmlbackgroundimglist" Then
-        S = getHtmlBackGroundImgList(strDQ(S))
+        s = getHtmlBackGroundImgList(strDQ(s)) 
     ElseIf LabelName = "gethandlewebhtmllink" Then
-        S = getHandleWebHtmlLink(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getHandleWebHtmlLink(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getcsslisturllist" Then
-        S = getCssListUrlList(strDQ(S))
+        s = getCssListUrlList(strDQ(s)) 
     ElseIf LabelName = "handlereadcsscontent" Then
-        S = handleReadCssContent(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleReadCssContent(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "handlecsspx" Then
-        S = handleCssPX(strDQ(S))
+        s = handleCssPX(strDQ(s)) 
     ElseIf LabelName = "handlehtmlstyle" Then
-        S = handleHtmlStyle(strDQ(S))
+        s = handleHtmlStyle(strDQ(s)) 
     ElseIf LabelName = "utf2gb" Then
-        S = UTF2GB(strDQ(S))
+        s = UTF2GB(strDQ(s)) 
     ElseIf LabelName = "checkutftogb2312" Then
-        S = CheckUTFToGB2312(strDQ(S))
+        s = CheckUTFToGB2312(strDQ(s)) 
     ElseIf LabelName = "convchinese" Then
-        S = ConvChinese(strDQ(S))
+        s = ConvChinese(strDQ(s)) 
     ElseIf LabelName = "utf8_urlencoding" Then
-        S = UTF8_URLEncoding(strDQ(S))
+        s = UTF8_URLEncoding(strDQ(s)) 
     ElseIf LabelName = "toutf8" Then
-        S = toUTF8(strDQ(S))
+        s = toUTF8(strDQ(s)) 
     ElseIf LabelName = "chinese2unicode" Then
-        S = chinese2unicode(strDQ(S))
+        s = chinese2unicode(strDQ(s)) 
     ElseIf LabelName = "isvalidhex" Then
-        S = isvalidhex(strDQ(S))
+        s = isvalidhex(strDQ(s)) 
     ElseIf LabelName = "escape" Then
-        S = escape(strDQ(S))
+        s = escape(strDQ(s)) 
     ElseIf LabelName = "unescape" Then
-        S = unescape(strDQ(S))
+        s = unescape(strDQ(s)) 
     ElseIf LabelName = "chinesetounicode" Then
-        S = ChineseToUnicode(strDQ(S))
+        s = ChineseToUnicode(strDQ(s)) 
     ElseIf LabelName = "unicodetochinese" Then
-        S = UnicodeToChinese(strDQ(S))
+        s = UnicodeToChinese(strDQ(s)) 
     ElseIf LabelName = "urlencode" Then
-        S = URLEncode(strDQ(S))
+        s = URLEncode(strDQ(s)) 
     ElseIf LabelName = "urldecode" Then
-        S = URLDecode(strDQ(S))
+        s = URLDecode(strDQ(s)) 
     ElseIf LabelName = "gbtoutf8" Then
-        S = GBtoUTF8(strDQ(S))
+        s = GBtoUTF8(strDQ(s)) 
     ElseIf LabelName = "encdecurl" Then
-        S = EncDecURL(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = EncDecURL(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "encurl" Then
-        S = EncURL(strDQ(S))
+        s = EncURL(strDQ(s)) 
     ElseIf LabelName = "decurl" Then
-        S = DecURL(strDQ(S))
+        s = DecURL(strDQ(s)) 
     ElseIf LabelName = "infocolor" Then
-        S = infoColor(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = infoColor(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "imgerror" Then
-        S = imgError()
+        s = imgError() 
     ElseIf LabelName = "targetstr" Then
-        S = targetStr(strDQ(S))
+        s = targetStr(strDQ(s)) 
     ElseIf LabelName = "atarget" Then
-        S = aTarget(strDQ(S))
+        s = aTarget(strDQ(s)) 
     ElseIf LabelName = "atitle" Then
-        S = aTitle(strDQ(S))
+        s = aTitle(strDQ(s)) 
     ElseIf LabelName = "imgalt" Then
-        S = imgAlt(strDQ(S))
+        s = imgAlt(strDQ(s)) 
     ElseIf LabelName = "imgtitlealt" Then
-        S = imgTitleAlt(strDQ(S))
+        s = imgTitleAlt(strDQ(s)) 
     ElseIf LabelName = "arel" Then
-        S = aRel(strDQ(S))
+        s = aRel(strDQ(s)) 
     ElseIf LabelName = "styleclass" Then
-        S = styleClass(strDQ(S))
+        s = styleClass(strDQ(s)) 
     ElseIf LabelName = "textfontb" Then
-        S = textFontB(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = textFontB(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "textfontcolor" Then
-        S = textFontColor(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = textFontColor(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "fontcolorfontb" Then
-        S = fontColorFontB(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = fontColorFontB(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getdefaultfilename" Then
-        S = getDefaultFileName()
+        s = getDefaultFileName() 
     ElseIf LabelName = "ahref" Then
-        S = aHref(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = aHref(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "imgsrc" Then
-        S = imgSrc(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = imgSrc(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "selecttarget" Then
-        S = selectTarget(strDQ(S))
+        s = selectTarget(strDQ(s)) 
     ElseIf LabelName = "selectfontcolor" Then
-        S = selectFontColor(strDQ(S))
+        s = selectFontColor(strDQ(s)) 
     ElseIf LabelName = "selectsex" Then
-        S = selectSex(strDQ(S))
+        s = selectSex(strDQ(s)) 
     ElseIf LabelName = "selectsessioncookies" Then
-        S = selectSessionCookies(strDQ(S))
+        s = selectSessionCookies(strDQ(s)) 
     ElseIf LabelName = "showselectlist" Then
-        S = showSelectList(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = showSelectList(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "showarticleliststyle" Then
-        S = showArticleListStyle(strDQ(S))
+        s = showArticleListStyle(strDQ(s)) 
     ElseIf LabelName = "showarticleinfostyle" Then
-        S = showArticleInfoStyle(strDQ(S))
+        s = showArticleInfoStyle(strDQ(s)) 
     ElseIf LabelName = "handlearticleliststyleorinfostyle" Then
-        S = handleArticleListStyleOrInfoStyle(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleArticleListStyleOrInfoStyle(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "showwebmoduleskins" Then
-        S = showWebModuleSkins(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = showWebModuleSkins(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "showradiolist" Then
-        S = showRadioList(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = showRadioList(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "inputcheckbox" Then
-        S = inputCheckBox(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = inputCheckBox(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "inputcheckbox3" Then
-        S = inputCheckBox3(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputCheckBox3(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handleinputcheckbox" Then
-        S = handleInputCheckBox(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = handleInputCheckBox(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "inputtext" Then
-        S = inputText(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputText(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "inputtext2" Then
-        S = inputText2(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = inputText2(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "inputlefttext" Then
-        S = inputLeftText(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputLeftText(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "inputlefttexthelptextright" Then
-        S = inputLeftTextHelpTextRight(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputLeftTextHelpTextRight(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "inputlefttextcontent" Then
-        S = inputLeftTextContent(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputLeftTextContent(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "inputrighttextcontent" Then
-        S = inputRightTextContent(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputRightTextContent(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handleinputleftrighttextcontent" Then
-        S = handleInputLeftRightTextContent(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = handleInputLeftRightTextContent(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "inputleftpasstext" Then
-        S = inputLeftPassText(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputLeftPassText(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "inputleftpasstextcontent" Then
-        S = inputLeftPassTextContent(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = inputLeftPassTextContent(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "inputhiddentext" Then
-        S = inputHiddenText(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = inputHiddenText(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "inputtextarea" Then
-        S = inputTextArea(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = inputTextArea(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "inputhiddentextarea" Then
-        S = inputHiddenTextArea(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = inputHiddenTextArea(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "handleinputhiddentextarea" Then
-        S = handleInputHiddenTextArea(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)),strDQ(Splxx(5)))
+        s = handleInputHiddenTextArea(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4)), strDQ(splxx(5))) 
     ElseIf LabelName = "showselectdirlist" Then
-        S = showSelectDirList(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = showSelectDirList(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "inputdisabled" Then
-        S = inputDisabled(strDQ(S))
+        s = inputDisabled(strDQ(s)) 
     ElseIf LabelName = "inputaddalt" Then
-        S = inputAddAlt(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = inputAddAlt(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "webtitle_inputtextarea" Then
-        S = webTitle_InputTextArea(strDQ(S))
+        s = webTitle_InputTextArea(strDQ(s)) 
     ElseIf LabelName = "webkeywords_inputtext" Then
-        S = webKeywords_InputText(strDQ(S))
+        s = webKeywords_InputText(strDQ(s)) 
     ElseIf LabelName = "webdescription_inputtextarea" Then
-        S = webDescription_InputTextArea(strDQ(S))
+        s = webDescription_InputTextArea(strDQ(s)) 
     ElseIf LabelName = "foldername_inputtext" Then
-        S = folderName_InputText(strDQ(S))
+        s = folderName_InputText(strDQ(s)) 
     ElseIf LabelName = "filename_inputtext" Then
-        S = fileName_InputText(strDQ(S))
+        s = fileName_InputText(strDQ(s)) 
     ElseIf LabelName = "templatepath_inputtext" Then
-        S = templatePath_InputText(strDQ(S))
+        s = templatePath_InputText(strDQ(s)) 
     ElseIf LabelName = "clickpinyinhtmlstr" Then
-        S = clickPinYinHTMLStr(strDQ(S))
+        s = clickPinYinHTMLStr(strDQ(s)) 
     ElseIf LabelName = "showfontcolorfontb" Then
-        S = showFontColorFontB(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = showFontColorFontB(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "showsort" Then
-        S = showSort(strDQ(S))
+        s = showSort(strDQ(s)) 
     ElseIf LabelName = "showwebnavtype" Then
-        S = showWebNavType(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)),strDQ(Splxx(5)))
+        s = showWebNavType(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4)), strDQ(splxx(5))) 
     ElseIf LabelName = "showonhtml" Then
-        S = showOnHtml(strDQ(S))
+        s = showOnHtml(strDQ(s)) 
     ElseIf LabelName = "showthrough" Then
-        S = showThrough(strDQ(S))
+        s = showThrough(strDQ(s)) 
     ElseIf LabelName = "showrecommend" Then
-        S = showRecommend(strDQ(S))
+        s = showRecommend(strDQ(s)) 
     ElseIf LabelName = "showonoffimg" Then
-        S = showOnOffImg(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = showOnOffImg(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "newshowonoffimg" Then
-        S = newShowOnOffImg(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = newShowOnOffImg(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "controldialogcss" Then
-        S = controlDialogCss()
+        s = controlDialogCss() 
     ElseIf LabelName = "batchdeletetempstr" Then
-        S = batchDeleteTempStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = batchDeleteTempStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "htmlformatting" Then
-        S = htmlFormatting(strDQ(S))
+        s = htmlFormatting(strDQ(s)) 
     ElseIf LabelName = "handlehtmlformatting" Then
-        S = handleHtmlFormatting(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = handleHtmlFormatting(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "checkhtmlformatting" Then
-        S = checkHtmlFormatting(strDQ(S))
+        s = checkHtmlFormatting(strDQ(s)) 
     ElseIf LabelName = "newreplacevalueparam" Then
-        S = newReplaceValueParam(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = newReplaceValueParam(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "newrparam" Then
-        S = newRParam(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = newRParam(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getcontentallrunstr" Then
-        S = getContentAllRunStr(strDQ(S))
+        s = getContentAllRunStr(strDQ(s)) 
     ElseIf LabelName = "getcontentrunstr" Then
-        S = getContentRunStr(strDQ(S))
+        s = getContentRunStr(strDQ(s)) 
     ElseIf LabelName = "checkcontentrunstr" Then
-        S = checkContentRunStr(strDQ(S))
+        s = checkContentRunStr(strDQ(s)) 
     ElseIf LabelName = "handledoublequotation" Then
-        S = handleDoubleQuotation(strDQ(S))
+        s = handleDoubleQuotation(strDQ(s)) 
     ElseIf LabelName = "strdq" Then
-        S = strDQ(strDQ(S))
+        s = strDQ(strDQ(s)) 
     ElseIf LabelName = "handletoarray" Then
-        S = handleToArray(strDQ(S))
+        s = handleToArray(strDQ(s)) 
     ElseIf LabelName = "handlecontentcode" Then
-        S = handleContentCode(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleContentCode(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handleinmodule" Then
-        S = handleInModule(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = handleInModule(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "clearrparam" Then
-        S = clearRParam(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = clearRParam(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "atrparam" Then
-        S = atRParam(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = atRParam(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "rparam" Then
-        S = rParam(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = rParam(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "handlerparam" Then
-        S = handleRParam(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = handleRParam(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getconfigblock" Then
-        S = getConfigBlock(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getConfigBlock(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getconfigblock2" Then
-        S = getConfigBlock2(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getConfigBlock2(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getconfigblock3" Then
-        S = getConfigBlock3(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getConfigBlock3(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getcutconfigblock" Then
-        S = getCutConfigBlock(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = getCutConfigBlock(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "getconfigcontentblock" Then
-        S = getConfigContentBlock(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getConfigContentBlock(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getconfigfileblock" Then
-        S = getConfigFileBlock(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getConfigFileBlock(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "setconfigfileblock" Then
-        S = setConfigFileBlock(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = setConfigFileBlock(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "delconfigblock" Then
-        S = delConfigBlock(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = delConfigBlock(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "delconfigblock2" Then
-        S = delConfigBlock2(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = delConfigBlock2(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "delconfigblock3" Then
-        S = delConfigBlock3(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = delConfigBlock3(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "delcutconfigblock" Then
-        S = delCutConfigBlock(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = delCutConfigBlock(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "getfileparamvalue" Then
-        S = getFileParamValue(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getFileParamValue(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "setfileparamvalue" Then
-        S = setFileParamValue(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = setFileParamValue(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "handlegetsetfileparamevalue" Then
-        S = handleGetSetFileParameValue(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = handleGetSetFileParameValue(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "setrparam" Then
-        S = setRParam(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = setRParam(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "addreplacerparam" Then
-        S = addReplaceRParam(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = addReplaceRParam(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "deletestrcut" Then
-        S = deleteStrCut(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = deleteStrCut(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "replacecontentmodule" Then
-        S = replaceContentModule(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)),strDQ(Splxx(4)))
+        s = replaceContentModule(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3)), strDQ(splxx(4))) 
     ElseIf LabelName = "replacecontentrowmodule" Then
-        S = replaceContentRowModule(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = replaceContentRowModule(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "handleconfigfile" Then
-        Call handleConfigFile(strDQ(S))
+        Call handleConfigFile(strDQ(s)) 
     ElseIf LabelName = "getrparam" Then
-        S = getRParam(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = getRParam(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getdefaultvalue" Then
-        S = getDefaultValue(strDQ(S))
+        s = getDefaultValue(strDQ(s)) 
     ElseIf LabelName = "addmodulereplacearray" Then
-        Call addModuleReplaceArray(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        Call addModuleReplaceArray(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "modulefindcontent" Then
-        S = moduleFindContent(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = moduleFindContent(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "batchfindfunction" Then
-        S = BatchFindFunction(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = BatchFindFunction(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getfindfilefunction" Then
-        S = GetFindFileFunction(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = GetFindFileFunction(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "getaspcode" Then
-        S = GetASPCode(strDQ(S))
+        s = GetASPCode(strDQ(s)) 
     ElseIf LabelName = "handlegetaspcode" Then
-        S = HandleGetAspCode(strDQ(Splxx(0)),strDQ(Splxx(1)))
+        s = HandleGetAspCode(strDQ(splxx(0)), strDQ(splxx(1))) 
     ElseIf LabelName = "delaspnote" Then
-        S = DelAspNote(strDQ(S))
+        s = DelAspNote(strDQ(s)) 
     ElseIf LabelName = "findaspfunction" Then
-        S = FindAspFunction(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)),strDQ(Splxx(3)))
+        s = FindAspFunction(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2)), strDQ(splxx(3))) 
     ElseIf LabelName = "firstletteruppercase" Then
-        S = FirstLetterUppercase(strDQ(S))
+        s = FirstLetterUppercase(strDQ(s)) 
     ElseIf LabelName = "contentlushow" Then
-        S = ContentLUShow(strDQ(S))
+        s = ContentLUShow(strDQ(s)) 
     ElseIf LabelName = "asptovb" Then
-        S = ASPToVB(strDQ(S))
+        s = ASPToVB(strDQ(s)) 
     ElseIf LabelName = "asptovbnet" Then
-        S = ASPToVBNET(strDQ(S))
+        s = ASPToVBNET(strDQ(s)) 
     ElseIf LabelName = "dimadddefaultvalue" Then
-        S = dimAddDefaultValue(strDQ(S))
+        s = dimAddDefaultValue(strDQ(s)) 
     ElseIf LabelName = "functionparamtonet" Then
-        S = functionParamtoNet(strDQ(S))
+        s = functionParamtoNet(strDQ(s)) 
     ElseIf LabelName = "getbeforenstr" Then
-        S = GetBeforeNStr(strDQ(Splxx(0)),strDQ(Splxx(1)),strDQ(Splxx(2)))
+        s = GetBeforeNStr(strDQ(splxx(0)), strDQ(splxx(1)), strDQ(splxx(2))) 
     ElseIf LabelName = "getstrdim" Then
-        S = getStrDim(strDQ(S))
+        s = getStrDim(strDQ(s)) 
     ElseIf LabelName = "getfunctionstrdim" Then
-        S = getFunctionStrDim(strDQ(S))
+        s = getFunctionStrDim(strDQ(s)) 
     ElseIf LabelName = "getrandcolor" Then
-        S = getRandColor()
-'footer end
+        s = getRandColor() 
+        'footer end
 
 
 
@@ -1738,12 +1739,12 @@ End Function
 
 
 '内部模块处理 HandleInModule(Content,"start") HandleInModule(Content,"end")
-Function handleInModule(content, SType)
-    SType = LCase(CStr(SType)) 
-    If SType = "1" Or SType = "start" Then
+Function handleInModule(content, sType)
+    sType = LCase(CStr(sType)) 
+    If sType = "1" Or sType = "start" Then
         content = Replace(content, "\'", "\|*|\") 
         content = Replace(content, "\=", "\|&|\")                                   '后加20141024
-    ElseIf SType = "2" Or SType = "end" Then
+    ElseIf sType = "2" Or sType = "end" Then
         content = Replace(content, "\|*|\", "'") 
         content = Replace(content, "\$", "$") 
         content = Replace(content, "\}", "}") 
@@ -1771,7 +1772,7 @@ End Function
 '读单个参数值  Title = RParam(Action,"Title")     起强版获取参数值20150723
 Function rParam(ByVal action, ByVal lableStr)
     Dim s 
-	
+
     '原始 单引号
     s = handleRParam(action, lableStr, "'") 
     '原始 双引号
@@ -1815,39 +1816,39 @@ Function rParam(ByVal action, ByVal lableStr)
 End Function 
 '处理 读单个参数值
 Function handleRParam(ByVal action, ByVal LableStr, ByVal typeStr)
-    Dim LalbeName, endTypeStr, isTrue, s
+    Dim LalbeName, endTypeStr, isTrue, s 
     isTrue = False                                                                  '是否为真
     endTypeStr = IIF(typeStr <> "", typeStr, " ") 
     action = vbCrLf & " " & action                                                  '给它也加个空格，要不然在没有函数，前面就没有空格
     '默认前面加空格
     LalbeName = " " & LableStr                                                      '加个空格是为了精准
     '不存在  前面加点
-    If InStr(action, LalbeName & "=" & typeStr) = False and isTrue = False Then
+    If InStr(action, LalbeName & "=" & typeStr) = False And isTrue = False Then
         LalbeName = "'" & LableStr 
     Else
         isTrue = True 
     End If 
     '不存在 前面加双引号
-    If InStr(action, LalbeName & "=" & typeStr) = False and isTrue = False Then
+    If InStr(action, LalbeName & "=" & typeStr) = False And isTrue = False Then
         LalbeName = """" & LableStr 
     Else
         isTrue = True 
     End If 
     '不存在    前面加TAB
-    If InStr(action, LalbeName & "=" & typeStr) = False and isTrue = False Then
+    If InStr(action, LalbeName & "=" & typeStr) = False And isTrue = False Then
         LalbeName = vbTab & LableStr 
     Else
         isTrue = True 
     End If 
     '不存在    前面加换行
-    If InStr(action, LalbeName & "=" & typeStr) = False and isTrue = False Then
+    If InStr(action, LalbeName & "=" & typeStr) = False And isTrue = False Then
         LalbeName = vbCrLf & LableStr 
     Else
         isTrue = True 
     End If 
     If InStr(action, LalbeName & "=" & typeStr) > 0 And InStr(action, endTypeStr) > 0 Then
         s = StrCut(action, LalbeName & "=" & typeStr, endTypeStr, 2) 
-        s = handleInModule(s, "end")                              '处理里面参数 追加于20141031            还原内容值
+        s = handleInModule(s, "end")                                                    '处理里面参数 追加于20141031            还原内容值
 
         If s = "" Then
             s = "[#空*值_#]" 
@@ -1865,7 +1866,7 @@ Function handleRParam(ByVal action, ByVal LableStr, ByVal typeStr)
         'handleRParam=false
     'end if
     End If 
-	handleRParam=s
+    handleRParam = s 
 End Function 
 
 
@@ -1883,59 +1884,60 @@ Function getConfigBlock3(ConfigContent, BlockName)
 End Function 
 '截取配置内容中块 20150105
 Function getCutConfigBlock(ConfigContent, BlockName, StartLable, EndLable)
-    Dim StartStr, EndStr 
-    StartStr = StartLable & BlockName & EndLable 
-    EndStr = StartLable & BlockName & EndLable 
+    Dim startStr, endStr 
+    startStr = StartLable & BlockName & EndLable 
+    endStr = StartLable & BlockName & EndLable 
     '开始标签处理
-    If InStr(ConfigContent, StartStr & " start") > 0 Then
-        StartStr = StartStr & " start" 
+    If InStr(ConfigContent, startStr & " start") > 0 Then
+        startStr = startStr & " start" 
     Else
-        StartStr = StartStr & " Start" 
+        startStr = startStr & " Start" 
     End If 
     '结束标签处理
-    If InStr(ConfigContent, EndStr & " end") > 0 Then
-        EndStr = EndStr & " end" 
+    If InStr(ConfigContent, endStr & " end") > 0 Then
+        endStr = endStr & " end" 
     Else
-        EndStr = EndStr & " End" 
+        endStr = endStr & " End" 
     End If 
 
-    If InStr(ConfigContent, StartStr) > 0 And InStr(ConfigContent, EndStr) > 0 Then
-        getCutConfigBlock = StrCut(ConfigContent, StartStr, EndStr, 2) 
+    If InStr(ConfigContent, startStr) > 0 And InStr(ConfigContent, endStr) > 0 Then
+        getCutConfigBlock = StrCut(ConfigContent, startStr, endStr, 2) 
     End If 
 End Function 
 '获得配置内容块20150401
 Function getConfigContentBlock(ByVal ConfigContent, BlockName)
     getConfigContentBlock = getCutConfigBlock(ConfigContent, BlockName, "", "") 
 End Function 
-'获得配置文件里块20150401  GetConfigFileBlock(ConfigPath, "#txtRunCode#")  测试标签块时则自动创建
+'获得配置文件里块20150401  getConfigFileBlock(ConfigPath, "#txtRunCode#")  测试标签块时则自动创建
 Function getConfigFileBlock(ByVal ConfigFile, BlockName)
-    Dim content, FindStr, ReplaceStr, StartStr, EndStr 
+    Dim content, FindStr, replaceStr, startStr, endStr 
     content = GetFText(ConfigFile) 
     'MsgBox ("ConfigFile=" & ConfigFile & "(" & CheckFile(ConfigFile) & "，" & GetFSize(ConfigFile) & ")" & vbCrLf & "Content=" & Content)
-    StartStr = BlockName & " start" 
-    EndStr = BlockName & " end" 
-    ReplaceStr = StartStr & "" & EndStr 
-    If InStr(content, StartStr) > 0 And InStr(content, EndStr) > 0 Then
-        FindStr = StrCut(content, StartStr, EndStr, 2) 
+    startStr = BlockName & " start" 
+    endStr = BlockName & " end" 
+    replaceStr = startStr & "" & endStr 
+    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+        FindStr = StrCut(content, startStr, endStr, 2) 
         getConfigFileBlock = FindStr 
     Else
-        Call CreateFile(ConfigFile, content & ReplaceStr) 
+        Call CreateFile(ConfigFile, content & replaceStr) 
     End If 
 End Function 
-'设置配置文件里块 20150401 call SetConfigFileBlock(ConfigFile, "aaabbc", "#上传目录列表#")  存在则更新
+'设置配置文件里块 20150401 call setConfigFileBlock(ConfigFile, "aaabbc", "#上传目录列表#")  存在则更新
 Function setConfigFileBlock(ByVal ConfigFile, ByVal WriteContent, BlockName)
-    Dim content, FindStr, ReplaceStr, StartStr, EndStr 
+    Dim content, FindStr, replaceStr, startStr, endStr 
     content = GetFText(ConfigFile) 
-    StartStr = BlockName & " start" 
-    EndStr = BlockName & " end" 
-    ReplaceStr = StartStr & WriteContent & EndStr 
-    If InStr(content, StartStr) > 0 And InStr(content, EndStr) > 0 Then
-        FindStr = StrCut(content, StartStr, EndStr, 1) 
-        content = Replace(content, FindStr, ReplaceStr) 
-        Call CreateFile(ConfigFile, content) 
+    startStr = BlockName & " start" 
+    endStr = BlockName & " end" 
+    replaceStr = startStr & WriteContent & endStr 
+    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+        FindStr = StrCut(content, startStr, endStr, 1) 
+        content = Replace(content, FindStr, replaceStr) 
     Else
-        Call CreateFile(ConfigFile, content & ReplaceStr) 
+		content=content & replaceStr 
     End If 
+    Call CreateFile(ConfigFile, content) 
+	setConfigFileBlock=content
 End Function 
 
 '删除配置块 20150322
@@ -1952,11 +1954,11 @@ Function delConfigBlock3(Config, BlockName)
 End Function 
 '删除配置内容 20150322
 Function delCutConfigBlock(Config, BlockName, StartLable, EndLable)
-    Dim StartStr, EndStr, s 
-    StartStr = StartLable & BlockName & EndLable & " start" 
-    EndStr = StartLable & BlockName & EndLable & " end" 
-    If InStr(Config, StartStr) > 0 And InStr(Config, EndStr) > 0 Then
-        s = StrCut(Config, StartStr, EndStr, 1) 
+    Dim startStr, endStr, s 
+    startStr = StartLable & BlockName & EndLable & " start" 
+    endStr = StartLable & BlockName & EndLable & " end" 
+    If InStr(Config, startStr) > 0 And InStr(Config, endStr) > 0 Then
+        s = StrCut(Config, startStr, endStr, 1) 
         Config = Replace(Config, s, "") 
     End If 
     delCutConfigBlock = Config 
@@ -1966,16 +1968,16 @@ End Function
 
 
 '获得文件里设置参数　20150315
-Function getFileParamValue(ConfigPath, ParamName)
-    getFileParamValue = HandleGetSetFileParameValue(ConfigPath, ParamName, "", "获得") 
+Function getFileParamValue(ConfigPath, paramName)
+    getFileParamValue = HandleGetSetFileParameValue(ConfigPath, paramName, "", "获得") 
 End Function 
 '设置文件里设置参数　20150315
-Function setFileParamValue(ConfigPath, ParamName, ValueStr)
-    setFileParamValue = HandleGetSetFileParameValue(ConfigPath, ParamName, ValueStr, "设置") 
+Function setFileParamValue(ConfigPath, paramName, valueStr)
+    setFileParamValue = HandleGetSetFileParameValue(ConfigPath, paramName, valueStr, "设置") 
 End Function 
 '处理获得设置文件参数值　20150315
-Function handleGetSetFileParameValue(ConfigPath, ParamName, ValueStr, SType)
-    Dim content, StartStr, EndStr, YunStr, ReplaceStr 
+Function handleGetSetFileParameValue(ConfigPath, paramName, valueStr, sType)
+    Dim content, startStr, endStr, YunStr, replaceStr 
     '文件为假时，创建一个空文件看看，如果不能创建这个文件则说明这个文件地址有问题，则退出20150324
     If checkFile(ConfigPath) = False Then
         Call CreateFile(ConfigPath, "") 
@@ -1983,34 +1985,34 @@ Function handleGetSetFileParameValue(ConfigPath, ParamName, ValueStr, SType)
     If checkFile(ConfigPath) = False Then Exit Function                             '文件不存在则退出
 
     content = TrimVbCrlf(GetFText(ConfigPath)) 
-    StartStr = vbCrLf & ParamName & "=" : EndStr = vbCrLf 
-    ReplaceStr = vbCrLf & ParamName & "=" & ValueStr & vbCrLf 
-    If InStr(vbCrLf & content, StartStr) > 0 And InStr(content & vbCrLf, EndStr) > 0 Then
-        YunStr = StrCut(vbCrLf & content & vbCrLf, StartStr, EndStr, 2) 
-        If SType = "获得" Then
+    startStr = vbCrLf & paramName & "=" : endStr = vbCrLf 
+    replaceStr = vbCrLf & paramName & "=" & valueStr & vbCrLf 
+    If InStr(vbCrLf & content, startStr) > 0 And InStr(content & vbCrLf, endStr) > 0 Then
+        YunStr = StrCut(vbCrLf & content & vbCrLf, startStr, endStr, 2) 
+        If sType = "获得" Then
             handleGetSetFileParameValue = YunStr 
             Exit Function 
         End If 
-        YunStr = StartStr & YunStr & EndStr 
-        content = Replace(vbCrLf & content & vbCrLf, YunStr, ReplaceStr) 
+        YunStr = startStr & YunStr & endStr 
+        content = Replace(vbCrLf & content & vbCrLf, YunStr, replaceStr) 
         Call CreateFile(ConfigPath, content) 
     Else
-        Call CreateFile(ConfigPath, content & vbCrLf & TrimVbCrlf(ReplaceStr)) 
+        Call CreateFile(ConfigPath, content & vbCrLf & TrimVbCrlf(replaceStr)) 
     End If 
 End Function 
 
 '设置内容里参数 20150611
 Function setRParam(ConfigPath, paramName, paramValue, isNoAdd)
-    Dim content, StartStr, EndStr, s 
+    Dim content, startStr, endStr, s 
     content = PHPTrim(GetFText(ConfigPath)) 
-    StartStr = paramName & "='" : EndStr = "'" 
-    If InStr(content, StartStr) > 0 And InStr(content, EndStr) > 0 Then
-        s = StrCut(content, StartStr, EndStr, 2) 
-        content = Replace(content, StartStr & s & EndStr, StartStr & paramValue & EndStr) 
+    startStr = paramName & "='" : endStr = "'" 
+    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+        s = StrCut(content, startStr, endStr, 2) 
+        content = Replace(content, startStr & s & endStr, startStr & paramValue & endStr) 
         Call CreateFile(ConfigPath, content) 
 
     ElseIf Trim(isNoAdd) = "1" Then
-        Call CreateAddFile(ConfigPath, StartStr & paramValue & EndStr) 
+        Call createAddFile(ConfigPath, startStr & paramValue & endStr) 
     End If 
 End Function 
 
@@ -2027,13 +2029,13 @@ Function addReplaceRParam(ByVal content, startStr, endStr, ByVal valueStr)
     addReplaceRParam = content 
 End Function 
 '删除指定字符N次
-Function deleteStrCut(ByVal content, ByVal StartStr, ByVal EndStr, ByVal CutType, nDelCount)
+Function deleteStrCut(ByVal content, ByVal startStr, ByVal endStr, ByVal cutType, nDelCount)
     Dim i, s 
     If nDelCount = 0 Then
         nDelCount = 99 
     End If 
     For i = 0 To nDelCount
-        s = getStrCut(content, StartStr, EndStr, 1) 
+        s = getStrCut(content, startStr, endStr, 1) 
         If s <> "" Then
             content = Replace(content, s, "") 
         Else
@@ -2052,30 +2054,30 @@ End Function
 'call Rwend(replaceContentModule(getftext("1.html"),"<div>","</div>","替换内容","外部追加在前"))
 'call Rwend(replaceContentModule(getftext("1.html"), "<div>", "</div>", "替换内容", "外部追加"))
 '替换内容里模块   ReplaceType(空为替换，追加在前，追加在后(追加)，外部追加在前，外部追加在后(外部追加))
-Function replaceContentModule(ByVal content, StartStr, EndStr, ReplaceValue, ReplaceType)
+Function replaceContentModule(ByVal content, startStr, endStr, ReplaceValue, ReplaceType)
     Dim splStr, splxx, s, i, splType, valueList, newStartStr, newEndStr, sourceValueList, sourceValue, tempS, newReplaceValue 
-    If InStr(content, StartStr) = False and InStr(content, EndStr) = False Then
+    If InStr(content, startStr) = False And InStr(content, endStr) = False Then
         replaceContentModule = content 
         Exit Function 
     End If 
     splType = "$Array$" 
     For i = 1 To 99
-        If InStr(content, StartStr) > 0 and InStr(content, EndStr) > 0 Then
-            s = StrCut(content, StartStr, EndStr, 1) : tempS = s 
-            s = Mid(s, Len(StartStr) + 1, Len(s) - Len(StartStr) - Len(EndStr)) 
-            newStartStr = getEachStrAddValue(StartStr, "|*|") 
+        If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+            s = StrCut(content, startStr, endStr, 1) : tempS = s 
+            s = Mid(s, Len(startStr) + 1, Len(s) - Len(startStr) - Len(endStr)) 
+            newStartStr = getEachStrAddValue(startStr, "|*|") 
             If InStr(splType & valueList & splType, splType & newStartStr & splType) = False Then
                 If valueList <> "" Then valueList = valueList & splType 
                 valueList = valueList & newStartStr 
                 If sourceValueList <> "" Then sourceValueList = sourceValueList & splType 
-                sourceValueList = sourceValueList & StartStr 
+                sourceValueList = sourceValueList & startStr 
             End If 
-            newEndStr = getEachStrAddValue(EndStr, "|*|") 
+            newEndStr = getEachStrAddValue(endStr, "|*|") 
             If InStr(splType & valueList & splType, splType & newEndStr & splType) = False Then
                 If valueList <> "" Then valueList = valueList & splType 
                 valueList = valueList & newEndStr 
                 If sourceValueList <> "" Then sourceValueList = sourceValueList & splType 
-                sourceValueList = sourceValueList & EndStr 
+                sourceValueList = sourceValueList & endStr 
             End If 
 
             If ReplaceType = "追加在前" Then
@@ -2178,7 +2180,7 @@ Function getRParam(ByVal content, ByVal lableStr)
                             isValue = True 
                             Exit For 
                         End If 
-                    ElseIf s = " " and c = "" Then
+                    ElseIf s = " " And c = "" Then
 
                     ElseIf s = " " Or s = "/" Or s = ">" Then
                         isValue = True 
@@ -2208,34 +2210,34 @@ Function getDefaultValue(action)
 End Function 
 
 '添加模块替换数组
-sub addModuleReplaceArray(title,content)
-	dim i
-	for i=1 to ubound(ModuleReplaceArray)-1
-		if ModuleReplaceArray(i,0)="" then
-			ModuleReplaceArray(i,0)=title
-			ModuleReplaceArray(0,i)=content
-			exit sub
-		end if
-	next
-end sub
+Sub addModuleReplaceArray(title, content)
+    Dim i 
+    For i = 1 To UBound(ModuleReplaceArray) - 1
+        If ModuleReplaceArray(i, 0) = "" Then
+            ModuleReplaceArray(i, 0) = title 
+            ModuleReplaceArray(0, i) = content 
+            Exit Sub 
+        End If 
+    Next 
+End Sub 
 
 '根据标签找到对应内容
 Function moduleFindContent(action, ModuleName)
-    Dim defaultStr, StartStr, EndStr 
-    defaultStr = rParam(action, ModuleName)                                         '把转小写LCase去掉 （20151008） 
+    Dim defaultStr, startStr, endStr 
+    defaultStr = rParam(action, ModuleName)                                         '把转小写LCase去掉 （20151008）
 
-    StartStr = "<!--#" & defaultStr & " start#-->" 
-    EndStr = "<!--#" & defaultStr & " end#-->"  
+    startStr = "<!--#" & defaultStr & " start#-->" 
+    endStr = "<!--#" & defaultStr & " end#-->" 
     '[_18年独家一次性祛斑第一品牌2014年10月21日 10时59分]
     'Call Echo("Default",Default)
     '判断是否存在
-    If InStr(code, StartStr) > 0 And InStr(code, EndStr) > 0 Then
-        defaultStr = StrCut(code, StartStr, EndStr, 2) 
+    If InStr(code, startStr) > 0 And InStr(code, endStr) > 0 Then
+        defaultStr = StrCut(code, startStr, endStr, 2) 
     Else
-        StartStr = "<!--#" & defaultStr 
-        EndStr = "#-->" 
-        If InStr(code, StartStr) > 0 And InStr(code, EndStr) > 0 Then
-            defaultStr = StrCut(code, StartStr, EndStr, 2) 
+        startStr = "<!--#" & defaultStr 
+        endStr = "#-->" 
+        If InStr(code, startStr) > 0 And InStr(code, endStr) > 0 Then
+            defaultStr = StrCut(code, startStr, endStr, 2) 
 
         'Call Echo("有","StartStr=" & StartStr & ",EndStr=" & EndStr  & ",Default=" & Default)
         End If 
@@ -2245,13 +2247,9 @@ Function moduleFindContent(action, ModuleName)
     Dim deletedefault 
     deletedefault = rParam(action, "deletedefault") 
     If deletedefault = "true" Then
-        Call addModuleReplaceArray("【删除】", StartStr & defaultStr & EndStr) 
+        Call addModuleReplaceArray("【删除】", startStr & defaultStr & endStr) 
     End If 
     moduleFindContent = defaultStr 
 End Function 
-%>  
-
-
-
-
+%>   
 

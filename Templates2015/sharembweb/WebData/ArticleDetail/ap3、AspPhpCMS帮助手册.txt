@@ -8,7 +8,7 @@
 【adddatetime】2016-02-18 08:51:11
 【filename】/aspphpcms/aspphpcmshelp.html
 【customaurl】
-【flags】|c|
+【flags】
 【relatedtags】ASP,在线ASP转PHP
 【bodycontent】
 [&全部换行&]AspPhpCMS帮助手册

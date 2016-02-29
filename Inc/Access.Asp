@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
@@ -255,6 +255,33 @@ Function getFieldList(tableName)
     Next : tempRs.Close 
     getFieldList = c 
 End Function 
+'获得表字段配置列表20160226
+Function getFieldConfigList(tableName)
+    Dim Fn, c, Fld, n ,s
+    On Error Resume Next 
+    '字段
+    tempRs.Open "Select * From [" & tableName & "]", conn, 1, 1 
+    If tempRs.Fields.Count = 0 Then Exit Function                                   '为零退出
+    Fn = tempRs.Fields.Count 
+    If Err <> 0 Then Call eerr("字段", tempRs.Fields.Count) 
+    c = "," 
+    For n = 1 To Fn - 1
+        Set Fld = tempRs.Fields.Item(n)
+			if Fld.Type=3 or Fld.Type=11 then
+				s="|numb|0"
+			elseif Fld.Type=7 then
+				s="|time|"
+			elseif Fld.Type=203 then
+				s="|textarea|"				
+			else
+				s="||"
+			end if
+            c = c & Fld.Name & s & ","
+			
+        Set Fld = Nothing 
+    Next : tempRs.Close 
+    getFieldConfigList = c 
+End Function
 '获得不同数据库表字段列表 (.mdb Or .xls)
 Function getDifferentTableFieldList(ConnObj, Table)
     Dim Fn, c, Fld, n 
@@ -610,7 +637,6 @@ Function showAccessStream(conn, tableName, fieldName, id, addSql)
         End If : rs.Close 
 End Function
 %>     
-
 
 
 

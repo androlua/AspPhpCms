@@ -11,11 +11,21 @@
 【flags】|c|
 【relatedtags】ASP,在线ASP转PHP
 【bodycontent】
-[&全部换行&]AspPhpCMS下载
-<a href="https://github.com/313801120/AspPhpCms" class="ablue"  target="_blank">Github下载AspPhpCms</a>
-<a href="http://sharembweb.com/Tools/zip/AspPhpCms.chm" class="ablue" rel="nofollow" target="_blank">下载AspPhpCms帮助文档(chm版)</a>
- 
+
+
+<strong>AspPhpCMS网站内容管理系统下载列表</strong><br>
+<ul class="list">
+<li><a href="https://github.com/313801120/AspPhpCms"  target="_blank">【Github下载】AspPhpCms内容管理系统 最新版</a></li>
+<li><a href="http://member.down.admin5.com/asp/131548.html" target="_blank">【admin5下载】AspPhpCms内容管理系统 v1.0</a></li>
+<li><a href="http://sharembweb.com/Tools/zip/AspPhpCms.chm" rel="nofollow" target="_blank">下载AspPhpCms帮助文档(chm版)</a></li>
+</ul>
+
+
 【/bodycontent】
 
+
+
+
+http://member.down.admin5.com/plus/view.php?aid=131548
 
  

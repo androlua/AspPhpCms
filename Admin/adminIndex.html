@@ -183,13 +183,13 @@
 
 <div class="header">
 	<div class="top">
-        <li class="logo">ASPPHPCMS V1.0</li>
+        <li class="logo">{$webVersion$}</li>
         <li class="fleftwrap">
-            您好！{$adminusername$} [超级管理员]
+            您好！{$adminusername$} [{$adminflags$}]
         </li>
         <li class="frightbox"> 
             <a href="javascript:outLogin()" >退出</a>  
-            <a href="#" onClick="return ShowHiddeLeft();">帮助？</a>
+            <a href="javascript:window1('help.html','后台地图');">帮助？</a>
         	<a href="javascript:window1('adminMap.html','后台地图');">后台地图</a>  
         </li>
     </div>
@@ -223,10 +223,11 @@
             <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=ArticleDetail','分类信息');">分类信息</li>      
             <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=TableComment','评论');">评论</li>      
             <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=OnePage','单页管理');">单页管理</li>    
-            <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=Admin','系统用户管理');">系统用户管理</li>
+            <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=Admin','后台管理员');">后台管理员</li>
             
               
             
+            <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=SearchStat','搜索统计');">搜索统计</li>
             <li class="item" onClick="window1('?act=dispalyManageHandle&actionType=WebsiteStat','网站统计');">网站统计</li> 
             <li class="item" onClick="window1('?act=displayLayout&templateFile=manageMakeHtml.html','生成HTML');">生成HTML</li> 
             <li class="item" onClick="window1('?act=displayLayout&templateFile=makeSiteMap.html','生成SiteMap');">生成SiteMap</li> 
@@ -266,77 +267,19 @@
     <div class="mg10">
 	   <div class="lbtop"><div class="lbsub">管理员信息</div></div>
 	   <div class="lbbody">
-            用 户 名：  {$adminusername$}<br>
+            用 户 名：  {$adminusername$}&nbsp; <a href="javascript:window1('?act=addEditHandle&actionType=Admin&id=[$adminId$]','后台管理员');">修改密码</a><br>
             权限权限：   超级管理员<br>
-            表前缀：   {$DB_PREFIX$}<br>
-            <!--
-            <a href="/Inc/Create_Html.Asp?act=showweb&gl=edit" target="_blank">进入在线修改模式(旧版)</a><br>
-            -->
-            <a href="{$WEB_VIEWURL$}?gl=edit" target="_blank">进入在线修改模式</a> 
-            
+            表前缀：   {$DB_PREFIX$}<br> 
+       		<input type="button" class="btnclick2" value="进入在线修改模式" onClick="window.open('{$WEB_VIEWURL$}?gl=edit');" />
 	   </div>
 	</div>
-    
-    <div class="mbox1">
-    	<a href="#" class="atitleleft mgr6">网站基本信息</a>
-    	<div class="atitleleft">网站基本信息</div>
-    	<div class="atitleright">网站基本信息</div>&nbsp;
-        <div class="clear"></div>
-        <div class="acontent">
-        	<a href="WebSiteConfig.Asp">如果您的游览器没有自动跳转,请点这里&gt;&gt;</a><br />
-            如果您的游览器没有自动跳转,请点这里<br />
-            如果您的游览器没有自动跳转,请点这里<br />
-            <div class="onCorrect">输入正确</div>
-            <div class="onFocus">真实姓名应该为2-20位之间</div>
-            <div class="onError">E-mail格式错误</div>
-            <div class="onShow">显示信息</div>
-            <div class="onLamp">显示onLamp</div>
-            <div class="onTime">显示onTime</div>
-            <div class="onHelp">显示onHelp</div> 
-            <div class="clear10"></div>
-            <script language="javascript" type="text/javascript" src="js/colorpicker.js"></script>
-            <img src="images/colour.png" width="15" height="16" onClick="colorpicker('title_colorpanel','set_title_color');" style="cursor:hand">
-             <span id="title_colorpanel" style="position:absolute; z-index:200" class="colorpanel"></span>
-             <img src="images/bold.png" width="10" height="10" onClick="input_font_bold()" style="cursor:hand">
-             <input type="text" id="title" class="measure-input" value="月月月月月月月月月月月2222" />
-            <input type="text" name="style_color" id="style_color" value="">
-            <input type="text" name="style_font_weight" id="style_font_weight" value="">
-            
-            <div class="clear10"></div>
- 			<link rel="stylesheet" type="text/css" href="js/calendar/jscal2.css"/>
-			<link rel="stylesheet" type="text/css" href="js/calendar/border-radius.css"/>
-			<link rel="stylesheet" type="text/css" href="js/calendar/win2k.css"/>
-            <script type="text/javascript" src="js/calendar/calendar.js"></script>
-            <script type="text/javascript" src="js/calendar/lang/en.js"></script>
-            <input type="text" name="info[inputtime]" id="inputtime" value="2015-11-13 13:47:17" size="21" class="date input-text" readonly="">
-			<script type="text/javascript">
-			Calendar.setup({
-			weekNumbers: true,
-		    inputField : "inputtime",
-		    trigger    : "inputtime",
-		    dateFormat: "%Y-%m-%d %H:%M:%S",
-		    showTime: true,
-		    minuteStep: 1,
-		    onSelect   : function() {this.hide();}
-			});
-        </script> 
-        
-        
-		<div class="clear10"></div>
-        <div class="explain-col">
-        	温馨提示：请在添加、修改栏目全部完成后，更新栏目缓存
-        </div>
-		<div class="clear10"></div>
-        <input type="button" class="btnclick1" value="按钮一" />
-        <input type="button" class="btnclick2" value="按钮二" />
-        <div class="clear10"></div>
-        <input type="text" class="input-text" value="测试文本" />
-        <div class="clear10"></div>
-        <input type="text" class="inputstyle" value="测试文本" />
-
-            
-            </div>
-    </div>
+    <div class="mg10">
+	   <div class="lbtop"><div class="lbsub">最新访客信息</div></div>
+	   <div class="lbbody">
+            {$WebsiteStat$}
+	   </div>
+	</div>
+     
 </div>
 
 
@@ -444,6 +387,7 @@ function openWind(tourl,w,h,tit){
   }
   //fLoadIframe(document.getElementsByTagName("iframe")[0],oDivView);
 }
+
 //定义打开窗口
 function window1(url,title){
 	if(url.indexOf("?")==0){
@@ -472,7 +416,6 @@ function input_font_bold() {
 </script>
 </body>
 </html>
-
 
 
 

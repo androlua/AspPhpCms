@@ -22,10 +22,10 @@
             <li class="title"><h1>[$detailTitle$]</h1></li>
             <li class="content">
                 [$detailContent$]
-                [$gbl_aritcleRelatedTags$]
+                [$glb_aritcleRelatedTags$]
                 <ul class=""updownarticlewrap"">
-                <li>{$gbl_upArticle$}</li>
-                <li>{$gbl_downArticle$}</li>
+                <li>{$glb_upArticle$}</li>
+                <li>{$glb_downArticle$}</li>
                 </ul>
             </li>
         </ul>
@@ -36,7 +36,7 @@
             
                 <ul class="list"> 
 
-                    <sPAn class="testhidde">{$ArticleList columnname='[$gbl_columnname$]' topnumb='8' addsql='where id<>[$gbl_id$]' order by sortrank desc' default='[_2016年01月15日 14时11分]'$}</sPAn>
+                    <sPAn class="testhidde">{$ArticleList columnname='[$glb_columnname$]' topnumb='8' addsql='where id<>[$glb_id$]' order by sortrank desc' default='[_2016年01月15日 14时11分]'$}</sPAn>
                     <!--#[_2016年01月15日 14时11分]
                     [list]<li><a href="[$url$]" title="[$title$]">[$title len='920'$]</a></li>
                     [/list] 
@@ -53,7 +53,7 @@
                 <ul class="commentlist">
 
 
-                    <sPAn class="testhidde">{$CommentList topnumb='8' itemid='[$gbl_Id$]' addsql='' default='[_2016年01月15日 Comment]'$}</sPAn>
+                    <sPAn class="testhidde">{$CommentList topnumb='8' itemid='[$glb_Id$]' addsql='' default='[_2016年01月15日 Comment]'$}</sPAn>
                     <!--#[_2016年01月15日 Comment]
 [list]<li class="usermsg">IP：[$ip$] &nbsp; 时间：[$adddatetime format_time='1'$]</li>
 <li class="contentcontent">[$bodycontent$]</li>
@@ -70,7 +70,7 @@
                     #-->
                      
                 </ul> 
-              <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?dataact=articlecomment&itemid=[$gbl_Id$]" target="_blank"  onSubmit="return formSubmit()">
+              <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?dataact=articlecomment&itemid=[$glb_Id$]" target="_blank"  onSubmit="return formSubmit()">
                 <textarea name="content" placeholder="我也来说两句..."></textarea>   
                 <input type="submit" class="mybtn" value="评论">
 评论支持使用[code][/code]标签添加代码

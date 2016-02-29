@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-24
+创建：2016-02-29
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By 云端 
+*                                    Powered By AspPhpCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -271,7 +271,21 @@ text-align:right;
 line-height:25px;
 }
 
-
+.mytipwrap{
+	line-height:30px;
+	color:#999999;
+}
+a.mytip {
+    line-height: 14px;
+    padding: 6px 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #EEE #CCC #CCC #EEE;
+    background: #FAFAFA;
+    color: #333; 
+    margin-right:10px;
+    text-decoration: none;
+}
 </style>
 </head>
 <body>
@@ -518,7 +532,7 @@ function step2(){
         <tbody>
             <tr>
                 <td class="onetd"><strong>提示：</strong></td>
-                <td> <small>创建数据库成功。(如果不恢复数据库将退出)</small> </td>
+                <td> <div class="mytipwrap">创建数据库成功。(如果不恢复数据库将退出) &nbsp;<a href="../index.php" class="mytip" target="_blank">访问网站首页</a><a href="../admin/index.php" class="mytip" target="_blank">登录网站后台</a> </div> </td>
             </tr> 
       </tbody>
     </table>

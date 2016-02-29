@@ -8,7 +8,7 @@
 ¡¾adddatetime¡¿2016-02-14 22:38:35
 ¡¾filename¡¿
 ¡¾customaurl¡¿/aspphpcms/inlineTags.asp
-¡¾flags¡¿|c|
+¡¾flags¡¿|
 ¡¾isonhtml¡¿False
 ¡¾relatedtags¡¿ASP,ÔÚÏßASP×ªPHP 
 ¡¾bodycontent¡¿ 

@@ -2,13 +2,14 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <!--#Include File = "../Inc/Config.Asp"--> 
+<!--#Include File = "function.asp"--> 
 <!DOCTYPE html> 
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 <head> 
@@ -82,6 +83,9 @@ End Sub
 '删除模板文件
 Sub delTemplateFile(dir, fileName)
     Dim filePath 
+	
+	call handlePower("删除模板文件")						'管理权限处理
+	
     filePath = dir & "/" & fileName 
     Call deleteFile(filePath) 
     Call echo("删除文件", filePath) 
@@ -94,7 +98,14 @@ Function addEditFile(dir, fileName)
     If Right(LCase(fileName), 5) <> ".html" Then
         fileName = fileName & ".html" 
     End If 
-    filePath = dir & "/" & fileName 
+    filePath = dir & "/" & fileName
+	
+	if checkFile(filePath)=false then
+		call handlePower("添加模板文件")						'管理权限处理
+	else
+		call handlePower("修改模板文件")						'管理权限处理	
+	end if
+	 
     '保存内容
     If Request("issave") = "true" Then
         Call createfile(filePath, Request("content")) 
@@ -130,4 +141,3 @@ Function folderSearch(dir)
   </table> 
 </form> 
 <% End Function%>
-

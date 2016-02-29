@@ -7,7 +7,7 @@
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2016-01-15 13:24:23
 ¡¾filename¡¿/asp/cutstraspphpcode.html
-¡¾flags¡¿|c|
+¡¾flags¡¿|
 ¡¾relatedtags¡¿ASP,PHP,ÔÚÏßASP×ªPHP
 ¡¾bodycontent¡¿
 {$displayEditor title='aab' $}

@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-24
+'创建：2016-02-29
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By 云端 
+'*                                    Powered By AspPhpCMS 
 '************************************************************
 %>
 <% 
@@ -71,8 +71,8 @@ Function createFile(ByVal filePath, ByVal content)
     Set fso = CreateObject("Scripting.FileSystemObject")
         If ExistsZhiDuFile(filePath) = True Then                                        '判断是否为只读文件
             Call EditFileAttribute(filePath, 32)                                            '把只读属性改成存档属性
-        End If 
-		call echo("filePath",filePath)
+        End If
+		'call echo("filePath",filePath)
         Set fText = fso.createTextFile(filePath, True)
             fText.WriteLine(content) 
             createFile = True 
@@ -1342,6 +1342,5 @@ Function getParentPath(ByVal dirPath)
     End If 
 End Function 
 %>  
-
 
 

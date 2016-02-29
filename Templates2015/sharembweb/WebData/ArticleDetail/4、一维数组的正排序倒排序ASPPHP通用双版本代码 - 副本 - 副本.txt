@@ -7,7 +7,7 @@
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2016-01-18 16:30:15
 ¡¾filename¡¿/asp/onearraysort.html
-¡¾flags¡¿|c|
+¡¾flags¡¿|
 ¡¾relatedtags¡¿ASP,PHP,ÔÚÏßASP×ªPHP
 ¡¾bodycontent¡¿
 {$displayEditor title='aab' $}
