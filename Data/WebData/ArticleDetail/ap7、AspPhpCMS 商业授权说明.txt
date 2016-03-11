@@ -1,0 +1,71 @@
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS商业授权说明
+【webtitle】ASPPHPCMS商业授权说明 - 分享模板网站
+【webkeywords】ASPPHPCMS商业授权说明 - 分享模板网站
+【webdescription】ASPPHPCMS商业授权说明 - 分享模板网站
+【sortrank】7
+【author】sharembweb
+【adddatetime】2016-02-22 22:23:11
+【filename】/ASPPHPCMS/ASPPHPCMSauthorization.html
+【customaurl】
+【flags】|c|
+【relatedtags】ASP,在线ASP转PHP
+【bodycontent】
+[&全部换行&]<strong>商业授权说明</strong>
+
+<strong>一、授权办法：</strong>
+1、使用本产品进行商业用途或去掉前后台版权标志的用户，需要购买商业授权。
+2、商业授权只针对一个域名下的一个网站进行授权。
+3、因授权只针对域名，所以一但授权达成，不得更换和变更。
+4、商业授权为终身授权
+
+
+<strong>二、授权的好处与免费用户区别</strong>
+1、只对授权后的网站提供技术支持
+2、只对授权后的网站提供帮助
+3、只对授权后的网站提供安全服务
+4、只对授权后的网站提供在线视频帮助及插件
+5、只对授权后的网站提供二次订制开发服务
+
+授权价格<b><font color="#FF0000">1</font></b>元人民币
+
+"× " 表示该版本不具备或不支持此功能或服务
+"√" 表示该版本已具备或支持此功能或服务
+
+
+<strong>三、说明：以下情况不属于服务范围 </strong>
+1、自行修改或使用非原始 ASPPHPCMS 程序代码产生的问题；
+2、自行对数据库进行直接操作导致数据库出错或者崩溃；
+3、非官方的模块/插件的安装以及由于安装模块/插件造成的故障； 
+4、服务器、虚拟主机原因造成的系统故障；
+5、二次开发或定制及其它可能产生问题的情况。
+
+
+<strong>四、你是否需要授权？</strong>
+如果您能保持以下几点，您无需购买授权。
+1、前台版权的保留
+2、散步和发布本程序时保持开源
+3、进行2次开发或产品整合包装时，保留版权并保持开源
+
+
+<strong>五、官方VIP帐号说明</strong>
+1、免费实名认证
+2、下载一些稀有资源
+
+
+<strong>六、购买流程</strong>
+客服QQ: 313801120
+
+
+<strong>七、商业授权协议概要： </strong>
+您可以将 ASPPHPCMS 直接使用在自己的商业或者非商业网站或者软件产品中。 
+您可以对 ASPPHPCMS 进行必要的修改和美化，可以去除 ASPPHPCMS 外在的版权标识（Powered by ASPPHPCMS），无需公开您修改或美化过的 ASPPHPCMS 源代码。 
+商业授权只需要购买一次，适用于 ASPPHPCMS 现有版本和所有后续版本，永久有效。 
+您享有反映和提出意见的优先权，相关意见将被作为首要考虑。
+
+
+
+【/bodycontent】
+
+
+ 

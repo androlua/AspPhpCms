@@ -2,16 +2,49 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
 '输出内容(2014,03,28)
 
-'愿意显示内容
+
+'空网页内容 20160108
+Function getBlankHtmlBody(webTitle, webBody)
+    Dim c 
+    c = "<!DOCTYPE html PUBLIC>" & vbCrLf 
+    c = c & "<html xmlns=""http://www.w3.org/1999/xhtml"">" & vbCrLf 
+    c = c & "<head>" & vbCrLf 
+    c = c & "<meta http-equiv=""Content-Type"" content=""text/html; charset=gb2312"" />" & vbCrLf 
+    c = c & "<title>" & webTitle & "</title>" & vbCrLf 
+    c = c & "</head>" & vbCrLf 
+    c = c & "<body>" & vbCrLf 
+    c = c & webBody & vbCrLf 
+    c = c & "</body>" & vbCrLf 
+    c = c & "</html>" & vbCrLf 
+    getBlankHtmlBody = c 
+End Function 
+
+
+
+'错误提示 之前网站用到
+Function errorText(Refresh, str, url)
+    If Refresh<>"" Then 
+		rw("<meta http-equiv=""refresh"" content=""" & Refresh & ";URL=" & url & """"""">") & vbCrLf 
+    end if
+	rw("<fieldset>") & vbCrLf 
+    'rw("<legend></legend>") & vbCrLf 
+    rw("<div style=""padding-left:20px;padding-top:10px;color:red;font-weight:bold;text-align:center;"">" & str & "</div>") & vbCrLf 
+    rw("<div style=""height:200p;text-align:center;""><P>") & vbCrLf 
+    rw("<a href=""" & url & """>如果您的游览器没有自动跳转,请点这里>></a><P>") & vbCrLf 
+    rw("</div></fieldset>") : Response.End() 
+End Function
+ 
+
+'愿形显示内容
 Function printPre(content)
     content = Replace(content, "<", "&lt;") 
     printPre = "<pre>" & content & "</pre>" 

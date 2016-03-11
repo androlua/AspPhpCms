@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -224,38 +224,46 @@ End Function
 
 '生成 Install.php 文件
 Sub printAccessToPHPInstallFile()
-    Dim content, splTableName, tableName, splFieldName, fieldName, fieldType, c 
+    Dim content, splTableName, tableName, splFieldName, fieldName, fieldType, c ,tempTableName
+	dim tableNameList			'表名称列表
     Call openconn() 
     content = getTableList() 
     'call echo("content",content)
     splTableName = Split(content, vbCrLf) 
     For Each tableName In splTableName
+		tempTableName=tableName
         tableName = LCase(tableName)                                                    '转成小写
-        content = getFieldList(tableName) 
-        Call echo(tableName, content) 
-        splFieldName = Split(content, ",") 
-        c = c & """{$mydbpre}" & tableName & """ => ""CREATE TABLE `{$mydbpre}" & tableName & "` (" & vbCrLf 
-        c = c & "`id` int(5) unsigned NOT NULL auto_increment," & vbCrLf 
-        For Each fieldName In splFieldName
-            If fieldName <> "" Then 
-                fieldName = LCase(fieldName)                                                    '转成小写
-                fieldType = getFieldAlt(tableName, fieldName) 
-                'call echo(copyStr("&nbsp;",8) & "fieldName",fieldName   & "("& fieldType &")")        'mediumtext
-                If fieldType = "VarChar" Then
-                    c = c & "`" & fieldName & "` varchar(255) NOT NULL default ''," & vbCrLf 
-                ElseIf fieldType = "Int" Then
-                    c = c & "`" & fieldName & "` int(8) NOT NULL default '0'," & vbCrLf 
-				'  InStr("|simpleintroduction|bodycontent|content|template|", "|" & fieldName & "|") > 0 Or InStr(fieldName, "module") > 0
-                ElseIf fieldType="Text" Then
-                    c = c & "`" & fieldName & "` mediumtext," & vbCrLf 
-
-                Else
-                    c = c & "`" & fieldName & "` varchar(250) NOT NULL default ''," & vbCrLf 
-                End If 
-            End If 
-        Next 
-        c = c & "PRIMARY KEY  (`Id`)" & vbCrLf 
-        c = c & "){$char};""," & vbCrLf 
+		if instr(tableName,"_")>0 then
+			tableName=mid(tableName,instr(tableName,"_")+1) 
+		end if
+		'排除重复表名称
+		if instr("|"& tableNameList &"|","|"& tableName &"|")=false then
+			content = getFieldList(tempTableName) 
+			Call echo(tableName, content) 
+			splFieldName = Split(content, ",") 
+			c = c & """{$mydbpre}" & tableName & """ => ""CREATE TABLE `{$mydbpre}" & tableName & "` (" & vbCrLf 
+			c = c & "`id` int(5) unsigned NOT NULL auto_increment," & vbCrLf 
+			For Each fieldName In splFieldName
+				If fieldName <> "" Then 
+					fieldName = LCase(fieldName)                                                    '转成小写
+					fieldType = getFieldAlt(tempTableName, fieldName) 
+					'call echo(copyStr("&nbsp;",8) & "fieldName",fieldName   & "("& fieldType &")")        'mediumtext
+					If fieldType = "VarChar" Then
+						c = c & "`" & fieldName & "` varchar(255) NOT NULL default ''," & vbCrLf 
+					ElseIf fieldType = "Int" Then
+						c = c & "`" & fieldName & "` int(8) NOT NULL default '0'," & vbCrLf 
+					'  InStr("|aboutcontent|bodycontent|content|template|", "|" & fieldName & "|") > 0 Or InStr(fieldName, "module") > 0
+					ElseIf fieldType="Text" Then
+						c = c & "`" & fieldName & "` mediumtext," & vbCrLf 
+	
+					Else
+						c = c & "`" & fieldName & "` varchar(250) NOT NULL default ''," & vbCrLf 
+					End If 
+				End If 
+			Next 
+			c = c & "PRIMARY KEY  (`Id`)" & vbCrLf 
+			c = c & "){$char};""," & vbCrLf 
+		end if
     Next 
     Dim installFilePath, startStr, endStr, searchStr, replaceStr 
     startStr = "//access start" 

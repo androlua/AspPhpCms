@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -44,9 +44,9 @@ function resetAccessData(){
 
     $content=''; $filePath=''; $parentid=''; $author=''; $adddatetime=''; $fileName=''; $bodycontent=''; $webtitle=''; $webkeywords=''; $webdescription=''; $sortrank=''; $labletitle=''; $target ='';
     $websitebottom=''; $webtemplate=''; $webimages=''; $webcss=''; $webjs=''; $flags=''; $websiteurl=''; $splxx=''; $columntype=''; $relatedtags=''; $npagesize=''; $customaurl=''; $nofollow ='';
-    $templatepath=''; $through ='';
+    $templatepath=''; $isthrough ='';
     $showreason=''; $ncomputersearch=''; $nmobliesearch=''; $ncountsearch=''; $ndegree ='';//竞价表
-    $displaytitle=''; $simpleintroduction=''; $isonhtml ='';//单页表
+    $displaytitle=''; $aboutcontent=''; $isonhtml ='';//单页表
     $columnenname ='';//导航表
     $smallimage=''; $bigImage=''; $bannerimage ='';//文章表
 
@@ -54,7 +54,7 @@ function resetAccessData(){
 
 
     //网站配置
-    $content = getftext($webdataDir . '/website.ini') ;
+    $content = getftext($webdataDir . '/website.txt') ;
     if( $content <> '' ){
         $webtitle = newGetStrCut($content, 'webtitle') ;
         $webkeywords = newGetStrCut($content, 'webkeywords') ;
@@ -87,6 +87,7 @@ function resetAccessData(){
             $splxx = aspSplit($content, vbCrlf() . '-------------------------------') ;
             foreach( $splxx as $s){
                 if( instr($s, '【webtitle】') > 0 ){
+                    $s=$s . vbCrlf() ;
                     $webtitle = newGetStrCut($s, 'webtitle') ;
                     $webkeywords = newGetStrCut($s, 'webkeywords') ;
                     $webdescription = newGetStrCut($s, 'webdescription') ;
@@ -99,7 +100,9 @@ function resetAccessData(){
                     $columntype = newGetStrCut($s, 'columntype') ;
                     $flags = newGetStrCut($s, 'flags') ;
                     $parentid = newGetStrCut($s, 'parentid') ;
-                    $parentid = phptrim(getColumnId($parentid)) ;
+
+                    $parentid = phptrim(getColumnId($parentid)) 										;//可根据栏目名称找到对应ID   不存在为-1
+                    //call echo("parentid",parentid)
                     $labletitle = newGetStrCut($s, 'labletitle') ;
                     //每页显示条数
                     $npagesize = newGetStrCut($s, 'npagesize') ;
@@ -132,13 +135,13 @@ function resetAccessData(){
                     }
 
 
-                    $simpleintroduction = newGetStrCut($s, 'simpleintroduction') ;
-                    $simpleintroduction = contentTranscoding($simpleintroduction) ;
+                    $aboutcontent = newGetStrCut($s, 'aboutcontent') ;
+                    $aboutcontent = contentTranscoding($aboutcontent) ;
 
                     $bodycontent = newGetStrCut($s, 'bodycontent') ;
                     $bodycontent = contentTranscoding($bodycontent) ;
 
-                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,simpleintroduction,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $columnname . '\',\'' . $columnenname . '\',\'' . $columntype . '\',' . $sortrank . ',\'' . $fileName . '\',\'' . $flags . '\',' . $parentid . ',\'' . $labletitle . '\',\'' . $simpleintroduction . '\',\'' . $bodycontent . '\',' . $npagesize . ',' . $isonhtml . ',' . $nofollow . ',\'' . $target . '\',\'' . $smallimage . '\',\'' . $bigImage . '\',\'' . $bannerimage . '\',\'' . $templatepath . '\')') ;
+                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,aboutcontent,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $columnname . '\',\'' . $columnenname . '\',\'' . $columntype . '\',' . $sortrank . ',\'' . $fileName . '\',\'' . $flags . '\',' . $parentid . ',\'' . $labletitle . '\',\'' . $aboutcontent . '\',\'' . $bodycontent . '\',' . $npagesize . ',' . $isonhtml . ',' . $nofollow . ',\'' . $target . '\',\'' . $smallimage . '\',\'' . $bigImage . '\',\'' . $bannerimage . '\',\'' . $templatepath . '\')') ;
                 }
             }
         }
@@ -171,6 +174,7 @@ function resetAccessData(){
                     if( $sortrank == '' ){ $sortrank = 0 ;}
                     $adddatetime = newGetStrCut($s, 'adddatetime') ;
                     $fileName = newGetStrCut($s, 'filename') ;
+                    $templatepath = newGetStrCut($s, 'templatepath') ;
                     $flags = newGetStrCut($s, 'flags') ;
                     $relatedtags = newGetStrCut($s, 'relatedtags') ;
 
@@ -181,8 +185,10 @@ function resetAccessData(){
                     $smallimage = newGetStrCut($s, 'smallimage') ;
                     $bigImage = newGetStrCut($s, 'bigImage') ;
                     $bannerimage = newGetStrCut($s, 'bannerimage') ;
-                    $templatepath = newGetStrCut($s, 'templatepath') ;
 
+
+                    $aboutcontent = newGetStrCut($s, 'aboutcontent') ;
+                    $aboutcontent = contentTranscoding($aboutcontent) ;
 
                     $bodycontent = newGetStrCut($s, 'bodycontent') ;
                     $bodycontent = contentTranscoding($bodycontent) ;
@@ -200,7 +206,7 @@ function resetAccessData(){
                     }else{
                         $nofollow = 0 ;
                     }
-                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(' . $parentid . ',\'' . $title . '\',\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $author . '\',' . $sortrank . ',\'' . $adddatetime . '\',\'' . $fileName . '\',\'' . $flags . '\',\'' . $relatedtags . '\',\'' . $bodycontent . '\',\'' . Now() . '\',' . $isonhtml . ',\'' . $customaurl . '\',' . $nofollow . ',\'' . $target . '\',\'' . $smallimage . '\',\'' . $bigImage . '\',\'' . $bannerimage . '\',\'' . $templatepath . '\')') ;
+                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,aboutcontent,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(' . $parentid . ',\'' . $title . '\',\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $author . '\',' . $sortrank . ',\'' . $adddatetime . '\',\'' . $fileName . '\',\'' . $flags . '\',\'' . $relatedtags . '\',\''. $aboutcontent .'\',\'' . $bodycontent . '\',\'' . Now() . '\',' . $isonhtml . ',\'' . $customaurl . '\',' . $nofollow . ',\'' . $target . '\',\'' . $smallimage . '\',\'' . $bigImage . '\',\'' . $bannerimage . '\',\'' . $templatepath . '\')') ;
                 }
             }
         }
@@ -231,9 +237,9 @@ function resetAccessData(){
                     $adddatetime = newGetStrCut($s, 'adddatetime') ;
                     $fileName = newGetStrCut($s, 'filename') ;
 
-                    $simpleintroduction = newGetStrCut($s, 'simpleintroduction') ;
+                    $aboutcontent = newGetStrCut($s, 'aboutcontent') ;
 
-                    $simpleintroduction = contentTranscoding($simpleintroduction) ;
+                    $aboutcontent = contentTranscoding($aboutcontent) ;
                     $target = newGetStrCut($s, 'target') ;
                     $templatepath = newGetStrCut($s, 'templatepath') ;
 
@@ -255,7 +261,7 @@ function resetAccessData(){
                     }
 
 
-                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,simpleintroduction,bodycontent,nofollow,target,templatepath) values(\'' . $title . '\',\'' . $displaytitle . '\',\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $adddatetime . '\',\'' . $fileName . '\',' . $isonhtml . ',\'' . $simpleintroduction . '\',\'' . $bodycontent . '\',' . $nofollow . ',\'' . $target . '\',\'' . $templatepath . '\')') ;
+                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,aboutcontent,bodycontent,nofollow,target,templatepath) values(\'' . $title . '\',\'' . $displaytitle . '\',\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $adddatetime . '\',\'' . $fileName . '\',' . $isonhtml . ',\'' . $aboutcontent . '\',\'' . $bodycontent . '\',' . $nofollow . ',\'' . $target . '\',\'' . $templatepath . '\')') ;
                 }
             }
         }
@@ -274,6 +280,7 @@ function resetAccessData(){
             $splxx = aspSplit($content, vbCrlf() . '-------------------------------') ;
             foreach( $splxx as $s){
                 if( instr($s, '【webkeywords】') > 0 ){
+                    $s=$s . vbCrlf() ;
                     $webkeywords = newGetStrCut($s, 'webkeywords') ;
                     $showreason = newGetStrCut($s, 'showreason') ;
                     $ncomputersearch = newGetStrCut($s, 'ncomputersearch') ;
@@ -303,6 +310,7 @@ function resetAccessData(){
             $splxx = aspSplit($content, vbCrlf() . '-------------------------------') ;
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
+                    $s=$s . vbCrlf() ;
                     $title = newGetStrCut($s, 'title') ;
                     $webtitle = newGetStrCut($s, 'webtitle') ;
                     $webkeywords = newGetStrCut($s, 'webkeywords') ;
@@ -310,11 +318,11 @@ function resetAccessData(){
 
                     $customaurl = newGetStrCut($s, 'customaurl') ;
                     $target = newGetStrCut($s, 'target') ;
-                    $through = newGetStrCut($s, 'through') ;
-                    if( $through == '0' || LCase($through) == 'false' ){
-                        $through = 0 ;
+                    $isthrough = newGetStrCut($s, 'isthrough') ;
+                    if( $isthrough == '0' || LCase($isthrough) == 'false' ){
+                        $isthrough = 0 ;
                     }else{
-                        $through = 1 ;
+                        $isthrough = 1 ;
                     }
                     $sortrank = newGetStrCut($s, 'sortrank') ;
                     if( $sortrank == '' ){ $sortrank = 0 ;}
@@ -333,17 +341,60 @@ function resetAccessData(){
                         $nofollow = 0 ;
                     }
                     //call echo("title",title)
-                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'SearchStat (title,webtitle,webkeywords,webdescription,customaurl,target,through,sortrank,isonhtml,nofollow) values(\'' . $title . '\',\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $customaurl . '\',\'' . $target . '\',' . $through . ',' . $sortrank . ',' . $isonhtml . ',' . $nofollow . ')') ;
+                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'SearchStat (title,webtitle,webkeywords,webdescription,customaurl,target,isthrough,sortrank,isonhtml,nofollow) values(\'' . $title . '\',\'' . $webtitle . '\',\'' . $webkeywords . '\',\'' . $webdescription . '\',\'' . $customaurl . '\',\'' . $target . '\',' . $isthrough . ',' . $sortrank . ',' . $isonhtml . ',' . $nofollow . ')') ;
+
+                }
+            }
+        }
+    }
+    $itemid='';$username='';$ip='';$reply='';$tablename			='';//评论
+    //评论
+    connExecute('delete from ' . $GLOBALS['db_PREFIX'] . 'TableComment') ;
+    $content = getDirTxtList($webdataDir . '/TableComment/') ;
+    $splStr = aspSplit($content, vbCrlf()) ;
+    hr() ;
+    foreach( $splStr as $filePath){
+        $fileName = getfilename($filePath) ;
+        if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1)) == false ){
+            ASPEcho('评论', $filePath) ;
+            $content = getftext($filePath) ;
+            $splxx = aspSplit($content, vbCrlf() . '-------------------------------') ;
+            foreach( $splxx as $s){
+                if( instr($s, '【title】') > 0 ){
+                    $s=$s . vbCrlf() ;
+
+                    $tablename = newGetStrCut($s, 'tablename') ;
+                    $title = newGetStrCut($s, 'title') ;
+                    $itemid = getArticleId(newGetStrCut($s, 'itemid'));
+                    if( $itemid=='' ){ $itemid=0;}
+                    //call echo("itemID",itemID)
+                    $adddatetime = newGetStrCut($s, 'adddatetime') ;
+                    $username = newGetStrCut($s, 'username') ;
+                    $ip = newGetStrCut($s, 'ip') ;
+                    $bodycontent = newGetStrCut($s, 'bodycontent') ;
+                    $reply = newGetStrCut($s, 'reply') ;
+
+
+
+                    $isthrough = newGetStrCut($s, 'isthrough') ;
+                    if( $isthrough == '0' || LCase($isthrough) == 'false' ){
+                        $isthrough = 0 ;
+                    }else{
+                        $isthrough = 1 ;
+                    }
+
+
+
+                    //call echo("title",title)
+                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'TableComment (tablename,title,itemid,adddatetime,username,ip,bodycontent,reply,isthrough) values(\''. $tablename .'\',\'' . $title . '\','. $itemid .',\''. $adddatetime .'\',\''. $username .'\',\''. $ip .'\',\''. $bodycontent .'\',\''. $reply .'\','. $isthrough .')') ;
 
                 }
             }
         }
     }
 
-    //评论
-    connExecute('delete from ' . $GLOBALS['db_PREFIX'] . 'TableComment') ;
 
-
+    writeSystemLog('','恢复默认数据' . $GLOBALS['db_PREFIX'])			;//系统日志
 
 }
 

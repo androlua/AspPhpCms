@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -65,6 +65,13 @@ function delTemplateMyNote($code){
         }
     }
 
+    //删除翻页配置20160309
+    $startStr = '<!--#list start#-->' ;
+    $endStr = '<!--#list end#-->' ;
+    if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+        $s=StrCut($code, $startStr, $endStr, 2) ;
+        $code=replace($code,$s,'');
+    }
 
     if( @$_REQUEST['gl'] == 'yun' ){
         $content = GetFText('/Jquery/dragsort/Config.html') ;
@@ -177,26 +184,6 @@ function delTemplateMyNote($code){
     return @$delTemplateMyNote;
 }
 
-
-//处理常用函数附加参数    辅助类
-//Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
-//Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
-function handleFunParameter($action, $did, $sid, $tid, $title, $topNumb, $cutStrNumb, $addSql){
-    $startStr=''; $endStr ='';
-    $did = RParam($action, 'Did') ;
-    $sid = RParam($action, 'Sid') ;
-    $tid = RParam($action, 'Tid') ;
-
-    $did = IIF($did == '[$PubProDid$]', $GLOBALS['PubProDid'], $did) ;
-    $sid = IIF($sid == '[$PubProSid$]', $GLOBALS['PubProSid'], $sid) ;
-    $tid = IIF($tid == '[$PubProTid$]', $GLOBALS['PubProTid'], $tid) ;
-
-    $title = RParam($action, 'Title') ;
-    $topNumb = RParam($action, 'TopNumb') ;
-    $cutStrNumb = RParam($action, 'CutStrNumb') ;
-    if( $cutStrNumb == '' ){ $cutStrNumb = 28 ;}//默认截取字符为32
-    $addSql = RParam($action, 'AddSql') ;
-}
 //处理替换参数值 20160114
 function handleReplaceValueParam($content, $paramName, $replaceStr){
     if( instr($content, '[$' . $paramName) == false ){
@@ -213,7 +200,8 @@ function replaceValueParam($content, $paramName, $replaceStr){
     $elseIfStr ='';//第二判断字符
     $valueStr ='';//显示字符
     $elseStr ='';//否则字符
-    $instrStr ='';//查找字符
+    $elseIfValue='';$elseValue																	='';//第二判断值
+    $instrStr='';$instr2Str ='';//查找字符
     $tempReplaceStr																='';//暂存
     //ReplaceStr = ReplaceStr & "这里面放上内容在这时碳呀。"
     //ReplaceStr = CStr(ReplaceStr)            '转成字符类型
@@ -251,7 +239,7 @@ function replaceValueParam($content, $paramName, $replaceStr){
             if( $nLen <> '' ){ $replaceStr = CutStr($replaceStr, $nLen, '...') ;}//Left(ReplaceStr,nLen)
 
             //时间处理
-            $nTimeFormat = RParam($labelStr, 'format_Time') ;//时间处理值
+            $nTimeFormat = RParam($labelStr, 'format_time') ;//时间处理值
             if( $nTimeFormat <> '' ){
                 $replaceStr = Format_Time($replaceStr, $nTimeFormat) ;
             }
@@ -276,8 +264,10 @@ function replaceValueParam($content, $paramName, $replaceStr){
             $ifStr = RParam($labelStr, 'if') ;
             $elseIfStr = RParam($labelStr, 'elseif') ;
             $valueStr = RParam($labelStr, 'value') ;
-            $elseStr = RParam($labelStr, 'else') ;
+            $elseifValue = RParam($labelStr, 'elseifvalue') ;
+            $elseValue = RParam($labelStr, 'elsevalue') ;
             $instrStr = RParam($labelStr, 'instr');
+            $instr2Str = RParam($labelStr, 'instr2');
 
             //call echo("ifStr",ifStr)
             //call echo("valueStr",valueStr)
@@ -285,13 +275,23 @@ function replaceValueParam($content, $paramName, $replaceStr){
             //call echo("elseIfStr",elseIfStr)
             //call echo("replaceStr",replaceStr)
             if( $ifStr <> '' || $instrStr <> '' ){
-                if(($ifStr == CStr($replaceStr) && $ifStr <> '') ||($elseIfStr == CStr($replaceStr) && $elseIfStr <> '') ){
+                if(($ifStr == CStr($replaceStr) && $ifStr <> '') ){
                     $replaceStr = $valueStr ;
+                }else if( $elseIfStr == CStr($replaceStr) && $elseIfStr <> '' ){
+                    $replaceStr = $valueStr ;
+                    if( $elseifValue<>'' ){
+                        $replaceStr = $elseifValue;
+                    }
                 }else if( instr(CStr($replaceStr), $instrStr) > 0 && $instrStr <> '' ){
+                    $replaceStr = $valueStr 		 ;
+                }else if( instr(CStr($replaceStr), $instr2Str) > 0 && $instr2Str <> '' ){
                     $replaceStr = $valueStr ;
+                    if( $elseifValue<>'' ){
+                        $replaceStr = $elseifValue;
+                    }
                 }else{
-                    if( $elseStr <> '@ME' ){
-                        $replaceStr = $elseStr ;
+                    if( $elseValue <> '@ME' ){
+                        $replaceStr = $elseValue ;
                     }
                 }
             }
@@ -305,7 +305,7 @@ function replaceValueParam($content, $paramName, $replaceStr){
 
             //默认值
             $s = RParam($labelStr, 'default') ;
-            if( $s <> '' ){
+            if( $s <> '' && $s<>'@ME' ){
                 if( $replaceStr == '' ){
                     $replaceStr = $s ;
                 }
@@ -327,13 +327,6 @@ function replaceValueParam($content, $paramName, $replaceStr){
     $replaceValueParam = $content ;
     return @$replaceValueParam;
 }
-//call rwend(execute("replaceStr=testfunction(""ME"")") & replaceStr)
-function testfunction($s){
-    $testfunction = $s . '(end)' ;
-    return @$testfunction;
-}
-
-
 
 //显示编辑器20160115
 function displayEditor($action){
@@ -403,7 +396,7 @@ function handleDisplayOnlineEditDialog($url, $content, $cssStyle, $replaceStr){
 //获得控制内容
 function getControlStr($url){
     if( @$_REQUEST['gl'] == 'edit' ){
-        $getControlStr = ' onMouseMove="onColor(this,\'#FDFAC6\',\'red\')" onMouseOut="offColor(this,\'\',\'\')" onDblClick="window1(\'' . $url . '\',\'信息修改\')" title=\'双击在线修改\' oncontextmenu="CommonMenu(event,this,\'\')' ;//删除网址为空
+        $getControlStr = ' onMouseMove="onColor(this,\'#FDFAC6\',\'red\')" onMouseOut="offColor(this,\'\',\'\')" onDblClick="window1(\'' . $url . '\',\'信息修改\')" title=\'双击或右键在线修改\' oncontextmenu="CommonMenu(event,this,\'\')' ;//删除网址为空
     }
     return @$getControlStr;
 }

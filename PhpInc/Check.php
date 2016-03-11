@@ -2,14 +2,61 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
 //Check验证 (2013,10,26)
+
+//检测URL文件名称是否带参数，如:.js?  .css?  用法 checkUrlFileNameParam("http://sdfsd.com/aaa.js","js|css|")
+function checkUrlFileNameParam($httpurl,$sList){
+    $url='';$splstr='';$searchStr='';
+    $url=lcase($httpurl);
+    $sList=lcase($sList);
+    $splstr=aspSplit($sList,'|');
+    foreach( $splstr as $searchStr){
+        if( $searchStr<>'' ){
+            $searchStr='.'. $searchStr .'?';
+            //call echo("searchStr",searchStr)
+            if( instr($url,$searchStr) > 0 ){
+                $checkUrlFileNameParam=true;
+                return @$checkUrlFileNameParam;
+            }
+        }
+    }
+    $checkUrlFileNameParam=false;
+    return @$checkUrlFileNameParam;
+}
+
+//是大写 20160105
+function isUCase($content){
+    $i=''; $s ='';
+    $isUCase = true ;
+    for( $i = 1 ; $i<= strlen($content); $i++){
+        $s = mid($content, $i, 1) ;
+        if( instr('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $s) == false ){
+            $isUCase = false ;
+            return @$isUCase;
+        }
+    }
+    return @$isUCase;
+}
+//是小写 20160105
+function isLCase($content){
+    $i=''; $s ='';
+    $isLCase = true ;
+    for( $i = 1 ; $i<= strlen($content); $i++){
+        $s = mid($content, $i, 1) ;
+        if( instr('abcdefghijklmnopqrstuvwxyz', $s) == false ){
+            $isLCase = false ;
+            return @$isLCase;
+        }
+    }
+    return @$isLCase;
+}
 
 
 //检测错误
@@ -30,7 +77,7 @@ function strTrueFalseToInt( $content){
 //检查换行
 function checkVbCrlf($content){
     $checkVbCrlf = false ;
-    if( instr($content, "\n") > 0 ){ $checkVbCrlf = true ;}
+    if( instr($content, vbCrlf()) > 0 ){ $checkVbCrlf = true ;}
     return @$checkVbCrlf;
 }
 //检查换行    辅助
@@ -68,7 +115,7 @@ function replace_SQLText($fString){
         $fString = Replace($fString, '\'', '\'\'') ;
         $fString = Replace($fString, ';', '；') ;
         $fString = Replace($fString, '--', '—') ;
-        $fString = HTMLEncode($fString) ;
+        $fString = $GLOBALS['HTMLEncode'][$fString] ;
         $replace_SQLText = $fString ;
     }
     return @$replace_SQLText;
@@ -176,7 +223,7 @@ function checkTime($DateTime){
     return @$checkTime;
 }
 //判断是否为空
-function isNul( $s){ //留空函数
+function isNul( $s){ return ''; return ''; return ''; return ''; return ''; return ''; return ''; //留空函数
 }
 
 

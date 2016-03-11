@@ -8,15 +8,15 @@
 ¡¾filename¡¿/page/newsdowns.html
 ¡¾isonhtml¡¿1
 
-¡¾simpleintroduction¡¿
+¡¾aboutcontent¡¿
  
-¡¾/simpleintroduction¡¿
+¡¾/aboutcontent¡¿
 
 
 ¡¾bodycontent¡¿
 
  <a class="corepackage" href="https://github.com/313801120/AspToPhp" target="_blank">GithubÏÂÔØAspToPhp</a>
- <a class="corepackage" href="https://github.com/313801120/AspPhpCms" target="_blank">GithubÏÂÔØAspPhpCms</a>
+ <a class="corepackage" href="https://github.com/313801120/ASPPHPCMS" target="_blank">GithubÏÂÔØASPPHPCMS</a>
 ¡¾/bodycontent¡¿
 
 

@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -75,50 +75,50 @@ End Function
 '1=[A]abbccdd[/A]
 '3=[A]abbccdd
 '4=abbccdd[/A]
+'截取字符串
 Function strCut(ByVal content, ByVal startStr, ByVal endStr, ByVal cutType)
-    'On Error Resume Next
-    Dim s1, s1Str, s2, s3, c 
+    Dim s1, s1Str, s2, s3, c,tempContent,tempStartStr,tempEndStr
+	tempStartStr=startStr
+	tempEndStr=endStr
+	tempContent=content
+	cutType="|"& cutType &"|"
+	'不区分大小写
+	if instr(cutType,"|lu|")>0 then
+		content=lcase(content)
+		startStr=lcase(startStr)
+		endStr=lcase(endStr)
+	end if
     If InStr(content, startStr) = False Or InStr(content, endStr) = False Then
         c = "" 
         Exit Function 
     End If 
-    Select Case cutType
-        '完善于20150923
-        Case 1
+	if instr(cutType,"|1|")>0 then
             s1 = InStr(content, startStr) 
             s1Str = Mid(content, s1 + Len(startStr)) 
             s2 = s1 + InStr(s1Str, endStr) + Len(startStr) + Len(endStr) - 1 '为什么要减1
-
-        Case Else
+	else
             s1 = InStr(content, startStr) + Len(startStr) 
             s1Str = Mid(content, s1) 
-            'S2 = InStr(S1, Content, EndStr)
+            'S2 = InStr(S1, content, EndStr)
             s2 = s1 + InStr(s1Str, endStr) - 1 
-        'call echo("s2",s2)
-    End Select
+    end if
     s3 = s2 - s1 
     If s3 >= 0 Then
-        c = Mid(content, s1, s3) 
+        c = Mid(tempContent, s1, s3)
     Else
         c = "" 
     End If 
-    If cutType = 3 Then
-        c = startStr & c 
+    if instr(cutType,"|3|")>0 then
+        c = tempStartStr & c 
     End If 
-    If cutType = 4 Then
-        c = c & endStr 
+    if instr(cutType,"|4|")>0 then
+        c = c & tempEndStr 
     End If 
-    strCut = c 
-    'If Err.Number <> 0 Then Call eerr(startStr, content)
-'doError Err.Description, "StrCut 截取字符串 函数出错，StartStr=" & EchoHTML(StartStr) & "<hr>EndStr=" & EchoHTML(EndStr)
+    strCut = c  
 End Function 
 '获得截取内容,20150305
 Function getStrCut(ByVal content, ByVal startStr, ByVal endStr, ByVal CutType)
-    getStrCut = "" 
-    'Content=Replace(Replace(Content,Chr(13),""),Chr(10),"")
-    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-        getStrCut = strCut(content, startStr, endStr, CutType) 
-    End If 
+     getStrCut = strCut(content, startStr, endStr, CutType) 
 End Function 
 '接取字符 CutStr(Content,22,"null")
 Function cutStr(ByVal content, ByVal CutNumb, ByVal MoreStr)

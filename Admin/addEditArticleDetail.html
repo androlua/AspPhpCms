@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <title>{$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
 <link href="css/style.css" rel="stylesheet"  type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 <script type="text/javascript" src="../Jquery/Jquery.Min.js"></script>
 <script src="js/runAction.js"></script>
 </head>
@@ -81,9 +82,9 @@ KindEditor.ready(function(K) {
  
 
 <div id="positionwrap">
-    <div class="msg">当前位置：{$position$}</div>
+    <div class="msg">当前位置：[$position$]</div>
 </div>
-<form action="?act=saveAddEditHandle&lableTitle={$lableTitle$}&nPageSize={$nPageSize$}&page={$page$}&parentid={$parentid$}&searchfield={$searchfield$}&keyword={$keyword$}" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+<form action="[$postUrl$]" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
 <div class="mg10">
 	<ul class="tabbut noselect">
         <li>基本设置</li>
@@ -112,7 +113,14 @@ KindEditor.ready(function(K) {
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>标题名称</td>
-                        <td align="left" style="padding:3px;">[$input_title$]</td>
+                        <td align="left" style="padding:3px;">
+                        <input name='title' type='text' id='title' value="[$title$]" style='color:[$titlecolor$];width:66%;[$flags instr='|b|' value='font-weight:bold'$]' class='measure-input' alt='请输入标题'>
+<input name="titlecolor" type="hidden" id="titlecolor" value="[$titlecolor$]" />
+<script language="javascript" type="text/javascript" src="js/colorpicker.js"></script>
+<img src="images/colour.png" width="15" height="16" onClick="colorpicker('title_colorpanel','set_title_color');" style="cursor:hand">
+<span id="title_colorpanel" style="position:absolute; z-index:200" class="colorpanel"></span>
+<img src="images/bold.png" width="10" height="10" onClick="input_font_bold()" style="cursor:hand">
+						</td>
                         <td>columnname</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
@@ -127,9 +135,9 @@ KindEditor.ready(function(K) {
 <select name="target" id="target">
 <option value=''>链接打开方式</option>
 <option selected value=''>本页打开</option>
-<option value="_blank"[$target if='_blank' value=' selected' else='' $]>新页打开</option>
-<option value="Index"[$target if='Index' value=' selected' else='' $]>Index页打开</option>
-<option value="Main"[$target if='Main' value=' selected' else='' $]>Main页打开</option>
+<option value="_blank"[$target if='_blank' value=' selected'$]>新页打开</option>
+<option value="Index"[$target if='Index' value=' selected'$]>Index页打开</option>
+<option value="Main"[$target if='Main' value=' selected'$]>Main页打开</option>
 </select>
                         </td>
                         <td>filename / target</td>
@@ -190,8 +198,8 @@ KindEditor.ready(function(K) {
                 <tbody class="tbodybox">
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>简要内容</td>
-                        <td align="left" style="padding:3px;">[$input_simpleintroduction$]</td>
-                        <td>simpleintroduction</td>
+                        <td align="left" style="padding:3px;">[$input_aboutcontent$]</td>
+                        <td>aboutcontent</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>详细内容</td>
@@ -219,13 +227,13 @@ KindEditor.ready(function(K) {
                     
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>不追踪链接</td>
-                        <td align="left" style="padding:3px;"><label for="nofollow"><input type="checkbox" name="nofollow" id="nofollow"[$nofollow if='1' value=' checked' else='' $] value="1" class="inputstyle">不追踪链接</label></td>
+                        <td align="left" style="padding:3px;"><label for="nofollow"><input type="checkbox" name="nofollow" id="nofollow"[$nofollow if='1' value=' checked'$] value="1" class="inputstyle">不追踪链接</label></td>
                         <td>nofollow</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>生成静态文件</td>
                         <td align="left" style="padding:3px;">
-                        <label for='isonhtml'><input type='checkbox' name='isonhtml' id='isonhtml' [$isonhtml if='False' elseif='0' value='' else=' checked'$]  value='1'>生成静态网页</label>                          
+                        <label for='isonhtml'><input type='checkbox' name='isonhtml' id='isonhtml' [$isonhtml if='False' elseif='0' value='' elsevalue=' checked'$]  value='1'>生成静态网页</label>                          
                         </td>
                         <td>isonhtml</td>
                     </tr>
@@ -241,9 +249,7 @@ KindEditor.ready(function(K) {
             <input name="switchId" type="hidden" id="switchId" value="[$switchId$]" /> 
             <input name="fieldNameList" type="hidden" id="fieldNameList" value="[$fieldNameList$]" />  
             <input name="重置" type="reset" class="mybtn2 radius5" value="重置"  />
-        </div>
-    </div>
-    [$inputId$] 
+        </div>    </div>
 </form>
 <script language="javascript" type="text/javascript" src="js/formBottom.js"></script>
 </body>

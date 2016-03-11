@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -13,19 +13,19 @@
 
 //================ 快速获得网站操作 ==================
 //在线修改 修改单文本
-//MainStr = DisplayOnlineED2("/admin/MainInfo.Asp?act=ShowEdit&Id=" & TempRs("Id") & "&n=" & GetRnd(11), MainStr, "<li|<a ")
+//MainStr = DisplayOnlineED2(WEB_ADMINURL &"MainInfo.Asp?act=ShowEdit&Id=" & TempRs("Id") & "&n=" & GetRnd(11), MainStr, "<li|<a ")
 //在线修改 产品大类
-//DidStr = DisplayOnlineED2("/admin/ProductClassManage.Asp?act=ShowEditBigClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), DidStr, "<li|<a ")
+//DidStr = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditBigClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), DidStr, "<li|<a ")
 //在线修改 产品小类
-//SidStr = DisplayOnlineED2("/admin/ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), SidStr, "<li|<a ")
+//SidStr = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditSmallClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), SidStr, "<li|<a ")
 //在线修改 产品子类
-//S = DisplayOnlineED2("/admin/ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), S, "<li|<a ")
+//S = DisplayOnlineED2(WEB_ADMINURL &"ProductClassManage.Asp?act=ShowEditThreeClass&Id=" & TempRs("Id") & "&n=" & GetRnd(11), S, "<li|<a ")
 //在线修改  文章
-//ProStr = DisplayOnlineED2("/admin/Product.Asp?act=ShowEditProduct&Id=" & TempRs("Id") & "&n=" & GetRnd(11), ProStr, "<li|<a ")
+//ProStr = DisplayOnlineED2(WEB_ADMINURL &"Product.Asp?act=ShowEditProduct&Id=" & TempRs("Id") & "&n=" & GetRnd(11), ProStr, "<li|<a ")
 //在线修改 导航大类
-//NavDidStr = DisplayOnlineED2("/admin/NavManage.Asp?act=EditNavBig&Id=" & TempRs("Id") & "&n=" & GetRnd(11), NavDidStr, "<li|<a ")
+//NavDidStr = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavBig&Id=" & TempRs("Id") & "&n=" & GetRnd(11), NavDidStr, "<li|<a ")
 //在线修改 导航小类
-//NavSidStr = DisplayOnlineED2("/admin/NavManage.Asp?act=EditNavSmall&Id=" & TempRs("Id") & "&n=" & GetRnd(11), NavSidStr, "<li|<a ")
+//NavSidStr = DisplayOnlineED2(WEB_ADMINURL &"NavManage.Asp?act=EditNavSmall&Id=" & TempRs("Id") & "&n=" & GetRnd(11), NavSidStr, "<li|<a ")
 
 //-------------------------------- 下面为网站后台常用快捷标签代码区 -------------------------------------------
 
@@ -131,58 +131,58 @@ function imgSrc($url, $title, $Target){
 //选择Target打开方式
 function selectTarget($Target){
     $c=''; $sel ='';
-    $c = $c . '<select name="Target" id="Target">' . "\n" ;
-    $c = $c . '  <option value=\'\'>链接打开方式</option>' . "\n" ;
+    $c = $c . '<select name="Target" id="Target">' . vbCrlf() ;
+    $c = $c . '  <option value=\'\'>链接打开方式</option>' . vbCrlf() ;
     if( $Target == '' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '  <option' . $sel . ' value=\'\'>本页打开</option>' . "\n" ;
+    $c = $c . '  <option' . $sel . ' value=\'\'>本页打开</option>' . vbCrlf() ;
     if( $Target == '_blank' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '  <option value="_blank"' . $sel . '>新页打开</option>' . "\n" ;
+    $c = $c . '  <option value="_blank"' . $sel . '>新页打开</option>' . vbCrlf() ;
     if( $Target == 'Index' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '  <option value="Index"' . $sel . '>Index页打开</option>' . "\n" ;
+    $c = $c . '  <option value="Index"' . $sel . '>Index页打开</option>' . vbCrlf() ;
     if( $Target == 'Main' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '  <option value="Main"' . $sel . '>Main页打开</option>' . "\n" ;
-    $c = $c . '</select>' . "\n" ;
+    $c = $c . '  <option value="Main"' . $sel . '>Main页打开</option>' . vbCrlf() ;
+    $c = $c . '</select>' . vbCrlf() ;
     $selectTarget = $c ;
     return @$selectTarget;
 }
 //选择文本颜色
 function selectFontColor($FontColor){
     $c=''; $sel ='';
-    $c = $c . '  <select name="FontColor" id="FontColor">' . "\n" ;
-    $c = $c . '    <option value=\'\'>文本颜色</option>' . "\n" ;
+    $c = $c . '  <select name="FontColor" id="FontColor">' . vbCrlf() ;
+    $c = $c . '    <option value=\'\'>文本颜色</option>' . vbCrlf() ;
     if( $FontColor == 'Red' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '    <option value="Red" class="FontColor_Red"' . $sel . '>红色</option>' . "\n" ;
+    $c = $c . '    <option value="Red" class="FontColor_Red"' . $sel . '>红色</option>' . vbCrlf() ;
     if( $FontColor == 'Blue' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '    <option value="Blue" class="FontColor_Blue"' . $sel . '>蓝色</option>' . "\n" ;
+    $c = $c . '    <option value="Blue" class="FontColor_Blue"' . $sel . '>蓝色</option>' . vbCrlf() ;
     if( $FontColor == 'Green' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '    <option value="Green" class="FontColor_Green"' . $sel . '>绿色</option>' . "\n" ;
+    $c = $c . '    <option value="Green" class="FontColor_Green"' . $sel . '>绿色</option>' . vbCrlf() ;
     if( $FontColor == 'Black' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '    <option value="Black" class="FontColor_Black"' . $sel . '>黑色</option>' . "\n" ;
+    $c = $c . '    <option value="Black" class="FontColor_Black"' . $sel . '>黑色</option>' . vbCrlf() ;
     if( $FontColor == 'White' ){ $sel = ' selected' ;}else{ $sel == '' ;}
-    $c = $c . '    <option value="White" class="FontColor_White"' . $sel . '>白色</option>' . "\n" ;
-    $c = $c . '  </select>' . "\n" ;
+    $c = $c . '    <option value="White" class="FontColor_White"' . $sel . '>白色</option>' . vbCrlf() ;
+    $c = $c . '  </select>' . vbCrlf() ;
     $selectFontColor = $c ;
     return @$selectFontColor;
 }
 //选择男女
 function selectSex($sex){
     $c=''; $sel ='';
-    $c = $c . '  <select name="FontColor" id="FontColor">' . "\n" ;
-    $c = $c . '    <option value="男">男</option>' . "\n" ;
+    $c = $c . '  <select name="FontColor" id="FontColor">' . vbCrlf() ;
+    $c = $c . '    <option value="男">男</option>' . vbCrlf() ;
     $sel = IIF($sex == '女', ' selected', '') ;
-    $c = $c . '    <option value="女"' . $sel . '>女</option>' . "\n" ;
-    $c = $c . '  </select>' . "\n" ;
+    $c = $c . '    <option value="女"' . $sel . '>女</option>' . vbCrlf() ;
+    $c = $c . '  </select>' . vbCrlf() ;
     $selectSex = $c ;
     return @$selectSex;
 }
 //选择Session或Cookies验证
 function selectSessionCookies($VerificationMode){
     $c=''; $sel ='';
-    $c = $c . '  <select name="VerificationMode" id="VerificationMode">' . "\n" ;
-    $c = $c . '    <option value="1">Session验证</option>' . "\n" ;
+    $c = $c . '  <select name="VerificationMode" id="VerificationMode">' . vbCrlf() ;
+    $c = $c . '    <option value="1">Session验证</option>' . vbCrlf() ;
     $sel = IIF($VerificationMode == '0', ' selected', '') ;
-    $c = $c . '    <option value="0"' . $sel . '>Cookies验证</option>' . "\n" ;
-    $c = $c . '  </select>' . "\n" ;
+    $c = $c . '    <option value="0"' . $sel . '>Cookies验证</option>' . vbCrlf() ;
+    $c = $c . '  </select>' . vbCrlf() ;
     $selectSessionCookies = $c ;
     return @$selectSessionCookies;
 }
@@ -191,15 +191,15 @@ function showSelectList($IDName, $content, $SplType, $ThisValue){
     $c=''; $sel=''; $splStr=''; $s ='';
     $IDName = AspTrim($IDName) ;
     if( $SplType == '' ){ $SplType = '|_-|' ;}
-    if( $IDName <> '' ){ $c = $c . '  <select name="' . $IDName . '" id="' . $IDName . '">' . "\n" ;}
+    if( $IDName <> '' ){ $c = $c . '  <select name="' . $IDName . '" id="' . $IDName . '">' . vbCrlf() ;}
 
     $splStr = aspSplit($content, $SplType) ;
     foreach( $splStr as $s){
         $sel = '' ;
         if( $s == $ThisValue ){ $sel = ' selected' ;}
-        $c = $c . '    <option value="' . $s . '"' . $sel . '>' . $s . '</option>' . "\n" ;
+        $c = $c . '    <option value="' . $s . '"' . $sel . '>' . $s . '</option>' . vbCrlf() ;
     }
-    if( $IDName <> '' ){ $c = $c . '  </select>' . "\n" ;}
+    if( $IDName <> '' ){ $c = $c . '  </select>' . vbCrlf() ;}
     $showSelectList = $c ;
     return @$showSelectList;
 }
@@ -225,16 +225,16 @@ function handleArticleListStyleOrInfoStyle($folderName, $InputName, $ThisValue){
 
     $ThisValue = LCase($ThisValue) ;//转成小写 好对比
 
-    $c = $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . "\n" ;
-    $c = $c . '    <option value=""></option>' . "\n" ;
-    $splStr = aspSplit($content, "\n") ;
+    $c = $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . vbCrlf() ;
+    $c = $c . '    <option value=""></option>' . vbCrlf() ;
+    $splStr = aspSplit($content, vbCrlf()) ;
     foreach( $splStr as $fileName){
         if( $fileName <> '' ){
             $sel = IIF(LCase($fileName) == $ThisValue, ' selected', '') ;
-            $c = $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . "\n" ;
+            $c = $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . vbCrlf() ;
         }
     }
-    $c = $c . '  </select>' . "\n" ;
+    $c = $c . '  </select>' . vbCrlf() ;
 
     $handleArticleListStyleOrInfoStyle = $c ;
     return @$handleArticleListStyleOrInfoStyle;
@@ -250,16 +250,16 @@ function showWebModuleSkins($InputName, $ThisValue){
 
     $ThisValue = LCase($ThisValue) ;//转成小写 好对比
 
-    $c = $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . "\n" ;
-    $c = $c . '    <option value=""></option>' . "\n" ;
-    $splStr = aspSplit($content, "\n") ;
+    $c = $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . vbCrlf() ;
+    $c = $c . '    <option value=""></option>' . vbCrlf() ;
+    $splStr = aspSplit($content, vbCrlf()) ;
     foreach( $splStr as $fileName){
         if( $fileName <> '' ){
             $sel = IIF(LCase($fileName) == $ThisValue, ' selected', '') ;
-            $c = $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . "\n" ;
+            $c = $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . vbCrlf() ;
         }
     }
-    $c = $c . '  </select>' . "\n" ;
+    $c = $c . '  </select>' . vbCrlf() ;
 
     $showWebModuleSkins = $c ;
     return @$showWebModuleSkins;
@@ -275,7 +275,7 @@ function showRadioList($IDName, $content, $SplType, $ThisValue){
     foreach( $splStr as $s){
         $sel = '' ; $i = $i + 1 ;
         if( $s == $ThisValue ){ $sel = ' checked' ;}
-        $c = $c . '<input type="radio" name="' . $IDName . '" id="' . $IDName . $i . '" value="radio" ' . $sel . '><label for="' . $IDName . $i . '">' . $s . '</label>' . "\n" ;
+        $c = $c . '<input type="radio" name="' . $IDName . '" id="' . $IDName . $i . '" value="radio" ' . $sel . '><label for="' . $IDName . $i . '">' . $s . '</label>' . vbCrlf() ;
     }
 
     $showRadioList = $c ;
@@ -351,7 +351,7 @@ function inputLeftText($textName, $valueStr, $width, $helpStr){
         }
         $Css = ' style=\'width:' . $width . ';\'' ;
     }
-    $inputLeftText = $helpStr . '<input name="' . $textName . '" type="text" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' . "\n" ;
+    $inputLeftText = $helpStr . '<input name="' . $textName . '" type="text" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' . vbCrlf() ;
     return @$inputLeftText;
 }
 //显示Input文本在左边 帮助文字在右边
@@ -395,9 +395,9 @@ function handleInputLeftRightTextContent($SType, $textName, $valueStr, $width, $
     $handleInputLeftRightTextContent = '<input name="' . $textName . '" type="text" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' ;
 
     if( $SType == '左边' ){
-        $handleInputLeftRightTextContent = $helpStr . handleInputLeftRightTextContent . "\n" ;
+        $handleInputLeftRightTextContent = $helpStr . $handleInputLeftRightTextContent . vbCrlf() ;
     }else{
-        $handleInputLeftRightTextContent = handleInputLeftRightTextContent . $helpStr;
+        $handleInputLeftRightTextContent = $handleInputLeftRightTextContent . $helpStr;
     }
 
     return @$handleInputLeftRightTextContent;
@@ -413,7 +413,7 @@ function inputLeftPassText($textName, $valueStr, $width, $helpStr){
         }
         $Css = ' style=\'width:' . $width . ';\'' ;
     }
-    $inputLeftPassText = $helpStr . '<input name="' . $textName . '" type="password" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' . "\n" ;
+    $inputLeftPassText = $helpStr . '<input name="' . $textName . '" type="password" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' . vbCrlf() ;
     return @$inputLeftPassText;
 }
 //显示Input文本在左边密码类型
@@ -431,12 +431,12 @@ function inputLeftPassTextContent($textName, $valueStr, $width, $helpStr){
     }else{
         $Css = Replace($Css, ';\'', ';text-align:center;\'') ;
     }
-    $inputLeftPassTextContent = $helpStr . '<input name="' . $textName . '" type="password" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' . "\n" ;
+    $inputLeftPassTextContent = $helpStr . '<input name="' . $textName . '" type="password" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' . vbCrlf() ;
     return @$inputLeftPassTextContent;
 }
 //显示Input隐藏文本
 function inputHiddenText($textName, $valueStr){
-    $inputHiddenText = '<input name="' . $textName . '" type="hidden" id="' . $textName . '" value="' . $valueStr . '" />' . "\n" ;
+    $inputHiddenText = '<input name="' . $textName . '" type="hidden" id="' . $textName . '" value="' . $valueStr . '" />' . vbCrlf() ;
     return @$inputHiddenText;
 }
 //显示Input文本域 InputTextArea("FindTpl", FindTpl, "60%" , "120px", "")
@@ -490,11 +490,11 @@ function handleInputHiddenTextArea($textName, $valueStr, $width, $height, $class
 //显示目录列表 以Select方式显示
 function showSelectDirList($folderPath, $valueStr){
     $splStr=''; $c=''; $fileName=''; $sel ='';
-    $splStr = aspSplit(GetDirFileSort($folderPath), "\n") ;
+    $splStr = aspSplit(GetDirFileSort($folderPath), vbCrlf()) ;
     foreach( $splStr as $fileName){
         if( $fileName <> '' ){
             $sel = IIF($valueStr == $fileName, ' selected', '') ;
-            $c = $c . '<option value="' . $folderPath . $fileName . '" ' . $sel . '>' . $fileName . '</option>' . "\n" ;
+            $c = $c . '<option value="' . $folderPath . $fileName . '" ' . $sel . '>' . $fileName . '</option>' . vbCrlf() ;
         }
     }
     $showSelectDirList = $c ;
@@ -604,15 +604,15 @@ function showOnOffImg($id, $Table, $FieldName, $Recommend, $url){
     $temp=''; $Img=''; $AUrl ='';
     if( Rq('page') <> '' ){ $temp = '&page=' . Rq('page') ;}else{ $temp == '' ;}
     if( $Recommend == true ){
-        $Img = '<img src="/Admin/Images/yes.gif">' ;
+        $Img = '<img src="'. $GLOBALS['adminDir'] .'Images/yes.gif">' ;
     }else{
-        $Img = '<img src="/Admin/Images/webno.gif">' ;
+        $Img = '<img src="'. $GLOBALS['adminDir'] .'Images/webno.gif">' ;
     }
-    //Call Echo(GetUrl(),"/Admin/HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id)
-    $AUrl = GetUrlAddToParam(GetUrl(), '/Admin/HandleDatabase.Asp?act=SetTrueFalse&Table=' . $Table . '&FieldName=' . $FieldName . '&Url=' . $url . '&Id=' . $id, 'replace') ;
+    //Call Echo(GetUrl(),""& adminDir &"HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id)
+    $AUrl = GetUrlAddToParam(GetUrl(), ''. $GLOBALS['adminDir'] .'HandleDatabase.Asp?act=SetTrueFalse&Table=' . $Table . '&FieldName=' . $FieldName . '&Url=' . $url . '&Id=' . $id, 'replace') ;
     $showOnOffImg = '<a href="' . $AUrl . '">' . $Img . '</a>' ;
     //旧版
-    //ShowOnOffImg = "<a href=/Admin/HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id & Temp & ">" & Img & "</a>"
+    //ShowOnOffImg = "<a href="& adminDir &"HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id & Temp & ">" & Img & "</a>"
     return @$showOnOffImg;
 }
 //显示开户与关闭图片
@@ -632,31 +632,31 @@ function newShowOnOffImg($id, $Table, $FieldName, $Recommend, $url){
 //获得控制Css样式 20150128  暂时不用
 function controlDialogCss(){
     $c ='';
-    $c = '<style>' . "\n" ;
-    $c = $c . '/*控制Css20150128*/' . "\n" ;
-    $c = $c . '.controlDialog{' . "\n" ;
-    $c = $c . '    position:relative;' . "\n" ;
-    $c = $c . '    height:50px;' . "\n" ;
-    $c = $c . '    width:auto;' . "\n" ;
-    $c = $c . '}' . "\n" ;
-    $c = $c . '.controlDialog .menu{' . "\n" ;
-    $c = $c . '    position:absolute;' . "\n" ;
-    $c = $c . '    right:0px;' . "\n" ;
-    $c = $c . '    top:0px;' . "\n" ;
-    $c = $c . '}' . "\n" ;
-    $c = $c . '.controlDialog .menu a{' . "\n" ;
-    $c = $c . '    color:#FF0000;' . "\n" ;
-    $c = $c . '    font-size:14px;' . "\n" ;
-    $c = $c . '    text-decoration:none;' . "\n" ;
-    $c = $c . '    background-color:#FFFFFF;' . "\n" ;
-    $c = $c . '    border:1px solid #003300;' . "\n" ;
-    $c = $c . '    padding:4px;' . "\n" ;
-    $c = $c . '}' . "\n" ;
-    $c = $c . '.controlDialog .menu a:hover{' . "\n" ;
-    $c = $c . '    color:#C60000;' . "\n" ;
-    $c = $c . '    text-decoration:underline;' . "\n" ;
-    $c = $c . '}' . "\n" ;
-    $c = $c . '</style>' . "\n" ;
+    $c = '<style>' . vbCrlf() ;
+    $c = $c . '/*控制Css20150128*/' . vbCrlf() ;
+    $c = $c . '.controlDialog{' . vbCrlf() ;
+    $c = $c . '    position:relative;' . vbCrlf() ;
+    $c = $c . '    height:50px;' . vbCrlf() ;
+    $c = $c . '    width:auto;' . vbCrlf() ;
+    $c = $c . '}' . vbCrlf() ;
+    $c = $c . '.controlDialog .menu{' . vbCrlf() ;
+    $c = $c . '    position:absolute;' . vbCrlf() ;
+    $c = $c . '    right:0px;' . vbCrlf() ;
+    $c = $c . '    top:0px;' . vbCrlf() ;
+    $c = $c . '}' . vbCrlf() ;
+    $c = $c . '.controlDialog .menu a{' . vbCrlf() ;
+    $c = $c . '    color:#FF0000;' . vbCrlf() ;
+    $c = $c . '    font-size:14px;' . vbCrlf() ;
+    $c = $c . '    text-decoration:none;' . vbCrlf() ;
+    $c = $c . '    background-color:#FFFFFF;' . vbCrlf() ;
+    $c = $c . '    border:1px solid #003300;' . vbCrlf() ;
+    $c = $c . '    padding:4px;' . vbCrlf() ;
+    $c = $c . '}' . vbCrlf() ;
+    $c = $c . '.controlDialog .menu a:hover{' . vbCrlf() ;
+    $c = $c . '    color:#C60000;' . vbCrlf() ;
+    $c = $c . '    text-decoration:underline;' . vbCrlf() ;
+    $c = $c . '}' . vbCrlf() ;
+    $c = $c . '</style>' . vbCrlf() ;
     $controlDialogCss = $c ;
     return @$controlDialogCss;
 }

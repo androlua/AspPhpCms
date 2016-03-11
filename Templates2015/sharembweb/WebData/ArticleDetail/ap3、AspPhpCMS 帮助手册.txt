@@ -1,0 +1,32 @@
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS帮助手册
+【webtitle】ASPPHPCMS帮助手册 - 分享模板网站
+【webkeywords】ASPPHPCMS帮助手册 - 分享模板网站
+【webdescription】ASPPHPCMS帮助手册 - 分享模板网站
+【sortrank】3
+【author】sharembweb
+【adddatetime】2016-02-18 08:51:11
+【filename】/ASPPHPCMS/ASPPHPCMShelp.html
+【customaurl】
+【flags】
+【relatedtags】ASP,在线ASP转PHP
+【bodycontent】
+[&全部换行&]ASPPHPCMS帮助手册
+
+
+各位站长们：
+
+　　感谢大家一直以来对ASPPHPCMS的帮助和支持！现发布《ASPPHPCMS V1.0 用户手册》来帮助大家更直接，更清晰的了解ASPPHPCMS V1.0。
+
+　　《ASPPHPCMS V1.0 用户手册》教程和之前的在线版本相比更加详细，条理更加分明，欢迎大家针对手册提出合理的意见和建议，我们会采纳您的合理化建议不断改进和完善帮助文档，希望可以尽可能的为广大站长朋友提供便利。
+
+
+<b>更多帮助：</b>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
+<a href="http://sharembweb.com/Tools/zip/ASPPHPCMS.chm" class="ablue" rel="nofollow" target="_blank">下载ASPPHPCMS帮助文档(chm版)</a>
+
+<br>
+【/bodycontent】
+
+
+ 

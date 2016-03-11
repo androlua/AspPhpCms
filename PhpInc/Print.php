@@ -2,53 +2,57 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
 //输出内容(2014,03,28)
 
-//愿意显示内容
+
+//空网页内容 20160108
+function getBlankHtmlBody($webTitle, $webBody){
+    $c ='';
+    $c = '<!DOCTYPE html PUBLIC>' . vbCrlf() ;
+    $c = $c . '<html xmlns="http://www.w3.org/1999/xhtml">' . vbCrlf() ;
+    $c = $c . '<head>' . vbCrlf() ;
+    $c = $c . '<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />' . vbCrlf() ;
+    $c = $c . '<title>' . $webTitle . '</title>' . vbCrlf() ;
+    $c = $c . '</head>' . vbCrlf() ;
+    $c = $c . '<body>' . vbCrlf() ;
+    $c = $c . $webBody . vbCrlf() ;
+    $c = $c . '</body>' . vbCrlf() ;
+    $c = $c . '</html>' . vbCrlf() ;
+    $getBlankHtmlBody = $c ;
+    return @$getBlankHtmlBody;
+}
+
+
+
+//错误提示 之前网站用到
+function errorText($Refresh, $str, $url){
+    if( $Refresh<>'' ){
+        rw('<meta http-equiv="refresh" content="' . $Refresh . ';URL=' . $url . '""">') . vbCrlf() ;
+    }
+    rw('<fieldset>') . vbCrlf() ;
+    //rw("<legend></legend>") & vbCrLf
+    rw('<div style="padding-left:20px;padding-top:10px;color:red;font-weight:bold;text-align:center;">' . $str . '</div>') . vbCrlf() ;
+    rw('<div style="height:200p;text-align:center;"><P>') . vbCrlf() ;
+    rw('<a href="' . $url . '">如果您的游览器没有自动跳转,请点这里>></a><P>') . vbCrlf() ;
+    rw('</div></fieldset>') ; die() ;
+}
+
+
+//愿形显示内容
 function printPre($content){
     $content = Replace($content, '<', '&lt;') ;
     $printPre = '<pre>' . $content . '</pre>' ;
     return @$printPre;
 }
 
-//作者信息
-function authorInfo($FileInfo){
-    $c ='';
-    $c = '\'************************************************************' . "\n" ;
-    if( $FileInfo <> '' ){ $c = $c . '\'  文件：' . $FileInfo . "\n" ;}
-    $c = $c . '\'  作者：云端' . "\n" ;
-    $c = $c . '\'  版权：源代码公开，各种用途均可免费使用。' . "\n" ;
-    $c = $c . '\'  创建：' . Format_Time(Now(), 2) . "\n" ;
-    $c = $c . '\'  联系：QQ313801120  交流群35915100    邮箱313801120@qq.com' . "\n" ;
-    $c = $c . '\'                                       Powered By 云端 ' . "\n" ;
-    $c = $c . '\'************************************************************' . "\n" ;
-    $authorInfo = $c ;
-    return @$authorInfo;
-}
-function authorInfo2(){
-    $c ='';
-    $c = '                \'\'\'' . "\n" ;
-    $c = $c . '               (0 0)' . "\n" ;
-    $c = $c . '   +-----oOO----(_)------------+' . "\n" ;
-    $c = $c . '   |                           |' . "\n" ;
-    $c = $c . '   |    让我们一起来体验       |' . "\n" ;
-    $c = $c . '   |    QQ:313801120           |' . "\n" ;
-    $c = $c . '   |                           |' . "\n" ;
-    $c = $c . '   +------------------oOO------+' . "\n" ;
-    $c = $c . '              |__|__|' . "\n" ;
-    $c = $c . '               || ||' . "\n" ;
-    $c = $c . '              ooO Ooo' . "\n" ;
 
-    $authorInfo2 = $c ;
-    return @$authorInfo2;
-}
 //折叠菜单
 function foldingMenu($id, $s, $msg){
     //On Error Resume Next
@@ -103,38 +107,38 @@ function printFormInfo(){ //留空函数
 //DedeCms回显样式 20150113
 function dedeCMSMsg(){
     $c ='';
-    $c = '<style> ' . "\n" ;
-    $c = $c . '.msgbox {' . "\n" ;
-    $c = $c . '    width: 450px;' . "\n" ;
-    $c = $c . '    border: 1px solid #DADADA;' . "\n" ;
-    $c = $c . '    margin:0 auto;' . "\n" ;
-    $c = $c . '    margin-top:20px;' . "\n" ;
-    $c = $c . '    line-height:20px;' . "\n" ;
-    $c = $c . '}' . "\n" ;
-    $c = $c . '.msgbox .ptitle{' . "\n" ;
-    $c = $c . '    padding: 6px;' . "\n" ;
-    $c = $c . '    font-size: 12px;' . "\n" ;
-    $c = $c . '    border-bottom: 1px solid #DADADA;' . "\n" ;
-    $c = $c . '    background: #DBEEBD url(/plus/img/wbg.gif);' . "\n" ;
-    $c = $c . '    font-weight:bold;' . "\n" ;
-    $c = $c . '    text-align:center;' . "\n" ;
-    $c = $c . '}' . "\n" ;
-    $c = $c . '.msgbox .pcontent{' . "\n" ;
-    $c = $c . '    height: 100px;' . "\n" ;
-    $c = $c . '    font-size: 10pt;' . "\n" ;
-    $c = $c . '    background: #ffffff;' . "\n" ;
-    $c = $c . '    text-align:center;' . "\n" ;
-    $c = $c . '    padding-top:30px;' . "\n" ;
-    $c = $c . '}' . "\n" ;
-    $c = $c . '</style> ' . "\n" ;
-    $c = $c . '<div class="msgbox">' . "\n" ;
-    $c = $c . '    <div class="ptitle">提示信息！</div>' . "\n" ;
-    $c = $c . '    <div class="pcontent">' . "\n" ;
-    $c = $c . '        成功登录，正在转向管理管理主页！<br>' . "\n" ;
-    $c = $c . '        <a href="#">如果你的浏览器没反应，请点击这里...</a>' . "\n" ;
-    $c = $c . '' . "\n" ;
-    $c = $c . '    </div>' . "\n" ;
-    $c = $c . '</div>' . "\n" ;
+    $c = '<style> ' . vbCrlf() ;
+    $c = $c . '.msgbox {' . vbCrlf() ;
+    $c = $c . '    width: 450px;' . vbCrlf() ;
+    $c = $c . '    border: 1px solid #DADADA;' . vbCrlf() ;
+    $c = $c . '    margin:0 auto;' . vbCrlf() ;
+    $c = $c . '    margin-top:20px;' . vbCrlf() ;
+    $c = $c . '    line-height:20px;' . vbCrlf() ;
+    $c = $c . '}' . vbCrlf() ;
+    $c = $c . '.msgbox .ptitle{' . vbCrlf() ;
+    $c = $c . '    padding: 6px;' . vbCrlf() ;
+    $c = $c . '    font-size: 12px;' . vbCrlf() ;
+    $c = $c . '    border-bottom: 1px solid #DADADA;' . vbCrlf() ;
+    $c = $c . '    background: #DBEEBD url(/plus/img/wbg.gif);' . vbCrlf() ;
+    $c = $c . '    font-weight:bold;' . vbCrlf() ;
+    $c = $c . '    text-align:center;' . vbCrlf() ;
+    $c = $c . '}' . vbCrlf() ;
+    $c = $c . '.msgbox .pcontent{' . vbCrlf() ;
+    $c = $c . '    height: 100px;' . vbCrlf() ;
+    $c = $c . '    font-size: 10pt;' . vbCrlf() ;
+    $c = $c . '    background: #ffffff;' . vbCrlf() ;
+    $c = $c . '    text-align:center;' . vbCrlf() ;
+    $c = $c . '    padding-top:30px;' . vbCrlf() ;
+    $c = $c . '}' . vbCrlf() ;
+    $c = $c . '</style> ' . vbCrlf() ;
+    $c = $c . '<div class="msgbox">' . vbCrlf() ;
+    $c = $c . '    <div class="ptitle">提示信息！</div>' . vbCrlf() ;
+    $c = $c . '    <div class="pcontent">' . vbCrlf() ;
+    $c = $c . '        成功登录，正在转向管理管理主页！<br>' . vbCrlf() ;
+    $c = $c . '        <a href="#">如果你的浏览器没反应，请点击这里...</a>' . vbCrlf() ;
+    $c = $c . '' . vbCrlf() ;
+    $c = $c . '    </div>' . vbCrlf() ;
+    $c = $c . '</div>' . vbCrlf() ;
     $dedeCMSMsg = $c ;
     return @$dedeCMSMsg;
 }

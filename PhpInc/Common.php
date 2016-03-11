@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -59,7 +59,7 @@ function Rw($Str){
 }
 //输出内容加换行
 function RwBr($Str){
-    echo($Str . "\n") ;
+    echo($Str . vbCrlf()) ;
 }
 //替换Response.Write对象 + Response.End()
 function RwEnd($Str){
@@ -77,7 +77,7 @@ function PHPDie($Str){
 }
 //替换Response.Write对象
 function Debug($Str){
-    echo('<div  style="border:solid 1px #000000;margin-bottom:2px;">调试' . $Str . '</div>' . "\n");
+    echo('<div  style="border:solid 1px #000000;margin-bottom:2px;">调试' . $Str . '</div>' . vbCrlf());
 }
 //跟踪
 function FlashTrace($Str){
@@ -109,7 +109,7 @@ function PHPPrint_R($Content){
     $I='';$C='';
     if( TypeName($Content) == 'Variant()' ){
         for( $I=0 ; $I<= Ubound($Content); $I++){
-            $C = $C . '['. $I .'] => ' . $Content[$I] . "\n";
+            $C = $C . '['. $I .'] => ' . $Content[$I] . vbCrlf();
         }
     }else{
         $C = $Content;
@@ -141,18 +141,18 @@ function HR(){
 //Public Sub Echo(ByVal s) : Response.Write(s) : End Sub
 //输出字符串和一个换行符
 function PHPPrint( $s){
-    echo($s . "\n") ; PHPFlush();
+    echo($s . vbCrlf()) ; PHPFlush();
 }
 //输出字符串和一个html换行符
 function Println( $s){
-    echo($s . '<br />' . "\n") ; PHPFlush();
+    echo($s . '<br />' . vbCrlf()) ; PHPFlush();
 }
 //输出字符串并将HTML标签转为普通字符
 function PrintHtml( $s){
-    echo(HtmlEncode($s) . "\n");
+    echo($GLOBALS['HtmlEncode'][$s] . vbCrlf());
 }
 function PrintlnHtml( $s){
-    echo(HtmlEncode($s) . '<br />') . "\n";
+    echo($GLOBALS['HtmlEncode'][$s] . '<br />') . vbCrlf();
 }
 //将任意变量直接输出为字符串(Json格式)
 //Public Sub PrintString(ByVal s) : Response.Write(Str.ToString(s) & VbCrLf) : End Sub
@@ -202,7 +202,7 @@ function DoError($S, $Msg){
 
 //执行ASP脚本
 function PHPExec( $tStr){
-    if( $tStr=='' ){  }
+    if( $tStr=='' ){ return ''; }
 
     Execute($tStr);
 

@@ -1,0 +1,132 @@
+【parentid】CSS3
+【title】DIV+CSS3命名规范收集整理
+【webtitle】DIV+CSS3命名规范收集整理 - 分享模板网站
+【webkeywords】DIV+CSS3命名规范收集整理,css命名规范,css命名 - 分享模板网站
+【webdescription】DIV+CSS3命名规范收集整理 - 分享模板网站
+【sortrank】599
+【author】sharembweb
+【adddatetime】2016-01-26 16:51:18
+【filename】/asp/cssdivsetname.html
+【flags】|
+【relatedtags】ASP,在线ASP转PHP 
+【bodycontent】
+[&全部换行&]  
+<strong>一、命名规则说明：</strong> 
+
+1、所有的命名最好都小写
+2、属性的值一定要用双引号("")括起来，且一定要有值如class="divcss5",id="divcss5"
+3、每个标签都要有开始和结束，且要有正确的层次，排版有规律工整
+4、空元素要有结束的tag或于开始的tag后加上"/"
+5、表现与结构完全分离，代码中不涉及任何的表现元素，如style、font、bgColor、border等
+6、&lt;h1>到&lt;h5>的定义，应遵循从大到小的原则，体现文档的结构，并有利于搜索引擎的查询。
+7、给每一个表格和表单加上一个唯一的、结构标记id
+8、给图片加上alt标签
+9、尽量使用英文命名原则
+10、尽量不缩写，除非一看就明白的单词
+
+
+<strong>二、相对网页外层重要部分CSS样式命名：</strong> 
+
+外套 wrap ------------------用于最外层
+头部 header ----------------用于头部
+主要内容 main ------------用于主体内容（中部）
+左侧 main-left -------------左侧布局
+右侧 main-right -----------右侧布局
+导航条 nav -----------------网页菜单导航条
+内容 content ---------------用于网页中部主体
+底部 footer -----------------用于底部
+
+
+<strong>三、DIV+CSS命名参考表： </strong> 
+
+#wrapper页面外围控制整体布局宽度
+#container或#content
+容器,用于最外层
+#layout布局
+#head, #header页头部分
+#foot, #footer页脚部分
+#nav主导航
+#subnav二级导航
+#menu菜单
+#submenu子菜单
+#sideBar侧栏
+#sidebar_a, #sidebar_b左边栏或右边栏
+#main页面主体
+#tag标签
+#msg #message提示信息
+#tips小技巧
+#vote投票
+#friendlink友情连接
+#title标题
+#summary摘要
+#loginbar登录条
+#searchInput搜索输入框
+#hot热门热点
+#search搜索
+#search_output搜索输出和搜索结果相似
+#searchBar搜索条
+#search_results搜索结果
+#copyright版权信息
+#branding商标
+#logo网站LOGO标志
+#siteinfo网站信息
+#siteinfoLegal法律声明
+#siteinfoCredits信誉
+#joinus加入我们
+#partner合作伙伴
+#service服务
+#regsiter注册
+arr/arrow箭头
+#guild指南
+#sitemap网站地图
+#list列表
+#homepage首页
+#subpage二级页面子页面
+#tool, #toolbar工具条
+#drop下拉
+#dorpmenu下拉菜单
+#status状态
+#scroll滚动
+.tab标签页
+.left .right .center居左、中、右
+.news新闻
+.download下载
+.banner广告条(顶部广告条)
+
+.products产品
+.products_prices产品价格
+.products_description产品描述
+.products_review产品评论
+.editor_review编辑评论
+.news_release最新产品
+.publisher生产商
+.screenshot缩略图
+.faqs常见问题
+.keyword关键词
+.blog博客
+.forum论坛
+
+
+<strong>四、css判断不同分辨率显示不同宽度布局实现自适应宽度： </strong> 
+
+
+/* css注释：设置了浏览器宽度不小于981px时  显示980px宽度 */ 
+@media screen and (min-width: 981px) { 
+	.bodywrap {width: 980px} 
+	.columnwrap{width:490px;}
+} 
+
+/* 设置了浏览器宽度不大于980px时 abc 显示980px宽度 */ 
+@media screen and (max-width: 980px) { 
+	.bodywrap {width:100%}
+	.columnwrap{width:100%;}
+}
+
+
+
+
+
+【/bodycontent】
+
+
+ 

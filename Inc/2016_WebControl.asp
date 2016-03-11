@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -64,6 +64,13 @@ Function delTemplateMyNote(code)
         End If 
     Next 
 
+	'删除翻页配置20160309
+	startStr = "<!--#list start#-->" 
+	endStr = "<!--#list end#-->" 
+	If InStr(code, startStr) > 0 And InStr(code, endStr) > 0 Then
+		s=StrCut(code, startStr, endStr, 2) 
+		code=replace(code,s,"")
+	End If 
 
     If Request("gl") = "yun" Then
         content = GetFText("/Jquery/dragsort/Config.html") 
@@ -175,26 +182,6 @@ Function delTemplateMyNote(code)
     delTemplateMyNote = code 
 End Function 
 
-
-'处理常用函数附加参数    辅助类
-'Dim Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql
-'Call HandleFunParameter(Action,Did,Sid,Tid,Title,TopNumb,CutStrNumb,AddSql)
-Sub handleFunParameter(action, did, sid, tid, title, topNumb, cutStrNumb, addSql)
-    Dim startStr, endStr 
-    did = RParam(action, "Did") 
-    sid = RParam(action, "Sid") 
-    tid = RParam(action, "Tid") 
-
-    did = IIF(did = "[$PubProDid$]", PubProDid, did) 
-    sid = IIF(sid = "[$PubProSid$]", PubProSid, sid) 
-    tid = IIF(tid = "[$PubProTid$]", PubProTid, tid) 
-
-    title = RParam(action, "Title") 
-    topNumb = RParam(action, "TopNumb") 
-    cutStrNumb = RParam(action, "CutStrNumb") 
-    If cutStrNumb = "" Then cutStrNumb = 28                                         '默认截取字符为32
-    addSql = RParam(action, "AddSql") 
-End Sub 
 '处理替换参数值 20160114
 Function handleReplaceValueParam(content, ByVal paramName, replaceStr)
     If InStr(content, "[$" & paramName) = False Then
@@ -210,7 +197,8 @@ Function replaceValueParam(content, paramName, replaceStr)
     Dim elseIfStr                                                                   '第二判断字符
     Dim valueStr                                                                    '显示字符
     Dim elseStr                                                                     '否则字符
-    Dim instrStr                                                                    '查找字符
+	dim elseIfValue,elseValue																	'第二判断值
+    Dim instrStr,instr2Str                                                                    '查找字符
 	dim tempReplaceStr																'暂存
     'ReplaceStr = ReplaceStr & "这里面放上内容在这时碳呀。"
     'ReplaceStr = CStr(ReplaceStr)            '转成字符类型
@@ -248,7 +236,7 @@ Function replaceValueParam(content, paramName, replaceStr)
 			If nLen <> "" Then replaceStr = CutStr(replaceStr, nLen, "...")                 'Left(ReplaceStr,nLen)
 	
 			'时间处理
-			nTimeFormat = RParam(labelStr, "format_Time")                                   '时间处理值
+			nTimeFormat = RParam(labelStr, "format_time")                                   '时间处理值
 			If nTimeFormat <> "" Then
 				replaceStr = Format_Time(replaceStr, nTimeFormat) 
 			End If 
@@ -273,8 +261,10 @@ Function replaceValueParam(content, paramName, replaceStr)
 			ifStr = RParam(labelStr, "if") 
 			elseIfStr = RParam(labelStr, "elseif") 
 			valueStr = RParam(labelStr, "value") 
-			elseStr = RParam(labelStr, "else") 
+			elseifValue = RParam(labelStr, "elseifvalue") 
+			elseValue = RParam(labelStr, "elsevalue") 
 			instrStr = RParam(labelStr, "instr")
+			instr2Str = RParam(labelStr, "instr2")
 			
 			'call echo("ifStr",ifStr)
 			'call echo("valueStr",valueStr)
@@ -282,13 +272,23 @@ Function replaceValueParam(content, paramName, replaceStr)
 			'call echo("elseIfStr",elseIfStr)
 			'call echo("replaceStr",replaceStr)
 			If ifStr <> "" Or instrStr <> "" Then
-				If(ifStr = CStr(replaceStr) And ifStr <> "") Or(elseIfStr = CStr(replaceStr) And elseIfStr <> "") Then
-					replaceStr = valueStr 
+				If(ifStr = CStr(replaceStr) And ifStr <> "") then
+					replaceStr = valueStr  
+				elseif elseIfStr = CStr(replaceStr) And elseIfStr <> "" Then
+					replaceStr = valueStr  
+					if elseifValue<>"" then
+						replaceStr = elseifValue
+					end if
 				ElseIf InStr(CStr(replaceStr), instrStr) > 0 And instrStr <> "" Then
-					replaceStr = valueStr 
+					replaceStr = valueStr 		 
+				ElseIf InStr(CStr(replaceStr), instr2Str) > 0 And instr2Str <> "" Then
+					replaceStr = valueStr  
+					if elseifValue<>"" then
+						replaceStr = elseifValue
+					end if
 				Else
-					If elseStr <> "@ME" Then
-						replaceStr = elseStr 
+					If elseValue <> "@ME" Then
+						replaceStr = elseValue 
 					End If 
 				End If 
 			End If 
@@ -302,7 +302,7 @@ Function replaceValueParam(content, paramName, replaceStr)
 	
 			'默认值
 			s = RParam(labelStr, "default") 
-			If s <> "" Then
+			If s <> "" and s<>"@ME" Then
 				If replaceStr = "" Then
 					replaceStr = s 
 				End If 
@@ -323,13 +323,7 @@ Function replaceValueParam(content, paramName, replaceStr)
 	next
     replaceValueParam = content 
 End Function 
-'call rwend(execute("replaceStr=testfunction(""ME"")") & replaceStr)
-Function testfunction(s)
-    testfunction = s & "(end)" 
-End Function 
-
-
-
+  
 '显示编辑器20160115
 Function displayEditor(action)
     Dim c 
@@ -395,7 +389,7 @@ End Function
 '获得控制内容
 Function getControlStr(url)
     If Request("gl") = "edit" Then
-        getControlStr = " onMouseMove=""onColor(this,'#FDFAC6','red')"" onMouseOut=""offColor(this,'','')"" onDblClick=""window1('" & url & "','信息修改')"" title='双击在线修改' oncontextmenu=""CommonMenu(event,this,'')" '删除网址为空
+        getControlStr = " onMouseMove=""onColor(this,'#FDFAC6','red')"" onMouseOut=""offColor(this,'','')"" onDblClick=""window1('" & url & "','信息修改')"" title='双击或右键在线修改' oncontextmenu=""CommonMenu(event,this,'')" '删除网址为空
     End If 
 End Function 
 

@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -39,7 +39,7 @@ Function getRandArticleId(addSql, topNumb)
         If c <> "" Then c = c & "," 
         c = c & rs("id") 
     rs.MoveNext : Wend : rs.Close 
-    getRandArticleId = RandomShow(c, ",", 4) 
+    getRandArticleId = randomShow(c, ",", 4) 
     splStr = Split(c, ",") : c = "" : nIndex = 0 
     For Each s In splStr
         If c <> "" Then c = c & "," 
@@ -69,7 +69,7 @@ Function handleUpDownArticle(lableTitle, sql)
     rsx.Open sql, conn, 1, 1 
     If Not rsx.EOF Then
         If isMakeHtml = True Then
-            url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/html/detail" & rsx("id")) 
+            url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/detail/detail" & rsx("id")) 
         Else
             url = handleWebUrl("?act=detail&id=" & rsx("id")) 
         End If 
@@ -97,10 +97,18 @@ Function getRsUrl(fileName, customAUrl, defaultFileName)
         url = Trim(customAUrl) 
     End If 
     If InStr(cfg_flags, "|addwebsite|") > 0 Then
-        url = urlAddHttpUrl(cfg_webSiteUrl, url) 
+        url = urlAddHttpUrl(cfg_webSiteUrl, url)
     End If 
     getRsUrl = url 
-End Function 
+End Function
+'获得处理后RS网址
+function getHandleRsUrl(fileName, customAUrl, defaultFileName)
+		dim url
+		url=getRsUrl(fileName, customAUrl, defaultFileName)
+        '因为URL如果为自定义的则需要处理下全局变量，这样程序运行又会变慢，不就可以使用生成HTML方法解决这个问题，20160308
+        url = replaceGlobleVariable(url)
+		getHandleRsUrl=url
+end function
 
 '获得单页url 20160114
 Function getOnePageUrl(title)
@@ -140,7 +148,7 @@ End Function
 Function getColumnUrl(columnNameOrId, sType)
     Dim url, addSql 
 
-    columnNameOrId = replaceGlobleVariable(columnNameOrId)    '处理动作 <a href="{$GetColumnUrl columnname='[$glb_columnName$]' $}" >更多图片</a>
+    columnNameOrId = replaceGlobleVariable(columnNameOrId)                          '处理动作 <a href="{$GetColumnUrl columnname='[$glb_columnName$]' $}" >更多图片</a>
 
     If sType = "name" Then
         addSql = " where columnname='" & columnNameOrId & "'" 
@@ -152,7 +160,8 @@ Function getColumnUrl(columnNameOrId, sType)
         If isMakeHtml = True Then
             url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
         Else
-            url = handleWebUrl("?act=nav&columnName=" & rsx("columnname")) 
+            url = handleWebUrl("?act=nav&id=" & rsx("id"))				'用这种方法20160310
+            'url = handleWebUrl("?act=nav&columnName=" & escape(rsx("columnname")))			'这种方法
             If rsx("customAUrl") <> "" Then
                 url = rsx("customAUrl") 
             End If 
@@ -161,6 +170,17 @@ Function getColumnUrl(columnNameOrId, sType)
 
     getColumnUrl = url 
 End Function 
+
+'获得文章标题对应的id
+Function getArticleId(title)
+    title = Replace(title, "'", "")                                                 '注意，这个不能留
+    getArticleId = -1 
+    rsx.Open "Select * from " & db_PREFIX & "ArticleDetail where title='" & title & "'", conn, 1, 1 
+    If Not rsx.EOF Then
+        getArticleId = rsx("id") 
+    End If : rsx.Close 
+End Function 
+
 '获得栏目名称对应的id
 Function getColumnId(columnName)
     columnName = Replace(columnName, "'", "")                                       '注意，这个不能留
@@ -247,80 +267,63 @@ Function webStat(folderPath)
     c = Replace(c, vbCrLf, "\n") 
     c = Replace(c, """", "\""") 
     'Response.Write("eval(""var MyWebStat=\""" & C & "\"""")")
+
+    Dim splxx, nIP, nPV, ipList, s, ip
+	'判断是否显示回显记录
+	if request("stype")="display" then
+		content = getftext(fileName) 
+		splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
+		nIP = 0 
+		nPV = 0 
+		ipList = "" 
+		For Each s In splxx
+			If InStr(s, "当前：") > 0 Then
+				s = vbCrLf & s & vbCrLf 
+				ip = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
+				nPV = nPV + 1 
+				If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
+					ipList = ipList & ip & vbCrLf 
+					nIP = nIP + 1 
+				End If 
+			End If 
+		Next 
+		Call rw("document.write('网长统计 | 今日IP["& nIP &"] | 今日PV["& nPV &"] ')") 
+	end if
     webStat = c 
-End Function 
-
-
-'读模块内容
-Function readTemplateModuleStr(filePath, defaultContent, ModuleId)
-    Dim startStr, endStr, content, s 
-    startStr = "<!--#Module " & ModuleId & " Start#-->" 
-    endStr = "<!--#Module " & ModuleId & " End#-->" 
-    'FilePath = ReplaceGlobleLable(FilePath)                '替换全部标签        '添加于2014 12 11
-
-    '文件不存在，则追加模板路径 20150616 给VB软件里用
-    If checkFile(filePath) = False Then
-        filePath = WebTemplate & filePath 
-    End If 
-
-    If defaultContent <> "" Then
-        content = defaultContent 
-    ElseIf checkFile(filePath) = True Then
-        content = GetFText(filePath) 
-    Else
-        content = code                                                               '默认用内容指定内容
-    End If 
-    'Call Die("显示" & ModuleId & "," & Content)
-    'Call Eerr(filepath & checkfile(filepath), Content)
-    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-        readTemplateModuleStr = StrCut(content, startStr, endStr, 2) 
-    Else
-        readTemplateModuleStr = "模块[" & ModuleId & "]不存在,路径=" & filePath 
-    End If 
-End Function 
-'找模块对应内容
-Function findModuleStr(content, valueStr)
-    Dim startStr, endStr, YuanStr, replaceStr, i, Block, BlockFile, action 
-    For i = 1 To 9
-        startStr = "[$读出内容 " : endStr = "$]" 
-        If InStr(valueStr, startStr) > 0 And InStr(valueStr, endStr) > 0 Then
-            action = StrCut(valueStr, startStr, endStr, 2) 
-            Block = RParam(action, "Block") 
-            BlockFile = RParam(action, "File") 
-            If InStr(vbCrLf & ReadBlockList & vbCrLf, vbCrLf & Block & vbCrLf) = False Then
-                ReadBlockList = ReadBlockList & Block & vbCrLf 
-            End If 
-            '块文件存在 则读出内容
-            If BlockFile <> "" Then
-                content = GetFText(BlockFile) 
-            End If 
-            YuanStr = startStr & action & endStr 
-            replaceStr = "" 
-
-            startStr = "<R#读出内容" & Block & " start#>" : endStr = "<R#读出内容" & Block & " end#>" 
-            If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-                replaceStr = StrCut(content, startStr, endStr, 2) 
-            Else
-                startStr = "<!--#读出内容" & Block : endStr = "#-->" 
-                If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-                    replaceStr = StrCut(content, startStr, endStr, 2) 
-                End If 
-            End If 
-            'Call Eerr(YuanStr,ReplaceStr)
-            valueStr = Replace(valueStr, YuanStr, replaceStr) 
-        'Call Echo("ValueStr",ValueStr)
-        Else
-            '没有模块要处理了 则退出
-            Exit For 
-        End If 
-    Next 
-    findModuleStr = valueStr 
 End Function 
 
 '判断传值是否相等
 Function checkFunValue(action, FunName)
     checkFunValue =(Left(action, Len(FunName)) = FunName) 
-End Function
+End Function 
+'HTML标签参数自动添加(target|title|alt|id|class|style|)    辅助类
+Function setHtmlParam(content, ParamList)
+    Dim splStr, startStr, endStr, c, paramValue, ReplaceStartStr 
+    endStr = "'" 
+    splStr = Split(ParamList, "|") 
+    For Each startStr In splStr
+        startStr = Trim(startStr) 
+        If startStr <> "" Then
+            '替换开始字符   因为开始字符类型可变 不同
+            ReplaceStartStr = startStr 
+            If Left(ReplaceStartStr, 3) = "img" Then
+                ReplaceStartStr = Mid(ReplaceStartStr, 4) 
+            ElseIf Left(ReplaceStartStr, 1) = "a" Then
+                ReplaceStartStr = Mid(ReplaceStartStr, 2) 
+            ElseIf InStr("|ul|li|", "|" & Left(ReplaceStartStr, 2) & "|") > 0 Then
+                ReplaceStartStr = Mid(ReplaceStartStr, 3) 
+            End If 
+            ReplaceStartStr = " " & ReplaceStartStr & "='" 
 
-%>    
+            startStr = " " & startStr & "='" 
+            If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+                paramValue = strCut(content, startStr, endStr, 2) 
+                paramValue = handleInModule(paramValue, "end")    '处理内部模块
+                c = c & ReplaceStartStr & paramValue & endStr 
+            End If 
+        End If 
+    Next 
+    setHtmlParam = c 
+End Function 
+%>     
 

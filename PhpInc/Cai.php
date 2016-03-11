@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -14,14 +14,14 @@
 //获得采集内容
 
 //处理获得采集内容
-function handleGetHttpPage( $HttpUrl, $Char_Set){ //留空函数
+function handleGetHttpPage( $HttpUrl, $Char_Set){ return ''; return ''; //留空函数
 }
 
 //获得采集内容 (辅助)
 
 //获得采集内容 (辅助)
 
-function bytesToBstr($body, $Cset){ //留空函数
+function bytesToBstr($body, $Cset){ return ''; //留空函数
 }
 //截取字符串 更新20160114
 //c=[A]abbccdd[/A]
@@ -29,51 +29,51 @@ function bytesToBstr($body, $Cset){ //留空函数
 //1=[A]abbccdd[/A]
 //3=[A]abbccdd
 //4=abbccdd[/A]
+//截取字符串
 function strCut( $content, $startStr, $endStr, $cutType){
-    //On Error Resume Next
-    $s1=''; $s1Str=''; $s2=''; $s3=''; $c ='';
+    $s1=''; $s1Str=''; $s2=''; $s3=''; $c='';$tempContent='';$tempStartStr='';$tempEndStr='';
+    $tempStartStr=$startStr;
+    $tempEndStr=$endStr;
+    $tempContent=$content;
+    $cutType='|'. $cutType .'|';
+    //不区分大小写
+    if( instr($cutType,'|lu|')>0 ){
+        $content=lcase($content);
+        $startStr=lcase($startStr);
+        $endStr=lcase($endStr);
+    }
     if( instr($content, $startStr) == false || instr($content, $endStr) == false ){
         $c = '' ;
-
+        return '';
     }
-    switch ( $cutType ){
-        //完善于20150923
-        case 1;
+    if( instr($cutType,'|1|')>0 ){
         $s1 = instr($content, $startStr) ;
         $s1Str = mid($content, $s1 + strlen($startStr),-1) ;
         $s2 = $s1 + instr($s1Str, $endStr) + strlen($startStr) + strlen($endStr) - 1 ;//为什么要减1
-        break;
-        default;
+    }else{
         $s1 = instr($content, $startStr) + strlen($startStr) ;
         $s1Str = mid($content, $s1,-1) ;
-        //S2 = InStr(S1, Content, EndStr)
+        //S2 = InStr(S1, content, EndStr)
         $s2 = $s1 + instr($s1Str, $endStr) - 1 ;
-        //call echo("s2",s2)
     }
     $s3 = $s2 - $s1 ;
     if( $s3 >= 0 ){
-        $c = mid($content, $s1, $s3) ;
+        $c = mid($tempContent, $s1, $s3);
     }else{
         $c = '' ;
     }
-    if( $cutType == 3 ){
-        $c = $startStr . $c ;
+    if( instr($cutType,'|3|')>0 ){
+        $c = $tempStartStr . $c ;
     }
-    if( $cutType == 4 ){
-        $c = $c . $endStr ;
+    if( instr($cutType,'|4|')>0 ){
+        $c = $c . $tempEndStr ;
     }
     $strCut = $c ;
-
-
     return @$strCut;
 }
 //获得截取内容,20150305
 function getStrCut( $content, $startStr, $endStr, $CutType){
-    $getStrCut = '' ;
-    //Content=Replace(Replace(Content,Chr(13),""),Chr(10),"")
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $getStrCut = strCut($content, $startStr, $endStr, $CutType) ;
-    }
+    $getStrCut = strCut($content, $startStr, $endStr, $CutType) ;
     return @$getStrCut;
 }
 //接取字符 CutStr(Content,22,"null")
@@ -144,7 +144,7 @@ function setCutTDStr( $content, $TDWidth, $MoreColor){
     }
     if( $YesMore == true ){
         //需要处理Title标题的HTML
-        $c = '<span Title="' . showHTMLCode($content) . '" style="background-color:' . $MoreColor . ';">' . $c . '</span>' ;
+        $c = '<span Title="' . $GLOBALS['showHTMLCode'][$content] . '" style="background-color:' . $MoreColor . ';">' . $c . '</span>' ;
     }
     $setCutTDStr = $c ;
     return @$setCutTDStr;

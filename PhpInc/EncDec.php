@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -15,8 +15,8 @@
 //特殊Html上传加密解密 20150121 specialHtmlUploadEncryptionDecrypt(Content,"Decrypt")
 function specialHtmlUploadEncryptionDecrypt($content, $sType){
     $splStr=''; $splxx=''; $c=''; $s ='';
-    $c = '·|[*-24156*]' . "\n" ;
-    $splStr = aspSplit($c, "\n") ;
+    $c = '·|[*-24156*]' . vbCrlf() ;
+    $splStr = aspSplit($c, vbCrlf()) ;
     foreach( $splStr as $s){
         if( instr($s, '|') > 0 ){
             $splxx = aspSplit($s, '|') ;
@@ -104,13 +104,13 @@ function toUnicode($str){
                 $toUnicode = ' ' . toUnicode ;
                 $p = 'e' ;
             }
-            $toUnicode = toUnicode . $c ;
+            $toUnicode = $toUnicode . $c ;
         }else{
             if( $p == 'e' ){
-                $toUnicode = toUnicode . ' ' ;
+                $toUnicode = $toUnicode . ' ' ;
                 $p = 'c' ;
             }
-            $toUnicode = toUnicode . '&#' . $j . ';' ;
+            $toUnicode = $toUnicode . '&#' . $j . ';' ;
         }
     }
     return @$toUnicode;
@@ -178,7 +178,7 @@ function lcaseEnc($str){
             $c = $c . $s ;
         }
     }
-    $c = Replace($c, "\n", '＠') ;
+    $c = Replace($c, vbCrlf(), '＠') ;
     $lcaseEnc = $c ;
     return @$lcaseEnc;
 }
@@ -195,7 +195,7 @@ function lcaseDec($str){
             $c = $c . $s ;
         }
     }
-    $c = Replace($c, '＠', "\n") ;
+    $c = Replace($c, '＠', vbCrlf()) ;
     $lcaseDec = $c ;
     return @$lcaseDec;
 }
@@ -208,7 +208,7 @@ function htmlToJs( $c){
     $c = Replace($c, '/', '\\/') ;
     $c = Replace($c, '\'', '\\\'') ;
     $c = Replace($c, '"', '\\"') ;
-    $c = Join(aspSplit($c, "\n"), '");' . "\n" . 'document.write("') ;
+    $c = Join(aspSplit($c, vbCrlf()), '");' . vbCrlf() . 'document.write("') ;
     $c = 'document.write("' . $c . '");' ;
     $htmlToJs = $c ;
     return @$htmlToJs;
@@ -227,7 +227,7 @@ function jsToHtml( $c){
 //html转换成Asp
 function htmlToAsp( $c){
     $c = Replace($c, '"', '""') ;
-    $c = Join(aspSplit($c, "\n"), '")' . "\n" . 'Response.Write("') ;
+    $c = Join(aspSplit($c, vbCrlf()), '")' . vbCrlf() . 'Response.Write("') ;
     $c = 'Response.Write("' . $c . '")' ;
     $htmlToAsp = $c ;
     return @$htmlToAsp;
@@ -235,7 +235,7 @@ function htmlToAsp( $c){
 //Html转Asp变量存储
 function htmlToAspDim( $c){
     $c = Replace($c, '"', '""') ;
-    $c = Join(aspSplit($c, "\n"), '"' . "\n" . 'C=C & "') ;
+    $c = Join(aspSplit($c, vbCrlf()), '"' . vbCrlf() . 'C=C & "') ;
     $c = 'C=C & "' . $c . '"' ;
     $htmlToAspDim = $c ;
     return @$htmlToAspDim;
@@ -259,7 +259,7 @@ function setFileName( $fileName){
     }
     $fileName = Replace($fileName, '&nbsp;', ' ') ;
     $fileName = Replace($fileName, '&quot;', '双') ;
-    $fileName = Replace($fileName, "\n", '') ;
+    $fileName = Replace($fileName, vbCrlf(), '') ;
     $setFileName = $fileName ;
     return @$setFileName;
 }

@@ -2,10 +2,10 @@
 '************************************************************
 '×÷Õß£ºÔÆ¶Ë (¾«Í¨ASP/VB/PHP/JS/Flash£¬½»Á÷ºÏ×÷¿ÉÁªÏµ±¾ÈË)
 '°æÈ¨£ºÔ´´úÂë¹«¿ª£¬¸÷ÖÖÓÃÍ¾¾ù¿ÉÃâ·ÑÊ¹ÓÃ¡£ 
-'´´½¨£º2016-02-29
+'´´½¨£º2016-03-11
 'ÁªÏµ£ºQQ313801120  ½»Á÷Èº35915100(ÈºÀïÒÑÓÐ¼¸°ÙÈË)    ÓÊÏä313801120@qq.com   ¸öÈËÖ÷Ò³ sharembweb.com
 '¸ü¶à°ïÖú£¬ÎÄµµ£¬¸üÐÂ¡¡Çë¼ÓÈº(35915100)»òä¯ÀÀ(sharembweb.com)»ñµÃ
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <%Option Explicit%>
@@ -66,6 +66,7 @@
 <!--#Include File = "2015_NewWebFunction.Asp"-->   
 <!--#Include File = "2016_WebControl.Asp"-->    
 <!--#Include File = "2016_SaveData.Asp"-->      
+<!--#Include File = "2016_Log.Asp"-->      
 <!--#Include File = "SystemInfo.Asp"--> 
 <% 
 
@@ -88,8 +89,10 @@ Dim WEBCOLUMNTYPE : WEBCOLUMNTYPE = "Ê×Ò³|ÎÄ±¾|²úÆ·|ÐÂÎÅ|ÊÓÆµ|ÏÂÔØ|°¸Àý|ÁôÑÔ|·´À
 Dim WEB_VIEWURL : WEB_VIEWURL = "/index.asp"                'Ç°Ì¨ÏÔÊ¾
 dim WEB_ADMINURL : WEB_ADMINURL ="/admin/index.asp"				'ºóÌ¨ÏÔÊ¾
 Dim EDITORTYPE : EDITORTYPE = "asp"                                             '³ÌÐòÀàÐÍ£¬ÊÇASP,»òPHP,»òjSP,»ò.NET
+MDBPath = "/Data/Data.mdb"
 '=========
 
+dim ReadBlockList
 
 dim SysStyle(9)
 SysStyle(0) = "#999999"
@@ -100,7 +103,10 @@ dim HandleisCache : HandleisCache=false						'»º³åÊÇ·ñ´¦ÀíÁË
 Dim db_PREFIX : db_PREFIX = "xy_"    		                                         '±íÇ°×º
 dim adminDir :adminDir="/admin/"							'ºóÌ¨Ä¿Â¼
 
-dim onOffEcho: onOffEcho=true											'¿ª¹Ø²âÊÔ»ØÏÔ
+
+Dim openErrorLog : openErrorLog = true                                             '¿ªÆô´íÎóÈÕÖ¾
+Dim openWriteSystemLog : openWriteSystemLog = "|txt|database|"                                             '¿ªÆôÐ´ÏµÍ³ÈÕÖ¾ txtÐ´ÈëÎÄ±¾ databaseÐ´ÈëÊý¾Ý¿â
+dim openTestEcho: openTestEcho=true											'¿ª¹Ø²âÊÔ»ØÏÔ
 Dim webVersion : webVersion="ASPPHPCMS V1.01"												'ÍøÕ¾°æ±¾
 
  

@@ -2,14 +2,14 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
-<!--#Include File = "Inc/Config.Asp"-->       
-<!--#Include File = "inc/admin_function.Asp"--> 
+<!--#Include File = "Inc/Config.Asp"-->         
+<!--#Include File = "inc/admin_function.Asp"-->   
 <% 
 'asp服务器
 
@@ -38,97 +38,108 @@ Dim isMakeHtml                                                                  
 Function handleAction(content)
     Dim startStr, endStr, ActionList, splStr, action, s, HandYes 
     startStr = "{\$" : endStr = "\$}" 
-    ActionList = GetArray(content, startStr, endStr, True, True) 
+    ActionList = getArray(content, startStr, endStr, True, True) 
     'Call echo("ActionList ", ActionList)
     splStr = Split(ActionList, "$Array$") 
     For Each s In splStr
         action = Trim(s) 
-        action = HandleInModule(action, "start")                                        '处理\'替换掉
+        action = handleInModule(action, "start")                                        '处理\'替换掉
         If action <> "" Then
             action = Trim(Mid(action, 3, Len(action) - 4)) & " " 
             'call echo("s",s)
             HandYes = True                                                                  '处理为真
             '{VB #} 这种是放在图片路径里，目的是为了在VB里不处理这个路径
-            If CheckFunValue(action, "# ") = True Then
+            If checkFunValue(action, "# ") = True Then
                 action = "" 
             '测试
-            ElseIf CheckFunValue(action, "GetLableValue ") = True Then
+            ElseIf checkFunValue(action, "GetLableValue ") = True Then
                 action = XY_getLableValue(action) 
 
             '加载文件
-            ElseIf CheckFunValue(action, "Include ") = True Then
+            ElseIf checkFunValue(action, "Include ") = True Then
                 action = XY_Include(action) 
 
             '栏目列表
-            ElseIf CheckFunValue(action, "ColumnList ") = True Then
+            ElseIf checkFunValue(action, "ColumnList ") = True Then
                 action = XY_AP_ColumnList(action) 
             '文章列表
-            ElseIf CheckFunValue(action, "ArticleList ") = True Then
+            ElseIf checkFunValue(action, "ArticleList ") = True Then
                 action = XY_AP_ArticleList(action) 
             '评论列表
-            ElseIf CheckFunValue(action, "CommentList ") = True Then
+            ElseIf checkFunValue(action, "CommentList ") = True Then
                 action = XY_AP_CommentList(action) 
             '搜索统计列表
-            ElseIf CheckFunValue(action, "SearchStatList ") = True Then
+            ElseIf checkFunValue(action, "SearchStatList ") = True Then
                 action = XY_AP_SearchStatList(action) 
 
 
 
             '显示单页内容
-            ElseIf CheckFunValue(action, "GetOnePageBody ") = True Then
+            ElseIf checkFunValue(action, "GetOnePageBody ") = True Then
                 action = XY_AP_GetOnePageBody(action) 
             '显示文章内容
-            ElseIf CheckFunValue(action, "GetArticleBody ") = True Then
+            ElseIf checkFunValue(action, "GetArticleBody ") = True Then
                 action = XY_AP_GetArticleBody(action) 
             '显示栏目内容
-            ElseIf CheckFunValue(action, "GetColumnBody ") = True Then
+            ElseIf checkFunValue(action, "GetColumnBody ") = True Then
                 action = XY_AP_GetColumnBody(action) 
 
 
 
             '获得栏目URL
-            ElseIf CheckFunValue(action, "GetColumnUrl ") = True Then
+            ElseIf checkFunValue(action, "GetColumnUrl ") = True Then
                 action = XY_GetColumnUrl(action) 
             '获得文章URL
-            ElseIf CheckFunValue(action, "GetArticleUrl ") = True Then
+            ElseIf checkFunValue(action, "GetArticleUrl ") = True Then
                 action = XY_GetArticleUrl(action) 
             '获得单页URL
-            ElseIf CheckFunValue(action, "GetOnePageUrl ") = True Then
+            ElseIf checkFunValue(action, "GetOnePageUrl ") = True Then
                 action = XY_GetOnePageUrl(action) 
 
-            '显示包裹块
-            ElseIf CheckFunValue(action, "DisplayWrap ") = True Then
+            '显示包裹块 作用不大
+            ElseIf checkFunValue(action, "DisplayWrap ") = True Then
                 action = XY_DisplayWrap(action) 
-            '获得内容模块 20150108
-            ElseIf CheckFunValue(action, "GetContentModule ") = True Then
-                action = XY_ReadTemplateModule(action) 
             '显示布局
-            ElseIf CheckFunValue(action, "Layout ") = True Then
+            ElseIf checkFunValue(action, "Layout ") = True Then
                 action = XY_Layout(action) 
             '显示模块
-            ElseIf CheckFunValue(action, "Module ") = True Then
+            ElseIf checkFunValue(action, "Module ") = True Then
                 action = XY_Module(action) 
+            '获得内容模块 20150108
+            ElseIf checkFunValue(action, "GetContentModule ") = True Then
+                action = XY_ReadTemplateModule(action) 
             '读模板样式并设置标题与内容   软件里有个栏目Style进行设置
-            ElseIf CheckFunValue(action, "ReadColumeSetTitle ") = True Then
+            ElseIf checkFunValue(action, "ReadColumeSetTitle ") = True Then
                 action = XY_ReadColumeSetTitle(action) 
 
-            '显示编辑器
-            ElseIf CheckFunValue(action, "displayEditor ") = True Then
+            '显示JS渲染ASP/PHP/VB等程序的编辑器
+            ElseIf checkFunValue(action, "displayEditor ") = True Then
                 action = displayEditor(action) 
 
             'Js版网站统计
-            ElseIf CheckFunValue(action, "JsWebStat ") = True Then
+            ElseIf checkFunValue(action, "JsWebStat ") = True Then
                 action = XY_JsWebStat(action) 
 
                 '------------------- 链接区 -----------------------
             '普通链接A
-            ElseIf CheckFunValue(action, "HrefA ") = True Then
+            ElseIf checkFunValue(action, "HrefA ") = True Then
                 action = XY_HrefA(action) 
 
+            '栏目菜单(引用后台栏目程序)
+            ElseIf checkFunValue(action, "ColumnMenu ") = True Then
+                action = XY_AP_ColumnMenu(action) 
+
+            '网站底部
+            ElseIf checkFunValue(action, "WebSiteBottom ") = True Then
+                action = XY_AP_WebSiteBottom(action) 
+
+
+
+
             '暂时不屏蔽
-            ElseIf CheckFunValue(action, "copyTemplateMaterial ") = True Then
+            ElseIf checkFunValue(action, "copyTemplateMaterial ") = True Then
                 action = "" 
-            ElseIf CheckFunValue(action, "clearCache ") = True Then
+            ElseIf checkFunValue(action, "clearCache ") = True Then
                 action = "" 
 
 
@@ -225,7 +236,13 @@ Sub loadWebConfig()
 
         '改换模板20160202
         If Request("templatedir") <> "" Then
-            templatedir = handlehttpurl(Replace(Request("templatedir"), handlePath("/"), "/")) 
+			
+            templatedir = Request("templatedir")
+			if instr(templatedir,":")>0 or instr(templatedir,"..")>0 then
+				call eerr("提示","模板目录有非法字符")
+			end if
+			templatedir=handlehttpurl(Replace(templatedir, handlePath("/"), "/"))
+			
             cfg_webImages = Replace(cfg_webImages, cfg_webTemplate, templatedir) 
             cfg_webCss = Replace(cfg_webCss, cfg_webTemplate, templatedir) 
             cfg_webJs = Replace(cfg_webJs, cfg_webTemplate, templatedir) 
@@ -253,7 +270,7 @@ End Function
 '显示管理列表
 Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameList, nPageSize, nPage, addSql)
     Call openconn() 
-    Dim defaultList, i, s, c, tableName, j, splxx, k 
+    Dim defaultList, i, s, c, tableName, j, splxx ,sql
     Dim x, url, nCount 
     Dim pageInfo 
 
@@ -264,7 +281,8 @@ Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameL
     tableName = LCase(actionName)                                                   '表名称
     Dim listFileName                                                                '列表文件名称
     listFileName = RParam(action, "listFileName") 
-
+    Dim aHrefTarget                                                                     'A链接打开方式
+	
     Dim id 
     id = rq("id") 
 
@@ -275,121 +293,89 @@ Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameL
     fieldNameList = specialStrReplace(fieldNameList)                                '特殊字符处理
     splFieldName = Split(fieldNameList, ",")                                        '字段分割成数组
 
-    content = Replace(content, "{$lableTitle$}", lableTitle) 
-    content = Replace(content, "{$actionName$}", actionName) 
-    content = Replace(content, "{$lableTitle$}", lableTitle) 
-    content = Replace(content, "{$tableName$}", tableName) 
 
-
-
-    content = Replace(content, "{$nPageSize$}", nPageSize) 
-    content = Replace(content, "{$page$}", Request("page")) 
-    content = Replace(content, "{$nPageSize" & nPageSize & "$}", " selected") 
-    For i = 1 To 9
-        content = Replace(content, "{$nPageSize" & i & "0$}", "") 
-    Next 
     defaultList = getStrCut(content, "[list]", "[/list]", 2) 
     pageInfo = getStrCut(content, "[page]", "[/page]", 1) 
     If pageInfo <> "" Then
         content = Replace(content, pageInfo, "") 
     End If 
 
-    'call echo("pageInfo",pageInfo)
-
-    '【删除此行start】
-    'ASP部分
-    If "ASP" = "ASP" Then
-        rs.Open "select * from " & db_PREFIX & tableName & " " & addSql, conn, 1, 1 
-        nCount = rs.RecordCount 
-        'nPageSize = 10         '上面设定
-        x = getRsPageNumber(rs, nCount, nPageSize, nPage)                               '获得Rs页数                                                  '记录总数
-        For i = 1 To x
-            s = defaultList 
-            '处理三次，这样就会导致速度过慢了20160202
-            For k = 1 To 3
-                s = Replace(s, "[$id$]", rs("id")) 
-                For j = 0 To UBound(splFieldName)
-                    If splFieldName(j) <> "" Then
-                        splxx = Split(splFieldName(j) & "|||", "|") 
-                        fieldName = splxx(0) 
-                        replaceStr = rs(fieldName) & "" 
-                        s = replaceValueParam(s, fieldName, replaceStr) 
-                    End If 
-
-                    If isMakeHtml = True Then
-                        url = getRsUrl(rs("fileName"), rs("customAUrl"), "/html/detail" & rs("id")) 
-                    Else
-                        url = handleWebUrl("?act=detail&id=" & rs("id")) 
-                        If rs("customAUrl") <> "" Then
-                            url = rs("customAUrl") 
-                        End If 
-                    End If 
-                    s = replaceValueParam(s, "url", url) 
-                Next 
-            Next 
-            '文章列表加在线编辑
-            url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
-            s = HandleDisplayOnlineEditDialog(url, s, "", "div|li|span") 
-
-            c = c & s 
-        rs.MoveNext : Next : rs.Close 
-        content = Replace(content, "[list]" & defaultList & "[/list]", c) 
-
-        If isMakeHtml = True Then
-            url = "" 
-            If Len(listFileName) > 5 Then
-                url = Mid(listFileName, 1, Len(listFileName) - 5) & "[id].html" 
-                url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-            End If 
-        Else
-            url = getUrlAddToParam(getUrl(), "?page=[id]", "replace") 
-        End If 
-
-        content = Replace(content, "[$pageInfo$]", webPageControl(nCount, nPageSize, nPage, url, pageInfo)) 
-    Else
-        'PHP部分
-        '【删除此行end】
-        rs.Open "select * from " & db_PREFIX & tableName & " " & addSql, conn, 1, 1 
-        nCount = rs.RecordCount 
-        'nPageSize = 10         '上面设定
-        page = Request("page") 
-        url = getUrlAddToParam(getUrl(), "?page=[id]", "replace") 
-        content = Replace(content, "[$pageInfo$]", webPageControl(nCount, nPageSize, page, url, pageInfo)) 
-        If page <> "" Then
-            page = page - 1 
-        End If 
-        rs.Open "select * from " & db_PREFIX & tableName & " " & addSql & " limit " & nPageSize * page & "," & nPageSize & "", conn, 1, 1 
-        While Not rs.EOF
-            s = defaultList 
-            For k = 1 To 3
-                s = Replace(s, "[$id$]", rs("id")) 
-                s = Replace(s, "[$phpArray$]", "")                                         '替换为空  为要[]  因为我是通过js处理了
-                For j = 0 To UBound(splFieldName)
-                    If splFieldName(j) <> "" Then
-                        splxx = Split(splFieldName(j) & "|||", "|") 
-                        fieldName = splxx(0) 
-                        replaceStr = rs(fieldName) & "" 
-                        s = replaceValueParam(s, fieldName, replaceStr)                             '这种方式处理 加动作
-                    End If 
-
-                    If isMakeHtml = True Then
-                        url = getRsUrl(rs("fileName"), rs("customAUrl"), "/html/detail" & rs("id")) 
-                    Else
-                        url = handleWebUrl("?act=detail&id=" & rs("id")) 
-                    End If 
-                    s = replaceValueParam(s, "url", url) 
-                Next 
-            Next 
-            '文章列表加在线编辑
-            url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
-            s = HandleDisplayOnlineEditDialog(url, s, "", "div|li|span") 
-
-            c = c & s 
-        rs.MoveNext : Wend : rs.Close 
-        content = Replace(content, "[list]" & defaultList & "[/list]", c) 
-    '【删除此行start】
+	sql="select * from " & db_PREFIX & tableName & " " & addSql
+    '检测SQL
+    If checksql(sql) = False Then
+        Call errorLog("出错提示：<br>sql=" & sql & "<br>") 
+        Exit Function 
     End If 
-    '【删除此行end】
+    rs.Open sql, conn, 1, 1 
+    nCount = rs.RecordCount
+	
+	'为动态翻页网址
+	If isMakeHtml = True Then
+		url = "" 
+		If Len(listFileName) > 5 Then
+			url = Mid(listFileName, 1, Len(listFileName) - 5) & "[id].html" 
+			url = urlAddHttpUrl(cfg_webSiteUrl, url) 
+		End If 
+	Else
+		url = getUrlAddToParam(getUrl(), "?page=[id]", "replace") 
+	End If 
+    content = Replace(content, "[$pageInfo$]", webPageControl(nCount, nPageSize, nPage, url, pageInfo)) 
+
+    If EDITORTYPE = "asp" Then
+        x = getRsPageNumber(rs, nCount, nPageSize, nPage)                               '获得Rs页数                                                  '记录总数
+    Else
+        If nPage <> "" Then
+            nPage = nPage - 1 
+        End If 
+        sql = "select * from " & db_PREFIX & "" & tableName & " " & addSql & " limit " & nPageSize * nPage & "," & nPageSize 
+        rs.Open sql, conn, 1, 1 
+        x = rs.RecordCount 
+    End If 
+    For i = 1 To x
+        '【PHP】$rs=mysql_fetch_array($rsObj);                                            //给PHP用，因为在 asptophp转换不完善
+        '打开方式2016
+        If InStr(fieldNameList, "target") > 0 Then
+            aHrefTarget = IIF(rs("target") <> "", " target=""" & rs("target") & """", "") 
+        End If 
+        s = defaultList 
+        s = Replace(s, "[$id$]", rs("id")) 
+        For j = 0 To UBound(splFieldName)
+            If splFieldName(j) <> "" Then
+                splxx = Split(splFieldName(j) & "|||", "|") 
+                fieldName = splxx(0) 
+                replaceStr = rs(fieldName) & "" 
+                s = replaceValueParam(s, fieldName, replaceStr) 
+            End If 
+
+            If isMakeHtml = True Then
+                url = getHandleRsUrl(rs("fileName"), rs("customAUrl"), "/detail/detail" & rs("id")) 
+            Else
+                url = handleWebUrl("?act=detail&id=" & rs("id")) 
+                If rs("customAUrl") <> "" Then
+                    url = rs("customAUrl") 
+                End If 
+            End If 
+            s = replaceValueParam(s, "url", url) 
+            s = replaceValueParam(s, "atarget", aHrefTarget)                                    'A链接打开方式
+        Next 
+        '文章列表加在线编辑
+        url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
+        s = handleDisplayOnlineEditDialog(url, s, "", "div|li|span") 
+
+        c = c & s 
+    rs.MoveNext : Next : rs.Close 
+    content = Replace(content, "[list]" & defaultList & "[/list]", c) 
+
+    If isMakeHtml = True Then
+        url = "" 
+        If Len(listFileName) > 5 Then
+            url = Mid(listFileName, 1, Len(listFileName) - 5) & "[id].html" 
+            url = urlAddHttpUrl(cfg_webSiteUrl, url) 
+        End If 
+    Else
+        url = getUrlAddToParam(getUrl(), "?page=[id]", "replace") 
+    End If 
+
     getDetailList = content 
 End Function 
 
@@ -404,23 +390,24 @@ Function defaultListTemplate()
     lableName = "list" 
     startStr = "<!--#" & lableName & " start#-->" 
     endStr = "<!--#" & lableName & " end#-->" 
+'	call rwend(templateHtml)
     If InStr(templateHtml, startStr) > 0 And InStr(templateHtml, endStr) > 0 Then
-        listTemplate = StrCut(templateHtml, startStr, endStr, 2) 
+        listTemplate = strCut(templateHtml, startStr, endStr, 2) 
     Else
         startStr = "<!--#" & lableName 
         endStr = "#-->" 
         If InStr(templateHtml, startStr) > 0 And InStr(templateHtml, endStr) > 0 Then
-            listTemplate = StrCut(templateHtml, startStr, endStr, 2) 
-        End If 
+            listTemplate = strCut(templateHtml, startStr, endStr, 2) 
+        End If
     End If 
     If listTemplate = "" Then
         c = "<ul class=""list"">" & vbCrLf 
-        c = c & "[list]    <li><a href=""[$url$]"" target=""[$target$]"">[$title$]</a><span class=""time"">[$adddatetime format_time='7'$]</span></li>" & vbCrLf 
+        c = c & "[list]    <li><a href=""[$url$]""[$atarget$]>[$title$]</a><span class=""time"">[$adddatetime format_time='7'$]</span></li>" & vbCrLf 
         c = c & "[/list]" & vbCrLf 
         c = c & "</ul>" & vbCrLf 
         c = c & "<div class=""clear10""></div>" & vbCrLf 
         c = c & "<div>[$pageInfo$]</div>" & vbCrLf 
-        listTemplate = c 
+        listTemplate = c  
     End If 
 
     defaultListTemplate = listTemplate 
@@ -442,9 +429,11 @@ End If
 templateName = Request("templateName")                                          '模板名称
 
 '保存数据处理页
-Select Case Request("dataact")
-    Case "articlecomment" : SaveArticleComment() : Response.End()                   '保存文章评论
-    Case "WebStat" : WebStat(adminDir & "/Data/Stat/") : Response.End()             '网站统计
+Select Case Request("act")
+    Case "savedata" : saveData(request("stype")) : Response.End()                   '保存数据
+	''站长统计 | 今日IP[653] | 今日PV[9865] | 当前在线[65]')
+    Case "webstat" : webStat(adminDir & "/Data/Stat/")	
+	Response.End()             '网站统计
 End Select
 
 '生成html
@@ -452,7 +441,7 @@ If Request("act") = "makehtml" Then
     Call echo("makehtml", "makehtml") 
     isMakeHtml = True 
     Call makeWebHtml(" action actionType='" & Request("act") & "' columnName='" & Request("columnName") & "' id='" & Request("id") & "' ") 
-    Call createfile("index.html", code) 
+    Call createFileGBK("index.html", code) 
 
 '复制Html到网站
 ElseIf Request("act") = "copyHtmlToWeb" Then
@@ -464,7 +453,8 @@ ElseIf Request("act") = "makeallhtml" Then
 '生成当前页面
 ElseIf Request("isMakeHtml") <> "" And Request("isSave") <> "" Then
 
-    Call handlePower("生成HTML页面")                                                '管理权限处理
+    Call handlePower("生成当前HTML页面")                                            '管理权限处理
+    Call writeSystemLog("", "生成当前HTML页面")                                     '系统日志
 
     isMakeHtml = True 
     Call rw(makeWebHtml(" action actionType='" & Request("act") & "' columnName='" & Request("columnName") & "' columnType='" & Request("columnType") & "' id='" & Request("id") & "' npage='" & Request("page") & "' ")) 
@@ -477,7 +467,7 @@ ElseIf Request("isMakeHtml") <> "" And Request("isSave") <> "" Then
     '文件不为空  并且开启生成html
     If glb_filePath <> "" And glb_isonhtml = True Then
         Call createDirFolder(getFileAttr(glb_filePath, "1")) 
-        Call createfile(glb_filePath, code) 
+        Call createFileGBK(glb_filePath, code) 
         If Request("act") = "detail" Then
             conn.Execute("update " & db_PREFIX & "ArticleDetail set ishtml=true where id=" & Request("id")) 
         ElseIf Request("act") = "nav" Then
@@ -515,7 +505,7 @@ End If
 'http://127.0.0.1/aspweb.asp?act=detail&id=75
 '生成html静态页
 Function makeWebHtml(action)
-    Dim actionType, npagesize, npage, url, addSql 
+    Dim actionType, npagesize, npage, url, addSql, sortSql
     actionType = RParam(action, "actionType") 
     npage = RParam(action, "npage") 
     npage = getnumber(npage) 
@@ -529,6 +519,9 @@ Function makeWebHtml(action)
         glb_columnType = RParam(action, "columnType") 
         glb_columnName = RParam(action, "columnName") 
         glb_columnId = RParam(action, "columnId") 
+		if glb_columnId="" then
+			glb_columnId=RParam(action, "id") 
+		end if
         If glb_columnType <> "" Then
             addSql = "where columnType='" & glb_columnType & "'" 
         End If 
@@ -536,8 +529,9 @@ Function makeWebHtml(action)
             addSql = getWhereAnd(addSql, "where columnName='" & glb_columnName & "'") 
         End If 
         If glb_columnId <> "" Then
-            addSql = getWhereAnd(addSql, "where columnId='" & glb_columnId & "'") 
+            addSql = getWhereAnd(addSql, "where id=" & glb_columnId & "") 
         End If 
+		'call echo("addsql",addsql)
         rs.Open "Select * from " & db_PREFIX & "webcolumn " & addSql, conn, 1, 1 
         If Not rs.EOF Then
             glb_columnId = rs("id") 
@@ -548,6 +542,7 @@ Function makeWebHtml(action)
             glb_flags = rs("flags") 
             npagesize = rs("npagesize")                                                     '每页显示条数
             glb_isonhtml = rs("isonhtml")                                                   '是否生成静态网页
+			sortSql=" " & rs("sortsql")															'排序SQL
 
             If rs("webTitle") <> "" Then
                 cfg_webTitle = rs("webTitle")                                                   '网址标题
@@ -565,20 +560,23 @@ Function makeWebHtml(action)
                     templateName = getDateilTemplate(rs("id"), "List") 
                 End If 
             End If 
-        End If : rs.Close 
+        End If : rs.Close
         glb_columnENType = handleColumnType(glb_columnType) 
         glb_url = getColumnUrl(glb_columnName, "name") 
 
-        '列表
-        If InStr("|新闻|产品|下载|视频|", "|" & glb_columnType & "|") > 0 Then
-            glb_bodyContent = getDetailList(action, defaultListTemplate(), "ArticleDetail", "网站栏目", "*", npagesize, npage, "where parentid=" & glb_columnId & " order by sortrank asc") 
+        '文章类列表
+        If InStr("|产品|新闻|视频|下载|案例|", "|" & glb_columnType & "|") > 0 Then
+            glb_bodyContent = getDetailList(action, defaultListTemplate(), "ArticleDetail", "栏目列表", "*", npagesize, npage, "where parentid=" & glb_columnId & sortSql) 
+        '留言类列表
+        ElseIf InStr("|留言|", "|" & glb_columnType & "|") > 0 Then 
+            glb_bodyContent = getDetailList(action, defaultListTemplate(), "GuestBook", "留言列表", "*", npagesize, npage, " where isthrough<>0 " & sortSql) 
         ElseIf glb_columnType = "文本" Then
             '航行栏目加管理
             If Request("gl") = "edit" Then
                 glb_bodyContent = "<span>" & glb_bodyContent & "</span>" 
             End If 
             url = "/admin/1.asp?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=" & glb_columnId & "&n=" & getRnd(11) 
-            glb_bodyContent = HandleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
+            glb_bodyContent = handleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
 
         End If 
     '细节
@@ -591,7 +589,7 @@ Function makeWebHtml(action)
             glb_isonhtml = rs("isonhtml")                                                   '是否生成静态网页
             glb_id = rs("id")                                                               '文章ID
             If isMakeHtml = True Then
-                glb_url = getRsUrl(rs("fileName"), rs("customAUrl"), "/html/detail" & rs("id")) 
+                glb_url = getHandleRsUrl(rs("fileName"), rs("customAUrl"), "/detail/detail" & rs("id")) 
             Else
                 glb_url = handleWebUrl("?act=detail&id=" & rs("id")) 
             End If 
@@ -628,7 +626,7 @@ Function makeWebHtml(action)
                 glb_bodyContent = "<span>" & glb_bodyContent & "</span>" 
             End If 
             url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & RParam(action, "id") & "&n=" & getRnd(11) 
-            glb_bodyContent = HandleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
+            glb_bodyContent = handleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
 
             If templateName = "" Then
                 If Trim(rs("templatePath")) <> "" Then
@@ -647,7 +645,7 @@ Function makeWebHtml(action)
             glb_detailTitle = rs("title") 
             glb_isonhtml = rs("isonhtml")                                                   '是否生成静态网页
             If isMakeHtml = True Then
-                glb_url = getRsUrl(rs("fileName"), rs("customAUrl"), "/page/page" & rs("id")) 
+                glb_url = getHandleRsUrl(rs("fileName"), rs("customAUrl"), "/page/page" & rs("id")) 
             Else
                 glb_url = handleWebUrl("?act=detail&id=" & rs("id")) 
             End If 
@@ -670,7 +668,7 @@ Function makeWebHtml(action)
                 glb_bodyContent = "<span>" & glb_bodyContent & "</span>" 
             End If 
             url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & RParam(action, "id") & "&n=" & getRnd(11) 
-            glb_bodyContent = HandleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
+            glb_bodyContent = handleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
 
 
             If templateName = "" Then
@@ -718,10 +716,18 @@ Function makeWebHtml(action)
     code = replaceGlobleVariable(code)                                              '替换全局标签
     code = delTemplateMyNote(code)                                                  '删除无用内容
 
-    '格式化
+    '格式化HTML
     If InStr(cfg_flags, "|formattinghtml|") > 0 Then
         'code = HtmlFormatting(code)        '简单
-        code = HandleHtmlFormatting(code, False, 0, "删除空行")                         '自定义
+        code = handleHtmlFormatting(code, False, 0, "删除空行")                         '自定义
+    '格式化HTML第二种
+	elseIf InStr(cfg_flags, "|formattinghtmltow|") > 0 Then
+        code = HtmlFormatting(code)        '简单
+        code = handleHtmlFormatting(code, False, 0, "删除空行")                         '自定义		
+	'压缩HTML
+	elseIf InStr(cfg_flags, "|ziphtml|") > 0 Then
+		code=ziphtml(code)
+	
     End If 
     '闭合标签
     If InStr(cfg_flags, "|labelclose|") > 0 Then
@@ -729,7 +735,7 @@ Function makeWebHtml(action)
     End If 
 
     '在线编辑20160127
-    If Rq("gl") = "edit" Then
+    If rq("gl") = "edit" Then
         If InStr(code, "</head>") > 0 Then
             If InStr(code, "jquery.Min.js") = False Then
                 code = Replace(code, "</head>", "<script src=""/Jquery/jquery.Min.js""></script></head>") 
@@ -766,9 +772,15 @@ Function getDateilTemplate(parentid, templateType)
             If checkFile(cfg_webTemplate & "/Down_" & templateType & ".html") = True Then
                 templateName = "Down_" & templateType & ".html" 
             End If 
+
         ElseIf rsx("columntype") = "视频" Then
             '视频细节页
             If checkFile(cfg_webTemplate & "/Video_" & templateType & ".html") = True Then
+                templateName = "Video_" & templateType & ".html" 
+            End If 
+        ElseIf rsx("columntype") = "留言" Then
+            '视频细节页
+            If checkFile(cfg_webTemplate & "/GuestBook_" & templateType & ".html") = True Then
                 templateName = "Video_" & templateType & ".html" 
             End If 
         ElseIf rsx("columntype") = "文本" Then
@@ -788,6 +800,7 @@ End Function
 Sub makeAllHtml(columnType, columnName, columnId)
     Dim action, s, i, nPageSize, nCountSize, nPage, addSql, url 
     Call handlePower("生成全部HTML页面")                                            '管理权限处理
+    Call writeSystemLog("", "生成全部HTML页面")                                     '系统日志
 
     isMakeHtml = True 
     '栏目
@@ -806,13 +819,20 @@ Sub makeAllHtml(columnType, columnName, columnId)
         glb_columnName = "" 
         '开启生成html
         If rss("isonhtml") = True Then
-            If rss("columntype") = "新闻" Then
-                nCountSize = getRecordCount(db_PREFIX & "articledetail", " where parentid=" & rss("id")) '记录数
+            If instr("|产品|新闻|视频|下载|案例|留言|反馈|招聘|订单|","|" & rss("columntype") & "|")>0 Then 
+				if  rss("columntype") ="留言" then
+	                nCountSize = getRecordCount(db_PREFIX & "guestbook", "") '记录数
+				else
+	                nCountSize = getRecordCount(db_PREFIX & "articledetail", " where parentid=" & rss("id")) '记录数
+				end if
                 nPageSize = rss("npagesize") 
-                nPage = getPageNumb(CInt(nCountSize), CInt(nPageSize)) 
+                nPage = getPageNumb(CInt(nCountSize), CInt(nPageSize))
+				if nPage<=0 then 
+					nPage=1
+				end if
                 For i = 1 To nPage
-                    url = getRsUrl(rss("fileName"), rss("customAUrl"), "/nav" & rss("id")) 
-                    glb_filePath = Replace(url, cfg_webSiteUrl, "") 
+                    url = getHandleRsUrl(rss("fileName"), rss("customAUrl"), "/nav" & rss("id")) 
+                    glb_filePath = Replace(url, cfg_webSiteUrl, "")
                     If Right(glb_filePath, 1) = "/" Or glb_filePath = "" Then
                         glb_filePath = glb_filePath & "index.html" 
                     End If 
@@ -827,7 +847,7 @@ Sub makeAllHtml(columnType, columnName, columnId)
                     Call echo(action, s) 
                     If glb_filePath <> "" Then
                         Call createDirFolder(getFileAttr(glb_filePath, "1")) 
-                        Call createfile(glb_filePath, code) 
+                        Call createFileGBK(glb_filePath, code) 
                     End If 
                     doevents() 
                     templateName = ""                                                               '清空模板文件名称
@@ -843,7 +863,7 @@ Sub makeAllHtml(columnType, columnName, columnId)
                 Call echo(action, s) 
                 If glb_filePath <> "" Then
                     Call createDirFolder(getFileAttr(glb_filePath, "1")) 
-                    Call createfile(glb_filePath, code) 
+                    Call createFileGBK(glb_filePath, code) 
                 End If 
                 doevents() 
                 templateName = "" 
@@ -869,7 +889,7 @@ Sub makeAllHtml(columnType, columnName, columnId)
             '文件不为空  并且开启生成html
             If glb_filePath <> "" And rss("isonhtml") = True Then
                 Call createDirFolder(getFileAttr(glb_filePath, "1")) 
-                Call createfile(glb_filePath, code) 
+                Call createFileGBK(glb_filePath, code) 
                 conn.Execute("update " & db_PREFIX & "ArticleDetail set ishtml=true where id=" & rss("id")) '更新文章为生成状态
             End If 
             templateName = ""                                                               '清空模板文件名称
@@ -892,7 +912,7 @@ Sub makeAllHtml(columnType, columnName, columnId)
             '文件不为空  并且开启生成html
             If glb_filePath <> "" And rss("isonhtml") = True Then
                 Call createDirFolder(getFileAttr(glb_filePath, "1")) 
-                Call createfile(glb_filePath, code) 
+                Call createFileGBK(glb_filePath, code) 
                 conn.Execute("update " & db_PREFIX & "onepage set ishtml=true where id=" & rss("id")) '更新单页为生成状态
             End If 
             templateName = ""                                                               '清空模板文件名称
@@ -910,6 +930,7 @@ Sub copyHtmlToWeb()
 
 
     Call handlePower("复制生成HTML页面")                                            '管理权限处理
+    Call writeSystemLog("", "复制生成HTML页面")                                     '系统日志
 
     WebFolderName = cfg_webTemplate 
     If Left(WebFolderName, 1) = "/" Then
@@ -947,7 +968,7 @@ Sub copyHtmlToWeb()
         If filePath <> "" Then
             content = getftext(filePath) 
             content = Replace(content, cfg_webImages, "../images/") 
-            Call createfile(filePath, content) 
+            Call createFileGBK(filePath, content) 
             Call echo("css", cfg_webImages) 
         End If 
     Next 
@@ -956,7 +977,7 @@ Sub copyHtmlToWeb()
     rss.Open "select * from " & db_PREFIX & "webcolumn where isonhtml=true", conn, 1, 1 
     While Not rss.EOF
         glb_filePath = Replace(getColumnUrl(rss("columnname"), "name"), cfg_webSiteUrl, "") 
-        If Right(glb_filePath, 1) = "/" Then
+        If Right(glb_filePath, 1) = "/" or Right(glb_filePath, 1) = "" Then
             glb_filePath = glb_filePath & "index.html" 
         End If 
         If Right(glb_filePath, 5) = ".html" Then
@@ -969,9 +990,9 @@ Sub copyHtmlToWeb()
     rss.MoveNext : Wend : rss.Close 
     rss.Open "select * from " & db_PREFIX & "articledetail where isonhtml=true", conn, 1, 1 
     While Not rss.EOF
-        glb_url = getRsUrl(rss("fileName"), rss("customAUrl"), "/html/detail" & rss("id")) 
+        glb_url = getHandleRsUrl(rss("fileName"), rss("customAUrl"), "/detail/detail" & rss("id")) 
         glb_filePath = Replace(glb_url, cfg_webSiteUrl, "") 
-        If Right(glb_filePath, 1) = "/" Then
+        If Right(glb_filePath, 1) = "/" or Right(glb_filePath, 1) = "" Then
             glb_filePath = glb_filePath & "index.html" 
         End If 
         If Right(glb_filePath, 5) = ".html" Then
@@ -985,9 +1006,9 @@ Sub copyHtmlToWeb()
 
     rss.Open "select * from " & db_PREFIX & "onepage where isonhtml=true", conn, 1, 1 
     While Not rss.EOF
-        glb_url = getRsUrl(rss("fileName"), rss("customAUrl"), "/page/page" & rss("id")) 
+        glb_url = getHandleRsUrl(rss("fileName"), rss("customAUrl"), "/page/page" & rss("id")) 
         glb_filePath = Replace(glb_url, cfg_webSiteUrl, "") 
-        If Right(glb_filePath, 1) = "/" Then
+        If Right(glb_filePath, 1) = "/" or Right(glb_filePath, 1) = "" Then
             glb_filePath = glb_filePath & "index.html" 
         End If 
         If Right(glb_filePath, 5) = ".html" Then
@@ -1025,7 +1046,7 @@ Sub copyHtmlToWeb()
                 content = Replace(content, "/Jquery/Jquery.Min.js", "js/Jquery.Min.js") 
                 Call copyfile("/Jquery/Jquery.Min.js", webJs & "/Jquery.Min.js") 
             End If 
-            Call createfile(filePath, content) 
+            Call createFileGBK(filePath, content) 
         End If 
     Next 
     Call echo("webFolderName", WebFolderName) 
@@ -1036,11 +1057,11 @@ End Sub
 Function makeHtmlWebToZip(webDir)
     Dim content, splStr, filePath, c, fileArray, fileName, fileType, isTrue 
     Dim cleanFileList                                                               '干净文件列表 为了删除翻页文件
-    content = GetFileFolderList(webDir, True, "全部", "", "全部文件夹", "", "") 
+    content = getFileFolderList(webDir, True, "全部", "", "全部文件夹", "", "") 
     splStr = Split(content, vbCrLf) 
     For Each filePath In splStr
         If checkfolder(filePath) = False Then
-            fileArray = HandleFilePathArray(filePath) 
+            fileArray = handleFilePathArray(filePath) 
             fileName = LCase(fileArray(2)) 
             fileType = LCase(fileArray(4)) 
             fileName = remoteNumber(fileName) 
@@ -1052,18 +1073,20 @@ Function makeHtmlWebToZip(webDir)
             If isTrue = True Then
                 'call echo(fileType,fileName)
                 If c <> "" Then c = c & "|" 
-                c = c & Replace(filePath, HandlePath("/"), "") 
+                c = c & Replace(filePath, handlePath("/"), "") 
                 cleanFileList = cleanFileList & fileName & "|" 
             End If 
         End If 
     Next 
     Call rw(c) 
     c = c & "|||||" 
-    Call createfile("htmladmin/1.txt", c) 
+    Call createFileGBK("htmladmin/1.txt", c) 
     Call echo("<hr>cccccccccccc", c) 
-    Call echo("", XMLPost("http://127.0.0.1/myZIP.php?webFolderName=" & WebFolderName, "content=" & escape(c))) 
+	'先判断这个文件存在20160309
+	if checkfile("/myZIP.php")=true then
+	    Call echo("", XMLPost("http://127.0.0.1/myZIP.php?webFolderName=" & WebFolderName, "content=" & escape(c))) 
+	end if
 
 End Function 
 
-%>   
-
+%>     

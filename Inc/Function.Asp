@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -787,7 +787,7 @@ Function FindFolderRepeatFunction(FolderPath)
 	Dim ErrFunList,AllErrFunList
     Call HandlePath(FolderPath)                                                     '获得完整路径
     C = "操作文件夹" & FolderPath & vbCrLf 
-    Content = GetDirFileList(FolderPath)
+    Content = GetDirFileList(FolderPath,"")
     SplStr = Split(Content, vbCrLf) : nI = 0 
     For Each FilePath In SplStr
         nI = nI + 1 

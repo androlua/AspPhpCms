@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 <title>{$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
 <link href="css/style.css" rel="stylesheet"  type="text/css">
 <script type="text/javascript" src="../Jquery/Jquery.Min.js"></script>
@@ -35,9 +36,9 @@ KindEditor.ready(function(K) {
 </script>
 <!--#editor end#-->
 <div id="positionwrap">
-    <div class="msg">当前位置：{$position$}</div>
+    <div class="msg">当前位置：[$position$]</div>
 </div>
-<form action="?act=saveAddEditHandle&lableTitle={$lableTitle$}&nPageSize={$nPageSize$}&page={$page$}&parentid={$parentid$}&searchfield={$searchfield$}&keyword={$keyword$}" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+<form action="[$postUrl$]" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
 <div class="mg10">
 	<ul class="tabbut noselect">
         <li>基本设置</li>
@@ -64,26 +65,30 @@ KindEditor.ready(function(K) {
                         <td>username</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
+                      <td>项目ID</td>
+                      <td align="left" style="padding:3px;">[$input_itemid$]</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr align="center" height="25" bgcolor="#F9FCEF">
                       <td>IP</td>
-                      <td align="left" style="padding:3px;">[$ip$]</td>
+                      <td align="left" style="padding:3px;">[$input_ip$]</td>
                       <td>ip</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
-                        <td>留言内容</td>
+                        <td>评论内容</td>
                         <td align="left" style="padding:3px;">[$input_bodycontent$]</td>
                         <td>bodycontent</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
-                        <td>反馈内容</td>
+                        <td>回复内容</td>
                         <td align="left" style="padding:3px;">[$input_reply$]</td>
                         <td>reply</td>
                     </tr> 
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>审核</td>
                         <td align="left" style="padding:3px;">
-                        <label for='through'><input type='checkbox' name='through' id='through' [$through if='False' elseif='0' value='' else=' checked'$]  value='1'>审核通过</label>                          
-                        </td>
-                        <td>through</td>
+                        <label for='isthrough'><input type='checkbox' name='isthrough' id='isthrough' [$isthrough if='False' elseif='0' value='' elsevalue=' checked'$]  value='1'>审核通过</label>                        </td>
+                        <td>isthrough</td>
                     </tr>
                 </tbody>  
                 <tbody class="tbodybox">
@@ -92,7 +97,6 @@ KindEditor.ready(function(K) {
                         <td align="left" style="padding:3px;"> </td>
                         <td> 要</td>
                     </tr>
-                    
                 </tbody>
         </table>
     </div>
@@ -104,9 +108,7 @@ KindEditor.ready(function(K) {
             <input name="提交" type="submit" class="mybtn2 radius5" value="保存(S)"  />
             <input name="switchId" type="hidden" id="switchId" value="[$switchId$]" /> 
             <input name="重置" type="reset" class="mybtn2 radius5" value="重置"  />
-        </div>
-    </div>
-    [$inputId$] 
+        </div>    </div>
 </form>
 <script language="javascript" type="text/javascript" src="js/formBottom.js"></script>
 </body>

@@ -1,4 +1,4 @@
-【parentid】AspPhpCMS
+【parentid】ASPPHPCMS
 【title】如果将一个ASP网站转换成PHP网站？
 【webtitle】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
 【webkeywords】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
@@ -6,7 +6,7 @@
 【sortrank】6
 【author】sharembweb
 【adddatetime】2016-02-18 08:51:11
-【filename】/aspphpcms/ruheaspwebtophpweb.html
+【filename】/ASPPHPCMS/ruheaspwebtophpweb.html
 【customaurl】
 【flags】|c|
 【relatedtags】ASP,在线ASP转PHP 
@@ -25,7 +25,7 @@
 4、一部分ASP函数是自己手动创建的，并非ASP直接转换过来的
 
 <b>更多帮助：</b>
-<a href="https://github.com/313801120/AspPhpCms" class="ablue"  target="_blank">Github下载AspPhpCms</a>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
 <br>
 【/bodycontent】
 

@@ -8,20 +8,20 @@
 【filename】/page/websitenotice.html
 【isonhtml】1
 
-【simpleintroduction】 
+【aboutcontent】 
 
 <strong>sharembweb.com 域名由来？</strong><br>
 share=分享，mb=模板，web=网站<br><br>
 
 <strong>sharembweb.com 提供功能？</strong><br>
-1、提供【AspPhpCms】免费开源的ASP/PHP通用双CMS管制系统
+1、提供【ASPPHPCMS】免费开源的ASP/PHP通用双CMS管制系统
 2、提供【在线ASP转PHP】<br>
 3、提供【在线仿站】并一键生成后台<br>
 4、提供【在线格式化ASP】<br>
 5、提供大量原创工具与源码，最最重要的是：这一切竟然全部都是免费的<br>
 6、分享自己在工作中积累得经验和掌握的技术<br>
 
-【/simpleintroduction】
+【/aboutcontent】
 
 
 【bodycontent】
@@ -29,7 +29,7 @@ share=分享，mb=模板，web=网站<br><br>
 share=分享，mb=模板，web=网站<br><br>
 
 <strong>sharembweb.com 提供功能？</strong><br>
-1、提供【AspPhpCms】免费开源的ASP/PHP通用双CMS管制系统
+1、提供【ASPPHPCMS】免费开源的ASP/PHP通用双CMS管制系统
 2、提供【在线ASP转PHP】<br>
 3、提供【在线仿站】并一键生成后台<br>
 4、提供【在线格式化ASP】<br>

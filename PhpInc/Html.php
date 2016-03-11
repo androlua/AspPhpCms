@@ -2,202 +2,31 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
 //Html 处理HTML代码 (2014,1,3)
+//显示HTML结构        call rw(displayHTmL("<br>aasdfds<br>"))
+//关闭显示HTML结构   call rwend(unDisplayHtml("&lt;br&gt;aasdfds&lt;br&gt;"))
 
-//HTML代码转码
-function showHTMLCode($str){
-    if( IsNull($str) ){
-        $str = Replace($str, ' ', '&nbsp;') ;
-        $str = Replace($str, '<', '&lt;') ;
-        $str = Replace($str, '>', '&gt;') ;
-        $str = Replace($str, '”', '&rdquo;') ;
-        $str = Replace($str, '“', '&ldquo;') ;
-        $str = Replace($str, '&', '&amp;') ;
-    }
-    $showHTMLCode = $str ;
-    return @$showHTMLCode;
-}
-
-//显示Html
-function showHtml($str){
-    $showHtml = Replace($str, '<', '&lt;') ;
-    return @$showHtml;
-}
-
-//HTML代码解码
-function unHTMLCode($str){
-    if( IsNull($str) ){
-        $str = Replace($str, '&nbsp;', ' ') ;
-        $str = Replace($str, '&lt;', '<') ;
-        $str = Replace($str, '&gt;', '>') ;
-        $str = Replace($str, '&rdquo;', '”') ;
-        $str = Replace($str, '&ldquo;', '“') ;
-        $str = Replace($str, '&mdash;', '—') ;
-        $str = Replace($str, '&lsquo;', '‘') ;
-        $str = Replace($str, '&rsquo;', '’') ;
-
-        $str = Replace($str, '&amp;', '&') ;
-
-    }
-    $unHTMLCode = $str ;
-    return @$unHTMLCode;
-}
-
-//让HTML不运行显示
-function echoHTML($str){
-    if( IsNull($str) ){
-        $str = Replace($str, ' ', '&nbsp;') ;
-        $str = Replace($str, '<', '&lt;') ;
-    }
-    $echoHTML = $str ;
-    return @$echoHTML;
-}
-
-
-//ErrorText
-function errorText($Refresh, $str, $url){
-    if( $Refresh<>'' ){
-        rw('<meta http-equiv="refresh" content="' . $Refresh . ';URL=' . $url . '""">') . vbCrlf() ;
-    }
-    rw('<fieldset>') . vbCrlf() ;
-    rw('<legend>&nbsp;Report&nbsp;</legend>') . vbCrlf() ;
-    rw('<div style="padding-left:20px;padding-top:10px;color:red;font-weight:bold;text-align:center;">' . $str . '</div>') . vbCrlf() ;
-    rw('<div style="height:200p;text-align:center;"><P>') . vbCrlf() ;
-    rw('<a href="' . $url . '">如果您的游览器没有自动跳转,请点这里>></a><P>') . vbCrlf() ;
-    rw('</div></fieldset>') ; die() ;
-}
-
-
-//---------------------- Html处理 Start ----------------------
-//测试Html显示20141217 待测试
-function testHtml(){
-    $s ='';
-    $s = '<font style="font-size:12px">显示<b>1</b></font>' ;
-    ASPEcho('S', $s) ;
-    $s = HTMLEncode($s) ;
-    ASPEcho('S', $s) ;
-    $s = HtmlDecode($s) ;
-    ASPEcho('S', $s) ;
-    $s = HtmlFilter($s) ;
-    ASPEcho('S', $s) ;
-}
-
-//Html解密
-function htmlDecode( $str){
-    if( IsNul($str) ){
-        $str = regReplace($str, '<br\\s*/?\\s*>', vbCrlf()) ;
-        $str = Replace($str, '&nbsp;&nbsp; &nbsp;', Chr(9)) ;
-        $str = Replace($str, '&quot;', Chr(34)) ;
-        $str = Replace($str, '&nbsp;', Chr(32)) ;
-        $str = Replace($str, '&#39;', Chr(39)) ;
-        $str = Replace($str, '&apos;', Chr(39)) ;
-        $str = Replace($str, '&gt;', '>') ;
-        $str = Replace($str, '&lt;', '<') ;
-        $str = Replace($str, '&amp;', Chr(38)) ;
-        $str = Replace($str, '&#38;', Chr(38)) ;
-        $htmlDecode = $str ;
-    }
-    return @$htmlDecode;
-}
-
-//Html加密
-function htmlEncode( $str){
-    if( IsNul($str) ){
-        $str = Replace($str, Chr(38), '&#38;') ;
-        $str = Replace($str, '<', '&lt;') ;
-        $str = Replace($str, '>', '&gt;') ;
-        $str = Replace($str, Chr(39), '&#39;') ;
-        $str = Replace($str, Chr(32), '&nbsp;') ;
-        $str = Replace($str, Chr(34), '&quot;') ;
-        $str = Replace($str, Chr(9), '&nbsp;&nbsp; &nbsp;') ;
-        $str = Replace($str, vbCrlf(), '<br />') ;
-    }
-    $htmlEncode = $str ;
-    return @$htmlEncode;
-}
-
-//HTML过虑
-function htmlFilter( $str){
-    $str = regReplace($str, '<[^>]+>', '') ;
-    $str = Replace($str, '>', '&gt;') ;
+//显示HTML结构
+function displayHtml($str){
     $str = Replace($str, '<', '&lt;') ;
-    $htmlFilter = $str ;
-    return @$htmlFilter;
+    $str = Replace($str, '>', '&gt;') ;
+    $displayHtml = $str ;
+    return @$displayHtml;
 }
-
-
-
-
-
-
-
-//---------------------- Html处理 End ----------------------
-
-
-
-
-
-
-
-
-
-
-
-//处理Html标签闭合(20150831) 第一种，淘汰
-function handleHtmlLabelClose($content, $labelName, $isAddAlt){
-    $startStr=''; $endStr=''; $splStr=''; $s=''; $ImgList=''; $imgStr=''; $LCaseImgStr=''; $newImgStr ='';
-    $startStr = '<' . $labelName ; $endStr = '>' ;
-    $ImgList = GetArray($content, $startStr, $endStr, true, false) ;
-    //call rw(ImgList)
-    $splStr = aspSplit($ImgList, '$Array$') ;
-    foreach( $splStr as $imgStr){
-        $newImgStr = phpTrim($imgStr) ;
-        if( substr($newImgStr, - 1) == '/' ){
-            $newImgStr = PHPTrim(substr($newImgStr, 0 , strlen($newImgStr) - 1)) ;
-        }
-        if( $isAddAlt == true ){
-            $LCaseImgStr = LCase($imgStr) ;
-            if( instr($LCaseImgStr, 'alt') == false ){
-                $newImgStr = $newImgStr . ' alt=""' ;
-            }
-        }
-        $content = Replace($content, $imgStr . '>', $newImgStr . ' />') ;
-    }
-    $handleHtmlLabelClose = $content ;
-    return @$handleHtmlLabelClose;
+//关闭显示HTML结构
+function unDisplayHtml($str){
+    $str = Replace($str, '&lt;', '<') ;
+    $str = Replace($str, '&gt;', '>') ;
+    $unDisplayHtml = $str ;
+    return @$unDisplayHtml;
 }
-
-
-//处理图片闭合(20150831)
-function handleImgClose($content, $isAddAlt){
-    $handleImgClose = handleHtmlLabelClose($content, 'img', $isAddAlt) ;
-    return @$handleImgClose;
-}
-
-//处理BR闭合(20150831)
-function handleBrClose($content, $isAddAlt){
-    $handleBrClose = handleHtmlLabelClose($content, 'br', false) ;
-    $handleBrClose = Replace(handleBrClose, '<br>', '<br />') ;
-    return @$handleBrClose;
-}
-
-//处理HR闭合(20150831)
-function handleHrClose($content, $isAddAlt){
-    $handleHrClose = handleHtmlLabelClose($content, 'hr', false) ;
-    $handleHrClose = Replace(handleHrClose, '<hr>', '<hr />') ;
-    return @$handleHrClose;
-}
-
-
-
-
 
 //处理闭合HTML标签(20150902)  比上面的更好用 第二种
 function handleCloseHtml($content, $ImgAddAlt, $action){
@@ -224,11 +53,9 @@ function handleCloseHtml($content, $ImgAddAlt, $action){
                 //call eerr("s",s)
 
                 if( instr($action, '|处理A链接|') > 0 ){
-                    $s = htmlLabelToClean($s, $labelName, 'http://127.0.0.1/TestWeb/Web/', '处理A链接') ;//处理干净html标签
+                    $s = handleHtmlAHref($s, $labelName, 'http://127.0.0.1/TestWeb/Web/', '处理A链接') ;//处理干净html标签
                 }else if( instr($action, '|处理A链接第二种|') > 0 ){
-                    $s = htmlLabelToClean($s, $labelName, 'http://127.0.0.1/debugRemoteWeb.asp?url=', '处理A链接') ;//处理干净html标签
-                }else{
-                    $s = htmlLabelToClean($s, $labelName, '', '') ;//处理干净html标签
+                    $s = handleHtmlAHref($s, $labelName, 'http://127.0.0.1/debugRemoteWeb.asp?url=', '处理A链接') ;//处理干净html标签
                 }
 
                 //call echo(s,labelName)   param与embed是Flash用到，不过embed有结束标签的
@@ -266,8 +93,8 @@ function handleCloseHtml($content, $ImgAddAlt, $action){
     $handleCloseHtml = $c ;
     return @$handleCloseHtml;
 }
-
-function htmlLabelToClean( $content, $labelName, $addToHttpUrl, $action){
+//处理htmlA标签的Href链接  配合上面函数
+function handleHtmlAHref( $content, $labelName, $addToHttpUrl, $action){
     $i=''; $s=''; $c=''; $temp ='';
     $isValue ='';//是否为内容值
     $valueStr ='';//存储内容值
@@ -347,11 +174,10 @@ function htmlLabelToClean( $content, $labelName, $addToHttpUrl, $action){
 
     }
     $c = AspTrim($c) ;
-    $htmlLabelToClean = $c ;
-    return @$htmlLabelToClean;
+    $handleHtmlAHref = $c ;
+    return @$handleHtmlAHref;
 }
-
-//追加或替换网址(20150922)   addToOrAddHttpUrl("http://127.0.0.1/aa/","http://127.0.0.1/4.asp","替换")
+//追加或替换网址(20150922) 配合上面   addToOrAddHttpUrl("http://127.0.0.1/aa/","http://127.0.0.1/4.asp","替换") = http://127.0.0.1/aa/4.asp
 function addToOrAddHttpUrl($httpUrl, $url, $action){
     $s ='';
     $action = '|' . $action . '|' ;
@@ -372,6 +198,38 @@ function addToOrAddHttpUrl($httpUrl, $url, $action){
     return @$addToOrAddHttpUrl;
 }
 
+//获得HTML标签名 call rwend(getHtmlLableName("<img src><a href=>",0))    输入  img
+function getHtmlLableName($content, $nThisLabel){
+    $i=''; $endStr=''; $s=''; $c=''; $labelName=''; $nLabelCount ='';
+    $nLabelCount = 0 ;
+    for( $i = 1 ; $i<= strlen($content); $i++){
+        $s = mid($content, $i, 1) ;
+        $endStr = mid($content, $i,-1) ;
+        if( $s == '<' ){
+            if( instr($endStr, '>') > 0 ){
+                $s = mid($endStr, 1, instr($endStr, '>')) ;
+                $i = $i + strlen($s) - 1 ;
+                $s = mid($s, 2, strlen($s) - 2) ;
+                $s = phptrim($s) ;
+                if( substr($s, - 1) == '/' ){
+                    $s = phptrim(substr($s, 0 , strlen($s) - 1)) ;
+                }
+                $endStr = substr($endStr, - strlen($endStr) - strlen($s) - 2) ;//最后字符减去当前标签  -2是因为它有<>二个字符
+                //注意之前放在labelName下面
+                $labelName = mid($s, 1, instr($s . ' ', ' ') - 1) ;
+                $labelName = LCase($labelName) ;
+                if( $nThisLabel == $nLabelCount ){
+                    break;
+                }
+                $nLabelCount = $nLabelCount + 1 ;
+            }
+        }
+        $c = $c . $s ;
+    }
+    $getHtmlLableName = $labelName ;
+    return @$getHtmlLableName;
+}
+
 //删除html里空行 最笨的方法 删除空行
 function removeBlankLines($content){
     $s=''; $c=''; $splStr ='';
@@ -386,31 +244,6 @@ function removeBlankLines($content){
     return @$removeBlankLines;
 }
 
-function removeBlankLines_test1($content){
-    $i ='';
-    for( $i = 1 ; $i<= 9; $i++){
-        $content = Replace($content, vbCrlf() . vbCrlf(), vbCrlf()) ;
-    }
-    $removeBlankLines_test1 = $content ;
-    return @$removeBlankLines_test1;
-}
-
-//空网页内容 20160108
-function blankHtmlBody($webTitle, $webBody){
-    $c ='';
-    $c = '<!DOCTYPE html PUBLIC>' . vbCrlf() ;
-    $c = $c . '<html xmlns="http://www.w3.org/1999/xhtml">' . vbCrlf() ;
-    $c = $c . '<head>' . vbCrlf() ;
-    $c = $c . '<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />' . vbCrlf() ;
-    $c = $c . '<title>' . $webTitle . '</title>' . vbCrlf() ;
-    $c = $c . '</head>' . vbCrlf() ;
-    $c = $c . '<body>' . vbCrlf() ;
-    $c = $c . $webBody . vbCrlf() ;
-    $c = $c . '</body>' . vbCrlf() ;
-    $c = $c . '</html>' . vbCrlf() ;
-    $blankHtmlBody = $c ;
-    return @$blankHtmlBody;
-}
 
 
 

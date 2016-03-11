@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?php
@@ -68,14 +68,25 @@ class mysql{
 	function query($sql){ 
 		//不能替换，因为插入和更新时有值会被替换掉(20151130)
 		//$sql=replace(replace($sql,"["," "),"]"," ");				//删除[]  因为在php里不允许用 [product]  这种(20150810)  免得出错
-		
-		
 		$sql=$this->handleSqlTop($sql);
 		if(!($query = @mysql_query($sql))) 
 			$this->show('MySQL 执行错误', $sql);
 		$this->querynum++;
 		return $query;
 	}
+	
+	function checkSQL($sql){ 
+		//不能替换，因为插入和更新时有值会被替换掉(20151130)
+		//$sql=replace(replace($sql,"["," "),"]"," ");				//删除[]  因为在php里不允许用 [product]  这种(20150810)  免得出错
+		$sql=$this->handleSqlTop($sql);
+		if(!($query = @mysql_query($sql))) {
+			return false;	
+		}else{
+			$this->querynum++;
+			return true;
+		}
+	}
+	
 	
 	//处理SQL显示条数TOP
 	function handleSqlTop( $sql){

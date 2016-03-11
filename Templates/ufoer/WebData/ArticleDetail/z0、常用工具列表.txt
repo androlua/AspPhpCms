@@ -50,7 +50,7 @@
 ¡¾adddatetime¡¿2015-01-28 15:09:05
 ¡¾nofollow¡¿1
 ¡¾isonhtml¡¿0
-¡¾customaurl¡¿http://sharembweb.com/aspphpcms/inlineTags.asp
+¡¾customaurl¡¿http://sharembweb.com/ASPPHPCMS/inlineTags.asp
 -------------------------------
 
 

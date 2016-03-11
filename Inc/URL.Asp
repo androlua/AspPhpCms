@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -33,7 +33,18 @@
 '域名（webDoMain）：http://127.0.0.1
 '主机（host）：http://127.0.0.1/
 '获得当前网址加参数（GetUrlAddToParam）：http://127.0.0.1/atemp.asp?PageSize=20&act=1
+'getThisUrlFileName()    : 4.asp
 
+'Url = getUrlAddToParam("http://www.baidu.com/?a=1&b=2&c=3","?a=11&b=22&c=333","")        'http://www.baidu.com/?a=1&b=2&c=3
+'Url = getUrlAddToParam("http://www.baidu.com/?a=1&b=2&c=3","?a=11&b=22&c=333","replace")        'http://www.baidu.com/?a=11&b=22&c=333
+
+'获得当前网后的文件名与参数
+Function getThisUrlFileParam()
+    Dim url 
+    url = getUrl() 
+    url = Mid(url, InStrRev(url, "/") + 1) 
+    getThisUrlFileParam = url 
+End Function 
 
 '获得当前网址无参数
 Function getThisUrlNoParam()
@@ -42,7 +53,7 @@ Function getThisUrlNoParam()
         httpType = "http://" 
     Else
         httpType = "https://" 
-    End If
+    End If 
     getThisUrlNoParam = httpType & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") 
 End Function 
 
@@ -70,8 +81,8 @@ Function getGoToUrlNoFileName()
             url = Mid(getGoToUrlNoParam(), 1, InStrRev(getGoToUrlNoParam(), "/")) 
         End If 
     End If 
-	if right(url,1)<>"/" then url=url & "/"
-    getGoToUrlNoFileName = url
+    If Right(url, 1) <> "/" Then url = url & "/" 
+    getGoToUrlNoFileName = url 
 End Function 
 
 '获取客户端IP地址第二种
@@ -116,8 +127,8 @@ End Function
 
 '处理网址\转/  '待完善
 Function handleHttpUrl(httpUrl)
-    Dim headStr 
-    If IsNul(httpUrl) Then Exit Function                                            '为空则退出
+    Dim headStr, url 
+    If isNul(httpUrl) Then Exit Function                                            '为空则退出
     httpUrl = Replace(Trim(httpUrl), "\", "/") 
     headStr = Mid(httpUrl, 1, InStr(httpUrl, ":") + 2) 
     httpUrl = Mid(httpUrl, InStr(httpUrl, ":") + 3) 
@@ -131,7 +142,19 @@ Function handleHttpUrl(httpUrl)
     httpUrl = Replace(httpUrl, "【|http|】", "http://") 
     httpUrl = Replace(httpUrl, "【|https|】", "https://") 
     httpUrl = Replace(httpUrl, "【|ftp|】", "ftp://") 
-    handleHttpUrl = headStr & httpUrl 
+
+    url = headStr & httpUrl 
+    '/"http://www.qibosoft.com/images/qibosoft/loading.gif/"
+    If Left(url, 2) = "/""" Then
+        url = Mid(url, 3) 
+    End If 
+    If Right(url, 2) = "/""" Then
+        url = Mid(url, 1, Len(url) - 2) 
+    End If 
+    handleHttpUrl = url 
+
+
+
 End Function 
 
 '处理文件/转\   使用了While判断，再完善
@@ -155,7 +178,7 @@ Function handleUrlComplete(httpUrl)
     If InStr(httpUrl, "?") > 0 Then Exit Function                                   '有?符号则退出
     '网址最后没有/  判断如果为域名 则在最后加上/退出
     If Right(httpUrl, 1) <> "/" Then
-        If httpUrl & "/" = GetWebSite(httpUrl) Then
+        If httpUrl & "/" = getWebSite(httpUrl) Then
             handleUrlComplete = httpUrl & "/" 
             Exit Function 
         End If 
@@ -215,15 +238,19 @@ End Function
 
 '网得当前网址
 Function getUrl()
-    getUrl = GetThisUrl() 
+    getUrl = getThisUrl() 
 'GetUrl = WebDoMain() & Request.ServerVariables("SCRIPT_NAME") & Request.ServerVariables("QUERY_STRING")
 End Function 
 
 '获得当前带参数网址
 Function getThisUrl()
-    Dim url, port 
+    Dim url 
     'vbdel start
-    url = "http://" & Request.ServerVariables("server_name") & getPort() 
+    url = "http://" & Request.ServerVariables("server_name") 
+    'PHP版上面直接获得端口
+    If InStr(url, ":") = False Then
+        url = url & getPort() 
+    End If 
     url = url & Request.ServerVariables("script_name") 
     If Request.ServerVariables("QUERY_STRING") <> "" Then url = url & "?" & Request.ServerVariables("QUERY_STRING") 
     'vbdel end
@@ -238,6 +265,22 @@ Function getThisUrlNoFileName()
         End If 
     End If 
     getThisUrlNoFileName = url 
+End Function 
+
+'获得网址域名名称 http://www.aaa.bb.mywebname.com/   mywebname
+Function getWebSiteName(httpUrl)
+    Dim url, splStr, s, domainName 
+    url = getWebsite(httpUrl) 
+    url = Replace(url, "://", "://.") 
+    splStr = Split(url, ".") 
+    For Each s In splStr
+        If InStr(s, "/") = False And s <> "" Then
+            If Len(s) >= 4 Then
+                domainName = s 
+            End If 
+        End If 
+    Next 
+    getWebSiteName = domainName 
 End Function 
 
 '分析网址 获得域名
@@ -268,7 +311,7 @@ Function getWebSite(ByVal httpUrl)
         If(InStr(httpUrl, "www.") > 0 And UBound(splStr) >= 2) Or UBound(splStr) >= 1 Then
             If InStr(httpUrl, "/") > 0 Then
                 s = Mid(httpUrl, 1, InStr(httpUrl, "/") - 1) 
-                If s = GetDianNumb(s) Then
+                If s = getDianNumb(s) Then
                     httpUrl = s 
                 End If 
             End If 
@@ -376,10 +419,12 @@ Function fullHttpUrl(ByVal httpUrl, ByVal url)
             url = thisUrl & url 
         End If 
     End If 
-    If InStr(LCase(httpUrl), "http://") > 0 And InStr(LCase(url), "http://") = 0 Then
-        url = "http://" & url 
-    ElseIf InStr(LCase(httpUrl), "https://") > 0 And InStr(LCase(url), "https://") = 0 Then
-        url = "https://" & url 
+    If InStr(LCase(url), "http://") = False And InStr(LCase(url), "https://") = False Then
+        If InStr(LCase(httpUrl), "http://") > 0 And InStr(LCase(url), "http://") = False Then
+            url = "http://" & url 
+        ElseIf InStr(LCase(httpUrl), "https://") > 0 And InStr(LCase(url), "https://") = False Then
+            url = "https://" & url 
+        End If 
     End If 
     fullHttpUrl = url 
     If Err Then doError Err.Description, "FullHttpUrl 获得域名 完整网址，HttpUrl=" & httpUrl & "<hr>Url=" & url 
@@ -416,20 +461,7 @@ End Function
 
 '获得网站标题
 Function getWebTitle(content)
-    getWebTitle = MyStrCut(content, "<title>", "</title>", 0) 
-End Function 
-
-'获得截取内容
-Function myStrCut(content, startStr, endStr, cutType)
-    Dim TempContent, nLeftLen, nRightLen 
-    TempContent = LCase(content) 
-    If InStr(TempContent, startStr) > 0 And InStr(TempContent, endStr) > 0 Then
-        nLeftLen = InStr(TempContent, startStr) + Len(startStr) 
-        nRightLen = InStr(TempContent, endStr) - nLeftLen 
-        myStrCut = Mid(content, nLeftLen, nRightLen) 
-        If cutType = 1 Or cutType = 3 Then myStrCut = startStr & myStrCut 
-        If cutType = 2 Or cutType = 3 Then myStrCut = myStrCut & endStr 
-    End If 
+    getWebTitle = getStrCut(content, "<title>", "</title>", 0) 
 End Function 
 
 '获得容中网址列表 (缺陷是网址全部小写了20150728)
@@ -443,11 +475,11 @@ Function getContentAHref(httpUrl, content, PubAHrefList, PubATitleList)
             If LalType = "<a " Then
                 LalStr = Mid(TempS, 1, InStr(TempS, "</") + 2) 
                 nLen = Len(LalStr) - 1 
-                c = c & HandleLink(httpUrl, LalStr, "href", "", "url", PubAHrefList, PubATitleList) & vbCrLf 
+                c = c & handleLink(httpUrl, LalStr, "href", "", "url", PubAHrefList, PubATitleList) & vbCrLf 
                 i = i + nLen 
             End If 
         End If 
-        DoEvents 
+        doEvents 
     Next 
     If c <> "" Then c = Left(c, Len(c) - 2) 
     getContentAHref = c 
@@ -465,19 +497,20 @@ Function getContentImgSrc(httpUrl, content, PubAHrefList, PubATitleList)
                 LalStr = Mid(TempS, 1, InStr(TempS, ">")) 
                 nLen = Len(LalStr) - 1 
                 'Call Echo(I,LalStr)
-                c = c & HandleLink(httpUrl, LalStr, "src", "", "url", PubAHrefList, PubATitleList) & vbCrLf 
+                c = c & handleLink(httpUrl, LalStr, "src", "", "url", PubAHrefList, PubATitleList) & vbCrLf 
                 i = i + nLen 
             End If 
         End If 
-        DoEvents 
+        doEvents 
     Next 
     If c <> "" Then c = Left(c, Len(c) - 2) 
     getContentImgSrc = c 
 End Function 
 
-'让内容中网址完整
-Function handleConentUrl(httpUrl, content, PubAHrefList, PubATitleList)
+'让内容中网址完整 sType=|*|link|img|a|script|embed|param|meta|
+Function handleConentUrl(httpUrl, content, sType, PubAHrefList, PubATitleList)
     Dim i, s, YuanStr, TempS, LalType, nLen, LalStr, c 
+    sType = "|" & sType & "|" 
     For i = 1 To Len(content)
         s = Mid(content, i, 1) 
         If s = "<" Then
@@ -486,51 +519,51 @@ Function handleConentUrl(httpUrl, content, PubAHrefList, PubATitleList)
             TempS = Replace(Replace(TempS, Chr(10), " " & vbCrLf), Chr(13), " " & vbCrLf) '让处理图片素材更完整  比如  <img换行src=""  也可以获得 20150714
             LalStr = Mid(YuanStr, 1, InStr(YuanStr, ">")) 
             LalType = LCase(Mid(TempS, 1, InStr(TempS, " "))) 
-            If LalType = "<link " Then
+            If LalType = "<link " And(InStr(sType, "|link|") > 0 Or InStr(sType, "|*|") > 0) Then
                 nLen = Len(LalStr) - 1 
-                c = c & HandleLink(httpUrl, LalStr, "href", "", "", PubAHrefList, PubATitleList) 
+                c = c & handleLink(httpUrl, LalStr, "href", "", "", PubAHrefList, PubATitleList) 
                 i = i + nLen 
-            ElseIf LalType = "<img " Then
+            ElseIf LalType = "<img " And(InStr(sType, "|img|") > 0 Or InStr(sType, "|*|") > 0) Then
                 nLen = Len(LalStr) - 1 
-                c = c & HandleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList) 
+                c = c & handleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList) 
                 i = i + nLen 
-            ElseIf LalType = "<a " Then
+            ElseIf LalType = "<a " And(InStr(sType, "|a|") > 0 Or InStr(sType, "|*|") > 0) Then
                 nLen = Len(LalStr) - 1 
                 '没有javascript就运行，但是还是有不足之处
                 If InStr(LCase(LalStr), "javascript:") = 0 Then
-                    c = c & HandleLink(httpUrl, LalStr, "href", "", "", PubAHrefList, PubATitleList) 
+                    c = c & handleLink(httpUrl, LalStr, "href", "", "", PubAHrefList, PubATitleList) 
                 Else
                     c = c & LalStr 
                 End If 
                 i = i + nLen 
-            ElseIf LalType = "<script " Then
+            ElseIf LalType = "<script " And(InStr(sType, "|script|") > 0 Or InStr(sType, "|*|") > 0) Then
                 nLen = Len(LalStr) - 1 
                 If InStr(LCase(LalStr), "src") > 0 Then
-                    c = c & HandleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList) 
+                    c = c & handleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList) 
                 Else
                     c = c & LalStr 
                 End If 
                 i = i + nLen 
-            ElseIf LalType = "<embed " Then
+            ElseIf LalType = "<embed " And(InStr(sType, "|embed|") > 0 Or InStr(sType, "|*|") > 0) Then
                 nLen = Len(LalStr) - 1 
-                c = c & HandleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList) 
+                c = c & handleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList) 
                 i = i + nLen 
-            ElseIf LalType = "<param " Then
+            ElseIf LalType = "<param " And(InStr(sType, "|param|") > 0 Or InStr(sType, "|*|") > 0) Then
                 nLen = Len(LalStr) - 1 
                 If InStr(LCase(LalStr), "movie") > 0 Then
-                    c = c & HandleLink(httpUrl, LalStr, "value", "", "", PubAHrefList, PubATitleList) 
+                    c = c & handleLink(httpUrl, LalStr, "value", "", "", PubAHrefList, PubATitleList) 
                 Else
                     c = c & LalStr 
                 End If 
                 i = i + nLen 
-            ElseIf LalType = "<meta " Then
+            ElseIf LalType = "<meta " And(InStr(sType, "|meta|") > 0 Or InStr(sType, "|*|") > 0) Then
                 nLen = Len(LalStr) - 1 
                 '替换关键词
                 If InStr(LCase(LalStr), "keywords") > 0 Then
-                    c = c & HandleLink(httpUrl, LalStr, "content", WebKeywords, "", PubAHrefList, PubATitleList) 
+                    c = c & handleLink(httpUrl, LalStr, "content", WebKeywords, "", PubAHrefList, PubATitleList) 
                 '替换网站描述
                 ElseIf InStr(LCase(LalStr), "description") > 0 Then
-                    c = c & HandleLink(httpUrl, LalStr, "content", WebDescription, "", PubAHrefList, PubATitleList) 
+                    c = c & handleLink(httpUrl, LalStr, "content", WebDescription, "", PubAHrefList, PubATitleList) 
                 Else
                     c = c & LalStr 
                 End If 
@@ -541,20 +574,20 @@ Function handleConentUrl(httpUrl, content, PubAHrefList, PubATitleList)
         Else
             c = c & s 
         End If 
-        DoEvents 
+        doEvents 
     Next 
     handleConentUrl = c 
 End Function 
 
 
-'替换内容里全部Js目录 20150722
+'替换内容里全部Js目录 20150722  call rwend(handleConentUrl("/admin/js/", "<script src='aa/js.js' ><script src=""bb/js.js"" >","",""))
 Function replaceContentJsDir(content, dirPath, PubAHrefList, PubATitleList)
     Dim splStr, s, c 
     splStr = Split(content, vbCrLf) 
     For Each s In splStr
         If c <> "" Then c = c & vbCrLf 
         If InStr(s, "<script ") > 0 And InStr(s, "</script>") > 0 Then
-            s = HandleLink(dirPath, s, "src", "", "replaceDir", PubAHrefList, PubATitleList) 
+            s = handleLink(dirPath, s, "src", "", "replaceDir", PubAHrefList, PubATitleList) 
         End If 
         c = c & s 
     Next 
@@ -563,7 +596,7 @@ End Function
 
 
 '处理链接地址 HttpUrl=追加网址，Content=内容  SType=类型
-'替换目录方法  call rw(HandleLink("Js/", "111111<script src=""js/Jquery.Min.js""></"& "script>","src", "", "replaceDir"))
+'替换目录方法  call rw(HandleLink("Js/", "111111<script src=""js/Jquery.Min.js""></"& "script>","src", "newurl", "replaceDir","",""))
 Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, PubAHrefList, PubATitleList)
     On Error Resume Next 
     Dim splStr, i, s, c, TempContent, FindUrl, HandleUrl, startStr, endStr, s1, s2, tempHttpUrl 
@@ -582,14 +615,15 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, PubAHrefList,
     startStr = sType & "=""" 
     endStr = """" 
     If InStr(TempContent, startStr) > 0 And InStr(TempContent, endStr) > 0 Then
-        FindUrl = StrCut(content, startStr, endStr, 2) 
+        'call echo("提示","1")
+        FindUrl = strCut(content, startStr, endStr, 2) 
         If SetStr <> "" Then
             HandleUrl = SetStr 
         Else
             HandleUrl = fullHttpUrl(httpUrl, FindUrl) 
             '替换目录
             If UrlOrContent = "replacedir" Then
-                HandleUrl = tempHttpUrl & HandleFilePathArray(HandleUrl)(2) 
+                HandleUrl = tempHttpUrl & handleFilePathArray(HandleUrl)(2) 
             End If 
             PubAHrefList = PubAHrefList & HandleUrl & vbCrLf 
             '链接标题
@@ -617,14 +651,15 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, PubAHrefList,
     startStr = sType & "='" 
     endStr = "'" 
     If InStr(TempContent, startStr) > 0 And InStr(TempContent, endStr) > 0 Then
-        FindUrl = StrCut(TempContent, startStr, endStr, 2) 
+        'call echo("提示","2")
+        FindUrl = strCut(TempContent, startStr, endStr, 2) 
         If SetStr <> "" Then
             HandleUrl = SetStr 
         Else
             HandleUrl = fullHttpUrl(httpUrl, FindUrl) 
             '替换目录
             If UrlOrContent = "replacedir" Then
-                HandleUrl = tempHttpUrl & HandleFilePathArray(HandleUrl)(2) 
+                HandleUrl = tempHttpUrl & handleFilePathArray(HandleUrl)(2) 
             End If 
             PubAHrefList = PubAHrefList & HandleUrl & vbCrLf 
             '链接标题
@@ -650,18 +685,19 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, PubAHrefList,
         Exit Function 
     End If 
     startStr = sType & "=" 
-    endStr = " " 
+    endStr = ">"                                                                    '这里面把之家的 空格换成>
     If InStr(TempContent, startStr) > 0 And InStr(TempContent, endStr) > 0 Then
-        FindUrl = StrCut(TempContent, startStr, endStr, 2) 
+        FindUrl = strCut(TempContent, startStr, endStr, 2) 
+
         If SetStr <> "" Then
             HandleUrl = SetStr 
         Else
             HandleUrl = fullHttpUrl(httpUrl, FindUrl) 
             '替换目录
             If UrlOrContent = "replacedir" Then
-                HandleUrl = tempHttpUrl & HandleFilePathArray(HandleUrl)(2) 
+                HandleUrl = tempHttpUrl & handleFilePathArray(HandleUrl)(2) 
             End If 
-            PubAHrefList = PubAHrefList & HandleUrl & vbCrLf 
+            PubAHrefList = PubAHrefList & handleHttpUrl(HandleUrl) & vbCrLf 
             '链接标题
             s1 = InStr(content, ">") 
             s2 = Right(content, Len(content) - s1) 
@@ -684,8 +720,11 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, PubAHrefList,
         End If 
         Exit Function 
     End If 
+
+
+
     If UrlOrContent <> "url" Then handleLink = content 
-    Call CreateAddFile("出错内容列表.txt", httpUrl & vbCrLf & content & vbCrLf & sType & vbCrLf & SetStr & vbCrLf & UrlOrContent & vbCrLf & "----------------------" & vbCrLf) 
+    Call createAddFile("出错内容列表.txt", httpUrl & vbCrLf & content & vbCrLf & sType & vbCrLf & SetStr & vbCrLf & UrlOrContent & vbCrLf & "----------------------" & vbCrLf) 
 End Function 
 
 '获得网站目录文件夹名称 \Templates\WeiZhanLue\  得到WeiZhanLue
@@ -697,27 +736,6 @@ Function getEndUrlHandleName(FileUrl)
     getEndUrlHandleName = url 
 End Function 
 
-'判断是否为本地IP，如果是则为创建文件夹加个对应网站名称
-Function getWebFolderName()
-    If getIP = "127.0.0.1" Or InStr(getIP, "192.168.") > 0 Then
-        getWebFolderName = "/wwwroot/" & WebFolderName & "/" 
-    End If 
-End Function 
-
-'获得网站首页
-Function getWebHome()
-    Dim url 
-    If getIP = "127.0.0.1" Or InStr(getIP, "192.168.") > 0 Then
-        Call OpenConn() 
-        rs.Open "Select * From [WebSite]", conn, 1, 1 
-        If Not rs.EOF Then
-            getWebHome = "/wwwroot/" & getEndUrlHandleName(rs("WebSkins")) & "/Index.html" 
-        End If : rs.Close 
-    End If 
-    If getWebHome = "" Then
-        getWebHome = "/Index.html" 
-    End If 
-End Function 
 
 '获得列表中不同域名列表
 Function getUrlListInWebSiteList(content)
@@ -728,7 +746,7 @@ Function getUrlListInWebSiteList(content)
         If url <> "" And InStr(vbCrLf & UrlList & vbCrLf, vbCrLf & url & vbCrLf) = 0 Then
             UrlList = UrlList & url & vbCrLf 
         End If 
-        Doevents 
+        doevents 
     Next 
     getUrlListInWebSiteList = UrlList 
 End Function 
@@ -743,13 +761,13 @@ End Function
 
 '处理网站HTML中Img    写得不是特别的完善好  Content = HandleWebHtmlImg("/aa/bb/",Content)
 Function handleWebHtmlImg(RootPath, content, PubAHrefList, PubATitleList)
-    Dim ImgList, splStr, ImgUrl, NewImgUrl 
+    Dim ImgList, splStr, imgUrl, NewImgUrl 
     Dim startStr, endStr 
     ImgList = getContentImgSrc("", content, PubAHrefList, PubATitleList) 
     splStr = Split(ImgList, vbCrLf) 
-    For Each ImgUrl In splStr
-        If ImgUrl <> "" Then
-            NewImgUrl = handleHttpUrl(ImgUrl) 
+    For Each imgUrl In splStr
+        If imgUrl <> "" Then
+            NewImgUrl = handleHttpUrl(imgUrl) 
             If InStr(NewImgUrl, "/") > 0 Then
                 NewImgUrl = Mid(NewImgUrl, InStrRev(NewImgUrl, "/") + 1) 
             End If 
@@ -757,11 +775,11 @@ Function handleWebHtmlImg(RootPath, content, PubAHrefList, PubATitleList)
             'Call Echo(NewImgUrl,ImgUrl)
             startStr = "src=""" : endStr = """" 
             If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-                content = RegExp_Replace(content, startStr & ImgUrl & endStr, startStr & NewImgUrl & endStr) 
+                content = regExp_Replace(content, startStr & imgUrl & endStr, startStr & NewImgUrl & endStr) 
             End If 
             startStr = "src='" : endStr = "'" 
             If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-                content = RegExp_Replace(content, startStr & ImgUrl & endStr, startStr & NewImgUrl & endStr) 
+                content = regExp_Replace(content, startStr & imgUrl & endStr, startStr & NewImgUrl & endStr) 
             End If 
         End If 
     Next 
@@ -770,15 +788,15 @@ End Function
 
 '处理网站Css中Img    写得不是特别的完善好  Content = HandleWebHtmlImg("/aa/bb/",Content)
 Function handleWebCssImg(RootPath, content)
-    Dim startStr, endStr, ImgList, splStr, c, ImgUrl, NewImgUrl 
+    Dim startStr, endStr, ImgList, splStr, c, imgUrl, NewImgUrl 
     startStr = "url\(" 
     endStr = "\)" 
-    ImgList = GetArray(content, startStr, endStr, False, False) 
+    ImgList = getArray(content, startStr, endStr, False, False) 
     'Call RwEnd(ImgList)
     splStr = Split(ImgList, "$Array$") 
-    For Each ImgUrl In splStr
-        If ImgUrl <> "" Then
-            NewImgUrl = handleHttpUrl(ImgUrl) 
+    For Each imgUrl In splStr
+        If imgUrl <> "" Then
+            NewImgUrl = handleHttpUrl(imgUrl) 
             If InStr(NewImgUrl, "/") > 0 Then
                 NewImgUrl = Mid(NewImgUrl, InStrRev(NewImgUrl, "/") + 1) 
             End If 
@@ -787,7 +805,7 @@ Function handleWebCssImg(RootPath, content)
             endStr = ")" 
             If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
                 'call echo(StartStr,"StartStr")
-                content = RegExp_Replace(content, startStr & ImgUrl & endStr, startStr & NewImgUrl & endStr) 
+                content = regExp_Replace(content, startStr & imgUrl & endStr, startStr & NewImgUrl & endStr) 
             End If 
         End If 
     Next 
@@ -814,7 +832,7 @@ Function replaceContentImagePath(RootFolder, content)
     Dim ImageFile, ToImageFile, ImageList, splxx 
     RootFolder = handleHttpUrl(RootFolder) 
     If Right(RootFolder, 1) <> "/" Then RootFolder = RootFolder & "/" 
-    ImageList = GetDirFileNameList(RootFolder) 
+    ImageList = getDirFileNameList(RootFolder,"") 
     splxx = Split(ImageList, vbCrLf) 
     For Each ImageFile In splxx
         If ImageFile <> "" Then
@@ -836,11 +854,11 @@ End Function
 Function getCssLinkList(ByVal content)
     Dim startStr, endStr, splStr, s, c, fileName 
     startStr = "<link" : endStr = "/>" 
-    content = GetArray(content, startStr, endStr, False, False) 
+    content = getArray(content, startStr, endStr, False, False) 
     splStr = Split(content, "$Array$") 
     For Each s In splStr
         If InStr(LCase(s), "stylesheet") > 0 Then
-            fileName = StrCut(s, "href=""", """", 2) 
+            fileName = strCut(s, "href=""", """", 2) 
             Call echo(fileName, s) 
             c = c & fileName & vbCrLf 
         End If 
@@ -860,11 +878,11 @@ Function getHtmlBackGroundUrlList(content)
             LalType = LCase(Mid(TempS, 1, InStr(TempS, " "))) 
             If InStr(LalStr, "url(") > 0 Then
                 startStr = "url(" : endStr = ")" 
-                c = c & StrCut(LalStr, startStr, endStr, 2) & vbCrLf 
+                c = c & strCut(LalStr, startStr, endStr, 2) & vbCrLf 
                 i = i + nLen 
             End If 
         End If 
-        DoEvents 
+        doEvents 
     Next 
     getHtmlBackGroundUrlList = c 
 End Function 
@@ -880,12 +898,12 @@ Function getImgUrlList(content)
             LalStr = Mid(YuanStr, 1, InStr(YuanStr, ">")) 
             LalType = LCase(Mid(TempS, 1, InStr(TempS, " "))) 
             If LalType = "<img " Then
-                c = c & GetLinkUrl(LalStr, "src") & vbCrLf 
+                c = c & getLinkUrl(LalStr, "src") & vbCrLf 
                 i = i + nLen 
 
             End If 
         End If 
-        DoEvents 
+        doEvents 
     Next 
     getImgUrlList = c 
 End Function 
@@ -900,12 +918,12 @@ Function getLinkUrl(ByVal LinkStr, LinkType)
     startStr = LinkType & "=""" 
     endStr = """" 
     If InStr(TempLinkStr, startStr) > 0 And InStr(TempLinkStr, endStr) > 0 Then
-        LinkUrl = StrCut(TempLinkStr, startStr, endStr, 2) 
+        LinkUrl = strCut(TempLinkStr, startStr, endStr, 2) 
         getLinkUrl = LinkUrl 
     End If 
 End Function 
 
-'是本地网址或本地网址        20141120
+'是本地网址或远程网址        20141120
 Function localUrlOrRemoteUrl(filePath, UrlYes)
     Dim httpUrl 
     UrlYes = False 
@@ -915,7 +933,7 @@ Function localUrlOrRemoteUrl(filePath, UrlYes)
         UrlYes = True 
     End If 
     If UrlYes = False Then
-        filePath = SetFileName(filePath) 
+        filePath = setFileName(filePath) 
     End If 
     localUrlOrRemoteUrl = filePath 
 End Function 
@@ -924,7 +942,7 @@ End Function
 Function checkRemoteUrl(url)
     Dim httpUrl 
     url = Trim(url) 
-    httpUrl = Replace(UnSetFileName(url), "\", "/") 
+    httpUrl = Replace(unSetFileName(url), "\", "/") 
     checkRemoteUrl = False 
     If Left(LCase(httpUrl), 7) = "http://" Or Left(LCase(httpUrl), 4) = "www." Or Left(LCase(httpUrl), 4) = "[网址]" Then
         If Left(LCase(httpUrl), 4) = "[网址]" Then
@@ -934,65 +952,7 @@ Function checkRemoteUrl(url)
     End If 
 End Function 
 
-'判断Url后面是否加.html后缀
-Function getHandleUrl(ByVal url)
-    Dim s 
-    url = CStr(Trim(url)) 
-    If url <> "" Then
-        url = Replace(Trim(url), "\", "/") 
-        If InStr(url, "://") = False Then url = Replace(Replace(url, "//", "/"), "//", "/") 
-    End If 
-    If Left(url, 1) <> "/" And Right(url, 1) <> "/" Then
-        url = "/Html/" & url & ".Html" 
-    ElseIf Right(LCase(url), 4) <> ".html" Then                                     '后面没有.html 给加上
-        s = Mid(url, InStrRev(url, "/") + 1) 
-        If InStr(s, ".") = False Then
-            If s <> "" Then
-                url = url & ".Html" 
-            End If 
-        End If 
-    End If 
-    getHandleUrl = url 
-End Function 
 
-'网站调试网址配置 (20140408改进)
-Function webDebug(url, DebugUrl)
-    If Request.QueryString("Debug") <> "" Then
-        If getwebsite(DebugUrl) <> "" Then
-            url = DebugUrl 
-            webDebug = url 
-            Exit Function 
-        Else
-            url = "/Inc/Create_Html.Asp?Debug=1&" & DebugUrl 
-        End If 
-        If Request("MackHtml") = "False" Then
-            url = url & "&MackHtml=False" 
-        End If 
-        If Request("gl") <> "" Then
-            url = url & "&gl=" & Request("gl") 
-        End If 
-    Else
-        If CheckMakeHtmlFile(url) = True Then
-            url = LCase(url)                                                                '对URL进行小写转换
-        End If 
-    End If 
-    If CheckMakeHtmlFile(url) = True Then
-        url = fullHttpUrl(host(), url)                                                  '让网址完整
-    Else
-        '追加于20141231  原因：因为文件名称可自定义网址 url:
-        url = Trim(url) 
-        If Left(LCase(url), 4) = "url:" Then
-            url = Mid(url, 5) 
-        End If 
-        If Left(LCase(url), 5) = "/url:" Then
-            url = Mid(url, 6) 
-        End If 
-        url = HandleTemplateAction(url, False) 
-
-    End If 
-
-    webDebug = url 
-End Function 
 
 '函数名称：AsaiLinkAdd   20141217引用别人
 '函数作用：正则自动添加链接
@@ -1273,6 +1233,7 @@ Function handleHttpUrlArray(ByVal url)
     FileType = Mid(fileName, InStrRev(fileName, ".") + 1) 
     httpAgreement = Mid(url, 1, InStr(url, ":") - 1) 
     webSite = getWebSite(url) 
+    Call echo("url", url) 
     folderDir = Mid(urlDir, Len(webSite)) 
     'HandleHttpUrlArray = Array(url, urlDir, fileName, fileType, fileStr, HttpAgreement, webSite, folderDir)
     Dim arrayData 
@@ -1389,7 +1350,7 @@ End Function
 
 '获得内容里网址列表(20161025)
 Function getContentUrlList(httpUrl, ByVal content)
-    getContentUrlList = HandleGetContentUrlList(httpUrl, content, "|*|内链|") 
+    getContentUrlList = handleGetContentUrlList(httpUrl, content, "|*|内链|") 
 End Function 
 '处理获得内容里网址列表(20161025)
 Function handleGetContentUrlList(httpUrl, ByVal content, sType)
@@ -1476,5 +1437,4 @@ Function getInChain(httpUrl, urlList)
     If urlList <> "" Then urlList = Left(urlList, Len(urlList) - 2) 
     getInChain = urlList 
 End Function 
-%>       
-
+%>         

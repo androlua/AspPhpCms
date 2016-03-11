@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -57,16 +57,16 @@ End Function
 
 '去掉字符串头尾的连续的回车和空格
 Function trimVbCrlf(str)
-    trimVbCrlf = rtrimVBcrlf(ltrimVBcrlf(str)) 
+    trimVbCrlf = PHPRTrim(PHPLTrim(str)) 
 End Function 
 
 'PHP里Trim方法
-Function pHPTrim(str)
-    pHPTrim = trimVbCrlf(str) 
+Function PHPTrim(str)
+    PHPTrim = trimVbCrlf(str) 
 End Function 
 
 '去掉字符串开头的连续的回车和空格
-Function ltrimVBcrlf(str)
+Function PHPLTrim(str)
     Dim pos, isBlankChar 
     pos = 1 
     isBlankChar = True 
@@ -79,11 +79,11 @@ Function ltrimVBcrlf(str)
             isBlankChar = False 
         End If 
     Wend 
-    ltrimVBcrlf = Right(str, Len(str) - pos + 1) 
+    PHPLTrim = Right(str, Len(str) - pos + 1) 
 End Function 
 
 '去掉字符串末尾的连续的回车和空格
-Function rtrimVBcrlf(str)
+Function PHPRTrim(str)
     Dim pos, isBlankChar 
     pos = Len(str) 
     isBlankChar = True 
@@ -96,7 +96,7 @@ Function rtrimVBcrlf(str)
             isBlankChar = False 
         End If 
     Wend 
-    rtrimVBcrlf = RTrim(Left(str, pos)) 
+    PHPRTrim = RTrim(Left(str, pos)) 
 End Function 
 
 
@@ -184,7 +184,7 @@ Function getHtmlCssStyle(ByVal content)
     getHtmlCssStyle = CssStr 
 End Function 
 
-'处理成干净的Css内容
+'处理成干净的Css内容  CSS格式化
 Function handleCleanCss(ByVal content)
     Dim splStr, s, c, AddStrYes, CustomS 
     content = Replace(content, "{", vbCrLf & "{" & vbCrLf) 
@@ -211,6 +211,8 @@ Function handleCleanCss(ByVal content)
         End If 
     Next 
     c = trimVbCrlf(c) 
+	c=replace(c,"    ;"&vbcrlf,"")			'清除多于的分号
+	c=replace(c,";"& vbcrlf &"}", vbcrlf & "}")			'最后一个参数不要分号
     handleCleanCss = c 
 End Function 
 

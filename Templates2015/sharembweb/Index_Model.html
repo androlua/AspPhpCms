@@ -16,41 +16,72 @@
 
 <div class="mainwrap">
     <div class="sidebarleft">
- 
+
     
         <ul class="columnbox">
             <li class="title">最新公告<a href="{$GetOnePageUrl title='最新公告'$}" class="more">更多&gt;&gt;</a></li>
             <li class="content">
-<sPAn class="testhidde">{$GetOnePageBody title='最新公告' fieldname='simpleintroduction'$}</sPAn>
+<sPAn class="testhidde">{$GetOnePageBody title='最新公告' default='没有最新公告' fieldname='aboutcontent' $}</sPAn>
  
             </li>
         </ul> 
+    
+        <ul class="columnbox">
+            <li class="title">模板分享下载<a href="{$GetOnePageUrl title='模板分享下载'$}" class="more">更多&gt;&gt;</a></li>
+            <li class="content"> 
+            <!--#细节列表 ASPPHP通用#-->
+<sPAn class="testspan">{$ArticleList columnname='模板分享下载' topnumb='4' default='[_2016年03月07日 07时56分]'$}</sPAn>
+ 
+<!--#[_2016年03月07日 07时56分]
+[list]
+                <div class="casewrap">
+                    <img src="[$smallimage$]" title="[$title$]" alt="[$title$]" width="100%"  >
+                    <div class="footerwrap"></div>
+                    <a href="[$url$]">[$title$]</a>                
+                </div> 
+
+[/list] 
+[list-3]
+                <div class="casewrapright">
+                    <img src="[$smallimage$]" title="[$title$]" alt="[$title$]" width="100%"  >
+                    <div class="footerwrap"></div>
+                    <a href="[$url$]">[$title$]</a>                
+                </div> 
+
+[/list-3] 
+#-->
+<!--#test start#--> 
+                <div class="casewrap">
+                    <img src="/Templates2015/sharembweb/Images/asptophp.jpg" width="100%"  > 
+                    <div class="footerwrap"></div>
+                    <a href="#">最新案例3号</a>
+                </div>
+                <div class="casewrap">
+                    <img src="/Templates2015/sharembweb/Images/asptophp.jpg" width="100%"  > 
+                    <div class="footerwrap"></div>
+                    <a href="#">最新案例3号</a>                
+                </div>
+                <div class="casewrapright">
+                    <img src="/Templates2015/sharembweb/Images/asptophp.jpg" width="100%"  >
+                    <div class="footerwrap"></div>
+                    <a href="#">最新案例3号</a>                
+                </div> 
+<!--#test end#-->
+                 <div class="clear10"></div>
+          </li>
+        </ul> 
   
        
-        
-        <ul class="columnbox">
-            <li class="title">模板分享下载<a href="{$GetColumnUrl columnname='模板分享下载'$}" class="more">更多&gt;&gt;</a></li>
-            <li class="content">
-            
-               <ul class="list">
-                <sPAn class="testhidde">{$ArticleList columnname='模板分享下载'  topnumb='8' addsql=' order by id desc' default='[_2016年01月15日 asp]'$}</sPAn>
-                <!--#[_2016年01月15日 asp]
-                [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
-                [/list]
-                #-->
-              </ul>
-            
-            </li>
-        </ul>
+ 
         
         
         <ul class="columnbox">
-            <li class="title">AspPhpCMS<a href="{$GetColumnUrl columnname='AspPhpCMS'$}" class="more">更多&gt;&gt;</a></li>
+            <li class="title">ASPPHPCMS<a href="{$GetColumnUrl columnname='ASPPHPCMS'$}" class="more">更多&gt;&gt;</a></li>
             <li class="content">
             
                <ul class="list">
-                <sPAn class="testhidde">{$ArticleList columnname='AspPhpCMS'  topnumb='8' addsql=' order by id asc' default='[_2016年01月15日 AspPhpCMS]'$}</sPAn>
-                <!--#[_2016年01月15日 AspPhpCMS]
+                <sPAn class="testhidde">{$ArticleList columnname='ASPPHPCMS'  topnumb='8' addsql=' order by id asc' default='[_2016年01月15日 ASPPHPCMS]'$}</sPAn>
+                <!--#[_2016年01月15日 ASPPHPCMS]
                 [list]<li><a href="[$url$]" title="[$title$]" target="[$target$]"[$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
                 [/list]
                 #-->
@@ -139,7 +170,7 @@
         <ul class="columnbox">
             <li class="title">最新下载</li>
             <li class="content">
-<sPAn class="testhidde">{$MainInfo title='最新下载' default='没有最新公告' fieldname='bodycontent' $}</sPAn>
+<sPAn class="testhidde">{$GetOnePageBody title='最新下载' default='没有最新公告' fieldname='bodycontent' $}</sPAn>
             </li>
         </ul>
         <ul class="columnbox">
@@ -203,7 +234,7 @@
             <li class="title">联系作者<a href="{$GetColumnUrl columnname='联系作者'$}" class="more">更多&gt;&gt;</a></li>
             <li class="content">            
             
-            {$GetColumnContent columnname='联系作者' fieldname='simpleintroduction' default='无栏目内容'$}
+            {$GetColumnBody columnname='联系作者' fieldname='aboutcontent' default='无栏目内容'$}
 
             </li>
         </ul>
@@ -214,7 +245,7 @@
             <li class="content">
             
 <form name="form1" action="http://sharembweb.com/Tools/ask.asp?act=feedback" method="post" onSubmit="return formSubmit()">
-  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:200px;"></textarea>
+  <textarea name="content" id="yjfkcontent" class="inputstyle"></textarea>
   <div class="clear10"></div>
   <input type="submit" name="button" id="button" value="提交" class="clickgrey3 radius5 btn btnclearfix">
 </form>
@@ -222,8 +253,8 @@
 <script language="javascript">
 function formSubmit(){
     if(document.all.form1.content.value==""){
-        document.all.form1.content.focus()
-        alert("反馈内容不能为空")
+        document.all.form1.content.focus();
+        alert("反馈内容不能为空");
         return false;
     }
 }

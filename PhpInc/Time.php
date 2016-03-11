@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -76,6 +76,8 @@ function format_Time($timeStr, $nType){
     }
     return @$format_Time;
 }
+//获得当前时期还可以计算
+
 //获得当前天状态
 function getDayStatus($h, $SType){
     $c ='';
@@ -182,7 +184,7 @@ function vBGetTimer(){
     $n ='';
     $n = DateDiff('s', $GLOBALS['PubTimer'], Now()) ;
     $n = printTimeValue($n) ;
-    $vBGetTimer = "\n" . '------------------------------------' . "\n" . '运行时间：' . $n ;
+    $vBGetTimer = vbCrlf() . '------------------------------------' . vbCrlf() . '运行时间：' . $n ;
     return @$vBGetTimer;
 }
 //获得第三种

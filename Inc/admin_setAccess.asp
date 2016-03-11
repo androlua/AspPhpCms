@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -43,9 +43,9 @@ Sub resetAccessData()
 
     Dim content, filePath, parentid, author, adddatetime, fileName, bodycontent, webtitle, webkeywords, webdescription, sortrank, labletitle, target 
     Dim websitebottom, webtemplate, webimages, webcss, webjs, flags, websiteurl, splxx, columntype, relatedtags, npagesize, customaurl, nofollow 
-    Dim templatepath, through 
+    Dim templatepath, isthrough 
     Dim showreason, ncomputersearch, nmobliesearch, ncountsearch, ndegree           '竞价表
-    Dim displaytitle, simpleintroduction, isonhtml                                  '单页表
+    Dim displaytitle, aboutcontent, isonhtml                                  '单页表
     Dim columnenname                                                                '导航表
     Dim smallimage, bigImage, bannerimage                                           '文章表
 
@@ -53,7 +53,7 @@ Sub resetAccessData()
 
 
     '网站配置
-    content = getftext(webdataDir & "/website.ini") 
+    content = getftext(webdataDir & "/website.txt") 
     If content <> "" Then
         webtitle = newGetStrCut(content, "webtitle") 
         webkeywords = newGetStrCut(content, "webkeywords") 
@@ -86,6 +86,7 @@ Sub resetAccessData()
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【webtitle】") > 0 Then
+					s=s & vbcrlf 
                     webtitle = newGetStrCut(s, "webtitle") 
                     webkeywords = newGetStrCut(s, "webkeywords") 
                     webdescription = newGetStrCut(s, "webdescription") 
@@ -98,7 +99,9 @@ Sub resetAccessData()
                     columntype = newGetStrCut(s, "columntype") 
                     flags = newGetStrCut(s, "flags") 
                     parentid = newGetStrCut(s, "parentid") 
-                    parentid = phptrim(getColumnId(parentid)) 
+					 
+                    parentid = phptrim(getColumnId(parentid))  										'可根据栏目名称找到对应ID   不存在为-1
+					'call echo("parentid",parentid)
                     labletitle = newGetStrCut(s, "labletitle") 
                     '每页显示条数
                     npagesize = newGetStrCut(s, "npagesize") 
@@ -131,13 +134,13 @@ Sub resetAccessData()
                     End If 
 
 
-                    simpleintroduction = newGetStrCut(s, "simpleintroduction") 
-                    simpleintroduction = contentTranscoding(simpleintroduction) 
+                    aboutcontent = newGetStrCut(s, "aboutcontent") 
+                    aboutcontent = contentTranscoding(aboutcontent) 
 
                     bodycontent = newGetStrCut(s, "bodycontent") 
                     bodycontent = contentTranscoding(bodycontent) 
 
-                    conn.Execute("insert into " & db_PREFIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,simpleintroduction,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values('" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & columnname & "','" & columnenname & "','" & columntype & "'," & sortrank & ",'" & fileName & "','" & flags & "'," & parentid & ",'" & labletitle & "','" & simpleintroduction & "','" & bodycontent & "'," & npagesize & "," & isonhtml & "," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
+                    conn.Execute("insert into " & db_PREFIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,aboutcontent,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values('" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & columnname & "','" & columnenname & "','" & columntype & "'," & sortrank & ",'" & fileName & "','" & flags & "'," & parentid & ",'" & labletitle & "','" & aboutcontent & "','" & bodycontent & "'," & npagesize & "," & isonhtml & "," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
                 End If 
             Next 
         End If 
@@ -183,8 +186,8 @@ Sub resetAccessData()
                     bannerimage = newGetStrCut(s, "bannerimage") 
 				
 				
-                    simpleintroduction = newGetStrCut(s, "simpleintroduction") 
-                    simpleintroduction = contentTranscoding(simpleintroduction) 
+                    aboutcontent = newGetStrCut(s, "aboutcontent") 
+                    aboutcontent = contentTranscoding(aboutcontent) 
 
                     bodycontent = newGetStrCut(s, "bodycontent") 
                     bodycontent = contentTranscoding(bodycontent) 
@@ -202,7 +205,7 @@ Sub resetAccessData()
                     Else
                         nofollow = 0 
                     End If 
-                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,simpleintroduction,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & parentid & ",'" & title & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & author & "'," & sortrank & ",'" & adddatetime & "','" & fileName & "','" & flags & "','" & relatedtags & "','"& simpleintroduction &"','" & bodycontent & "','" & Now() & "'," & isonhtml & ",'" & customaurl & "'," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
+                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,aboutcontent,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & parentid & ",'" & title & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & author & "'," & sortrank & ",'" & adddatetime & "','" & fileName & "','" & flags & "','" & relatedtags & "','"& aboutcontent &"','" & bodycontent & "','" & Now() & "'," & isonhtml & ",'" & customaurl & "'," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
                 End If 
             Next 
         End If 
@@ -233,9 +236,9 @@ Sub resetAccessData()
                     adddatetime = newGetStrCut(s, "adddatetime") 
                     fileName = newGetStrCut(s, "filename") 
 
-                    simpleintroduction = newGetStrCut(s, "simpleintroduction") 
+                    aboutcontent = newGetStrCut(s, "aboutcontent") 
 
-                    simpleintroduction = contentTranscoding(simpleintroduction) 
+                    aboutcontent = contentTranscoding(aboutcontent) 
                     target = newGetStrCut(s, "target") 
                     templatepath = newGetStrCut(s, "templatepath") 
 
@@ -257,7 +260,7 @@ Sub resetAccessData()
                     End If 
 
 
-                    conn.Execute("insert into " & db_PREFIX & "onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,simpleintroduction,bodycontent,nofollow,target,templatepath) values('" & title & "','" & displaytitle & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & adddatetime & "','" & fileName & "'," & isonhtml & ",'" & simpleintroduction & "','" & bodycontent & "'," & nofollow & ",'" & target & "','" & templatepath & "')") 
+                    conn.Execute("insert into " & db_PREFIX & "onepage (title,displaytitle,webtitle,webkeywords,webdescription,adddatetime,filename,isonhtml,aboutcontent,bodycontent,nofollow,target,templatepath) values('" & title & "','" & displaytitle & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & adddatetime & "','" & fileName & "'," & isonhtml & ",'" & aboutcontent & "','" & bodycontent & "'," & nofollow & ",'" & target & "','" & templatepath & "')") 
                 End If 
             Next 
         End If 
@@ -276,6 +279,7 @@ Sub resetAccessData()
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【webkeywords】") > 0 Then
+					s=s & vbcrlf 
                     webkeywords = newGetStrCut(s, "webkeywords") 
                     showreason = newGetStrCut(s, "showreason") 
                     ncomputersearch = newGetStrCut(s, "ncomputersearch") 
@@ -305,6 +309,7 @@ Sub resetAccessData()
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【title】") > 0 Then
+					s=s & vbcrlf 
                     title = newGetStrCut(s, "title") 
                     webtitle = newGetStrCut(s, "webtitle") 
                     webkeywords = newGetStrCut(s, "webkeywords") 
@@ -312,11 +317,11 @@ Sub resetAccessData()
 
                     customaurl = newGetStrCut(s, "customaurl") 
                     target = newGetStrCut(s, "target") 
-                    through = newGetStrCut(s, "through") 
-                    If through = "0" Or LCase(through) = "false" Then
-                        through = 0 
+                    isthrough = newGetStrCut(s, "isthrough")  
+                    If isthrough = "0" Or LCase(isthrough) = "false" Then
+                        isthrough = 0 
                     Else
-                        through = 1 
+                        isthrough = 1 
                     End If 
                     sortrank = newGetStrCut(s, "sortrank") 
                     If sortrank = "" Then sortrank = 0 
@@ -335,17 +340,60 @@ Sub resetAccessData()
                         nofollow = 0 
                     End If 
                     'call echo("title",title)
-                    conn.Execute("insert into " & db_PREFIX & "SearchStat (title,webtitle,webkeywords,webdescription,customaurl,target,through,sortrank,isonhtml,nofollow) values('" & title & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & customaurl & "','" & target & "'," & through & "," & sortrank & "," & isonhtml & "," & nofollow & ")") 
+                    conn.Execute("insert into " & db_PREFIX & "SearchStat (title,webtitle,webkeywords,webdescription,customaurl,target,isthrough,sortrank,isonhtml,nofollow) values('" & title & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & customaurl & "','" & target & "'," & isthrough & "," & sortrank & "," & isonhtml & "," & nofollow & ")") 
+
+                End If 
+            Next 
+        End If 
+    Next 
+dim itemid,username,ip,reply,tablename			'评论
+    '评论
+    conn.Execute("delete from " & db_PREFIX & "TableComment")  
+    content = getDirTxtList(webdataDir & "/TableComment/") 
+    splStr = Split(content, vbCrLf) 
+    Call hr() 
+    For Each filePath In splStr
+        fileName = getfilename(filePath) 
+        If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
+            Call echo("评论", filePath) 
+            content = getftext(filePath) 
+            splxx = Split(content, vbCrLf & "-------------------------------") 
+            For Each s In splxx
+                If InStr(s, "【title】") > 0 Then
+					s=s & vbcrlf 
+					
+                    tablename = newGetStrCut(s, "tablename") 
+                    title = newGetStrCut(s, "title") 
+                    itemid = getArticleId(newGetStrCut(s, "itemid"))
+					if itemid="" then itemid=0
+					'call echo("itemID",itemID)
+                    adddatetime = newGetStrCut(s, "adddatetime") 
+                    username = newGetStrCut(s, "username") 
+                    ip = newGetStrCut(s, "ip") 
+                    bodycontent = newGetStrCut(s, "bodycontent") 
+                    reply = newGetStrCut(s, "reply") 
+					 
+					
+
+                    isthrough = newGetStrCut(s, "isthrough")  
+                    If isthrough = "0" Or LCase(isthrough) = "false" Then
+                        isthrough = 0 
+                    Else
+                        isthrough = 1 
+                    End If 
+                   
+				   
+				   
+                    'call echo("title",title)
+                    conn.Execute("insert into " & db_PREFIX & "TableComment (tablename,title,itemid,adddatetime,username,ip,bodycontent,reply,isthrough) values('"& tablename &"','" & title & "',"& itemid &",'"& adddatetime &"','"& username &"','"& ip &"','"& bodycontent &"','"& reply &"',"& isthrough &")") 
 
                 End If 
             Next 
         End If 
     Next 
 
-    '评论
-    conn.Execute("delete from " & db_PREFIX & "TableComment") 
 
-
+	call writeSystemLog("","恢复默认数据" & db_PREFIX)			'系统日志
 
 End Sub 
 

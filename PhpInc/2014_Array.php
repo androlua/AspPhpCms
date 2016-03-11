@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -117,8 +117,8 @@ function getArrayCount($content, $SplC){
     }
     return @$getArrayCount;
 }
-//随机显示内容 RandomShow("1,2,3,4,5,6,7,8,9", ",", 2)
-function randomShow($content, $SplType, $NSwitch){
+//随机显示内容 randomShow("1,2,3,4,5,6,7,8,9", ",", 2)
+function randomShow($content, $SplType,$NSwitch){
     $splStr=''; $s=''; $c=''; $n=''; $i ='';
 
     for( $i = 1 ; $i<= $NSwitch; $i++){
@@ -130,7 +130,6 @@ function randomShow($content, $SplType, $NSwitch){
             }else{
                 $c = $s . $SplType . $c ;
             }
-            //Call Echo(S,N)
         }
         if( $c <> '' ){ $c = substr($c, 0 , strlen($c) - strlen($SplType)) ;}
         $content = $c ;
@@ -437,17 +436,17 @@ function testTwoDimensionalArray(){
     $splStr=''; $i ='';
     $splStr = HandleSplitArray('9-g|2-b|3-a|1-中', '|', '-') ;
     for( $i = 0 ; $i<= UBound($splStr); $i++){
-        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents ;
+        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents( );
     }
     ASPEcho('', 'Ａｄｃ') ;
     TwoDimensionalArrayAsc($splStr) ;//二维数组正排序
     for( $i = 0 ; $i<= UBound($splStr); $i++){
-        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents ;
+        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents( );
     }
     ASPEcho('', 'Desc') ;
     TwoDimensionalArrayDesc($splStr) ;//二维数组倒排序
     for( $i = 0 ; $i<= UBound($splStr); $i++){
-        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents ;
+        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents( );
     }
 }
 

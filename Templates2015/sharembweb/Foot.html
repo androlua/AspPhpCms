@@ -18,8 +18,18 @@
 <div id="footer">
     <div class="content">
         <div class="fl">
-            <img src="/Templates2015/sharembweb/Images/logo.jpg" alt="分享模板网站" width="79" title="分享模板网站">        </div>
-      <div class="fl">     
+            <img src="/Templates2015/sharembweb/Images/logo.jpg" alt="分享模板网站" width="79" title="分享模板网站">        
+            </div>
+      <div class="fl">
+      
+<!--#自定义导航列表#-->
+<sPAn class="testspan">{$ColumnList flags='foot' addsql='order by sortrank' default='[_2016年03月09日 13时42分]'$}</sPAn>
+<!--#[_2016年03月09日 13时42分]
+[list]<a href="[$url$]">[$columnname$]</a>&nbsp;|&nbsp;[/list]
+[list-focus][$columnname$]&nbsp;|&nbsp;[/list-focus]
+#-->
+
+        
       [$cfg_websitebottom$]</div>
      </div>
 </div>

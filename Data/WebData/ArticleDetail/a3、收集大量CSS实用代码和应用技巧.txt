@@ -1,0 +1,45 @@
+【parentid】CSS3
+【title】收集大量CSS实用代码和应用技巧
+【webtitle】收集大量CSS实用代码和应用技巧 - 分享模板网站
+【webkeywords】收集大量CSS实用代码和应用技巧 - 分享模板网站
+【webdescription】收集大量CSS实用代码和应用技巧 - 分享模板网站
+【sortrank】596
+【author】sharembweb
+【adddatetime】2016-02-01 10:13:25
+【filename】/asp/csssyjq.html
+【flags】|
+【relatedtags】ASP,在线ASP转PHP 
+【bodycontent】
+[&全部换行&]
+<strong>一、文字超出隐藏并显示省略号：</strong>
+[&html转码&]
+<style>
+div{
+	overflow: hidden; /*自动隐藏文字*/
+	text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+	white-space: nowrap;/*强制不换行*/ 
+	width:100px;
+}
+</style>
+<div>
+	这里输出测试文字超出隐藏并显示省略号内容部分。
+</div>
+[&html转码end&] 
+
+
+<strong>二、中文或英文字符内容自动换行：</strong>
+[&html转码&] 
+<style>
+div{
+	word-wrap: break-word;
+	word-break: normal;
+}
+</style>
+<div>
+	这里输出测试文字 中文或英文字符内容自动换行 部分。
+</div>
+[&html转码end&] 
+【/bodycontent】
+
+
+ 

@@ -15,7 +15,7 @@
 
 模仿网址：http://www.ufoer.com/<br>
 添加程序后：<a href="/aspweb.asp?templatedir=\Templates\ufoer\" class="ablue" target="_blank">点击在线预览</a><br>
-下载整站：<a href="https://github.com/313801120/AspPhpCms"  class="ablue" target="_blank">Github下载AspPhpCms</a>(模板+本站自行开发的AspPhpCMS网站管理系统)<br>
+下载整站：<a href="https://github.com/313801120/ASPPHPCMS"  class="ablue" target="_blank">Github下载ASPPHPCMS</a>(模板+本站自行开发的ASPPHPCMS网站管理系统)<br>
 <br>
 
 网站介绍：一位SEO高手王通的个人博客，他的网站做得非常的优秀，优化做得非常的好，忍不住的给它下载下来，研究一番。<br><br>

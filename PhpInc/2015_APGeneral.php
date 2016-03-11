@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -40,7 +40,7 @@ function getRandArticleId($addSql, $topNumb){
         if( $c <> '' ){ $c = $c . ',' ;}
         $c = $c . $rs['id'] ;
     }
-    $getRandArticleId = RandomShow($c, ',', 4) ;
+    $getRandArticleId = randomShow($c, ',', 4) ;
     $splStr = aspSplit($c, ',') ; $c = '' ; $nIndex = 0 ;
     foreach( $splStr as $s){
         if( $c <> '' ){ $c = $c . ',' ;}
@@ -74,7 +74,7 @@ function handleUpDownArticle($lableTitle, $sql){
     $rsx=mysql_fetch_array($rsxObj);
     if( @mysql_num_rows($rsxObj)!=0 ){
         if( $GLOBALS['isMakeHtml'] == true ){
-            $url = getRsUrl($rsx['filename'], $rsx['customaurl'], '/html/detail' . $rsx['id']) ;
+            $url = getRsUrl($rsx['filename'], $rsx['customaurl'], '/detail/detail' . $rsx['id']) ;
         }else{
             $url = handleWebUrl('?act=detail&id=' . $rsx['id']) ;
         }
@@ -103,10 +103,19 @@ function getRsUrl($fileName, $customAUrl, $defaultFileName){
         $url = AspTrim($customAUrl) ;
     }
     if( instr($GLOBALS['cfg_flags'], '|addwebsite|') > 0 ){
-        $url = urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url) ;
+        $url = urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
     }
     $getRsUrl = $url ;
     return @$getRsUrl;
+}
+//获得处理后RS网址
+function getHandleRsUrl($fileName, $customAUrl, $defaultFileName){
+    $url='';
+    $url=getRsUrl($fileName, $customAUrl, $defaultFileName);
+    //因为URL如果为自定义的则需要处理下全局变量，这样程序运行又会变慢，不就可以使用生成HTML方法解决这个问题，20160308
+    $url = replaceGlobleVariable($url);
+    $getHandleRsUrl=$url;
+    return @$getHandleRsUrl;
 }
 
 //获得单页url 20160114
@@ -164,7 +173,8 @@ function getColumnUrl($columnNameOrId, $sType){
         if( $GLOBALS['isMakeHtml'] == true ){
             $url = getRsUrl($rsx['filename'], $rsx['customaurl'], '/nav' . $rsx['id']) ;
         }else{
-            $url = handleWebUrl('?act=nav&columnName=' . $rsx['columnname']) ;
+            $url = handleWebUrl('?act=nav&id=' . $rsx['id'])				;//用这种方法20160310
+            //url = handleWebUrl("?act=nav&columnName=" & escape(rsx("columnname")))			'这种方法
             if( $rsx['customaurl'] <> '' ){
                 $url = $rsx['customaurl'] ;
             }
@@ -174,6 +184,19 @@ function getColumnUrl($columnNameOrId, $sType){
     $getColumnUrl = $url ;
     return @$getColumnUrl;
 }
+
+//获得文章标题对应的id
+function getArticleId($title){
+    $title = Replace($title, '\'', '') ;//注意，这个不能留
+    $getArticleId = -1 ;
+    $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'ArticleDetail where title=\'' . $title . '\'');
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        $getArticleId = $rsx['id'] ;
+    }
+    return @$getArticleId;
+}
+
 //获得栏目名称对应的id
 function getColumnId($columnName){
     $columnName = Replace($columnName, '\'', '') ;//注意，这个不能留
@@ -268,80 +291,62 @@ function webStat($folderPath){
     $c = Replace($c, vbCrlf(), '\\n') ;
     $c = Replace($c, '"', '\\"') ;
     //Response.Write("eval(""var MyWebStat=\""" & C & "\"""")")
+
+    $splxx=''; $nIP=''; $nPV=''; $ipList=''; $s=''; $ip='';
+    //判断是否显示回显记录
+    if( @$_REQUEST['stype']=='display' ){
+        $content = getftext($fileName) ;
+        $splxx = aspSplit($content, vbCrlf() . '-------------------------------------------------' . vbCrlf()) ;
+        $nIP = 0 ;
+        $nPV = 0 ;
+        $ipList = '' ;
+        foreach( $splxx as $s){
+            if( instr($s, '当前：') > 0 ){
+                $s = vbCrlf() . $s . vbCrlf() ;
+                $ip = ADSql(getStrCut($s, vbCrlf() . 'IP:', vbCrlf(), 0)) ;
+                $nPV = $nPV + 1 ;
+                if( instr(vbCrlf() . $ipList . vbCrlf(), vbCrlf() . $ip . vbCrlf()) == false ){
+                    $ipList = $ipList . $ip . vbCrlf() ;
+                    $nIP = $nIP + 1 ;
+                }
+            }
+        }
+        rw('document.write(\'网长统计 | 今日IP['. $nIP .'] | 今日PV['. $nPV .'] \')') ;
+    }
     $webStat = $c ;
     return @$webStat;
 }
 
-
-//读模块内容
-function readTemplateModuleStr($filePath, $defaultContent, $ModuleId){
-    $startStr=''; $endStr=''; $content=''; $s ='';
-    $startStr = '<!--#Module ' . $ModuleId . ' Start#-->' ;
-    $endStr = '<!--#Module ' . $ModuleId . ' End#-->' ;
-    //FilePath = ReplaceGlobleLable(FilePath)                '替换全部标签        '添加于2014 12 11
-
-    //文件不存在，则追加模板路径 20150616 给VB软件里用
-    if( checkFile($filePath) == false ){
-        $filePath = $GLOBALS['WebTemplate'] . $filePath ;
-    }
-
-    if( $defaultContent <> '' ){
-        $content = $defaultContent ;
-    }else if( checkFile($filePath) == true ){
-        $content = GetFText($filePath) ;
-    }else{
-        $content = $GLOBALS['code'] ;//默认用内容指定内容
-    }
-    //Call Die("显示" & ModuleId & "," & Content)
-    //Call Eerr(filepath & checkfile(filepath), Content)
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $readTemplateModuleStr = StrCut($content, $startStr, $endStr, 2) ;
-    }else{
-        $readTemplateModuleStr = '模块[' . $ModuleId . ']不存在,路径=' . $filePath ;
-    }
-    return @$readTemplateModuleStr;
-}
-//找模块对应内容
-function findModuleStr($content, $valueStr){
-    $startStr=''; $endStr=''; $YuanStr=''; $replaceStr=''; $i=''; $Block=''; $BlockFile=''; $action ='';
-    for( $i = 1 ; $i<= 9; $i++){
-        $startStr = '[$读出内容 ' ; $endStr = '$]' ;
-        if( instr($valueStr, $startStr) > 0 && instr($valueStr, $endStr) > 0 ){
-            $action = StrCut($valueStr, $startStr, $endStr, 2) ;
-            $Block = RParam($action, 'Block') ;
-            $BlockFile = RParam($action, 'File') ;
-            if( instr(vbCrlf() . $GLOBALS['ReadBlockList'] . vbCrlf(), vbCrlf() . $Block . vbCrlf()) == false ){
-                $GLOBALS['ReadBlockList'] = $GLOBALS['ReadBlockList'] . $Block . vbCrlf() ;
-            }
-            //块文件存在 则读出内容
-            if( $BlockFile <> '' ){
-                $content = GetFText($BlockFile) ;
-            }
-            $YuanStr = $startStr . $action . $endStr ;
-            $replaceStr = '' ;
-
-            $startStr = '<R#读出内容' . $Block . ' start#>' ; $endStr = '<R#读出内容' . $Block . ' end#>' ;
-            if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-                $replaceStr = StrCut($content, $startStr, $endStr, 2) ;
-            }else{
-                $startStr = '<!--#读出内容' . $Block ; $endStr = '#-->' ;
-                if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-                    $replaceStr = StrCut($content, $startStr, $endStr, 2) ;
-                }
-            }
-            //Call Eerr(YuanStr,ReplaceStr)
-            $valueStr = Replace($valueStr, $YuanStr, $replaceStr) ;
-            //Call Echo("ValueStr",ValueStr)
-        }else{
-            //没有模块要处理了 则退出
-            break;
-        }
-    }
-    $findModuleStr = $valueStr ;
-    return @$findModuleStr;
-}
-
 //判断传值是否相等
 
+//HTML标签参数自动添加(target|title|alt|id|class|style|)    辅助类
+function setHtmlParam($content, $ParamList){
+    $splStr=''; $startStr=''; $endStr=''; $c=''; $paramValue=''; $ReplaceStartStr ='';
+    $endStr = '\'' ;
+    $splStr = aspSplit($ParamList, '|') ;
+    foreach( $splStr as $startStr){
+        $startStr = AspTrim($startStr) ;
+        if( $startStr <> '' ){
+            //替换开始字符   因为开始字符类型可变 不同
+            $ReplaceStartStr = $startStr ;
+            if( substr($ReplaceStartStr, 0 , 3) == 'img' ){
+                $ReplaceStartStr = mid($ReplaceStartStr, 4,-1) ;
+            }else if( substr($ReplaceStartStr, 0 , 1) == 'a' ){
+                $ReplaceStartStr = mid($ReplaceStartStr, 2,-1) ;
+            }else if( instr('|ul|li|', '|' . substr($ReplaceStartStr, 0 , 2) . '|') > 0 ){
+                $ReplaceStartStr = mid($ReplaceStartStr, 3,-1) ;
+            }
+            $ReplaceStartStr = ' ' . $ReplaceStartStr . '=\'' ;
 
+            $startStr = ' ' . $startStr . '=\'' ;
+            if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
+                $paramValue = strCut($content, $startStr, $endStr, 2) ;
+                $paramValue = handleInModule($paramValue, 'end') ;//处理内部模块
+                $c = $c . $ReplaceStartStr . $paramValue . $endStr ;
+            }
+        }
+    }
+    $setHtmlParam = $c ;
+    return @$setHtmlParam;
+}
 ?>

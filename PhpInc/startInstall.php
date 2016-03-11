@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -14,13 +14,12 @@ require_once './ASP.php';
 require_once './sys_FSO.php';
 require_once './Conn.php';
 require_once './MySqlClass.php';
-require_once './sys_System.php';
 require_once './sys_Url.php';
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>网站标题 - :::企业后台管理系统,QQ:313801120:::</title> 
+<title>安装MYSQL数据库,QQ:313801120:::</title> 
 <style type="text/css">
 a img{border:none}
 /*img{vertical-align:bottom; display:block;} 这种不要了，因为它会让图片成为块*/
@@ -526,6 +525,7 @@ function GetStrCut( $Content, $StartStr, $EndStr, $CutType){
 <?php
 function step2(){
 ?>
+<form id="form1" name="form1" method="post" action="install.php">
 <div class="pright">
     <div class="pr-title"><h3>数据库设定 第二步</h3></div>
     <table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
@@ -534,10 +534,31 @@ function step2(){
                 <td class="onetd"><strong>提示：</strong></td>
                 <td> <div class="mytipwrap">创建数据库成功。(如果不恢复数据库将退出) &nbsp;<a href="../index.php" class="mytip" target="_blank">访问网站首页</a><a href="../admin/index.php" class="mytip" target="_blank">登录网站后台</a> </div> </td>
             </tr> 
+            <tr>
+                <td class="onetd"><strong>表前缀：</strong></td>
+                <td>
+                  <div style="float:left;margin-right:3px;"><input name="db_PREFIX" id="db_PREFIX" type="text" value="xy_" class="input-txt">
+                  </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="onetd"><strong>登录账号：</strong></td>
+                <td>
+                  <div style="float:left;margin-right:3px;"><input name="loginname"   type="text" value="admin" class="input-txt">
+                  </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="onetd"><strong>登录密码：</strong></td>
+                <td>
+                  <div style="float:left;margin-right:3px;"><input name="loginpwd"  type="text" value="admin" class="input-txt">
+                  </div>
+                </td>
+            </tr>
       </tbody>
     </table>
     <div class="btn-box"> 
-        <input name="提交" type="button" class="btnclick1" onclick="window.location.href='install.php';" value="下一步创建表">
+        <input name="提交" type="submit" class="btnclick1"  value="下一步创建表">
     </div>
 </div>
 <?PHP

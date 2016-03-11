@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 <title>{$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
 <link href="css/style.css" rel="stylesheet"  type="text/css">
 <script type="text/javascript" src="../Jquery/Jquery.Min.js"></script>
@@ -10,9 +11,9 @@
 <body>
 
 <div id="positionwrap">
-    <div class="msg">当前位置：{$position$}</div>
+    <div class="msg">当前位置：[$position$]</div>
 </div>
-<form action="?act=saveAddEditHandle&lableTitle={$lableTitle$}&nPageSize={$nPageSize$}&page={$page$}&parentid={$parentid$}&searchfield={$searchfield$}&keyword={$keyword$}" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+<form action="[$postUrl$]" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
 <div class="mg10">
 	<ul class="tabbut noselect">
         <li>基本设置</li> 
@@ -47,8 +48,8 @@
                 <tbody class="tbodybox">
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>简要内容</td>
-                        <td align="left" style="padding:3px;">[$input_simpleintroduction$]</td>
-                        <td>simpleintroduction</td>
+                        <td align="left" style="padding:3px;">[$input_aboutcontent$]</td>
+                        <td>aboutcontent</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>详细内容</td>
@@ -66,9 +67,7 @@
             <input name="提交" type="submit" class="mybtn2 radius5" value="保存(S)"  />
             <input name="switchId" type="hidden" id="switchId" value="[$switchId$]" /> 
             <input name="重置" type="reset" class="mybtn2 radius5" value="重置"  />
-        </div>
-    </div>
-    [$inputId$] 
+        </div>    </div>
 </form>
 <script language="javascript" type="text/javascript" src="js/formBottom.js"></script>
 </body>

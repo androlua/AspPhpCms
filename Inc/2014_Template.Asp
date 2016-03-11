@@ -2,17 +2,131 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
 '删除这种多余标签 <R#读出内容BlockName网站公告 start#>  <R#读出内容BlockName网站公告 end#>
 '对模板处理
 
-'VB不引用 Start
+
+
+'读模块内容
+Function XY_ReadTemplateModule(action)
+    Dim moduleId, filePath 
+    Dim sourceList                                                                  '源内容列表 20150109
+    Dim replaceList                                                                 '替换内容列表
+    filePath = RParam(action, "File") 
+    moduleId = RParam(action, "ModuleId") 
+    sourceList = RParam(action, "SourceList") 
+    replaceList = RParam(action, "ReplaceList") 
+    'Call Echo(SourceList,ReplaceList)
+
+    If moduleId = "" Then moduleId = RParam(action, "ModuleName")                   '用块名称
+    filePath = filePath & ".html" 
+    'Call Echo("FilePath",FilePath)
+    'Call Echo("ModuleId",ModuleId)
+    XY_ReadTemplateModule = readTemplateModuleStr(filePath, "", moduleId) 
+End Function 
+
+'读模块内容
+Function readTemplateModuleStr(filePath, defaultContent, moduleId)
+    Dim startStr, endStr, content 
+    startStr = "<!--#Module " & moduleId & " Start#-->" 
+    endStr = "<!--#Module " & moduleId & " End#-->" 
+    'FilePath = ReplaceGlobleLable(FilePath)                '替换全部标签        '添加于2014 12 11
+
+    '文件不存在，则追加模板路径 20150616 给VB软件里用
+    If checkFile(filePath) = False Then
+        filePath = WebTemplate & filePath 
+    End If 
+
+    If defaultContent <> "" Then
+        content = defaultContent 
+    ElseIf checkFile(filePath) = True Then
+        content = getFText(filePath) 
+    Else
+        content = code                                                                  '默认用内容指定内容
+    End If 
+    'Call Die("显示" & ModuleId & "," & Content)
+    'Call Eerr(filepath & checkfile(filepath), Content)
+    If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+        readTemplateModuleStr = strCut(content, startStr, endStr, 2) 
+    Else
+        readTemplateModuleStr = "模块[" & moduleId & "]不存在,路径=" & filePath 
+    End If 
+End Function 
+'找模块对应内容
+Function findModuleStr(content, valueStr)
+    Dim startStr, endStr, YuanStr, replaceStr, i, Block, BlockFile, action 
+    For i = 1 To 9
+        startStr = "[$读出内容 " : endStr = "$]" 
+        If InStr(valueStr, startStr) > 0 And InStr(valueStr, endStr) > 0 Then
+            action = strCut(valueStr, startStr, endStr, 2) 
+            Block = RParam(action, "Block") 
+            BlockFile = RParam(action, "File") 
+            If InStr(vbCrLf & ReadBlockList & vbCrLf, vbCrLf & Block & vbCrLf) = False Then
+                ReadBlockList = ReadBlockList & Block & vbCrLf 
+            End If 
+            '块文件存在 则读出内容
+            If BlockFile <> "" Then
+                content = getFText(BlockFile) 
+            End If 
+            YuanStr = startStr & action & endStr 
+            replaceStr = "" 
+
+            startStr = "<R#读出内容" & Block & " start#>" : endStr = "<R#读出内容" & Block & " end#>" 
+            If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+                replaceStr = strCut(content, startStr, endStr, 2) 
+            Else
+                startStr = "<!--#读出内容" & Block : endStr = "#-->" 
+                If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+                    replaceStr = strCut(content, startStr, endStr, 2) 
+                End If 
+            End If 
+            'Call Eerr(YuanStr,ReplaceStr)
+            valueStr = Replace(valueStr, YuanStr, replaceStr) 
+        'Call Echo("ValueStr",ValueStr)
+        Else
+            '没有模块要处理了 则退出
+            Exit For 
+        End If 
+    Next 
+    findModuleStr = valueStr 
+End Function 
+
+'读出Left模板样式        这里面字符 ' 来回复制会出错，所以我们用 \|*|\ 代替处理
+Function XY_ReadColumeSetTitle(action)
+    Dim startStr, endStr, Style, title, valueStr, MoreClass, MoreUrl, MoreStr, aStr 
+    action = handleInModule(action, "start") 
+    Style = RParam(action, "style") 
+    title = RParam(action, "Title") 
+    'Call Echo("ContentHeight",ContentHeight)
+    'ValueStr = RParam(Action,"value")
+    '根据模块找内容
+    valueStr = moduleFindContent(action, "value") 
+    'Call Eerr("ValueStr",ValueStr)
+    valueStr = findModuleStr(code, valueStr)                                        '找模块对应内容
+
+    MoreClass = RParam(action, "MoreClass") 
+    MoreUrl = Trim(RParam(action, "MoreUrl")) 
+    MoreStr = RParam(action, "MoreStr") 
+    valueStr = handleInModule(valueStr, "end") 
+    XY_ReadColumeSetTitle = readColumeSetTitle(action, Style, title, valueStr) 
+
+    If MoreClass = "" Then MoreClass = "more"                                       'More链接为空 则用默认代替
+    'If MoreUrl="" Then MoreUrl="#"                    'More链接网址为空 则用默认#代替
+    'More链接样式不能为空，因为没有样式它就不能让More在最近边
+    If MoreUrl <> "" And MoreStr <> "" Then
+        'AStr = "<a href='"& MoreUrl &"' class='"& MoreClass &"'>"& MoreStr &"</a>"
+        aStr = "<a " & AHref(MoreUrl, title, "") & " class='" & MoreClass & "'>" & MoreStr & "</a>" 
+        XY_ReadColumeSetTitle = Replace(XY_ReadColumeSetTitle, "<!--#AMore#-->", aStr) 
+    End If 
+End Function 
+
 '读栏目并赋标题与内容值
 Function readColumeSetTitle(action, id, ColumeTitle, ColumeContent)
     Dim TitleWidth                                                                  '标题宽度
@@ -56,7 +170,7 @@ Function readColumeSetTitle(action, id, ColumeTitle, ColumeContent)
     End If 
 
     Dim content 
-    content = ReadColumn(id) 
+    content = readColumn(id) 
     '标题宽
     If TitleWidth <> "" Then
         content = Replace(content, "<div class=""tvalue"">", "<div class=""tvalue"" style='width:" & TitleWidth & ";'>") 
@@ -79,15 +193,12 @@ Function readColumn(id)
     templateFilePath = WebTemplate & "\Template_Left.html" 
     startStr = "/*columnlist" & id & "Start*/" 
     endStr = "/*columnlist" & id & "End*/" 
-    s = ReadTemplateFileModular(templateFilePath, startStr, endStr) 
+    s = readTemplateFileModular(templateFilePath, startStr, endStr) 
     If s = "[$NO$]" Then
         s = "Left样式ID[" & id & "]不存在" 
     End If 
     readColumn = s 
 End Function 
-
-
-'VB不引用 End
 
 
 '读模板素材
@@ -96,7 +207,7 @@ Function readTemplateSource(id)
     templateFilePath = WebTemplate & "\TemplateSource.html" 
     startStr = "<!--#sourceHtml" & id & "Start#-->" 
     endStr = "<!--#sourceHtml" & id & "End#-->" 
-    s = ReadTemplateFileModular(templateFilePath, startStr, endStr) 
+    s = readTemplateFileModular(templateFilePath, startStr, endStr) 
     If s = "[$NO$]" Then
         s = "模板资源ID[" & id & "]不存在" 
     End If 
@@ -109,9 +220,9 @@ End Function
 Function readTemplateFileModular(templateFilePath, startStr, endStr)
     Dim content 
     readTemplateFileModular = "" 
-    content = GetFText(templateFilePath) 
+    content = getFText(templateFilePath) 
     If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
-        readTemplateFileModular = StrCut(content, startStr, endStr, 2) 
+        readTemplateFileModular = strCut(content, startStr, endStr, 2) 
     Else
         readTemplateFileModular = "[$NO$]" 
     End If 
@@ -125,7 +236,7 @@ Function readTemplateFileSource(templateFilePath, id)
     s = readTemplateFileModular(templateFilePath, startStr, endStr) 
     If s = "[$NO$]" Then
         '加一个读取本文本里配置列表(20150815)
-        c = GetStrCut(pubCode, startStr, endStr, 2) 
+        c = getStrCut(pubCode, startStr, endStr, 2) 
         If c <> "" Then
             readTemplateFileSource = c 
             'call rwend(c)
@@ -163,6 +274,5 @@ Function readArticleInfoStyleSource(id)
     readArticleInfoStyleSource = readTemplateFileSource(filePath, id) 
 End Function 
 
-%> 
-
+%>  
 

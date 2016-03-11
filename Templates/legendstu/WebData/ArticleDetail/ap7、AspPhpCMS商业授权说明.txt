@@ -1,12 +1,12 @@
-【parentid】AspPhpCMS
-【title】AspPhpCMS商业授权说明
-【webtitle】AspPhpCMS商业授权说明 - 分享模板网站
-【webkeywords】AspPhpCMS商业授权说明 - 分享模板网站
-【webdescription】AspPhpCMS商业授权说明 - 分享模板网站
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS商业授权说明
+【webtitle】ASPPHPCMS商业授权说明 - 分享模板网站
+【webkeywords】ASPPHPCMS商业授权说明 - 分享模板网站
+【webdescription】ASPPHPCMS商业授权说明 - 分享模板网站
 【sortrank】7
 【author】sharembweb
 【adddatetime】2016-02-22 22:23:11
-【filename】/aspphpcms/aspphpcmsauthorization.html
+【filename】/ASPPHPCMS/ASPPHPCMSauthorization.html
 【customaurl】
 【flags】|c|
 【relatedtags】ASP,在线ASP转PHP
@@ -34,7 +34,7 @@
 
 
 <strong>三、说明：以下情况不属于服务范围 </strong>
-1、自行修改或使用非原始 AspPhpCMS 程序代码产生的问题；
+1、自行修改或使用非原始 ASPPHPCMS 程序代码产生的问题；
 2、自行对数据库进行直接操作导致数据库出错或者崩溃；
 3、非官方的模块/插件的安装以及由于安装模块/插件造成的故障； 
 4、服务器、虚拟主机原因造成的系统故障；
@@ -58,9 +58,9 @@
 
 
 <strong>七、商业授权协议概要： </strong>
-您可以将 AspPhpCMS 直接使用在自己的商业或者非商业网站或者软件产品中。 
-您可以对 AspPhpCMS 进行必要的修改和美化，可以去除 AspPhpCMS 外在的版权标识（Powered by aspphpcms），无需公开您修改或美化过的 AspPhpCMS 源代码。 
-商业授权只需要购买一次，适用于 AspPhpCMS 现有版本和所有后续版本，永久有效。 
+您可以将 ASPPHPCMS 直接使用在自己的商业或者非商业网站或者软件产品中。 
+您可以对 ASPPHPCMS 进行必要的修改和美化，可以去除 ASPPHPCMS 外在的版权标识（Powered by ASPPHPCMS），无需公开您修改或美化过的 ASPPHPCMS 源代码。 
+商业授权只需要购买一次，适用于 ASPPHPCMS 现有版本和所有后续版本，永久有效。 
 您享有反映和提出意见的优先权，相关意见将被作为首要考虑。
 
 

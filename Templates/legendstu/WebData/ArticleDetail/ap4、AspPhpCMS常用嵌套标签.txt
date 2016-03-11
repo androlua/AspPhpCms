@@ -1,17 +1,17 @@
-【parentid】AspPhpCMS
-【title】AspPhpCMS常用嵌套标签
-【webtitle】AspPhpCMS常用嵌套标签 - 分享模板网站
-【webkeywords】AspPhpCMS常用嵌套标签 - 分享模板网站
-【webdescription】AspPhpCMS常用嵌套标签 - 分享模板网站
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS常用嵌套标签
+【webtitle】ASPPHPCMS常用嵌套标签 - 分享模板网站
+【webkeywords】ASPPHPCMS常用嵌套标签 - 分享模板网站
+【webdescription】ASPPHPCMS常用嵌套标签 - 分享模板网站
 【sortrank】4
 【author】sharembweb
 【adddatetime】2016-02-22 18:33:11
-【filename】/aspphpcms/aspphpcmstags.html
+【filename】/ASPPHPCMS/ASPPHPCMStags.html
 【customaurl】
 【flags】|c|
 【relatedtags】ASP,在线ASP转PHP
 【bodycontent】
-[&全部换行&]AspPhpCMS帮助文档
+[&全部换行&]ASPPHPCMS帮助文档
 
 Include  加载文件
 {<font>$Include file='head.html' block='top'$} 
@@ -33,7 +33,7 @@ ArticleList 信息列表
 #-->
 
 <b>更多帮助：</b>
-<a href="https://github.com/313801120/AspPhpCms" class="ablue"  target="_blank">Github下载AspPhpCms</a>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
 <br>
 【/bodycontent】
 

@@ -1038,9 +1038,6 @@ $(function (){
 	})
 })
 
-
-
-
 //全选|反选|取消  这种好使
 function checkmm(Str){
 	var a = document.listform.getElementsByTagName("input");
@@ -1069,7 +1066,11 @@ function checkmm(Str){
 //获得表单值，并判断
 function getInputValue(fieldName){
 	try{
-		return document.all(fieldName).value
+		s=document.all(fieldName).value
+		if(s==undefined){
+			s=""	
+		}
+		return s
 	}catch(exception){
 		return ""
 	}
@@ -1093,9 +1094,7 @@ function delArc(actionName,lableTitle,page){
 		alert("请先选择要删除的ID")
 	}else{
 		if(confirm("你确定要删除吗？\n删除后将不可恢复")){ 
-			var url="?act=delHandle&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect")+"&parentid="+getInputValue("parentid")			
-			url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&page="+page+"&id="+idList 
-			window.location.href=url 
+			clickControl("?act=delHandle",actionName,lableTitle,page,idList)
 		} 
 	}
 }
@@ -1121,14 +1120,11 @@ function sortArc(actionName,lableTitle,page){
 	}
 }
 //更新当前页面 20160225
-function refreshPage(actionName,lableTitle){
-	var url="?act=dispalyManageHandle&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect") + "&parentid="+getInputValue("parentid")			
-	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&page=1"
-	//document.write(url)
-	location.href=url
+function refreshPage(actionName,lableTitle,page,id){  
+	clickControl("?act=dispalyManageHandle",actionName,lableTitle,page,id)
 }
 
-//更新当前页面 20160225
+//添加修改前页面 20160225
 function addEditHandle(actionName,lableTitle,page,id){ 
 	clickControl("?act=addEditHandle",actionName,lableTitle,page,id)
 }
@@ -1136,18 +1132,18 @@ function addEditHandle(actionName,lableTitle,page,id){
 function delHandle(actionName,lableTitle,page,id){ 
 	clickControl("?act=delHandle",actionName,lableTitle,page,id)
 }
+//更新字段
+function updateFieldHandle(fieldName,fieldValue,actionName,lableTitle,page,id){ 
+	clickControl("?act=updateField&fieldname="+ fieldName +"&fieldvalue="+fieldValue,actionName,lableTitle,page,id)
+}
+
+//获得网址
+//clickControl('?act=updateWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')
 //点击控件
 function clickControl(url,actionName,lableTitle,page,id){
 	url+="&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect")+"&parentid="+getInputValue("parentid")			
-	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&page="+page+"&id="+id 
+	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&addsql="+getInputValue("addsql")+"&page="+page+"&id="+id 
+	//alert(url)
 	window.location.href=url 
 }
-//搜索回车
-function formSearchSubmit(){
-	try{
-		document.all.dosubmit.click();
-	}catch(exception){
-		return false
-	}
-	return false;
-}
+ 

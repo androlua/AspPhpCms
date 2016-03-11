@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -36,51 +36,51 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     }
     //页头部分
     if( $sPageStart=='' ){
-        $sPageStart='<ul class="pagecontrolwrap">' . "\n" . '<li class="pageinfo">共[$nRecrodCount$]条 [$nPage$]/[$nCountPage$]页</li>' . "\n";
+        $sPageStart='<ul class="pagecontrolwrap">' . vbCrlf() . '<li class="pageinfo">共[$nRecrodCount$]条 [$nPage$]/[$nCountPage$]页</li>' . vbCrlf();
     }
     //页尾部分
     if( $sPageEnd=='' ){
-        $sPageEnd='</ul><div class="clear"></div>' . "\n";
+        $sPageEnd='</ul><div class="clear"></div>' . vbCrlf();
     }
     //首页
     if( $sHomePage=='' ){
-        $sHomePage='<li class="pageli">首页</li>' . "\n";
+        $sHomePage='<li class="pageli">首页</li>' . vbCrlf();
     }
     //首页交点
     if( $sHomePageFocus=='' ){
-        $sHomePageFocus='<li><a href="[$url$]">首页</a></li>' . "\n";
+        $sHomePageFocus='<li><a href="[$url$]">首页</a></li>' . vbCrlf();
     }
     //上一页
     if( $sUpPage=='' ){
-        $sUpPage='<li class="pageli">上一页</li>' . "\n";
+        $sUpPage='<li class="pageli">上一页</li>' . vbCrlf();
     }
     //上一页交点
     if( $sUpPageFocus=='' ){
-        $sUpPageFocus='<li><a href="[$url$]">上一页</a></li>' . "\n";
+        $sUpPageFocus='<li><a href="[$url$]">上一页</a></li>' . vbCrlf();
     }
     //下一页
     if( $sNextPage=='' ){
-        $sNextPage='<li class="pageli">下一页</li>' . "\n";
+        $sNextPage='<li class="pageli">下一页</li>' . vbCrlf();
     }
     //下一页交点
     if( $sNextPageFocus=='' ){
-        $sNextPageFocus='<li><a href="[$url$]">下一页</a></li>' . "\n";
+        $sNextPageFocus='<li><a href="[$url$]">下一页</a></li>' . vbCrlf();
     }
     //循环页
     if( $sForPage=='' ){
-        $sForPage='<li><a href="[$url$]">[$i$]</a></li>' . "\n";
+        $sForPage='<li><a href="[$url$]">[$i$]</a></li>' . vbCrlf();
     }
     //循环页交点
     if( $sForPageFocus=='' ){
-        $sForPageFocus='<li class="pagefocus">[$i$]</li>' . "\n";
+        $sForPageFocus='<li class="pagefocus">[$i$]</li>' . vbCrlf();
     }
     //最后页
     if( $sTailPage=='' ){
-        $sTailPage='<li class="pageli">末页</li>' . "\n";
+        $sTailPage='<li class="pageli">末页</li>' . vbCrlf();
     }
     //最后页交点
     if( $sTailPageFocus=='' ){
-        $sTailPageFocus='<li><a href="[$url$]">末页</a></li>' . "\n" ;
+        $sTailPageFocus='<li><a href="[$url$]">末页</a></li>' . vbCrlf() ;
     }
 
     //配置页为空则
@@ -175,9 +175,12 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
 
     $c = replaceValueParam($c, 'nRecrodCount', $nRecrodCount);
     $c = replaceValueParam($c, 'nPage', $nPage);
+    if( $nCountPage=='0' ){
+        $nCountPage=1;
+    }
     $c = replaceValueParam($c, 'nCountPage', $nCountPage);
 
-    $webPageControl=$c . "\n";
+    $webPageControl=$c . vbCrlf();
     return @$webPageControl;
 }
 

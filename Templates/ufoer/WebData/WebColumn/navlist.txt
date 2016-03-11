@@ -232,16 +232,16 @@ function formSubmit(){
 
 【/bodycontent】
 -------------------------------
-【columnname】AspPhpCMS
+【columnname】ASPPHPCMS
 【columntype】新闻
 【sortrank】5
-【filename】/aspphpcms/
+【filename】/ASPPHPCMS/
 【flags】|top|
 【parentid】-1
-【labletitle】AspPhpCMS通用双系统CMS
+【labletitle】ASPPHPCMS通用双系统CMS
 【target】
-【webtitle】AspPhpCMS通用双系统CMS,AspPhpCMS,免费开源AspPhpCms,ASP/PHP通用双CMS - 分享模板网站
-【webkeywords】AspPhpCMS通用双系统CMS,AspPhpCMS,免费开源AspPhpCms,ASP/PHP通用双CMS - 分享模板网站
+【webtitle】ASPPHPCMS通用双系统CMS,ASPPHPCMS,免费开源ASPPHPCMS,ASP/PHP通用双CMS - 分享模板网站
+【webkeywords】ASPPHPCMS通用双系统CMS,ASPPHPCMS,免费开源ASPPHPCMS,ASP/PHP通用双CMS - 分享模板网站
 【webdescription】提供免费开源的ASP/PHP通用双CMS系统，提供大量模板可供下载 - 分享模板网站QQ313801120
 【bodycontent】
 
@@ -260,20 +260,20 @@ function formSubmit(){
 【webdescription】联系作者,联系sharembweb,联系QQ313801120,联系云端 - 分享模板网站
 
 
-【simpleintroduction】
+【aboutcontent】
 
 作者：云端<br>
 QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="ablue" rel="nofollow" title="在线与313801120交流">313801120</a><br>
 邮箱：313801120@qq.com<br>
 交流群：<a href="/url.asp?title=qq群35915100" class="ablue" target="_blank">35915100</a><br>
 
-【/simpleintroduction】
+【/aboutcontent】
 
 【bodycontent】[&全部换行&]
 <div><img src="{$cfg_webimages$}me.jpg" alt="作者云端"></div>
 作者：云端
 2006年进入互联网，专注网站制作与程序开发，精通ASP/PHP/VB/HTML/CSS/Flash/Android/，热爱传统文化与哲学，擅长把复杂的事情简单化，喜欢与朋友分享。
- 发布AspPhpCMS开源项目
+ 发布ASPPHPCMS开源项目
  发布在线ASP转PHP开源项目
  上海，南京等城市从事网站开发工作多年
 [&全部换行end&]

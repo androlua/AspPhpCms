@@ -4,15 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <title>{$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
 <link href="css/style.css" rel="stylesheet"  type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 <script type="text/javascript" src="../Jquery/Jquery.Min.js"></script> 
 <script src="js/runAction.js"></script>
 </head>
 <body>
 
 <div id="positionwrap">
-    <div class="msg">当前位置：{$position$}</div>
+    <div class="msg">当前位置：[$position$]</div>
 </div>
-<form action="?act=saveAddEditHandle&lableTitle={$lableTitle$}&nPageSize={$nPageSize$}&page={$page$}&parentid={$parentid$}&searchfield={$searchfield$}&keyword={$keyword$}" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+<form action="[$postUrl$]" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
 <div class="mg10">
 	<ul class="tabbut noselect">
         <li>基本设置</li>  
@@ -53,7 +54,7 @@
                    <tr align="center" height="25" bgcolor="#ffffff">
                         <td>权限</td>
                         <td align="left" style="padding:3px;">系统管理员(拥有无上权限)
-						</td>
+						<input type="hidden" name="flags[$phpArray$]" value="*"></td>
                       <td>flags</td>
                     </tr>
                     <!--超级管理员end-->
@@ -65,12 +66,12 @@
                       <td>flags</td>
                     </tr>
                     <!--用户权限end-->
-                    <!--普通理员-->
+                    <!--普通管理员-->
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>站点配置</td>
                         <td align="left" style="padding:3px;">
 <label for="showwebsite"><input type="checkbox" id="showwebsite" name="flags[$phpArray$]" [$flags instr='显示站点配置' value=' checked'  $] value="显示站点配置" class="inputstyle">显示站点配置</label>
-<label for="updatewebsite"><input type="checkbox" id="updatewebsite" name="flags[$phpArray$]" [$flags instr='更新站点配置' value=' checked'  $] value="更新站点配置" class="inputstyle">更新站点配置</label>
+<label for="updatewebsite"><input type="checkbox" id="updatewebsite" name="flags[$phpArray$]" [$flags instr='修改站点配置' value=' checked'  $] value="修改站点配置" class="inputstyle">修改站点配置</label>
 </td>
                       <td>flags</td>
                     </tr>
@@ -130,8 +131,8 @@
                         <td align="left" style="padding:3px;">
 <label for="showsearchstat"><input type="checkbox" id="showsearchstat" name="flags[$phpArray$]" [$flags instr='显示搜索统计' value=' checked'  $] value="显示搜索统计" class="inputstyle">显示搜索统计</label>
 <label for="addsearchstat"><input type="checkbox" id="addsearchstat" name="flags[$phpArray$]" [$flags instr='添加搜索统计' value=' checked'  $] value="添加搜索统计" class="inputstyle">添加搜索统计</label>
-<label for="delsearchstat"><input type="checkbox" id="delsearchstat" name="flags[$phpArray$]" [$flags instr='删除搜索统计' value=' checked'  $] value="删除搜索统计" class="inputstyle">删除搜索统计</label>&nbsp;
-<label for="updatesearchstat"><input type="checkbox" id="updatesearchstat" name="flags[$phpArray$]" [$flags instr='修改搜索统计' value=' checked'  $] value="修改搜索统计" class="inputstyle">修改搜索统计</label>&nbsp;
+<label for="delsearchstat"><input type="checkbox" id="delsearchstat" name="flags[$phpArray$]" [$flags instr='删除搜索统计' value=' checked'  $] value="删除搜索统计" class="inputstyle">删除搜索统计</label>
+<label for="updatesearchstat"><input type="checkbox" id="updatesearchstat" name="flags[$phpArray$]" [$flags instr='修改搜索统计' value=' checked'  $] value="修改搜索统计" class="inputstyle">修改搜索统计</label>
                         </td>
                       <td>flags</td>
                     </tr>
@@ -140,9 +141,13 @@
                         <td align="left" style="padding:3px;">
 <label for="showwebstat"><input type="checkbox" id="showwebstat" name="flags[$phpArray$]" [$flags instr='显示网站统计' value=' checked'  $] value="显示网站统计" class="inputstyle">显示网站统计</label>
 <label for="addwebstat"><input type="checkbox" id="addwebstat" name="flags[$phpArray$]" [$flags instr='添加网站统计' value=' checked'  $] value="添加网站统计" class="inputstyle">添加网站统计</label>
-<label for="delwebstat"><input type="checkbox" id="delwebstat" name="flags[$phpArray$]" [$flags instr='删除网站统计' value=' checked'  $] value="删除网站统计" class="inputstyle">删除网站统计</label>&nbsp;
-<label for="updatewebstat"><input type="checkbox" id="updatewebstat" name="flags[$phpArray$]" [$flags instr='修改网站统计' value=' checked'  $] value="修改网站统计" class="inputstyle">修改网站统计</label>&nbsp;
-                        </td>
+<label for="delwebstat"><input type="checkbox" id="delwebstat" name="flags[$phpArray$]" [$flags instr='删除网站统计' value=' checked'  $] value="删除网站统计" class="inputstyle">删除网站统计</label>
+<label for="updatewebstat"><input type="checkbox" id="updatewebstat" name="flags[$phpArray$]" [$flags instr='修改网站统计' value=' checked'  $] value="修改网站统计" class="inputstyle">修改网站统计</label>
+<label for="updatewebstatinfo"><input type="checkbox" id="updatewebstatinfo" name="flags[$phpArray$]" [$flags instr='更新网站统计' value=' checked'  $] value="更新网站统计" class="inputstyle">更新网站统计</label>
+<label for="webstatinfo"><input type="checkbox" id="webstatinfo" name="flags[$phpArray$]" [$flags instr='网站统计详细' value=' checked'  $] value="网站统计详细" class="inputstyle">网站统计详细</label>
+
+         
+               </td>
                       <td>flags</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
@@ -190,7 +195,7 @@
                         </td>
                       <td>flags</td>
                     </tr>
-                    <!--普通理员end-->
+                    <!--普通管理员end-->
                 </tbody> 
         </table>
     </div>
@@ -202,9 +207,7 @@
             <input name="提交" type="submit" class="mybtn2 radius5" value="保存(S)"  />
             <input name="switchId" type="hidden" id="switchId" value="[$switchId$]" /> 
             <input name="重置" type="reset" class="mybtn2 radius5" value="重置"  />
-        </div>
-    </div>
-    [$inputId$] 
+        </div>    </div>
 </form>
 <script language="javascript" type="text/javascript" src="js/formBottom.js"></script>
 </body>

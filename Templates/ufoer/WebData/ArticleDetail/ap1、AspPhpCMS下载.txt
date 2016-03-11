@@ -1,19 +1,19 @@
-【parentid】AspPhpCMS
-【title】AspPhpCMS下载
-【webtitle】AspPhpCMS下载 - 分享模板网站
-【webkeywords】AspPhpCMS下载 - 分享模板网站
-【webdescription】AspPhpCMS下载 - 分享模板网站
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS下载
+【webtitle】ASPPHPCMS下载 - 分享模板网站
+【webkeywords】ASPPHPCMS下载 - 分享模板网站
+【webdescription】ASPPHPCMS下载 - 分享模板网站
 【sortrank】1
 【author】sharembweb
 【adddatetime】2016-01-1 07:14:10
-【filename】/aspphpcms/aspphpcmsdownload.html
+【filename】/ASPPHPCMS/ASPPHPCMSdownload.html
 【customaurl】
 【flags】|c|
 【relatedtags】ASP,在线ASP转PHP
 【bodycontent】
-[&全部换行&]AspPhpCMS下载
-<a href="https://github.com/313801120/AspPhpCms" class="ablue"  target="_blank">Github下载AspPhpCms</a>
-<a href="http://sharembweb.com/Tools/zip/AspPhpCms.chm" class="ablue" rel="nofollow" target="_blank">下载AspPhpCms帮助文档(chm版)</a>
+[&全部换行&]ASPPHPCMS下载
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
+<a href="http://sharembweb.com/Tools/zip/ASPPHPCMS.chm" class="ablue" rel="nofollow" target="_blank">下载ASPPHPCMS帮助文档(chm版)</a>
  
 【/bodycontent】
 

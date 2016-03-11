@@ -1,0 +1,40 @@
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS下载
+【webtitle】ASPPHPCMS下载 - 分享模板网站
+【webkeywords】ASPPHPCMS下载，ASPPHPCMS v1.0下载，ASPPHPCMS Download - 分享模板网站
+【webdescription】ASPPHPCMS下载 - 分享模板网站
+【sortrank】1
+【author】sharembweb
+【adddatetime】2016-01-1 07:14:10
+【filename】/ASPPHPCMS/ASPPHPCMSdownload.html
+【customaurl】
+【flags】|c|
+【relatedtags】ASP,在线ASP转PHP
+【bodycontent】
+
+
+<strong>ASPPHPCMS网站内容管理系统下载列表</strong><br>
+<ul class="list">
+<li><a href="https://github.com/313801120/ASPPHPCMS"  target="_blank">【Github下载】ASPPHPCMS内容管理系统 最新版</a></li>
+<li><a href="http://member.down.admin5.com/asp/131548.html" target="_blank">【admin5下载】ASPPHPCMS内容管理系统 v1.0</a></li>
+<li><a href="http://www.jzku.com/asp/2016/0226/719.html" target="_blank">【jzku下载】ASPPHPCMS内容管理系统 v1.0</a></li>    
+<li><a href="http://www.asp300.com/SoftView/10/SoftView_59793.html" target="_blank">【asp300下载】ASPPHPCMS内容管理系统 v1.0</a></li>    
+
+
+</ul>
+
+<br>
+<ul class="list"> 
+<li><a href="http://sharembweb.com/Tools/zip/ASPPHPCMS.chm" rel="nofollow" target="_blank">下载ASPPHPCMS帮助文档(chm版)</a></li>
+</ul>
+<br>
+
+【/bodycontent】
+
+
+
+http://www.hicode.cn/taiyangchengyulecheng/1231.html    骗子，下载量也做错，而且还是低能儿那种，我晕
+
+http://member.down.admin5.com/plus/view.php?aid=131548
+
+ 

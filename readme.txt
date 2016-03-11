@@ -5,7 +5,7 @@ ASPPHPCMS v1.0 是一个免费开源网站内容管理系统，有ASP和PHP两种版本，并且是通用的 
 4、sharembweb.com.asp为测试程序
 5、更多帮助加群(35915100)或浏览(http://sharembweb.com)
 
-AspPhpCms内容管理系统 v1.0
+ASPPHPCMS内容管理系统 v1.0
 http://sharembweb.com/aspphpcms/
 
 
@@ -23,6 +23,16 @@ ASPPHPCMS管网
 作者呕心沥血花了大半年时间才开发出来，现在分享给大家。程序不免会有BUG,可
 想获得更多帮助和下载最新版　请浏览(http://sharembweb.com)
 在线演示：http://sharembweb.com/
+
+
+——- 20016.03.03 update ——
+1、前后台翻页改进，代码缩小了三分之二
+2、后台搜索完善了，可按回车搜索，可选字段，可选排序方式
+3、后台加入系统操作日志
+4、字段判断处理改进，如 [$ishtml if='False' elseif='0' value='未生成' elsevalue='已生成'$]
+5、整理出常用14个模板嵌套标签(ColumnList/ColumnMenu/ArticleList/CommentList/SearchStatList/GetOnePageBody/GetArticleBody/GetColumnBody/GetOnePageUrl/GetArticleUrl/GetColumnUrl/DisplayWrap/Include/WebSiteBottom)
+6、后台界面模板加入了可根据当前表前缀加载对应模板，当模板不存在时，则加载默认模板
+7、对后台里面的网址传值进行了优化，对二次开发非常方便
 
 ——- 20016.02.29 update ——
 1、后台管理员加入权限管理

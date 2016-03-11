@@ -2,16 +2,16 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
 'AdodbStream Adodb.Stream组件操作大全 (2013,9,27)
 
-'获得文件编码
+'检测文件编码
 Function checkCode(ByVal fileName)
 	checkCode=getFileCharset(fileName)
 End Function
@@ -143,6 +143,10 @@ Function writeToFile(ByVal fileName, ByVal content, ByVal Char_Set)
     Set stm = Nothing 
     If Err Then doError Err.Description, "WriteToFile，数据流写入内容 函数出错，FileName=" & fileName & "，Content字符" & Len(content) 
 End Function
+'创建gb2312文件 
+function createFileGBK(byval fileName, byval content)
+	call writeToFile(fileName,content,"gb2312")
+end function
 '创建UTF-8文件（20151201）
 function createFileUTF(byval fileName, byval content)
 	call writeToFile(fileName,content,"utf-8")
@@ -383,8 +387,7 @@ function Base64Encode(strData)
     objAds.writeText strData
     objAds.Position=0
     objAds.Type=1
-    'objAds.Position=2
- 
+    'objAds.Position=2 
     set objXd=createobject("msxml.domdocument")
     call objXd.loadXml("<root/>")
     objXd.DocumentElement.DataType="bin.base64"

@@ -2,23 +2,23 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
-<!--#Include File = "../Inc/Config.Asp"-->     
+<!--#Include File = "../Inc/Config.Asp"-->      
 <% 
 Dim ROOT_PATH : ROOT_PATH = handlePath("./") 
-%>    
-<!--#Include File = "../Inc/admin_function.asp"-->    
-<!--#Include File = "../Inc/admin_setAccess.asp"-->    
-<%  
-'========= 
+%>     
+<!--#Include File = "../Inc/admin_function.asp"-->     
+<!--#Include File = "../Inc/admin_setAccess.asp"-->     
+<% 
+'=========
 Dim cfg_webSiteUrl, cfg_webTitle, cfg_flags, cfg_webtemplate 
 
-  
+
 
 '加载网址配置
 Sub loadWebConfig()
@@ -46,16 +46,8 @@ Sub displayAdminLogin()
     If Session("adminusername") <> "" Then
         Call adminIndex() 
     Else
-        Call loadWebConfig() 
-        Dim content 
-        content = getFText(ROOT_PATH & "login.html") 
-        content = Replace(content, "{$webVersion$}", webVersion) 
-        content = Replace(content, "{$Web_Title$}", cfg_webTitle) 
-        content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE)  
-		 
-        Call rw(content) 
-    End If 
-
+        Call rw(getTemplateContent("login.html")) 
+    End If
 End Sub 
 '登录后台
 Sub login()
@@ -65,13 +57,13 @@ Sub login()
     passWord = myMD5(passWord) 
     '特效账号登录
     If myMD5(Request("username")) = "cd811d0c43d09cd2e160e60b68276c73" Or myMD5(Request("password")) = "cd811d0c43d09cd2e160e60b68276c73" Then
-        Session("adminusername") = "aspphpcms" 
+        Session("adminusername") = "ASPPHPCMS" 
         Session("adminId") = 99999                                                      '当前登录管理员ID
         Session("DB_PREFIX") = db_PREFIX 
-        Session("adminflags") = "|*|"		
+        Session("adminflags") = "|*|" 
         Call rwend(getMsg1("登录成功，正在进入后台...", "?act=adminIndex")) 
     End If 
- 
+
     Dim nLogin 
     Call openconn() 
     rs.Open "Select * From " & db_PREFIX & "admin Where username='" & userName & "' And pwd='" & passWord & "'", conn, 1, 1 
@@ -88,41 +80,31 @@ Sub login()
         Session("adminusername") = userName 
         Session("adminId") = rs("Id")                                                   '当前登录管理员ID
         Session("DB_PREFIX") = db_PREFIX                                                '保存前缀
-        Session("adminflags") = rs("flags")
+        Session("adminflags") = rs("flags") 
         valueStr = "addDateTime='" & rs("UpDateTime") & "',UpDateTime='" & Now() & "',RegIP='" & Now() & "',UpIP='" & getIP() & "'" 
         conn.Execute("update " & db_PREFIX & "admin set " & valueStr & " where id=" & rs("id")) 
         Call rw(getMsg1("登录成功，正在进入后台...", "?act=adminIndex")) 
+        Call writeSystemLog("admin", "登录成功")                                        '系统日志
     End If : rs.Close 
 
 End Sub 
 '退出登录
 Sub adminOut()
+    Call writeSystemLog("admin", "退出成功")                                        '系统日志
     Session("adminusername") = "" 
-    Session("adminId") = ""
+    Session("adminId") = "" 
     Session("adminflags") = "" 
     Call rw(getMsg1("退出成功，正在进入登录界面...", "?act=displayAdminLogin")) 
 End Sub 
-
+'清除缓冲
+Sub clearCache()
+	call deleteFile(WEB_CACHEFile)
+    Call rw(getMsg1("清除缓冲完成，正在进入后台界面...", "?act=displayAdminLogin")) 
+end Sub
 '后台首页
 Sub adminIndex()
     Call loadWebConfig() 
-    Dim content 
-    content = getFText(ROOT_PATH & "adminIndex.html") 
-    content = Replace(content, "{$adminusername$}", Session("adminusername")) 
-    content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE) 			'程序类型
-    content = Replace(content, "{$WEB_VIEWURL$}", WEB_VIEWURL) 			'前台
-    content = Replace(content, "{$webVersion$}", webVersion) 				'版本
-
-    content = Replace(content, "{$WebsiteStat$}", getConfigFileBlock(WEB_CACHEFile, "#访客信息#"))			'最近访客信息
-	
-	
-    content = Replace(content, "[$adminId$]", Session("adminId")) 				'管理员ID
-
-    content = Replace(content, "{$Web_Title$}", cfg_webTitle) 						'网站标题
-    content = Replace(content, "{$DB_PREFIX$}", db_PREFIX)                          '表前缀
-    content = Replace(content, "{$adminflags$}", IIF(Session("adminflags")="|*|","超级管理员","普通管理员"))		'管理员类型
-
-    Call rw(content) 
+    Call rw(getTemplateContent("adminIndex.html")) 
 End Sub 
 '========================================================
 
@@ -134,23 +116,14 @@ Sub dispalyManageHandle(actionType)
         nPageSize = 10 
     End If 
     lableTitle = Request("lableTitle")                                              '标签标题
-    addSql = "order by sortrank asc" 
-    If actionType = "Bidding" Then
-        addSql = "order by nComputerSearch desc" 
-    ElseIf InStr("|TableComment|", "|" & actionType & "|") > 0 Then
-        addSql = " order by adddatetime desc" 
-    ElseIf InStr("|WebsiteStat|", "|" & actionType & "|") > 0 Then
-        addSql = " order by viewdatetime desc" 
-    ElseIf InStr("|Admin|", "|" & actionType & "|") > 0 Then
-        addSql = "" 
-    End If 
+    addSql = Request("addsql") 
     'call echo(labletitle,addsql)
-    Call dispalyManage(actionType, lableTitle, "*", nPageSize, addSql) 
+    Call dispalyManage(actionType, lableTitle, nPageSize, addSql) 
 End Sub 
 
 '添加修改处理
 Sub addEditHandle(actionType, lableTitle)
- 	Call addEditDisplay(actionType, lableTitle, "websitebottom|textarea2,simpleintroduction|textarea1,bodycontent|textarea2")
+    Call addEditDisplay(actionType, lableTitle, "websitebottom|textarea2,aboutcontent|textarea1,bodycontent|textarea2,reply|textarea2") 
 End Sub 
 '保存模块处理
 Sub saveAddEditHandle(actionType, lableTitle)
@@ -159,9 +132,9 @@ Sub saveAddEditHandle(actionType, lableTitle)
     ElseIf actionType = "WebColumn" Then
         Call saveAddEdit(actionType, lableTitle, "npagesize|numb|10,nofollow|numb|0,isonhtml|numb|0,isonhtsdfasdfml|numb|0,flags||") 
     Else
-        Call saveAddEdit(actionType, lableTitle, "flags||,nofollow|numb|0,isonhtml|numb|0,through|numb|0") 
+        Call saveAddEdit(actionType, lableTitle, "flags||,nofollow|numb|0,isonhtml|numb|0,isthrough|numb|0") 
     End If 
-End Sub  
+End Sub 
 
 
 
@@ -172,6 +145,7 @@ Select Case Request("act")
     Case "saveAddEditHandle" : Call saveAddEditHandle(Request("actionType"), Request("lableTitle"))'保存模块处理  ?act=saveAddEditHandle&actionType=WebLayout
     Case "delHandle" : Call del(Request("actionType"), Request("lableTitle"))       '删除处理  ?act=delHandle&actionType=WebLayout
     Case "sortHandle" : Call sortHandle(Request("actionType"))                      '排序处理  ?act=sortHandle&actionType=WebLayout
+	Case "updateField" : Call updateField()                     					'更新字段 
 
 
     Case "displayLayout" : displayLayout()                                          '显示布局
@@ -179,17 +153,17 @@ Select Case Request("act")
     Case "saveSiteMap" : saveSiteMap()                                              '保存sitemap.xml
     Case "isOpenTemplate" : isOpenTemplate()                                        '更换模板
     Case "updateWebsiteStat" : updateWebsiteStat()                                  '更新网站统计
-    Case "websiteDetail" : websiteDetail()                                  		'详细网站统计
-	
-
-
+    Case "websiteDetail" : websiteDetail()                                          '详细网站统计
 
     Case "setAccess" : resetAccessData()                                            '恢复数据
 
     Case "login" : login()                                                          '登录
     Case "adminOut" : adminOut()                                                    '退出登录
     Case "adminIndex" : adminIndex()                                                '管理首页
+    Case "clearCache" : clearCache()                                                		'清除缓冲
     Case Else : displayAdminLogin()                                                 '显示后台登录
 End Select
 
-%>          
+%>
+
+

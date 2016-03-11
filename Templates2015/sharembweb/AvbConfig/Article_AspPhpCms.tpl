@@ -5,7 +5,7 @@
 </text>
 ---------------------
 【home】
-<VB IncludeTemplateFile path='模块功能列表\sharembweb\home\index_aspphpcms.html' operate='true' />
+<VB IncludeTemplateFile path='模块功能列表\sharembweb\home\index_ASPPHPCMS.html' operate='true' />
 ---------------------
 【加载底部框架】
 <text>
@@ -39,3 +39,4 @@
 [txtIsCodeCssTemplate]{1}
 [txtIsDeleteRepeatCssClass]{1}
 [txtCopyImageEncryption]{}
+

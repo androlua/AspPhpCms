@@ -2,10 +2,10 @@
 '************************************************************
 '作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 '版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-02-29
+'创建：2016-03-11
 '联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 '更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered By AspPhpCMS 
+'*                                    Powered by ASPPHPCMS 
 '************************************************************
 %>
 <% 
@@ -660,15 +660,17 @@ Function getFileFolderList(ByVal folderPath, FileYes, FileTypeList, FileNameOrTy
                 Next 
             End If 
 
-            If InStr("|当前|全部|文件夹|全部文件夹|", "|" & FolderType & "|") > 0 Then
+            If InStr("|" & FolderType & "|","|文件夹|") > 0 or InStr("|" & FolderType & "|","|全部文件夹|") > 0 or InStr("|" & FolderType & "|","|全部|") > 0 Then
                 Set fc = f.subFolders
                     For Each f1 In fc
-                        If InStr("|名称|取名称|", "|" & FolderNameOrType & "|") > 0 Then
-                            c = c & f1.Name & vbCrLf 
-                        ElseIf LCase(FolderNameOrType) <> "no" Then
-                            c = c & f1 & vbCrLf 
-                        End If 
-                        If InStr("|全部|全部文件夹|", "|" & FolderType & "|") > 0 Then
+						if instr("|" & FolderType & "|","|hidefolderlist|")=false then
+							If InStr("|名称|取名称|", "|" & FolderNameOrType & "|") > 0 Then
+								c = c & f1.Name & vbCrLf 
+							ElseIf LCase(FolderNameOrType) <> "no" Then
+								c = c & f1 & vbCrLf 
+							End If 
+						end if
+						If InStr("|" & FolderType & "|","|全部文件夹|") > 0 or InStr("|" & FolderType & "|","|全部|") > 0 Then
                             c = getFileFolderList(f1, FileYes, FileTypeList, FileNameOrType, FolderType, FolderNameOrType, c) & vbCrLf 
                         End If 
                         DoEvents 
@@ -683,60 +685,127 @@ Function getFileFolderList(ByVal folderPath, FileYes, FileTypeList, FileNameOrTy
 End Function 
 '获得当前目录下全部Jpg文件
 Function getDirJpgList(ByVal folderPath)
-    getDirJpgList = getFileFolderList(folderPath, True, "jpg", "", "", "", "") 
-End Function 
+    getDirJpgList =getDirFileList(folderPath,"jpg")
+End Function
+'获得当前目录下全部Png文件
+Function getDirPngList(ByVal folderPath)
+    getDirPngList =getDirFileList(folderPath,"png")
+End Function
 '获得当前目录下全部Ini文件
 Function getDirIniList(ByVal folderPath)
-    getDirIniList = getFileFolderList(folderPath, True, "ini", "", "", "", "") 
+    getDirIniList =getDirFileList(folderPath,"ini")
 End Function 
 '获得当前目录下全部Txt文件
 Function getDirTxtList(ByVal folderPath)
-    getDirTxtList = getFileFolderList(folderPath, True, "txt", "", "", "", "") 
-End Function 
-'获得当前目录下全部Html文件
-Function getDirHtmlList(ByVal folderPath)
-    getDirHtmlList = getFileFolderList(folderPath, True, "html", "", "", "", "") 
-End Function 
-'获得当前目录下全部css文件
-Function getDirCssList(ByVal folderPath)
-    getDirCssList = getFileFolderList(folderPath, True, "css", "", "", "", "") 
+    getDirTxtList =getDirFileList(folderPath,"txt")
 End Function 
 '获得当前目录下全部js文件
 Function getDirJsList(ByVal folderPath)
-    getDirJsList = getFileFolderList(folderPath, True, "js", "", "", "", "") 
+    getDirJsList=getDirFileList(folderPath,"js")
 End Function 
-'获得当前目录下全部类型文件
-Function getDirFileList(ByVal folderPath)
-    getDirFileList = getFileFolderList(folderPath, True, "全部", "", "", "", "") 
+'获得当前目录下全部css文件
+Function getDirCssList(ByVal folderPath)
+    getDirCssList=getDirFileList(folderPath,"css")
+End Function 
+'获得当前目录下全部Html文件
+Function getDirHtmlList(ByVal folderPath)
+    getDirHtmlList=getDirFileList(folderPath,"html")
+End Function 
+'获得当前目录下全部asp文件
+Function getDirAspList(ByVal folderPath)
+    getDirAspList=getDirFileList(folderPath,"asp")
+End Function 
+'获得当前目录下全部php文件
+Function getDirPhpList(ByVal folderPath) 
+	getDirPhpList=getDirFileList(folderPath,"php")
+End Function
+'获得当前目录下批量文件列表
+Function getDirFileList(ByVal folderPath,fileTypeList)
+	if fileTypeList="" then
+		fileTypeList="全部"
+	end if
+    getDirFileList = getFileFolderList(folderPath, True, fileTypeList, "", "", "", "") 
+End Function
+ 
+'获得当前目录下全部Jpg文件名称
+Function getDirJpgNameList(ByVal folderPath)
+    getDirJpgNameList =getDirFileNameList(folderPath,"jpg")
+End Function
+'获得当前目录下全部Png文件名称
+Function getDirPngNameList(ByVal folderPath)
+    getDirPngNameList =getDirFileNameList(folderPath,"png")
+End Function
+'获得当前目录下全部Ini文件名称
+Function getDirIniNameList(ByVal folderPath)
+    getDirIniNameList =getDirFileNameList(folderPath,"ini")
+End Function 
+'获得当前目录下全部Txt文件名称
+Function getDirTxtNameList(ByVal folderPath)
+    getDirTxtNameList =getDirFileNameList(folderPath,"txt")
+End Function 
+'获得当前目录下全部js文件名称
+Function getDirJsNameList(ByVal folderPath)
+    getDirJsNameList=getDirFileNameList(folderPath,"js")
+End Function 
+'获得当前目录下全部css文件名称
+Function getDirCssNameList(ByVal folderPath)
+    getDirCssNameList=getDirFileNameList(folderPath,"css")
 End Function 
 '获得当前目录下全部Html文件名称
-Function getDirHtmlListName(ByVal folderPath)
-    getDirHtmlListName = getFileFolderList(folderPath, True, "html", "名称", "", "", "") 
+Function getDirHtmlNameList(ByVal folderPath)
+    getDirHtmlNameList=getDirFileNameList(folderPath,"html")
 End Function 
+'获得当前目录下全部asp文件名称
+Function getDirAspNameList(ByVal folderPath)
+    getDirAspNameList=getDirFileNameList(folderPath,"asp")
+End Function 
+'获得当前目录下全部php文件名称
+Function getDirPhpNameList(ByVal folderPath) 
+	getDirPhpNameList=getDirFileNameList(folderPath,"php")
+End Function
 '获得当前目录下全部类型文件名称
-Function getDirFileNameList(ByVal folderPath)
-    getDirFileNameList = getFileFolderList(folderPath, True, "全部", "名称", "", "", "") 
+Function getDirFileNameList(ByVal folderPath,fileTypeList)
+	if fileTypeList="" then
+		fileTypeList="全部"
+	end if
+    getDirFileNameList = getFileFolderList(folderPath, True, fileTypeList, "名称", "", "", "") 
 End Function 
+
+
 '获得当前目录下全部文件名称
-Function getDirAllFileNameList(ByVal folderPath)
-    getDirAllFileNameList = getFileFolderList(folderPath, True, "全部", "名称", "全部文件夹", "", "") 
+Function getDirAllFileList(ByVal folderPath,fileTypeList)
+	if fileTypeList="" then
+		fileTypeList="全部"
+	end if
+    getDirAllFileList = getFileFolderList(folderPath, True, fileTypeList, "", "全部文件夹|hidefolderlist", "", "") 
+End Function
+'获得当前目录下全部文件名称
+Function getDirAllFileNameList(ByVal folderPath,fileTypeList)
+	if fileTypeList="" then
+		fileTypeList="全部"
+	end if
+    getDirAllFileNameList = getFileFolderList(folderPath, True, fileTypeList, "名称", "全部文件夹|hidefolderlist", "", "") 
 End Function 
-'获得当前目录下全部文件夹
+
+'获得当前目录下文件夹
 Function getDirFolderList(ByVal folderPath)
     getDirFolderList = getFileFolderList(folderPath, False, "", "", "文件夹", "", "") 
 End Function 
-'获得当前目录下全部文件夹名称
+'获得当前目录下文件夹名称
 Function getDirFolderNameList(ByVal folderPath)
     getDirFolderNameList = getFileFolderList(folderPath, False, "", True, "文件夹", "名称", "") 
 End Function 
-'获得当前目录下全部文件夹 调用上面
-Function getThisAllFolder(folderPath)
-    getThisAllFolder = getDirFolderList(folderPath) 
+
+'获得当前目录下全部文件夹
+Function getDirAllFolderList(ByVal folderPath)
+    getDirAllFolderList = getFileFolderList(folderPath, False, "", "", "全部文件夹", "", "") 
 End Function 
-'获得当前目录下全部文件夹名称  调用上面
-Function getThisAllFolderName(folderPath)
-    getThisAllFolderName = getDirFolderNameList(folderPath) 
+'获得当前目录下全部文件夹名称
+Function getDirAllFolderNameList(ByVal folderPath)
+    getDirAllFolderNameList = getFileFolderList(folderPath, False, "", True, "全部文件夹", "名称", "") 
 End Function 
+
+
 '获得全部文件（夹）数量
 Function getFileFolderNumb(ByVal folderPath, SType, ByVal countNumb)
     On Error Resume Next 

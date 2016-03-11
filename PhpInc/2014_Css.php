@@ -2,35 +2,35 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
 //Css
 
-//Css压缩 CssCompression(Content,0)
+//Css压缩 cssCompression(Content,0)
 function cssCompression($content, $Level){
     $Level = CStr($Level) ;//转成字符好判断
     //Css高级压缩
     if( $Level == '1' ){
-        $content = RegExp_Replace($content, '\\/\\*(.|' . "\n" . ')*?\\*\\/', '') ;
+        $content = RegExp_Replace($content, '\\/\\*(.|' . vbCrlf() . ')*?\\*\\/', '') ;
         $content = RegExp_Replace($content, '\\s*([\\{\\}\\:\\;\\,])\\s*', '$1') ;
         $content = RegExp_Replace($content, '\\,[\\s\\.\\#\\d]*\\{', '{') ;
         $content = RegExp_Replace($content, ';\\s*;', ';') ;
         //Css简单压缩
     }else{
         if( $Level >= 2 ){
-            $content = RegExp_Replace($content, '\\/\\*(.|' . "\n" . ')*?\\*\\/', '') ;////删除注释
+            $content = RegExp_Replace($content, '\\/\\*(.|' . vbCrlf() . ')*?\\*\\/', '') ;////删除注释
         }
         $content = RegExp_Replace($content, '\\s*([\\{\\}\\:\\;\\,])\\s*', '$1') ;
         $content = RegExp_Replace($content, '\\,[\\s\\.\\#\\d]*\\{', '{') ;////容错处理
         $content = RegExp_Replace($content, ';\\s*;', ';') ;////清除连续分号
         $content = RegExp_Replace($content, ';\\s*}', '}') ;////清除末尾分号和大括号
         $content = RegExp_Replace($content, '([^\\s])\\{([^\\s])', '$1{$2') ;
-        $content = RegExp_Replace($content, '([^\\s])\\}([^' . "\n" . ']s*)', '$1}' . "\n" . '$2') ;
+        $content = RegExp_Replace($content, '([^\\s])\\}([^' . vbCrlf() . ']s*)', '$1}' . vbCrlf() . '$2') ;
 
 
 
@@ -42,7 +42,7 @@ function cssCompression($content, $Level){
 
 //删除Css里注释
 function deleteCssNote($content){
-    $deleteCssNote = RegExp_Replace($content, '\\/\\*(.|' . "\n" . ')*?\\*\\/', '') ;////删除注释
+    $deleteCssNote = RegExp_Replace($content, '\\/\\*(.|' . vbCrlf() . ')*?\\*\\/', '') ;////删除注释
     return @$deleteCssNote;
 }
 
@@ -51,16 +51,16 @@ function unCssCompression($content){
     $content = RegExp_Replace($content, '\\s*([\\{\\}\\:\\;\\,])\\s*', '$1') ;
     $content = RegExp_Replace($content, ';\\s*;', ';') ;////清除连续分号
     $content = RegExp_Replace($content, '\\,[\\s\\.\\#\\d]*{', '{') ;
-    $content = RegExp_Replace($content, '([^\\s])\\{([^\\s])', '$1 {' . "\n" . '' . "\t" . '$2') ;
-    $content = RegExp_Replace($content, '([^\\s])\\}([^' . "\n" . ']*)', '$1' . "\n" . '}' . "\n" . '$2') ;
-    $content = RegExp_Replace($content, '([^\\s]);([^\\s\\}])', '$1;' . "\n" . '' . "\t" . '$2') ;
+    $content = RegExp_Replace($content, '([^\\s])\\{([^\\s])', '$1 {' . vbCrlf() . '' . "\t" . '$2') ;
+    $content = RegExp_Replace($content, '([^\\s])\\}([^' . vbCrlf() . ']*)', '$1' . vbCrlf() . '}' . vbCrlf() . '$2') ;
+    $content = RegExp_Replace($content, '([^\\s]);([^\\s\\}])', '$1;' . vbCrlf() . '' . "\t" . '$2') ;
     $unCssCompression = $content ;
     return @$unCssCompression;
 }
 
 //去掉字符串头尾的连续的回车和空格
 function trimVbCrlf($str){
-    $trimVbCrlf = rtrimVBcrlf(ltrimVBcrlf($str)) ;
+    $trimVbCrlf = PHPRTrim(PHPLTrim($str)) ;
     return @$trimVbCrlf;
 }
 
@@ -68,40 +68,10 @@ function trimVbCrlf($str){
 
 
 //去掉字符串开头的连续的回车和空格
-function ltrimVBcrlf($str){
-    $pos=''; $isBlankChar ='';
-    $pos = 1 ;
-    $isBlankChar = true ;
-    while( $isBlankChar){
-        if( mid($str, $pos, 1) == ' ' || mid($str, $pos, 1) == "\t" ){ //把vbTab也去掉
-            $pos = $pos + 1 ;
-        }else if( mid($str, $pos, 2) == "\n" ){
-            $pos = $pos + 2 ;
-        }else{
-            $isBlankChar = false ;
-        }
-    }
-    $ltrimVBcrlf = substr($str, - strlen($str) - $pos + 1) ;
-    return @$ltrimVBcrlf;
-}
+
 
 //去掉字符串末尾的连续的回车和空格
-function rtrimVBcrlf($str){
-    $pos=''; $isBlankChar ='';
-    $pos = strlen($str) ;
-    $isBlankChar = true ;
-    while( $isBlankChar && $pos >= 2){
-        if( mid($str, $pos, 1) == ' ' || mid($str, $pos, 1) == "\t" ){ //把vbTab也去掉
-            $pos = $pos - 1 ;
-        }else if( mid($str, $pos - 1, 2) == "\n" ){
-            $pos = $pos - 2 ;
-        }else{
-            $isBlankChar = false ;
-        }
-    }
-    $rtrimVBcrlf = AspRTrim(substr($str, 0 , $pos)) ;
-    return @$rtrimVBcrlf;
-}
+
 
 
 //--------------- 有用 暂时用这文件里 ------------------
@@ -152,7 +122,7 @@ function rTrimVBTab($str){
 //找Html页中Css Style
 function getHtmlCssStyle( $content){
     $splStr=''; $s=''; $StyleYes=''; $StyleStartStr=''; $StyleEndStr=''; $StyleStr=''; $CssStr ='';
-    $splStr = aspSplit($content, "\n") ;//分割行
+    $splStr = aspSplit($content, vbCrlf()) ;//分割行
     $StyleYes = false ;//Css样式默认为假
     //循环分行
     foreach( $splStr as $s){
@@ -164,9 +134,9 @@ function getHtmlCssStyle( $content){
                 //HTML中定义的Css在一行
                 if( instr($StyleEndStr, '</style>') > 0 ){
                     $StyleStr = mid($StyleEndStr, 1, instr($StyleEndStr, '</style>') - 1) ;
-                    $CssStr = $CssStr . $StyleStr . "\n" ;
+                    $CssStr = $CssStr . $StyleStr . vbCrlf() ;
                 }else{
-                    $CssStr = $CssStr . $StyleEndStr . "\n" ;
+                    $CssStr = $CssStr . $StyleEndStr . vbCrlf() ;
                     $StyleYes = true ;//收集CssStyle样式开始
                 }
                 //Call Echo("StyleStartStr",ShowHtml(StyleStartStr))
@@ -178,13 +148,13 @@ function getHtmlCssStyle( $content){
         }else if( $StyleYes == true ){
             if( instr(LCase($s), '</style>') > 0 ){
                 $StyleStr = mid($s, 1, instr(LCase($s), '</style>') - 1) ;
-                $CssStr = $CssStr . $StyleStr . "\n" ;
+                $CssStr = $CssStr . $StyleStr . vbCrlf() ;
                 //Call Echo("StyleStr2",ShowHtml(StyleStr))
                 //Call Echo("CssStr2",ShowHtml(CssStr))
                 //Call RwEnd("")
                 $StyleYes = false ;//收集CssStyle样式结束
             }else{
-                $CssStr = $CssStr . $s . "\n" ;
+                $CssStr = $CssStr . $s . vbCrlf() ;
             }
         }
     }
@@ -195,11 +165,11 @@ function getHtmlCssStyle( $content){
 //处理成干净的Css内容
 function handleCleanCss( $content){
     $splStr=''; $s=''; $c=''; $AddStrYes=''; $CustomS ='';
-    $content = Replace($content, '{', "\n" . '{' . "\n") ;
-    $content = Replace($content, '}', "\n" . '}' . "\n") ;
-    $content = Replace($content, ';', ';' . "\n") ;
+    $content = Replace($content, '{', vbCrlf() . '{' . vbCrlf()) ;
+    $content = Replace($content, '}', vbCrlf() . '}' . vbCrlf()) ;
+    $content = Replace($content, ';', ';' . vbCrlf()) ;
 
-    $splStr = aspSplit($content, "\n") ;
+    $splStr = aspSplit($content, vbCrlf()) ;
     $AddStrYes = false ;//追加字符默认为假
     foreach( $splStr as $s){
         $s = trimVbCrlf($s) ;
@@ -211,7 +181,7 @@ function handleCleanCss( $content){
             }else if( instr($s, '}') > 0 ){
                 $AddStrYes = false ;
             }
-            if( substr($s, 0 , 1) <> '{' ){ $c = $c . "\n" ;}
+            if( substr($s, 0 , 1) <> '{' ){ $c = $c . vbCrlf() ;}
             if( $AddStrYes == true ){ $s = '    ' . $s ;}
             if( $CustomS <> '' ){ $s = $CustomS ;}//自定义值不为空则用自定义内容
             $c = $c . $s ;
@@ -228,11 +198,11 @@ function handleCleanCss( $content){
 //移除内容中多除行
 function removeExcessRow($content){
     $splStr=''; $s=''; $c=''; $TempS ='';
-    $splStr = aspSplit($content, "\n") ;//分割行
+    $splStr = aspSplit($content, vbCrlf()) ;//分割行
     foreach( $splStr as $s){
         $TempS = Replace(Replace($s, ' ', ''), "\t", '') ;
         if( $TempS <> '' ){
-            $c = $c . $s . "\n" ;
+            $c = $c . $s . vbCrlf() ;
         }
     }
     if( $c <> '' ){ $c = substr($c, 0 , strlen($c) - 2) ;}
@@ -290,7 +260,7 @@ function cssStyleAddToParam( $CssStyleStr, $CssStyleStrTwo){
     if( instr($CssStyleStrTwo, '}') > 0 ){
         $CssStyleStrTwo = mid($CssStyleStrTwo, 1, instr($CssStyleStrTwo, '}') - 1) ;
     }
-    $splStr = aspSplit(Replace($CssStyleStr . ';' . $CssStyleStrTwo, "\n", ''), ';') ;
+    $splStr = aspSplit(Replace($CssStyleStr . ';' . $CssStyleStrTwo, vbCrlf(), ''), ';') ;
     foreach( $splStr as $s){
         $s = AspTrim($s) ;
         if( instr($s, ':') > 0 && $s <> '' ){
@@ -298,12 +268,12 @@ function cssStyleAddToParam( $CssStyleStr, $CssStyleStrTwo){
             if( instr('|' . $ParamList . '|', '|' . $ParamName . '|') == false ){
                 $ParamList = $ParamList . $ParamName . '|' ;
                 //Call Echo("ParamName",ParamName)
-                $CssStr = $CssStr . '    ' . $s . ';' . "\n" ;
+                $CssStr = $CssStr . '    ' . $s . ';' . vbCrlf() ;
             }
         }
     }
     if( $CssStyleName <> '' ){
-        $CssStr = $CssStyleName . "\n" . $CssStr . '}' ;
+        $CssStr = $CssStyleName . vbCrlf() . $CssStr . '}' ;
     }
     $cssStyleAddToParam = $CssStr ;
     //Call Echo(CssStyleStr,CssStyleStrTwo)
@@ -316,7 +286,7 @@ function findCssStyle( $content, $StyleName){
     //CAll Echo("StyleName",StyleName)
     //CAll Echo("Content",Content)
     $StyleName = AspTrim($StyleName) ;
-    $splStr = aspSplit($content, "\n") ;
+    $splStr = aspSplit($content, vbCrlf()) ;
     foreach( $splStr as $s){
         if( instr($s, $StyleName) > 0 ){
             $FindStyleName = AspTrim($s) ;
@@ -330,7 +300,7 @@ function findCssStyle( $content, $StyleName){
                     //Call EErr(s,FindCssStyle)
                     return @$findCssStyle;
                 }else{
-                    $TempS = mid($content, instr($content, $s . "\n") + 1,-1) ;
+                    $TempS = mid($content, instr($content, $s . vbCrlf()) + 1,-1) ;
                     $TempS = mid($TempS, 1, instr($TempS, '}') + 1) ;
                     $findCssStyle = $TempS ;
                     return @$findCssStyle;
@@ -353,8 +323,8 @@ function handleCutCssCode($dirPath, $CssStr){
     $content = getArray($CssStr, $startStr, $endStr, false, false) ;
     $splStr = aspSplit($content, '$Array$') ;
     foreach( $splStr as $ImageFile){
-        if( $ImageFile <> '' && instr($ImageFile, '.') > 0 && instr("\n" . $listStr . "\n", "\n" . $ImageFile . "\n") == false ){//对重复使用的图片处理
-            $listStr = $listStr . $ImageFile . "\n" ;
+        if( $ImageFile <> '' && instr($ImageFile, '.') > 0 && instr(vbCrlf() . $listStr . vbCrlf(), vbCrlf() . $ImageFile . vbCrlf()) == false ){//对重复使用的图片处理
+            $listStr = $listStr . $ImageFile . vbCrlf() ;
             $fileName = Replace(Replace(Replace($ImageFile, '"', ''), '\'', ''), '\\', '/') ;
             if( instr($fileName, '/') > 0 ){
                 $fileName = mid($fileName, strrpos($fileName, '/') + 1,-1) ;
@@ -387,8 +357,8 @@ function handleCutDivCode($dirPath, $DivStr){
     }
     //图片处理
     //Content = GetIMG(DivStr) & vbCrlf & GetHtmlBackGroundImgList(DivStr)        '再加个Html背景图片
-    $content = GetImgJsUrl($DivStr, '不重复') . "\n" . GetHtmlBackGroundImgList($DivStr) ;//再加个Html背景图片  加强版20150126
-    $splStr = aspSplit($content, "\n") ;
+    $content = GetImgJsUrl($DivStr, '不重复') . vbCrlf() . GetHtmlBackGroundImgList($DivStr) ;//再加个Html背景图片  加强版20150126
+    $splStr = aspSplit($content, vbCrlf()) ;
     foreach( $splStr as $ImageFile){
         if( $ImageFile <> '' ){ //当链接地址当前为HTTP:时则不处理20150313
             $isHandle = false ;
@@ -415,7 +385,7 @@ function handleCutDivCode($dirPath, $DivStr){
 //获得HTMl里背景图片 20150116  如： <td width="980" height="169" background="kslx3bg.jpg">
 function getHtmlBackGroundImgList( $content){
     $content = GetArray($content, ' background="', '"', false, false) ;
-    $content = Replace($content, '$Array$', "\n") ;
+    $content = Replace($content, '$Array$', vbCrlf()) ;
     $getHtmlBackGroundImgList = $content ;
     return @$getHtmlBackGroundImgList;
 }
@@ -444,7 +414,7 @@ function getHandleWebHtmlLink($RootPath, $content){
             }
             if( LCase($NewCssUrl) <> 'common.css' && LCase($NewCssUrl) <> 'public.css' ){
                 $NewCssUrl = $RootPath . $NewCssUrl ;
-                $CssStr = $CssStr . '<link href="' . $NewCssUrl . '" rel="stylesheet" type="text/css" />' . "\n" ;
+                $CssStr = $CssStr . '<link href="' . $NewCssUrl . '" rel="stylesheet" type="text/css" />' . vbCrlf() ;
             }
         }
     }
@@ -471,9 +441,9 @@ function getCssListUrlList($content){
             if( instr($CssUrl, $startStr) > 0 && instr($CssUrl, $endStr) > 0 ){
                 $CssUrl = StrCut($CssUrl, $startStr, $endStr, 2) ;
             }
-            if( instr("\n" . $urlList . "\n", "\n" . $CssUrl . "\n") == false ){
-                if( $urlList <> '' ){ $urlList = $urlList . "\n" ;}
-                $urlList = $urlList . $CssUrl . "\n" ;
+            if( instr(vbCrlf() . $urlList . vbCrlf(), vbCrlf() . $CssUrl . vbCrlf()) == false ){
+                if( $urlList <> '' ){ $urlList = $urlList . vbCrlf() ;}
+                $urlList = $urlList . $CssUrl . vbCrlf() ;
             }
         }
     }
@@ -529,7 +499,7 @@ function handleHtmlStyle($content){
         $serchS = mid($serchS, $nLength,-1) ;
     }
     $replaceS = $serchS ;
-    $replaceS = cssCompression($replaceS, 0) . "\n" ;//格式化CSS
+    $replaceS = cssCompression($replaceS, 0) . vbCrlf() ;//格式化CSS
     $replaceS = removeBlankLines($replaceS) ;
 
     $content = Replace($content, $serchS, $replaceS) ;

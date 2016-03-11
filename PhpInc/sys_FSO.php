@@ -2,17 +2,17 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?php
 // 读取文件
 function reaFile($file) {
 	$file = handlePath ( $file );
-	if (is_file ( $file ) == false) {
+	if (@is_file ( $file ) == false) {
 		return "";
 	} else {
 		$data = file_get_contents ( $file );
@@ -65,6 +65,10 @@ function AspSaveFile($file, $text) {
 }
 // &&&创建文件
 function createFile($file, $text) {
+	return AspSaveFile ( $file, $text );
+}
+// &&&创建文件 默认就是GBK文件，并且最后没有多余一行
+function createFileGBK($file, $text) {
 	return AspSaveFile ( $file, $text );
 }
 // 保存累加文件
@@ -125,15 +129,7 @@ function rewrite($file, $data) {
 	flock($filenum, LOCK_EX);
 	fwrite($filenum, $data);
 	fclose($filenum);
-}
-
-
-
-
-
-
-
-
+} 
 
 // 检测文件
 function checkFile($file) {
@@ -165,7 +161,7 @@ function moveFile($file, $newfile) {
 function copyFile($file, $newfile) {
 	$file = handlePath ( $file );
 	$newfile = handlePath ( $newfile );
-	aspecho($file, $newfile);
+	//aspecho($file, $newfile);
 	return copy ( $file, $newfile );
 }
 // 获得文件大小
@@ -249,12 +245,17 @@ function getFileFolderList($folderPath,$c='',$action='|处理文件#|处理文件夹|文件
 						if (strstr('|' . $action . '|', '|文件夹名称|')){
 							$s=$file;						
 						}else{
-							$s=$ffPath;
+							$s=handlePath($ffPath);
 						}
-						$c=$c . $s. vbCrlf();
+						$c=$c .$s.vbCrlf() ;
 					}
 					if (strstr('|' . $action . '|', '|循环文件夹|')){
-						$c=getFileFolderList($ffPath,$c,$action,$fileTypeList);
+						//aspecho('$ffPath',$ffPath);
+						$tempC=getFileFolderList($ffPath,"",$action,$fileTypeList);
+						if($tempC!=''){
+							$tempC=$tempC.vbCrlf();
+						}
+						$c=$c . $tempC;
 					}
                 }elseif (strstr('|' . $action . '|', '|处理文件|')){
 					$fileType=strtolower(substr(strrchr($file, '.'), 1));
@@ -263,7 +264,7 @@ function getFileFolderList($folderPath,$c='',$action='|处理文件#|处理文件夹|文件
 					}elseif (strstr('|' . $action . '|', '|文件类型|')){
 						$s=$fileType;
 					}else{
-						$s=$ffPath;
+						$s=handlePath($ffPath);
 					}
 					if (strstr('|' . $fileTypeList . '|', '|'.$fileType.'|') || strstr('|' . $fileTypeList . '|', '|*|')){
                    		$c=$c . $s. vbCrlf();				
@@ -273,10 +274,10 @@ function getFileFolderList($folderPath,$c='',$action='|处理文件#|处理文件夹|文件
         }
         closedir($fso);
     }
-	//if( $c <> '' ){ $c = substr($c, 0 , strlen($c) - 1) ;}
+	if( $c <> '' ){ $c = substr($c, 0 , strlen($c) - 2) ;}
     return $c;
 }
-
+/*
 //获得当前文件夹列表
 function getDirFolderNameList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件夹|文件夹名称|');
@@ -306,25 +307,11 @@ function getAllHtmlFileList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|循环文件夹|','|html|htm|');
 }
 //获得当前文件夹下html，以名称方式显示     以ASP匹配
-function getDirHtmlListName($folderPath){
+function getDirHtmlNameList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|文件名称|','|html|');
 }
 
-//获得当前Php文件列表
-function getThisPhpFileList($folderPath){
-	return getFileFolderList($folderPath,'','|处理文件|','|php|');
-}
-
-//获得当前Js文件列表
-function getDirJsList($folderPath){
-	return getFileFolderList($folderPath,'','|处理文件|','|js|');
-}
-//获得当前Css文件列表
-function getDirCssList($folderPath){
-	return getFileFolderList($folderPath,'','|处理文件|','|css|');
-}
- 
-
+  
 //获得全部Php文件列表
 function getAllPhpFileList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|循环文件夹|','|php|');
@@ -332,6 +319,136 @@ function getAllPhpFileList($folderPath){
 //获得当前txt文件列表
 function getDirTxtList($folderPath){
 	return getFileFolderList($folderPath,'','|处理文件|','|txt|');
+}
+ 
+*/
+
+//获得当前目录下全部Jpg文件
+function getDirJpgList($folderPath){
+	return getDirFileList($folderPath, 'jpg');
+}
+//获得当前目录下全部Png文件
+function getDirPngList($folderPath){
+	return getDirFileList($folderPath, 'png');
+}
+//获得当前目录下全部Ini文件
+function getDirIniList($folderPath){
+	return getDirFileList($folderPath, 'ini');
+}
+//获得当前目录下全部Txt文件
+function getDirTxtList($folderPath){
+	return getDirFileList($folderPath, 'txt');
+}
+//获得当前目录下全部Js文件
+function getDirJsList($folderPath){
+	return getDirFileList($folderPath, 'js');
+}
+//获得当前目录下全部Css文件
+function getDirCssList($folderPath){
+	return getDirFileList($folderPath, 'css');
+}
+//获得当前目录下全部Html文件
+function getDirHtmlList($folderPath){
+	return getDirFileList($folderPath, 'html');
+}
+//获得当前目录下全部asp文件
+function getDirAspList($folderPath){
+	return getDirFileList($folderPath, 'asp');
+}
+//获得当前目录下全部Php文件
+function getDirPhpList($folderPath){
+	return getDirFileList($folderPath, 'php');
+}
+//获得当前目录下批量文件列表
+function getDirFileList($folderPath,$fileTypeList){
+	if($fileTypeList==''){
+		$fileTypeList='*';
+	}
+	//aspecho('$fileTypeList',$fileTypeList);
+	return getFileFolderList($folderPath,'','|处理文件|','|'.$fileTypeList.'|');
+} 
+
+
+
+
+//获得当前目录下全部Jpg文件名称
+function getDirJpgNameList($folderPath){
+	return getDirFileNameList($folderPath, 'jpg');
+}
+//获得当前目录下全部Png文件名称
+function getDirPngNameList($folderPath){
+	return getDirFileNameList($folderPath, 'png');
+}
+//获得当前目录下全部Ini文件名称
+function getDirIniNameList($folderPath){
+	return getDirFileNameList($folderPath, 'ini');
+}
+//获得当前目录下全部Txt文件名称
+function getDirTxtNameList($folderPath){
+	return getDirFileNameList($folderPath, 'txt');
+}
+//获得当前目录下全部Js文件名称
+function getDirJsNameList($folderPath){
+	return getDirFileNameList($folderPath, 'js');
+}
+//获得当前目录下全部Css文件名称
+function getDirCssNameList($folderPath){
+	return getDirFileNameList($folderPath, 'css');
+}
+//获得当前目录下全部Html文件名称
+function getDirHtmlNameList($folderPath){
+	return getDirFileNameList($folderPath, 'html');
+}
+//获得当前目录下全部asp文件名称
+function getDirAspNameList($folderPath){
+	return getDirFileNameList($folderPath, 'asp');
+}
+//获得当前目录下全部Php文件名称
+function getDirPhpNameList($folderPath){
+	return getDirFileNameList($folderPath, 'php');
+}
+//获得当前目录下批量文件名称列表
+function getDirFileNameList($folderPath,$fileTypeList){
+	if($fileTypeList==''){
+		$fileTypeList='*';
+	}
+	//aspecho('$fileTypeList',$fileTypeList);
+	return getFileFolderList($folderPath,'','|处理文件|文件名称|','|'.$fileTypeList.'|');
+}
+
+
+ //获得当前目录下批量文件列表
+function getDirAllFileList($folderPath,$fileTypeList){
+	if($fileTypeList==''){
+		$fileTypeList='*';
+	}
+	//aspecho('$fileTypeList',$fileTypeList);
+	return getFileFolderList($folderPath,'','|处理文件|循环文件夹|hidefolderlist|','|'.$fileTypeList.'|');
+} 
+//获得当前目录下批量文件名称列表
+function getDirAllFileNameList($folderPath,$fileTypeList){
+	if($fileTypeList==''){
+		$fileTypeList='*';
+	}
+	//aspecho('$fileTypeList',$fileTypeList);
+	return getFileFolderList($folderPath,'','|处理文件|文件名称|循环文件夹|hidefolderlist|','|'.$fileTypeList.'|');
+}
+
+//获得当前目录下文件夹
+function getDirFolderList($folderPath){ 
+	return getFileFolderList($folderPath,'','|处理文件夹|');
+}
+//获得当前目录下文件夹
+function getDirFolderNameList($folderPath){ 
+	return getFileFolderList($folderPath,'','|处理文件夹|文件夹名称|');
+}
+//获得当前目录下全部文件夹
+function getDirAllFolderList($folderPath){ 
+	return getFileFolderList($folderPath,'','|处理文件夹|循环文件夹|');
+}
+//获得当前目录下全部文件夹
+function getDirAllFolderNameList($folderPath){ 
+	return getFileFolderList($folderPath,'','|处理文件夹|循环文件夹|文件夹名称|');
 }
  
 

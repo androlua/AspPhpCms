@@ -69,7 +69,7 @@ switch ( @$_REQUEST['act'] ){
 //模板文件列表
 function templateFileList($dir){
     $content=''; $splStr=''; $fileName=''; $s ='';
-    $content = getDirHtmlListName($dir) ;
+    $content = getDirHtmlNameList($dir) ;
     $splStr = aspSplit($content, "\n") ;
     foreach( $splStr as $fileName){
         if( $fileName<>'' ){

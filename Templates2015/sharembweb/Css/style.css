@@ -343,7 +343,7 @@ body{background-color:#F9F9F9}
 #footer .content{margin:0 auto;line-height:22px;font-size:14px}
 /*评论*/
 .comment{color:#979797;font-size:16px}
-.comment textarea{width:100%;height:80px;outline:0;font-size:16px;line-height:24px}
+.comment textarea{width:98%;height:80px;outline:0;font-size:16px;line-height:24px}
 .commentlist .usermsg{color:#888888;font-size:14px;line-height:24px;margin:0 0 10px 0}
 .commentlist .contentcontent{color:#333333;font-size:14px;line-height:22px}
 .commentlist .line{border-bottom:1px #CCCCCC solid;margin:6px 0 14px 0}
@@ -362,35 +362,45 @@ body{background-color:#F9F9F9}
 /*按钮样式*/
 .mybtn{margin-right:10px;padding:0 10px;height:30px;line-height:30px;font-weight:bold;color:#FFF;cursor:pointer;vertical-align:middle;border:0;background-color:#999999;font-size:14px}
 .mybtn:hover{margin-right:10px;padding:0 10px;height:30px;line-height:30px;font-weight:bold;color:#FFF;cursor:pointer;vertical-align:middle;border:0;background-color:#666666;font-size:14px}
+/*首页案例列表*/
+.casewrap,.casewrapright{float:left;border:1px solid #CCCCCC;width:222px;padding:3px;position:relative;margin-right:10px;margin-top:10px}
+.casewrapright{margin-right:0px}
+.casewrap .footerwrap,.casewrapright .footerwrap{display:block;width:100%;height:40px;background-color:#000000;opacity:0.4;position:absolute;bottom:0;left:0;overflow:hidden;/*自动隐藏文字*/}
+.casewrap a,.casewrapright a{display:block;width:100%;height:40px;line-height:40px;position:absolute;bottom:0;left:0;text-align:center;color:#FFFFFF}
+.casewrap a:hover,.casewrapright a:hover{background-color:#000;font-weight:bold}
+#yjfkcontent{width:93%;height:200px}
 /* css注释：设置了浏览器宽度不小于981px时  显示980px宽度 */
 @media screen and (min-width:981px){.mainwrap{width:980px}
 .headerbox{width:980px}
 #footer .content{width:980px}
 .sidebarleft{width:740px;margin-right:10px}
 .sidebarright{width:220px}
-}/* 设置了浏览器宽度不大于980px时 abc 显示980px宽度 */ 
-@media screen and (max-width:980px){.mainwrap{width:100%}
+}@media screen and (max-width:980px){.mainwrap{width:100%}
 #footer .content{padding:0 4px}
 .sidebarleft{width:100%}
 .sidebarright{width:100%}
 .pagecontrolwrap .pageinfo{width:100%}
 .pagecontrolwrap .pageli,.pagecontrolwrap .pagefocus{display:none}
+.casewrap,.casewrapright{width:268px}
+#yjfkcontent{width:98%;height:150px}
+}@media screen and (max-width:500px){.casewrap,.casewrapright{width:100%}
+#yjfkcontent{width:96%;height:150px}
 }.inputstyle{color:#333333}
  
-/*模块功能列表_sharembweb_home__style.css end*//*article_detail.tpl start*/
-/*article_detail.tpl end*/
-/*foot.tpl start*/
-/*foot.tpl end*/
+/*模块功能列表_sharembweb_home__style.css end*//*index_model.tpl start*/
+/*index_model.tpl end*/
 /*head.tpl start*/
 /*head.tpl end*/
-/*index_model.tpl start*/
-/*index_model.tpl end*/
-/*main_model.tpl start*/
-/*main_model.tpl end*/
-/*news_detail.tpl start*/
-/*news_detail.tpl end*/
-/*article_aspphpcms.tpl start*/
-/*article_aspphpcms.tpl end*//*in footer start*/
+/*article_guestbooklist.tpl start*/
+/*article_guestbooklist.tpl end*/
+/*guestbook_list.tpl start*/.guestbooklist{}
+.guestbooklist .gbitem{border:1px solid #B4B4B4;line-height:22px;font-size:14px;margin:0 0 10px 0}
+.guestbooklist .gbtitle{padding:0 0 0 10px;color:#000;line-height:30px;background-color:#EBEBEB}
+.guestbooklist .gbmessage{border-top:1px solid #B4B4B4;padding:10px}
+.guestbooklist .gbreply{border-top:1px solid #B4B4B4;padding:10px}
+/*guestbook_list.tpl end*/
+/*foot.tpl start*/
+/*foot.tpl end*//*in footer start*/
 /*清除滚动*/
 .clear40{height:40px;overflow:hidden;clear:both}
 .cleardisplay{display:}

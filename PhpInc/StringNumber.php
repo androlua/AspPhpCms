@@ -2,10 +2,10 @@
 /************************************************************
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
 版权：源代码公开，各种用途均可免费使用。 
-创建：2016-02-29
+创建：2016-03-11
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered By AspPhpCMS 
+*                                    Powered by ASPPHPCMS 
 ************************************************************/
 ?>
 <?PHP
@@ -333,7 +333,7 @@ function copyStr($InputStr, $Multiplier){
 
 //内容加Tab
 function contentAddTab( $content, $nNumb){
-    $contentAddTab = copyStr('    ', $nNumb) . Join(aspSplit($content, "\n"), "\n" . copyStr('    ', $nNumb)) ;
+    $contentAddTab = copyStr('    ', $nNumb) . Join(aspSplit($content, vbCrlf()), vbCrlf() . copyStr('    ', $nNumb)) ;
     return @$contentAddTab;
 }
 
@@ -605,9 +605,9 @@ function PHPStrLen($str){
 function addIndent($content, $IndentStr){
     $splStr=''; $s=''; $c ='';
     $c = '' ;
-    $splStr = aspSplit($content, "\n") ;
+    $splStr = aspSplit($content, vbCrlf()) ;
     foreach( $splStr as $s){
-        $c = $c . $IndentStr . $s . "\n" ;
+        $c = $c . $IndentStr . $s . vbCrlf() ;
     }
     $addIndent = TrimVbCrlf($c) ;
     return @$addIndent;
@@ -658,7 +658,7 @@ function rndcode( $stars, $ends){
     $rndlen = Int($stars * rnd() + $ends - $stars) ;
     for( $i = 1 ; $i<= $rndlen; $i++){
 
-        $rndcode = rndcode . Chr(Int(127 * rnd() + 1)) ;
+        $rndcode = $rndcode . Chr(Int(127 * rnd() + 1)) ;
     }
     return @$rndcode;
 }
@@ -675,7 +675,7 @@ function getRandomPhoneNumber($nCount){
             $num1 = CStr(Chr((57 - 48) * rnd() + 48)) ;
             $rndnum = $rndnum . $num1 ;
         }
-        $c = $c . 13 . $rndnum . "\n" ;
+        $c = $c . 13 . $rndnum . vbCrlf() ;
         $rndnum = '' ;
         $j = $j + 1 ;
     }

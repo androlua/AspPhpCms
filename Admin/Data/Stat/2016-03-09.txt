@@ -1,0 +1,957 @@
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 10:59:48
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:00:50
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:01:05
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:01:22
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:02:51
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:07:00
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:07:04
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:07:36
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:07:44
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:07:50
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:07:59
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:08:18
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:08:32
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:10:07
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:11:36
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:17:22
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:18:44
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:18:48
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:20:57
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:21:24
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:21:31
+IP:127.0.0.1
+IE:[MSIE 7.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=NLKDKCMDKJCBEEGPFMJDECHC; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; __qc_wId=467
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:22:09
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=MLKDKCMDCDBIHMMOLPBJAIBM; __qc_wId=96; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 11:24:44
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=ASPSESSIONIDSSRTDABT=MLKDKCMDCDBIHMMOLPBJAIBM; __qc_wId=96; CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp?act=nav&columnName=%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88
+时间：2016/3/9 11:25:23
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order%20by%20sortrank&lableTitle=%CD%F8%D5%BE%C0%B8%C4%BF
+当前：http://aa/aspweb.asp?act=nav&columnName=%D4%DA%CF%DF%B7%B4%C0%A1
+时间：2016/3/9 11:25:44
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order%20by%20sortrank&lableTitle=%CD%F8%D5%BE%C0%B8%C4%BF
+当前：http://aa/aspweb.asp?act=nav&columnName=%D4%DA%CF%DF%B7%B4%C0%A1
+时间：2016/3/9 11:28:07
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order%20by%20sortrank&lableTitle=%CD%F8%D5%BE%C0%B8%C4%BF
+当前：http://aa/aspweb.asp?act=nav&columnName=%D4%DA%CF%DF%B7%B4%C0%A1
+时间：2016/3/9 11:28:12
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order%20by%20sortrank&lableTitle=%CD%F8%D5%BE%C0%B8%C4%BF
+当前：http://aa/aspweb.asp?act=nav&columnName=%D4%DA%CF%DF%B7%B4%C0%A1
+时间：2016/3/9 11:29:28
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order%20by%20sortrank&lableTitle=%CD%F8%D5%BE%C0%B8%C4%BF
+当前：http://aa/aspweb.asp?act=nav&columnName=%D4%DA%CF%DF%B7%B4%C0%A1
+时间：2016/3/9 11:31:37
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order%20by%20sortrank&lableTitle=%CD%F8%D5%BE%C0%B8%C4%BF
+当前：http://aa/aspweb.asp?act=nav&columnName=%D4%DA%CF%DF%B7%B4%C0%A1
+时间：2016/3/9 11:32:12
+IP:127.0.0.1
+IE:[AppleWebKit]Safari
+Cookies=AJSTAT_ok_times=1; ASPSESSIONIDSSRTDABT=OLKDKCMDNDGKHDLDOPBCFLDA; __qc_wId=528; CNZZDATA1257109459=1853008709-1453957358-http%253A%252F%252Faa%252F%7C1457491724
+XP=
+Screen=1920x1080
+用户信息=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 12:53:48
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 12:53:52
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 12:57:56
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:00:25
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:00:26
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:01:43
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:01:45
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:02:01
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:02:07
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:02:44
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:21:20
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:21:47
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:22:03
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:22:39
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:22:44
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:24:19
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:24:22
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:24:45
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:25:17
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:25:35
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:26:22
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:28:25
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:31:18
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:33:59
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp
+时间：2016/3/9 13:43:30
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp
+时间：2016/3/9 13:43:54
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp
+时间：2016/3/9 13:44:58
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 13:45:06
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线反馈
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:45:10
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线反馈
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:46:53
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线反馈
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:48:12
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线反馈
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:50:05
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线留言
+当前：http://aa/aspweb.asp?act=nav&columnName=在线反馈
+时间：2016/3/9 13:50:13
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线反馈
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言
+时间：2016/3/9 13:50:16
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线留言
+当前：http://aa/aspweb.asp?act=nav&columnName=分享模板网站
+时间：2016/3/9 13:50:19
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=GCIHNFNDGNHKPJNPIIGNJOLM; __qc_wId=156
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&id=33&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&parentid=&searchfield=&keyword=&addsql=&page=
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+时间：2016/3/9 13:51:31
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+当前：http://aa/guestbook/index.html
+时间：2016/3/9 13:51:35
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/guestbook/index.html
+当前：http://aa/aspweb.asp?page=2&act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+时间：2016/3/9 13:51:37
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+当前：http://aa/guestbook/index.html
+时间：2016/3/9 13:51:41
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+当前：http://aa/guestbook/index.html
+时间：2016/3/9 13:54:18
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&id=33&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&parentid=&searchfield=&keyword=&addsql=&page=
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+时间：2016/3/9 13:54:22
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+当前：http://aa/guestbook/index.html
+时间：2016/3/9 13:54:25
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/guestbook/index.html
+当前：http://aa/aspweb.asp?page=&act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+时间：2016/3/9 13:54:29
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?page=&act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+当前：http://aa/aspweb.asp?page=2&act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+时间：2016/3/9 13:54:30
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+当前：http://aa/guestbook/index.html
+时间：2016/3/9 13:54:37
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=dispalyManageHandle&id=33&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&parentid=&searchfield=&keyword=&addsql=&page=
+当前：http://aa/aspweb.asp?act=nav&columnName=在线留言&isMakeHtml=1&isSave=1
+时间：2016/3/9 13:55:37
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=HCIHNFNDDODDALDHGKKOLEGG
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=makeallhtml
+当前：http://aa/myworks/index2.html
+时间：2016/3/9 14:01:47
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=ICIHNFNDBABPLMNJEJPKELPN
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=makeallhtml
+当前：http://aa/guestbook/index2.html
+时间：2016/3/9 14:01:55
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=ICIHNFNDBABPLMNJEJPKELPN
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=makeallhtml
+当前：http://aa/myworks/index2.html
+时间：2016/3/9 14:02:07
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=ICIHNFNDBABPLMNJEJPKELPN
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=makeallhtml
+当前：http://aa/guestbook/index.html
+时间：2016/3/9 14:06:42
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=ICIHNFNDBABPLMNJEJPKELPN
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=makeallhtml
+当前：http://aa/guestbook/index.html
+时间：2016/3/9 14:06:48
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=ICIHNFNDBABPLMNJEJPKELPN
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=makeallhtml
+当前：http://aa/guestbook/index2.html
+时间：2016/3/9 14:06:53
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=ICIHNFNDBABPLMNJEJPKELPN
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/aspweb.asp?act=makeallhtml
+当前：http://aa/guestbook/index2.html
+时间：2016/3/9 14:06:57
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=ICIHNFNDBABPLMNJEJPKELPN
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp
+时间：2016/3/9 14:18:08
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=JCIHNFNDHINJAPLHDFDFABPM
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp
+时间：2016/3/9 14:18:17
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=JCIHNFNDHINJAPLHDFDFABPM
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访http://aa/web/1.asp?act=displayLayout&templateFile=manageTemplates.html&lableTitle=模板管理
+当前：http://aa/aspweb.asp?templatedir=/Templates2015/anyi/
+时间：2016/3/9 14:18:59
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=JCIHNFNDHINJAPLHDFDFABPM; __qc_wId=898
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+
+来访
+当前：http://aa/aspweb.asp
+时间：2016/3/9 16:12:06
+IP:127.0.0.1
+IE:[MSIE 9.0]Internet Explorer
+Cookies=CNZZDATA1257109459=1641118733-1453957358-%7C1457491724; AJSTAT_ok_times=1; ASPSESSIONIDQSQQBCAT=NCIHNFNDIDEAGPALAACHMPGP
+XP=Windows NT 6.1
+Screen=1920x1080
+用户信息=Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+-------------------------------------------------
+

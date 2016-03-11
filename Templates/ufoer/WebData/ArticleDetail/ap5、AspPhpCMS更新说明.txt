@@ -1,12 +1,12 @@
-【parentid】AspPhpCMS
-【title】AspPhpCMS更新说明
-【webtitle】AspPhpCMS更新说明 - 分享模板网站
-【webkeywords】AspPhpCMS更新说明 - 分享模板网站
-【webdescription】AspPhpCMS更新说明 - 分享模板网站
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS更新说明
+【webtitle】ASPPHPCMS更新说明 - 分享模板网站
+【webkeywords】ASPPHPCMS更新说明 - 分享模板网站
+【webdescription】ASPPHPCMS更新说明 - 分享模板网站
 【sortrank】5
 【author】sharembweb
 【adddatetime】2016-02-22 22:23:11
-【filename】/aspphpcms/aspphpcmsupdate.html
+【filename】/ASPPHPCMS/ASPPHPCMSupdate.html
 【customaurl】
 【flags】|c|
 【relatedtags】ASP,在线ASP转PHP
@@ -35,7 +35,7 @@
 4、ASP版开发完成，测试通过，PHP待开发
 
 <b>更多帮助：</b>
-<a href="https://github.com/313801120/AspPhpCms" class="ablue"  target="_blank">Github下载AspPhpCms</a>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
 <br>
 【/bodycontent】
 

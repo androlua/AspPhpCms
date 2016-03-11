@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 <title>{$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
 <link href="css/style.css" rel="stylesheet"  type="text/css">
 <script type="text/javascript" src="../Jquery/Jquery.Min.js"></script>
@@ -79,9 +80,9 @@ KindEditor.ready(function(K) {
 }); 
 </script> 
 <div id="positionwrap">
-    <div class="msg">当前位置：{$position$}</div>
+    <div class="msg">当前位置：[$position$]</div>
 </div>
-<form action="?act=saveAddEditHandle&lableTitle={$lableTitle$}&nPageSize={$nPageSize$}&page={$page$}&parentid={$parentid$}&searchfield={$searchfield$}&keyword={$keyword$}" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+<form action="[$postUrl$]" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
 <div class="mg10">
 	<ul class="tabbut noselect">
         <li>基本设置</li>
@@ -135,9 +136,9 @@ KindEditor.ready(function(K) {
 <select name="target" id="target">
 <option value=''>链接打开方式</option>
 <option selected value=''>本页打开</option>
-<option value="_blank"[$target if='_blank' value=' selected' else='' $]>新页打开</option>
-<option value="Index"[$target if='Index' value=' selected' else='' $]>Index页打开</option>
-<option value="Main"[$target if='Main' value=' selected' else='' $]>Main页打开</option>
+<option value="_blank"[$target if='_blank' value=' selected'$]>新页打开</option>
+<option value="Index"[$target if='Index' value=' selected'$]>Index页打开</option>
+<option value="Main"[$target if='Main' value=' selected'$]>Main页打开</option>
 </select>                        </td>
                         <td>filename / target</td>
                     </tr> 
@@ -182,13 +183,13 @@ KindEditor.ready(function(K) {
                 <tbody class="tbodybox">
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>显示标题</td>
-                        <td align="left" style="padding:3px;">[$input_showtitle$]</td>
-                        <td>showtitle</td>
+                        <td align="left" style="padding:3px;">[$input_displaytitle$]</td>
+                        <td>displaytitle</td>
                     </tr>                
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>简要内容</td>
-                        <td align="left" style="padding:3px;">[$input_simpleintroduction$]</td>
-                        <td>simpleintroduction</td>
+                        <td align="left" style="padding:3px;">[$input_aboutcontent$]</td>
+                        <td>aboutcontent</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>详细内容</td>
@@ -209,20 +210,35 @@ KindEditor.ready(function(K) {
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>不追踪链接</td>
-                        <td align="left" style="padding:3px;"><label for="nofollow"><input type="checkbox" name="nofollow" id="nofollow"[$nofollow if='1' value=' checked' else='' $] value="1" class="inputstyle">不追踪链接</label></td>
+                        <td align="left" style="padding:3px;"><label for="nofollow"><input type="checkbox" name="nofollow" id="nofollow"[$nofollow if='1' value=' checked'$] value="1" class="inputstyle">不追踪链接</label></td>
                         <td>nofollow</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>生成静态文件</td>
                         <td align="left" style="padding:3px;">
-                        <label for='isonhtml'><input type='checkbox' name='isonhtml' id='isonhtml' [$isonhtml if='False' elseif='0' value='' else=' checked'$]  value='1'>生成静态网页</label>                        </td>
+                        <label for='isonhtml'><input type='checkbox' name='isonhtml' id='isonhtml' [$isonhtml if='False' elseif='0' value='' elsevalue=' checked'$]  value='1'>生成静态网页</label>                        </td>
                         <td>isonhtml</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>显示条数</td>
                         <td align="left" style="padding:3px;"><input name="npagesize" type="text" id="npagesize" value="[$npagesize$]" style="width:80px; text-align:center;" class="input-text"></td>
                         <td>npagesize</td>
-                    </tr> 
+                    </tr>
+                    <tr align="center" height="25" bgcolor="#F9FCEF">
+                        <td>排序方式</td>
+                        <td align="left" style="padding:3px;"><select name="sortsql" id="sortsql">
+                          <option value="order by id">ID正排序</option>
+                          <option value="order by id desc"[$sortsql if='order by id desc' value=' selected'$]>ID倒排序</option>
+                          <option value="order by sortrank"[$sortsql if='order by sortrank' value=' selected'$]>排序正排序</option>
+                          <option value="order by sortrank desc"[$sortsql if='order by sortrank desc' value=' selected'$]>排序倒排序</option>
+                          <option value="order by adddatetime"[$sortsql if='order by adddatetime' value=' selected'$]>添加时间正排序</option>
+                          <option value="order by adddatetime desc"[$sortsql if='order by adddatetime desc' value=' selected'$]>添加时间倒排序</option>
+                        </select>
+                        </td>
+                        <td>sortsql</td>
+                    </tr>
+                    
+                    sortField
                 </tbody>
         </table>
     </div>
@@ -234,9 +250,7 @@ KindEditor.ready(function(K) {
             <input name="提交" type="submit" class="mybtn2 radius5" value="保存(S)"  />
             <input name="switchId" type="hidden" id="switchId" value="[$switchId$]" /> 
             <input name="重置" type="reset" class="mybtn2 radius5" value="重置"  />
-        </div>
-    </div>
-    [$inputId$] 
+        </div>    </div>
 </form>
 <script language="javascript" type="text/javascript" src="js/formBottom.js"></script>
 </body>

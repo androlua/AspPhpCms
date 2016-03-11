@@ -1,0 +1,111 @@
+【parentid】在线ASP转PHP
+【title】ASP转PHP程序 开发过程介绍
+【webtitle】ASP转PHP程序 开发过程介绍 - 分享模板网站
+【webkeywords】ASP转PHP程序 开发过程介绍 - 分享模板网站
+【webdescription】介绍一名ASP程序员是怎么一步一步开发出ASP转PHP程序来 - 分享模板网站
+【sortrank】600
+【author】sharembweb
+【adddatetime】2016-01-26 16:51:18
+【filename】/asp/asptophpabouthelp.html
+【flags】|c|
+【relatedtags】ASP,在线ASP转PHP
+【bodycontent】[&全部换行&]<strong>1、为什么要开发《ASP代码转PHP代码》 ？</strong>
+出于以下三个方面考虑：
+1、为自己：可以把自己之前用ASP开发得网站转换成PHP版本
+2、为研究：可以快速掌握PHP语言特性与语法结构，增加对PHP这种语言的认识，对于研究更加方便
+3、为他人：让只懂ASP程序，而不懂PHP程序得朋友可通过此程序来快速学习PHP
+
+<b>下面详细阐述：</b>
+第一
+作为一名从事ASP程序开发多年的人来说，用惯了ASP这门语言，从它的基本语法，到语言结构和系统函数的使用已经非常的熟悉，可以说是得心应手。现在要放弃它而改用PHP语言，是一种很艰难的选择。
+
+尤其是ASP程序得语法与PHP程序的语法相差很大，简直就是天然之别，想到这里就更加犹豫了。
+但是PHP语言是做网站首选开发语言，在这种情况下，有没有一种办法可以把自己得ASP代码转换成PHP可运行的代码呢？
+
+这样不仅可以节约开发时间，还可以用PHP程序来运行网站，而且通用性和一致性也不用去管，用这套小程序通通都解决了，并且也可以继续写我最爱的ASP程序。这是一件多么美好的事情啊。
+
+第二
+很早之前就知道PHP的强大与易用性和跨平台，可惜当时自己在开发网站的时候只能用ASP程序，错过了PHP程序的威力与神奇。
+即使在工作中用不到PHP程序来开发网站，但是对PHP的好奇一直存在。
+
+随着写程序得时间越来越长，写出来的ASP代码也越来越多，这个时候就在想，有没有一种方法可以把自己的ASP代码转成PHP代码，这样也好去研究，学习PHP程序，可以知道一段代码在ASP里是什么结构，放在PHP里又是什么结构，它们之间的变化又是什么，为什么这段代码在ASP里是这样写，而放到PHP里要这么写。很好奇。
+
+第三
+给新手一点帮助，让新手知道两种语言的语法结构的不同，快速看清楚这两种语言结构得不同之处与相同之处。可以很轻松的就可以获得转换后的PHP代码，而且还是在线的，太方便了。
+作者也是在不断得更新这款《ASP代码转PHP代码》程序，也会天天在线回答大家的提问。
+
+
+<strong>2、作者有没有实力开发出《ASP代码转PHP代码》？</strong>
+1、作者是一名有着8年ASP开发经验的老程序员
+2、独立开发过大型网站包括网站后台内容管理系统
+3、独立开发出一套模板网站系统，包括用VB写了一套辅助网站开发的系统
+4、作者曾经用Flash独立开发过一套强大的在线网络游戏，仿照《大话西游2》这款网络游戏来开发的，用时一年半
+5、作者精通ASP/VB/PHP/HTML/CSS/JS/Flash/Android/
+6、在Github和各大源码站或大型下载站上有发布过多套开源作品
+
+
+<strong>3、《ASP代码转PHP代码》 对哪一部分人有帮助？</strong>
+1、对想要把ASP代码转成PHP代码的人有帮助
+2、对掌握ASP程序，开始学习PHP的新手非常有帮助
+3、对想研究ASP与PHP程序语法的不同之处得朋友有帮助
+
+
+<strong>4 、怎样做到《ASP代码转PHP代码》使用方便灵活？</strong>
+1、提供在线ASP转PHP功能
+2、提供多服务器可供选择，保证速度与稳定性
+3、在线提供帮助及说明文档
+4、提供在线提问专区，可以把不懂和不明白的问题提交过来，作者会在第一时间给于回答
+
+
+<strong>5、现在《ASP代码转PHP代码》开发到那一版本？</strong>
+1、开发到《Asp转PHP v1.0》版
+2、做到了对 if判断语句，for循环语句，select case选择语句，function函数语句的处理
+3、对一维数组，多维数组的转换
+
+
+<strong>6、下一版本《ASP代码转PHP代码》要做哪些改进？</strong>
+1、对class类的转换
+2、添加ASP内置函数，继续放到ASP.php文件里
+3、对函数名称与数组变量之间的混乱处理
+4、写出强大的帮助文档
+5、在线《ASP代码转PHP代码》界面完善
+
+
+<strong>7、我是怎么开发出《ASP代码转PHP代码》 程序来的</strong>
+一直就在考虑怎么才可以把我用ASP做的网站转换成PHP呢？带着这个想法我开始了 《ASP代码转PHP代码》开发之路，一路走来遇到很多挑战。
+
+首先ASP语言与PHP语言本身就是两种完全不同写法的语言程序，在开发的过程中也是遇到很多挑战，一路走来相当艰难曲折，经过一年来的不懈努力和自己的刻苦钻研，终于在二零一五年底开发完毕。
+
+
+<strong>8、我是怎样把ASP整站转换成PHP整站</strong>
+1、asptophp.asp?act=inc  是把inc/目录下得全部asp文件转换成php程序，放到指定目录 
+2、asptophp.asp?act=web1asp  是把web/1.asp转换成web/1.php程序  为后台核心程序
+3、asptophp.asp?act=webfunction  是把web/function.asp转换成web/wfunction.php程序  为后台核心程序
+4、asptophp.asp?act=webtemplate  是把web/template.asp转换成web/template.php程序  为后台模板修改程序
+5、asptophp.asp?act=setAccess  是把web/setAccess.asp转换成web/setAccess.php程序  为后台数据库操作
+6、asptophp.asp?act=aspweb  是把aspweb.asp转换成aspweb.php程序  为前端核心程序
+7、sys_FSO.php，sys_System.php，sys_Url.php，sys_Cai.php，ASP.php 为系统核心文件
+
+
+<strong>9、《ASP代码转PHP代码》开发思路：</strong>
+1、语言层级控制好
+2、开始标签与结束标签控制好
+3、出错提醒要做好<br>
+
+【/bodycontent】
+
+
+【note】
+
+
+
+
+2、《ASP代码转PHP代码》是否可行，难度有多大？
+5、现在《ASP代码转PHP代码》开发到那一程度？哪一版本？下面要继续改进那些方面，到哪一版本？
+7、当前版本介绍，改进介绍，下一改进介绍。
+
+
+
+
+【/note】
+
