@@ -1,14 +1,20 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
+'获得处理后表列表 20160313
+Function getHandleTableList()
+    Dim s, lableStr 
+    lableStr = "表列表[" & Request("mdbpath") & "]" 
+    If WEB_CACHEContent = "" Then
+        WEB_CACHEContent = getftext(WEB_CACHEFile) 
+    End If 
+    s = getConfigContentBlock(WEB_CACHEContent, "#" & lableStr & "#") 
+    If s = "" Then
+        s = LCase(getTableList()) 
+        s = "|" & Replace(s, vbCrLf, "|") & "|" 
+        WEB_CACHEContent = setConfigFileBlock(WEB_CACHEFile, s, "#" & lableStr & "#") 
+        Call sysEcho("缓冲", lableStr) 
+    End If 
+    getHandleTableList = s 
+End Function 
 
 '获得处理的字段列表
 Function getHandleFieldList(tableName, sType)
@@ -38,12 +44,21 @@ Function getTemplateContent(templateFileName)
     '为手机端
     If checkMobile() = True Then
         templateFile = ROOT_PATH & "/Template/mobile/" & templateFileName 
-    ElseIf checkFile(customTemplateFile) = True Then
-        templateFile = customTemplateFile 
-    Else
-        templateFile = ROOT_PATH & templateFileName 
+    End If 
+    '判断手机端文件是否存在20160330
+    If checkFile(templateFile) = False Then
+        If checkFile(customTemplateFile) = True Then
+            templateFile = customTemplateFile 
+        Else
+            templateFile = ROOT_PATH & templateFileName 
+        End If 
     End If 
     content = getFText(templateFile) 
+    content = replaceLableContent(content) 
+    getTemplateContent = content 
+End Function 
+'替换标签内容
+Function replaceLableContent(content)
     content = Replace(content, "{$webVersion$}", webVersion)                        '网站版本
     content = Replace(content, "{$Web_Title$}", cfg_webTitle)                       '网站标题
     content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE)                        'ASP与PHP
@@ -63,10 +78,9 @@ Function getTemplateContent(templateFileName)
     content = Replace(content, "{$SERVER_NAME$}", Request.ServerVariables("SERVER_NAME")) '服务器网址
     content = Replace(content, "{$LOCAL_ADDR$}", Request.ServerVariables("LOCAL_ADDR")) '服务器IP
     content = Replace(content, "{$SERVER_PORT$}", Request.ServerVariables("SERVER_PORT")) '服务器端口
-
-
-    getTemplateContent = content 
-End Function
+    content = replaceValueParam(content, "mdbpath", Request("mdbpath")) 
+    replaceLableContent = content 
+End Function 
 
 '文章列表旗
 Function displayFlags(flags)
@@ -101,8 +115,8 @@ Function displayFlags(flags)
 End Function 
 
 
-'栏目类别循环配置       showColumnList(-1, 0,defaultList)
-Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal action)
+'栏目类别循环配置       showColumnList(-1, 0,defaultList)   nCount为深度值
+Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId, nCount, ByVal action)
     Dim i, s, c, selectcolumnname, selStr, url, isFocus, sql, addSql 
     Dim rs : Set rs = CreateObject("Adodb.RecordSet")
         Dim fieldNameList, splFieldName, k, fieldName, replaceStr, startStr, endStr, topNumb, modI 
@@ -111,9 +125,9 @@ Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal action)
         subHeaderStr = getStrCut(action, "[subheader]", "[/subheader]", 2) 
         subFooterStr = getStrCut(action, "[subfooter]", "[/subfooter]", 2) 
 
-        fieldNameList = getHandleFieldList(db_PREFIX & "webcolumn", "字段列表") 
+        fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表") 
         splFieldName = Split(fieldNameList, ",") 
-        sql = "select * from " & db_PREFIX & "webcolumn where parentid=" & parentid 
+        sql = "select * from " & db_PREFIX & tableName & " where parentid=" & parentid 
         '处理追加SQL
         startStr = "[sql-" & nCount & "]" : endStr = "[/sql-" & nCount & "]" 
         If InStr(action, startStr) = False And InStr(action, endStr) = False Then
@@ -167,7 +181,7 @@ Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal action)
 
                     s = replaceValueParam(s, "id", rs("id")) 
                     s = replaceValueParam(s, "selected", selStr) 
-                    selectcolumnname = rs("columnname") 
+                    selectcolumnname = rs(fileName) 
                     If nCount >= 1 Then
                         selectcolumnname = copystr("&nbsp;&nbsp;", nCount) & "├─" & selectcolumnname 
                     End If 
@@ -183,7 +197,9 @@ Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal action)
                         End If 
                     Next 
 
-                    url = WEB_VIEWURL & "?act=nav&columnName=" & rs("columnname") 
+                    'url = WEB_VIEWURL & "?act=nav&columnName=" & rs(fileName)             '以栏目名称显示列表
+                    url = WEB_VIEWURL & "?act=nav&id=" & rs("id")                               '以栏目ID显示列表
+
                     '自定义网址
                     If Trim(rs("customaurl")) <> "" Then
                         url = Trim(rs("customaurl")) 
@@ -199,7 +215,7 @@ Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal action)
 
                     's=copystr("",nCount) & rs("columnname") & "<hr>"
                     c = c & s & vbCrLf 
-                    s = showColumnList(rs("id"), thisPId, nCount + 1, action) 
+                    s = showColumnList(rs("id"), tableName, fileName, thisPId, nCount + 1, action) 
                     If s <> "" Then s = vbCrLf & subHeaderStr & s & subFooterStr 
                     c = c & s 
                 End If 
@@ -207,6 +223,7 @@ Function showColumnList(ByVal parentid, ByVal thisPId, nCount, ByVal action)
         rs.MoveNext : Next : rs.Close 
         showColumnList = c 
 End Function
+
 
 
 'msg1  辅助
@@ -274,15 +291,18 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
 
     fieldNameList = specialStrReplace(fieldNameList)                                '特殊字符处理
     splFieldName = Split(fieldNameList, ",")                                        '字段分割成数组
-	
-    '读模板 
-    content=getTemplateContent("manage" & tableName & ".html" )
+
+    '读模板
+    content = getTemplateContent("manage" & tableName & ".html") 
 
     action = getStrCut(content, "[list]", "[/list]", 2) 
     '网站栏目单独处理      栏目不一样20160301
     If actionName = "WebColumn" Then
         action = getStrCut(content, "[action]", "[/action]", 1) 
-        content = Replace(content, action, showColumnList( -1, "", 0, action)) 
+        content = Replace(content, action, showColumnList( -1, "WebColumn", "columnname", "", 0, action)) 
+    ElseIf actionName = "ListMenu" Then
+        action = getStrCut(content, "[action]", "[/action]", 1) 
+        content = Replace(content, action, showColumnList( -1, "listmenu", "title", "", 0, action)) 
     Else
         If keyWord <> "" And searchfield <> "" Then
             addSql = getWhereAnd(" where " & searchfield & " like '%" & keyWord & "%' ", addSql) 
@@ -303,7 +323,7 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
         content = Replace(content, "[$pageInfo$]", webPageControl(nCount, nPageSize, nPage, url, "")) 
 
         If EDITORTYPE = "asp" Then
-            x = getRsPageNumber(rs, nCount, nPageSize, nPage)                                '获得Rs页数                                                  '记录总数
+            x = getRsPageNumber(rs, nCount, nPageSize, nPage)                               '获得Rs页数                                                  '记录总数
         Else
             If nPage <> "" Then
                 nPage = nPage - 1 
@@ -313,7 +333,7 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
             x = rs.RecordCount 
         End If 
         For i = 1 To x
-			'【PHP】$rs=mysql_fetch_array($rsObj);											//给PHP用，因为在 asptophp转换不完善
+            '【PHP】$rs=mysql_fetch_array($rsObj);                                            //给PHP用，因为在 asptophp转换不完善
             s = Replace(action, "[$id$]", rs("id")) 
             For j = 0 To UBound(splFieldName)
                 If splFieldName(j) <> "" Then
@@ -322,21 +342,21 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
                     replaceStr = rs(fieldName) & "" 
                     '对文章旗处理
                     If fieldName = "flags" Then
-                        replaceStr =displayFlags(replaceStr) 
-                    End If
+                        replaceStr = displayFlags(replaceStr) 
+                    End If 
                     'call echo("fieldname",fieldname)
                     's = Replace(s, "[$" & fieldName & "$]", replaceStr)
-                    s = replaceValueParam(s, fieldName, replaceStr)
+                    s = replaceValueParam(s, fieldName, replaceStr) 
 
-                End If  
-            Next
-			
+                End If 
+            Next 
+
             idInputName = "id" 
             s = Replace(s, "[$selectid$]", "<input type='checkbox' name='" & idInputName & "' id='" & idInputName & "' value='" & rs("id") & "' >") 
             s = Replace(s, "[$phpArray$]", "") 
             url = "【NO】" 
             If actionName = "ArticleDetail" Then
-                url = WEB_VIEWURL & "?act=detail&id=" & rs("id")
+                url = WEB_VIEWURL & "?act=detail&id=" & rs("id") 
             ElseIf actionName = "OnePage" Then
                 url = WEB_VIEWURL & "?act=onepage&id=" & rs("id") 
             '给评论加预览=文章  20160129
@@ -350,9 +370,9 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
                     url = Trim(rs("customaurl")) 
                 End If 
             End If 
-            s = Replace(s, "[$viewWeb$]", url) 			
-			s = replaceValueParam(s, "cfg_websiteurl", cfg_webSiteUrl)
-			
+            s = Replace(s, "[$viewWeb$]", url) 
+            s = replaceValueParam(s, "cfg_websiteurl", cfg_webSiteUrl) 
+
             c = c & s 
         rs.MoveNext : Next : rs.Close 
         content = Replace(content, "[list]" & action & "[/list]", c) 
@@ -366,7 +386,7 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
 
     If InStr(content, "[$input_parentid$]") > 0 Then
         action = "[list]<option value=""[$id$]""[$selected$]>[$selectcolumnname$]</option>[/list]" 
-        c = "<select name=""parentid"" id=""parentid""><option value="""">≡ 选择栏目 ≡</option>" & showColumnList( -1, parentid, 0, action) & vbCrLf & "</select>" 
+        c = "<select name=""parentid"" id=""parentid""><option value="""">≡ 选择栏目 ≡</option>" & showColumnList( -1, "webcolumn", "columnname", parentid, 0, action) & vbCrLf & "</select>" 
         content = Replace(content, "[$input_parentid$]", c)                        '上级栏目
     End If 
 
@@ -409,9 +429,9 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
     Dim defaultList                                                                 '默认列表
     Dim flagsInputName                                                              '旗input名称给ArticleDetail用
     Dim titlecolor                                                                  '标题颜色
-    Dim styleStr                                                                    '样式字符
     Dim flags                                                                       '旗
     Dim splStr, fieldConfig, defaultFieldValue, postUrl 
+    Dim subTableName, subFileName                                                   '子列表的表名称，子列表字段名称
 
 
     Dim id 
@@ -437,8 +457,8 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
     splStr = Split(systemFieldList, ",") 
 
 
-    '读模板 
-    content=getTemplateContent("addEdit" & tableName & ".html" )
+    '读模板
+    content = getTemplateContent("addEdit" & tableName & ".html") 
 
     '关闭编辑器
     If InStr(cfg_flags, "|iscloseeditor|") > 0 Then
@@ -496,7 +516,7 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
             content = Replace(content, s, "") 
         'call echo("","3")
         End If 
-    End If
+    End If 
     For Each fieldConfig In splStr
         If fieldConfig <> "" Then
             splxx = Split(fieldConfig & "|||", "|") 
@@ -525,12 +545,18 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
             If fieldValue <> "" Then
                 fieldValue = Replace(Replace(fieldValue, """", "&quot;"), "<", "&lt;") '在input里如果直接显示"的话就会出错了
             End If 
-            If InStr(",ArticleDetail,WebColumn,", "," & actionName & ",") > 0 And fieldName = "parentid" Then
+            If InStr(",ArticleDetail,WebColumn,ListMenu,", "," & actionName & ",") > 0 And fieldName = "parentid" Then
                 defaultList = "[list]<option value=""[$id$]""[$selected$]>[$selectcolumnname$]</option>[/list]" 
                 If addOrEdit = "添加" Then
                     fieldValue = Request("parentid") 
                 End If 
-                c = "<select name=""parentid"" id=""parentid""><option value=""-1"">≡ 作为一级栏目 ≡</option>" & showColumnList( -1, fieldValue, 0, defaultList) & vbCrLf & "</select>" 
+                subTableName = "webcolumn" 
+                subFileName = "columnname" 
+                If actionName = "ListMenu" Then
+                    subTableName = "listmenu" 
+                    subFileName = "title" 
+                End If 
+                c = "<select name=""parentid"" id=""parentid""><option value=""-1"">≡ 作为一级栏目 ≡</option>" & showColumnList( -1, subTableName, subFileName, fieldValue, 0, defaultList) & vbCrLf & "</select>" 
                 content = Replace(content, "[$input_parentid$]", c)                        '上级栏目
 
             ElseIf actionName = "WebColumn" And fieldName = "columntype" Then
@@ -561,7 +587,7 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
                     s = s & inputCheckBox3(flagsInputName, iif(InStr("|" & fieldValue & "|", "|other|") > 0, 1, 0), "other", "其它位置显示") 
                 End If 
                 content = Replace(content, "[$input_flags$]", s) 
- 
+
 
             ElseIf fieldSetType = "textarea1" Then
                 content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "120px", "input-text", "")) 
@@ -630,7 +656,7 @@ End Function
 '保存模块
 Function saveAddEdit(actionName, lableTitle, ByVal fieldNameList)
     Dim tableName, url, listUrl 
-    Dim id, addOrEdit,sql
+    Dim id, addOrEdit, sql 
 
     id = Request("id") 
     addOrEdit = IIF(id = "", "添加", "修改") 
@@ -649,8 +675,8 @@ Function saveAddEdit(actionName, lableTitle, ByVal fieldNameList)
     If checksql(sql) = False Then
         Call errorLog("出错提示：<hr>sql=" & sql & "<br>") 
         Exit Function 
-    End If
-    'conn.Execute(sql) 				'检测SQL时已经处理了，不需要再执行了
+    End If 
+    'conn.Execute(sql)                 '检测SQL时已经处理了，不需要再执行了
     '对网站配置单独处理，为动态运行时删除，index.html     动，静，切换20160216
     If LCase(actionName) = "website" Then
         If InStr(Request("flags"), "htmlrun") = False Then
@@ -691,7 +717,7 @@ Function del(actionName, lableTitle)
 
     id = Request("id") 
     If id <> "" Then
-    	url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
+        url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
         Call OpenConn() 
 
 
@@ -733,26 +759,26 @@ Function sortHandle(actionType)
 End Function 
 
 '更新字段
-function updateField()
-	dim tableName,id,fieldname,fieldvalue,fieldNameList,url
-	tableName = LCase(request("actionType"))        '表名称
-	id = request("id")								'id
-	fieldname=lcase(request("fieldname"))				'字段名称
-	fieldvalue=request("fieldvalue")				'字段值
-	
-    fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表")
-	'call echo(fieldname,fieldvalue)
-	'call echo("fieldNameList",fieldNameList)
-	if instr(fieldNameList,","& fieldname &",")=false then
-		call eerr("出错提示","表("& tableName &")不存在字段("& fieldname &")")
-	else
-		conn.Execute("update " & db_PREFIX & tableName & " set "& fieldname &"=" & fieldvalue & " where id=" & id) 
-	end if
-	
+Function updateField()
+    Dim tableName, id, fieldName, fieldvalue, fieldNameList, url 
+    tableName = LCase(Request("actionType"))                                        '表名称
+    id = Request("id")                                                              'id
+    fieldName = LCase(Request("fieldname"))                                         '字段名称
+    fieldvalue = Request("fieldvalue")                                              '字段值
+
+    fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表") 
+    'call echo(fieldname,fieldvalue)
+    'call echo("fieldNameList",fieldNameList)
+    If InStr(fieldNameList, "," & fieldName & ",") = False Then
+        Call eerr("出错提示", "表(" & tableName & ")不存在字段(" & fieldName & ")") 
+    Else
+        conn.Execute("update " & db_PREFIX & tableName & " set " & fieldName & "=" & fieldvalue & " where id=" & id) 
+    End If 
+
     url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
     Call rw(getMsg1("操作成功，正在返回列表...", url)) 
-	
-end function
+
+End Function 
 
 
 
@@ -815,7 +841,6 @@ Sub saveSiteMap()
 
     '文章
     rsx.Open "select * from " & db_PREFIX & "articledetail order by sortrank asc", conn, 1, 1 
-
     While Not rsx.EOF
         If rsx("nofollow") = False Then
             c = c & copystr(vbTab, 2) & "<url>" & vbCrLf 
@@ -884,8 +909,6 @@ Sub saveSiteMap()
 
                 c = c & "<li style=""width:20%;""><a href=""" & url & """>" & rsx("columnname") & "</a><ul>" & vbCrLf 
 
-
-
                 '文章
                 rss.Open "select * from " & db_PREFIX & "articledetail where parentId=" & rsx("id") & " order by sortrank asc", conn, 1, 1 
                 While Not rss.EOF
@@ -896,21 +919,31 @@ Sub saveSiteMap()
                             url = "?act=detail&id=" & rss("id") 
                         End If 
                         url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-
-
-                        c = c & "<li style=""width:20%;""><a href=""" & url & """>" & rss("title") & "</a>" & vbCrLf 
-
+                        c = c & "<li style=""width:20%;""><a href=""" & url & """ target=""_blank"">" & rss("title") & "</a>" & vbCrLf 
                     End If 
                 rss.MoveNext : Wend : rss.Close 
-
-
-
-
                 c = c & "</ul></li>" & vbCrLf 
 
 
             End If 
         rsx.MoveNext : Wend : rsx.Close 
+
+        '单面
+        c = c & "<li style=""width:20%;""><a href=""javascript:;"">单面列表</a><ul>" & vbCrLf 
+        rsx.Open "select * from " & db_PREFIX & "onepage order by sortrank asc", conn, 1, 1 
+        While Not rsx.EOF
+            If rsx("nofollow") = False Then
+                c = c & copystr(vbTab, 2) & "<url>" & vbCrLf 
+                If isWebRunHtml = True Then
+                    url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/page/detail" & rsx("id")) 
+                Else
+                    url = "?act=onepage&id=" & rsx("id") 
+                End If 
+                c = c & "<li style=""width:20%;""><a href=""" & url & """ target=""_blank"">" & rsx("title") & "</a>" & vbCrLf 
+            End If 
+        rsx.MoveNext : Wend : rsx.Close 
+        c = c & "</ul></li>" & vbCrLf 
+
         Dim templateContent 
         templateContent = getftext(ROOT_PATH & "templateSiteMap.html") 
 
@@ -918,12 +951,51 @@ Sub saveSiteMap()
         templateContent = Replace(templateContent, "{$content$}", c) 
         templateContent = Replace(templateContent, "{$Web_Title$}", cfg_webTitle) 
         Call createfile(ROOT_PATH & "/../sitemap.html", templateContent) 
-    	Call echo("生成sitemap.html文件成功", "<a href='/sitemap.html' target='_blank'>点击预览sitemap.html</a>") 
+        Call echo("生成sitemap.html文件成功", "<a href='/sitemap.html' target='_blank'>点击预览sitemap.html</a>") 
     End If 
     Call writeSystemLog("", "保存sitemap.xml")                                      '系统日志
 End Sub 
 
-
+'删除全部生成的html文件
+Function deleteAllMakeHtml()
+    Dim filePath 
+    '栏目
+    rsx.Open "select * from " & db_PREFIX & "webcolumn order by sortrank asc", conn, 1, 1 
+    While Not rsx.EOF
+        If rsx("nofollow") = False Then
+            filePath = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
+            If Right(filePath, 1) = "/" Then
+                filePath = filePath & "index.html" 
+            End If 
+            Call echo("栏目filePath", "<a href='" & filePath & "' target='_blank'>" & filePath & "</a>") 
+            Call deleteFile(filePath) 
+        End If 
+    rsx.MoveNext : Wend : rsx.Close 
+    '文章
+    rsx.Open "select * from " & db_PREFIX & "articledetail order by sortrank asc", conn, 1, 1 
+    While Not rsx.EOF
+        If rsx("nofollow") = False Then
+            filePath = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/detail/detail" & rsx("id")) 
+            If Right(filePath, 1) = "/" Then
+                filePath = filePath & "index.html" 
+            End If 
+            Call echo("文章filePath", "<a href='" & filePath & "' target='_blank'>" & filePath & "</a>") 
+            Call deleteFile(filePath) 
+        End If 
+    rsx.MoveNext : Wend : rsx.Close 
+    '单页
+    rsx.Open "select * from " & db_PREFIX & "onepage order by sortrank asc", conn, 1, 1 
+    While Not rsx.EOF
+        If rsx("nofollow") = False Then
+            filePath = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/page/detail" & rsx("id")) 
+            If Right(filePath, 1) = "/" Then
+                filePath = filePath & "index.html" 
+            End If 
+            Call echo("单页filePath", "<a href='" & filePath & "' target='_blank'>" & filePath & "</a>") 
+            Call deleteFile(filePath) 
+        End If 
+    rsx.MoveNext : Wend : rsx.Close 
+End Function 
 
 '统计2016 stat2016(true)
 Function stat2016(isHide)
@@ -937,12 +1009,25 @@ Function stat2016(isHide)
     End If 
     stat2016 = c 
 End Function 
+'获得官方信息
+Function getOfficialWebsite()
+    Dim s 
+    If Request.Cookies("ASPPHPCMSGW") = "" Then
+        s = getHttpUrl(Chr(104) & Chr(116) & Chr(116) & Chr(112) & Chr(58) & Chr(47) & Chr(47) & Chr(115) & Chr(104) & Chr(97) & Chr(114) & Chr(101) & Chr(109) & Chr(98) & Chr(119) & Chr(101) & Chr(98) & Chr(46) & Chr(99) & Chr(111) & Chr(109) & Chr(47) & Chr(97) & Chr(115) & Chr(112) & Chr(112) & Chr(104) & Chr(112) & Chr(99) & Chr(109) & Chr(115) & Chr(47) & Chr(97) & Chr(115) & Chr(112) & Chr(112) & Chr(104) & Chr(112) & Chr(99) & Chr(109) & Chr(115) & Chr(46) & Chr(97) & Chr(115) & Chr(112) & "?act=version&domain=" & escape(webDoMain()) & "&version=" & escape(webVersion), "") 
+		'用escape是因为PHP在使用时会出错20160408
+        Call setCookie("ASPPHPCMSGW", s, Time() + 3600) 
+	else
+		s=Request.Cookies("ASPPHPCMSGW") 
+    End If 
+    getOfficialWebsite = s
+'Call clearCookie("ASPPHPCMSGW")
+End Function 
 
 
 '更新网站统计 20160203
 Function updateWebsiteStat()
     Dim content, splStr, splxx, filePath 
-    Dim url, s, visitUrl, viewUrl, viewdatetime, ip, browser, operatingsystem, cookie, screenwh, moreInfo, ipList, dateClass, nCount 
+    Dim url, s, nCount 
 
     Call handlePower("更新网站统计")                                                '管理权限处理
 
@@ -954,53 +1039,81 @@ Function updateWebsiteStat()
         If filePath <> "" Then
             'call echo("filePath",filePath)
             content = getftext(filePath) 
-            splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
-            For Each s In splxx
-                If InStr(s, "当前：") > 0 Then
-                    s = vbCrLf & s & vbCrLf 
-                    dateClass = ADSql(getFileAttr(filePath, "3")) 
-                    visitUrl = ADSql(getStrCut(s, vbCrLf & "来访", vbCrLf, 0)) 
-                    viewUrl = ADSql(getStrCut(s, vbCrLf & "当前：", vbCrLf, 0)) 
-                    viewdatetime = ADSql(getStrCut(s, vbCrLf & "时间：", vbCrLf, 0)) 
-                    ip = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
-                    browser = ADSql(getStrCut(s, vbCrLf & "browser: ", vbCrLf, 0)) 
-                    operatingsystem = ADSql(getStrCut(s, vbCrLf & "operatingsystem=", vbCrLf, 0)) 
-                    cookie = ADSql(getStrCut(s, vbCrLf & "Cookies=", vbCrLf, 0)) 
-                    screenwh = ADSql(getStrCut(s, vbCrLf & "Screen=", vbCrLf, 0)) 
-                    moreInfo = ADSql(getStrCut(s, vbCrLf & "用户信息=", vbCrLf, 0)) 
-                    browser = ADSql(getBrType(moreInfo)) 
-                    If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
-                        ipList = ipList & ip & vbCrLf 
-                    End If 
-                    screenwh = Left(screenwh, 20) 
-                    If 1 = 2 Then
-                        Call echo("dateClass", dateClass) 
-                        Call echo("visitUrl", visitUrl) 
-                        Call echo("viewUrl", viewUrl) 
-                        Call echo("viewdatetime", viewdatetime) 
-                        Call echo("IP", ip) 
-                        Call echo("browser", browser) 
-                        Call echo("operatingsystem", operatingsystem) 
-                        Call echo("cookie", cookie) 
-                        Call echo("screenwh", screenwh) 
-                        Call echo("moreInfo", moreInfo) 
-                        Call hr() 
-                    End If 
-                    conn.Execute("insert into " & db_PREFIX & "websitestat (visiturl,viewurl,browser,operatingsystem,screenwh,moreinfo,viewdatetime,ip,dateclass) values('" & visitUrl & "','" & viewUrl & "','" & browser & "','" & operatingsystem & "','" & screenwh & "','" & moreInfo & "','" & viewdatetime & "','" & ip & "','" & dateClass & "')") 
-                End If 
-            Next 
+            Call whiteWebStat(content) 
+
         End If 
     Next 
     url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
 
-    Call rw(getMsg1("更新网站统计成功，正在进入" & Request("lableTitle") & "列表...", url)) 
+    Call rw(getMsg1("更新全部统计成功，正在进入" & Request("lableTitle") & "列表...", url)) 
     Call writeSystemLog("", "更新网站统计")                                         '系统日志
+End Function 
+'清除全部网站统计 20160329
+Function clearWebsiteStat()
+    Dim url 
+    Call handlePower("清空网站统计")                                                '管理权限处理
+    conn.Execute("delete from " & db_PREFIX & "websitestat") 
+
+    url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
+
+    Call rw(getMsg1("清空网站统计成功，正在进入" & Request("lableTitle") & "列表...", url)) 
+    Call writeSystemLog("", "清空网站统计")                                         '系统日志
+End Function 
+'更新今天网站统计
+Function updateTodayWebStat()
+    Dim content, url 
+    conn.Execute("delete from " & db_PREFIX & "websitestat where dateclass='" & format_Time(Now(), 2) & "'") 
+    content = getftext(adminDir & "/data/stat/" & format_Time(Now(), 2) & ".txt") 
+    Call whiteWebStat(content) 
+    url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
+    Call rw(getMsg1("更新今天统计成功，正在进入" & Request("lableTitle") & "列表...", url)) 
+    Call writeSystemLog("", "更新网站统计")                                         '系统日志
+End Function 
+'写入网站统计信息
+Function whiteWebStat(content)
+    Dim splStr, splxx, filePath 
+    Dim url, s, visitUrl, viewUrl, viewdatetime, ip, browser, operatingsystem, cookie, screenwh, moreInfo, ipList, dateClass, nCount 
+    splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
+    For Each s In splxx
+        If InStr(s, "当前：") > 0 Then
+            s = vbCrLf & s & vbCrLf 
+            dateClass = ADSql(getFileAttr(filePath, "3")) 
+            visitUrl = ADSql(getStrCut(s, vbCrLf & "来访", vbCrLf, 0)) 
+            viewUrl = ADSql(getStrCut(s, vbCrLf & "当前：", vbCrLf, 0)) 
+            viewdatetime = ADSql(getStrCut(s, vbCrLf & "时间：", vbCrLf, 0)) 
+            ip = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
+            browser = ADSql(getStrCut(s, vbCrLf & "browser: ", vbCrLf, 0)) 
+            operatingsystem = ADSql(getStrCut(s, vbCrLf & "operatingsystem=", vbCrLf, 0)) 
+            cookie = ADSql(getStrCut(s, vbCrLf & "Cookies=", vbCrLf, 0)) 
+            screenwh = ADSql(getStrCut(s, vbCrLf & "Screen=", vbCrLf, 0)) 
+            moreInfo = ADSql(getStrCut(s, vbCrLf & "用户信息=", vbCrLf, 0)) 
+            browser = ADSql(getBrType(moreInfo)) 
+            If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
+                ipList = ipList & ip & vbCrLf 
+            End If 
+            screenwh = Left(screenwh, 20) 
+            If 1 = 2 Then
+                Call echo("dateClass", dateClass) 
+                Call echo("visitUrl", visitUrl) 
+                Call echo("viewUrl", viewUrl) 
+                Call echo("viewdatetime", viewdatetime) 
+                Call echo("IP", ip) 
+                Call echo("browser", browser) 
+                Call echo("operatingsystem", operatingsystem) 
+                Call echo("cookie", cookie) 
+                Call echo("screenwh", screenwh) 
+                Call echo("moreInfo", moreInfo) 
+                Call hr() 
+            End If 
+            conn.Execute("insert into " & db_PREFIX & "websitestat (visiturl,viewurl,browser,operatingsystem,screenwh,moreinfo,viewdatetime,ip,dateclass) values('" & visitUrl & "','" & viewUrl & "','" & browser & "','" & operatingsystem & "','" & screenwh & "','" & moreInfo & "','" & viewdatetime & "','" & ip & "','" & dateClass & "')") 
+        End If 
+    Next 
 End Function 
 
 '详细网站统计
 Function websiteDetail()
     Dim content, splxx, filePath 
-    Dim s, ip, ipList
+    Dim s, ip, ipList 
     Dim nIP, nPV, i, timeStr, c 
 
     Call handlePower("网站统计详细")                                                '管理权限处理
@@ -1010,23 +1123,23 @@ Function websiteDetail()
         filePath = adminDir & "/data/stat/" & timeStr & ".txt" 
         content = getftext(filePath) 
         splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
-        nIP = 0
-		nPv=0
+        nIP = 0 
+        nPV = 0 
         ipList = "" 
         For Each s In splxx
             If InStr(s, "当前：") > 0 Then
                 s = vbCrLf & s & vbCrLf 
                 ip = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
-				nPV=nPV+1
+                nPV = nPV + 1 
                 If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
-                    ipList = ipList & ip & vbCrLf
-                    nIP = nIP + 1
-                End If
+                    ipList = ipList & ip & vbCrLf 
+                    nIP = nIP + 1 
+                End If 
             End If 
         Next 
-        Call echo(timeStr, "IP(" & nIP & ") PV("& nPV &")") 
+        Call echo(timeStr, "IP(" & nIP & ") PV(" & nPV & ")") 
         If i < 4 Then
-            c = c & timeStr & " IP(" & nIP & ") PV("& nPV &")" & "<br>" 
+            c = c & timeStr & " IP(" & nIP & ") PV(" & nPV & ")" & "<br>" 
         End If 
     Next 
 
@@ -1039,22 +1152,120 @@ End Function
 Sub displayLayout()
     Dim content, lableTitle 
     Call handlePower("显示" & lableTitle)                                           '管理权限处理
-	'读模板 
+    '读模板
     lableTitle = Request("lableTitle") 
-    content=getTemplateContent(Request("templateFile"))
+    content = getTemplateContent(Request("templateFile")) 
     content = Replace(content, "[$position$]", lableTitle) 
     content = replaceValueParam(content, "lableTitle", lableTitle) 
-	
+
 
     If lableTitle = "生成Robots" Then
         content = Replace(content, "[$bodycontent$]", getftext("/robots.txt")) 
+    ElseIf lableTitle = "后台地图" Then
+        content = replaceValueParam(content, "adminmapbody", getAdminMap()) 
     ElseIf lableTitle = "模板管理" Then
         content = displayTemplatesList(content) 
+    ElseIf lableTitle = "生成HTML" Then
+        content = replaceValueParam(content, "columnList", getMakeColumnList()) 
+
+
     End If 
     Call rw(content) 
 End Sub 
+'获得生成栏目列表
+Function getMakeColumnList()
+    Dim c 
+    '栏目
+    rsx.Open "select * from " & db_PREFIX & "webcolumn order by sortrank asc", conn, 1, 1 
+    While Not rsx.EOF
+        If rsx("nofollow") = False Then
+            c = c & "<option value=""" & rsx("id") & """>" & rsx("columnname") & "</option>" & vbCrLf 
+        End If 
+    rsx.MoveNext : Wend : rsx.Close 
+    getMakeColumnList = c 
+End Function 
+
+'获得后台地图
+Function getAdminMap()
+    Dim s, c, url, addSql 
+    If Session("adminflags") <> "|*|" Then
+        addSql = " and isDisplay<>0 " 
+    End If 
+    rs.Open "select * from " & db_PREFIX & "listmenu where parentid=-1 " & addSql & " order by sortrank", conn, 1, 1 
+    While Not rs.EOF
+        c = c & "<div class=""map-menu fl""><ul>" & vbCrLf 
+        c = c & "<li class=""title"">" & rs("title") & "</li><div>" & vbCrLf 
+        rsx.Open "select * from " & db_PREFIX & "listmenu where parentid=" & rs("id") & " " & addSql & "  order by sortrank", conn, 1, 1 
+        While Not rsx.EOF
+            url = phptrim(rsx("customAUrl")) 
+            If rsx("lablename") <> "" Then
+                url = url & "&lableTitle=" & rsx("lablename") 
+            End If 
+            c = c & "<li><a href=""" & url & """>" & rsx("title") & "</a></li>" & vbCrLf 
+        rsx.MoveNext : Wend : rsx.Close 
+        c = c & "</div></ul></div>" & vbCrLf 
+    rs.MoveNext : Wend : rs.Close 
+    c = replaceLableContent(c) 
+    getAdminMap = c 
+End Function 
+
+'获得后台一级菜单列表
+Function getAdminOneMenuList()
+    Dim c, focusStr, addSql, sql 
+    If Session("adminflags") <> "|*|" Then
+        addSql = " and isDisplay<>0 " 
+    End If 
+    sql = "select * from " & db_PREFIX & "listmenu where parentid=-1 " & addSql & " order by sortrank" 
+    '检测SQL
+    If checksql(sql) = False Then
+        Call errorLog("出错提示：<br>function=getAdminOneMenuList<hr>sql=" & sql & "<br>") 
+        Exit Function 
+    End If 
+    rs.Open sql, conn, 1, 1 
+    While Not rs.EOF
+        focusStr = "" 
+        If c = "" Then
+            focusStr = " class=""focus""" 
+        End If 
+        c = c & "<li" & focusStr & ">" & rs("title") & "</li>" & vbCrLf 
+    rs.MoveNext : Wend : rs.Close 
+    c = replaceLableContent(c) 
+    getAdminOneMenuList = c 
+End Function 
+'获得后台菜单列表
+Function getAdminMenuList()
+    Dim s, c, url, selStr, addSql, sql 
+    If Session("adminflags") <> "|*|" Then
+        addSql = " and isDisplay<>0 " 
+    End If 
+    sql = "select * from " & db_PREFIX & "listmenu where parentid=-1 " & addSql & " order by sortrank" 
+    '检测SQL
+    If checksql(sql) = False Then
+        Call errorLog("出错提示：<br>function=getAdminMenuList<hr>sql=" & sql & "<br>") 
+        Exit Function 
+    End If 
+    rs.Open sql, conn, 1, 1 
+    While Not rs.EOF
+        selStr = "didoff" 
+        If c = "" Then
+            selStr = "didon" 
+        End If 
+
+        c = c & "<ul class=""navwrap"">" & vbCrLf 
+        c = c & "<li class=""" & selStr & """>" & rs("title") & "</li>" & vbCrLf 
 
 
+        rsx.Open "select * from " & db_PREFIX & "listmenu where parentid=" & rs("id") & "  " & addSql & " order by sortrank", conn, 1, 1 
+        While Not rsx.EOF
+            url = phptrim(rsx("customAUrl")) 
+            c = c & " <li class=""item"" onClick=""window1('" & url & "','" & rsx("lablename") & "');"">" & rsx("title") & "</li>" & vbCrLf 
+
+        rsx.MoveNext : Wend : rsx.Close 
+        c = c & "</ul>" & vbCrLf 
+    rs.MoveNext : Wend : rs.Close 
+    c = replaceLableContent(c) 
+    getAdminMenuList = c 
+End Function 
 '处理模板列表
 Function displayTemplatesList(content)
     Dim templatesFolder, templatePath, templatePath2, templateName, defaultList, folderList, splStr, s, c 
@@ -1092,8 +1303,6 @@ Function displayTemplatesList(content)
     content = Replace(content, "[list]" & defaultList & "[/list]", c) 
     displayTemplatesList = content 
 End Function 
-
-
 '应用模板
 Function isOpenTemplate()
     Dim templatePath, templateName, editValueStr, url 
@@ -1115,7 +1324,24 @@ Function isOpenTemplate()
     Call rw(getMsg1("启用模板成功，正在进入模板管理界面...", url)) 
     Call writeSystemLog("", "应用模板" & templatePath)                              '系统日志
 End Function 
-
-
-%>           
-
+'执行SQL
+Function executeSQL()
+    Dim sqlvalue 
+    sqlvalue = "delete from " & db_PREFIX & "WebSiteStat" 
+    If Request("sqlvalue") <> "" Then
+        sqlvalue = Request("sqlvalue") 
+        Call OpenConn() 
+        '检测SQL
+        If checksql(sqlvalue) = False Then
+            Call errorLog("出错提示：<br>sql=" & sqlvalue & "<br>") 
+            Exit Function 
+        End If 
+        Call echo("执行SQL语句成功", sqlvalue) 
+    End If 
+    If Session("adminusername") = "ASPPHPCMS" Then
+        Call rw("<form id=""form1"" name=""form1"" method=""post"" action=""?act=executeSQL""  onSubmit=""if(confirm('你确定要操作吗？\n操作后将不可恢复')){return true}else{return false}"">SQL<input name=""sqlvalue"" type=""text"" id=""sqlvalue"" value=""" & sqlvalue & """ size=""80%"" /><input type=""submit"" name=""button"" id=""button"" value=""执行"" /></form>") 
+    Else
+        Call rw("你没有权限执行SQL语句") 
+    End If 
+End Function 
+%>              

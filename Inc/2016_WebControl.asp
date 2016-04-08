@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 '网站控制 20160223
 
@@ -43,7 +33,36 @@ End Function
 Function delTemplateMyNote(code)
     Dim startStr, endStr, i, s, handleNumb, splStr, Block, id 
     Dim content, DragSortCssStr, DragSortStart, DragSortEnd, DragSortValue, c 
-    handleNumb = 99                                                                 '这里定义很重要
+    dim lableName,lableStartStr,lableEndStr
+	handleNumb = 99                                                                 '这里定义很重要
+	
+	'加强版  对这个也可以<!--#aaa start#--><!--#aaa end#-->
+    startStr = "<!--#" : endStr = "#-->" 
+    For i = 1 To handleNumb
+        If InStr(code, startStr) > 0 And InStr(code, endStr) > 0 Then
+            lableName = StrCut(code, startStr, endStr, 2)
+			if instr(lableName," start")>0 then
+				lableName=mid(lableName,1,len(lableName)-6)
+			end if	
+			
+			s=startStr & lableName & endStr
+			lableStartStr=startStr & lableName & " start" & endStr
+			lableEndStr=startStr & lableName & " end" & endStr
+			If InStr(code, lableStartStr) > 0 And InStr(code, lableEndStr) > 0 Then
+            	s = StrCut(code, lableStartStr, lableEndStr, 1)
+				'call echo(">>",s)
+			end if
+			code=replace(code,s,"")
+			'call echo("s",s)
+			'call echo("lableName",lableName)
+			'call echo("lableStartStr",replace(lableStartStr,"<","&lt;"))
+			'call echo("lableEndStr",replace(lableEndStr,"<","&lt;"))
+		else
+			exit for
+        End If 
+    Next
+	
+	
 
     '清除ReadBlockList读出块列表内容  不过有个不足的地方，读出内容可以从外部读出内容，这个以后考虑
     'Call Eerr("ReadBlockList",ReadBlockList)
@@ -62,7 +81,7 @@ Function delTemplateMyNote(code)
         Else
             Exit For 
         End If 
-    Next 
+    Next
 
 	'删除翻页配置20160309
 	startStr = "<!--#list start#-->" 
@@ -192,7 +211,7 @@ End Function
 
 '替换参数值 2014  12 01
 Function replaceValueParam(content, paramName, replaceStr)
-    Dim startStr, endStr, labelStr, tempLabelStr, nLen, nTimeFormat, delHtmlYes, funStr, trimYes, s ,i
+    Dim startStr, endStr, labelStr, tempLabelStr, nLen, nTimeFormat, delHtmlYes, funStr, trimYes,isEscape, s ,i
     Dim ifStr                                                                       '判断字符
     Dim elseIfStr                                                                   '第二判断字符
     Dim valueStr                                                                    '显示字符
@@ -307,14 +326,21 @@ Function replaceValueParam(content, paramName, replaceStr)
 					replaceStr = s 
 				End If 
 			End If 
-	
-	
+			'escape转码
+			isEscape=lcase(RParam(labelStr, "escape")) 
+			if isEscape="1" or isEscape="true" then
+				replaceStr=escape(replaceStr)
+			end if
 	
 			'文本颜色
 			s = RParam(labelStr, "fontcolor")                                               '函数
 			If s <> "" Then
 				replaceStr = "<font color=""" & s & """>" & replaceStr & "</font>" 
 			End If 
+			
+ 
+			
+			
 			'call echo(tempLabelStr,replaceStr)
 			content = Replace(content, tempLabelStr, replaceStr) 
 		else
@@ -323,6 +349,7 @@ Function replaceValueParam(content, paramName, replaceStr)
 	next
     replaceValueParam = content 
 End Function 
+ 
   
 '显示编辑器20160115
 Function displayEditor(action)

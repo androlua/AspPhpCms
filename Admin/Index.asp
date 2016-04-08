@@ -1,19 +1,9 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
-<!--#Include File = "../Inc/Config.Asp"-->      
+<!--#Include File = "../Inc/Config.Asp"-->       
 <% 
 Dim ROOT_PATH : ROOT_PATH = handlePath("./") 
-%>     
-<!--#Include File = "../Inc/admin_function.asp"-->     
-<!--#Include File = "../Inc/admin_setAccess.asp"-->     
+%>      
+<!--#Include File = "../Inc/admin_function.asp"-->      
+<!--#Include File = "../Inc/admin_setAccess.asp"-->      
 <% 
 '=========
 Dim cfg_webSiteUrl, cfg_webTitle, cfg_flags, cfg_webtemplate 
@@ -23,13 +13,16 @@ Dim cfg_webSiteUrl, cfg_webTitle, cfg_flags, cfg_webtemplate
 '加载网址配置
 Sub loadWebConfig()
     Call openconn() 
-    rs.Open "select * from " & db_PREFIX & "website", conn, 1, 1 
-    If Not rs.EOF Then
-        cfg_webSiteUrl = rs("webSiteUrl") & ""                                          '网址
-        cfg_webTitle = rs("webTitle") & ""                                              '网址标题
-        cfg_flags = rs("flags") & ""                                                    '旗
-        cfg_webtemplate = rs("webtemplate") & ""                                        '模板路径
-    End If : rs.Close 
+    '判断表存在
+    If InStr(getHandleTableList(), "|" & db_PREFIX & "website" & "|") > 0 Then
+        rs.Open "select * from " & db_PREFIX & "website", conn, 1, 1 
+        If Not rs.EOF Then
+            cfg_webSiteUrl = rs("webSiteUrl") & ""                    '网址
+            cfg_webTitle = rs("webTitle") & ""                        '网址标题
+            cfg_flags = rs("flags") & ""                              '旗
+            cfg_webtemplate = rs("webtemplate") & ""                  '模板路径
+        End If : rs.Close 
+    End If 
 End Sub 
 
 
@@ -47,8 +40,9 @@ Sub displayAdminLogin()
         Call adminIndex() 
     Else
         Call rw(getTemplateContent("login.html")) 
-    End If
+    End If 
 End Sub 
+
 '登录后台
 Sub login()
     Dim userName, passWord, valueStr 
@@ -98,13 +92,20 @@ Sub adminOut()
 End Sub 
 '清除缓冲
 Sub clearCache()
-	call deleteFile(WEB_CACHEFile)
+    Call deleteFile(WEB_CACHEFile) 
     Call rw(getMsg1("清除缓冲完成，正在进入后台界面...", "?act=displayAdminLogin")) 
-end Sub
+End Sub 
 '后台首页
 Sub adminIndex()
+    Dim c 
     Call loadWebConfig() 
-    Call rw(getTemplateContent("adminIndex.html")) 
+    c = getTemplateContent("adminIndex.html") 
+    c = Replace(c, "[$adminonemenulist$]", getAdminOneMenuList()) 
+    c = Replace(c, "[$adminmenulist$]", getAdminMenuList()) 
+    c = Replace(c, "[$officialwebsite$]", getOfficialWebsite())                '获得官方信息
+    c = replaceValueParam(c, "title", "")                                           '给手机端用的20160330
+
+    Call rw(c) 
 End Sub 
 '========================================================
 
@@ -145,25 +146,33 @@ Select Case Request("act")
     Case "saveAddEditHandle" : Call saveAddEditHandle(Request("actionType"), Request("lableTitle"))'保存模块处理  ?act=saveAddEditHandle&actionType=WebLayout
     Case "delHandle" : Call del(Request("actionType"), Request("lableTitle"))       '删除处理  ?act=delHandle&actionType=WebLayout
     Case "sortHandle" : Call sortHandle(Request("actionType"))                      '排序处理  ?act=sortHandle&actionType=WebLayout
-	Case "updateField" : Call updateField()                     					'更新字段 
+    Case "updateField" : Call updateField()                                         '更新字段
 
 
     Case "displayLayout" : displayLayout()                                          '显示布局
     Case "saveRobots" : saveRobots()                                                '保存robots.txt
     Case "saveSiteMap" : saveSiteMap()                                              '保存sitemap.xml
+    Case "deleteAllMakeHtml" : deleteAllMakeHtml()                                  '删除全部生成的html文件
+
     Case "isOpenTemplate" : isOpenTemplate()                                        '更换模板
+
     Case "updateWebsiteStat" : updateWebsiteStat()                                  '更新网站统计
+    Case "clearWebsiteStat" : clearWebsiteStat()                                    '清空网站统计
+    Case "updateTodayWebStat" : updateTodayWebStat()                                '更新网站今天统计
+    Case "executeSQL" : executeSQL()                                                '执行SQL
+
     Case "websiteDetail" : websiteDetail()                                          '详细网站统计
+
 
     Case "setAccess" : resetAccessData()                                            '恢复数据
 
     Case "login" : login()                                                          '登录
     Case "adminOut" : adminOut()                                                    '退出登录
     Case "adminIndex" : adminIndex()                                                '管理首页
-    Case "clearCache" : clearCache()                                                		'清除缓冲
+    Case "clearCache" : clearCache()                                                '清除缓冲
     Case Else : displayAdminLogin()                                                 '显示后台登录
 End Select
 
-%>
+%> 
 
 

@@ -1,13 +1,3 @@
-<?php 
-/************************************************************
-作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
-创建：2016-03-11
-联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered by ASPPHPCMS 
-************************************************************/
-?>
 <?php
 
 //获得网址内容页
@@ -26,13 +16,17 @@ function get_url_content($url){
    return $file_contents;
 }
 //获得网址内容页  (辅助上面)
-function GetHttpPage($url){
-	return get_url_content(url);
+function getHttpPage($url){
+	return get_url_content($url);
+}
+//获得网址内容页  (辅助上面)
+function getHttpUrl($url,$rel){
+	return get_url_content($url);
 }
 
 //分割字符   
 //测试 echo(GetArray("11{@11 中国人len(now()) 22@}333abcdefg{@getLableValue title='标题 now()'content=\"len(now())\"@}123456{@aa title='aa'@}eeeee{@getLableValue title='aa'@} bb", "{@", "@}", true, true));   
-function  GetArray( $content, $startStr, $endStr, $startType, $endType){
+function  getArray( $content, $startStr, $endStr, $startType, $endType){
      $s=""; $i=""; $listStr ="";
     for( $i = 0 ; $i<= 999; $i++){				//30为截取条件
 		//echo($content . "=" . instr($content, $startStr));

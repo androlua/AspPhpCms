@@ -17,7 +17,10 @@
 </div>
 <div class="mg10">
 	<div class="atitleleft">[$lableTitle$]信息</div>
-	<a href="javascript:clickControl('?act=updateWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要操作吗？\n操作需要较长时间')" class="atitleleft mgl10">更新网站统计</a>
+	<a href="javascript:clickControl('?act=updateWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要更新全部统计吗？\n操作需要较长时间')" class="atitleleft mgl10">更新全部统计</a>
+	<a href="javascript:clickControl('?act=clearWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要清空全部统计吗？\n操作后将不可恢复')" class="atitleleft mgl10">清空全部统计</a>
+	<a href="javascript:clickControl('?act=updateTodayWebStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要更新今天统计吗？\n操作需要较长时间')" class="atitleleft mgl10">更新今天统计</a>
+    
 	<a href="javascript:clickControl('?act=websiteDetail','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" class="atitleleft mgl10">网站统计详细</a>
 	<a href="javascript:addEditHandle('[$actionType$]','[$lableTitle$]','[$page$]','');" class="atitleright">添加[$lableTitle$]</a>&nbsp;
 	<div class="clear">
@@ -67,8 +70,8 @@
           
 				<input name="idcheck" type="checkbox" class="np" value="[$id$]">
                 <input type="hidden" name="id" id="id" value="[$id$]" />          </td>
-		  <td align="left">[$visiturl len='24'$] </td>
-		  <td align="left">[$viewurl len='24'$] </td>
+		  <td align="left"><a href="[$visiturl$]" target="_blank">[$visiturl len='24'$]</a> </td>
+		  <td align="left"><a href="viewurl" target="_blank">[$viewurl len='24'$]</a> </td>
 		  <td>[$screenwh$]</td>
 		  <td>[$viewdatetime$] </td>
 		  <td>[$ip$]</td>

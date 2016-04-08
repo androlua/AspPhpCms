@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 '测试获得VB那个拼音模板
 Sub testGetPY()
@@ -503,10 +493,12 @@ Function pinYin(content, SType)
         ElseIf SType = "4" Then
             pinYin = C4 
         Else
+            Call echo("转换字符", content) 
             Call echo("拼音小写", Trim(c)) 
-            Call echo("首字母大写", Trim(C3)) 
-            Call echo("取首字母", Trim(C3)) 
-            Call echo("公司标准", EnToCompany(C3)) 
+            Call echo("首字母大写", Trim(C4)) 
+            Call echo("取首字母", Trim(C2)) 
+            Call echo("公司标准", EnToCompany(C4)) 
+            Call echo("无空格首字母小写", Trim(Replace(c, " ", ""))) 
             Call echo("无空格首字母大写", Trim(Replace(C3, " ", ""))) 
         End If 
     End If 

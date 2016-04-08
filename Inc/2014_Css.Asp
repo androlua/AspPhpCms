@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 'Css
 
@@ -31,13 +21,11 @@ Function cssCompression(content, Level)
         content = RegExp_Replace(content, ";\s*}", "}")                                 '//清除末尾分号和大括号
         content = RegExp_Replace(content, "([^\s])\{([^\s])", "$1{$2") 
         content = RegExp_Replace(content, "([^\s])\}([^" & vbCrLf & "]s*)", "$1}" & vbCrLf & "$2") 
-
-
-
+ 
     End If 
     content = trimVBcrlf(content) 
     cssCompression = content 
-End Function 
+End Function
 
 '删除Css里注释
 Function deleteCssNote(content)

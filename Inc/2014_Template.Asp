@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 '删除这种多余标签 <R#读出内容BlockName网站公告 start#>  <R#读出内容BlockName网站公告 end#>
 '对模板处理
@@ -16,9 +6,10 @@
 
 '读模块内容
 Function XY_ReadTemplateModule(action)
-    Dim moduleId, filePath 
+    Dim moduleId, filePath,c,i
     Dim sourceList                                                                  '源内容列表 20150109
     Dim replaceList                                                                 '替换内容列表
+	dim splSource,splReplace,sourceStr,replaceStr
     filePath = RParam(action, "File") 
     moduleId = RParam(action, "ModuleId") 
     sourceList = RParam(action, "SourceList") 
@@ -29,14 +20,25 @@ Function XY_ReadTemplateModule(action)
     filePath = filePath & ".html" 
     'Call Echo("FilePath",FilePath)
     'Call Echo("ModuleId",ModuleId)
-    XY_ReadTemplateModule = readTemplateModuleStr(filePath, "", moduleId) 
+	c= readTemplateModuleStr(filePath, "", moduleId) 
+	'加替换于20160331
+	if sourceList<>"" and replaceList<>"" then
+		splSource=split(sourceList,"[Array]")
+		splReplace=split(replaceList,"[Array]")
+		for i=0 to ubound(splSource)
+			sourceStr=splSource(i)
+			replaceStr=splReplace(i)
+			c=replace(c,sourceStr,replaceStr)
+		next
+	end if
+    XY_ReadTemplateModule =c
 End Function 
 
 '读模块内容
 Function readTemplateModuleStr(filePath, defaultContent, moduleId)
     Dim startStr, endStr, content 
-    startStr = "<!--#Module " & moduleId & " Start#-->" 
-    endStr = "<!--#Module " & moduleId & " End#-->" 
+    startStr = "<!--#Module " & moduleId & " start#-->" 
+    endStr = "<!--#Module " & moduleId & " end#-->" 
     'FilePath = ReplaceGlobleLable(FilePath)                '替换全部标签        '添加于2014 12 11
 
     '文件不存在，则追加模板路径 20150616 给VB软件里用

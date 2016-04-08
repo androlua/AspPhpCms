@@ -1,13 +1,3 @@
-<?php 
-/************************************************************
-作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
-创建：2016-03-11
-联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered by ASPPHPCMS 
-************************************************************/
-?>
 <?php
 // 读取文件
 function reaFile($file) {
@@ -434,6 +424,7 @@ function getDirAllFileNameList($folderPath,$fileTypeList){
 	return getFileFolderList($folderPath,'','|处理文件|文件名称|循环文件夹|hidefolderlist|','|'.$fileTypeList.'|');
 }
 
+
 //获得当前目录下文件夹
 function getDirFolderList($folderPath){ 
 	return getFileFolderList($folderPath,'','|处理文件夹|');
@@ -595,6 +586,7 @@ function getFileName($filePath){
 }
 //获得文件属性  handleFilePathArray($filePath)(3)  在PHP5.2.7上面是用不了的，晕20160216
 function getFileAttr( $filePath, $sType){
+	$sType=strval($sType);
     $arrayData=handleFilePathArray($filePath);
     if( $sType == '0' ){
         $getFileAttr =$arrayData[0] ;
@@ -609,4 +601,21 @@ function getFileAttr( $filePath, $sType){
     }
     return @$getFileAttr;
 }
+
+
+//--------------------------------------- 图片处理 ------------------------------------------------
+
+//获得图片类型 如/png/jpg/gif     20160322
+function getImageType($imgPath){
+	$imgPath=handlePath($imgPath);
+	$imgType=image_type_to_mime_type(exif_imagetype($imgPath));
+	$imgType=str_replace("-", '/', $imgType);
+	$imgType=str_replace(".", '/', $imgType);	
+	$imgType=substr($imgType,strrpos($imgType, '/')+1);
+	if($imgType=='jpeg'){
+		$imgType='jpg';
+	}
+	return strtolower($imgType);
+}
+
 ?>

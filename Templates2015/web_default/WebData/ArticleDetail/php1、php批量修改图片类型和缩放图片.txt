@@ -1,0 +1,389 @@
+【parentid】PHP
+【title】php批量修改图片类型和缩放图片
+【webtitle】php批量修改图片类型和缩放图片 - 分享模板网站
+【webkeywords】php批量修改图片类型和缩放图片 - 分享模板网站
+【webdescription】php批量修改图片类型和缩放图片 - 分享模板网站
+【sortrank】1
+【author】sharembweb
+【adddatetime】2016-03-23 09:39:18
+【filename】/php/Batch-change-image-size.html
+【flags】|
+【relatedtags】ASPPHPCMS,在线ASP转PHP 
+【bodycontent】
+{$displayEditor $}
+<strong>php批量修改图片类型和缩放图片</strong>
+<br>
+
+<strong><a href="http://sharembweb.com/php/" target="_blank" class="ablue">PHP</a></strong>代码部分：
+<pre class="brush: php;">
+[&html转码&]
+<?PHP
+//系统核心程序
+require_once './Include/ASP.php';
+require_once './Include/sys_FSO.php';
+require_once './Include/sys_URL.php';
+require_once './Include/sys_Cai.php';
+require_once './Include/Conn.php';
+require_once './Include/MySqlClass.php';
+//引用inc
+require_once './../Web/Inc/2014_Array.php';
+require_once './../Web/Inc/2014_Author.php';
+require_once './../Web/Inc/2014_Css.php';
+require_once './../Web/Inc/2014_Js.php'; 
+require_once './../Web/Inc/2015_APGeneral.php';
+require_once './../Web/Inc/2015_Color.php';
+require_once './../Web/Inc/2015_Formatting.php';
+require_once './../Web/Inc/2015_Param.php';
+require_once './../Web/Inc/2015_ToMyPHP.php';
+require_once './../Web/Inc/2015_NewWebFunction.php';
+require_once './../Web/Inc/2016_SaveData.php'; 
+require_once './../Web/Inc/2016_WebControl.php'; 
+require_once './../Web/Inc/ASPPHPAccess.php'; 
+//require_once './../Web/Inc/2015_ToPhpCms.php';
+require_once './../Web/Inc/Cai.php';
+require_once './../Web/Inc/Check.php';
+require_once './../Web/Inc/Common.php'; 
+require_once './../Web/Inc/Incpage.php';
+require_once './../Web/Inc/Print.php';
+require_once './../Web/Inc/StringNumber.php';
+require_once './../Web/Inc/Time.php';
+require_once './../Web/Inc/URL.php';;
+require_once './../Web/Inc/EncDec.php';
+require_once './../Web/Inc/IE.php';
+require_once './../Web/Inc/html.php';
+require_once './../Web/Inc/2016_Log.php'; 
+require_once './../Web/Inc/SystemInfo.php';  
+
+
+//echo getcwd() . "<br/>"; 			//获得当前目录
+//echo dirname(__FILE__); 			//获得当前目录
+
+/*
+aa\PHP2\ImageWaterMark\jpgtopng.php
+*/
+
+define('WEBPATH', getcwd().DIRECTORY_SEPARATOR);				//网站主目录
+
+
+handleImage(0);
+
+
+
+
+//处理图片
+function handleImage($sType=0){
+	$sourceDir='./web_img';			//源目录
+	$handleDir='./web_img2';			//处理目录
+	
+	deleteFolder($sourceDir);
+	copyFolder($sourceDir, $handleDir);
+	//jpg类型 转 png类型
+	batchHandleImageJpgToPng( handlePath($handleDir) );
+	//图片等比缩放
+	batchHandleImageZoom(handlePath($handleDir) , 390,260);
+	if($sType==1){
+		//批量处理图片缩放 直接压缩，会失真 图片不支持bmp格式处理
+		batchHandleImageNoHandleZoom( handlePath($handleDir) , 390,260);
+	}else{
+		//图片居中  这一步可以在JS里通过drawImage  缩放处理
+		batchHandleImageBackgroundWrite( handlePath($handleDir) , 390,260, '|lrmiddle|imgulmiddel|');
+	}
+	//生成测试html
+	handleCreateHtml($handleDir);
+
+}
+//测试
+function testImage(){
+	deleteFolder("./1.1");
+	copyFolder('./11','./1.1');
+	//图片等比缩放
+	batchHandleImageZoom(handlePath('./1.1') , 390,260);
+	//图片居中 
+	batchHandleImageBackgroundWrite( handlePath('./1.1') , 390,260, '|lrmiddle|imgulmiddel|');
+}
+
+
+//生成测试html
+function handleCreateHtml($folderPath){
+	$c='';
+	$splstr=aspSplit(getDirFolderNameList($folderPath),vbcrlf());
+	foreach($splstr as $folderName){
+		$c.='<div class="clear"></div><div>'.$folderName.'</div>' . vbcrlf();
+		if($folderName!=''){
+			aspecho('$folderName', $folderName);
+	
+			$content=getDirAllFileNameList($folderPath.'/'.$folderName,'');
+			$splstr=aspSplit($content,vbCrlf());
+			foreach($splstr as $imagePath){
+				if($imagePath!=''){
+					aspecho('$imagePath', $imagePath);
+					$s='<div class="item"><img src="'.$folderName.'/'. $imagePath .'" /></div>'.vbCrlf();
+					$c.=$s;
+				}
+			}
+		}
+	}
+	copyFile('./res/_jquery.js',$folderPath.'/_jquery.js');
+	copyFile('./res/runAction.js',$folderPath.'/runAction.js');
+	$content=getftext('./res/temp.html');
+	$content=replace($content,'[content]',$c);
+	createFile($folderPath.'/index.html',$content);
+}
+
+//批量处理图片 jpg转gif   如果是文件名称不对改名称，如果是图片类型不对改图片类型      20160323
+function batchHandleImageJpgToPng($dirPath){
+	//aspecho('WEBPATH',WEBPATH);
+	//aspecho('$dirPath',$dirPath);
+	aspecho('批量处理图片 jpg转gif',$dirPath);
+	$content=getDirAllFileList($dirPath,'');
+	$splstr=aspSplit($content,vbCrlf());
+	foreach($splstr as $imagePath){
+		if($imagePath!=''){
+			if(getImageType($imagePath)=='jpg'){
+				$img = imagecreatefromjpeg ($imagePath);
+				$imgWidth=imagesx($img);
+				$imgHeight=imagesy($img);
+				aspecho(getImageType($imagePath), $imagePath);
+				aspecho('$imgWidth',$imgWidth);
+				aspecho('$imgHeight',$imgHeight);
+				
+				$toImagePath=getFileAttr($imagePath,1) . getFileAttr($imagePath,3) . ".png";
+				$temp_toImagePath=$toImagePath . "_temp.png";
+				imagepng($img, $temp_toImagePath); 
+				deleteFile($imagePath);
+				moveFile($temp_toImagePath, $toImagePath);
+			//修改文件名称
+			}elseif(strtolower(getFileAttr($imagePath,4)!='png')){
+				$toImagePath=getFileAttr($imagePath,1) . getFileAttr($imagePath,3) . ".png";
+				moveFile($imagePath, $toImagePath);			
+			}
+		}
+	}
+}
+
+//批量处理图片缩放 图片不支持bmp格式处理
+function batchHandleImageZoom($dirPath,$setWidth=0,$setHeight=0){
+	if($setWidth==0){
+		die('设置图片宽为空，停止处理');
+	}
+	aspecho('批量处理图片缩放',$dirPath);
+	$content=getDirAllFileList($dirPath,'');
+	$splstr=aspSplit($content,vbCrlf());
+	foreach($splstr as $imagePath){
+		if($imagePath!=''){
+			$imageType=strtolower(getImageType($imagePath));
+			//aspecho($imagePath, $imageType);
+			$img='';
+			if($imageType=='jpg'){
+				$img = imagecreatefromjpeg ($imagePath);
+			}elseif($imageType=='gif'){
+				$img = imagecreatefromgif ($imagePath);
+			}elseif($imageType=='png'){
+				$img = imagecreatefrompng ($imagePath); 
+			}elseif($imageType=='wbmp'){
+				$img = imagecreatefromwbmp ($imagePath);
+ 			}
+			
+			if($img!=''){
+				$imgWidth=imagesx($img);
+				$imgHeight=imagesy($img);
+				if($imgWidth!=$setWidth || $imgHeight!=$setHeight){
+					aspecho($imageType, $imagePath);				
+					
+ 
+					if ($imgWidth > 0 && $imgHeight > 0){
+						if ($imgWidth / $imgHeight >= $setWidth / $setHeight){
+							if ($imgWidth > $setWidth) {
+								$newImgWidth = $setWidth;
+								$newImgHeight = ($imgHeight * $setWidth) / $imgWidth;
+							}else {
+								$newImgWidth = $imgWidth;
+								$newImgHeight = $imgHeight;
+							}
+						}else {
+							if ($imgHeight > $setHeight) {
+								$newImgHeight = $setHeight;
+								$newImgWidth = ($imgWidth * $setHeight) / $imgHeight;
+							}else {
+								$newImgWidth = $imgWidth;
+								$newImgHeight = $imgHeight;
+							}
+						}
+					}
+					
+					$img2 = imagecreatetruecolor ( $newImgWidth, $newImgHeight );
+					//缩放图片
+					imagecopyresampled ( $img2, $img, 0, 0, 0, 0, $newImgWidth, $newImgHeight, $imgWidth, $imgHeight);
+					
+					//保存图片
+					if($imageType=='jpg'){
+						imagejpeg($img2, $imagePath); 
+					}elseif($imageType=='gif'){
+						imagegif($img2, $imagePath);  
+					}elseif($imageType=='png'){
+						imagepng($img2, $imagePath);  
+					}elseif($imageType=='wbmp'){
+						imagewbmp($img2, $imagePath); 
+					}
+				}
+
+			}
+		}
+	}
+}
+
+//批量处理图片居中   背景为白色
+function batchHandleImageBackgroundWrite($dirPath,$setWidth=0,$setHeight=0,$sType){
+	if($setWidth==0){
+		die('设置图片宽为空，停止处理');
+	}
+	aspecho('批量处理图片居中',$dirPath);
+	$content=getDirAllFileList($dirPath,'');
+	$splstr=aspSplit($content,vbCrlf());
+	foreach($splstr as $imagePath){
+		if($imagePath!=''){
+			$imageType=strtolower(getImageType($imagePath));
+			//aspecho($imagePath, $imageType);
+			$img='';
+			if($imageType=='jpg'){
+				$img = imagecreatefromjpeg ($imagePath);
+			}elseif($imageType=='gif'){
+				$img = imagecreatefromgif ($imagePath);
+			}elseif($imageType=='png'){
+				$img = imagecreatefrompng ($imagePath); 
+			}elseif($imageType=='wbmp'){
+				$img = imagecreatefromwbmp ($imagePath);
+ 			}
+			
+			if($img!=''){
+				$imgWidth=imagesx($img);
+				$imgHeight=imagesy($img);
+				if($imgWidth!=$setWidth || $imgHeight!=$setHeight){
+					aspecho($imageType, $imagePath);				
+					
+					$newSetHeight=$setHeight;
+					if($setHeight==0){
+						$newSetHeight=intval($setWidth/($imgWidth/$imgHeight));
+					}
+					$img2 = imagecreatetruecolor ( $setWidth, $newSetHeight );
+					
+					//让背景变白色
+					$imgWrite = imagecreatefromjpeg (handlePath('./res/write.jpg'));					
+					imagecopyresampled ( $img2, $imgWrite, 0, 0, 0, 0, $setWidth, $setHeight, $setWidth, $setHeight);
+					 
+
+					$x=intval(($setWidth-$imgWidth)/2);
+					$y=intval(($setHeight-$imgHeight)/2);
+					//aspecho($imgWidth, $imgHeight);
+					//aspecho($x, $y);
+					
+					//缩放图片 居中
+					imagecopyresampled ( $img2, $img, $x, $y, 0, 0,$setWidth-$x*2, $setHeight-$y*2, $imgWidth, $imgHeight);
+					
+					//保存图片
+					if($imageType=='jpg'){
+						imagejpeg($img2, $imagePath); 
+					}elseif($imageType=='gif'){
+						imagegif($img2, $imagePath);  
+					}elseif($imageType=='png'){
+						imagepng($img2, $imagePath);  
+					}elseif($imageType=='wbmp'){
+						imagewbmp($img2, $imagePath); 
+					}
+				}
+
+			}
+		}
+	}
+}
+
+
+
+
+
+//批量处理图片缩放 直接压缩，会失真 图片不支持bmp格式处理
+function batchHandleImageNoHandleZoom($dirPath,$setWidth=0,$setHeight=0){
+	if($setWidth==0){
+		die('设置图片宽为空，停止处理');
+	}
+	aspecho('处理文件夹',$dirPath);
+	$content=getDirAllFileList($dirPath,'');
+	$splstr=aspSplit($content,vbCrlf());
+	foreach($splstr as $imagePath){
+		if($imagePath!=''){
+			$imageType=strtolower(getImageType($imagePath));
+			//aspecho($imagePath, $imageType);
+			$img='';
+			if($imageType=='jpg'){
+				$img = imagecreatefromjpeg ($imagePath);
+			}elseif($imageType=='gif'){
+				$img = imagecreatefromgif ($imagePath);
+			}elseif($imageType=='png'){
+				$img = imagecreatefrompng ($imagePath); 
+			}elseif($imageType=='wbmp'){
+				$img = imagecreatefromwbmp ($imagePath);
+ 			}
+			
+			if($img!=''){
+				$imgWidth=imagesx($img);
+				$imgHeight=imagesy($img);
+				if($imgWidth!=$setWidth || $imgHeight!=$setHeight){
+					aspecho($imageType, $imagePath);				
+					
+					$newSetHeight=$setHeight;
+					if($setHeight==0){
+						$newSetHeight=intval($setWidth/($imgWidth/$imgHeight));
+					}
+					$img2 = imagecreatetruecolor ( $setWidth, $newSetHeight );
+					//缩放图片
+					imagecopyresampled ( $img2, $img, 0, 0, 0, 0, $setWidth, $newSetHeight, $imgWidth, $imgHeight);
+					
+					//保存图片
+					if($imageType=='jpg'){
+						imagejpeg($img2, $imagePath); 
+					}elseif($imageType=='gif'){
+						imagegif($img2, $imagePath);  
+					}elseif($imageType=='png'){
+						imagepng($img2, $imagePath);  
+					}elseif($imageType=='wbmp'){
+						imagewbmp($img2, $imagePath); 
+					}
+				}
+
+			}
+		}
+	}
+}
+
+
+
+/*
+imagecopyresampled
+目标图象连接资源。
+ src_image 
+源图象连接资源。
+ dst_x 
+目标 X 坐标点。 
+dst_y 
+目标 Y 坐标点。 
+src_x 
+源的 X 坐标点。 
+src_y 
+源的 Y 坐标点。 
+dst_w 
+目标宽度。 
+dst_h 
+目标高度。 
+src_w 
+源图象的宽度。
+ src_h 
+源图象的高度。
+*/
+?>
+[&html转码end&]
+</pre>
+
+【/bodycontent】
+
+
+ 

@@ -1,0 +1,143 @@
+
+【parentid】作品展示
+【title】【ASP源码】ASPPHPCMS内容管理系统
+【sortrank】1
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【isonhtml】0
+【customaurl】http://sharembweb.com/aspphpcms/download.html
+【target】
+-------------------------------
+【parentid】作品展示
+【title】【ASP整站】企业模板网站ASP版(绿色样式) Powered by ASPPHPCMS
+【sortrank】2
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【isonhtml】0
+【customaurl】http://sharembweb.com/mobandown/company-green-template.html
+【target】
+【titlecolor】red
+【flags】|b|
+-------------------------------
+【parentid】作品展示
+【title】【ASP源码】ASP转PHP程序 v1.0
+【sortrank】3
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【isonhtml】0
+【customaurl】http://sharembweb.com/asptophp/download.html
+【target】
+【titlecolor】green
+【flags】|b|
+-------------------------------
+【parentid】作品展示
+【title】【ASP源码】格式化ASP程序V1.0
+【sortrank】4
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【nofollow】1
+【isonhtml】0
+【customaurl】http://www.codesky.net/codedown/html/29984.htm
+【target】_blank
+-------------------------------
+【parentid】作品展示
+【title】【Flash作品】仿照《网易大话西游2》来开发
+【webtitle】【Flash作品】仿照《网易大话西游2》来开发
+【webkeywords】【Flash作品】仿照《网易大话西游2》来开发_大话西游2Flash版
+【webdescription】【Flash作品】仿照《网易大话西游2》来开发 QQ313801120
+【sortrank】5
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【filename】/xy2/
+【target】_blank
+【bodycontent】
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="800" height="600">
+  <param name="movie" value="/xy2/3.swf">
+  <param name="quality" value="high">
+  <embed src="/xy2/3.swf" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="800" height="600"></embed>
+</object>
+
+【/bodycontent】
+-------------------------------
+【parentid】作品展示
+【title】【Canvas作品】在线写字_在线画画_保存画图
+【sortrank】4
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【nofollow】1
+【isonhtml】0
+【customaurl】http://sharembweb.com/toolslist/Drawing/
+【target】_blank
+【titlecolor】blue
+【flags】|b|
+-------------------------------
+【parentid】作品展示
+【title】【ASP源码】20多种ASP验证码 v1.0
+【sortrank】21
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【nofollow】1
+【isonhtml】0
+【customaurl】http://sharembweb.com/asp/verification-download.html
+【target】_blank
+-------------------------------
+【parentid】作品展示
+【title】【VB源码】FSO操作文件文件夹
+【sortrank】22
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【nofollow】1
+【isonhtml】0
+【customaurl】http://www.codesky.net/showhtml/17340.htm
+【target】_blank
+-------------------------------
+【parentid】作品展示
+【title】【ASP源码】50多种网站导航样式(包括后台管理)
+【sortrank】23
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【nofollow】1
+【isonhtml】0
+【customaurl】http://www.codesky.net/codedown/html/29077.htm
+【target】_blank
+-------------------------------
+【parentid】作品展示
+【title】【视频作品】慕课网-JS实现人机大战之五子棋 AI篇
+【sortrank】24
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【nofollow】1
+【isonhtml】0
+【customaurl】http://www.tudou.com/programs/view/dLs3Xz58lhg/
+【target】_blank
+-------------------------------
+【parentid】作品展示
+【title】【Flash作品】大话拼图小游戏
+【webtitle】【Flash作品】大话拼图小游戏
+【webkeywords】【Flash作品】大话拼图小游戏
+【webdescription】【Flash作品】大话拼图小游戏，开发于2013年 QQ313801120
+【sortrank】100
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【filename】/xy2/pingyu-game.html
+【target】_blank
+【bodycontent】
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="540" height="420">
+  <param name="movie" value="/xy2/xy2pingtu.swf">
+  <param name="quality" value="high">
+  <embed src="/xy2/xy2pingtu.swf" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="540" height="420"></embed>
+</object>
+
+【/bodycontent】
+-------------------------------
+【parentid】作品展示
+【title】【JS作品】模板嵌套标签生成器
+【sortrank】101
+【author】sharembweb
+【adddatetime】2015-04-05 15:09:05
+【nofollow】0
+【isonhtml】0
+【customaurl】http://sharembweb.com/aspphpcms/online-make-tags.html
+【target】_blank

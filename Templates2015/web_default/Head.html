@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>{$Web_Title$}</title>
+<meta name="keywords" content="{$Web_KeyWords$}" />
+<meta name="description" content="{$Web_Description$}" /> 
+<script src="Jquery/Common1.js" type="text/javascript"></script><!--#JS#-->
+<link href="[$WebCss$]style.css" rel="stylesheet" type="text/css" /><!--#Css#-->
+</head>
+<body>
+<!--#top start#-->
+{$GetContentModule modulename='module_topbar'$}
+ 
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/九拓自动化/顶部/' isHandle='true'$}</sPAn>
+
+
+<div class="top3">
+    <div class="top32">
+        <div class="top321"><img src="/Templates2015/web_default/Images/jy_03.png" width="142" height="104" /></div>
+         <div class="top322">
+         
+<sPAn class="testspan">{$MainInfo title='顶部公司标语' showtitle='顶部公司标语' default='[_顶部公司标语2014年12月05日 11时24分]' autoadd='true'$}</sPAn>
+<!--#test start#-->
+<!--#[_顶部公司标语2014年12月05日 11时24分] start#-->
+            <p class="p4">分享模板网站</p>
+            <p>打造国内每一分享平台家园</p>
+<!--#[_顶部公司标语2014年12月05日 11时24分] end#-->
+<!--#test end#-->
+           
+         </div>
+    </div>
+    <div class="top31">
+<sPAn class="testhidde">{$MainInfo title='顶部服务热线' showtitle='顶部服务热线' default='[_顶部服务热线2014年12月05日 11时26分]' autoadd='true'$}</sPAn>
+<!--#test start#-->
+<!--#[_顶部服务热线2014年12月05日 11时26分] start#-->
+      <p>服务热线:</p>
+       <div>400-800-0000</div>
+<!--#[_顶部服务热线2014年12月05日 11时26分] end#-->
+<!--#test end#-->
+
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+<dIv datid='4【DatId】'class="h_wrap_1">
+    {$DisplayWebColumn focustype='text,a' styleid='134' stylevalue='0' addsql=' where parentid\=-1 and flags like\'%top%\' order by sortrank'  navwidth='width:980px;margin:0 auto;' dropdownmenu='true' isconcise='true' deletedefault='true' shopnavidwrap='true'$}
+     
+</dIv>
+<div>
+{$GetContentModule modulename='module_Banner'$}
+</div>
+
+<div class="clear10"></div>
+<sPAn class="testspan">{$copyTemplateMaterial dir='TopBar/1/' isHandle='true'$}</sPAn>
+
+<!--#Module module_topbar start#-->
+
+
+<div class="lightbox">
+    <div id="light" class="white_content">
+        <sPAn class="testspan">{$MainInfo title='微信关注大图' showtitle='微信关注大图' default='[_微信关注大图2015年01月28日 09时59分]' autoadd='true'$}</sPAn>
+<!--#test start#-->
+<!--#[_微信关注大图2015年01月28日 09时59分] start#-->
+<img src="/Templates2015/web_default/Images/nwwx.jpg">
+<!--#[_微信关注大图2015年01月28日 09时59分] end#-->
+<!--#test end#--> 
+    </div>
+    <div id="fade" class="black_overlay" onClick="CloseLightBox('light','fade');"></div>
+</div>
+
+<div class="topbarbox">
+    <div class="topbar">
+        <div class="left">
+            <span class="weixin">微信</span><a href="#" class="greengz" onClick="ShowLightBox('light','fade');"></a><span class="line"></span>
+            <span class="weibo">微博</span><a href="http://d.weibo.com/" rel="nofollow" target="_blank" class="redgz"></a><span class="line"></span>
+            <!--#<span id="localtime"></span><script type="text/javascript">time_tick("南京市微战略科技有限公司")</script>#-->
+            <span>{$MainInfo title='顶部公司欢迎语' showtitle='顶部公司欢迎语' default='欢迎访问：ASPPHPCMS内容管理系统官网' autoadd='true'$}</span>
+        </div>
+        <div class="right">
+<sPAn class="testhidde">{$MainInfo title='网站顶部文本TopBar' showtitle='网站顶部文本TopBar' default='[_网站顶部文本TopBar2015年01月26日 09时07分]' autoadd='true'$}
+<!--#test start#-->
+<!--#[_网站顶部文本TopBar2015年01月26日 09时07分] start#-->
+{$HrefA content='加入收藏' title='加入收藏' type='收藏' $}&nbsp;|&nbsp;
+{$HrefA content='设为首页' title='设为首页' type='设为首页' $}&nbsp;|&nbsp;
+<a href="{$GetColumnUrl columnname='网站地图'$}" target="_blank">网站地图</a>&nbsp;|&nbsp;
+{$HrefA href='http://d.weibo.com/' title='新浪微博' rel='nofollow' class='weiboico' target='_blank'$}&nbsp;|&nbsp;
+{$HrefA href='http://t.qq.com/' title='腾讯微博' rel='nofollow' class='tqqico' target='_blank'$}
+<!--#[_网站顶部文本TopBar2015年01月26日 09时07分] end#-->
+<!--#test end#--> 
+</sPAn>  
+<!--#test start#-->
+<a href="#">加入收藏</a> | 
+<a href="#">设为首页</a> | 
+<a href="#">网站地图</a> | 
+<a href="#" class="weiboico">新浪微博</a> | 
+<a href="#" class="tqqico">腾讯微博</a>
+<!--#test end#-->         
+        </div>
+    </div>
+</div>
+<!--#Module module_topbar end#-->
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/Banner/106/' isHandle='true'$}</sPAn>
+
+<!--#Module module_Banner start#-->
+
+<script type="text/javascript"  src="/Templates2015/web_default/Images/Banner_Style106.js"></script>
+<div class="banner6">
+    <div id="bfocus7">
+        <ul>
+
+{$ArticleList topnumb='6' did='banner' addsql='' default='[_2016年01月15日 14时11分banner]'$}
+                    <!--#[_2016年01月15日 14时11分banner]
+                            [list]<li style="background:url([$smallimage$]) 50% no-repeat;"><a href="[$url$]"></a></li>
+                            [/list]
+                    #-->   
+
+        </ul>
+    </div>
+</div>
+
+<!--#Module module_Banner end#-->
+<!--#top end#-->
+
+</body>
+</html>
+
+

@@ -1,13 +1,3 @@
-<?php 
-/************************************************************
-作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
-创建：2016-03-11
-联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered by ASPPHPCMS 
-************************************************************/
-?>
 <?PHP
 //dim nCount,nPageSize,maxpage,page,x,i,PageControl
 
@@ -21,18 +11,18 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
 
     $sPageStart='';$sPageEnd='';$sHomePage='';$sHomePageFocus='';$sUpPage='';$sUpPageFocus='';$sNextPage='';$sNextPageFocus='';$sForPage='';$sForPageFocus='';$sTailPage='';$sTailPageFocus='';
     if( $action<>'' ){
-        $sPageStart=getStrCut($action, '[sPageStart]', '[/sPageStart]', 2)			;//页头部分
-        $sPageEnd=getStrCut($action, '[sPageEnd]', '[/sPageEnd]', 2)					;//页尾部分
-        $sHomePage=getStrCut($action, '[sHomePage]', '[/sHomePage]', 2)	;//首页
-        $sHomePageFocus=getStrCut($action, '[sHomePageFocus]', '[/sHomePageFocus]', 2)		;//首页交点
-        $sUpPage=getStrCut($action, '[sUpPage]', '[/sUpPage]', 2)						;//上一页
-        $sUpPageFocus=getStrCut($action, '[sUpPageFocus]', '[/sUpPageFocus]', 2)				;//上一页交点
-        $sNextPage=getStrCut($action, '[sNextPage]', '[/sNextPage]', 2)				;//下一页
-        $sNextPageFocus=getStrCut($action, '[sNextPageFocus]', '[/sNextPageFocus]', 2)			;//下一页交点
-        $sForPage=getStrCut($action, '[sForPage]', '[/sForPage]', 2)							;//循环页
-        $sForPageFocus=getStrCut($action, '[sForPageFocus]', '[/sForPageFocus]', 2)				;//循环页交点
-        $sTailPage=getStrCut($action, '[sTailPage]', '[/sTailPage]', 2)							;//最后页
-        $sTailPageFocus=getStrCut($action, '[sTailPageFocus]', '[/sTailPageFocus]', 2)			;//最后页交点
+        $sPageStart=getStrCut($action, '[sPageStart]', '[/sPageStart]', 2);			//页头部分
+        $sPageEnd=getStrCut($action, '[sPageEnd]', '[/sPageEnd]', 2);					//页尾部分
+        $sHomePage=getStrCut($action, '[sHomePage]', '[/sHomePage]', 2);	//首页
+        $sHomePageFocus=getStrCut($action, '[sHomePageFocus]', '[/sHomePageFocus]', 2);		//首页交点
+        $sUpPage=getStrCut($action, '[sUpPage]', '[/sUpPage]', 2);						//上一页
+        $sUpPageFocus=getStrCut($action, '[sUpPageFocus]', '[/sUpPageFocus]', 2);				//上一页交点
+        $sNextPage=getStrCut($action, '[sNextPage]', '[/sNextPage]', 2);				//下一页
+        $sNextPageFocus=getStrCut($action, '[sNextPageFocus]', '[/sNextPageFocus]', 2);			//下一页交点
+        $sForPage=getStrCut($action, '[sForPage]', '[/sForPage]', 2);							//循环页
+        $sForPageFocus=getStrCut($action, '[sForPageFocus]', '[/sForPageFocus]', 2);				//循环页交点
+        $sTailPage=getStrCut($action, '[sTailPage]', '[/sTailPage]', 2);							//最后页
+        $sTailPageFocus=getStrCut($action, '[sTailPageFocus]', '[/sTailPageFocus]', 2);			//最后页交点
     }
     //页头部分
     if( $sPageStart=='' ){
@@ -80,7 +70,7 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     }
     //最后页交点
     if( $sTailPageFocus=='' ){
-        $sTailPageFocus='<li><a href="[$url$]">末页</a></li>' . vbCrlf() ;
+        $sTailPageFocus='<li><a href="[$url$]">末页</a></li>' . vbCrlf();
     }
 
     //配置页为空则
@@ -88,8 +78,8 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
         $configPageUrl=GetUrlAddToParam( GetUrl(),'?page=[id]','replace');
     }
 
-    $nDisplay=6			;//显示数
-    $nDispalyOK=0		;//显示成功数
+    $nDisplay=6;			//显示数
+    $nDispalyOK=0;		//显示成功数
     $nPage=HandleNumberType($nPage);
     if( $nPage=='' ){
         $nPage=1;
@@ -114,7 +104,7 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     }
 
     //页开始
-    $c=$sPageStart ;
+    $c=$sPageStart;
     //首页
     if( $nPage>1 ){
         $c=$c . replace($sHomePageFocus,'[$url$]',replace($configPageUrl,'[id]',''));
@@ -135,15 +125,15 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
 
     $n='';
     //call echo(npage,ncountpage)
-    $n = ($nPage-3);
+    $n= ($nPage-3);
     //call echo("n",n)
 
     //翻页循环
-    for( $i = $n ; $i<= $nCountPage; $i++){
+    for( $i= $n ; $i<= $nCountPage; $i++){
         if( $i>=1 ){
             $nDispalyOK=$nDispalyOK+1;
             //call echo(i,nPage)
-            if( $i == $nPage ){
+            if( $i== $nPage ){
                 $c=$c . replace($sForPageFocus,'[$i$]',$i);
             }else{
                 $nTemp=$i;
@@ -173,12 +163,12 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     $c=$c . $sPageEnd;
 
 
-    $c = replaceValueParam($c, 'nRecrodCount', $nRecrodCount);
-    $c = replaceValueParam($c, 'nPage', $nPage);
+    $c= replaceValueParam($c, 'nRecrodCount', $nRecrodCount);
+    $c= replaceValueParam($c, 'nPage', $nPage);
     if( $nCountPage=='0' ){
         $nCountPage=1;
     }
-    $c = replaceValueParam($c, 'nCountPage', $nCountPage);
+    $c= replaceValueParam($c, 'nCountPage', $nCountPage);
 
     $webPageControl=$c . vbCrlf();
     return @$webPageControl;

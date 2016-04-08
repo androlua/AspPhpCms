@@ -1,0 +1,36 @@
+【parentid】在线ASP转PHP
+【title】如果将一个ASP网站转换成PHP网站？
+【webtitle】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
+【webkeywords】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
+【webdescription】如果将一个ASP网站转换成PHP网站？ - 分享模板网站
+【sortrank】8
+【author】sharembweb
+【adddatetime】2016-02-18 08:51:11
+【filename】/asptophp/aspweb-goto-phpweb.html
+【customaurl】
+【flags】|c|
+【relatedtags】在线ASP转PHP 
+【bodycontent】
+[&全部换行&]<b>初始步骤：</b>
+1、首先你要精通ASP程序，并且要熟练使用PHP程序，这是前提
+2、开发一套ASPCMS网站系统
+3、用程序把ASP代码转换成PHP代码
+4、ASP内置函数要在PHP提前写出来
+3、注意：在开发ASPCMS系统时要配合PHP程序来写ASP代码
+
+<b>我是如果把ASP网站转成PHP网站的：</b>
+1、首先我有多年开发ASP网站经验
+2、熟练使用PHP+MYSQL，可以本地搭建IIS+PHP+MYSQL
+3、用ASP程序开发了一套ASP程序转PHP程序
+4、一部分ASP函数是自己手动创建的，并非ASP直接转换过来的
+
+<b>更多帮助：</b>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
+<br>
+
+
+{$TitleInSearchEngineList title='如果将一个ASP网站转换成PHP网站？'$}
+【/bodycontent】
+
+
+ 

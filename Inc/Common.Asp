@@ -1,14 +1,4 @@
 <%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
-<%
 '常用函数大全 (2013,9,27Option Explicit)
  
 '成功永远都是缓慢的 2013,10,4,悟 
@@ -151,10 +141,10 @@ Public Sub Println(ByVal s)
 End Sub
 '输出字符串并将HTML标签转为普通字符
 Public Sub PrintHtml(ByVal s)
-	Response.Write(HtmlEncode(s) & VbCrLf)
+	Response.Write(displayHtml(s) & VbCrLf)
 End Sub
 Public Sub PrintlnHtml(ByVal s)
-	Response.Write(HtmlEncode(s) & "<br />") & VbCrLf
+	Response.Write(displayHtml(s) & "<br />") & VbCrLf
 End Sub
 '将任意变量直接输出为字符串(Json格式)
 'Public Sub PrintString(ByVal s) : Response.Write(Str.ToString(s) & VbCrLf) : End Sub

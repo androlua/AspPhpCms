@@ -1,0 +1,48 @@
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS常用嵌套标签
+【webtitle】ASPPHPCMS常用嵌套标签 - 分享模板网站
+【webkeywords】ASPPHPCMS常用嵌套标签 - 分享模板网站
+【webdescription】ASPPHPCMS常用嵌套标签 - 分享模板网站
+【sortrank】4
+【author】sharembweb
+【adddatetime】2016-02-22 18:33:11
+【filename】/ASPPHPCMS/Common-tags.html
+【customaurl】
+【flags】|c|
+【relatedtags】ASPPHPCMS
+【bodycontent】
+[&全部换行&]ASPPHPCMS帮助文档
+
+Include  加载文件
+{<font>$Include file='head.html' block='top'$} 
+
+
+ColumnList  导航列表
+{<font>$ColumnList  default='[_2016年01月14日 10时03分]'$}
+<<font>!--#[_2016年01月14日 10时03分]
+[list]&lt;a href="[$url$]" title="[$labletitle$]" target="[$target$]">[$columnname$]&lt;/a>
+[/list]
+[list-focus]&lt;a href="[$url$]"  title="[$labletitle$]" target="[$target$]" class="focus">[$columnname$]&lt;/a>
+[/list-focus]
+#-->
+
+
+ArticleList 信息列表
+{<font>$ArticleList columnname='模板分享下载'  topnumb='8' addsql=' order by id desc' default='[_2016年01月15日 asp]'$}
+<<font>!--#[_2016年01月15日 asp]
+[list]&lt;li>&lt;a href="[$url$]" title="[$title$]">[$title len='80'$]&lt;/a>&lt;span class="time">[$adddatetime format_time='7'$]&lt;/span>&lt;/li>
+[/list]
+#-->
+
+
+[<font>$字段名称 delhtml='true' trim='true' len='3' format_Time='3' getcolumnname='@ME' getcolumnurl='@ME' default='默认显示内容' $]
+
+<b>更多帮助：</b>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
+ 
+{$TitleInSearchEngineList title='ASPPHPCMS常用嵌套标签'$}
+
+【/bodycontent】
+
+
+ 

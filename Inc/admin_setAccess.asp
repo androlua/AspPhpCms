@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 
 '新的截取字符20160216
@@ -43,11 +33,12 @@ Sub resetAccessData()
 
     Dim content, filePath, parentid, author, adddatetime, fileName, bodycontent, webtitle, webkeywords, webdescription, sortrank, labletitle, target 
     Dim websitebottom, webtemplate, webimages, webcss, webjs, flags, websiteurl, splxx, columntype, relatedtags, npagesize, customaurl, nofollow 
-    Dim templatepath, isthrough 
+    Dim templatepath, isthrough,titlecolor
     Dim showreason, ncomputersearch, nmobliesearch, ncountsearch, ndegree           '竞价表
     Dim displaytitle, aboutcontent, isonhtml                                  '单页表
     Dim columnenname                                                                '导航表
     Dim smallimage, bigImage, bannerimage                                           '文章表
+	dim httpurl
 
 
 
@@ -64,7 +55,7 @@ Sub resetAccessData()
         webcss = newGetStrCut(content, "webcss") 
         webjs = newGetStrCut(content, "webjs") 
         flags = newGetStrCut(content, "flags") 
-        websiteurl = newGetStrCut(content, "websiteurl") 
+        websiteurl = newGetStrCut(content, "websiteurl")  
 
         If getRecordCount(db_PREFIX & "website", "") = 0 Then
             conn.Execute("insert into " & db_PREFIX & "website(webtitle) values('测试')") 
@@ -132,6 +123,7 @@ Sub resetAccessData()
                     Else
                         nofollow = 0 
                     End If 
+					'call echo(columnname,nofollow)
 
 
                     aboutcontent = newGetStrCut(s, "aboutcontent") 
@@ -148,7 +140,7 @@ Sub resetAccessData()
 
     '文章
     conn.Execute("delete from " & db_PREFIX & "articledetail") 
-    content = getDirTxtList(webdataDir & "/articledetail/") 
+    content = getDirAllFileList(webdataDir & "/articledetail/","txt") 
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr
@@ -163,6 +155,7 @@ Sub resetAccessData()
                     parentid = newGetStrCut(s, "parentid") 
                     parentid = getColumnId(parentid) 
                     title = newGetStrCut(s, "title") 
+                    titlecolor = newGetStrCut(s, "titlecolor") 
                     webtitle = newGetStrCut(s, "webtitle") 
                     webkeywords = newGetStrCut(s, "webkeywords") 
                     webdescription = newGetStrCut(s, "webdescription") 
@@ -205,7 +198,7 @@ Sub resetAccessData()
                     Else
                         nofollow = 0 
                     End If 
-                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,aboutcontent,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & parentid & ",'" & title & "','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & author & "'," & sortrank & ",'" & adddatetime & "','" & fileName & "','" & flags & "','" & relatedtags & "','"& aboutcontent &"','" & bodycontent & "','" & Now() & "'," & isonhtml & ",'" & customaurl & "'," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
+                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,titlecolor,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,aboutcontent,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & parentid & ",'" & title & "','"& titlecolor &"','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & author & "'," & sortrank & ",'" & adddatetime & "','" & fileName & "','" & flags & "','" & relatedtags & "','"& aboutcontent &"','" & bodycontent & "','" & Now() & "'," & isonhtml & ",'" & customaurl & "'," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
                 End If 
             Next 
         End If 
@@ -391,8 +384,50 @@ dim itemid,username,ip,reply,tablename			'评论
             Next 
         End If 
     Next 
+	
+    '友情链接
+    conn.Execute("delete from " & db_PREFIX & "FriendLink")  
+    content = getDirTxtList(webdataDir & "/FriendLink/") 
+    splStr = Split(content, vbCrLf) 
+    Call hr() 
+    For Each filePath In splStr
+        fileName = getfilename(filePath) 
+        If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
+            Call echo("评论", filePath) 
+            content = getftext(filePath) 
+            splxx = Split(content, vbCrLf & "-------------------------------") 
+            For Each s In splxx
+                If InStr(s, "【title】") > 0 Then
+					s=s & vbcrlf 
+					
+                    title = newGetStrCut(s, "title")  
+                    httpurl = newGetStrCut(s, "httpurl") 
+                    smallimage = newGetStrCut(s, "smallimage") 
+                    flags = newGetStrCut(s, "flags") 
+					target= newGetStrCut(s, "target") 
+					
 
+                    sortrank = newGetStrCut(s, "sortrank")  
+                    If sortrank = "0" Or LCase(sortrank) = "false" Then
+                        sortrank = 0 
+                    Else
+                        sortrank = 1 
+                    End If
+                    isthrough = newGetStrCut(s, "isthrough")  
+                    If isthrough = "0" Or LCase(isthrough) = "false" Then
+                        isthrough = 0 
+                    Else
+                        isthrough = 1 
+                    End If  
+                    'call echo("title",title)
+                    conn.Execute("insert into " & db_PREFIX & "FriendLink (title,httpurl,smallimage,flags,sortrank,isthrough,target) values('"& title &"','" & httpurl & "','"& smallimage &"','"& flags &"',"& sortrank &","& isthrough &",'"& target &"')") 
 
+                End If 
+            Next 
+        End If 
+    Next 
+	
+	
 	call writeSystemLog("","恢复默认数据" & db_PREFIX)			'系统日志
 
 End Sub 
@@ -431,7 +466,9 @@ Function contentTranscoding(ByVal content)
             s = Replace(s, "[&全部换行end&]", "") 
         End If 
         c = c & s & vbCrLf 
-    Next 
+    Next
+	c=replace(replace(c,"【b】","<b>"),"【/b】","</b>")
+	c=replace(replace(c,"【strong】","<strong>"),"【/strong】","</strong>")
     contentTranscoding = c 
 End Function 
 %>   

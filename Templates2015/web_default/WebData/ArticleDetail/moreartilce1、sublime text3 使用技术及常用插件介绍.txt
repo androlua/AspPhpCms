@@ -1,0 +1,53 @@
+【parentid】其它
+【title】sublime text3 使用技术及常用插件介绍
+【webtitle】sublime text3 使用技术及常用插件介绍 - 分享模板网站
+【webkeywords】sublimetext3使用技术，sublimetext3常用插件介绍 - 分享模板网站
+【webdescription】sublime text3 使用技术及常用插件介绍 - 分享模板网站
+【sortrank】6
+【author】sharembweb
+【adddatetime】2016-03-17 13:20:26
+【filename】/morearticle/sublime-text3-use.html
+【customaurl】
+【flags】|c|
+【relatedtags】ASPPHPCMS,在线ASP转PHP
+【bodycontent】
+[&全部换行&]ASPPHPCMS帮助文档
+
+
+下面代码为，而试图解压包文件sublimecodeintel出错。请尝试再次安装该软件包
+an error occurred while trying to unzip the package file for sublimecodeintel.
+please try installing the package again
+
+sublime Emmet的用法及相关语法
+html:5再按tab 或  ! 然后摁下 ctrl+E 
+html:xt 摁下 ctrl+E 
+span:.aa 摁下 ctrl+E 
+span:#aa 摁下 ctrl+E 
+div.aaa>ul>li
+div+p+bq
+div>ul>li^span
+div>ul>li^^span
+ul>li*5
+div>(header>ul>li*2>a)+footer>p
+(div>dl>(dt+dd)*3)+footer>p
+a[href="http://sharembweb.com/" title="haorooms 博客"]
+a[href="http://sharembweb.com/"]{点击这里到 haorooms 的博客}
+ul>li.item$*5
+ul>li.item$$$*5
+ul>li.item$@-*5
+ul>li.item$@-3*5
+
+
+
+
+问：ColorPicker与ConvertToUTF8用同一个快捷器ctrl+shift+c，解决方法
+答：Sublime Text --> Preferences --> Browse Packages，找到ConvertToUTF8文件夹并进入，找到对应操作系统的Default.sublime-keymap文件，直接修改
+
+
+<b>更多帮助：</b>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
+<br>
+【/bodycontent】
+
+
+ 

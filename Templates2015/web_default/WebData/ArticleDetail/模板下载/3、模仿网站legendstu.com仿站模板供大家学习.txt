@@ -1,0 +1,44 @@
+【parentid】模板下载
+【title】模仿网站legendstu.com旅游模板供大家学习研究
+【webtitle】模仿网站legendstu.com旅游模板供大家学习研究 - 分享模板网站
+【webkeywords】模仿网站legendstu.com旅游模板供大家学习研究 - 分享模板网站
+【webdescription】模仿网站legendstu.com旅游模板供大家学习研究,分析研究学习别人优化的网站，好让自己能做出一个能优化非常好的网站 - 分享模板网站
+【sortrank】3
+【author】sharembweb
+【adddatetime】2016-03-04 12:07:32
+【filename】/mobandown/copy-legendstu.html
+【smallimage】[$cfg_webimages$]mfweblegendstu.jpg
+【flags】|
+【relatedtags】模板下载
+【bodycontent】
+ 
+
+
+模仿网址：http://www.legendstu.com/<br>
+添加程序后：<a href="/phpweb.php?templatedir=\Templates\legendstu\" class="ablue" target="_blank">点击在线预览</a><br>
+下载整站：<a href="https://github.com/313801120/ASPPHPCMS"  class="ablue" target="_blank">Github下载ASPPHPCMS</a>(模板+本站自行开发的ASPPHPCMS网站管理系统)<br>
+<br>
+
+<b>优秀从模仿开始，模仿从现在开始：</b><br>
+网站介绍：一个专门给别人做仿站的网站，使用dedecms内容管理系统来仿站，没有使用自己开发的系统，网站做得一般，不过可以学习<br>
+用我自己开的ASPPHPCMS内容管理系统，给它做到了动态网站。<br><br>
+
+<b>模仿legendstu.com步骤：</b><br>
+1、使用在线 <a href="http://sharembweb.com/fangzhan/" class="ablue">在线仿部</a> 下载HTML单面<br>
+2、使用ASPPHPCMS内容管理系统，给网页添加模板标签<br>
+3、给WebData/文件夹写入默认配置数据<br>
+<br>
+
+<b>模仿legendstu.com学到技术：</b><br>
+1、学习到别人是怎么布局SEO优化<br> 
+<br>
+
+<br>
+<p>本文版权归作者所有，转摘请注明作者和出处！<br />
+作者：云端<br />
+首发：<a href="http://sharembweb.com/" target="_blank" class="ablue">http://sharembweb.com</a></p>
+<br>
+
+{$TitleInSearchEngineList title='模仿网站legendstu.com旅游模板供大家学习研究'$}
+【/bodycontent】
+ 

@@ -1,0 +1,42 @@
+【parentid】JS
+【title】jQuery使用技巧与帮助文档
+【webtitle】jQuery使用技巧与帮助文档 - 分享模板网站
+【webkeywords】jQuery使用技巧与帮助文档,jQueryAPI,jQuery技巧,jQuery用法 - 分享模板网站
+【webdescription】jQuery使用技巧与帮助文档 - 分享模板网站
+【sortrank】599
+【author】sharembweb
+【adddatetime】2016-03-22 09:39:18
+【filename】/js/jquery-help.html
+【flags】|
+【relatedtags】ASPPHPCMS,在线ASP转PHP 
+【bodycontent】
+[&html转码&]
+[&全部换行&] 
+
+
+$("#box1").wrap("<strong><em>111</em></strong>")   //包裹
+$("#box1").unwrap()                                //删除外包裹
+
+
+$(".shoppingtlistwrap").before("<div class='clear'>aa</div>")   //在元素前面加内容
+$(".shoppingtlistwrap").after("<div class='clear'>bb</div>")    //在元素后面加内容
+
+
+	var s="             s      						"
+	alert("|"+ $.trim(s) +"|")				//清除两边空格，等同于php的trim
+
+
+$( "p" ).wrapInner( "<b>11111111111</b>" );    包裹<b></b>
+
+
+
+
+var dataObj=eval("("+request+")")				//转成json类型
+
+$("form[name='control']").find("select").addClass("inputstyle");
+
+
+【/bodycontent】
+
+
+ 

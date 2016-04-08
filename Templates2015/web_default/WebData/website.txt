@@ -1,0 +1,63 @@
+【webtitle】分享模板网站_ASPPHPCMS内容管理系统_ASP转PHP_仿站_免费模板下载
+【webkeywords】分享模板网站_ASPPHPCMS内容管理系统_ASP转PHP_仿站_免费模板下载
+【webdescription】分享模板网站 - 为站长提供免费开源ASPPHPCMS网站内容管理系统,在线ASP转PHP,在线仿站服务 QQ313801120
+【websitebottom】
+ 
+ 
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?5563ede7d59ea4b9e071a9cf63ebd1fc";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+{$JsWebStat filename=''  stype='display' $}   
+
+<br>版权 sharembweb.com | Powered by <a href="http://sharembweb.com/" target="_blank">ASPPHPCMS</a><br>
+ 
+
+
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101292533" data-redirecturi="http://sharembweb.com/" charset="utf-8"></script>
+<script src="/Jquery/jquery.Min.js"></script>
+<script src="/Templates2015/sharembweb/Images/qqlogin.js"></script>
+
+
+<span style="margin-right:6px;">
+<a href="http://webscan.360.cn/index/checkwebsite/url/sharembweb.com" target="_blank" rel="nofollow"><img src="http://img.webscan.360.cn/status/pai/hash/fc1b2ff97ecf472d30edc3ce6bccdd98" title="360安全网站认证" alt="360安全网站认证"/></a>
+</span>
+<a target="_blank" href="http://union.rising.com.cn/InfoManage/attestation.aspx?p0=N2PmKkcKwdJaG8k/lxAUK9-CNetUMhAdRiMbDe8Rc7I=" rel="nofollow"><img src="http://union.rising.com.cn/images/tdflag1.jpg" alt="您访问的网站目前没有发现被挂马行为" title="您访问的网站目前没有发现被挂马行为" style="border:0px;"></a>
+
+【/websitebottom】
+
+【webtemplate】/Templates2015/web_default/
+【webimages】/Templates2015/web_default/Images/
+【webcss】/Templates2015/web_default/Css/
+【webjs】/Templates2015/web_default/Js/
+【flags】|addwebsite|iscloseeditor|htmlrun||
+【websiteurl】http://sharembweb.com/
+
+
+
+<span id="qqLoginBtn"></span>
+
+CNN统计
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257109459'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1257109459%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+
+
+
+百度关键词搜索
+<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=2053070418731876318' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+
+
+	'|addwebsite|updatehtml|formattinghtml|labelclose|cntoen|
+
+
+
+
+百度分享代码
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>

@@ -6,6 +6,7 @@
 <meta name="keywords" content="{$Web_KeyWords$}" />
 <meta name="description" content="{$Web_Description$}" /> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<link rel="Shortcut Icon" href="[$cfg_webimages$]favicon.ico" />
 <!--#JS#-->
 <link href="[$WebCss$]style.css" rel="stylesheet" type="text/css" /><!--#Css#-->
 </head>
@@ -15,6 +16,25 @@
 
 
 <div class="mainwrap">
+
+    <div class="mainwrap">
+        <div class="toolswrap noselect">
+<!--#细节列表 ASPPHP通用#-->
+<sPAn class="testspan">{$ArticleList columnname='常用工具' topnumb='6' addsql='where flags like\'%h%\'' default='[_2016年03月21日 13时28分]'$}</sPAn>
+<!--#[_2016年03月21日 13时28分]
+[list]<a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title$]</a>[/list]
+[list-end]<a href="[$url$]" style="margin-right:0px;"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title$]</a>[/list-end]
+#-->
+ 
+        </div>
+        <div class="sidebarleft">
+        </div> 
+        <div class="sidebarright">
+        </div>
+        <div class="clear"></div>
+    </div>
+      
+  
     <div class="sidebarleft">
 
     
@@ -27,17 +47,17 @@
         </ul> 
     
         <ul class="columnbox">
-            <li class="title">模板分享下载<a href="{$GetOnePageUrl title='模板分享下载'$}" class="more">更多&gt;&gt;</a></li>
+            <li class="title">模板下载<a href="{$GetOnePageUrl title='模板下载'$}" class="more">更多&gt;&gt;</a></li>
             <li class="content"> 
             <!--#细节列表 ASPPHP通用#-->
-<sPAn class="testspan">{$ArticleList columnname='模板分享下载' topnumb='4' default='[_2016年03月07日 07时56分]'$}</sPAn>
+<sPAn class="testspan">{$ArticleList columnname='模板下载' topnumb='3' default='[_2016年03月07日 07时56分]'$}</sPAn>
  
 <!--#[_2016年03月07日 07时56分]
 [list]
                 <div class="casewrap">
                     <img src="[$smallimage$]" title="[$title$]" alt="[$title$]" width="100%"  >
                     <div class="footerwrap"></div>
-                    <a href="[$url$]">[$title$]</a>                
+                    <a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title$]</a>                
                 </div> 
 
 [/list] 
@@ -45,7 +65,7 @@
                 <div class="casewrapright">
                     <img src="[$smallimage$]" title="[$title$]" alt="[$title$]" width="100%"  >
                     <div class="footerwrap"></div>
-                    <a href="[$url$]">[$title$]</a>                
+                    <a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title$]</a>                
                 </div> 
 
 [/list-3] 
@@ -82,13 +102,64 @@
                <ul class="list">
                 <sPAn class="testhidde">{$ArticleList columnname='ASPPHPCMS'  topnumb='8' addsql=' order by id asc' default='[_2016年01月15日 ASPPHPCMS]'$}</sPAn>
                 <!--#[_2016年01月15日 ASPPHPCMS]
-                [list]<li><a href="[$url$]" title="[$title$]" target="[$target$]"[$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
                 [/list]
                 #-->
               </ul>
             
             </li>
         </ul>   
+        
+        
+        <ul class="columnbox">
+            <li class="title">在线ASP转PHP<a href="{$GetColumnUrl columnname='在线ASP转PHP'$}" class="more">更多&gt;&gt;</a></li>
+            <li class="content">
+            
+               <ul class="list">
+                    <sPAn class="testspan">{$ArticleList columnname='在线ASP转PHP' topnumb='8'  addsql=' order by id asc' default='[_2016年03月22日 14时33分]'$}</sPAn> 
+                    <!--#[_2016年03月22日 14时33分]
+                    [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                    [/list]
+                    #-->
+
+              </ul>
+            
+            </li>
+        </ul>   
+
+        
+        <ul class="columnbox">
+            <li class="title">作品展示<a href="{$GetColumnUrl columnname='作品展示'$}" class="more">更多&gt;&gt;</a></li>
+            <li class="content">
+            
+               <ul class="list">
+                <sPAn class="testhidde">{$ArticleList columnname='作品展示'  topnumb='8' addsql=' order by id asc' default='[_2016年01月15日 作品展示]'$}</sPAn>
+                <!--#[_2016年01月15日 作品展示]
+                [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                [/list]
+                #-->
+              </ul>
+            
+            </li>
+        </ul>
+        
+        
+        <ul class="columnbox">
+            <li class="title">网站作品<a href="{$GetColumnUrl columnname='网站作品'$}" class="more">更多&gt;&gt;</a></li>
+            <li class="content">
+            
+               <ul class="list">
+                <sPAn class="testhidde">{$ArticleList columnname='网站作品'  topnumb='8' addsql=' order by id asc' default='[_2016年01月15日 网站作品]'$}</sPAn>
+                <!--#[_2016年01月15日 网站作品]
+                [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                [/list]
+                #-->
+              </ul>
+            
+            </li>
+        </ul>
+        
+        
         
         <ul class="columnbox">
             <li class="title">ASP<a href="{$GetColumnUrl columnname='ASP'$}" class="more">更多&gt;&gt;</a></li>
@@ -97,7 +168,7 @@
                <ul class="list">
                 <sPAn class="testhidde">{$ArticleList columnname='ASP'  topnumb='8' addsql=' order by id desc' default='[_2016年01月15日 asp]'$}</sPAn>
                 <!--#[_2016年01月15日 asp]
-                [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
                 [/list]
                 #-->
               </ul>
@@ -113,7 +184,7 @@
                <ul class="list">
                 <sPAn class="testhidde">{$ArticleList columnname='CSS3'  topnumb='8' addsql=' order by id desc' default='[_2016年01月15日 asp]'$}</sPAn>
                 <!--#[_2016年01月15日 asp]
-                [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
                 [/list]
                 #-->
               </ul>
@@ -130,7 +201,7 @@
                <ul class="list">
                 <sPAn class="testhidde">{$ArticleList columnname='问答Q/A'  topnumb='8' addsql=' order by id desc' default='[_2016年01月15日 asp]'$}</sPAn>
                 <!--#[_2016年01月15日 asp]
-                [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
+                [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
                 [/list]
                 #-->
               </ul>
@@ -138,39 +209,28 @@
             </li>
         </ul>
 
-        
-        
-        
-        
-        <ul class="columnbox">
-            <li class="title">作品欣赏<a href="{$GetColumnUrl columnname='作品欣赏'$}" class="more">更多&gt;&gt;</a></li>
-            <li class="content">
-            
-               <ul class="list">
-                <sPAn class="testhidde">{$ArticleList columnname='作品欣赏'  topnumb='8' addsql=' order by id asc' default='[_2016年01月15日 作品欣赏]'$}</sPAn>
-                <!--#[_2016年01月15日 作品欣赏]
-                [list]<li><a href="[$url$]" title="[$title$]" target="[$target$]"[$abcolor$]>[$title len='80'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
-                [/list]
-                #-->
-              </ul>
-            
-            </li>
-        </ul>
-        
 
-        
-
-
+ 
 
 
         
     </div>
     <div class="sidebarright">
-    
+       <ul class="columnbox">
+            <li class="title" id="userlogintitle">会员登录</li>
+            <li class="content">
+            <span id="qqLoginBtn"></span>
+            <div>
+            <img src="/Templates2015/sharembweb/Images/aspphpcmserweima.jpg" id="reweimaimg" alt="ASPPHPCMS二维码" title="ASPPHPCMS二维码"> 
+            </div>
+            <div>扫描二维码，获得更多ASPPHPCMS相关知识<br>        
+            </div>
+            </li>
+        </ul>
         <ul class="columnbox">
             <li class="title">最新下载</li>
             <li class="content">
-<sPAn class="testhidde">{$GetOnePageBody title='最新下载' default='没有最新公告' fieldname='bodycontent' $}</sPAn>
+                {$GetOnePageBody title='最新下载' default='没有最新公告' fieldname='bodycontent' $}
             </li>
         </ul>
         <ul class="columnbox">
@@ -182,7 +242,7 @@
  
                     <sPAn class="testhidde">{$ArticleList columnname='常用工具' topnumb='8' addsql='order by sortrank asc' default='[_2016年01月15日 常用工具]'$}</sPAn>
                     <!--#[_2016年01月15日 常用工具]
-                        [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a></li>
+                        [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a></li>
                         [/list]
                     [/list]
                     #-->
@@ -201,7 +261,7 @@
 
                     <sPAn class="testhidde">{$ArticleList  topnumb='8' addsql='where flags like\'%|c|%\' order by sortrank desc' default='[_2016年01月15日 14时10分]'$}</sPAn>
                     <!--#[_2016年01月15日 14时10分]
-                        [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a></li>
+                        [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a></li>
                         [/list]
                     [/list]
                     #-->
@@ -218,7 +278,7 @@
                         
                     <sPAn class="testhidde">{$ArticleList topnumb='8' addsql=' order by adddatetime desc' default='[_2016年01月15日 14时10分]'$}</sPAn>        
                     <!--#[_2016年01月15日 14时10分]
-                            [list]<li><a href="[$url$]" title="[$title$]"[$abcolor$]>[$title len='80'$]</a></li>
+                            [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a></li>
                             [/list]
                     #-->
             
@@ -227,6 +287,20 @@
         </ul>
         
         
+        <ul class="columnbox">
+            <li class="title">网络文摘</li>
+            <li class="content">            
+                <ul class="list"> 
+                        
+                    <sPAn class="testhidde">{$ArticleList did='网络文摘' topnumb='8' addsql=' order by adddatetime desc' default='[_2016年01月15日 网络文摘]'$}</sPAn>        
+                    <!--#[_2016年01月15日 网络文摘]
+                            [list]<li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->
+            
+                </ul>
+            </li>
+        </ul>
         
         
         

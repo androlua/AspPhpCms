@@ -1,13 +1,3 @@
-<?php 
-/************************************************************
-作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
-创建：2016-03-11
-联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered by ASPPHPCMS 
-************************************************************/
-?>
 <?PHP
 //Cai采集内容(2014)
 
@@ -38,84 +28,84 @@ function strCut( $content, $startStr, $endStr, $cutType){
     $cutType='|'. $cutType .'|';
     //不区分大小写
     if( instr($cutType,'|lu|')>0 ){
-        $content=lcase($content);
-        $startStr=lcase($startStr);
-        $endStr=lcase($endStr);
+        $content=strtolower($content);
+        $startStr=strtolower($startStr);
+        $endStr=strtolower($endStr);
     }
-    if( instr($content, $startStr) == false || instr($content, $endStr) == false ){
-        $c = '' ;
+    if( instr($content, $startStr)== false || instr($content, $endStr)== false ){
+        $c= '';
         return '';
     }
     if( instr($cutType,'|1|')>0 ){
-        $s1 = instr($content, $startStr) ;
-        $s1Str = mid($content, $s1 + strlen($startStr),-1) ;
-        $s2 = $s1 + instr($s1Str, $endStr) + strlen($startStr) + strlen($endStr) - 1 ;//为什么要减1
+        $s1= instr($content, $startStr);
+        $s1Str= mid($content, $s1 + strlen($startStr),-1);
+        $s2= $s1 + instr($s1Str, $endStr) + strlen($startStr) + strlen($endStr) - 1; //为什么要减1
     }else{
-        $s1 = instr($content, $startStr) + strlen($startStr) ;
-        $s1Str = mid($content, $s1,-1) ;
+        $s1= instr($content, $startStr) + strlen($startStr);
+        $s1Str= mid($content, $s1,-1);
         //S2 = InStr(S1, content, EndStr)
-        $s2 = $s1 + instr($s1Str, $endStr) - 1 ;
+        $s2= $s1 + instr($s1Str, $endStr) - 1;
     }
-    $s3 = $s2 - $s1 ;
+    $s3= $s2 - $s1;
     if( $s3 >= 0 ){
-        $c = mid($tempContent, $s1, $s3);
+        $c= mid($tempContent, $s1, $s3);
     }else{
-        $c = '' ;
+        $c= '';
     }
     if( instr($cutType,'|3|')>0 ){
-        $c = $tempStartStr . $c ;
+        $c= $tempStartStr . $c;
     }
     if( instr($cutType,'|4|')>0 ){
-        $c = $c . $tempEndStr ;
+        $c= $c . $tempEndStr;
     }
-    $strCut = $c ;
+    $strCut= $c;
     return @$strCut;
 }
 //获得截取内容,20150305
 function getStrCut( $content, $startStr, $endStr, $CutType){
-    $getStrCut = strCut($content, $startStr, $endStr, $CutType) ;
+    $getStrCut= strCut($content, $startStr, $endStr, $CutType);
     return @$getStrCut;
 }
 //接取字符 CutStr(Content,22,"null")
 function cutStr( $content, $CutNumb, $MoreStr){
     $i=''; $s=''; $n ='';
-    $n = 0 ;
-    $CutNumb = intval($CutNumb) ;//转换成数字类型    追加于20141107
-    if( $MoreStr == '' ){ $MoreStr = '...' ;}
-    if( LCase($MoreStr) == 'none' || LCase($MoreStr) == 'null' ){ $MoreStr = '' ;}
-    $cutStr = $content ;
-    for( $i = 1 ; $i<= strlen($content); $i++){
-        $s = Asc(mid(CStr($content), $i, 1)) ;
-        if( $s < 0 ){ $s = $s + 65536 ;}
-        if( $s < 255 ){ $n = $n + 1 ;}
-        if( $s > 255 ){ $n = $n + 2 ;}
-        if( $n >= $CutNumb ){ $cutStr = substr($content, 0 , $i) . $MoreStr ; return @$cutStr; }
+    $n= 0;
+    $CutNumb= intval($CutNumb); //转换成数字类型    追加于20141107
+    if( $MoreStr== '' ){ $MoreStr= '...' ;}
+    if( strtolower($MoreStr)== 'none' || strtolower($MoreStr)== 'null' ){ $MoreStr= '' ;}
+    $cutStr= $content;
+    for( $i= 1 ; $i<= strlen($content); $i++){
+        $s= ord(mid(CStr($content), $i, 1));
+        if( $s < 0 ){ $s= $s + 65536 ;}
+        if( $s < 255 ){ $n= $n + 1 ;}
+        if( $s > 255 ){ $n= $n + 2 ;}
+        if( $n >= $CutNumb ){ $cutStr= substr($content, 0 , $i) . $MoreStr ; return @$cutStr; }
     }
     return @$cutStr;
 }
 //截取内容，不区分大小写 20150327  C=CutStrNOLU(c,"<heAd",">")
 function cutStrNOLU($content, $startStr, $endStr){
     $s=''; $LCaseContent=''; $nStartLen=''; $nEndLen=''; $NewStartStr ='';
-    $startStr = LCase($startStr) ;
-    $endStr = LCase($endStr) ;
-    $LCaseContent = LCase($content) ;
+    $startStr= strtolower($startStr);
+    $endStr= strtolower($endStr);
+    $LCaseContent= strtolower($content);
 
     if( instr($LCaseContent, $startStr) > 0 ){
-        $nStartLen = instr($LCaseContent, $startStr) ;
-        $s = mid($content, $nStartLen,-1) ;
-        $LCaseContent = mid($s, strlen($startStr) + 1,-1) ;
-        $NewStartStr = mid($s, 1, strlen($startStr) + 1) ;//获得开始字符
+        $nStartLen= instr($LCaseContent, $startStr);
+        $s= mid($content, $nStartLen,-1);
+        $LCaseContent= mid($s, strlen($startStr) + 1,-1);
+        $NewStartStr= mid($s, 1, strlen($startStr) + 1); //获得开始字符
 
-        $LCaseContent = Replace($LCaseContent, '<', '&lt;') ;
+        $LCaseContent= Replace($LCaseContent, '<', '&lt;');
         //Call eerr("111",LCaseContent)
 
-        $nEndLen = instr($LCaseContent, $endStr) ;
-        ASPEcho('nEndLen', $nEndLen) ;
+        $nEndLen= instr($LCaseContent, $endStr);
+        ASPEcho('nEndLen', $nEndLen);
 
-        $s = mid($content, $nStartLen, $nEndLen + strlen($startStr)) ;
+        $s= mid($content, $nStartLen, $nEndLen + strlen($startStr));
         //Call Echo(nStartLen,nEndLen)
         //Call Echo("S",S)
-        $cutStrNOLU = $s ;
+        $cutStrNOLU= $s;
     }
     return @$cutStrNOLU;
 }
@@ -123,35 +113,35 @@ function cutStrNOLU($content, $startStr, $endStr){
 //接取TD字符
 function setCutTDStr( $content, $TDWidth, $MoreColor){
     $i=''; $s=''; $c=''; $n=''; $EndNumb=''; $YesMore ='';
-    $content = CStr($content . '') ;
-    if( $content == '' ){ $setCutTDStr = $content ; return @$setCutTDStr; }
-    if( $TDWidth == '' ){ $setCutTDStr = $content ; return @$setCutTDStr; }//TDWidth为空，则为自动
-    $n = 0 ; $YesMore = false ;
-    $EndNumb = Int($TDWidth / 6.3) ;
-    for( $i = 1 ; $i<= strlen($content); $i++){
-        $s = mid($content, $i, 1) ;
+    $content= CStr($content . '');
+    if( $content== '' ){ $setCutTDStr= $content ; return @$setCutTDStr; }
+    if( $TDWidth== '' ){ $setCutTDStr= $content ; return @$setCutTDStr; }//TDWidth为空，则为自动
+    $n= 0 ; $YesMore= false;
+    $EndNumb= Int($TDWidth / 6.3);
+    for( $i= 1 ; $i<= strlen($content); $i++){
+        $s= mid($content, $i, 1);
         if( $n >= $EndNumb ){
-            $YesMore = true ;
+            $YesMore= true;
             break;
         }else{
-            $c = $c . $s ;
+            $c= $c . $s;
         }
-        if( Asc($s) < 0 ){
-            $n = $n + 2 ;
+        if( ord($s) < 0 ){
+            $n= $n + 2;
         }else{
-            $n = $n + 1 ;
+            $n= $n + 1;
         }
     }
-    if( $YesMore == true ){
+    if( $YesMore== true ){
         //需要处理Title标题的HTML
-        $c = '<span Title="' . $GLOBALS['showHTMLCode'][$content] . '" style="background-color:' . $MoreColor . ';">' . $c . '</span>' ;
+        $c= '<span Title="' . displayHtml($content) . '" style="background-color:' . $MoreColor . ';">' . $c . '</span>';
     }
-    $setCutTDStr = $c ;
+    $setCutTDStr= $c;
     return @$setCutTDStr;
 }
 //接取TD字符 (辅助)
 function cutTDStr($content, $TDWidth){
-    $cutTDStr = setCutTDStr($content, $TDWidth, '#FBE3EF') ;
+    $cutTDStr= setCutTDStr($content, $TDWidth, '#FBE3EF');
     return @$cutTDStr;
 }
 //分割字符
@@ -160,22 +150,22 @@ function cutTDStr($content, $TDWidth){
 
 //分割字符 去掉字符 (辅助)
 function getArray1($content, $startStr, $endStr, $StartType, $EndType){
-    $getArray1 = getArrayList($content, $startStr, $endStr, $StartType, $EndType, '去掉字符') ;
+    $getArray1= getArrayList($content, $startStr, $endStr, $StartType, $EndType, '去掉字符');
     return @$getArray1;
 }
 //截取指定分割值
 function getSplit( $content, $splStr, $n){
     $splxx ='';
-    $splxx = aspSplit($content, $splStr) ;
-    $getSplit = $splxx[$n] ;
+    $splxx= aspSplit($content, $splStr);
+    $getSplit= $splxx[$n];
     return @$getSplit;
 }
 //获得分数总数
 function getSplitCount( $content, $splStr){
     $splxx ='';
-    $splxx = aspSplit($content, $splStr) ;
-    $getSplitCount = UBound($splxx) ;
-    if( getSplitCount > 0 ){ $getSplitCount = getSplitCount + 1 ;}//不为空加一
+    $splxx= aspSplit($content, $splStr);
+    $getSplitCount= UBound($splxx);
+    if( getSplitCount > 0 ){ $getSplitCount= getSplitCount + 1 ;}//不为空加一
     return @$getSplitCount;
 }
 

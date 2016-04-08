@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <!--#Include File = "../Inc/Config.Asp"--> 
 <!--#Include File = "function.asp"--> 
 <!DOCTYPE html> 
@@ -70,7 +60,11 @@ End Select
 '模板文件列表
 Sub templateFileList(dir)
     Dim content, splStr, fileName, s 
-    content = getDirHtmlNameList(dir) 
+	if  Session("adminusername") = "ASPPHPCMS"  then
+		content = getDirFileNameList(dir,"")
+	else
+	    content = getDirHtmlNameList(dir)
+	end if
     splStr = Split(content, vbCrLf) 
     For Each fileName In splStr
 		if fileName<>"" then
@@ -95,7 +89,8 @@ End Sub
 '添加修改文件
 Function addEditFile(dir, fileName)
     Dim filePath 
-    If Right(LCase(fileName), 5) <> ".html" Then
+	
+    If Right(LCase(fileName), 5) <> ".html" and Session("adminusername") <> "ASPPHPCMS" Then
         fileName = fileName & ".html" 
     End If 
     filePath = dir & "/" & fileName
@@ -121,7 +116,7 @@ Function addEditFile(dir, fileName)
       <td>文件名称 
       <input name="fileName" type="text" id="fileName" value="<% =fileName%>" size="40"> 
       <br> 
-      <textarea name="Content" cols="110" rows="25" id="Content"><%call rw(getFText(filePath))%></textarea></td> 
+      <textarea name="content" cols="110" rows="25" id="content"><%call rw(getFText(filePath))%></textarea></td> 
     </tr> 
     <tr> 
       <td height="40" align="center"><input type="submit" name="button" id="button" value=" 保存 " /></td> 

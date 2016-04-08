@@ -1,0 +1,47 @@
+【parentid】大客户
+【title】大客户1
+【sortrank】1
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh1.jpg
+-------------------------------
+【parentid】大客户
+【title】大客户2
+【sortrank】2
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh2.jpg
+-------------------------------
+【parentid】大客户
+【title】大客户3
+【sortrank】3
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh3.jpg
+-------------------------------
+【parentid】大客户
+【title】大客户4
+【sortrank】4
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh4.jpg
+-------------------------------
+【parentid】大客户
+【title】大客户5
+【sortrank】5
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh5.jpg
+-------------------------------
+【parentid】大客户
+【title】大客户6
+【sortrank】6
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh6.jpg

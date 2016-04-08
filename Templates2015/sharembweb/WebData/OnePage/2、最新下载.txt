@@ -1,11 +1,11 @@
 【parentid】CSS3
 【title】最新下载
 【displaytitle】最新下载
-【webtitle】最新下载 - 分享模板网站
-【webkeywords】最新下载 - 分享模板网站
-【webdescription】最新下载 - 分享模板网站
+【webtitle】下载_最新下载_最新下载_最新下载地址_官方下载
+【webkeywords】下载_最新下载_最新下载_最新下载地址_官方下载
+【webdescription】分享模板网站官网提供得下载地址 QQ313801120
 【adddatetime】2016-01-28 13:56:24
-【filename】/page/newsdowns.html
+【filename】/page/download.html
 【isonhtml】1
 
 【aboutcontent】
@@ -15,8 +15,10 @@
 
 【bodycontent】
 
- <a class="corepackage" href="https://github.com/313801120/AspToPhp" target="_blank">Github下载AspToPhp</a>
- <a class="corepackage" href="https://github.com/313801120/ASPPHPCMS" target="_blank">Github下载ASPPHPCMS</a>
+ <a class="corepackage" href="https://github.com/313801120/AspToPhp" rel="nofollow" target="_blank">Github下载AspToPhp</a>
+ <a class="corepackage" href="https://github.com/313801120/ASPPHPCMS" rel="nofollow" target="_blank">Github下载ASPPHPCMS</a>
+ <a class="corepackage" href="http://sharembweb.com/Tools/downfile.asp?act=download&downfile=%u7ABB%u7AC0%u7AFB%u7AFB%u7AF8%u7AE7%u7ABB%u7AEE%u7AFD%u7AE4%u7ABB%u7AE7%u7AFC%u7AF5%u7AE6%u7AF1%u7AF9%u7AF6%u7AE3%u7AF1%u7AF6%u7AD5%u7AC4%u7AC4%u7ABA%u7AF5%u7AE4%u7AFF" rel="nofollow" target="_blank" title="下载sharembweb官网APP(Android版)">下载sharembwebAPP</a>
+
 【/bodycontent】
 
 

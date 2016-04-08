@@ -1,14 +1,6 @@
-<?php 
-/************************************************************
-作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
-创建：2016-03-11
-联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered by ASPPHPCMS 
-************************************************************/
-?>
 <?PHP
+//header("Content-type: text/html; charset=utf-8");
+
 //\n换行 \r换行  \t相当于按Tab键
 
 //调用函数前面加 @ 符为出错不提示
@@ -138,6 +130,10 @@ function UCase($content){
 function UBound($content){
 	return count($content)-1;
 }
+//获得数组开始长度
+function LBound($content){
+	return 0;
+}
 //GET方式获得值
 function QueryString($name){ 
 	return @$_GET[$name];
@@ -182,7 +178,8 @@ function TypeName($str){
 }
 //转字符
 function Cstr($str){
-	return (string)$str;
+	return strval($str);
+	
 }
 
 /*测试 mid正确性
@@ -247,14 +244,10 @@ function Mid2($content,$nStart,$nLength=-1){
 	return $c;
 }
 //查找字符所在位置
-function InStr($content,$search){
-	 
-	if(is_array($content)){
- 
+function InStr($content,$search){	 
+	if(is_array($content)){ 
 		$content=arrayToString($content,"");
-	
-	} 
-	
+	}	
 	if( $search!=""){
 		if(strstr($content,$search)){
 			return strpos($content,$search)+1;
@@ -343,7 +336,7 @@ function IIF($bExp, $sVal1, $sVal2){
 }
 //获得年月日时分钞
 function getYMDHMS( $timeStr,$sType){
-	 $splstr="";
+	$splstr="";
 	$timeStr=replace(replace(replace(replace(replace(replace($timeStr,"年","-"),"月","-"),"日","-"),"时","-"),"分","-"),"秒","-");
 	$timeStr=replace(replace(replace(replace(replace($timeStr," ","-"),":","-"),"/","-"),"--","-"),"--","-") . "------";
 	$splstr=aspSplit($timeStr,"-");
@@ -378,7 +371,6 @@ function getYMDHMS( $timeStr,$sType){
 	}else if( $sType=="秒" || $sType=="5" ){
 		$getYMDHMS=$nSecond;
 	 }
-
  return @$getYMDHMS;}
 
 
@@ -457,7 +449,8 @@ function DateAdd($part, $n, $date){
 //Int
 function Int($string){
 	//$string1=intval($string); 	
-	return (int)($string); }
+	return intval($string);
+}
 //left函数
 function left($str,$nlength){
 	return substr($str, 0 ,$nlength);
@@ -479,7 +472,15 @@ function ServerVariables($sName){
 	}
 	return @$_SERVER[$sName];
 }
+//检测是否为对象
+function isObject($obj){
+	return is_object($obj);
+}
 
+//检测是否为数组
+function isArray($array){
+	return is_array($array);
+}
 
 //执行SQL语句
 function connExecute($sql){ 
@@ -504,7 +505,6 @@ function getFormFieldName(){
 	} 
 	return $c;
 }
-
 
 //判断传值是否相等
 function  checkFunValue($Action,$FunName){
@@ -558,6 +558,9 @@ function toGB2312Char($data){
     }
     return $data;
 }
+function GBtoUTF8($data){
+	return toGB2312Char($data);
+}
 //自定义var_dump
 function p($str){
 	echo('<pre>');
@@ -565,7 +568,27 @@ function p($str){
 	echo('</pre>');
 }
 
-
+//获得表列表
+function getTableList() { 
+	$sql = "SHOW TABLES FROM ".$GLOBALS['dbname'];
+	$result = mysql_query($sql);
+	$c='';
+	if (!$result) {
+	echo "DB Error, could not list tablesn";
+	echo 'MySQL Err(www.111cn.net)or: ' . mysql_error();
+	exit;
+	}
+	
+	while ($row = mysql_fetch_row($result)) {
+	//echo "Table: {$row[0]}n";
+		if($c<>''){
+			$c.='|';
+		}
+		$c=$c.$row[0];
+	} 
+//	echo('显示'.$c);
+	return $c; 
+} 
 
 //获得表字段列表20151230 exit(getFieldList('website'));
 function getFieldList($tableName){
@@ -631,6 +654,14 @@ function getHandleDate($numb){
 //删除Html
 function delHtml($str){
 	return strip_tags($str);
+}
+//清除cookie
+function clearCookie($cookieName){
+	setcookie($cookieName);
+}
+//移除cookie
+function removeCookie($cookieName){
+	setcookie($cookieName);
 }
 
 function XY_AutoAddHandle($Action){

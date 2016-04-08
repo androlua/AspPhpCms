@@ -1,0 +1,32 @@
+【title】分享模板网站官网
+【sortrank】1
+【flags】|h|
+【httpurl】http://sharembweb.com/
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh1.jpg
+【target】_blank
+-------------------------------
+【title】ASPPHPCMS内容管理系统官网
+【sortrank】1
+【flags】|h|
+【httpurl】http://sharembweb.com/aspphpcms/
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh1.jpg
+【target】_blank
+-------------------------------
+【title】ASP转PHP官网
+【sortrank】1
+【flags】|h|
+【httpurl】http://sharembweb.com/asptophp/
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh1.jpg
+【target】_blank
+-------------------------------
+【title】程序开发作者
+【sortrank】1
+【flags】|h|
+【httpurl】http://sharembweb.com/about/contact.html
+【adddatetime】2015-01-28 15:09:05 
+【smallimage】[$cfg_webimages$]kh1.jpg
+【target】_blank
+-------------------------------

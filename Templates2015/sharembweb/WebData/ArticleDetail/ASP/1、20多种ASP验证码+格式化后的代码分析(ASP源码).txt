@@ -1,0 +1,53 @@
+【parentid】ASP
+【title】20多种ASP验证码 v1.0+格式化后的代码分析(ASP源码)
+【webtitle】20多种ASP验证码 v1.0+格式化后的代码分析(ASP源码)
+【webkeywords】20多种ASP验证码 v1.0+格式化后的代码分析(ASP源码)_ASP验证码
+【webdescription】20多种ASP验证码,有纯数字的，有纯字母的，有纯汉字的，还有数字、字母、汉字混合的等等，非常的全和丰富 QQ313801120
+【sortrank】1
+【author】sharembweb
+【adddatetime】2016-01-16 11:11:11
+【filename】/asp/verification-download.html
+【flags】|c|
+【relatedtags】ASP
+【bodycontent】[&全部换行&]<strong>20多种ASP验证码+格式化后的代码分析(ASP源码)</strong>
+这是我2013年发布的一个asp类源码程序，里面有几十种ASP验证码源码代码，有纯数字的，有纯字母的，有纯汉字的，还有数字、字母、汉字混合的等等，非常的全和丰富。
+我把全部代码用自己写的ASP格式 化程序处理了一下，使得代码更易看懂。
+当时自己在开发网站时需要用到这些验证码，所以就花了一点时间把网上ASP类验证码收集起来了，整理了一个下载包，供大家下载使用。
+直到今天还有很多人加我QQ，问我这个ASP验证码之类的问题，我也会很认真一个一个回答他们，感觉挺有意思的，也很有成就感，也被很多网站所收录。
+
+<img src="http://www.codesky.net/codedown/viewpic/201310147505802.jpg" title="20多种ASP验证码+格式化后的代码分析(ASP源码)" alt="20多种ASP验证码+格式化后的代码分析(ASP源码)" width="100%">
+ 
+本文版权归作者所有，转摘请注明作者和出处！
+作者：云端
+首发：<a href="http://sharembweb.com/" target="_blank" class="ablue">http://sharembweb.com</a>
+
+[&全部换行end&]
+
+<b>下面是作者在各大源码下载类网站发布本作品的链接：</b><br>
+<ul class="list">  
+<li><a href="http://down.admin5.com/asp/106437.html" rel="nofollow" target="_blank">【admin5】20多种ASP验证码 v1.0(ASP源码)</a></li> 
+<li><a href="http://down.chinaz.com/soft/35264.htm" rel="nofollow" target="_blank">【chinaz】20多种ASP验证码 v1.0(ASP源码)</a></li> 
+<li><a href="http://download.csdn.net/detail/mydd3/6712723" rel="nofollow" target="_blank">【csdn】20多种ASP验证码+代码完美分析(ASP源码)</a></li> 
+<li><a href="http://www.codesky.net/codedown/html/29007.htm" rel="nofollow" rel="nofollow" target="_blank">【codesky】12个ASP验证码+代码超美化分析(ASP源码)</a></li>  
+
+</ul>
+<br>
+<b>下面这些下载地址我没有发布过，可能是从上面引用过来，链接：</b><br> 
+<ul class="list">
+<li><a href="http://www.jb51.net/codes/118319.html" rel="nofollow" target="_blank">【jb51】20多种ASP验证码 v1.0(ASP源码)</a></li>
+<li><a href="http://www.onlinedown.net/softdown/537626_2.htm" rel="nofollow" target="_blank">【onlinedown】20多种ASP验证码 1.0(ASP源码)</a></li> 
+<li><a href="http://www.mycodes.net/40/5912.htm" rel="nofollow" target="_blank">【mycodes】25种ASP验证码代码(ASP源码)</a></li> 
+
+<li><a href="http://www.softhy.net/soft/34498.htm" rel="nofollow" rel="nofollow" target="_blank">【softhy】20多种ASP验证码源码 v1.0 (ASP源码)</a></li>
+<li><a href="http://www.xdowns.com/soft/1/95/2013/Soft_113247.html" rel="nofollow" rel="nofollow" target="_blank">【xdowns】20多种ASP验证码源码 v1.0 (ASP源码)</a></li>
+<li><a href="http://www.downasp.com/yuanma/show.asp?id=20931" rel="nofollow" rel="nofollow" target="_blank">【downasp】20多种ASP验证码源码 v1.0 (ASP源码)</a></li>
+<li><a href="http://www.pudn.com/downloads608/sourcecode/web/detail2479216.html" rel="nofollow" rel="nofollow" target="_blank">【pudn】20多种ASP验证码源码 v1.0 (ASP源码)</a></li> 
+
+</ul>
+ <br><br>
+{$TitleInSearchEngineList title='20多种ASP验证码 v1.0'$}
+
+【/bodycontent】
+
+
+

@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 'FSO  VBscript.RegExp组件操作大全 (2013,9,29)
 
@@ -51,15 +41,15 @@ Function regExp_Replace(ByVal content, ByVal SetPattern, ByVal TStr)
     Set Rep = Nothing 
     If Err Then Call doError(Err.Description, "RegExp_Replace 替换内容 函数出错，SetPattern=" & SetPattern & " |Str=" & TStr) 
 End Function 
-'替换内容关自动加颜色,不区分大小写
+'替换内容自动加颜色,不区分大小写
 Function replaceColor(content, SetPattern, TStr, color)
     If color <> "" Then TStr = "<font color=" & color & ">" & TStr & "</font>" 
     replaceColor = regExp_Replace(content, SetPattern, TStr) 
-End Function 
+End Function
 '删除HTML标签
 Function delHtml(ByVal strHtml)
     On Error Resume Next 
-    Dim Rep, strOutput 
+    Dim Rep, strOutput
     Set Rep = CreateObject("VBscript.RegExp")
         Rep.IgnoreCase = True 
         Rep.Global = True 
@@ -71,13 +61,13 @@ Function delHtml(ByVal strHtml)
 End Function 
 '删除HTML标签 (辅助)
 Function regExp_DelHtml(strHtml)
-    regExp_DelHtml = delHtml(strHtml) 
+    regExp_DelHtml = delHtml(strHtml)
 End Function 
-'获得内容中链接与标题列表  GetAUrlTitleList(Content,"网址")
+'获得内容中链接与标题列表  getAUrlTitleList(Content,"网址")
 Function getAUrlTitleList(ByVal content, ByVal SType)
     On Error Resume Next 
     Dim s, c, SetExecute, SetValue, Rep 
-    c = "" 
+    c = ""
     Set Rep = CreateObject("VBscript.RegExp")
         Rep.IgnoreCase = True 
         Rep.Global = True 
@@ -93,11 +83,11 @@ Function getAUrlTitleList(ByVal content, ByVal SType)
                 End If 
                 If InStr(vbCrLf & c & vbCrLf, vbCrLf & s & vbCrLf) = False Then
                     c = c & s & vbCrLf 
-                End If 
+                End If
             Next 
         Set SetExecute = Nothing 
-    Set Rep = Nothing 
-    If c <> "" Then c = Left(c, Len(c) - 2) 
+    Set Rep = Nothing
+    If c <> "" Then c = Left(c, Len(c) - 2)
     getAUrlTitleList = c 
     If Err Then Call doError(Err.Description, "GetHrefUrlTitleList 获得内容中链接与标题列表 函数出错，C=" & c) 
 End Function 
@@ -649,5 +639,17 @@ End Function
 Function deleteNullRow(ByVal content)
     deleteNullRow = regExp_Replace(content, "\r\n\s*\r\n", "")                      '删除空行
 End Function 
+
+'空链接加默认名称 20160405  待测试
+function nullLinkAddDefaultName(content)
+	dim rep
+	Set rep = CreateObject("VBscript.RegExp")
+	rep.IgnoreCase=true 
+	rep.Global=True 
+	rep.Pattern="<a [^>]*href *= *[""'][""'][^>]*>" 
+	content=rep.Replace(content,"<a href='index.html'>") 
+	Set rep=Nothing 
+	nullLinkAddDefaultName=content
+end function
 %>  
 

@@ -36,7 +36,7 @@
 		  <td>栏目类型</td>
 		  <td>栏目位置</td>
 		  <td>HTML</td>
-		  <td>测试</td>
+		  <td>文件名称</td>
 		  <td>操作</td>
 		  </tr>
         [action] 
@@ -48,7 +48,7 @@
           
 				<input name="idcheck" type="checkbox" class="np" value="[$id$]">
                 <input type="hidden" name="id" id="id" value="[$id$]" />          </td>
-		                <td align="left"><a href="?act=dispalyManageHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=}&parentid=[$id$]" title="进入分类信息">[$selectcolumnname$]</a></td>
+		                <td align="left"><a href="?act=dispalyManageHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=1&parentid=[$id$]" title="进入分类信息">[$selectcolumnname$]</a></td>
                         <td>[$columntype$]</td>
                         <td align="left">[$flags$]</td>
                         <td>[$ishtml if='False' elseif='0' value='未生成' elsevalue='已生成'$] </td>
@@ -81,6 +81,7 @@
               <option value="20"[$nPageSize if='20' value=' selected'$]>每页显示20条</option>
               <option value="30"[$nPageSize if='30' value=' selected'$]>每页显示30条</option>
               <option value="40"[$nPageSize if='40' value=' selected'$]>每页显示40条</option>
+              <option value="50"[$nPageSize if='50' value=' selected'$]>每页显示50条</option>
             </select>            </td>
 		</tr> 
 		<tr align="right" bgcolor="#F9FCEF">

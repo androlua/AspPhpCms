@@ -1,0 +1,124 @@
+【parentid】HTML5
+【title】HTML学习笔记 来源慕课网
+【webtitle】HTML学习笔记 来源慕课网
+【webkeywords】HTML学习笔记 来源慕课网
+【webdescription】HTML学习笔记 来源慕课网 QQ313801120
+【sortrank】4
+【author】sharembweb
+【adddatetime】2016-04-06 10:11:10
+【filename】/html5/html-study-imooc.html
+【flags】|
+【relatedtags】HTML5
+【bodycontent】[&全部换行&][&html转码&]【strong】HTML学习笔记 来源慕课网【/strong】
+【b】1、元信息标记 <meta>【/b】
+不需要结束标记，放在<head></head>标记之间
+属性：name/http-equiv
+举例：<meta name="keyword/description/author/robots" count="关键字/页面描述/作者信息/搜索方式"/>
+<meta http-equiv="refresh/expirse/charset" content="刷新时间/到期时间/文档编码"/>
+
+【b】2、字体标记 <hn></hn>【/b】
+1）n=“1~6”标题文字标记
+<h1 align="left/center/right"></h1> align属性更改显示位置
+
+2）<font></font> 文字样式
+属性<font face="字体" size="大小" color="颜色">文字内容</font>
+face:属性值可以有一个或多个，逗号分隔，默认使用第一个，如果不在，使用第二个，以此类推
+size：有效范围值1~3，默认值3，属性前添加“+”，表示默认大小的增量或减量
+color:可以是关键字“red/blue……”也可以是16进制颜色代码（RGB）例如黑色“#000000”
+
+3) 其他字体标记
+<b>粗体</b> <i>斜体</i> <u>下划线</u> <tt>打字机字体</tt>
+<big>大型字体</big> <small>小型字体</small> <em>表示强调（斜体）</em> <strong>表示特别强调（粗体）</strong>
+
+【b】3、超链接标记 <a href="链接地址" target="属性值">说明文字</a>【/b】
+1）链接地址可以是绝对路径也可以是相对路径
+2）target属性值：
+_parent 在上一级窗口中打开
+_blank 在新打开的窗口中载入文档
+_self 默认设置，在同一个窗口中打开
+_top 在浏览器的整个窗口中打开
+
+【b】4、水平线标记 <hr>【/b】
+1）独立使用
+2）自身属性：
+width 设置水平线长度，取值为数字（单位：像素px）或百分数（占窗口的百分比）
+height 设置高度，取值同上
+size 设置粗细（单位：像素px）
+color 设置颜色
+
+【b】5、段落标记【/b】
+换行标记 <br>
+空格标记  
+缩进标记 <blockquote>
+段落标记 <p align="left/center/right"></p>
+居中标记 <center><p>居中对齐</p></center>
+
+【b】6、列表标记【/b】
+1）编号列表
+<ol type="1/A/a/I/i" start="编号开始序号">
+<li>列表项1</li>
+<li>列表项2</li>
+</ol>
+
+2）项目符号列表
+    <ul  type="circle/disc/square" >
+        <li>列表项1</li>
+        <li>列表项2</li>
+    </ul>
+
+3）说明项目列表
+    <dl >
+        <dt>第一项</dt>
+        <dd>第一项的定义</dd>
+        <dt>第二项</dt>
+        <dd>第二项的定义</dd>
+    </dl>
+	
+【b】7、表格标记【/b】
+<table border="边框宽度" cellspacing="单元格到表格边框距离" cellpadding="文字到单元格边框距离">
+<caption>表格标题</caption>
+<tr>
+<th>表头名称</th> <th>表头名称</th>
+</tr>
+<tr>
+<td>二行一列</td> <td>二行二列</td>
+</tr>
+</table>
+
+1）表格属性
+    width:控住表格宽度，取值整数，单位像素，取值百分数，表示表格宽度占整个网页宽度n%
+    heigth:控制表格的高度
+    bgcolor:设置表格背景颜色
+    align:设置表格对齐方式
+	
+2）行和列的属性
+    height:在<tr>中标记时，控制表格内某行高度
+    bordercolor:控制表格某行外框颜色
+    bgcolor：控制该行单元格的背景颜色
+    align:控制某行中各单元格内容水平对齐方式
+    valign:控制本行中单元格内容在垂直方向的对齐方式
+	
+3）单元格属性
+    bordercolor：单元格边框颜色
+    bgcolor:背景颜色
+    align/valign:单元格内元素水平、垂直对齐方式
+    colspan:控制单元格合并右方的单元格数
+    rowspan:控制单元格合并下方的单元格数
+	
+【b】8、表单元素标记【/b】
+<form name="表单名称" method="GET/POST" action="URL地址" enctype="编码方式" target="_blank/_parent/_self/_top" id="ID号">
+
+<input type="元素类型"  name="元素名称"/>
+</form>
+
+【b】9、文本区域框【/b】
+<textarea></textarea>
+
+【b】10、菜单列表类元素【/b】
+<select name="下拉菜单名称">
+<option value="" selected="">选项显示内容</option>
+</select>
+
+{$TitleInSearchEngineList title='HTML学习笔记 来源慕课网'$}
+
+【/bodycontent】 

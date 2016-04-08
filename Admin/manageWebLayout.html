@@ -25,14 +25,15 @@
 		<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#CFCFCF" align="center" style="margin-top:8px">
 		<tbody>
 		<tr bgcolor="#E7E7E7">
-			<td height="28" colspan="9" background="images/tbg.gif" style="padding-left:10px;">
+			<td height="28" colspan="10" background="images/tbg.gif" style="padding-left:10px;">
              <!--           ◆ 所有栏目>文档列表  (使用鼠标右键弹出菜单)-->			</td>
 		</tr>
 		<tr align="center" bgcolor="#FBFCE2" height="25">
 			<td width="30">ID</td>
 			<td>选择</td>
 			<td>布局名称</td>
-			<td>统一样式值</td>
+			<td>被替换内容</td>
+			<td>替换内容</td>
 			<td>更新时间</td>
 			<td>排序</td>
 			<td>点击</td>
@@ -49,7 +50,8 @@
 			<td align="left">
 				<span id="arc106">
 				<a href="#"><u>[$layoutname$]</u></a>				</span></td>
-			<td>[$replacestyle$]</td>
+			<td>[$sourcestr$]</td>
+			<td>[$replacestr$]</td>
 			<td>[$updatetime$]</td>
 			<td>
 				<a href="content_list.php?cid=5">[$sortrank$]</a>			</td>
@@ -62,7 +64,7 @@
 		</tr>
         [/list] 
 		<tr bgcolor="#ffffff">
-			<td height="36" colspan="10">
+			<td height="36" colspan="11">
 				<a href="javascript:checkmm('全选')" class="coolbg">全选</a>
 				<a href="javascript:checkmm('反选')" class="coolbg">反选</a>
 				<a href="javascript:checkmm('取消')" class="coolbg">取消</a>
@@ -80,14 +82,13 @@
               <option value="20"[$nPageSize if='20' value=' selected'$]>每页显示20条</option>
               <option value="30"[$nPageSize if='30' value=' selected'$]>每页显示30条</option>
               <option value="40"[$nPageSize if='40' value=' selected'$]>每页显示40条</option>
-            </select>
-            </td>
+              <option value="50"[$nPageSize if='50' value=' selected'$]>每页显示50条</option>
+            </select>            </td>
 		</tr> 
 		<tr align="right" bgcolor="#F9FCEF">
-			<td height="36" colspan="11" align="center">
+			<td height="36" colspan="12" align="center">
 				[$pageInfo$]			
-                <input name="nPageSize" type="hidden" id="nPageSize" value="[$nPageSize$]">
-                </td>
+                <input name="nPageSize" type="hidden" id="nPageSize" value="[$nPageSize$]">                </td>
 		</tr>
 		</table>
       </form>

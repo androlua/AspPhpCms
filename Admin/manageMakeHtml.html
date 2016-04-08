@@ -24,30 +24,38 @@
         <div class="explain-col">
             温馨提示： 
         </div>
-        <form name="listform" method="post" action="?act=dispalyManageHandle&actionType=[$actionType$]&lableTitle=[$lableTitle$]&page=[$page$]">
+        <form name="listform" method="post" action="{$WEB_VIEWURL$}?act=makeallhtml">
 		<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#CFCFCF" align="center" style="margin-top:8px">
 		<tbody>
 		<tr bgcolor="#E7E7E7">
-			<td height="28" colspan="3" background="images/tbg.gif" style="padding-left:10px;">
+			<td height="28" colspan="2" background="images/tbg.gif" style="padding-left:10px;">
           <!--           ◆ 所有栏目>单页管理</td>-->		</tr>
 		<tr align="center" bgcolor="#FBFCE2" height="25">
-			<td>ID</td>
-			<td>&nbsp;</td>
-		  <td>操作</td>
+			<td width="14%">ID</td>
+			<td width="86%">操作</td>
 		</tr> 
 		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
-		  <td>&nbsp;</td>
-		  <td>&nbsp;</td>
-		  <td><a href="{$WEB_VIEWURL$}?act=makeallhtml" target="_blank">生成全部HTML页面</a></td>
+		  <td>生成栏目</td>
+		  <td><select name="id" id="id">
+		    
+		    
+          [$columnList$]
+		    
+		  </select>
+		  <input type="submit" name="button" class="btnclick2" id="button" value="提交"></td>
 		  </tr>
 		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 		  <td>&nbsp;</td>
+		  <td><a href="{$WEB_VIEWURL$}?act=makeallhtml" target="_blank" onClick="return new xyClass().myConfirm('你确定要生成全部HTML吗？')">生成全部HTML页面</a> | 
+          <a href="?act=deleteAllMakeHtml" target="_blank" onClick="return new xyClass().myConfirm('你确定要删除吗？\n删除后将不可恢复')">删除全部HTML页面</a>          </td>
+		  </tr>
+		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 		  <td>&nbsp;</td>
 		  <td><a href="{$WEB_VIEWURL$}?act=copyHtmlToWeb" target="_blank">复制生成HTML页面</a></td>
 		  </tr>
 		 
 		<tr align="right" bgcolor="#F9FCEF">
-			<td height="36" colspan="7" align="center">&nbsp;				</td>
+			<td height="36" colspan="6" align="center">&nbsp;				</td>
 		</tr>
 		</table>
       </form>

@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 'Access (2013,10,22)   需要整理下，太多太乱(20151117)
 
@@ -221,7 +211,7 @@ Function getFieldAlt(tableName, fieldName)
 End Function
 '获得指定数据库里表列表
 Function getTableList_Conn(conn)
-    Dim s, c 
+    Dim s, c,rs
     Set rs = conn.OpenSchema(20)
         rs.MoveFirst 
         Do Until rs.EOF
@@ -272,7 +262,7 @@ Function getFieldConfigList(tableName)
 			elseif Fld.Type=7 then
 				s="|time|"
 			elseif Fld.Type=203 then
-				s="|textarea|"
+				s="|textarea|"				
 			else
 				s="||"
 			end if

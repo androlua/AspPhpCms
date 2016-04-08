@@ -1,0 +1,23 @@
+¡¾parentid¡¿banner
+¡¾title¡¿banner1
+¡¾sortrank¡¿1
+¡¾flags¡¿|h|
+¡¾author¡¿sharembweb
+¡¾adddatetime¡¿2015-01-28 15:09:05 
+¡¾smallimage¡¿[$cfg_webimages$]banner1.jpg
+-------------------------------
+¡¾parentid¡¿banner
+¡¾title¡¿banner2
+¡¾sortrank¡¿2
+¡¾flags¡¿|h|
+¡¾author¡¿sharembweb
+¡¾adddatetime¡¿2015-01-28 15:09:05 
+¡¾smallimage¡¿[$cfg_webimages$]banner2.jpg
+-------------------------------
+¡¾parentid¡¿banner
+¡¾title¡¿banner3
+¡¾sortrank¡¿3
+¡¾flags¡¿|h|
+¡¾author¡¿sharembweb
+¡¾adddatetime¡¿2015-01-28 15:09:05 
+¡¾smallimage¡¿[$cfg_webimages$]banner3.jpg

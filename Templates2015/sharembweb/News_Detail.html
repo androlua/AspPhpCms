@@ -6,6 +6,7 @@
 <meta name="keywords" content="{$Web_KeyWords$}" />
 <meta name="description" content="{$Web_Description$}" /> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<link rel="Shortcut Icon" href="[$cfg_webimages$]favicon.ico" />
 <!--#JS#-->
 <link href="[$WebCss$]style.css" rel="stylesheet" type="text/css" /><!--#Css#-->
 </head>
@@ -21,6 +22,7 @@
         <ul class="columnbox">
             <li class="title"><h1>[$detailTitle$]</h1></li>
             <li class="content">
+           <div class="articletimes">作者：[$glb_artitleAuthor$] 发表于：[$glb_artitleAdddatetime format_time='1'$]</div>
                 [$detailContent$]
                 [$glb_aritcleRelatedTags$]
                 <ul class=""updownarticlewrap"">
@@ -70,16 +72,16 @@
                     #-->
                      
                 </ul> 
-              <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?dataact=articlecomment&itemid=[$glb_Id$]" target="_blank"  onSubmit="return formSubmit()">
-                <textarea name="content" placeholder="我也来说两句..." class="inputstyle"  ></textarea>   
-                <input type="submit" class="mybtn" value="评论">
+              <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=articlecomment&itemid=[$glb_Id$]" target="_blank"  onSubmit="return formSubmit()">
+                <textarea name="content" placeholder="我也来说两句..."></textarea>
+                <input type="submit" class="mybtn" value="评论" />
 评论支持使用[code][/code]标签添加代码
               </form>
 <script language="javascript">
 function formSubmit(){
     if(document.all.formcomment.content.value==""){
-        document.all.formcomment.content.focus()
-        alert("评论内容不能为空")
+        document.all.formcomment.content.focus();
+        alert("评论内容不能为空");
         return false;
     }
 }
@@ -92,7 +94,16 @@ function formSubmit(){
         
     </div>
     <div class="sidebarright">
-    
+       <ul class="columnbox">
+            <li class="title" id="userlogintitle">会员登录</li>
+            <li class="content">
+            <span id="qqLoginBtn"></span>
+            <div>
+            <img src="/Templates2015/sharembweb/Images/aspphpcmserweima.jpg" width="100%" alt="ASPPHPCMS二维码" title="ASPPHPCMS二维码"> 
+            扫描二维码，获得更多ASPPHPCMS相关知识
+            </div>
+            </li>
+        </ul>
  
         <ul class="columnbox">
             <li class="title">常用工具</li>

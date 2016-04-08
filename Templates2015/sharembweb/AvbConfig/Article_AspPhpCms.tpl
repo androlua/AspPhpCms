@@ -5,7 +5,7 @@
 </text>
 ---------------------
 【home】
-<VB IncludeTemplateFile path='模块功能列表\sharembweb\home\index_ASPPHPCMS.html' operate='true' />
+<VB IncludeTemplateFile path='模块功能列表\sharembweb\home\index_aspphpcms.html' operate='true' />
 ---------------------
 【加载底部框架】
 <text>
@@ -30,9 +30,9 @@
 \Config\ASPAction\格式化HTML.Asp
 【拷贝文件夹】/../Jquery【|】[$模板路径$][$网站目录名称$]/Jquery}
 [默认HTML设置]{6、手机端NoJs.Html}
-[默认CSS设置]{1、Common.css}
+[默认CSS设置]{自定义CSS}
 [自定义模板]{}
-[自定义CSS]{}
+[自定义CSS]{\../DataDir\VB模块\服务器\Template\模块功能列表\sharembweb\home\_style.css}
 [自定义模板动作]{}
 [自定义CSS动作]{}
 [txtIsCodeHtmlTemplate]{1}

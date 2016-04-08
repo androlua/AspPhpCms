@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 'URL 网址处理 (2013,9,27)
 
@@ -246,7 +236,7 @@ End Function
 Function getThisUrl()
     Dim url 
     'vbdel start
-    url = "http://" & Request.ServerVariables("server_name") 
+    url =Request.ServerVariables("server_name") 
     'PHP版上面直接获得端口
     If InStr(url, ":") = False Then
         url = url & getPort() 
@@ -254,8 +244,9 @@ Function getThisUrl()
     url = url & Request.ServerVariables("script_name") 
     If Request.ServerVariables("QUERY_STRING") <> "" Then url = url & "?" & Request.ServerVariables("QUERY_STRING") 
     'vbdel end
-    getThisUrl = url 
+    getThisUrl =  "http://" & url 
 End Function 
+'获得当前无文件名称网址
 Function getThisUrlNoFileName()
     Dim url 
     url = getThisUrl() 
@@ -1111,7 +1102,7 @@ Function getUrlAddToParam(ByVal url, ByVal AddToUrl, sType)
 
     End If 
 
-
+	c=replace(c,"\","/")			'20160313
     getUrlAddToParam = c 
 End Function 
 

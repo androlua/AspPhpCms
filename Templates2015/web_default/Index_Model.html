@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>{$Web_Title$}</title>
+<meta name="keywords" content="{$Web_KeyWords$}" />
+<meta name="description" content="{$Web_Description$}" /> 
+<script src="Jquery/Common1.js" type="text/javascript"></script><!--#JS#-->
+<link href="[$WebCss$]style.css" rel="stylesheet" type="text/css" /><!--#Css#-->
+</head>
+<body>
+{$Include file='head.html' block='top'$} 
+<dIv datid='3【DatId】'class="ind_wrap_1">
+    <div class="ind_wrap_2">
+        {$GetContentModule modulename='module_Left' sourcelist='22[Array]' replacelist='22[Array]'$}
+    </div>
+    <div class="ind_wrap_3">
+        {$GetContentModule modulename='module_Right'$}
+    </div>
+    <div class="clear"></div>
+     
+</dIv>
+<!--#Module module_Left start#-->
+
+    {$ReadColumeSetTitle title='网站公告' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName网站公告\' file=\'\'$]'$}
+    <div class="clear10"></div>
+    
+    {$ReadColumeSetTitle title='产品列表' style='22' contentwidth='220' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName产品列表\' file=\'\'$]'$}
+    <div class="clear10"></div>
+    
+    {$ReadColumeSetTitle title='荣誉资质' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName荣誉资质\' file=\'\'$]'$}
+    <div class="clear10"></div>    
+
+    {$ReadColumeSetTitle title='最新动态' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName最新动态\' file=\'\'$]'$}
+    <div class="clear10"></div>
+    
+    {$ReadColumeSetTitle title='常见问题' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName常见问题\' file=\'\'$]'$}
+    <div class="clear10"></div>
+    
+    {$ReadColumeSetTitle title='联系方式' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName联系方式\' file=\'\'$]'$}
+    <div class="clear10"></div>
+
+
+<!--#Module module_Left end#-->
+<R#读出内容BlockName网站公告 start#>
+{$GetOnePageBody title='最新公告' default='没有最新公告' fieldname='aboutcontent' delhtml='true' len='300' $}
+<R#读出内容BlockName网站公告 end#>
+
+<R#读出内容BlockName产品列表 start#>
+ 
+
+                <ul class="ulstyleone">                         
+
+<sPAn class="testspan">{$ColumnList columnname='产品展示' flags='' addsql='order by sortrank' default='[_2016年03月31日 16时27分]'$}</sPAn>
+
+<!--#[_2016年03月31日 16时27分]
+[list]<li><a href="[$url$]">[$columnname$]</a></li>
+[/list]
+[list-focus]<li><a href="[$url$]"><font color=red>[$columnname$]</font></a></li>
+[/list-focus]
+#-->
+        
+                </ul>
+
+<R#读出内容BlockName产品列表 end#>
+
+<R#读出内容BlockName荣誉资质 start#>
+{$GetContentModule modulename='module_荣誉资质' sourcelist='22[Array]' replacelist='22[Array]'$}
+<R#读出内容BlockName荣誉资质 end#>
+
+<R#读出内容BlockName最新动态 start#>
+
+                <ul class="ulstyleone">                         
+                    <sPAn class="testhidde">{$ArticleList topnumb='8' addsql=' order by adddatetime desc' default='[_2016年01月15日 14时10分]'$}</sPAn>        
+                    <!--#[_2016年01月15日 14时10分]
+                            [list]<li><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->            
+                </ul>
+
+
+<R#读出内容BlockName最新动态 end#>
+
+<R#读出内容BlockName常见问题 start#>
+{$GetContentModule modulename='module_CJWT' sourcelist='22[Array]' replacelist='22[Array]'$}
+<R#读出内容BlockName常见问题 end#>
+
+<R#读出内容BlockName联系方式 start#>
+{$GetColumnBody columnname='联系作者' fieldname='aboutcontent' default='无栏目内容'$}
+<R#读出内容BlockName联系方式 end#>
+
+<!--#Module module_Right start#-->
+
+    {$ReadColumeSetTitle title='公司介绍' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName公司介绍\' file=\'\'$]'$}
+    <div class="clear10"></div>
+    
+    {$ReadColumeSetTitle title='案例展示' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName案例展示\' file=\'\'$]'$}
+    <div class="clear10"></div>
+
+<div>
+<dIv style="width:360px;float:left;">
+    {$ReadColumeSetTitle title='新闻中心' style='22' contentwidth='340'  moreclass='more_white0' morestr='More' moreurl='{\$GetColumnUrl columnname\=\'ASPPHPCMS\'\$\}' stylevalue='0' value='[$读出内容 block=\'BlockName新闻中心\' file=\'\'$]'$}
+    <div class="clear10"></div>
+</dIv>
+<dIv style="width:360px;float:right;">
+    {$ReadColumeSetTitle title='行业新闻' style='22' contentwidth='340' moreclass='more_white0' morestr='More' moreurl='{\$GetColumnUrl columnname\=\'ASPPHPCMS\'\$\}' stylevalue='0' value='[$读出内容 block=\'BlockName行业新闻\' file=\'\'$]'$}
+    <div class="clear10"></div>
+</dIv>
+</div>
+
+<div>
+<dIv style="width:360px;float:left;">
+    {$ReadColumeSetTitle title='ASP' style='22' contentwidth='340'  moreclass='more_white0' morestr='More' moreurl='{\$GetColumnUrl columnname\=\'ASP\'\$\}' stylevalue='0' value='[$读出内容 block=\'BlockNameASP\' file=\'\'$]'$}
+    <div class="clear10"></div>
+</dIv>
+<dIv style="width:360px;float:right;">
+    {$ReadColumeSetTitle title='SEO' style='22' contentwidth='340' moreclass='more_white0' morestr='More' moreurl='{\$GetColumnUrl columnname\=\'SEO\'\$\}' stylevalue='0' value='[$读出内容 block=\'BlockNameSEO\' file=\'\'$]'$}
+    <div class="clear10"></div>
+</dIv>
+</div>
+
+
+<div>
+<dIv style="width:360px;float:left;">
+    {$ReadColumeSetTitle title='在线ASP转PHP' style='22' contentwidth='340'  moreclass='more_white0' morestr='More' moreurl='{\$GetColumnUrl columnname\=\'在线ASP转PHP\'\$\}' stylevalue='0' value='[$读出内容 block=\'BlockName在线ASP转PHP\' file=\'\'$]'$}
+    <div class="clear10"></div>
+</dIv>
+<dIv style="width:360px;float:right;">
+    {$ReadColumeSetTitle title='ASPPHPCMS' style='22' contentwidth='340' moreclass='more_white0' morestr='More' moreurl='{\$GetColumnUrl columnname\=\'ASPPHPCMS\'\$\}' stylevalue='0' value='[$读出内容 block=\'BlockNameASPPHPCMS\' file=\'\'$]'$}
+    <div class="clear10"></div>
+</dIv>
+</div>
+<div class="clear"></div>
+    {$ReadColumeSetTitle title='推荐新闻' style='22' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName推荐新闻\' file=\'\'$]'$}
+    <div class="clear10"></div>
+
+
+<!--#Module module_Right end#-->
+<R#读出内容BlockName公司介绍 start#>
+{$GetOnePageBody title='最新公告' default='没有最新公告' fieldname='aboutcontent' $}
+<R#读出内容BlockName公司介绍 end#>
+
+<R#读出内容BlockName案例展示 start#> 
+{$GetContentModule modulename='module_ALZS' sourcelist='22[Array]' replacelist='22[Array]'$}
+<R#读出内容BlockName案例展示 end#>
+
+
+<R#读出内容BlockName新闻中心 start#>
+
+
+                <ul class="ulstyleone">                         
+                    <sPAn class="testhidde">{$ArticleList topnumb='6' addsql='' default='[_2016年01月15日 14时11分]'$}</sPAn>        
+                    <!--#[_2016年01月15日 14时11分]
+                            [list]<li><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->            
+                </ul>
+
+<R#读出内容BlockName新闻中心 end#>
+
+
+<R#读出内容BlockName行业新闻 start#>
+
+                <ul class="ulstyleone">                         
+                    <sPAn class="testhidde">{$ArticleList topnumb='6' addsql=' order by adddatetime desc' default='[_2016年01月15日 14时12分]'$}</sPAn>        
+                    <!--#[_2016年01月15日 14时12分]
+                            [list]<li><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->            
+                </ul>
+<R#读出内容BlockName行业新闻 end#>
+
+
+
+<R#读出内容BlockNameASP start#>
+
+
+                <ul class="ulstyleone">                         
+                    <sPAn class="testhidde">{$ArticleList did="ASP" topnumb='6' addsql='' default='[_2016年01月15日 14时11分]'$}</sPAn>        
+                    <!--#[_2016年01月15日 14时11分]
+                            [list]<li><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->            
+                </ul>
+
+<R#读出内容BlockNameASP end#>
+
+
+<R#读出内容BlockNameSEO start#>
+
+                <ul class="ulstyleone">                         
+                    <sPAn class="testhidde">{$ArticleList did="SEO" topnumb='6' addsql=' order by adddatetime desc' default='[_2016年01月15日 14时12分]'$}</sPAn>        
+                    <!--#[_2016年01月15日 14时12分]
+                            [list]<li><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->            
+                </ul>
+<R#读出内容BlockNameSEO end#>
+
+
+<R#读出内容BlockName在线ASP转PHP start#>
+
+
+                <ul class="ulstyleone">                         
+                    <sPAn class="testhidde">{$ArticleList did="在线ASP转PHP" topnumb='6' addsql='' default='[_2016年01月15日 14时11分]'$}</sPAn>        
+                    <!--#[_2016年01月15日 14时11分]
+                            [list]<li><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->            
+                </ul>
+
+<R#读出内容BlockName在线ASP转PHP end#>
+
+
+<R#读出内容BlockNameASPPHPCMS start#>
+
+                <ul class="ulstyleone">                         
+                    <sPAn class="testhidde">{$ArticleList did="ASPPHPCMS" topnumb='6' addsql=' order by adddatetime desc' default='[_2016年01月15日 14时12分]'$}</sPAn>        
+                    <!--#[_2016年01月15日 14时12分]
+                            [list]<li><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='80'$]</a></li>
+                            [/list]
+                    #-->            
+                </ul>
+<R#读出内容BlockNameASPPHPCMS end#>
+
+
+
+<R#读出内容BlockName推荐新闻 start#> 
+{$GetContentModule modulename='module_推荐新闻' $}
+<div class="clear10"></div>
+<R#读出内容BlockName推荐新闻 end#>
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/其它/快速返回点部和底部/' isHandle='true'$}</sPAn>
+
+
+<script type="text/javascript" src="/Templates2015/web_default/Images/backtopandbackbutton.js"></script>
+ <div id="floatPanel">
+    <div class="ctrolPanel">
+        <a class="arrow" href="#"><span>顶部</span></a><a class="contact" href="javascript:openWind('/Inc/Create_Html.Asp?act=Nav&NavDidType=首页&MackHtml=False&Debug=True&Template=表单验证&Did=在线反馈','250','230','在线反馈')"><span>反馈</span></a><a class="qrcode" href="#"><span>微信二维码</span></a><a class="arrow" href="#"><span>底部</span></a></div>
+    <div class="popPanel">
+        <div class="popPanel-inner">
+            <div class="qrcodePanel">
+            <sPAn class="testspan">{$MainInfo title='浮动面板_返回顶部与底部' showtitle='浮动面板_返回顶部与底部' default='[_浮动面板_返回顶部与底部2014年12月08日 15时36分]' autoadd='true'$}</sPAn>      
+<!--#test start#-->
+<!--#[_浮动面板_返回顶部与底部2014年12月08日 15时36分] start#-->
+                <img src="/Templates2015/web_default/Images/weixin.jpg" />
+<span>扫描二维码关注我为好友</span>
+<!--#[_浮动面板_返回顶部与底部2014年12月08日 15时36分] end#-->
+<!--#test end#-->
+             </div>
+            <div class="arrowPanel">
+                <div class="arrow01">                </div>
+                <div class="arrow02">                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--#Module module_CJWT start#-->
+
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/其它/问题常见问题/' isHandle='true'$}</sPAn>
+
+
+<div id="swer">   
+    
+<sPAn class="testspan">{$ArticleList columnname='' topnumb='10' cutstrnumb='22' defaultimage='/UploadFiles/NoImg.jpg' default='[_常见问题2015年01月06日 15时48分]' autoadddid='true' autoadd='true'$}</sPAn>
+<!--#[_常见问题2015年01月06日 15时48分]
+    [list]<dl>
+        <dt><a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]>[$title len='30' delhtml='true' trim='true' deltabs='true' $]</a></dt>
+        <dd>[$bodycontent len='60' delhtml='true' trim='true' deltabs='true' $]</dd>
+    </dl>
+[/list] 
+#-->
+      
+</div>
+<script type="text/javascript">
+    new Marquee("swer", 0, 1, 210, 250, 20, 0, 1000, 22);
+</script>
+
+<!--#Module module_CJWT end#-->
+<!--#Module module_ALZS start#-->
+
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/产品/产品高级滚动3/' isHandle='true'$}</sPAn>
+
+
+<div class="pscrolllt2_l">
+    <a href="javascript:;" id="PLeftIDt2"><img src="/Templates2015/web_default/Images/LR_L.gif"></a> 
+</div>
+<div id="PScollName1" class="fl">
+
+<sPAn class="testspan">{$ArticleList columnname='模板下载' topnumb='10' cutstrnumb='22' defaultimage='/UploadFiles/NoImg.jpg' default='[_案例展示2015年01月06日 15时48分]' autoadddid='true' autoadd='true'$}</sPAn>
+<!--#[_案例展示2015年01月06日 15时48分]
+    [list]
+    <div class="pproductlist1">
+        <a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]><img src="[$smallimage$]" width="200" height="150" alt="[$title$]" /></a>
+        <a href="[$url$]" class="tlink">[$title len='30' delhtml='true' trim='true' deltabs='true' $]</a>
+    </div>   
+[/list] 
+#-->
+
+    <div class="clear"></div>
+</div>
+<div class="pscrolllt2_l">
+    <a href="javascript:;" id="PRightIDt3"><img src="/Templates2015/web_default/Images/LR_R.gif"></a>
+</div>
+<div class="clear"></div>
+<script language="javascript" type="text/javascript">
+    var adsp1 = new ScrollPicleft();
+    adsp1.scrollContId = "PScollName1"; // 内容容器ID""
+    adsp1.arrLeftId = "PLeftIDt2"; //左箭头ID
+    adsp1.arrRightId = "PRightIDt3"; //右箭头ID
+    adsp1.frameWidth = 650; //显示框宽度
+    adsp1.pageWidth = 217; //翻页宽度
+    adsp1.speed = 10; //移动速度(单位毫秒，越小越快)
+    adsp1.space = 10; //每次移动像素(单位px，越大越快)
+    adsp1.autoPlay = true; //自动播放
+    adsp1.autoPlayTime = 3; //自动播放间隔时间(秒)
+    adsp1.initialize(); //初始化
+</script>
+
+<!--#Module module_ALZS end#-->
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/其它/荣誉资质左右切换/' isHandle='true'$}</sPAn>
+
+<!--#Module module_荣誉资质 start#-->
+
+
+<div class="scrolllr_l">
+    <a href="javascript:;" id="LeftID4"><img src="/Templates2015/web_default/Images/LR_L.gif"></a> 
+</div>
+<div id="ScollName4" class="fl">
+    
+<sPAn class="testspan">{$CustomInfoList did='荣誉资质' topnumb='10' cutstrnumb='22' defaultimage='/UploadFiles/NoImg.jpg' default='[_荣誉资质2015年01月06日 15时48分]' autoadddid='true' autoadd='true'$}</sPAn>
+<!--#[_荣誉资质2015年01月06日 15时48分]
+    [list]    
+    <div class="productlist">
+        <a href="[$url$]" title="[$title$]"[$atarget$][$abcolor$]><img src="[$smallimage$]" width="130" height="180" alt="[$title$]" /></a>
+        <a href="[$url$]" class="tlink">[$title len='30' delhtml='true' trim='true' deltabs='true' $]</a>
+
+
+    </div>    
+    [/list] 
+#-->
+      
+    <div class="clear"></div>
+</div>
+<div class="scrolllr_l">
+    <a href="javascript:;" id="RightID4"><img src="/Templates2015/web_default/Images/LR_R.gif"></a>
+</div>
+<div class="clear"></div>
+<script language="javascript" type="text/javascript">
+    var ads = new ScrollPicleft();
+    ads.scrollContId = "ScollName4"; // 内容容器ID""
+    ads.arrLeftId = "LeftID4"; //左箭头ID
+    ads.arrRightId = "RightID4"; //右箭头ID
+    ads.frameWidth = 140; //显示框宽度
+    ads.pageWidth = 140; //翻页宽度
+    ads.speed = 10; //移动速度(单位毫秒，越小越快)
+    ads.space = 10; //每次移动像素(单位px，越大越快)
+    ads.autoPlay = true; //自动播放
+    ads.autoPlayTime = 3; //自动播放间隔时间(秒)
+    ads.initialize(); //初始化
+</script>
+<!--#Module module_荣誉资质 end#-->
+
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/新闻/新闻样式一/' isHandle='true'$}</sPAn>
+
+<!--#Module module_推荐新闻 start#-->
+<div class="subnr">
+    
+<sPAn class="testspan">{$CustomInfoList did='模板下载' topnumb='4' cutstrnumb='22' defaultimage='/UploadFiles/NoImg.jpg' default='[_最新推荐新闻2015年01月06日 15时48分]' autoadddid='true' autoadd='true'$}</sPAn>
+<!--#[_最新推荐新闻2015年01月06日 15时48分]
+
+    [list-1]<dl>
+        <dt><a [$aurl$]><img src="[$smallimage$]" alt="[$title$]"></a></dt>
+        <dd>
+            <h5><a [$aurl$]>[$title len='30' delhtml='true' trim='true' deltabs='true' $]</a></h5>
+            <p>[$bodycontent len='255' delhtml='true' trim='true' deltabs='true' $]</p>
+            <a href="[$url$]" title="了解详情" class="more">[了解详情]</a>
+        </dd>
+    </dl>
+    <ul class="ulss">
+[/list-1]
+ 
+        [list]<li><span>[[$adddatetime format_time='2'$]]</span>·<a [$aurl$]>[$title len='30' delhtml='true' trim='true' deltabs='true' $]</a></li>[/list]
+    [dialog end]</ul>[/dialog end]
+#-->
+    
+</div>
+
+<!--#Module module_推荐新闻 end#-->
+{$Include file='Foot.html' block='foot'$} 
+<sPAn class="testspan">{$copyTemplateMaterial dir='模块功能列表/More更多按钮/默认版/' isHandle='true'$}</sPAn>
+
+
+
+
+</body>
+</html>
+
+

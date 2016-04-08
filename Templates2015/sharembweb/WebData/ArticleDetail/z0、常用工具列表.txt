@@ -1,11 +1,12 @@
 【parentid】常用工具
 【title】格式化ASP
 【sortrank】0
+【flags】|h|
 【author】sharembweb
 【adddatetime】2015-01-28 15:09:05
-【nofollow】1
+【nofollow】0
 【isonhtml】0
-【customaurl】http://sharembweb.com/asptophp/
+【customaurl】http://sharembweb.com/formatasp/
 -------------------------------
 【parentid】常用工具
 【title】格式化PHP
@@ -32,7 +33,7 @@
 【adddatetime】2015-01-28 15:09:05
 【nofollow】1
 【isonhtml】0
-【customaurl】http://www.sharembweb.com/Tools/Web_Soft/FormattingHTML.asp
+【customaurl】http://sharembweb.com/Tools/Web_Soft/FormattingHTML.asp
 -------------------------------
 【parentid】常用工具
 【title】格式化CSS
@@ -48,23 +49,9 @@
 【sortrank】5
 【author】sharembweb
 【adddatetime】2015-01-28 15:09:05
-【nofollow】1
+【nofollow】0
 【isonhtml】0
-【customaurl】http://sharembweb.com/ASPPHPCMS/inlineTags.asp
--------------------------------
-
-
-
-
-
-【parentid】常用工具
-【title】汉字转拼音
-【sortrank】10
-【author】sharembweb
-【adddatetime】2015-01-28 15:09:05
-【nofollow】1
-【isonhtml】0
-【customaurl】http://sharembweb.com/Tools/FormattingTools/Tools/JsTabHtml.Asp?Stype=汉字转拼音|拼音转汉字&Title=汉字拼音互转&content=汉字
+【customaurl】http://sharembweb.com/aspphpcms/online-make-Tags.html
 -------------------------------
 【parentid】常用工具
 【title】创建Asp函数
@@ -74,3 +61,193 @@
 【nofollow】1
 【isonhtml】0
 【customaurl】http://sharembweb.com/Tools/FormattingTools/CreateFunction.Asp
+-------------------------------
+【parentid】常用工具
+【title】在线ASP转JS
+【sortrank】20
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-03-21 15:09:05
+【filename】/asptophp/asptojs.html
+
+【webtitle】在线ASP转JS,在线ASP代码转JS代码,在线ASP程序转JS程序,AspToJs - 分享模板网站
+【webkeywords】在线ASP转JS,在线ASP代码转JS代码,在线ASP程序转JS程序,AspToJs - 分享模板网站
+【webdescription】提供ASP代码转换成JS代码服务 - 分享模板网站QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的ASP代码，提交后等待几秒即可生成JS代码：(更新于20160308)</div>
+
+<form name="form1" method="post" action="[$cfg_websiteurl$]asptophp/asptophp.asp?act=handlecontent&language=js" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;"><% 
+'作者：云端 QQ313801120  http://sharembweb.com/
+'这是一个测试程序
+if 1=1 then												'if判断
+	response.Write("1<hr>")
+elseif 1=2 then
+
+	response.Write("2<hr>")
+else
+	
+	response.Write("else<hr>")
+end if
+dim aa,bb,cc,splstr,s,i,c
+aa=1
+bb=2
+cc=3
+response.Write("aa=" & aa & "<br>")
+response.Write("bb=" & bb & "<br>")
+response.Write("cc=" & cc & "<br>")
+splstr=split("aa|bb|cc","|")
+for i=0 to ubound(splstr)
+	s=splstr(i)
+	response.Write(i & "、" & s & "<hr>")
+next
+%>  
+   
+
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+  <label for="isOpenImportFunction"><input name="isOpenImportFunction" type="checkbox" id="isOpenImportFunction" value="1" checked>导入函数</label>
+</form>
+
+<br>
+
+
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
+【title】在线GB2312字符转UTF8字符
+【sortrank】21
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-03-21 15:09:05
+【filename】/toolslist/online-gb2312-utf8.html
+
+【webtitle】在线GB2312字符转UTF8字符 - 分享模板网站
+【webkeywords】在线GB2312字符转UTF8字符 - 分享模板网站
+【webdescription】在线GB2312字符转UTF8字符 - 分享模板网站QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的ASP代码，提交后等待几秒即可生成PHP代码：(更新于20160308)</div>
+
+<form name="form1" method="post" action="[$cfg_websiteurl$]toolslist/tools.asp?act=gbtoutf" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">作者：云端 QQ313801120  http://sharembweb.com/
+'这是一个测试程序
+  
+aa
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">   
+</form>
+
+<br>
+
+
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
+【title】在线汉字转拼音
+【sortrank】22
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-03-22 15:09:05
+【filename】/toolslist/onlin-Chinese-pinyin.html
+
+【webtitle】在线汉字转拼音工具，汉字转拼音，汉字到拼音 - 分享模板网站
+【webkeywords】在线汉字转拼音工具，汉字转拼音，汉字到拼音 - 分享模板网站
+【webdescription】在线汉字转拼音工具，汉字转拼音，汉字到拼音 - 分享模板网站QQ313801120
+【bodycontent】
+
+<div class="divtip">输入汉字内容，提交后等待几秒即可生成(更新于20160322)</div>
+
+<form name="form1" method="post" action="[$cfg_websiteurl$]toolslist/tools.asp?act=pinyin" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">作者：云端 QQ313801120  http://sharembweb.com/
+分享模板网站
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">   
+</form>
+
+<br>
+
+
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
+【title】在线计算器
+【sortrank】23
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-03-22 15:09:05
+【filename】/toolslist/online-Calculator.html
+
+【webtitle】在线计算器 - 分享模板网站
+【webkeywords】在线计算器 - 分享模板网站
+【webdescription】在线计算器 - 分享模板网站QQ313801120
+【bodycontent】
+
+<div class="divtip">输入计算公式，提交后等待几秒即可生成(更新于20160322)</div>
+
+<input name="jsqtext" type="text" id="jsqtext" value="1+2+3*5/3+3+5" class="inputstyle" style="width:99%;" />
+<div class="clear10"></div>
+  <input type="button" name="button" id="button" value="点击计算" class="mybtn" onclick="handleJSQ()">   
+</form>
+<div id="jsqmsg"></div>
+<script>
+function handleJSQ(){
+	myevaljsq(document.getElementById("jsqtext").value);
+}
+function myevaljsq(str){	
+	try{
+		var s=eval(str); 
+		document.getElementById("jsqmsg").innerHTML= str + '=' + '<span>'+ s +'</span>';
+	}catch(err){
+		document.getElementById("jsqmsg").innerHTML=  str + '<b><font color=red>公式有问题啊</font></b>';
+	}
+}
+</script>
+<br>
+
+
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
+【title】在线聊天机器人
+【sortrank】23
+【flags】|h|
+【author】sharembweb
+【adddatetime】2015-03-22 15:09:05
+【filename】/toolslist/online-chat-robot.html
+
+【webtitle】在线聊天机器人 - 分享模板网站
+【webkeywords】在线聊天机器人 - 分享模板网站
+【webdescription】在线聊天机器人 - 分享模板网站QQ313801120
+【bodycontent】
+
+<div class="divtip">智慧聊天机器人 (更新于20160322)</div>
+
+<input name="jsqtext" type="text" id="jsqtext" value="你好" class="inputstyle" style="width:99%;" />
+<div class="clear10"></div>
+  <input type="button" name="button" id="button" value="发送" class="mybtn" onclick="chatrobot()">   
+</form>
+<div id="chatrobotmsg"></div>
+<script>
+function chatrobot(){
+	 var content=document.getElementById("jsqtext").value;
+	 var dataStr = "content=" + escape(content);
+	 $.ajax({
+             type: "POST",
+             url: "tools.asp?act=chatrobot",
+             data: dataStr,
+             success: function(result) {
+			   $("#chatrobotmsg").html( $("#chatrobotmsg").html() + unescape(result));
+             }
+           });
+	
+}
+</script>
+<br>
+
+
+【/bodycontent】

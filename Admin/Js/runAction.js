@@ -1038,6 +1038,9 @@ $(function (){
 	})
 })
 
+
+
+
 //全选|反选|取消  这种好使
 function checkmm(Str){
 	var a = document.listform.getElementsByTagName("input");
@@ -1070,7 +1073,7 @@ function getInputValue(fieldName){
 		if(s==undefined){
 			s=""	
 		}
-		return s
+		return s.replace(/\//g,"//");
 	}catch(exception){
 		return ""
 	}
@@ -1136,14 +1139,16 @@ function delHandle(actionName,lableTitle,page,id){
 function updateFieldHandle(fieldName,fieldValue,actionName,lableTitle,page,id){ 
 	clickControl("?act=updateField&fieldname="+ fieldName +"&fieldvalue="+fieldValue,actionName,lableTitle,page,id)
 }
-
 //获得网址
 //clickControl('?act=updateWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')
 //点击控件
 function clickControl(url,actionName,lableTitle,page,id){
 	url+="&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect")+"&parentid="+getInputValue("parentid")			
-	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&addsql="+getInputValue("addsql")+"&page="+page+"&id="+id 
+	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&addsql="+getInputValue("addsql")+"&page="+page+"&id="+id+"&mdbpath=" +getInputValue("mdbpath")
 	//alert(url)
 	window.location.href=url 
 }
- 
+//搜索回车
+function formSearchSubmit(actionName,lableTitle,page,id){   
+	return false;
+}

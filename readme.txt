@@ -1,11 +1,11 @@
-ASPPHPCMS v1.0 是一个免费开源网站内容管理系统，有ASP和PHP两种版本，并且是通用的 ，创立于2015年。
+ASPPHPCMS v1.0 是一款免费开源网站内容管理系统，有ASP和PHP两种版本，并且是通用的
 1、网站后台/admin/index.asp 账号：admin 密码：admin
 2、inc/,index.asp,admin/index.asp为ASP版
 3、phpinc/,index.php,admin/index.php为PHP版
 4、sharembweb.com.asp为测试程序
 5、更多帮助加群(35915100)或浏览(http://sharembweb.com)
 
-ASPPHPCMS内容管理系统 v1.0
+ASPPHPCMS内容管理系统 v1.2
 http://sharembweb.com/aspphpcms/
 
 
@@ -24,6 +24,11 @@ ASPPHPCMS管网
 想获得更多帮助和下载最新版　请浏览(http://sharembweb.com)
 在线演示：http://sharembweb.com/
 
+——- 20016.04.08 update ——
+1、ASPPHPCMS升级到 ASPPHPCMS v1.2
+2、增加一套企业绿色模板
+3、增加大量模板标签
+4、前后面程序更稳定
 
 ——- 20016.03.03 update ——
 1、前后台翻页改进，代码缩小了三分之二

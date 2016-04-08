@@ -3,10 +3,13 @@
 require_once './../PHP2/ImageWaterMark/Include/ASP.php';
 require_once './../PHP2/ImageWaterMark/Include/sys_FSO.php';
 require_once './../PHP2/ImageWaterMark/Include/Conn.php';
-require_once './../PHP2/ImageWaterMark/Include/MySqlClass.php';
-require_once './../PHP2/ImageWaterMark/Include/sys_System.php'; 
+require_once './../PHP2/ImageWaterMark/Include/MySqlClass.php'; 
 
 require_once './../PHP2/Web/Inc/Common.php'; 
+
+require_once './config.php'; 
+require_once './setAccess.php';
+require_once './function.php';
 
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -51,10 +54,9 @@ function checkDel()
     return false;
 }
 </script>
-
 <?PHP
 
-if( @$_SESSION['adminusername'] == '' ){
+if( @$_SESSION['adminusername']== '' ){
     eerr('提示', '未登录，请先登录') ;
 }
 
@@ -69,11 +71,15 @@ switch ( @$_REQUEST['act'] ){
 //模板文件列表
 function templateFileList($dir){
     $content=''; $splStr=''; $fileName=''; $s ='';
-    $content = getDirHtmlNameList($dir) ;
-    $splStr = aspSplit($content, "\n") ;
+    if( @$_SESSION['adminusername']== 'ASPPHPCMS' ){
+        $content= getDirFileNameList($dir,'');
+    }else{
+        $content= getDirHtmlNameList($dir);
+    }
+    $splStr= aspSplit($content, vbCrlf()) ;
     foreach( $splStr as $fileName){
         if( $fileName<>'' ){
-            $s = '<a href="../phpweb.php?templatedir=' . escape($dir) . '&templateName=' . $fileName . '" target=\'_blank\'>预览</a> ' ;
+            $s= '<a href="../phpweb.php?templatedir=' . escape($dir) . '&templateName=' . $fileName . '" target=\'_blank\'>预览</a> ' ;
             ASPEcho($fileName, $s . '| <a href=\'?act=addEditFile&dir=' . $dir . '&fileName=' . $fileName . '\'>修改</a> | <a href=\'?act=delTemplateFile&dir=' . @$_REQUEST['dir'] . '&fileName=' . $fileName . '\' onclick=\'return checkDel()\'>删除</a>') ;
         }
     }
@@ -82,7 +88,10 @@ function templateFileList($dir){
 //删除模板文件
 function delTemplateFile($dir, $fileName){
     $filePath ='';
-    $filePath = $dir . '/' . $fileName ;
+
+    handlePower('删除模板文件')						;//管理权限处理
+
+    $filePath= $dir . '/' . $fileName ;
     deleteFile($filePath) ;
     ASPEcho('删除文件', $filePath) ;
 }
@@ -91,37 +100,40 @@ function delTemplateFile($dir, $fileName){
 //添加修改文件
 function addEditFile($dir, $fileName){
     $filePath ='';
-    if( substr(LCase($fileName), - 5) <> '.html' ){
-        $fileName = $fileName . '.html' ;
+
+    if( substr(LCase($fileName), - 5) <> '.html' && @$_SESSION['adminusername'] <> 'ASPPHPCMS' ){
+        $fileName= $fileName . '.html' ;
     }
-    $filePath = $dir . '/' . $fileName ;
+    $filePath= $dir . '/' . $fileName;
+
+    if( checkFile($filePath)==false ){
+        handlePower('添加模板文件')						;//管理权限处理
+    }else{
+        handlePower('修改模板文件')						;//管理权限处理
+    }
+
     //保存内容
-    if( @$_REQUEST['issave'] == 'true' ){
+    if( @$_REQUEST['issave']== 'true' ){
         createfile($filePath, @$_REQUEST['content']) ;
     }
     ?>
     <form name="form1" method="post" action="?act=addEditFile&issave=true">
     <table width="800" border="0" cellspacing="0" cellpadding="0" class="tableline">
     <tr>
-    <td height="30">目录
-    <?= $dir?><br>
-    <input name="dir" type="hidden" id="dir" value=
-    "<?= $dir?>" /></td>
+    <td height="30">目录<?=$dir?><br>
+    <input name="dir" type="hidden" id="dir" value="<?=$dir?>" /></td>
     </tr>
     <tr>
     <td>文件名称
-    <input name="fileName" type="text" id="fileName" value=
-    "<?= $fileName?>" size="40">
+    <input name="fileName" type="text" id="fileName" value="<?=$fileName?>" size="40">
     <br>
-    <textarea name="Content" cols="110" rows="25" id="Content">
-    <?PHP rw(getFText($filePath))?></textarea></td>
+    <textarea name="content" cols="110" rows="25" id="content"><? rw(getFText($filePath))?></textarea></td>
     </tr>
     <tr>
     <td height="40" align="center"><input type="submit" name="button" id="button" value=" 保存 " /></td>
     </tr>
     </table>
     </form>
-
     <?PHP }
     //文件夹搜索
     function folderSearch($dir){
@@ -129,14 +141,11 @@ function addEditFile($dir, $fileName){
         <form name="form2" method="post" action="?act=templateFileList">
         <table width="800" border="0" cellspacing="0" cellpadding="0" class="tableline">
         <tr>
-        <td height="30"><input name="dir" type="text" id="dir" value=
-        "<?= $dir?>" size="60" />
+        <td height="30"><input name="dir" type="text" id="dir" value="<?=$dir?>" size="60" />
         <input type="submit" name="button2" id="button2" value=" 进入 " /></td>
         </tr>
         </table>
         </form>
-
-        <?PHP }?>
-
+        <? }?>
 
 

@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 'ASP和PHP通用函数
 
@@ -80,14 +70,15 @@ Function handleUpDownArticle(lableTitle, sql)
     handleUpDownArticle = c 
 End Function 
 '获得RS网址 配置上一页 下一页
-Function getRsUrl(fileName, customAUrl, defaultFileName)
+Function getRsUrl(byval fileName, customAUrl, defaultFileName)
     Dim url 
     '用默认文件名称
     If fileName = "" Then
         fileName = defaultFileName 
     End If 
     '网址
-    If fileName <> "" Then
+    If fileName <> "" Then		
+		fileName=lcase(fileName)		'让文件名称小写20160315
         url = fileName 
         If InStr(LCase(url), ".html") = False And Right(url, 1) <> "/" Then
             url = url & ".html" 
@@ -97,7 +88,10 @@ Function getRsUrl(fileName, customAUrl, defaultFileName)
         url = Trim(customAUrl) 
     End If 
     If InStr(cfg_flags, "|addwebsite|") > 0 Then
-        url = urlAddHttpUrl(cfg_webSiteUrl, url)
+		'url = replaceGlobleVariable(url)   '替换全局变量
+		if instr(url,"$cfg_websiteurl$")=false then
+        	url = urlAddHttpUrl(cfg_webSiteUrl, url)
+		end if
     End If 
     getRsUrl = url 
 End Function
@@ -160,8 +154,7 @@ Function getColumnUrl(columnNameOrId, sType)
         If isMakeHtml = True Then
             url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
         Else
-            url = handleWebUrl("?act=nav&id=" & rsx("id"))				'用这种方法20160310
-            'url = handleWebUrl("?act=nav&columnName=" & escape(rsx("columnname")))			'这种方法
+            url = handleWebUrl("?act=nav&columnName=" & rsx("columnname")) 
             If rsx("customAUrl") <> "" Then
                 url = rsx("customAUrl") 
             End If 

@@ -22,14 +22,14 @@
 【parentid】-1
 【labletitle】在线ASP代码转PHP代码
 【target】
-【webtitle】在线ASP转PHP,在线ASP代码转PHP代码,在线ASP程序转PHP程序,AspToPhp - 分享模板网站
-【webkeywords】在线ASP转PHP,在线ASP代码转PHP代码,在线ASP程序转PHP程序,AspToPhp - 分享模板网站
-【webdescription】提供ASP代码转换成PHP代码服务 - 分享模板网站QQ313801120
+【webtitle】在线ASP转PHP_在线ASP转PHP工具_PHP代码转PHP_ASP转PHP_AspToPhp
+【webkeywords】在线ASP转PHP_在线ASP转PHP工具_PHP代码转PHP_ASP转PHP_AspToPhp
+【webdescription】提供在线ASP代码转PHP代码服务 QQ313801120
 【bodycontent】
 
 <div class="divtip">输入你的ASP代码，提交后等待几秒即可生成PHP代码：(更新于20160308)</div>
 
-<form name="form1" method="post" action="asptophp.asp?act=handlecontent" target="_blank">
+<form name="form1" method="post" action="[$cfg_websiteurl$]asptophp/asptophp.asp?act=handlecontent" target="_blank">
   <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;"><% 
 '作者：云端 QQ313801120  http://sharembweb.com/
 '循环类
@@ -230,22 +230,22 @@ End Sub
 -------------------------------
 【columnname】在线格式化ASP
 【columntype】文本
-【sortrank】2
+【sortrank】22
 【filename】/formatasp/
-【flags】|top|
+【flagtops】||
 【parentid】-1
 【labletitle】在线格式化ASP
 【target】
-【webtitle】在线格式化ASP代码,在线ASP代码检测,在线ASP代码格式化,在线ASP代码混淆 - 分享模板网站
-【webkeywords】在线格式化ASP代码,在线ASP代码检测,在线ASP代码格式化,在线ASP代码混淆 - 分享模板网站
-【webdescription】提供在线ASP代码检测，格式化，混淆，和偏好处理功能 - 分享模板网站QQ313801120
+【webtitle】在线格式化ASP_ASP代码格式化_ASP检测_ASP混淆_ASP美化
+【webkeywords】在线格式化ASP_ASP代码格式化_ASP检测_ASP混淆_ASP美化
+【webdescription】提供在线ASP代码检测，格式化，混淆，和偏好处理等 QQ313801120
 【bodycontent】
 
 
 
 <div class="divtip">输入你的ASP代码，提交后等待几秒输出格式化后的ASP代码：</div>
 
-<form name="form1" method="post" action="http://sharembweb.com/Tools/FormattingTools/ClassAspCode.Asp?act=处理编辑函数" target="_blank">
+<form name="form1" method="post" action="http://sharembweb.com/Tools/FormattingTools/ClassAspCode.Asp?act={$escape content='处理编辑函数'$}" target="_blank">
   <textarea name="content" id="content" class="inputstyle" style="width:99%;height:300px;"><%
 '作者：云端 QQ313801120  http://sharembweb.com/
 dim var1,var2,var3
@@ -275,30 +275,30 @@ end if
 -------------------------------
 【columnname】在线仿站
 【columntype】文本
-【sortrank】3
+【sortrank】2
 【filename】/fangzhan/
 【flags】|top|
 【parentid】-1
 【labletitle】在线仿站
 【target】
-【webtitle】在线仿站,快速仿站加快速生成后台,在线拷贝网站,在线模仿网站,在线复制优秀网站 - 分享模板网站
-【webkeywords】在线仿站,快速仿站加快速生成后台,在线拷贝网站,在线模仿网站,在线复制优秀网站 - 分享模板网站
-【webdescription】提取快速模仿别人优秀网站，并生成相应搭配ASP/PHP网站管理后台 - 分享模板网站QQ313801120
-【bodycontent】
-
+【webtitle】仿站_在线仿站_克隆网站_复制网站_仿站教程
+【webkeywords】仿站_在线仿站_克隆网站_复制网站_仿站教程
+【webdescription】仿站是指借鉴和参考别人网站的优点,对喜欢的网站进行风格仿制或者功能仿制,在最短的时间内达到预期的效果,是一个快速并且省钱的选择 QQ313801120
+【bodycontent】 
 
 <form id="form1" name="form1" method="post" action="/url.asp?act=fangzhan" onSubmit="formSubmit()" target="_blank">
 <div>
-  网址：
-  <input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" size="70" />
+  <div>网址：
+  <input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" class="inputstyle" style="width:80%;" />
+  </div>
 编码：
-<select name="Char_Set" id="Char_Set">
+<select name="Char_Set" id="Char_Set" class="inputstyle">
   <option value="gb2312" selected="selected">gb2312</option>
   <option value="utf-8">utf-8</option>
 </select>
 </div>
 <div>选择服务器:  
-  <select name="selectServer" id="selectServer">
+  <select name="selectServer" id="selectServer" class="inputstyle">
     <option value="http://www.shluzheng.com/Admin/WebEditor/dieFangWeb.asp">服务器1</option>
     <option value="http://www.ylkj11.com/admin/KEditor/lang/I/dieFangWeb.asp">服务器2</option>
   </select>
@@ -331,19 +331,34 @@ function formSubmit(){
 
 【/bodycontent】
 -------------------------------
-【columnname】模板分享下载
+【columnname】模板下载
 【columntype】新闻
-【sortrank】4
-【filename】/templatesdown/
+【sortrank】3
+【filename】/mobandown/
 【flags】|top|
 【parentid】-1
-【labletitle】模板分享下载
+【labletitle】模板下载
 【target】
-【webtitle】模板分享下载,企业网站模板,公司网站模板,个人网站模板 - 分享模板网站
-【webkeywords】模板分享下载,企业网站模板,企业网页模板,公司网站模板,个人网站模板,免费网站模板下载,免费网页模板下载,优化网站模板 - 分享模板网站
-【webdescription】收集了大量易于优化的优秀网站模板，并且提供一套ASP/PHP完整后台管理系统，所有程序开源。 - 分享模板网站QQ313801120
+【webtitle】php网站模板_asp网站模板_手机模板_网站模板下载_免费模板下载
+【webkeywords】php网站模板_asp网站模板_手机模板_网站模板下载_免费模板下载
+【webdescription】php网站模板_asp网站模板_手机模板_网站模板下载_免费模板下载，分享模板网站提供海量免费ASP/PHP网站源码下载 QQ313801120
 【bodycontent】
 
+【/bodycontent】
+-------------------------------
+【columnname】SEO
+【columntype】新闻
+【sortrank】4
+【filename】/SEO/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】SEO
+【target】
+【webtitle】SEO_SEO优化_SEO整站优化_seo关键词优化_网站的优化
+【webkeywords】SEO_SEO优化_SEO整站优化_seo关键词优化_网站的优化
+【webdescription】SEO是指通过对网站内部调整优化及站外优化，使网站满足搜索引擎收录排名需求，在搜索引擎中提高关键词排名，从而把精准用户带到网站，获得免费流量，产生直接销售或品牌推广 QQ313801120
+【bodycontent】
 【/bodycontent】
 -------------------------------
 【columnname】ASPPHPCMS
@@ -355,9 +370,9 @@ function formSubmit(){
 【parentid】-1
 【labletitle】ASPPHPCMS通用双系统CMS
 【target】
-【webtitle】ASPPHPCMS通用双系统CMS,ASPPHPCMS,免费开源ASPPHPCMS,ASP/PHP通用双CMS - 分享模板网站
-【webkeywords】ASPPHPCMS通用双系统CMS,ASPPHPCMS,免费开源ASPPHPCMS,ASP/PHP通用双CMS - 分享模板网站
-【webdescription】提供免费开源的ASP/PHP通用双CMS系统，提供大量模板可供下载 - 分享模板网站QQ313801120
+【webtitle】CMS_CMS系统_企业CMS系统_ASPPHPCMS_ASPPHPCMS内容管理系统
+【webkeywords】CMS_CMS系统_企业CMS系统_ASPPHPCMS_ASPPHPCMS内容管理系统
+【webdescription】提供免费开源的ASP/PHP通用双版本CMS，提供大量模板可供下载 QQ313801120
 【bodycontent】
 
 【/bodycontent】
@@ -365,14 +380,14 @@ function formSubmit(){
 【columnname】联系作者
 【columntype】文本
 【sortrank】6
-【filename】/contact/
+【filename】/about/contact.html
 【flags】|top|
 【parentid】-1
 【labletitle】联系作者
 【target】
-【webtitle】联系作者,联系sharembweb,联系QQ313801120,联系云端 - 分享模板网站
-【webkeywords】联系作者,联系sharembweb,联系QQ313801120,联系云端 - 分享模板网站
-【webdescription】联系作者,联系sharembweb,联系QQ313801120,联系云端 - 分享模板网站
+【webtitle】联系作者_联系作者_sharembweb_313801120_云端
+【webkeywords】联系作者_联系作者_sharembweb_313801120_云端
+【webdescription】如果你有什么作者可以帮助得到的，可联系QQ313801120
 
 
 【aboutcontent】
@@ -390,10 +405,11 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 
 <br><strong>作者介绍</strong><br>
 1、2006年进入互联网，专注网站开发8年<br>
-2、精通ASP/PHP/VB/HTML/CSS/JS/Flash/Android/<br>
-3、擅长把复杂的事情简单化，开发一套ASPPHPCMS内容管理系统<br>
-4、发布【ASPPHPCMS】/【在线ASP转PHP】/【在线格式化ASP】【在线仿站】等开源项目<br>
-5、上海，南京等大城市从事网站开发工作多年<br>
+2、精通ASP/PHP/VB/HTML/CSS/JavaScript/Flash/Android/<br>
+3、掌握div+css/html5 canvas/thinkphp/bootstrap/<br>
+4、擅长把复杂的事情简单化，开发一套ASPPHPCMS内容管理系统<br>
+5、发布【ASPPHPCMS】/【在线ASP转PHP】/【在线格式化ASP】【在线仿站】等开源项目<br>
+6、上海，南京等大城市从事网站开发工作多年<br>
  
 
 
@@ -402,6 +418,8 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 邮箱：313801120@qq.com<br>
 交流群：<a href="http://shang.qq.com/wpa/qunwpa?idkey=253822bd485c454811141c731156d2ecd4dba04ecf647ce81dc97d16a563137b" class="ablue" rel="nofollow" target="_blank">35915100</a><br>
 网址：http://sharembweb.com/<br><br>
+Github主页：http://313801120.github.io/sharembweb/<br>
+
 
 【/bodycontent】
 -------------------------------
@@ -411,11 +429,11 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【filename】/asp/
 【flags】||
 【parentid】-1
-【labletitle】ASP文章列表
+【labletitle】ASP
 【target】
-【webtitle】ASP,ASP代码,ASP学习,ASP帮助,ASP特效 - 分享模板网站
-【webkeywords】ASP,ASP代码,ASP学习,ASP帮助,ASP特效 - 分享模板网站
-【webdescription】提供ASP相关文档 - 分享模板网站
+【webtitle】ASP_ASP教程_ASP学习_ASP代码_ASP帮助
+【webkeywords】ASP_ASP教程_ASP学习_ASP代码_ASP帮助
+【webdescription】提供ASP网站开发中用到得实用代码与教程 QQ313801120
 【bodycontent】
 
 【/bodycontent】
@@ -426,11 +444,11 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【filename】/php/
 【flags】||
 【parentid】-1
-【labletitle】PHP文章列表
+【labletitle】PHP
 【target】
-【webtitle】PHP,PHP代码,PHP学习,PHP帮助,PHP特效 - 分享模板网站
-【webkeywords】PHP,PHP代码,PHP学习,PHP帮助,PHP特效 - 分享模板网站
-【webdescription】提供PHP相关文档 - 分享模板网站
+【webtitle】PHP_PHP教程_PHP学习_PHP代码_PHP帮助
+【webkeywords】PHP_PHP教程_PHP学习_PHP代码_PHP帮助
+【webdescription】提供PHP网站开发中用到得实用代码与教程 QQ313801120
 【bodycontent】
 
 【/bodycontent】
@@ -441,11 +459,11 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【filename】/js/
 【flags】||
 【parentid】-1
-【labletitle】JS文章列表
+【labletitle】JS
 【target】
-【webtitle】JS,JS代码,JS学习,JS帮助,JS特效 - 分享模板网站
-【webkeywords】JS,JS代码,JS学习,JS帮助,JS特效 - 分享模板网站
-【webdescription】提供JS相关文档 - 分享模板网站
+【webtitle】JS_JS教程_JS学习_JS代码_JS帮助
+【webkeywords】JS_JS教程_JS学习_JS代码_JS帮助
+【webdescription】提供JS网站开发中用到得实用代码与教程 QQ313801120
 【bodycontent】
 
 【/bodycontent】
@@ -456,11 +474,11 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【filename】/html5/
 【flags】||
 【parentid】-1
-【labletitle】HTML5文章列表
+【labletitle】HTML5
 【target】
-【webtitle】HTML5,HTML5代码,HTML5学习,HTML5帮助,HTML5特效 - 分享模板网站
-【webkeywords】HTML5,HTML5代码,HTML5学习,HTML5帮助,HTML5特效 - 分享模板网站
-【webdescription】提供HTML5相关文档 - 分享模板网站
+【webtitle】HTML5_HTML5教程_HTML5学习_HTML5代码_HTML5帮助
+【webkeywords】HTML5_HTML5教程_HTML5学习_HTML5代码_HTML5帮助
+【webdescription】提供HTML5网站开发中用到得实用代码与教程 QQ313801120
 【bodycontent】
 
 【/bodycontent】
@@ -471,11 +489,11 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【filename】/css3/
 【flags】||
 【parentid】-1
-【labletitle】CSS3文章列表
+【labletitle】CSS3
 【target】
-【webtitle】CSS3,CSS3代码,CSS3学习,CSS3帮助,CSS3特效 - 分享模板网站
-【webkeywords】CSS3,CSS3代码,CSS3学习,CSS3帮助,CSS3特效 - 分享模板网站
-【webdescription】提供CSS3相关文档 - 分享模板网站
+【webtitle】CSS3_CSS3教程_CSS3学习_CSS3代码_CSS3帮助
+【webkeywords】CSS3_CSS3教程_CSS3学习_CSS3代码_CSS3帮助
+【webdescription】提供CSS3网站开发中用到得实用代码与教程 QQ313801120
 【bodycontent】
 
 【/bodycontent】
@@ -488,9 +506,9 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【parentid】-1
 【labletitle】问答Q&A
 【target】
-【webtitle】问答Q&A,在线问答,你问我答,在线ASP转PHP问答,在线格式化ASP问答,在线仿站问答  - 分享模板网站
-【webkeywords】问答Q&A,在线问答,你问我答,在线ASP转PHP问答,在线格式化ASP问答,在线仿站问答,免费问答 - 分享模板网站
-【webdescription】sharembweb,在线回答大家遇到的技术类问题，有问必答 - 分享模板网站
+【webtitle】问答_在线问答_你问我答_我要提问_快速问答
+【webkeywords】问答_在线问答_你问我答_我要提问_快速问答
+【webdescription】在线回答大家遇到的技术类问题，有问必答 QQ313801120
 【bodycontent】
 
 【/bodycontent】
@@ -509,26 +527,23 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【parentid】-1
 【labletitle】常用工具
 【target】
-【webtitle】常用工具  - 分享模板网站
-【webkeywords】常用工具 - 分享模板网站
-【webdescription】常用工具 - 分享模板网站
-【nofollow】1
-【isonhtml】0
+【webtitle】常用工具_ASP转JS_格式化HTML_格式化ASP_格式化CSS
+【webkeywords】常用工具_ASP转JS_格式化HTML_格式化ASP_格式化CSS
+【webdescription】提供大全原创工具 QQ313801120
 【bodycontent】
 【/bodycontent】
 -------------------------------
-【columnname】作品欣赏
+【columnname】网站作品
 【columntype】新闻
 【sortrank】19
-【filename】/myworks/
+【filename】/webworks/
 【flags】||
 【parentid】-1
-【labletitle】作品欣赏
+【labletitle】网站作品
 【target】
-【webtitle】作品欣赏  - 分享模板网站
-【webkeywords】作品欣赏 - 分享模板网站
-【webdescription】作品欣赏 - 分享模板网站
-【nofollow】1 
+【webtitle】网站作品_网站作品_网站制作作品_小云网站作品_网站建设作品
+【webkeywords】网站作品_网站作品_网站制作作品_小云网站作品_网站建设作品
+【webdescription】这些年来小云开发制作过的网站 QQ313801120
 【bodycontent】
 【/bodycontent】
 -------------------------------
@@ -540,10 +555,9 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 【parentid】-1
 【labletitle】在线反馈
 【target】
-【webtitle】在线反馈  - 分享模板网站
-【webkeywords】在线反馈 - 分享模板网站
-【webdescription】在线反馈 - 分享模板网站
-【nofollow】1 
+【webtitle】反馈_在线反馈_客户反馈_咨询反馈_反馈意识
+【webkeywords】反馈_在线反馈_客户反馈_咨询反馈_反馈意识
+【webdescription】您若在使用的过程中遇到了问题，或者您希望给我们提出一些意见或建议，非常欢迎您在这里提交给我们 QQ313801120
 【bodycontent】
 
 
@@ -570,12 +584,57 @@ QQ：<br><input type="text" name="qq" id="qq" style="width:98%;margin:6px 0" clas
 【parentid】-1
 【labletitle】在线留言
 【target】
-【webtitle】在线留言  - 分享模板网站
-【webkeywords】在线留言 - 分享模板网站
-【webdescription】在线留言 - 分享模板网站
-【nofollow】1 
+【webtitle】留言_在线留言_给我们留言_留言给我们_在线咨询
+【webkeywords】留言_在线留言_给我们留言_留言给我们_在线咨询
+【webdescription】如果您遇到了问题,就给我们留言 QQ313801120
 【bodycontent】
 【/bodycontent】
+-------------------------------
+【columnname】网络文摘
+【columntype】新闻
+【sortrank】22
+【filename】/digest/
+【templatepath】
+【flags】||
+【parentid】-1
+【labletitle】网络文摘
+【target】
+【webtitle】网络文摘精选
+【webkeywords】网络文摘_网络文章_网络文摘精选
+【webdescription】网络文摘_网络文章_网络文摘精选 QQ313801120
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】作品展示
+【columntype】新闻
+【sortrank】23
+【filename】/myworks/
+【templatepath】
+【flags】||
+【parentid】-1
+【labletitle】作品展示
+【target】
+【webtitle】作品展示
+【webkeywords】作品展示
+【webdescription】作品展示 QQ313801120
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】其它
+【columntype】新闻
+【sortrank】22
+【filename】/morearticle/
+【templatepath】
+【flags】||
+【parentid】-1
+【labletitle】
+【target】
+【webtitle】其它更多技术文章如canvas/android/flash/editplus  - 分享模板网站
+【webkeywords】更多文章，canvas文章 - 分享模板网站
+【webdescription】更多文章，canvas文章 - 分享模板网站
+【bodycontent】
+【/bodycontent】
+
 -------------------------------
 【columnname】网站地图
 【columntype】文本
@@ -590,9 +649,6 @@ QQ：<br><input type="text" name="qq" id="qq" style="width:98%;margin:6px 0" clas
 【webtitle】网站地图  - 分享模板网站
 【webkeywords】网站地图 - 分享模板网站
 【webdescription】网站地图 - 分享模板网站
-【nofollow】1 
+ 
 【bodycontent】
 【/bodycontent】
--------------------------------
-
-

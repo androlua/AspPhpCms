@@ -1,0 +1,164 @@
+【parentid】CSS3
+【title】收集大量CSS实用技巧
+【webtitle】收集大量CSS实用技巧
+【webkeywords】收集大量CSS实用技巧_CSS透明度的设置_CSS是什么_CSS教程
+【webdescription】CSS是层叠样式表是一种用来表现HTML（标准通用标记语言的一个应用）或XML（标准通用标记语言的一个子集）等文件样式的计算机语言 QQ313801120
+【sortrank】2
+【author】sharembweb
+【adddatetime】2016-02-01 10:13:25
+【filename】/css3/css-skills.html
+【flags】|
+【relatedtags】CSS3 
+【bodycontent】
+[&全部换行&]
+<strong>CSS是什么</strong>
+CSS是层叠样式表，层叠样式表是一种用来表现HTML（标准通用标记语言的一个应用）或XML（标准通用标记语言的一个子集）等文件样式的计算机语言。
+
+<strong>引入CSS</strong>
+[&html转码&]第一种引入CSS方法：
+<link href="mystyle.css" rel="stylesheet" type="text/css"/>
+
+第二种引入CSS方法：
+<style type="text/css">
+@import"mystyle.css"; 此处要注意.css文件的路径
+</style>
+[&html转码end&]
+<strong>CSS边框</strong>
+CSS border 属性允许你规定元素边框的样式、宽度和颜色。
+
+例如，你可以把一幅图片的边框定义为 outset，使之看上去像是“凸起按钮”：
+a:link img {border-style: outset;}
+
+定义多种样式
+您可以为一个边框定义多个样式，例如：
+p.aside {border-style: solid dotted dashed double;}
+
+定义单边宽度
+您可以按照 top-right-bottom-left 的顺序设置元素的各边边框：
+p {border-style: solid; border-width: 15px 5px 15px 5px;}
+
+没有边框
+在前面的例子中，您已经看到，如果希望显示某种边框，就必须设置边框样式，比如 solid 或 outset。
+那么如果把 border-style 设置为 none 会出现什么情况：
+p {border-style: none; border-width: 50px;}
+
+边框的颜色
+设置边框颜色非常简单。CSS 使用一个简单的 border-color 属性，它一次可以接受最多 4 个颜色值。
+可以使用任何类型的颜色值，例如可以是命名颜色，也可以是十六进制和 RGB 值：
+p {
+  border-style: solid;
+  border-color: blue rgb(25%,35%,45%) #909090 red;
+}
+
+透明边框
+我们刚才讲过，如果边框没有样式，就没有宽度。不过有些情况下您可能希望创建一个不可见的边框。
+CSS2 引入了边框颜色值 transparent。这个值用于创建有宽度的不可见边框。请看下面的例子：
+[&html转码&]<a href="#">AAA</a>
+<a href="#">BBB</a>
+<a href="#">CCC</a>
+[&html转码end&]
+我们为上面的链接定义了如下样式：
+a:link, a:visited {
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent;
+}
+a:hover {border-color: gray;}
+
+<strong>CSS定位</strong>
+分为CSS相对定位、CSS绝对定位两种
+
+CSS 相对定位
+相对定位是一个非常容易掌握的概念。如果对一个元素进行相对定位，它将出现在它所在的位置上。然后，可以通过设置垂直或水平位置，让这个元素“相对于”它的起点进行移动。
+如果将 top 设置为 20px，那么框将在原位置顶部下面 20 像素的地方。如果 left 设置为 30 像素，那么会在元素左边创建 30 像素的空间，也就是将元素向右移动。
+#box_relative {
+  position: relative;
+  left: 30px;
+  top: 20px;
+}
+
+CSS 绝对定位
+绝对定位使元素的位置与文档流无关，因此不占据空间。这一点与相对定位不同，相对定位实际上被看作普通流定位模型的一部分，因为元素的位置相对于它在普通流中的位置。
+普通流中其它元素的布局就像绝对定位的元素不存在一样：
+#box_relative {
+  position: absolute;
+  left: 30px;
+  top: 20px;
+}
+
+<strong>CSS动画</strong>
+如需在 CSS3 中创建动画，您需要学习 @keyframes 规则。
+@keyframes 规则用于创建动画。在 @keyframes 中规定某项 CSS 样式，就能创建由当前样式逐渐改为新样式的动画效果。
+
+浏览器支持
+Internet Explorer 10、Firefox 以及 Opera 支持 @keyframes 规则和 animation 属性。
+Chrome 和 Safari 需要前缀 -webkit-。
+注释：Internet Explorer 9，以及更早的版本，不支持 @keyframe 规则或 animation 属性。
+
+当您在 @keyframes 中创建动画时，请把它捆绑到某个选择器，否则不会产生动画效果。
+通过规定至少以下两项 CSS3 动画属性，即可将动画绑定到选择器：
+规定动画的名称
+规定动画的时长
+
+实例
+把 "myfirst" 动画捆绑到 div 元素，时长：5 秒：
+div
+{
+animation: myfirst 5s;
+-moz-animation: myfirst 5s;	/* Firefox */
+-webkit-animation: myfirst 5s;	/* Safari 和 Chrome */
+-o-animation: myfirst 5s;	/* Opera */
+}
+
+<strong>CSS content</strong>
+下面的例子在每个链接后插入括号中的 URL：
+a:after
+  {
+  content: " (" attr(href) ")";
+}
+
+<strong>CSS布局</strong>
+1、单列布局
+2、水平居中
+3、垂直居中
+4、多列布局
+5、多列等分布局
+6、九宫格布局
+7、全屏布局
+8、响应式布局
+
+<strong>CSS隐藏</strong>
+[&html转码&]1、css隐藏DIV及内容，完全隐藏内容与布局
+解释：使用CSS单词display:none;完全隐藏文本及图片
+<div style="display:none;">你是看不见我的</div> 
+
+2、overflow: hidden 隐藏溢出DIV内容或图片
+实例代码如：
+我是可以看见的<br/><br/> 
+<div style="overflow: hidden; width:30px; height:20px;">你是看不见我的。</div> 
+<br/> 
+同样我也是可以看见的 
+
+3、CSS隐藏滚动条
+使用overflow-y:hidden;和overflow-x:hidden来隐藏或显示对应横或竖方向的滚动条。此案例可以进入css手册的overflow-y和css在线手册的overflow-x有详细的讲解对滚动条的设置隐藏或显示方法。
+[&html转码end&]
+<strong>CSS DIV 居中</strong>
+对需要水平居中的DIV层添加以下属性:
+margin-left: auto;
+margin-right: auto;
+margin:0 auto;  
+
+<strong>CSS透明度的设置（兼容所有浏览器）</strong>
+.transparent_class {      
+filter:alpha(opacity=50);
+-moz-opacity:0.5;      
+-khtml-opacity: 0.5;      
+opacity: 0.5;
+}
+
+{$TitleInSearchEngineList title='收集大量CSS实用技巧'$}
+
+【/bodycontent】
+
+
+ 

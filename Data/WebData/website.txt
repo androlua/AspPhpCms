@@ -1,49 +1,19 @@
-【webtitle】分享模板网站 | ASP/PHP通用双版本网站程序,在线ASP转PHP,在线仿站,ASPPHPCMS
-【webkeywords】分享模板网站,ASP/PHP通用双版本网站程序,ASPPHPCMS,在线ASP转PHP,在线仿站
-【webdescription】分享模板网站 - 为站长免费提供了ASP/PHP通用双版本ASPPHPCMS网站内容管理系统,在线ASP转PHP，在线仿站服务。站长QQ313801120 邮箱313801120@qq.com
-【websitebottom】
- 
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?264b5983ea28c76339deeaebdca84ed6";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-{$JsWebStat filename=''  stype='display' $}   
-
-<br>版权 sharembweb.com | Powered by ASPPHPCMS
-
-
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101292533" data-redirecturi="http://sharembweb.com/" charset="utf-8"></script><span id="qqLoginBtn"></span><script type="text/javascript">     QC.Login({       btnId:"qqLoginBtn"}); </script>
-
-
+【webtitle】分享模板网站 | ASP/PHP通用双版本网站程序，在线ASP转PHP，在线仿站，ASPPHPCMS
+【webkeywords】分享模板网站，ASP/PHP通用双版本网站程序，ASPPHPCMS，在线ASP转PHP，在线仿站，AspToPhp，ASP/PHP程序分享家园，分享模板网站官网
+【webdescription】分享模板网站 - 为站长免费提供了ASP/PHP通用双版本网站程序,在线ASP转PHP，在线仿站服务。交流学习QQ313801120 邮箱313801120@qq.com
+【websitebottom】版权 sharembweb.com | Powered by 云端
+<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=2053070418731876318' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
 【/websitebottom】
 
 【webtemplate】/Templates2015/sharembweb/
 【webimages】/Templates2015/sharembweb/Images/
 【webcss】/Templates2015/sharembweb/Css/
 【webjs】/Templates2015/sharembweb/Js/
-【flags】|addwebsite|iscloseeditor|htmlrun|ziphtml|
+【flags】|addwebsite|iscloseeditor|htmlrun|
 【websiteurl】http://sharembweb.com/
 
 
-CNN统计
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257109459'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1257109459%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
 
-
-
-百度关键词搜索
-<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=2053070418731876318' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
 
 
 	'|addwebsite|updatehtml|formattinghtml|labelclose|cntoen|
-
-
-
-
-百度分享代码
-<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>

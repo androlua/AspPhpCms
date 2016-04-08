@@ -5,7 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-<title>{$EDITORTYPE$}版 {$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
+  <title>Bootstrap 101 Template</title>
+
   <!-- Bootstrap -->
   <link href="{$adminDir$}/Template/mobile/css/bootstrap.min.css" rel="stylesheet">
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -34,22 +35,22 @@
             <a href="?act=addEditHandle&actionType=WebSite&id=*&lableTitle=站点配置" target="_blank">站点配置</a>
           </li>
           <li>
-            <a href="?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=网站栏目" target="_blank">网站栏目</a>
+            <a href="?act=dispalyManageHandle&actionType=WebColumn&addsql=order by sortrank&lableTitle=[$title escape='1' default='网站栏目'$]" target="_blank">网站栏目</a>
           </li>
           <li>
-            <a href="?act=dispalyManageHandle&actionType=ArticleDetail&addsql=order by sortrank&lableTitle=分类信息" target="_blank">分类信息</a>
+            <a href="?act=dispalyManageHandle&actionType=ArticleDetail&addsql=order by sortrank&lableTitle=[$title escape='1' default='分类信息'$]" target="_blank">分类信息</a>
           </li>
           <li>
-            <a href="?act=dispalyManageHandle&actionType=OnePage&lableTitle=单页管理" target="_blank">单页管理</a>
+            <a href="?act=dispalyManageHandle&actionType=OnePage&lableTitle=[$title escape='1' default='单页管理'$]" target="_blank">单页管理</a>
           </li>
           <li>
-            <a href="?act=dispalyManageHandle&actionType=Admin&lableTitle=后台管理员" target="_blank">后台管理员</a>
+            <a href="?act=dispalyManageHandle&actionType=Admin&lableTitle=[$title escape='1' default='后台管理员'$]" target="_blank">后台管理员</a>
           </li>
           <li>
-            <a href="?act=dispalyManageHandle&actionType=SystemLog&addsql=order by id desc&lableTitle=后台操作日志" target="_blank">后台操作日志</a>
+            <a href="?act=dispalyManageHandle&actionType=SystemLog&addsql=order by id desc&lableTitle=[$title escape='1' default='后台操作日志'$]" target="_blank">后台操作日志</a>
           </li>
           <li>
-            <a href="?act=displayLayout&templateFile=manageMakeHtml.html&lableTitle=生成HTML" target="_blank">生成HTML</a>
+            <a href="?act=displayLayout&templateFile=manageMakeHtml.html&lableTitle=[$title escape='1' default='生成HTML'$]" target="_blank">生成HTML</a>
           </li>
  
         </ul>

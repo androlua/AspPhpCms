@@ -1,0 +1,103 @@
+【parentid】ASPPHPCMS
+【title】AspPhpCMS 内容管理系统介绍
+【webtitle】AspPhpCMS 内容管理系统介绍_CMS内容管理系统
+【webkeywords】AspPhpCMS 内容管理系统介绍_CMS内容管理系统_ASPPHPCMS介绍
+【webdescription】ASPPHPCMS内容管理系统，同时开发了ASP和PHP两套版本，采用HTML与程序分离，网站生成纯静态。 对HTML文件可重名称，后台对网站SEO优化做到了极致，让你的网站可以在最快得时间内容被各大搜索引擎收录 QQ313801120
+【sortrank】2
+【author】sharembweb
+【adddatetime】2016-02-18 08:51:11
+【filename】/ASPPHPCMS/about.html
+【customaurl】
+【flags】|c|
+【relatedtags】ASPPHPCMS
+
+
+【aboutcontent】
+ASPPHPCMS内容管理系统，同时开发了ASP和PHP两套版本，采用HTML与程序分离，网站生成纯静态。<br>
+对HTML文件可重名称，后台对网站SEO优化做到了极致，让你的网站可以在最快得时间内容被各大搜索引擎收录。<br>
+
+
+ 
+【/aboutcontent】
+
+【bodycontent】
+[&全部换行&]<strong>AspPhpCMS 内容管理系统介绍</strong>
+欢迎使用国内最专业的ASPPHPCMS内容管理系统，同时开发了(ASP+PHP)两种版本，它将是您轻松建站的首选利器。
+
+ASPPHPCMS内容管理系统分为，ASP版(ASP+Access)和PHP版(PHP+MYSQL) 进行搭建。
+模块化开发方式做为功能开发形式。框架易于功能扩展，代码维护，优秀的二次开发能力，可满足所有网站的应用需求。 8年开发经验的优秀个人，在掌握了丰富的WEB开发经验和CMS产品开发经验的同时，勇于创新追求完美的设计理念。
+
+对用户设计模板、网站升级转移均提供很大的便利，健壮的模板标签为站长DIY 自己的网站提供了强有力的支持。高效率标签缓存机制：允许对类同的标签进行缓存，在生成 HTML的时候，有利于提高系统反应速度，降低系统消耗的资源。
+
+ASPPHPCMS从开始的ASPPHPCMS v1.0到ASPPHPCMS v1.5，她的功能进行了数次飞跃性的革新，使得网站的架设与管理变得极其轻松！
+
+栏目无限级分类，前台全部静态，可接受强大的访问量，让纯静态得HTML网页打开速度更快，可让你的网站更易于被搜索引擎收录，对SEO优化人员来说操作更加得心应手。
+
+ASPPHPCMS在2016年进行了全新的升级，对新版本作出重大的创新，以期待全新的ASPPHPCMS内容管理系统服务更多的用户。
+
+<strong>ASPPHPCMS产品特色</strong>
+1、全新框架
+采用ASP+PHP两种语言进行兼容开发，进行全新框架设计。框架结构更为清晰，代码更易于维护。模块化做为功能的开发形式，让扩展性得到保证。ASPPHPCMS特别设计的二次开发扩展方式，让你不再修改官方的代码文件，就可以对功能代码进行重写。让你轻松享受二次开发带来的便捷的同时，不再为官方升级而担忧。
+
+2、模板系统
+ASPPHPCMS可自定义模板，模板与模板之间操作互不影响。
+
+3、独特思维
+ASPPHPCMS使用ASP与PHP两种语言，不管你的服务器是IIS还是Apache，也不管你的数据库是Access还是MySQL，都可以使用我们的系统。
+
+4、数据表分离
+ASPPHPCMS数据模型功能，不同模板使用不同数据表。
+
+5、模板制作方便
+ASPPHPCMS采用MVC体系设计其模板引擎，及模板与程序分离，简单易懂的模板引擎，让美工人员可独立完成模板制作及数据调用，可让程序人员和美工人员分工协作，最大可能提高团队执行力。多个工具箱，可方便的调用来自其他系统的数据。 
+
+6、优秀的用户体验
+ASPPHPCMS更加简洁，结构更为合理的后台管理系统，让上手更为容易，操作更为简单。后台模板框架可自定义扩展，和thinkphp使用一样方便。
+
+7、功能插件在线升级
+提示大量功能插件可供下载使用，如采集，格式化HTML等插件
+
+8、免费开源
+ASPPHPCMS内容管理系统得源代码百分之百的开源
+
+
+<strong>ASPPHPCMS应用领域</strong>
+1、企业网站
+无论大型还是中小型企业，利用网络传递信息在一定程度上提高了办事的效率，提高企业的竞争力；
+
+2、行业网站
+针对不同行业，强化内部的信息划分，体现行业的特色，网站含有行业的动态信息、产品、市场、技术、人才等信息，树立行业信息权威形象，为行业内产品供应链管理，提供实际的商业机会
+
+3、个人站长
+兴趣为主导，建立各种题材新颖，内容丰富的网站，通过共同兴趣的信息交流，可以让您形成自己具有特色的用户圈，产生个人需求，并为其服务
+
+4、收费网站
+内容收费类型的网站，用户可以在线提供产品销售，或者内容收费，简单清晰的盈利模式，确保您以最小的投资，取得最大的回报
+
+<b>更多帮助：</b>
+<a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
+
+{$TitleInSearchEngineList title='AspPhpCMS 内容管理系统介绍'$}
+
+【/bodycontent】
+
+
+
+
+
+ASP在线浏览：<a href="/aspweb.asp?templatedir=/Templates2015/sharembweb/" class="ablue" target="_blank">sharembweb</a> | 
+<a href="/aspweb.asp?templatedir=/Templates/legendstu/" class="ablue" target="_blank">legendstu</a> | 
+<a href="/aspweb.asp?templatedir=/Templates/ufoer/" class="ablue" target="_blank">ufoer</a> | 
+<a href="/aspweb.asp?templatedir=/Templates/cncn/" class="ablue" target="_blank">cncn</a>
+
+<br>
+PHP在线浏览：<a href="/phpweb.php?templatedir=/Templates2015/sharembweb/" class="ablue" target="_blank">sharembweb</a> | 
+<a href="/phpweb.php?templatedir=/Templates/legendstu/" class="ablue" target="_blank">legendstu</a> | 
+<a href="/phpweb.php?templatedir=/Templates/ufoer/" class="ablue" target="_blank">ufoer</a> | 
+<a href="/phpweb.php?templatedir=/Templates/cncn/" class="ablue" target="_blank">cncn</a>
+
+<br><br>
+ASP后台登录：<a href="/web/1.asp" class="ablue" target="_blank">登录ASPPHPCMS得ASP后台</a> &nbsp; 账号：test密码：test<br>
+PHP后台登录：<a href="/web/1.php" class="ablue" target="_blank">登录ASPPHPCMS得PHP后台</a> &nbsp; 账号：test密码：test
+
+ 

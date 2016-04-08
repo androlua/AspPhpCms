@@ -1,13 +1,3 @@
-<?php 
-/************************************************************
-作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
-创建：2016-03-11
-联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-*                                    Powered by ASPPHPCMS 
-************************************************************/
-?>
 <?php
 /*********************************************
 *Mysql数据库生成程序
@@ -93,7 +83,8 @@ class mysql{
 		$s=""; $nLength=""; $leftStr=""; $rightStr=""; $nRow ="";
 		$s = LCase($sql) ;
 		$nLength = instr($s, " top ") ;
-		if( $nLength > 0 ){
+		$nSelect= instr(lcase($s), "select ") ;
+		if( $nLength > 0 && $nSelect > 0 ){				//只允许查询有显示多少条的限制 20160408
 			$leftStr = mid($sql, 1, $nLength) ;
 			$rightStr = mid($sql, $nLength + 5,-1) ;
 			$rightStr = AspTrim($rightStr) ;

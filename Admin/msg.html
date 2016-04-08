@@ -34,7 +34,9 @@ a:hover,a:active{color:#ff6600;text-decoration: underline}
 document.onkeydown=function(event){ 
 	e = event ? event :(window.event ? window.event : null); 
 	if(e.keyCode==13){
-		location.href='[$url$]';
+		var url='[$url$]'
+		//url=url.replace(/\//g,"//");
+		location.href=url;
 	} 
 }
 </script> 

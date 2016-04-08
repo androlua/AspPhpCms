@@ -1,0 +1,416 @@
+【columnname】分享模板网站
+【columntype】首页
+【sortrank】0
+【filename】/index.html
+【flags】|top|
+【parentid】-1
+【labletitle】分享模板网站
+【target】
+【webtitle】
+【webkeywords】
+【webdescription】
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】在线ASP转PHP
+【columntype】文本
+【sortrank】1
+【filename】/asptophp/
+【flags】|top|
+【parentid】-1
+【labletitle】在线ASP代码转PHP代码
+【target】
+【webtitle】在线ASP转PHP,在线ASP代码转PHP代码,在线ASP程序转PHP程序,AspToPhp - 分享模板网站
+【webkeywords】在线ASP转PHP,在线ASP代码转PHP代码,在线ASP程序转PHP程序,AspToPhp - 分享模板网站
+【webdescription】提供ASP代码转换成PHP代码服务 - 分享模板网站QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的ASP代码，提交后等待几秒生成PHP代码：</div>
+
+<form name="form1" method="post" action="asptophp.asp?act=handlecontent" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:300px;"><%
+
+'截取字符串 更新20160114
+'c=[A]sharembweb.com[/A]
+'0=sharembweb.com
+'1=[A]sharembweb.com[/A]
+'3=[A]sharembweb.com
+'4=sharembweb.com[/A]
+Function strCut(ByVal content, ByVal startStr, ByVal endStr, ByVal cutType)
+    'On Error Resume Next
+    Dim s1, s1Str, s2, s3, c 
+    If InStr(content, startStr) = False Or InStr(content, endStr) = False Then
+        c = "" 
+        Exit Function 
+    End If 
+    Select Case cutType
+        '完善于20150923
+        Case 1
+            s1 = InStr(content, startStr) 
+            s1Str = Mid(content, s1 + Len(startStr)) 
+            s2 = s1 + InStr(s1Str, endStr) + Len(startStr) + Len(endStr) - 1 '为什么要减1
+
+        Case Else
+            s1 = InStr(content, startStr) + Len(startStr) 
+            s1Str = Mid(content, s1) 
+            'S2 = InStr(S1, Content, EndStr)
+            s2 = s1 + InStr(s1Str, endStr) - 1 
+        'call echo("s2",s2)
+    End Select
+    s3 = s2 - s1 
+    If s3 >= 0 Then
+        c = Mid(content, s1, s3) 
+    Else
+        c = "" 
+    End If 
+    If cutType = 3 Then
+        c = startStr & c 
+    End If 
+    If cutType = 4 Then
+        c = c & endStr 
+    End If 
+    strCut = c 
+    'If Err.Number <> 0 Then Call eerr(startStr, content)
+'doError Err.Description, "StrCut 截取字符串 函数出错，StartStr=" & EchoHTML(StartStr) & "<hr>EndStr=" & EchoHTML(EndStr)
+End Function 
+Dim c 
+c = "[A]sharembweb.com[/A]" 
+
+Response.Write("c=" & c & "<br>") 
+
+Response.Write("0=" & strCut(c, "[A]", "[/A]", 0) & "<br>" & vbcrlf) 
+Response.Write("1=" & strCut(c, "[A]", "[/A]", 1) & "<br>" & vbcrlf) 
+'response.Write("2=" & strCut(c,"[A]","[/A]",2) & "<br>" & vbcrlf)
+Response.Write("3=" & strCut(c, "[A]", "[/A]", 3) & "<br>" & vbcrlf) 
+Response.Write("4=" & strCut(c, "[A]", "[/A]", 4) & "<br>" & vbcrlf) 
+
+%> 
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+  <label for="isOpenImportFunction"><input name="isOpenImportFunction" type="checkbox" id="isOpenImportFunction" value="1" checked>导入函数</label>
+</form>
+
+
+<br><br>
+ASP代码转PHP代码源码下载地址：<br>
+<ul class="list">
+
+<li><a href="https://github.com/313801120/AspToPhp" target="_blank">【Github下载】ASP转PHP程序 最新版本</a></li>
+
+<li><a href="http://down.chinaz.com/soft/37718.htm" target="_blank">【chinaz下载】ASP转PHP程序 v1.0(ASP源码) 里面有本站的浏览地址</a></li>
+
+<li><a href="http://member.down.admin5.com/asp/130795.html" rel="nofollow" target="_blank">【admin5下载】ASP转PHP程序 v1.0(ASP源码) 改了里面演示网站，等显示</a></li> 
+
+<li><a href="/url.asp?down=codedown_asptophpv1" target="_blank">【codesky下载】ASP转PHP程序 v1.0 (ASP源码 等待)</a></li>
+ 
+<li><a href="/url.asp?down=csdn_asptophpv1" target="_blank">【csdn下载】ASP转PHP程序 v1.0(ASP源码)</a></li>
+<li><a href="/url.asp?down=jb51_asptophpv1" target="_blank">【jb51下载】ASP转PHP程序 v1.0(ASP源码)</a></li>
+
+ 
+</ul>
+
+
+【/bodycontent】
+-------------------------------
+【columnname】在线格式化ASP
+【columntype】文本
+【sortrank】2
+【filename】/formatasp/
+【flags】|top|
+【parentid】-1
+【labletitle】在线格式化ASP
+【target】
+【webtitle】在线格式化ASP代码,在线ASP代码检测,在线ASP代码格式化,在线ASP代码混淆 - 分享模板网站
+【webkeywords】在线格式化ASP代码,在线ASP代码检测,在线ASP代码格式化,在线ASP代码混淆 - 分享模板网站
+【webdescription】提供在线ASP代码检测，格式化，混淆，和偏好处理功能 - 分享模板网站QQ313801120
+【bodycontent】
+
+
+
+<div class="divtip">输入你的ASP代码，提交后等待几秒输出格式化后的ASP代码：</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/Tools/FormattingTools/ClassAspCode.Asp?act=处理编辑函数" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:300px;"><%
+dim var1,var2,var3
+if 0=0 then
+if 1=1 then
+response.write("111")
+elseif 2=2 then
+response.write("111")
+end if
+end if
+
+%> 
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+  <label for="isOpenImportFunction"><input name="isOpenImportFunction" type="checkbox" id="isOpenImportFunction" value="1" checked>导入函数</label>
+</form>
+
+
+<br><br>
+格式化ASP程序源码下载地址：<br>
+<ul class="list">
+<li><a href="http://www.codesky.net/codedown/html/29984.htm   " rel="nofollow" target="_blank">【codesky下载】格式化ASP程序V1.0</a></li>
+</ul>
+
+
+【/bodycontent】
+-------------------------------
+【columnname】在线仿站
+【columntype】文本
+【sortrank】3
+【filename】/fangzhan/
+【flags】|top|
+【parentid】-1
+【labletitle】在线仿站
+【target】
+【webtitle】在线仿站,快速仿站加快速生成后台,在线拷贝网站,在线模仿网站,在线复制优秀网站 - 分享模板网站
+【webkeywords】在线仿站,快速仿站加快速生成后台,在线拷贝网站,在线模仿网站,在线复制优秀网站 - 分享模板网站
+【webdescription】提取快速模仿别人优秀网站，并生成相应搭配ASP/PHP网站管理后台 - 分享模板网站QQ313801120
+【bodycontent】
+
+
+<form id="form1" name="form1" method="post" action="/url.asp?act=fangzhan" onSubmit="formSubmit()" target="_blank">
+<div>
+  网址：
+  <input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" size="70" />
+编码：
+<select name="Char_Set" id="Char_Set">
+  <option value="gb2312" selected="selected">gb2312</option>
+  <option value="utf-8">utf-8</option>
+</select>
+</div>
+<div>选择服务器:  
+  <select name="selectServer" id="selectServer">
+    <option value="http://www.shluzheng.com/Admin/WebEditor/dieFangWeb.asp">服务器1</option>
+    <option value="http://www.ylkj11.com/admin/KEditor/lang/I/dieFangWeb.asp">服务器2</option>
+  </select>
+  </div>
+<input type="submit" name="button" class="mybtn" id="button" value="提交" />
+<input name="verificationTime" type="hidden" id="verificationTime" value="aabbccddeeffgg" />
+</form>
+
+<!--
+http://www.thinkphp.cn/
+
+<script language="javascript">
+function formSubmit(){
+	var url = document.form1.selectServer.value + "?act=downweb&n="+Math.random() 
+	document.form1.action = url 
+}
+</script>
+-->
+<br>
+<div class="bodywrap">
+使用帮助：<br>
+第一步，下载网页后，点击下载 *.xml打包文件<br>
+第二步，<a href='/url.asp?act=downaspvbs' class="ablue" rel="nofollow" target='_blank'>下载 asp.vbs</a><br>
+第三步，把*.xmp和asp.vbs放到D盘<br>
+第四步，update.xml改名为1.xml<br>
+第五步，双击asp.vbs =》 就会看到一个web文件夹
+</div>
+
+
+
+【/bodycontent】
+-------------------------------
+【columnname】模板分享下载
+【columntype】新闻
+【sortrank】4
+【filename】/templatesdown/
+【flags】|top|
+【parentid】-1
+【labletitle】模板分享下载
+【target】
+【webtitle】模板分享下载,企业网站模板,公司网站模板,个人网站模板 - 分享模板网站
+【webkeywords】模板分享下载,企业网站模板,企业网页模板,公司网站模板,个人网站模板,免费网站模板下载,免费网页模板下载,优化网站模板 - 分享模板网站
+【webdescription】收集了大量易于优化的优秀网站模板，并且提供一套ASP/PHP完整后台管理系统，所有程序开源。 - 分享模板网站QQ313801120
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】ASPPHPCMS
+【columntype】新闻
+【sortrank】5
+【filename】/ASPPHPCMS/
+【flags】|top|
+【parentid】-1
+【labletitle】ASPPHPCMS通用双系统CMS
+【target】
+【webtitle】ASPPHPCMS通用双系统CMS,ASPPHPCMS,免费开源ASPPHPCMS,ASP/PHP通用双CMS - 分享模板网站
+【webkeywords】ASPPHPCMS通用双系统CMS,ASPPHPCMS,免费开源ASPPHPCMS,ASP/PHP通用双CMS - 分享模板网站
+【webdescription】提供免费开源的ASP/PHP通用双CMS系统，提供大量模板可供下载 - 分享模板网站QQ313801120
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】联系作者
+【columntype】文本
+【sortrank】6
+【filename】/contact/
+【flags】|top|
+【parentid】-1
+【labletitle】联系作者
+【target】
+【webtitle】联系作者,联系sharembweb,联系QQ313801120,联系云端 - 分享模板网站
+【webkeywords】联系作者,联系sharembweb,联系QQ313801120,联系云端 - 分享模板网站
+【webdescription】联系作者,联系sharembweb,联系QQ313801120,联系云端 - 分享模板网站
+
+
+【aboutcontent】
+
+作者：云端<br>
+QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="ablue" rel="nofollow" title="在线与313801120交流">313801120</a><br>
+邮箱：313801120@qq.com<br>
+交流群：<a href="/url.asp?title=qq群35915100" class="ablue" target="_blank">35915100</a><br>
+
+【/aboutcontent】
+
+【bodycontent】[&全部换行&]
+<div><img src="{$cfg_webimages$}me.jpg" alt="作者云端"></div>
+作者：云端
+2006年进入互联网，专注网站制作与程序开发，精通ASP/PHP/VB/HTML/CSS/Flash/Android/，热爱传统文化与哲学，擅长把复杂的事情简单化，喜欢与朋友分享。
+ 发布ASPPHPCMS开源项目
+ 发布在线ASP转PHP开源项目
+ 上海，南京等城市从事网站开发工作多年
+[&全部换行end&]
+
+<br>
+QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="ablue" rel="nofollow" title="在线与313801120交流">313801120</a><br>
+邮箱：313801120@qq.com<br>
+交流群：<a href="http://shang.qq.com/wpa/qunwpa?idkey=253822bd485c454811141c731156d2ecd4dba04ecf647ce81dc97d16a563137b" class="ablue" rel="nofollow" target="_blank">35915100</a><br>
+网址：http://sharembweb.com/
+
+【/bodycontent】
+-------------------------------
+【columnname】ASP
+【columntype】新闻
+【sortrank】11
+【filename】/asp/
+【flags】||
+【parentid】-1
+【labletitle】ASP文章列表
+【target】
+【webtitle】ASP,ASP代码,ASP学习,ASP帮助,ASP特效 - 分享模板网站
+【webkeywords】ASP,ASP代码,ASP学习,ASP帮助,ASP特效 - 分享模板网站
+【webdescription】提供ASP相关文档 - 分享模板网站
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】PHP
+【columntype】新闻
+【sortrank】12
+【filename】/php/
+【flags】||
+【parentid】-1
+【labletitle】PHP文章列表
+【target】
+【webtitle】PHP,PHP代码,PHP学习,PHP帮助,PHP特效 - 分享模板网站
+【webkeywords】PHP,PHP代码,PHP学习,PHP帮助,PHP特效 - 分享模板网站
+【webdescription】提供PHP相关文档 - 分享模板网站
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】JS
+【columntype】新闻
+【sortrank】13
+【filename】/js/
+【flags】||
+【parentid】-1
+【labletitle】JS文章列表
+【target】
+【webtitle】JS,JS代码,JS学习,JS帮助,JS特效 - 分享模板网站
+【webkeywords】JS,JS代码,JS学习,JS帮助,JS特效 - 分享模板网站
+【webdescription】提供JS相关文档 - 分享模板网站
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】HTML5
+【columntype】新闻
+【sortrank】14
+【filename】/html5/
+【flags】||
+【parentid】-1
+【labletitle】HTML5文章列表
+【target】
+【webtitle】HTML5,HTML5代码,HTML5学习,HTML5帮助,HTML5特效 - 分享模板网站
+【webkeywords】HTML5,HTML5代码,HTML5学习,HTML5帮助,HTML5特效 - 分享模板网站
+【webdescription】提供HTML5相关文档 - 分享模板网站
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】CSS3
+【columntype】新闻
+【sortrank】15
+【filename】/css3/
+【flags】||
+【parentid】-1
+【labletitle】CSS3文章列表
+【target】
+【webtitle】CSS3,CSS3代码,CSS3学习,CSS3帮助,CSS3特效 - 分享模板网站
+【webkeywords】CSS3,CSS3代码,CSS3学习,CSS3帮助,CSS3特效 - 分享模板网站
+【webdescription】提供CSS3相关文档 - 分享模板网站
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】问答Q/A
+【columntype】新闻
+【sortrank】17
+【filename】/ask/
+【flags】||
+【parentid】-1
+【labletitle】问答Q&A
+【target】
+【webtitle】问答Q&A,在线问答,你问我答,在线ASP转PHP问答,在线格式化ASP问答,在线仿站问答  - 分享模板网站
+【webkeywords】问答Q&A,在线问答,你问我答,在线ASP转PHP问答,在线格式化ASP问答,在线仿站问答,免费问答 - 分享模板网站
+【webdescription】sharembweb,在线回答大家遇到的技术类问题，有问必答 - 分享模板网站
+【bodycontent】
+
+【/bodycontent】
+
+【note】
+在线问答  在线问答网站  免费问答  你问我答  技术问题
+【/】
+
+
+-------------------------------
+【columnname】常用工具
+【columntype】新闻
+【sortrank】18
+【filename】/mytools/
+【flags】||
+【parentid】-1
+【labletitle】常用工具
+【target】
+【webtitle】常用工具  - 分享模板网站
+【webkeywords】常用工具 - 分享模板网站
+【webdescription】常用工具 - 分享模板网站
+【nofollow】1
+【isonhtml】0
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】作品欣赏
+【columntype】新闻
+【sortrank】19
+【filename】/myworks/
+【flags】||
+【parentid】-1
+【labletitle】作品欣赏
+【target】
+【webtitle】作品欣赏  - 分享模板网站
+【webkeywords】作品欣赏 - 分享模板网站
+【webdescription】作品欣赏 - 分享模板网站
+【nofollow】1 
+【bodycontent】
+【/bodycontent】
+
+

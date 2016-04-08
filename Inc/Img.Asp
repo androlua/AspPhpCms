@@ -1,13 +1,3 @@
-<%
-'************************************************************
-'作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-'版权：源代码公开，各种用途均可免费使用。 
-'创建：2016-03-11
-'联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 sharembweb.com
-'更多帮助，文档，更新　请加群(35915100)或浏览(sharembweb.com)获得
-'*                                    Powered by ASPPHPCMS 
-'************************************************************
-%>
 <% 
 
 
@@ -20,6 +10,7 @@
 'Call Rw(HandleShowImg("UploadFiles/Soso.gif",100,60,""))
 'Call Rw(HandleShowImg("UploadFiles/Soso.gif",100,60,"高"))
 'Call Rw(HandleShowImg("UploadFiles/Soso.gif",100,60,"宽"))
+'获得图片类型    getFileContentType("/aa.jpg")
 
 'VB不引用 Start
 'psd不行，等加
@@ -224,7 +215,11 @@ Function getFileContentType(filePath)
             getFileContentType = PD(0)                      '//获取图片类型
         Set fs = Nothing 
     Set GetPicSize = Nothing 
-End Function 
+End Function
+'获得图片类型 
+function getImageType(filePath)
+	getImageType = getFileContentType(filePath)
+end function
 '瀑布流方式显示图片列表
 Function imageWaterfall(folderPath, nRow, SetWidth)
     Dim content, splStr, i, ImgPath, c, s, nProportion, width, height, thisI, nNumb 
