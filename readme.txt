@@ -24,45 +24,46 @@ ASPPHPCMS管网
 想获得更多帮助和下载最新版　请浏览(http://sharembweb.com)
 在线演示：http://sharembweb.com/
 
-——- 20016.04.08 update ——
+—— 20016.04.08 update ——
 1、ASPPHPCMS升级到 ASPPHPCMS v1.2
 2、增加一套企业绿色模板
-3、增加大量模板标签
+3、新增大量模板标签
 4、前后面程序更稳定
+5、后台增加了对手机端的显示
 
-——- 20016.03.03 update ——
+—— 20016.03.03 update ——
 1、前后台翻页改进，代码缩小了三分之二
 2、后台搜索完善了，可按回车搜索，可选字段，可选排序方式
 3、后台加入系统操作日志
 4、字段判断处理改进，如 [$ishtml if='False' elseif='0' value='未生成' elsevalue='已生成'$]
 5、整理出常用14个模板嵌套标签(ColumnList/ColumnMenu/ArticleList/CommentList/SearchStatList/GetOnePageBody/GetArticleBody/GetColumnBody/GetOnePageUrl/GetArticleUrl/GetColumnUrl/DisplayWrap/Include/WebSiteBottom)
 6、后台界面模板加入了可根据当前表前缀加载对应模板，当模板不存在时，则加载默认模板
-7、对后台里面的网址传值进行了优化，对二次开发非常方便
+7、对后台里面的网址传值进行了优化，给二次开发的朋友提供方便
 
-——- 20016.02.29 update ——
+—— 20016.02.29 update ——
 1、后台管理员加入权限管理
 2、加入XY_AP_GetOnePageBody  XY_AP_GetArticleBody XY_AP_GetColumnBody 函数
-3、程序进行了优化
+3、程序进行了大幅度优化
 
-——- 20016.02.02 update ——
-1、加个文章评论功能，前端与后台包括数据库设计都OK
+—— 20016.02.02 update ——
+1、追加文章评论功能，前端与后台包括数据库调试完成
 2、handleRGV函数功能加强，可对替换变量进行动作处理
 3、模板智能匹配如 News_List.html 匹配新闻列表 News_Detail.html 匹配新闻细节 自定义模板可手动修改模样文件
 4、[$cfg_webtitle fontcolor='red'$] 全局变量添加了函数功能
 
-——- 20016.01.01 update ——
+—— 20016.01.01 update ——
 1、ASPPHPCMS升级到 ASPPHPCMS v1.1
 2、后台增加 robotes.txt生成
 3、后台增加sitemap.xml与sitemap.html生成 
 4、前端添加在线修改网站功能
 
-——- 20015.11.11 update ——
+—— 20015.11.11 update ——
 1、ASPPHPCMS的PHP版 开发完成
 2、加入了生成纯html静态网页功能
 3、ASP与PHP可切换
 
-——- 20015.10.10 update ——
+—— 20015.10.10 update ——
 1、ASPPHPCMS v1.0 正式上线
 2、自带模板（sharembweb和ufoer）
 3、网站后台/admin/index.asp 账号：admin 密码：admin
-4、ASP版开发完成，测试通过，PHP待开发
+4、ASP版开发完成，测试通过，PHP待开发中
