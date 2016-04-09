@@ -5,23 +5,23 @@ ASPPHPCMS是一款免费开源网站内容管理系统，有ASP和PHP两种版本，并且是通用的
 4、sharembweb.com.asp为测试程序
 5、更多帮助加群(35915100)或浏览(http://sharembweb.com)
 
-ASPPHPCMS内容管理系统 v1.2
+ASPPHPCMS内容管理系统最新版本是 v1.2
 http://sharembweb.com/aspphpcms/
 
 
 作者：云端 (精通ASP/VB/PHP/JS/Flash，交流合作可联系本人)
-版权：源代码公开，各种用途均可免费使用。 
+版权：源代码公开，各种用途均可免费使用
 创建：20160111 
 联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 http://sharembweb.com
 更多帮助，文档，更新　请加群(35915100)或浏览(http://sharembweb.com)
-*                                    Powered By AspPhpCMS
+*                                    Powered By ASPPHPCNS
 
  
 
-ASPPHPCMS管网
+ASPPHPCMS官网
 交流学习QQ（313801120） 群（35915100）(群里已有几百人)    邮箱313801120@qq.com
-作者呕心沥血花了大半年时间才开发出来，现在分享给大家。程序不免会有BUG,可
-想获得更多帮助和下载最新版　请浏览(http://sharembweb.com)
+作者呕心沥血花了大半年时间才开发出来，现在分享给大家。程序不免会有BUG，如果你发现了BUT了，请给作者发邮箱313801120@qq.com
+想获得更多帮助和获得最新ASPPHPCMS动态　请浏览(http://sharembweb.com)
 在线演示：http://sharembweb.com/
 
 —— 20016.04.08 update ——
