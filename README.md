@@ -1,97 +1,93 @@
-## ¼ò½é
+ï»¿## ç®€ä»‹
 
-ASPPHPCMS ÊÇÒ»¸öÃâ·Ñ¿ªÔ´µÄ£¬¿ìËÙ¡¢¼òµ¥¡¢ÇáÁ¿¼¶ÍøÕ¾ÄÚÈÝ¹ÜÀíÏµÍ³£¬ÓÐASPºÍPHPÁ½ÖÖ°æ±¾£¬²¢ÇÒÊÇÏà»¥Í¨ÓÃµÄ¡£Ö»ÒªÄãÐ´Ò»´Î£¬¾Í¿ÉÒÔÍ¬Ê±ÔÚASPÆ½Ì¨ºÍPHPÆ½Ì¨ÔËÐÐ¡£
-´´Á¢ÓÚ2015Äê³õ£¬ÊÇÎªÁËÃô½ÝWEBÓ¦ÓÃ¿ª·¢ºÍ¼ò»¯ÆóÒµÓ¦ÓÃ¿ª·¢¶øµ®ÉúµÄ¡£ASPPHPCMS´Óµ®ÉúÒÔÀ´Ò»Ö±±ü³Ð¼ò½àÊµÓÃµÄÉè¼ÆÔ­Ôò£¬ÔÚ±£³Ö³öÉ«µÄÐÔÄÜºÍÖÁ¼òµÄ´úÂëµÄÍ¬Ê±£¬Ò²×¢ÖØÒ×ÓÃÐÔ¡£
-²¢ÇÒÓµÓÐÖÚ¶àµÄÔ­´´¹¦ÄÜºÍÌØÐÔ£¬ÔÚÒ×ÓÃÐÔ¡¢À©Õ¹ÐÔºÍÐÔÄÜ·½Ãæ²»¶ÏÓÅ»¯ºÍ¸Ä½ø£¬±Ø½«³ÉÎª¹úÄÚ×îÁìÏÈºÍ×î¾ßÓ°ÏìÁ¦µÄWEBÓ¦ÓÃ¿ª·¢¿ò¼Ü£¬ÖÚ¶àµÄµäÐÍ°¸ÀýÈ·±£¿ÉÒÔÎÈ¶¨ÓÃÓÚÉÌÒµÒÔ¼°ÃÅ»§¼¶µÄ¿ª·¢¡£
+ASPPHPCMS æ˜¯ä¸€ä¸ªå…è´¹å¼€æºçš„ï¼Œå¿«é€Ÿã€ç®€å•ã€è½»é‡çº§ç½‘ç«™å†…å®¹ç®¡ç†ç³»ç»Ÿï¼Œæœ‰ASPå’ŒPHPä¸¤ç§ç‰ˆæœ¬ï¼Œå¹¶ä¸”æ˜¯ç›¸äº’é€šç”¨çš„ã€‚åªè¦ä½ å†™ä¸€æ¬¡ï¼Œå°±å¯ä»¥åŒæ—¶åœ¨ASPå¹³å°å’ŒPHPå¹³å°è¿è¡Œã€‚
+åˆ›ç«‹äºŽ2015å¹´åˆï¼Œæ˜¯ä¸ºäº†æ•æ·WEBåº”ç”¨å¼€å‘å’Œç®€åŒ–ä¼ä¸šåº”ç”¨å¼€å‘è€Œè¯žç”Ÿçš„ã€‚ASPPHPCMSä»Žè¯žç”Ÿä»¥æ¥ä¸€ç›´ç§‰æ‰¿ç®€æ´å®žç”¨çš„è®¾è®¡åŽŸåˆ™ï¼Œåœ¨ä¿æŒå‡ºè‰²çš„æ€§èƒ½å’Œè‡³ç®€çš„ä»£ç çš„åŒæ—¶ï¼Œä¹Ÿæ³¨é‡æ˜“ç”¨æ€§ã€‚
+å¹¶ä¸”æ‹¥æœ‰ä¼—å¤šçš„åŽŸåˆ›åŠŸèƒ½å’Œç‰¹æ€§ï¼Œåœ¨æ˜“ç”¨æ€§ã€æ‰©å±•æ€§å’Œæ€§èƒ½æ–¹é¢ä¸æ–­ä¼˜åŒ–å’Œæ”¹è¿›ï¼Œå¿…å°†æˆä¸ºå›½å†…æœ€é¢†å…ˆå’Œæœ€å…·å½±å“åŠ›çš„WEBåº”ç”¨å¼€å‘æ¡†æž¶ï¼Œä¼—å¤šçš„å…¸åž‹æ¡ˆä¾‹ç¡®ä¿å¯ä»¥ç¨³å®šç”¨äºŽå•†ä¸šä»¥åŠé—¨æˆ·çº§çš„å¼€å‘ã€‚
 
-## ´óµÀÖÁ¼òµÄ¿ª·¢ÀíÄî
+## å¤§é“è‡³ç®€çš„å¼€å‘ç†å¿µ
 
-ASPPHPCMS´Óµ®ÉúÒÔÀ´Ò»Ö±±ü³Ð´óµÀÖÁ¼òµÄ¿ª·¢ÀíÄî£¬ÎÞÂÛ´Óµ×²ãÊµÏÖ»¹ÊÇÓ¦ÓÃ¿ª·¢£¬ÎÒÃÇ¶¼³«µ¼ÓÃ×îÉÙµÄ´úÂëÍê³ÉÏàÍ¬µÄ¹¦ÄÜ£¬ÕýÊÇÓÉÓÚ¶Ô¼òµ¥µÄÖ´×ÅºÍ´úÂëµÄÐÞÁ¶£¬ÈÃÎÒÃÇ³¤ÆÚ±£³Ö³öÉ«µÄÐÔÄÜºÍ¼«ËÙµÄ¿ª·¢ÌåÑé¡£¼òµ¥ºÍ¿ìËÙ¿ª·¢ÊÇÎÒÃÇ²»±äµÄ×ÚÖ¼¡£
+ASPPHPCMSä»Žè¯žç”Ÿä»¥æ¥ä¸€ç›´ç§‰æ‰¿å¤§é“è‡³ç®€çš„å¼€å‘ç†å¿µï¼Œæ— è®ºä»Žåº•å±‚å®žçŽ°è¿˜æ˜¯åº”ç”¨å¼€å‘ï¼Œæˆ‘ä»¬éƒ½å€¡å¯¼ç”¨æœ€å°‘çš„ä»£ç å®Œæˆç›¸åŒçš„åŠŸèƒ½ï¼Œæ­£æ˜¯ç”±äºŽå¯¹ç®€å•çš„æ‰§ç€å’Œä»£ç çš„ä¿®ç‚¼ï¼Œè®©æˆ‘ä»¬é•¿æœŸä¿æŒå‡ºè‰²çš„æ€§èƒ½å’Œæžé€Ÿçš„å¼€å‘ä½“éªŒã€‚ç®€å•å’Œå¿«é€Ÿå¼€å‘æ˜¯æˆ‘ä»¬ä¸å˜çš„å®—æ—¨ã€‚
 
-## °²È«ÐÔ
+## å®‰å…¨æ€§
 
-¿ò¼ÜÔÚÏµÍ³²ãÃæÌá¹©ÁËÖÚ¶àµÄ°²È«ÌØÐÔ£¬È·±£ÄãµÄÍøÕ¾ºÍ²úÆ·°²È«ÎÞÓÇ¡£ÕâÐ©ÌØÐÔ°üÀ¨£º
+æ¡†æž¶åœ¨ç³»ç»Ÿå±‚é¢æä¾›äº†ä¼—å¤šçš„å®‰å…¨ç‰¹æ€§ï¼Œç¡®ä¿ä½ çš„ç½‘ç«™å’Œäº§å“å®‰å…¨æ— å¿§ã€‚è¿™äº›ç‰¹æ€§åŒ…æ‹¬ï¼š
 
-*  XSS°²È«·À»¤
-*  ±íµ¥×Ô¶¯ÑéÖ¤
-*  Ç¿ÖÆÊý¾ÝÀàÐÍ×ª»»
-*  ÊäÈëÊý¾Ý¹ýÂË
-*  ±íµ¥ÁîÅÆÑéÖ¤
-*  ·ÀSQL×¢Èë
-*  Í¼ÏñÉÏ´«¼ì²â
+*  XSSå®‰å…¨é˜²æŠ¤
+*  è¡¨å•è‡ªåŠ¨éªŒè¯
+*  å¼ºåˆ¶æ•°æ®ç±»åž‹è½¬æ¢
+*  è¾“å…¥æ•°æ®è¿‡æ»¤
+*  è¡¨å•ä»¤ç‰ŒéªŒè¯
+*  é˜²SQLæ³¨å…¥
+*  å›¾åƒä¸Šä¼ æ£€æµ‹
 
-## Ê¹ÓÃËµÃ÷
+## ä½¿ç”¨è¯´æ˜Ž
  
-1¡¢ÍøÕ¾ºóÌ¨/admin/index.asp ÕËºÅ£ºadmin ÃÜÂë£ºadmin
+*  1ã€ç½‘ç«™åŽå°/admin/index.asp è´¦å·ï¼šadmin å¯†ç ï¼šadmin
+*  2ã€inc/,index.asp,admin/index.aspä¸ºASPç‰ˆ
+*  3ã€phpinc/,index.php,admin/index.phpä¸ºPHPç‰ˆ
+*  4ã€sharembweb.com.aspä¸ºæµ‹è¯•ç¨‹åº
+*  5ã€æ›´å¤šå¸®åŠ©åŠ ç¾¤(35915100)æˆ–æµè§ˆ(http://sharembweb.com)
+*  ASPPHPCMSå†…å®¹ç®¡ç†ç³»ç»Ÿæœ€æ–°ç‰ˆæœ¬æ˜¯ v1.2
+*  http://sharembweb.com/aspphpcms/
 
-2¡¢inc/,index.asp,admin/index.aspÎªASP°æ
+## ä½œè€…ä»‹ç»
 
-3¡¢phpinc/,index.php,admin/index.phpÎªPHP°æ
-
-4¡¢sharembweb.com.aspÎª²âÊÔ³ÌÐò
-
-5¡¢¸ü¶à°ïÖú¼ÓÈº(35915100)»òä¯ÀÀ(http://sharembweb.com)
-
-ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³×îÐÂ°æ±¾ÊÇ v1.2
-
-http://sharembweb.com/aspphpcms/
-
-## ×÷Õß½éÉÜ
-
-×÷Õß£ºÔÆ¶Ë (¾«Í¨ASP/VB/PHP/JS/Flash£¬½»Á÷ºÏ×÷¿ÉÁªÏµ±¾ÈË)
-°æÈ¨£ºÔ´´úÂë¹«¿ª£¬¸÷ÖÖÓÃÍ¾¾ù¿ÉÃâ·ÑÊ¹ÓÃ
-´´½¨£º20160111 
-ÁªÏµ£ºQQ313801120  ½»Á÷Èº35915100(ÈºÀïÒÑÓÐ¼¸°ÙÈË)    ÓÊÏä313801120@qq.com   ¸öÈËÖ÷Ò³ http://sharembweb.com
-¸ü¶à°ïÖú£¬ÎÄµµ£¬¸üÐÂ¡¡Çë¼ÓÈº(35915100)»òä¯ÀÀ(http://sharembweb.com)
+*  ä½œè€…ï¼šäº‘ç«¯ (ç²¾é€šASP/VB/PHP/JS/Flashï¼Œäº¤æµåˆä½œå¯è”ç³»æœ¬äºº)
+*  ç‰ˆæƒï¼šæºä»£ç å…¬å¼€ï¼Œå„ç§ç”¨é€”å‡å¯å…è´¹ä½¿ç”¨
+*  åˆ›å»ºï¼š20160111 
+*  è”ç³»ï¼šQQ313801120  äº¤æµç¾¤35915100(ç¾¤é‡Œå·²æœ‰å‡ ç™¾äºº)    é‚®ç®±313801120@qq.com   ä¸ªäººä¸»é¡µ http://sharembweb.com
+*  æ›´å¤šå¸®åŠ©ï¼Œæ–‡æ¡£ï¼Œæ›´æ–°ã€€è¯·åŠ ç¾¤(35915100)æˆ–æµè§ˆ(http://sharembweb.com)
 *                                    Powered By ASPPHPCNS
 
-ASPPHPCMS¹ÙÍøhttp://sharembweb.com/
-½»Á÷Ñ§Ï°Çë¼ÓQQ313801120 ½»Á÷Èº35915100(ÈºÀïÒÑÓÐ¼¸°ÙÈË)  ÓÊÏä313801120@qq.com
-×÷ÕßÅ»ÐÄÁ¤Ñª»¨ÁË´ó°ëÄêµÃÊ±¼ä²Å¿ª·¢³öÀ´£¬ÏÖÔÚ·ÖÏí¸ø´ó¼Ò¡£
-³ÌÐò²»Ãâ»áÓÐBUG£¬Èç¹ûÄãºÜÈÙÐÒµÄ·¢ÏÖÁËBUG£¬Çë°ÑBUG·¢ËÍµ½×÷ÕßÓÊÏä313801120@qq.com £¨×÷Õß»á°ÑÄãµÄÃû×Ö·Åµ½³ÌÐòÀï£©
-Ïë»ñµÃ¸ü¶à°ïÖúºÍ»ñµÃ×îÐÂASPPHPCMS¶¯Ì¬¡¡Çëä¯ÀÀ(http://sharembweb.com)
-ÔÚÏßÑÝÊ¾£ºhttp://sharembweb.com/
+## ASPPHPCMSæ›´æ–°æ—¥å¿—
 
-¡ª¡ª 20016.04.08 update ¡ª¡ª
-1¡¢ASPPHPCMSÉý¼¶µ½ ASPPHPCMS v1.2
-2¡¢Ôö¼ÓÒ»Ì×ÆóÒµÂÌÉ«Ä£°å
-3¡¢ÐÂÔö´óÁ¿Ä£°å±êÇ©
-4¡¢Ç°ºóÌ¨³ÌÐò¸ü¼ÓÎÈ¶¨
-5¡¢ºóÌ¨Ôö¼ÓÁË¶ÔÊÖ»ú¶ËµÄÏÔÊ¾
+*  ASPPHPCMSå®˜ç½‘http://sharembweb.com/
+*  äº¤æµå­¦ä¹ è¯·åŠ QQ313801120 äº¤æµç¾¤35915100(ç¾¤é‡Œå·²æœ‰å‡ ç™¾äºº)  é‚®ç®±313801120@qq.com
+*  ä½œè€…å‘•å¿ƒæ²¥è¡€èŠ±äº†å¤§åŠå¹´å¾—æ—¶é—´æ‰å¼€å‘å‡ºæ¥ï¼ŒçŽ°åœ¨åˆ†äº«ç»™å¤§å®¶ã€‚
+*  ç¨‹åºä¸å…ä¼šæœ‰BUGï¼Œå¦‚æžœä½ å¾ˆè£å¹¸çš„å‘çŽ°äº†BUGï¼Œè¯·æŠŠBUGå‘é€åˆ°ä½œè€…é‚®ç®±313801120@qq.com ï¼ˆä½œè€…ä¼šæŠŠä½ çš„åå­—æ”¾åˆ°ç¨‹åºé‡Œï¼‰
+*  æƒ³èŽ·å¾—æ›´å¤šå¸®åŠ©å’ŒèŽ·å¾—æœ€æ–°ASPPHPCMSåŠ¨æ€ã€€è¯·æµè§ˆ(http://sharembweb.com)
+*  åœ¨çº¿æ¼”ç¤ºï¼šhttp://sharembweb.com/
 
-¡ª¡ª 20016.03.03 update ¡ª¡ª
-1¡¢Ç°ºóÌ¨·­Ò³¸Ä½ø£¬´úÂëËõÐ¡ÁËÈý·ÖÖ®¶þ
-2¡¢ºóÌ¨ËÑË÷ÍêÉÆÁË£¬¿É°´»Ø³µËÑË÷£¬¿ÉÑ¡Ôñ×Ö¶Î£¬¿ÉÑ¡ÔñÅÅÐò·½Ê½
-3¡¢ºóÌ¨¼ÓÈëÏµÍ³²Ù×÷ÈÕÖ¾
-4¡¢×Ö¶ÎÅÐ¶Ï´¦Àí¸Ä½ø£¬Èç [$ishtml if='False' elseif='0' value='Î´Éú³É' elsevalue='ÒÑÉú³É'$]
-5¡¢ÕûÀí³ö³£ÓÃ14¸öÄ£°åÇ¶Ì×±êÇ©(ColumnList/ColumnMenu/ArticleList/CommentList/SearchStatList/GetOnePageBody/GetArticleBody/GetColumnBody/GetOnePageUrl/GetArticleUrl/GetColumnUrl/DisplayWrap/Include/WebSiteBottom)
-6¡¢ºóÌ¨½çÃæÄ£°å¼ÓÈëÁË¿É¸ù¾Ýµ±Ç°±íÇ°×º¼ÓÔØ¶ÔÓ¦Ä£°å£¬µ±Ä£°å²»´æÔÚÊ±£¬Ôò¼ÓÔØÄ¬ÈÏÄ£°å
-7¡¢¶ÔºóÌ¨ÀïÃæµÄÍøÖ·´«Öµ½øÐÐÁËÓÅ»¯£¬¸ø¶þ´Î¿ª·¢µÄÅóÓÑÌá¹©ÁË·½±ã
+â€”â€” 20016.04.08 update â€”â€”
+*  1ã€ASPPHPCMSå‡çº§åˆ° ASPPHPCMS v1.2
+*  2ã€å¢žåŠ ä¸€å¥—ä¼ä¸šç»¿è‰²æ¨¡æ¿
+*  3ã€æ–°å¢žå¤§é‡æ¨¡æ¿æ ‡ç­¾
+*  4ã€å‰åŽå°ç¨‹åºæ›´åŠ ç¨³å®š
+*  5ã€åŽå°å¢žåŠ äº†å¯¹æ‰‹æœºç«¯çš„æ˜¾ç¤º
 
-¡ª¡ª 20016.02.29 update ¡ª¡ª
-1¡¢ºóÌ¨¹ÜÀíÔ±¼ÓÈëÈ¨ÏÞ¹ÜÀí
-2¡¢¼ÓÈëXY_AP_GetOnePageBody  XY_AP_GetArticleBody XY_AP_GetColumnBody º¯Êý
-3¡¢³ÌÐò½øÐÐÁË´ó·ù¶ÈÓÅ»¯
+â€”â€” 20016.03.03 update â€”â€”
+*  1ã€å‰åŽå°ç¿»é¡µæ”¹è¿›ï¼Œä»£ç ç¼©å°äº†ä¸‰åˆ†ä¹‹äºŒ
+*  2ã€åŽå°æœç´¢å®Œå–„äº†ï¼Œå¯æŒ‰å›žè½¦æœç´¢ï¼Œå¯é€‰æ‹©å­—æ®µï¼Œå¯é€‰æ‹©æŽ’åºæ–¹å¼
+*  3ã€åŽå°åŠ å…¥ç³»ç»Ÿæ“ä½œæ—¥å¿—
+*  4ã€å­—æ®µåˆ¤æ–­å¤„ç†æ”¹è¿›ï¼Œå¦‚ [$ishtml if='False' elseif='0' value='æœªç”Ÿæˆ' elsevalue='å·²ç”Ÿæˆ'$]
+*  5ã€æ•´ç†å‡ºå¸¸ç”¨14ä¸ªæ¨¡æ¿åµŒå¥—æ ‡ç­¾(ColumnList/ColumnMenu/ArticleList/CommentList/SearchStatList/GetOnePageBody/GetArticleBody/GetColumnBody/GetOnePageUrl/GetArticleUrl/GetColumnUrl/DisplayWrap/Include/WebSiteBottom)
+*  6ã€åŽå°ç•Œé¢æ¨¡æ¿åŠ å…¥äº†å¯æ ¹æ®å½“å‰è¡¨å‰ç¼€åŠ è½½å¯¹åº”æ¨¡æ¿ï¼Œå½“æ¨¡æ¿ä¸å­˜åœ¨æ—¶ï¼Œåˆ™åŠ è½½é»˜è®¤æ¨¡æ¿
+*  7ã€å¯¹åŽå°é‡Œé¢çš„ç½‘å€ä¼ å€¼è¿›è¡Œäº†ä¼˜åŒ–ï¼Œç»™äºŒæ¬¡å¼€å‘çš„æœ‹å‹æä¾›äº†æ–¹ä¾¿
 
-¡ª¡ª 20016.02.02 update ¡ª¡ª
-1¡¢×·¼ÓÎÄÕÂÆÀÂÛ¹¦ÄÜ£¬Ç°¶ËÓëºóÌ¨°üÀ¨Êý¾Ý¿âµ÷ÊÔÍê³É
-2¡¢handleRGVº¯Êý¹¦ÄÜ¼ÓÇ¿£¬¿É¶ÔÌæ»»±äÁ¿½øÐÐ¶¯×÷´¦Àí
-3¡¢Ä£°åÖÇÄÜÆ¥ÅäÈç News_List.html Æ¥ÅäÐÂÎÅÁÐ±í News_Detail.html Æ¥ÅäÐÂÎÅÏ¸½Ú ×Ô¶¨ÒåÄ£°å¿ÉÊÖ¶¯ÐÞ¸ÄÄ£ÑùÎÄ¼þ
-4¡¢[$cfg_webtitle fontcolor='red'$] È«¾Ö±äÁ¿Ìí¼ÓÁËº¯Êý¹¦ÄÜ
+â€”â€” 20016.02.29 update â€”â€”
+*  1ã€åŽå°ç®¡ç†å‘˜åŠ å…¥æƒé™ç®¡ç†
+*  2ã€åŠ å…¥XY_AP_GetOnePageBody  XY_AP_GetArticleBody XY_AP_GetColumnBody å‡½æ•°
+*  3ã€ç¨‹åºè¿›è¡Œäº†å¤§å¹…åº¦ä¼˜åŒ–
 
-¡ª¡ª 20016.01.01 update ¡ª¡ª
-1¡¢ASPPHPCMSÉý¼¶µ½ ASPPHPCMS v1.1
-2¡¢ºóÌ¨Ôö¼Ó robotes.txtÉú³É
-3¡¢ºóÌ¨Ôö¼Ósitemap.xmlÓësitemap.htmlÉú³É 
-4¡¢Ç°¶ËÌí¼ÓÔÚÏßÐÞ¸ÄÍøÕ¾¹¦ÄÜ
+â€”â€” 20016.02.02 update â€”â€”
+*  1ã€è¿½åŠ æ–‡ç« è¯„è®ºåŠŸèƒ½ï¼Œå‰ç«¯ä¸ŽåŽå°åŒ…æ‹¬æ•°æ®åº“è°ƒè¯•å®Œæˆ
+*  2ã€handleRGVå‡½æ•°åŠŸèƒ½åŠ å¼ºï¼Œå¯å¯¹æ›¿æ¢å˜é‡è¿›è¡ŒåŠ¨ä½œå¤„ç†
+*  3ã€æ¨¡æ¿æ™ºèƒ½åŒ¹é…å¦‚ News_List.html åŒ¹é…æ–°é—»åˆ—è¡¨ News_Detail.html åŒ¹é…æ–°é—»ç»†èŠ‚ è‡ªå®šä¹‰æ¨¡æ¿å¯æ‰‹åŠ¨ä¿®æ”¹æ¨¡æ ·æ–‡ä»¶
+*  4ã€[$cfg_webtitle fontcolor='red'$] å…¨å±€å˜é‡æ·»åŠ äº†å‡½æ•°åŠŸèƒ½
 
-¡ª¡ª 20015.11.11 update ¡ª¡ª
-1¡¢ASPPHPCMSµÄPHP°æ ¿ª·¢Íê³É
-2¡¢¼ÓÈëÁËÉú³É´¿html¾²Ì¬ÍøÒ³¹¦ÄÜ
-3¡¢ASPÓëPHP¿ÉÇÐ»»
+â€”â€” 20016.01.01 update â€”â€”
+*  1ã€ASPPHPCMSå‡çº§åˆ° ASPPHPCMS v1.1
+*  2ã€åŽå°å¢žåŠ  robotes.txtç”Ÿæˆ
+*  3ã€åŽå°å¢žåŠ sitemap.xmlä¸Žsitemap.htmlç”Ÿæˆ 
+*  4ã€å‰ç«¯æ·»åŠ åœ¨çº¿ä¿®æ”¹ç½‘ç«™åŠŸèƒ½
 
-¡ª¡ª 20015.10.10 update ¡ª¡ª
-1¡¢ASPPHPCMS v1.0 ÕýÊ½ÉÏÏß
-2¡¢×Ô´øÄ£°å£¨sharembwebºÍufoer£©
-3¡¢ÍøÕ¾ºóÌ¨/admin/index.asp ÕËºÅ£ºadmin ÃÜÂë£ºadmin
-4¡¢ASP°æ¿ª·¢Íê³É£¬²âÊÔÍ¨¹ý£¬PHP´ý¿ª·¢ÖÐ
+â€”â€” 20015.11.11 update â€”â€”
+*  1ã€ASPPHPCMSçš„PHPç‰ˆ å¼€å‘å®Œæˆ
+*  2ã€åŠ å…¥äº†ç”Ÿæˆçº¯htmlé™æ€ç½‘é¡µåŠŸèƒ½
+*  3ã€ASPä¸ŽPHPå¯åˆ‡æ¢
+
+â€”â€” 20015.10.10 update â€”â€”
+*  1ã€ASPPHPCMS v1.0 æ­£å¼ä¸Šçº¿
+*  2ã€è‡ªå¸¦æ¨¡æ¿ï¼ˆsharembwebå’Œufoerï¼‰
+*  3ã€ç½‘ç«™åŽå°/admin/index.asp è´¦å·ï¼šadmin å¯†ç ï¼šadmin
+*  4ã€ASPç‰ˆå¼€å‘å®Œæˆï¼Œæµ‹è¯•é€šè¿‡ï¼ŒPHPå¾…å¼€å‘ä¸­
