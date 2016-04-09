@@ -22,7 +22,7 @@ $adminDir ='';$adminDir='/admin/';							//后台目录
 $openErrorLog =''; $openErrorLog= true; //开启错误日志
 $openWriteSystemLog =''; $openWriteSystemLog= '|txt|database|'; //开启写系统日志 txt写入文本 database写入数据库
 $openTestEcho=''; $openTestEcho=true;											//开关测试回显
-$webVersion =''; $webVersion='ASPPHPCMS V1.02';												//网站版本
+$webVersion =''; $webVersion='ASPPHPCMS v1.2';												//网站版本
 
 
 $WEB_CACHEFile =''; $WEB_CACHEFile='/admin/'. EDITORTYPE .'cachedata.txt';								//缓冲文件

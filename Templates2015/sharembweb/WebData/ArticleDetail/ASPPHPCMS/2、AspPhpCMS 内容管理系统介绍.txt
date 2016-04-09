@@ -13,11 +13,13 @@
 
 
 【aboutcontent】
-ASPPHPCMS内容管理系统，同时开发了ASP和PHP两套版本，采用HTML与程序分离，网站生成纯静态。<br>
-对HTML文件可重名称，后台对网站SEO优化做到了极致，让你的网站可以在最快得时间内容被各大搜索引擎收录。<br>
+ASPPHPCMS内容管理系统，同时开发了ASP+PHP双版本通用CMS内容管理系统，采用HTML与程序分离。<br>
+让你制作出来的HTML模板可以运行在ASP服务器和PHP服务器上。<br>
+网站可生成纯静态，对HTML文件可重名称，后台对网站SEO优化做到了极致，让你的网站可以在最快得时间内容被各大搜索引擎收录。<br>
+<br>
 
 
- 
+
 【/aboutcontent】
 
 【bodycontent】

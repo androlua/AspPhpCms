@@ -1,7 +1,7 @@
 <?php
 //define('$db',"aaa");
 $conn="";
-$dbhost='localhost';$dbuser='root';$dbpwd='root';$dbname='phpwebdata';  
+$dbhost='localhostNO';$dbuser='root';$dbpwd='root';$dbname='phpwebdata';  
 
 function openConn() {
 	global $conn;

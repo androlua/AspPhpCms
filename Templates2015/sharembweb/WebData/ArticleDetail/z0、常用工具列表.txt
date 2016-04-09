@@ -6,34 +6,97 @@
 【adddatetime】2015-01-28 15:09:05
 【nofollow】0
 【isonhtml】0
-【customaurl】http://sharembweb.com/formatasp/
+【customaurl】{$GetColumnUrl columnname='在线格式化ASP'$}
 -------------------------------
 【parentid】常用工具
 【title】格式化PHP
 【sortrank】1
 【author】sharembweb
-【adddatetime】2015-01-28 15:09:05
-【nofollow】1
-【isonhtml】0
-【customaurl】http://sharembweb.com/Tools/FormattingTools/Tools/JsTabHtml.Asp?Stype=格式化PHP&content=if(1==2){\necho('11')\n}
+【adddatetime】2015-03-21 15:09:05
+【filename】/asptophp/formatphp.html
+【webtitle】格式化PHP_在线格式化PHP
+【webkeywords】格式化PHP_在线格式化PHP
+【webdescription】提供在线格式化PHP功能 QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的PHP代码，提交后等待几秒即可输出格式化后的PHP代码：(更新于20160308)</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/Tools.Asp?act=formatphp" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
+<?PHP
+if(1==1){
+echo('11');
+}else{
+echo("else");
+}
+?> 
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+</form> 
+<br>
+
+
+【/bodycontent】
 -------------------------------
 【parentid】常用工具
 【title】格式化JS
 【sortrank】2
 【author】sharembweb
-【adddatetime】2015-01-28 15:09:05
-【nofollow】1
-【isonhtml】0
-【customaurl】http://sharembweb.com/Tools/FormattingTools/Tools/JsTabHtml.Asp?Stype=格式化PHP&content=if(1==2){\ndocument.write('11')\n}
+【adddatetime】2015-03-21 15:09:05
+【filename】/asptophp/formatjs.html
+【webtitle】格式化JS_在线格式化JS
+【webkeywords】格式化JS_在线格式化JS
+【webdescription】提供在线格式化JS功能 QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的JS代码，提交后等待几秒即可输出格式化后的JS代码：(更新于20160308)</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/Tools.Asp?act=formatjs" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
+&lt;script>
+if(1==1){
+document.write('11');
+}else{
+document.write("else");
+}
+&lt;/script>
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+</form> 
+<br> 
+【/bodycontent】
 -------------------------------
 【parentid】常用工具
 【title】格式化HTML
 【sortrank】3
 【author】sharembweb
-【adddatetime】2015-01-28 15:09:05
-【nofollow】1
-【isonhtml】0
-【customaurl】http://sharembweb.com/Tools/Web_Soft/FormattingHTML.asp
+【adddatetime】2015-03-21 15:09:05
+【filename】/asptophp/formathtml.html
+【webtitle】格式化HTML_在线格式化HTML
+【webkeywords】格式化HTML_在线格式化HTML
+【webdescription】提供在线格式化HTML功能 QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的HTML代码，提交后等待几秒即可输出格式化后的HTML代码：(更新于20160308)</div>
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/Tools.Asp?act=formathtml" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
+&lt;div>
+111
+&lt;div>
+2222
+&lt;div>
+333
+&lt;/div>
+&lt;/div>
+&lt;/div>
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+</form> 
+<br> 
+【/bodycontent】
 -------------------------------
 【parentid】常用工具
 【title】格式化CSS
@@ -42,6 +105,7 @@
 【adddatetime】2015-01-28 15:09:05
 【nofollow】1
 【isonhtml】0
+【target】_blank
 【customaurl】http://sharembweb.com/Tools/FormattingTools/Tools/CSS压缩格式化工具.html
 -------------------------------
 【parentid】常用工具
@@ -77,7 +141,7 @@
 
 <div class="divtip">输入你的ASP代码，提交后等待几秒即可生成JS代码：(更新于20160308)</div>
 
-<form name="form1" method="post" action="[$cfg_websiteurl$]asptophp/asptophp.asp?act=handlecontent&language=js" target="_blank">
+<form name="form1" method="post" action="http://sharembweb.com/asptophp/asptophp.asp?act=handlecontent&language=js" target="_blank">
   <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;"><% 
 '作者：云端 QQ313801120  http://sharembweb.com/
 '这是一个测试程序
@@ -131,7 +195,7 @@ next
 
 <div class="divtip">输入你的ASP代码，提交后等待几秒即可生成PHP代码：(更新于20160308)</div>
 
-<form name="form1" method="post" action="[$cfg_websiteurl$]toolslist/tools.asp?act=gbtoutf" target="_blank">
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/tools.asp?act=gbtoutf" target="_blank">
   <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">作者：云端 QQ313801120  http://sharembweb.com/
 '这是一个测试程序
   
@@ -161,7 +225,7 @@ aa
 
 <div class="divtip">输入汉字内容，提交后等待几秒即可生成(更新于20160322)</div>
 
-<form name="form1" method="post" action="[$cfg_websiteurl$]toolslist/tools.asp?act=pinyin" target="_blank">
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/tools.asp?act=pinyin" target="_blank">
   <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">作者：云端 QQ313801120  http://sharembweb.com/
 分享模板网站
   </textarea>

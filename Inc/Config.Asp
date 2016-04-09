@@ -97,7 +97,7 @@ dim adminDir :adminDir="/admin/"							'后台目录
 Dim openErrorLog : openErrorLog = true                                             '开启错误日志
 Dim openWriteSystemLog : openWriteSystemLog = "|txt|database|"                                             '开启写系统日志 txt写入文本 database写入数据库
 dim openTestEcho: openTestEcho=true											'开关测试回显
-Dim webVersion : webVersion="ASPPHPCMS V1.02"												'网站版本
+Dim webVersion : webVersion="ASPPHPCMS v1.2"												'网站版本
 
  
 dim WEB_CACHEFile : WEB_CACHEFile="/admin/"& EDITORTYPE &"cachedata.txt"								'缓冲文件

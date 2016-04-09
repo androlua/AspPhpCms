@@ -16,7 +16,7 @@ var _hmt = _hmt || [];
 
 {$JsWebStat filename=''  stype='display' $}   
 
-<br>版权 sharembweb.com | Powered by ASPPHPCMS<br>
+<br>版权 sharembweb.com | Powered by <a href='http://sharembweb.com' target='_blank'>ASPPHPCMS</a><br>
  
 
 
@@ -28,6 +28,9 @@ var _hmt = _hmt || [];
 <span style="margin-right:6px;">
 <a href="http://webscan.360.cn/index/checkwebsite/url/sharembweb.com" target="_blank" rel="nofollow"><img src="http://img.webscan.360.cn/status/pai/hash/fc1b2ff97ecf472d30edc3ce6bccdd98" title="360安全网站认证" alt="360安全网站认证"/></a>
 </span>
+
+
+
 <a target="_blank" href="http://union.rising.com.cn/InfoManage/attestation.aspx?p0=N2PmKkcKwdJaG8k/lxAUK9-CNetUMhAdRiMbDe8Rc7I=" rel="nofollow"><img src="http://union.rising.com.cn/images/tdflag1.jpg" alt="您访问的网站目前没有发现被挂马行为" title="您访问的网站目前没有发现被挂马行为" style="border:0px;"></a>
 
 【/websitebottom】
