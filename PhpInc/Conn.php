@@ -1,7 +1,7 @@
 <?php
 //define('$db',"aaa");
 $conn="";
-$dbhost='localhostNO';$dbuser='root';$dbpwd='root';$dbname='phpwebdata';  
+$dbhost='localhostNO';$dbuser='root';$dbpwd='123456';$dbname='phpwebdata';  
 
 function openConn() {
 	global $conn;
@@ -11,13 +11,13 @@ function openConn() {
 	
 	$conna = @mysql_connect($GLOBALS['dbhost'],$GLOBALS['dbuser'],$GLOBALS['dbpwd']);
     if(!$conna){
-		header('Location://phpinc/startInstall.php');			//直接跳转安装页
-		exit('<a href="//phpinc/startInstall.php" target="_blank">连接服务器失败，点击配置1</a>');
+		header('Location:/phpinc/startInstall.php');			//直接跳转安装页
+		exit('<a href="/phpinc/startInstall.php" target="_blank">连接服务器失败，点击配置1</a>');
 		 
 	}
     if(!mysql_select_db($GLOBALS['dbname'],$conna)){
-		header('Location://phpinc/startInstall.php');			//直接跳转安装页
-		exit('<a href="//phpinc/startInstall.php" target="_blank">连接数据库失败，点击配置2</a>');	
+		header('Location:/phpinc/startInstall.php');			//直接跳转安装页
+		exit('<a href="/phpinc/startInstall.php" target="_blank">连接数据库失败，点击配置2</a>');	
 	}
 	
 	mysql_query("set names 'gb2312'"); //数据库输出编码

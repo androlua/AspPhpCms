@@ -1218,8 +1218,8 @@ if($DB_PREFIX<>''){
 	if(checkfile($configPath)==true){
 		require_once './Cai.php';
 		$content=getFText($configPath);
-		$s=strCut( $content, '$db_PREFIX = \'', '\'', 1);
-		$content=replace($content,$s,'$db_PREFIX = \''.$DB_PREFIX.'\'');
+		$s=strCut( $content, '; $db_PREFIX= \'', '\'', 1);
+		$content=replace($content,$s,'; $db_PREFIX= \''.$DB_PREFIX.'\'');
 		createFile($configPath, $content);
 		echo('修改config.php配置文件完成');
 	}
@@ -1251,9 +1251,7 @@ if($DB_PREFIX<>''){
 	//给权限，要不然恢复数据不行20160301
 	@$_SESSION['adminusername'] = 'ASPPHPCMS' ;
     @$_SESSION['adminflags'] = '|*|'		;
-	
-	
-	
+	 
 
 $splstr='';$s='';
 $conn=OpenConn();
@@ -1275,9 +1273,9 @@ foreach( $splStr as $s){
             $parentid = '-1' ;
         }
 
-        if( LCase($tempS) == 'end' ){
+        if( trim(LCase($tempS)) == 'end' ){
             break;
-        }else if( $s <> '' ){
+        }else if( trim($s) <> '' ){
             $title = mid($s . ' ', 1, instr($s . ' ', ' ') - 1) ;
             $lableName = getStrCut($s, 'lablename=\'', '\'', 2) ;
             $url = getStrCut($s, 'url=\'', '\'', 2) ;
