@@ -17,9 +17,10 @@ http://sharembweb.com/aspphpcms/
 *                                    Powered By ASPPHPCNS
 
 
-ASPPHPCMS官网 
-交流学习QQ（313801120） 群（35915100）(群里已有几百人)    邮箱313801120@qq.com
-作者呕心沥血花了大半年时间才开发出来，现在分享给大家。程序不免会有BUG，如果你发现了BUT了，请给作者发邮箱313801120@qq.com
+ASPPHPCMS官网http://sharembweb.com/
+交流学习请加QQ313801120 交流群35915100(群里已有几百人)  邮箱313801120@qq.com
+作者呕心沥血花了大半年得时间才开发出来，现在分享给大家。
+程序不免会有BUG，如果你很荣幸的发现了BUG，请把BUG发送到作者邮箱313801120@qq.com （作者会把你的名字放到程序里）
 想获得更多帮助和获得最新ASPPHPCMS动态　请浏览(http://sharembweb.com)
 在线演示：http://sharembweb.com/
 
@@ -27,17 +28,17 @@ ASPPHPCMS官网
 1、ASPPHPCMS升级到 ASPPHPCMS v1.2
 2、增加一套企业绿色模板
 3、新增大量模板标签
-4、前后面程序更稳定
+4、前后台程序更加稳定
 5、后台增加了对手机端的显示
 
 —— 20016.03.03 update ——
 1、前后台翻页改进，代码缩小了三分之二
-2、后台搜索完善了，可按回车搜索，可选字段，可选排序方式
+2、后台搜索完善了，可按回车搜索，可选择字段，可选择排序方式
 3、后台加入系统操作日志
 4、字段判断处理改进，如 [$ishtml if='False' elseif='0' value='未生成' elsevalue='已生成'$]
 5、整理出常用14个模板嵌套标签(ColumnList/ColumnMenu/ArticleList/CommentList/SearchStatList/GetOnePageBody/GetArticleBody/GetColumnBody/GetOnePageUrl/GetArticleUrl/GetColumnUrl/DisplayWrap/Include/WebSiteBottom)
 6、后台界面模板加入了可根据当前表前缀加载对应模板，当模板不存在时，则加载默认模板
-7、对后台里面的网址传值进行了优化，给二次开发的朋友提供方便
+7、对后台里面的网址传值进行了优化，给二次开发的朋友提供了方便
 
 —— 20016.02.29 update ——
 1、后台管理员加入权限管理
