@@ -1,0 +1,42 @@
+【parentid】模板分享下载
+【title】模仿网站ufoer.com模板供大家学习研究
+【webtitle】模仿网站ufoer.com模板供大家学习研究,企业网站模板,企业网页模板,免费网站模板,网站模板下载,免费网页模板,优秀企业网站模板 - 分享模板网站
+【webkeywords】模仿网站ufoer.com模板供大家学习研究,企业网站模板,企业网页模板,免费网站模板,网站模板下载,免费网页模板,优秀企业网站模板 - 分享模板网站
+【webdescription】模仿网站ufoer.com模板供大家学习研究,分析研究学习别人优化的网站，好让自己能做出一个能优化非常好的网站 - 分享模板网站
+【sortrank】890
+【author】sharembweb
+【adddatetime】2016-01-20 11:10:05
+【filename】/mobandown/mofangufoercom.html
+【flags】|c|
+【relatedtags】ASP,PHP,在线ASP转PHP
+【bodycontent】
+
+
+
+模仿网址：http://www.ufoer.com/<br>
+添加程序后：<a href="/aspweb.asp?templatedir=\Templates\ufoer\" class="ablue" target="_blank">点击在线预览</a><br>
+下载整站：<a href="https://github.com/313801120/ASPPHPCMS"  class="ablue" target="_blank">Github下载ASPPHPCMS</a>(模板+本站自行开发的ASPPHPCMS网站管理系统)<br>
+<br>
+
+网站介绍：一位SEO高手王通的个人博客，他的网站做得非常的优秀，优化做得非常的好，忍不住的给它下载下来，研究一番。<br><br>
+
+1、css用到了9个之多，发现了有 bootstrap.min.css，上网查了下Bootstrap是Twitter推出的一个用于前端开发的开源工具包。<br><br>
+发现了 cyberchimps-responsive.min.css，上网查了下 可能是WordPress开发的[CyberChimps]主题 。<br><br>
+2、js用到了14个之多，在里面发现了有 jquery.mobile.custom.min.js，上网查了下，是bootstrap开发的mobile手机端框架。<br><br>
+3、他的网站在手机端浏览效果也非常的好，在电脑端浏览，放大缩小时浏览体验还是非常的好。值得学习和模仿。<br><br>
+4、我把它首页完整的下载下来了，css/js/images分别放到不同文件夹里，方便大家查看和学习。<br><br>
+5、图片网址列表.txt 文件里面是我在下载整个网页时所下载的全部链接，如*.css,*.js等等<br><br>
+6、百度云盘下载地址：<a href="http://pan.baidu.com/s/1dEm7393" rel="nofollow" target="_blank" class="ablue">http://pan.baidu.com/s/1dEm7393</a><br><br>
+右边有个“分享”，点进去里面还有更多。<br><br>
+7、在 sharembweb.com   网站上有个在线模仿，大家可以自己把想要模仿的网址输入进去，然后就可以把他的网站模仿过来了。<br><br>
+8、本下载只提供学习研究<br>
+
+
+<br>
+<p>本文版权归作者所有，转摘请注明作者和出处！<br />
+作者：云端<br />
+首发：<a href="http://sharembweb.com/" target="_blank" class="ablue">http://sharembweb.com</a></p>
+<br>
+
+【/bodycontent】
+ 
