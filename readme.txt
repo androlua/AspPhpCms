@@ -23,11 +23,17 @@ ASPPHPCMS´Óµ®ÉúÒÔÀ´Ò»Ö±±ü³Ğ´óµÀÖÁ¼òµÄ¿ª·¢ÀíÄî£¬ÎŞÂÛ´Óµ×²ãÊµÏÖ»¹ÊÇÓ¦ÓÃ¿ª·¢£¬ÎÒÃÇ¶
 ## Ê¹ÓÃËµÃ÷
  
 1¡¢ÍøÕ¾ºóÌ¨/admin/index.asp ÕËºÅ£ºadmin ÃÜÂë£ºadmin
+
 2¡¢inc/,index.asp,admin/index.aspÎªASP°æ
+
 3¡¢phpinc/,index.php,admin/index.phpÎªPHP°æ
+
 4¡¢sharembweb.com.aspÎª²âÊÔ³ÌĞò
+
 5¡¢¸ü¶à°ïÖú¼ÓÈº(35915100)»òä¯ÀÀ(http://sharembweb.com)
+
 ASPPHPCMSÄÚÈİ¹ÜÀíÏµÍ³×îĞÂ°æ±¾ÊÇ v1.2
+
 http://sharembweb.com/aspphpcms/
 
 ## ×÷Õß½éÉÜ
