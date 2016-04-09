@@ -39,7 +39,7 @@ ASPPHPCMS从诞生以来一直秉承大道至简的开发理念，无论从底�
 *  更多帮助，文档，更新　请加群(35915100)或浏览(http://sharembweb.com)
 *                                    Powered By ASPPHPCNS
 
-## ASPPHPCMS更新日志
+## 更新日志
 
 *  ASPPHPCMS官网http://sharembweb.com/
 *  交流学习请加QQ313801120 交流群35915100(群里已有几百人)  邮箱313801120@qq.com
