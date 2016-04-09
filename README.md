@@ -37,7 +37,7 @@ ASPPHPCMS从诞生以来一直秉承大道至简的开发理念，无论从底�
 *  创建：20160111 
 *  联系：QQ313801120  交流群35915100(群里已有几百人)    邮箱313801120@qq.com   个人主页 http://sharembweb.com
 *  更多帮助，文档，更新　请加群(35915100)或浏览(http://sharembweb.com)
-*                                    Powered By ASPPHPCNS
+*  Powered By ASPPHPCNS
 
 *  ASPPHPCMS官网 http://sharembweb.com/
 *  学习交流请加QQ313801120 QQ交流群请加35915100(群里已有几百人)  邮箱313801120@qq.com
