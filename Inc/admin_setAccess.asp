@@ -76,7 +76,11 @@ Sub resetAccessData()
             content = getftext(filePath) 
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
-                If InStr(s, "【webtitle】") > 0 Then
+                If InStr(s, "【webtitle】") > 0 Then 
+					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+					if instr(s,vbcrlf)=false then 
+						s=replace(s,chr(10),vbcrlf)  
+					end if
 					s=s & vbcrlf 
                     webtitle = newGetStrCut(s, "webtitle") 
                     webkeywords = newGetStrCut(s, "webkeywords") 
@@ -151,6 +155,10 @@ Sub resetAccessData()
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【title】") > 0 Then
+					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+					if instr(s,vbcrlf)=false then 
+						s=replace(s,chr(10),vbcrlf)  
+					end if
                     s = s & vbCrLf 
                     parentid = newGetStrCut(s, "parentid") 
                     parentid = getColumnId(parentid) 
@@ -217,6 +225,10 @@ Sub resetAccessData()
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【webkeywords】") > 0 Then
+					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+					if instr(s,vbcrlf)=false then 
+						s=replace(s,chr(10),vbcrlf)  
+					end if
                     s = s & vbCrLf 
                     title = newGetStrCut(s, "title") 
                     displaytitle = newGetStrCut(s, "displaytitle") 
@@ -272,6 +284,10 @@ Sub resetAccessData()
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【webkeywords】") > 0 Then
+					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+					if instr(s,vbcrlf)=false then 
+						s=replace(s,chr(10),vbcrlf)  
+					end if
 					s=s & vbcrlf 
                     webkeywords = newGetStrCut(s, "webkeywords") 
                     showreason = newGetStrCut(s, "showreason") 
@@ -302,6 +318,10 @@ Sub resetAccessData()
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【title】") > 0 Then
+					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+					if instr(s,vbcrlf)=false then 
+						s=replace(s,chr(10),vbcrlf)  
+					end if
 					s=s & vbcrlf 
                     title = newGetStrCut(s, "title") 
                     webtitle = newGetStrCut(s, "webtitle") 
@@ -353,6 +373,10 @@ dim itemid,username,ip,reply,tablename			'评论
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【title】") > 0 Then
+					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+					if instr(s,vbcrlf)=false then 
+						s=replace(s,chr(10),vbcrlf)  
+					end if
 					s=s & vbcrlf 
 					
                     tablename = newGetStrCut(s, "tablename") 
@@ -398,6 +422,10 @@ dim itemid,username,ip,reply,tablename			'评论
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【title】") > 0 Then
+					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+					if instr(s,vbcrlf)=false then 
+						s=replace(s,chr(10),vbcrlf)  
+					end if
 					s=s & vbcrlf 
 					
                     title = newGetStrCut(s, "title")  

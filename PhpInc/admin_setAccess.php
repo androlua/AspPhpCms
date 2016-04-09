@@ -78,6 +78,10 @@ function resetAccessData(){
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【webtitle】') > 0 ){
+                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+                    if( instr($s,vbCrlf())==false ){
+                        $s=replace($s,chr(10),vbCrlf());
+                    }
                     $s=$s . vbCrlf();
                     $webtitle= newGetStrCut($s, 'webtitle');
                     $webkeywords= newGetStrCut($s, 'webkeywords');
@@ -152,6 +156,10 @@ function resetAccessData(){
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
+                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+                    if( instr($s,vbCrlf())==false ){
+                        $s=replace($s,chr(10),vbCrlf());
+                    }
                     $s= $s . vbCrlf();
                     $parentid= newGetStrCut($s, 'parentid');
                     $parentid= getColumnId($parentid);
@@ -218,6 +226,10 @@ function resetAccessData(){
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【webkeywords】') > 0 ){
+                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+                    if( instr($s,vbCrlf())==false ){
+                        $s=replace($s,chr(10),vbCrlf());
+                    }
                     $s= $s . vbCrlf();
                     $title= newGetStrCut($s, 'title');
                     $displaytitle= newGetStrCut($s, 'displaytitle');
@@ -273,6 +285,10 @@ function resetAccessData(){
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【webkeywords】') > 0 ){
+                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+                    if( instr($s,vbCrlf())==false ){
+                        $s=replace($s,chr(10),vbCrlf());
+                    }
                     $s=$s . vbCrlf();
                     $webkeywords= newGetStrCut($s, 'webkeywords');
                     $showreason= newGetStrCut($s, 'showreason');
@@ -303,6 +319,10 @@ function resetAccessData(){
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
+                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+                    if( instr($s,vbCrlf())==false ){
+                        $s=replace($s,chr(10),vbCrlf());
+                    }
                     $s=$s . vbCrlf();
                     $title= newGetStrCut($s, 'title');
                     $webtitle= newGetStrCut($s, 'webtitle');
@@ -354,6 +374,10 @@ function resetAccessData(){
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
+                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+                    if( instr($s,vbCrlf())==false ){
+                        $s=replace($s,chr(10),vbCrlf());
+                    }
                     $s=$s . vbCrlf();
 
                     $tablename= newGetStrCut($s, 'tablename');
@@ -399,6 +423,10 @@ function resetAccessData(){
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
+                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+                    if( instr($s,vbCrlf())==false ){
+                        $s=replace($s,chr(10),vbCrlf());
+                    }
                     $s=$s . vbCrlf();
 
                     $title= newGetStrCut($s, 'title');
