@@ -1,4 +1,4 @@
-ASPPHPCMS v1.0 是一款免费开源网站内容管理系统，有ASP和PHP两种版本，并且是通用的
+ASPPHPCMS是一款免费开源网站内容管理系统，有ASP和PHP两种版本，并且是通用的
 1、网站后台/admin/index.asp 账号：admin 密码：admin
 2、inc/,index.asp,admin/index.asp为ASP版
 3、phpinc/,index.php,admin/index.php为PHP版
