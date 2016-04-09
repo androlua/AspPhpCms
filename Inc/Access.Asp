@@ -295,7 +295,8 @@ End Function
 '=====================压缩参数========================= boolIs97 这个好像没有什么用
 '压缩数据库
 Function compactDB(dBPath, boolIs97)
-    Dim fso, Engine, strDBPath, JET_3X 
+    Dim fso, Engine, strDBPath, JET_3X
+	dBPath=handlePath(dBPath)
     strDBPath = Left(dBPath, InStrRev(dBPath, "\")) 
     Set fso = CreateObject("Scripting.FileSystemObject")
         If fso.fileExists(dBPath) Then

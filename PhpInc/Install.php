@@ -1263,7 +1263,7 @@ $parentid=''; $title=''; $lableName=''; $content=''; $tempS=''; $url=''; $isdisp
 
 $content = getftext(handlePath('./../admin/后台菜单配置.ini'));
 $content = Replace($content, "\t", '    ');
-$splStr = aspSplit($content, vbCrlf());
+$splStr = aspSplit($content, chr(10));		//不用vbCrlf()  是因为在上传到GitHut上去，下载下来它会把后台菜单配置.ini文件编码转成utf-8 20160409
 $nCount = 0;
 foreach( $splStr as $s){
     $tempS = $s ;
