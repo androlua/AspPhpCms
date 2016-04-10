@@ -278,12 +278,12 @@ End Function
 
 '获得指定位数随机A到Z字符
 Function getRndAZ(nCount)
-    Dim ZD, i, s, c 
-    c = "" : ZD = "" 
+    Dim zd, i, s, c 
+    c = "" : zd = "" 
     Randomize 
-    ZD = "abcdefghijklmnopqrstuvwxyz" & UCase(ZD) 
+    zd = "abcdefghijklmnopqrstuvwxyz" & UCase(zd) 
     For i = 1 To nCount
-        s = Mid(ZD, pHPRnd(1, Len(ZD)), 1) 
+        s = Mid(zd, pHPRnd(1, Len(zd)), 1) 
         c = c & s 
     Next 
     getRndAZ = c 

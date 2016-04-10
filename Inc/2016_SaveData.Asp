@@ -5,10 +5,11 @@ Function saveData(sType)
     If sType = "articlecomment" Then
         Call saveArticleComment(Request("itemid"), ADSql(Request("content"))) 
     ElseIf sType = "feedback" Then
-		call autoSavePostData("", "feedback", "isthrough|numb|0,ip||"& getip() &"")
+		call autoSavePostData("", "feedback", "isthrough|numb|0,ip||"& getip() &",columnid||" & request.QueryString("columnid"))
 		Call echo("提示", "反馈提交成功，等待管理员审核") 
     ElseIf sType = "guestbook" Then
-		call autoSavePostData("", "guestbook", "isthrough|numb|0,ip||"& getip() &"")
+		'call echo("columnid",request.QueryString("columnid"))
+		call autoSavePostData("", "guestbook", "isthrough|numb|0,ip||"& getip() &",columnid||" & request.QueryString("columnid"))
 		Call echo("提示", "留言提交成功，等待管理员审核") 
 		
     End If 

@@ -6,10 +6,10 @@
 
 '读模块内容
 Function XY_ReadTemplateModule(action)
-    Dim moduleId, filePath,c,i
+    Dim moduleId, filePath, c, i 
     Dim sourceList                                                                  '源内容列表 20150109
     Dim replaceList                                                                 '替换内容列表
-	dim splSource,splReplace,sourceStr,replaceStr
+    Dim splSource, splReplace, sourceStr, replaceStr 
     filePath = RParam(action, "File") 
     moduleId = RParam(action, "ModuleId") 
     sourceList = RParam(action, "SourceList") 
@@ -20,18 +20,18 @@ Function XY_ReadTemplateModule(action)
     filePath = filePath & ".html" 
     'Call Echo("FilePath",FilePath)
     'Call Echo("ModuleId",ModuleId)
-	c= readTemplateModuleStr(filePath, "", moduleId) 
-	'加替换于20160331
-	if sourceList<>"" and replaceList<>"" then
-		splSource=split(sourceList,"[Array]")
-		splReplace=split(replaceList,"[Array]")
-		for i=0 to ubound(splSource)
-			sourceStr=splSource(i)
-			replaceStr=splReplace(i)
-			c=replace(c,sourceStr,replaceStr)
-		next
-	end if
-    XY_ReadTemplateModule =c
+    c = readTemplateModuleStr(filePath, "", moduleId) 
+    '加替换于20160331
+    If sourceList <> "" And replaceList <> "" Then
+        splSource = Split(sourceList, "[Array]") 
+        splReplace = Split(replaceList, "[Array]") 
+        For i = 0 To UBound(splSource)
+            sourceStr = splSource(i) 
+            replaceStr = splReplace(i) 
+            c = Replace(c, sourceStr, replaceStr) 
+        Next 
+    End If 
+    XY_ReadTemplateModule = c 
 End Function 
 
 '读模块内容
@@ -43,7 +43,7 @@ Function readTemplateModuleStr(filePath, defaultContent, moduleId)
 
     '文件不存在，则追加模板路径 20150616 给VB软件里用
     If checkFile(filePath) = False Then
-        filePath = WebTemplate & filePath 
+        filePath = webTemplate & filePath 
     End If 
 
     If defaultContent <> "" Then
@@ -102,7 +102,7 @@ End Function
 
 '读出Left模板样式        这里面字符 ' 来回复制会出错，所以我们用 \|*|\ 代替处理
 Function XY_ReadColumeSetTitle(action)
-    Dim startStr, endStr, Style, title, valueStr, MoreClass, MoreUrl, MoreStr, aStr 
+    Dim startStr, endStr, Style, title, valueStr, MoreClass, MoreUrl, MoreStr, aStr,c
     action = handleInModule(action, "start") 
     Style = RParam(action, "style") 
     title = RParam(action, "Title") 
@@ -114,10 +114,10 @@ Function XY_ReadColumeSetTitle(action)
     valueStr = findModuleStr(code, valueStr)                                        '找模块对应内容
 
     MoreClass = RParam(action, "MoreClass") 
-    MoreUrl = Trim(RParam(action, "MoreUrl")) 
+    MoreUrl = PHPTrim(RParam(action, "MoreUrl")) 
     MoreStr = RParam(action, "MoreStr") 
     valueStr = handleInModule(valueStr, "end") 
-    XY_ReadColumeSetTitle = readColumeSetTitle(action, Style, title, valueStr) 
+    c = readColumeSetTitle(action, Style, title, valueStr) 
 
     If MoreClass = "" Then MoreClass = "more"                                       'More链接为空 则用默认代替
     'If MoreUrl="" Then MoreUrl="#"                    'More链接网址为空 则用默认#代替
@@ -125,8 +125,9 @@ Function XY_ReadColumeSetTitle(action)
     If MoreUrl <> "" And MoreStr <> "" Then
         'AStr = "<a href='"& MoreUrl &"' class='"& MoreClass &"'>"& MoreStr &"</a>"
         aStr = "<a " & AHref(MoreUrl, title, "") & " class='" & MoreClass & "'>" & MoreStr & "</a>" 
-        XY_ReadColumeSetTitle = Replace(XY_ReadColumeSetTitle, "<!--#AMore#-->", aStr) 
+        c = Replace(c, "<!--#AMore#-->", aStr) 
     End If 
+	XY_ReadColumeSetTitle=c
 End Function 
 
 '读栏目并赋标题与内容值
@@ -192,7 +193,7 @@ End Function
 Function readColumn(id)
     Dim templateFilePath, startStr, endStr, s 
     'Call Echo("WebTemplate",WebTemplate)
-    templateFilePath = WebTemplate & "\Template_Left.html" 
+    templateFilePath = webTemplate & "\Template_Left.html" 
     startStr = "/*columnlist" & id & "Start*/" 
     endStr = "/*columnlist" & id & "End*/" 
     s = readTemplateFileModular(templateFilePath, startStr, endStr) 
@@ -206,7 +207,7 @@ End Function
 '读模板素材
 Function readTemplateSource(id)
     Dim templateFilePath, startStr, endStr, s 
-    templateFilePath = WebTemplate & "\TemplateSource.html" 
+    templateFilePath = webTemplate & "\TemplateSource.html" 
     startStr = "<!--#sourceHtml" & id & "Start#-->" 
     endStr = "<!--#sourceHtml" & id & "End#-->" 
     s = readTemplateFileModular(templateFilePath, startStr, endStr) 
@@ -260,7 +261,7 @@ Function readArticleListStyleSource(id)
     Dim filePath 
     filePath = getWebImages() & "\文章展示样式\" & id 
     If checkFile(filePath) = False Then
-        filePath = WebTemplate & "\Resources\" & id 
+        filePath = webTemplate & "\Resources\" & id 
     End If 
     'call echo(checkfile(filePath),filePath)
     readArticleListStyleSource = readTemplateFileSource(filePath, id) 
@@ -271,10 +272,10 @@ Function readArticleInfoStyleSource(id)
     Dim filePath 
     filePath = getWebImages() & "\文章信息展示样式\" & id 
     If checkFile(filePath) = False Then
-        filePath = WebTemplate & "\Resources\" & id 
+        filePath = webTemplate & "\Resources\" & id 
     End If 
     readArticleInfoStyleSource = readTemplateFileSource(filePath, id) 
 End Function 
 
-%>  
 
+%>   

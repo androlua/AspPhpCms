@@ -42,7 +42,7 @@
 		  <td>选择</td>
 		  <td>反馈内容</td>
 		  <td>IP</td>
-		  <td>评论时间</td>
+		  <td>反馈时间</td>
 		  <td>是否审核</td>
 		  <td>操作</td>
 		  </tr> 
@@ -59,7 +59,7 @@
 		  <td><a href="javascript:updateFieldHandle('isthrough','[$isthrough if='False' elseif='0' value='1' elsevalue='0'$]','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')"><img src="Images/[$isthrough if='False' elseif='0' value='isno.gif' elsevalue='isyes.gif'$]"></a></td>
 		  <td>
 			 <a href="javascript:addEditHandle('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');"><img src="images/icon/gtk-edit.png" title="编辑" alt="编辑" border="0" width="16" height="16"></a>
-			  <a href="[$viewWeb$]" target="_blank"><img src="images/icon/part-list.gif" title="预览" alt="预览" style="cursor:pointer" border="0" width="16" height="16"></a>
+			  <a href="{$WEB_VIEWURL$}?act=nav&id=[$columnid$]" target="_blank"><img src="images/icon/part-list.gif" title="预览" alt="预览" style="cursor:pointer" border="0" width="16" height="16"></a>
                <a href="javascript:delHandle('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');" title="删除" onClick="return new xyClass().myConfirm('你确定要删除吗？\n删除后将不可恢复')"><img src="images/icon/gtk-del.png" title="删除" /></a>             </td>
 		  </tr>
         [/list] 

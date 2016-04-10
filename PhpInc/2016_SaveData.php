@@ -5,10 +5,11 @@ function saveData($sType){
     if( $sType== 'articlecomment' ){
         saveArticleComment(@$_REQUEST['itemid'], ADSql(@$_REQUEST['content']));
     }else if( $sType== 'feedback' ){
-        autoSavePostData('', 'feedback', 'isthrough|numb|0,ip||'. getip() .'');
+        autoSavePostData('', 'feedback', 'isthrough|numb|0,ip||'. getip() .',columnid||' . @$_GET['columnid']);
         ASPEcho('提示', '反馈提交成功，等待管理员审核');
     }else if( $sType== 'guestbook' ){
-        autoSavePostData('', 'guestbook', 'isthrough|numb|0,ip||'. getip() .'');
+        //call echo("columnid",request.QueryString("columnid"))
+        autoSavePostData('', 'guestbook', 'isthrough|numb|0,ip||'. getip() .',columnid||' . @$_GET['columnid']);
         ASPEcho('提示', '留言提交成功，等待管理员审核');
 
     }
@@ -28,7 +29,7 @@ function autoSavePostData($id, $tableName, $fieldNameList){
         errorLog('出错提示：<hr>sql=' . $sql . '<br>');
         return '';
     }
-    connexecute($sql);
+    //conn.execute(sql)			'checksql这一步就已经执行了不需要再执行了20160410
 }
 //获得Post发送表单处理SQL语句 20160309
 function getPostSql($id, $tableName, $fieldNameList){

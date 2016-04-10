@@ -6,10 +6,10 @@
 
 //读模块内容
 function XY_ReadTemplateModule($action){
-    $moduleId=''; $filePath='';$c='';$i='';
+    $moduleId=''; $filePath=''; $c=''; $i ='';
     $sourceList ='';//源内容列表 20150109
     $replaceList ='';//替换内容列表
-    $splSource='';$splReplace='';$sourceStr='';$replaceStr='';
+    $splSource=''; $splReplace=''; $sourceStr=''; $replaceStr ='';
     $filePath= RParam($action, 'File');
     $moduleId= RParam($action, 'ModuleId');
     $sourceList= RParam($action, 'SourceList');
@@ -22,16 +22,16 @@ function XY_ReadTemplateModule($action){
     //Call Echo("ModuleId",ModuleId)
     $c= readTemplateModuleStr($filePath, '', $moduleId);
     //加替换于20160331
-    if( $sourceList<>'' && $replaceList<>'' ){
-        $splSource=aspSplit($sourceList,'[Array]');
-        $splReplace=aspSplit($replaceList,'[Array]');
-        for( $i=0 ; $i<= ubound($splSource); $i++){
-            $sourceStr=$splSource[$i];
-            $replaceStr=$splReplace[$i];
-            $c=replace($c,$sourceStr,$replaceStr);
+    if( $sourceList <> '' && $replaceList <> '' ){
+        $splSource= aspSplit($sourceList, '[Array]');
+        $splReplace= aspSplit($replaceList, '[Array]');
+        for( $i= 0 ; $i<= UBound($splSource); $i++){
+            $sourceStr= $splSource[$i];
+            $replaceStr= $splReplace[$i];
+            $c= Replace($c, $sourceStr, $replaceStr);
         }
     }
-    $XY_ReadTemplateModule=$c;
+    $XY_ReadTemplateModule= $c;
     return @$XY_ReadTemplateModule;
 }
 
@@ -44,7 +44,7 @@ function readTemplateModuleStr($filePath, $defaultContent, $moduleId){
 
     //文件不存在，则追加模板路径 20150616 给VB软件里用
     if( checkFile($filePath)== false ){
-        $filePath= $GLOBALS['WebTemplate'] . $filePath;
+        $filePath= $GLOBALS['webTemplate'] . $filePath;
     }
 
     if( $defaultContent <> '' ){
@@ -105,7 +105,7 @@ function findModuleStr($content, $valueStr){
 
 //读出Left模板样式        这里面字符 ' 来回复制会出错，所以我们用 \|*|\ 代替处理
 function XY_ReadColumeSetTitle($action){
-    $startStr=''; $endStr=''; $Style=''; $title=''; $valueStr=''; $MoreClass=''; $MoreUrl=''; $MoreStr=''; $aStr ='';
+    $startStr=''; $endStr=''; $Style=''; $title=''; $valueStr=''; $MoreClass=''; $MoreUrl=''; $MoreStr=''; $aStr='';$c='';
     $action= handleInModule($action, 'start');
     $Style= RParam($action, 'style');
     $title= RParam($action, 'Title');
@@ -120,16 +120,17 @@ function XY_ReadColumeSetTitle($action){
     $MoreUrl= AspTrim(RParam($action, 'MoreUrl'));
     $MoreStr= RParam($action, 'MoreStr');
     $valueStr= handleInModule($valueStr, 'end');
-    $XY_ReadColumeSetTitle= readColumeSetTitle($action, $Style, $title, $valueStr);
+    $c= readColumeSetTitle($action, $Style, $title, $valueStr);
 
     if( $MoreClass== '' ){ $MoreClass= 'more' ;}//More链接为空 则用默认代替
     //If MoreUrl="" Then MoreUrl="#"                    'More链接网址为空 则用默认#代替
     //More链接样式不能为空，因为没有样式它就不能让More在最近边
-    if( $MoreUrl <> '' && $MoreStr <> '' ){
+    if( $MoreUrl <> '' && $MoreStr <> '' ){ 
         //AStr = "<a href='"& MoreUrl &"' class='"& MoreClass &"'>"& MoreStr &"</a>"
         $aStr= '<a ' . AHref($MoreUrl, $title, '') . ' class=\'' . $MoreClass . '\'>' . $MoreStr . '</a>';
-        $XY_ReadColumeSetTitle= Replace(XY_ReadColumeSetTitle, '<!--#AMore#-->', $aStr);
+        $c= Replace($c, '<!--#AMore#-->', $aStr);
     }
+    $XY_ReadColumeSetTitle=$c;
     return @$XY_ReadColumeSetTitle;
 }
 
@@ -197,7 +198,7 @@ function readColumeSetTitle($action, $id, $ColumeTitle, $ColumeContent){
 function readColumn($id){
     $templateFilePath=''; $startStr=''; $endStr=''; $s ='';
     //Call Echo("WebTemplate",WebTemplate)
-    $templateFilePath= $GLOBALS['WebTemplate'] . '\\Template_Left.html';
+    $templateFilePath= $GLOBALS['webTemplate'] . '\\Template_Left.html';
     $startStr= '/*columnlist' . $id . 'Start*/';
     $endStr= '/*columnlist' . $id . 'End*/';
     $s= readTemplateFileModular($templateFilePath, $startStr, $endStr);
@@ -212,7 +213,7 @@ function readColumn($id){
 //读模板素材
 function readTemplateSource($id){
     $templateFilePath=''; $startStr=''; $endStr=''; $s ='';
-    $templateFilePath= $GLOBALS['WebTemplate'] . '\\TemplateSource.html';
+    $templateFilePath= $GLOBALS['webTemplate'] . '\\TemplateSource.html';
     $startStr= '<!--#sourceHtml' . $id . 'Start#-->';
     $endStr= '<!--#sourceHtml' . $id . 'End#-->';
     $s= readTemplateFileModular($templateFilePath, $startStr, $endStr);
@@ -269,7 +270,7 @@ function readArticleListStyleSource($id){
     $filePath ='';
     $filePath= getWebImages() . '\\文章展示样式\\' . $id;
     if( checkFile($filePath)== false ){
-        $filePath= $GLOBALS['WebTemplate'] . '\\Resources\\' . $id;
+        $filePath= $GLOBALS['webTemplate'] . '\\Resources\\' . $id;
     }
     //call echo(checkfile(filePath),filePath)
     $readArticleListStyleSource= readTemplateFileSource($filePath, $id);
@@ -281,10 +282,11 @@ function readArticleInfoStyleSource($id){
     $filePath ='';
     $filePath= getWebImages() . '\\文章信息展示样式\\' . $id;
     if( checkFile($filePath)== false ){
-        $filePath= $GLOBALS['WebTemplate'] . '\\Resources\\' . $id;
+        $filePath= $GLOBALS['webTemplate'] . '\\Resources\\' . $id;
     }
     $readArticleInfoStyleSource= readTemplateFileSource($filePath, $id);
     return @$readArticleInfoStyleSource;
 }
+
 
 ?>

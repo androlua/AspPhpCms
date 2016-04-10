@@ -275,12 +275,12 @@ function mathRandom(){
 
 //获得指定位数随机A到Z字符
 function getRndAZ($nCount){
-    $ZD=''; $i=''; $s=''; $c ='';
-    $c= '' ; $ZD= '';
+    $zd=''; $i=''; $s=''; $c ='';
+    $c= '' ; $zd= '';
 
-    $ZD= 'abcdefghijklmnopqrstuvwxyz' . strtoupper($ZD);
+    $zd= 'abcdefghijklmnopqrstuvwxyz' . strtoupper($zd);
     for( $i= 1 ; $i<= $nCount; $i++){
-        $s= mid($ZD, pHPRnd(1, strlen($ZD)), 1);
+        $s= mid($zd, pHPRnd(1, strlen($zd)), 1);
         $c= $c . $s;
     }
     $getRndAZ= $c;
@@ -697,7 +697,7 @@ function toString( $arr){
         $tmp ='';
         $tmp= Join($arr, ',');
         $toString= $tmp;
-    }else{
+        $GLOBALS['Else'];
         $toString= $arr;
     }
     return @$toString;

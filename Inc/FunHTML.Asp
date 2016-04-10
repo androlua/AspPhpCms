@@ -29,14 +29,14 @@ Function imgError()
     imgError = " onerror=""this.src='/UploadFiles/NoImg.jpg'""" 
 End Function 
 '获得target样式
-Function targetStr(ByVal SType)
-    If SType <> "" Then
-        targetStr = " target='" & SType & "'" 
+Function targetStr(ByVal sType)
+    If sType <> "" Then
+        targetStr = " target='" & sType & "'" 
     End If 
 End Function 
 '打开方式  (辅助)
-Function aTarget(SType)
-    aTarget = targetStr(SType) 
+Function aTarget(sType)
+    aTarget = targetStr(sType) 
 End Function 
 '获得链接Title样式
 Function aTitle(ByVal title)
@@ -57,8 +57,8 @@ Function imgTitleAlt(ByVal str)
     End If 
 End Function 
 '获得A Rel值
-Function aRel(ByVal SType)
-    If SType = True Then
+Function aRel(ByVal sType)
+    If sType = True Then
         aRel = " rel='nofollow'" 
     End If 
 End Function 
@@ -88,33 +88,33 @@ Function fontColorFontB(title, FontB, FontColor)
 End Function 
 '获得默认文章信息文件名称
 Function getDefaultFileName()
-    getDefaultFileName = Format_Time(Now(), 6) 
+    getDefaultFileName = format_Time(Now(), 6) 
 End Function 
 '获得链接  例：'"<a " & AHref(Url, TempRs("BigClassName"), TempRs("Target")) & ">" & TempRs("BigClassName") & "</a>"
-Function aHref(url, title, Target)
-    url = HandleHttpUrl(url)                                                        '处理一下URL 让之完整
-    aHref = "href='" & url & "'" & aTitle(title) & aTarget(Target) 
+Function aHref(url, title, target)
+    url = handleHttpUrl(url)                                                        '处理一下URL 让之完整
+    aHref = "href='" & url & "'" & aTitle(title) & aTarget(target) 
 End Function 
 '获得图片路径
-Function imgSrc(url, title, Target)
-    url = HandleHttpUrl(url)                                                        '处理一下URL 让之完整
-    imgSrc = "src='" & url & "'" & aTitle(title) & imgAlt(title) & aTarget(Target) 
+Function imgSrc(url, title, target)
+    url = handleHttpUrl(url)                                                        '处理一下URL 让之完整
+    imgSrc = "src='" & url & "'" & aTitle(title) & imgAlt(title) & aTarget(target) 
 End Function 
 
 '============== 网站后台使用 ==================
 
 '选择Target打开方式
-Function selectTarget(Target)
+Function selectTarget(target)
     Dim c, sel 
     c = c & "<select name=""Target"" id=""Target"">" & vbCrLf 
     c = c & "  <option value=''>链接打开方式</option>" & vbCrLf 
-    If Target = "" Then sel = " selected" Else sel = "" 
+    If target = "" Then sel = " selected" Else sel = "" 
     c = c & "  <option" & sel & " value=''>本页打开</option>" & vbCrLf 
-    If Target = "_blank" Then sel = " selected" Else sel = "" 
+    If target = "_blank" Then sel = " selected" Else sel = "" 
     c = c & "  <option value=""_blank""" & sel & ">新页打开</option>" & vbCrLf 
-    If Target = "Index" Then sel = " selected" Else sel = "" 
+    If target = "Index" Then sel = " selected" Else sel = "" 
     c = c & "  <option value=""Index""" & sel & ">Index页打开</option>" & vbCrLf 
-    If Target = "Main" Then sel = " selected" Else sel = "" 
+    If target = "Main" Then sel = " selected" Else sel = "" 
     c = c & "  <option value=""Main""" & sel & ">Main页打开</option>" & vbCrLf 
     c = c & "</select>" & vbCrLf 
     selectTarget = c 
@@ -176,11 +176,11 @@ End Function
 
 '显示文章展示列表样式 20150114   例 Call Rw(ShowArticleListStyle("下载列表二.html"))
 Function showArticleListStyle(ByVal ThisValue)
-    showArticleListStyle = HandleArticleListStyleOrInfoStyle("文章展示样式", "ArticleListStyle", ThisValue) 
+    showArticleListStyle = handleArticleListStyleOrInfoStyle("文章展示样式", "ArticleListStyle", ThisValue) 
 End Function 
 '显示文章信息展示样式 20150114   例 Call Rw(ShowArticleInfoStyle("下载列表二.html"))
 Function showArticleInfoStyle(ByVal ThisValue)
-    showArticleInfoStyle = HandleArticleListStyleOrInfoStyle("文章信息展示样式", "ArticleInfoStyle", ThisValue) 
+    showArticleInfoStyle = handleArticleListStyleOrInfoStyle("文章信息展示样式", "ArticleInfoStyle", ThisValue) 
 End Function 
 '处理文章展示列表样式和文章信息样式
 Function handleArticleListStyleOrInfoStyle(folderName, InputName, ByVal ThisValue)
@@ -189,7 +189,7 @@ Function handleArticleListStyleOrInfoStyle(folderName, InputName, ByVal ThisValu
 
     ResourceDir = getWebImages() & "\" & folderName & "\" 
 
-    content = GetFileFolderList(ResourceDir, True, "html", "名称", "", "", "") 
+    content = getFileFolderList(ResourceDir, True, "html", "名称", "", "", "") 
 
     ThisValue = LCase(ThisValue)                                                    '转成小写 好对比
 
@@ -212,7 +212,7 @@ Function showWebModuleSkins(InputName, ByVal ThisValue)
     Dim ResourceDir, content, c, splStr, fileName, sel 
     ResourceDir = getWebSkins() & "\Index\column" 
     'Call Echo("ResourceDir",ResourceDir)
-    content = GetDirFolderNameList(ResourceDir) 
+    content = getDirFolderNameList(ResourceDir) 
     'Call Echo("Content",Content)
 
     ThisValue = LCase(ThisValue)                                                    '转成小写 好对比
@@ -248,28 +248,28 @@ Function showRadioList(IDName, content, SplType, ThisValue)
 End Function 
 '显示Input复选 InputCheckBox("Id",ID,"")
 Function inputCheckBox(textName, checked, helpStr)
-    'Dim sel 
-    'If CStr(valueStr) = "True" Or CStr(checked) = "1" Then sel = " checked" Else sel = "" 
-    'inputCheckBox = "<input type='checkbox' name='" & textName & "' id='" & textName & "'" & sel & " value='1'>" 
-    'If helpStr <> "" Then inputCheckBox = "<label for='" & textName & "'>" & inputCheckBox & helpStr & "</label> " 
-	inputCheckBox=handleInputCheckBox(textName, checked, 1, helpStr,"")   
-End Function  
+    'Dim sel
+    'If CStr(valueStr) = "True" Or CStr(checked) = "1" Then sel = " checked" Else sel = ""
+    'inputCheckBox = "<input type='checkbox' name='" & textName & "' id='" & textName & "'" & sel & " value='1'>"
+    'If helpStr <> "" Then inputCheckBox = "<label for='" & textName & "'>" & inputCheckBox & helpStr & "</label> "
+    inputCheckBox = handleInputCheckBox(textName, checked, 1, helpStr, "") 
+End Function 
 '显示Input复选 InputCheckBox("Id",ID,"")
 Function inputCheckBox3(textName, checked, valueStr, helpStr)
-   inputCheckBox3=handleInputCheckBox(textName, checked, valueStr, helpStr,"newidname")    
-End Function
-Function handleInputCheckBox(textName, checked, valueStr, helpStr,sType)
-	dim s,sel,idName
+    inputCheckBox3 = handleInputCheckBox(textName, checked, valueStr, helpStr, "newidname") 
+End Function 
+Function handleInputCheckBox(textName, checked, valueStr, helpStr, sType)
+    Dim s, sel, idName 
     If CStr(valueStr) = "True" Or CStr(checked) = "1" Then sel = " checked" Else sel = "" 
-	idName=textName			'id名等于文件名称
-	sType="|"& sType &"|"
-	if instr(sType,"|newidname|")>0 then
-	    idName = textName & phprand(1, 9999)
-	end if
-	s="<input type='checkbox' name='" & textName & "' id='" & idName & "'" & sel & " value='" & valueStr & "'>" 
-	If helpStr <> "" Then s = "<label for='" & idName & "'>" & s & helpStr & "</label> " 
-	handleInputCheckBox=s
-end function
+    idName = textName                                                               'id名等于文件名称
+    sType = "|" & sType & "|" 
+    If InStr(sType, "|newidname|") > 0 Then
+        idName = textName & phprand(1, 9999) 
+    End If 
+    s = "<input type='checkbox' name='" & textName & "' id='" & idName & "'" & sel & " value='" & valueStr & "'>" 
+    If helpStr <> "" Then s = "<label for='" & idName & "'>" & s & helpStr & "</label> " 
+    handleInputCheckBox = s 
+End Function 
 
 '显示Input文本  InputText("FolderName", FolderName, "40px", "帮助文字")
 Function inputText(textName, valueStr, width, helpStr)
@@ -282,7 +282,7 @@ Function inputText(textName, valueStr, width, helpStr)
         End If 
         Css = " style='width:" & width & ";'" 
     End If 
-    inputText = "<input name=""" & textName & """ type=""text"" id=""" & textName & """ value=""" & valueStr & """" & Css & " />" & helpStr
+    inputText = "<input name=""" & textName & """ type=""text"" id=""" & textName & """ value=""" & valueStr & """" & Css & " />" & helpStr 
 End Function 
 '显示Input文本  InputText("FolderName", FolderName, "40px", "帮助文字")
 Function inputText2(textName, valueStr, width, className, helpStr)
@@ -299,7 +299,7 @@ Function inputText2(textName, valueStr, width, className, helpStr)
         End If 
         Css = " style='width:" & width & ";'" 
     End If 
-    inputText2 = "<input name=""" & textName & """ type=""text"" id=""" & textName & """ value=""" & valueStr & """" & Css & className & " />" & helpStr
+    inputText2 = "<input name=""" & textName & """ type=""text"" id=""" & textName & """ value=""" & valueStr & """" & Css & className & " />" & helpStr 
 End Function 
 '显示Input文本在左边  InputLeftText(TextName, ValueStr, "98%", "")
 Function inputLeftText(textName, valueStr, width, helpStr)
@@ -323,18 +323,18 @@ Function inputLeftTextHelpTextRight(textName, valueStr, width, helpStr)
         End If 
         Css = " style='width:" & width & ";'" 
     End If 
-    inputLeftTextHelpTextRight = "<input name=""" & textName & """ type=""text"" id=""" & textName & """ value=""" & valueStr & """" & Css & " />" & helpStr
+    inputLeftTextHelpTextRight = "<input name=""" & textName & """ type=""text"" id=""" & textName & """ value=""" & valueStr & """" & Css & " />" & helpStr 
 End Function 
 '显示Input文本在中边 提示文本在左边
 Function inputLeftTextContent(textName, valueStr, width, helpStr)
-    inputLeftTextContent = HandleInputLeftRightTextContent("左边", textName, valueStr, width, helpStr) 
+    inputLeftTextContent = handleInputLeftRightTextContent("左边", textName, valueStr, width, helpStr) 
 End Function 
 '显示Input文本在中边 提示文本在右边
 Function inputRightTextContent(textName, valueStr, width, helpStr)
-    inputRightTextContent = HandleInputLeftRightTextContent("右边", textName, valueStr, width, helpStr) 
+    inputRightTextContent = handleInputLeftRightTextContent("右边", textName, valueStr, width, helpStr) 
 End Function 
 '显示Input文本在中边 提示文本在左边 或 提示文本在右边 20150114
-Function handleInputLeftRightTextContent(SType, textName, valueStr, width, helpStr)
+Function handleInputLeftRightTextContent(sType, textName, valueStr, width, helpStr)
     Dim Css 
     width = Trim(LCase(width)) 
     If width <> "" Then
@@ -350,10 +350,10 @@ Function handleInputLeftRightTextContent(SType, textName, valueStr, width, helpS
     End If 
     handleInputLeftRightTextContent = "<input name=""" & textName & """ type=""text"" id=""" & textName & """ value=""" & valueStr & """" & Css & " />" 
 
-    If SType = "左边" Then
+    If sType = "左边" Then
         handleInputLeftRightTextContent = helpStr & handleInputLeftRightTextContent & vbCrLf 
     Else
-        handleInputLeftRightTextContent = handleInputLeftRightTextContent & helpStr
+        handleInputLeftRightTextContent = handleInputLeftRightTextContent & helpStr 
     End If 
 
 End Function 
@@ -402,7 +402,7 @@ Function inputTextArea(textName, valueStr, width, height, helpStr)
         Css = " style='width:" & width & ";'" 
     End If 
     If height <> "" Then
-        If CheckNumber(height) Then                                                     '自动加个px像素
+        If checkNumber(height) Then                                                     '自动加个px像素
             height = height & "px" 
         End If 
         HeightStr = "height:" & height & ";" 
@@ -413,7 +413,7 @@ Function inputTextArea(textName, valueStr, width, height, helpStr)
         End If 
     End If 
     Css = Replace(Css, ";;", ";")                                                   '去掉多余的值
-    inputTextArea = "<textarea name=""" & textName & """ type=""text"" id=""" & textName & """" & Css & ">" & valueStr & "</textarea>" & helpStr
+    inputTextArea = "<textarea name=""" & textName & """ type=""text"" id=""" & textName & """" & Css & ">" & valueStr & "</textarea>" & helpStr 
 End Function 
 '显示隐藏Input文本域 InputTextArea("WebDescription", WebDescription, "99%", "100px", "")
 Function inputHiddenTextArea(textName, valueStr, width, height, helpStr)
@@ -434,12 +434,12 @@ Function handleInputHiddenTextArea(textName, valueStr, width, height, className,
             Css = " style='height:" & height & ";display:none;'" 
         End If 
     End If 
-    handleInputHiddenTextArea = "<textarea name=""" & textName & """ type=""text"" id=""" & textName & """" & Css & className & ">" & valueStr & "</textarea>" & helpStr
+    handleInputHiddenTextArea = "<textarea name=""" & textName & """ type=""text"" id=""" & textName & """" & Css & className & ">" & valueStr & "</textarea>" & helpStr 
 End Function 
 '显示目录列表 以Select方式显示
 Function showSelectDirList(folderPath, valueStr)
     Dim splStr, c, fileName, sel 
-    splStr = Split(GetDirFileSort(folderPath), vbCrLf) 
+    splStr = Split(getDirFileSort(folderPath), vbCrLf) 
     For Each fileName In splStr
         If fileName <> "" Then
             sel = IIF(valueStr = fileName, " selected", "") 
@@ -455,16 +455,16 @@ End Function
 
 '给Input加个rel关系内容
 Function inputAddAlt(ByVal content, AltStr)
-    Dim SearchStr, ReplaceStr 
+    Dim SearchStr, replaceStr 
     SearchStr = "<input " 
-    ReplaceStr = SearchStr & "alt=""" & AltStr & """ " 
+    replaceStr = SearchStr & "alt=""" & AltStr & """ " 
     If InStr(content, SearchStr) > 0 Then
-        content = Replace(content, SearchStr, ReplaceStr) 
+        content = Replace(content, SearchStr, replaceStr) 
     Else
         SearchStr = "<textarea " 
-        ReplaceStr = SearchStr & "alt=""" & AltStr & """ " 
+        replaceStr = SearchStr & "alt=""" & AltStr & """ " 
         If InStr(content, SearchStr) > 0 Then
-            content = Replace(content, SearchStr, ReplaceStr) 
+            content = Replace(content, SearchStr, replaceStr) 
         End If 
     End If 
     inputAddAlt = content 
@@ -533,30 +533,30 @@ Function showRecommend(Recommend)
     showRecommend = inputCheckBox("Recommend", Recommend, "推荐") 
 End Function 
 '显示开户与关闭图片
-Function showOnOffImg(id, Table, FieldName, Recommend, url)
-    Dim temp, Img, AUrl 
-    If Rq("page") <> "" Then temp = "&page=" & Rq("page") Else temp = "" 
+Function showOnOffImg(id, Table, fieldName, Recommend, url)
+    Dim temp, Img, aUrl 
+    If rq("page") <> "" Then temp = "&page=" & rq("page") Else temp = "" 
     If Recommend = True Then
-        Img = "<img src="""& adminDir &"Images/yes.gif"">" 
+        Img = "<img src=""" & adminDir & "Images/yes.gif"">" 
     Else
-        Img = "<img src="""& adminDir &"Images/webno.gif"">" 
+        Img = "<img src=""" & adminDir & "Images/webno.gif"">" 
     End If 
     'Call Echo(GetUrl(),""& adminDir &"HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id)
-    AUrl = GetUrlAddToParam(GetUrl(), ""& adminDir &"HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & url & "&Id=" & id, "replace") 
-    showOnOffImg = "<a href=""" & AUrl & """>" & Img & "</a>" 
+    aUrl = getUrlAddToParam(getUrl(), "" & adminDir & "HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & fieldName & "&Url=" & url & "&Id=" & id, "replace") 
+    showOnOffImg = "<a href=""" & aUrl & """>" & Img & "</a>" 
     '旧版
 'ShowOnOffImg = "<a href="& adminDir &"HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id & Temp & ">" & Img & "</a>"
 End Function 
 '显示开户与关闭图片
-Function newShowOnOffImg(id, Table, FieldName, Recommend, url)
+Function newShowOnOffImg(id, Table, fieldName, Recommend, url)
     Dim temp, Img 
-    If Rq("page") <> "" Then temp = "&page=" & Rq("page") Else temp = "" 
+    If rq("page") <> "" Then temp = "&page=" & rq("page") Else temp = "" 
     If Recommend = 1 Then
         Img = "<img src=""/Images/yes.gif"">" 
     Else
         Img = "<img src=""/Images/webno.gif"">" 
     End If 
-    newShowOnOffImg = "<a href=/WebAdmin/ZAction.Asp?act=Through&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & url & "&Id=" & id & temp & ">" & Img & "</a>" 
+    newShowOnOffImg = "<a href=/WebAdmin/ZAction.Asp?act=Through&Table=" & Table & "&FieldName=" & fieldName & "&Url=" & url & "&Id=" & id & temp & ">" & Img & "</a>" 
 End Function 
 
 
@@ -593,18 +593,15 @@ End Function
 
 
 '删除里暂存代码
-function batchDeleteTempStr(content,startStr,endStr)
-	dim i,s
-	for i = 1 to 9
-		if instr(content,startStr)=false then
-			exit for
-		end if
-		s=getStrCut(content,startStr,endStr,1)
-		content=replace(content,s,"")		
-	next
-	batchDeleteTempStr=content
-end function
-%>      
-
-
-
+Function batchDeleteTempStr(content, startStr, endStr)
+    Dim i, s 
+    For i = 1 To 9
+        If InStr(content, startStr) = False Then
+            Exit For 
+        End If 
+        s = getStrCut(content, startStr, endStr, 1) 
+        content = Replace(content, s, "") 
+    Next 
+    batchDeleteTempStr = content 
+End Function 
+%>    

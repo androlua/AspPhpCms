@@ -578,7 +578,7 @@ Github主页：http://313801120.github.io/sharembweb/<br>
 感谢您对我们的关注!您若在使用的过程中遇到了问题，或者您希望给我们提出一些意见或建议，非常欢迎您在这里提交给我们。我们每天都在倾听来自用户的声音，您的支持是我们前进的动力。
 </div>
 
-<form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=feedback&itemid=[$glb_Id$]" target="_blank" onSubmit="return formcommentSubmit()">
+<form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=feedback&columnid=[$glb_columnId$]" target="_blank" onSubmit="return formcommentSubmit()">
 姓名：<br><input type="text" name="guestname" id="guestname" style="width:98%;margin:6px 0" class="inputstyle" /><br>
 QQ：<br><input type="text" name="qq" id="qq" style="width:98%;margin:6px 0" class="inputstyle" /><br>
 电话：<br><input type="text" name="tel" id="tel" style="width:98%;margin:6px 0" class="inputstyle" /><br>

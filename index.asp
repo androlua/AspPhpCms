@@ -202,6 +202,8 @@ Function XY_DisplayWebColumn(action)
     End If 
     If isConcise = True Then c = c & CopyStr(" ", 4) & "<li class=left></li>" & vbCrLf 
     For i = 1 To rs.RecordCount
+		
+        '【PHP】$rs=mysql_fetch_array($rsObj);                                            //给PHP用，因为在 asptophp转换不完善
         url=getColumnUrl(rs("columnname"), "name") 
         If rs("columnName") = glb_columnName Then
             If focusType = "a" Then
@@ -484,7 +486,7 @@ Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameL
 			
         Next 
         '文章列表加在线编辑
-        url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
+        url =WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
         s = handleDisplayOnlineEditDialog(url, s, "", "div|li|span") 
 
         c = c & s 
@@ -709,7 +711,7 @@ Function makeWebHtml(action)
             If Request("gl") = "edit" Then
                 glb_bodyContent = "<span>" & glb_bodyContent & "</span>" 
             End If 
-            url = "/admin/1.asp?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=" & glb_columnId & "&n=" & getRnd(11) 
+            url = WEB_ADMINURL & "?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=" & glb_columnId & "&n=" & getRnd(11) 
             glb_bodyContent = handleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
 
         End If 
@@ -760,7 +762,7 @@ Function makeWebHtml(action)
             If Request("gl") = "edit" Then
                 glb_bodyContent = "<span>" & glb_bodyContent & "</span>" 
             End If 
-            url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & RParam(action, "id") & "&n=" & getRnd(11) 
+            url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & RParam(action, "id") & "&n=" & getRnd(11) 
             glb_bodyContent = handleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
 
             If templateName = "" Then
@@ -802,7 +804,7 @@ Function makeWebHtml(action)
             If Request("gl") = "edit" Then
                 glb_bodyContent = "<span>" & glb_bodyContent & "</span>" 
             End If 
-            url = "/admin/1.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & RParam(action, "id") & "&n=" & getRnd(11) 
+            url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & RParam(action, "id") & "&n=" & getRnd(11) 
             glb_bodyContent = handleDisplayOnlineEditDialog(url, glb_bodyContent, "", "span") 
 
 

@@ -39,6 +39,8 @@ require_once './phpInc/IE.php';
 require_once './phpInc/html.php';
 require_once './phpInc/2016_Log.php'; 
 require_once './phpInc/SystemInfo.php'; 
+require_once './phpInc/2014_Template.php'; 
+require_once './phpInc/FunHTML.php';  
 require_once './phpInc/admin_setAccess.php';
 require_once './phpInc/admin_function.php';
 require_once './phpInc/config.php';
@@ -93,7 +95,7 @@ function handleAction($content){
                 $action= XY_getLableValue($action);
                 //标题在搜索引擎里列表
             }else if( checkFunValue($action, 'TitleInSearchEngineList ')== true ){
-                $action= $GLOBALS['XY_TitleInSearchEngineList'][$action];
+                $action= XY_TitleInSearchEngineList($action);
 
                 //加载文件
             }else if( checkFunValue($action, 'Include ')== true ){
@@ -112,7 +114,7 @@ function handleAction($content){
                 $action= XY_AP_SearchStatList($action);
                 //友情链接列表
             }else if( checkFunValue($action, 'Links ')== true ){
-                $action= $GLOBALS['XY_AP_Links'][$action];
+                $action= XY_AP_Links($action);
 
 
                 //显示单页内容
@@ -182,11 +184,11 @@ function handleAction($content){
 
                 //URL加密
             }else if( CheckFunValue($action, 'escape ')==true ){
-                $action= $GLOBALS['XY_escape'][$action];
+                $action= XY_escape($action);
 
                 //URL解密
             }else if( CheckFunValue($action, 'unescape ')==true ){
-                $action= $GLOBALS['XY_unescape'][$action];
+                $action= XY_unescape($action);
 
                 //
 
@@ -249,6 +251,8 @@ function XY_DisplayWebColumn($action){
     }
     if( $isConcise== true ){ $c= $c . CopyStr(' ', 4) . '<li class=left></li>' . vbCrlf() ;}
     for( $i= 1 ; $i<= @mysql_num_rows($rsObj); $i++){
+
+        $rs=mysql_fetch_array($rsObj); //给PHP用，因为在 asptophp转换不完善
         $url=getColumnUrl($rs['columnname'], 'name');
         if( $rs['columnname']== $GLOBALS['glb_columnName'] ){
             if( $focusType== 'a' ){
@@ -536,7 +540,7 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
 
         }
         //文章列表加在线编辑
-        $url= '/admin/index.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11);
+        $url=WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11);
         $s= handleDisplayOnlineEditDialog($url, $s, '', 'div|li|span');
 
         $c= $c . $s;
@@ -764,7 +768,7 @@ function makeWebHtml($action){
             if( @$_REQUEST['gl']== 'edit' ){
                 $GLOBALS['glb_bodyContent']= '<span>' . $GLOBALS['glb_bodyContent'] . '</span>';
             }
-            $url= '/admin/index.asp?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=' . $GLOBALS['glb_columnId'] . '&n=' . getRnd(11);
+            $url= WEB_ADMINURL . '?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=' . $GLOBALS['glb_columnId'] . '&n=' . getRnd(11);
             $GLOBALS['glb_bodyContent']= handleDisplayOnlineEditDialog($url, $GLOBALS['glb_bodyContent'], '', 'span');
 
         }
@@ -816,7 +820,7 @@ function makeWebHtml($action){
             if( @$_REQUEST['gl']== 'edit' ){
                 $GLOBALS['glb_bodyContent']= '<span>' . $GLOBALS['glb_bodyContent'] . '</span>';
             }
-            $url= '/admin/index.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . RParam($action, 'id') . '&n=' . getRnd(11);
+            $url= WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . RParam($action, 'id') . '&n=' . getRnd(11);
             $GLOBALS['glb_bodyContent']= handleDisplayOnlineEditDialog($url, $GLOBALS['glb_bodyContent'], '', 'span');
 
             if( $GLOBALS['templateName']== '' ){
@@ -859,7 +863,7 @@ function makeWebHtml($action){
             if( @$_REQUEST['gl']== 'edit' ){
                 $GLOBALS['glb_bodyContent']= '<span>' . $GLOBALS['glb_bodyContent'] . '</span>';
             }
-            $url= '/admin/index.asp?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . RParam($action, 'id') . '&n=' . getRnd(11);
+            $url= WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . RParam($action, 'id') . '&n=' . getRnd(11);
             $GLOBALS['glb_bodyContent']= handleDisplayOnlineEditDialog($url, $GLOBALS['glb_bodyContent'], '', 'span');
 
 

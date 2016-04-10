@@ -375,24 +375,29 @@ function getYMDHMS( $timeStr,$sType){
 
 
 
-//ASP清除两边空格
+//ASP清除两边空格 改进于20160410
 function AspTrim($content){
-    $i="";$s="";
+	$nLeft=1;$nRight=0; 
 	for( $i=1 ; $i<= len($content); $i++){
 		$s=mid($content,$i,1);
-		if( $s<>" " ){
-			$content=mid($content,$i,-1);
+		if( $s==' ' ){
+			$nLeft++;
+		}else{ 
 			 break;
 		 }
 	}
 	for( $i=len($content) ; $i>=1; $i--){
 		$s=mid($content,$i,1);
-		if( $s<>" " ){
-			$content=mid($content,1,$i);
+		if( $s==' ' ){
+			$nRight--;
+		}else{
 			 break;
-		 }
+		}
 	}
-	return @$content;
+	if($nRight==0){
+		$nRight=-1;
+	}
+	return mid($content,$nLeft,$nRight); 
 }
 //清除左边
 function AspLTrim($content){

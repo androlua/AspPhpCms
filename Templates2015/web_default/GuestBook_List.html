@@ -123,14 +123,32 @@
 <R#读出内容BlockName详细内容 end#>
 
 <R#读出内容BlockName留言 start#>
-    <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=guestbook&itemid=[$glb_Id$]" target="_blank" onSubmit="return formSubmit()">
+    <form class="comment" name="formmessage" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=guestbook&columnid=[$glb_columnId$]" target="_blank" onSubmit="return formmessageSubmit()">
     姓名：<br><input type="text" name="guestname" id="guestname" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     QQ：<br><input type="text" name="qq" id="qq" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     电话：<br><input type="text" name="tel" id="tel" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     地址：<br><input type="text" name="address" id="address" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     内容：<textarea name="bodycontent" placeholder="我也来说两句..." class="inputstyle"></textarea>
     <input type="submit" class="mybtn" value="提交留言"></form>
-
+<script type="text/javascript">
+function formmessageSubmit(){
+	if(formmessage.guestname.value==''){
+		formmessage.guestname.focus();
+		alert('姓名不能为空');
+		return false;
+	}
+	if(formmessage.tel.value==''){
+		formmessage.tel.focus();
+		alert('电话不能为空');
+		return false;
+	}
+	if(formmessage.bodycontent.value==''){
+		formmessage.bodycontent.focus();
+		alert('留言内容不能为空');
+		return false;
+	}
+}
+</script>
 
 <R#读出内容BlockName留言 end#>
 

@@ -245,7 +245,7 @@ function getColumnBodyContent($columnID){
 //网站统计2014
 function webStat($folderPath){
     $dateTime=''; $content=''; $splStr ='';
-    $thisUrl=''; $goToUrl=''; $caiShu=''; $c=''; $fileName=''; $co=''; $IE=''; $XP ='';
+    $thisUrl=''; $goToUrl=''; $caiShu=''; $c=''; $fileName=''; $co=''; $ie=''; $xp ='';
     $goToUrl= ServerVariables('HTTP_REFERER');
     $thisUrl= 'http://' . ServerVariables('HTTP_HOST') . ServerVariables('SCRIPT_NAME');
     $caiShu= ServerVariables('QUERY_STRING');
@@ -263,8 +263,8 @@ function webStat($folderPath){
     $content= Replace($content, 'NT 5.2', '2003');
 
     $splStr= aspSplit($content . ';;;;', ';');
-    $IE= $splStr[1];
-    $XP= AspTrim($splStr[2]);
+    $ie= $splStr[1];
+    $xp= AspTrim($splStr[2]);
     if( substr($XP, - 1)== ')' ){ $XP= mid($XP, 1, strlen($XP) - 1) ;}
     $c= '来访' . $goToUrl . vbCrlf();
     $c= $c . '当前：' . $thisUrl . vbCrlf();
@@ -272,7 +272,7 @@ function webStat($folderPath){
     $c= $c . 'IP:' . getIP() . vbCrlf();
     $c= $c . 'IE:' . getBrType('') . vbCrlf();
     $c= $c . 'Cookies=' . $co . vbCrlf();
-    $c= $c . 'XP=' . $XP . vbCrlf();
+    $c= $c . 'XP=' . $xp . vbCrlf();
     $c= $c . 'Screen=' . @$_REQUEST['screen'] . vbCrlf(); //屏幕分辨率
     $c= $c . '用户信息=' . ServerVariables('HTTP_USER_AGENT') . vbCrlf(); //用户信息
 

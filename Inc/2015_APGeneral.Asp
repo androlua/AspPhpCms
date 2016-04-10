@@ -221,7 +221,7 @@ End Function
 '网站统计2014
 Function webStat(folderPath)
     Dim dateTime, content, splStr 
-    Dim thisUrl, goToUrl, caiShu, c, fileName, co, IE, XP 
+    Dim thisUrl, goToUrl, caiShu, c, fileName, co, ie, xp 
     goToUrl = Request.ServerVariables("HTTP_REFERER") 
     thisUrl = "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") 
     caiShu = Request.ServerVariables("QUERY_STRING") 
@@ -239,8 +239,8 @@ Function webStat(folderPath)
     content = Replace(content, "NT 5.2", "2003") 
 
     splStr = Split(content & ";;;;", ";") 
-    IE = splStr(1) 
-    XP = Trim(splStr(2)) 
+    ie = splStr(1) 
+    xp = Trim(splStr(2)) 
     If Right(XP, 1) = ")" Then XP = Mid(XP, 1, Len(XP) - 1) 
     c = "来访" & goToUrl & vbCrLf 
     c = c & "当前：" & thisUrl & vbCrLf 
@@ -248,7 +248,7 @@ Function webStat(folderPath)
     c = c & "IP:" & getIP() & vbCrLf 
     c = c & "IE:" & getBrType("") & vbCrLf 
     c = c & "Cookies=" & co & vbCrLf 
-    c = c & "XP=" & XP & vbCrLf 
+    c = c & "XP=" & xp & vbCrLf 
     c = c & "Screen=" & Request("screen") & vbCrLf                                  '屏幕分辨率
     c = c & "用户信息=" & Request.ServerVariables("HTTP_USER_AGENT") & vbCrLf       '用户信息
 

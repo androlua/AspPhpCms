@@ -84,7 +84,7 @@ background:blue;/*Firefox背景变蓝色*/
 *background:black;/*IE7背景变黑色*/  
 _background:orange;/*IE6背景变橘色*/  
 } 
-【说明】：IE7和IE6都可以辨识「*」(米字号)，但IE6可以辨识「_」(底线)，IE7却无法辨识，透过IE7无法读取「_」的特性就能轻鬆区隔IE6和IE7之间的差异。
+【说明】：IE7和IE6都可以辨识「*」(米字号)，但IE6可以辨识「_」(底线)，IE7却无法辨识，透过IE7无法读取「_」的特性就能轻松区隔IE6和IE7之间的差异。
 
 7、区别IE6、IE7(方法2)
 【区别符号】：“!important”

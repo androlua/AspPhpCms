@@ -31,15 +31,15 @@ function imgError(){
     return @$imgError;
 }
 //获得target样式
-function targetStr( $SType){
-    if( $SType <> '' ){
-        $targetStr= ' target=\'' . $SType . '\'';
+function targetStr( $sType){
+    if( $sType <> '' ){
+        $targetStr= ' target=\'' . $sType . '\'';
     }
     return @$targetStr;
 }
 //打开方式  (辅助)
-function aTarget($SType){
-    $aTarget= targetStr($SType);
+function aTarget($sType){
+    $aTarget= targetStr($sType);
     return @$aTarget;
 }
 //获得链接Title样式
@@ -64,8 +64,8 @@ function imgTitleAlt( $str){
     return @$imgTitleAlt;
 }
 //获得A Rel值
-function aRel( $SType){
-    if( $SType== true ){
+function aRel( $sType){
+    if( $sType== true ){
         $aRel= ' rel=\'nofollow\'';
     }
     return @$aRel;
@@ -100,36 +100,36 @@ function fontColorFontB($title, $FontB, $FontColor){
 }
 //获得默认文章信息文件名称
 function getDefaultFileName(){
-    $getDefaultFileName= Format_Time(Now(), 6);
+    $getDefaultFileName= format_Time(Now(), 6);
     return @$getDefaultFileName;
 }
 //获得链接  例：'"<a " & AHref(Url, TempRs("BigClassName"), TempRs("Target")) & ">" & TempRs("BigClassName") & "</a>"
-function aHref($url, $title, $Target){
-    $url= HandleHttpUrl($url); //处理一下URL 让之完整
-    $aHref= 'href=\'' . $url . '\'' . aTitle($title) . aTarget($Target);
+function aHref($url, $title, $target){
+    $url= handleHttpUrl($url); //处理一下URL 让之完整
+    $aHref= 'href=\'' . $url . '\'' . aTitle($title) . aTarget($target);
     return @$aHref;
 }
 //获得图片路径
-function imgSrc($url, $title, $Target){
-    $url= HandleHttpUrl($url); //处理一下URL 让之完整
-    $imgSrc= 'src=\'' . $url . '\'' . aTitle($title) . imgAlt($title) . aTarget($Target);
+function imgSrc($url, $title, $target){
+    $url= handleHttpUrl($url); //处理一下URL 让之完整
+    $imgSrc= 'src=\'' . $url . '\'' . aTitle($title) . imgAlt($title) . aTarget($target);
     return @$imgSrc;
 }
 
 //============== 网站后台使用 ==================
 
 //选择Target打开方式
-function selectTarget($Target){
+function selectTarget($target){
     $c=''; $sel ='';
     $c= $c . '<select name="Target" id="Target">' . vbCrlf();
     $c= $c . '  <option value=\'\'>链接打开方式</option>' . vbCrlf();
-    if( $Target== '' ){ $sel= ' selected' ;}else{ $sel== '' ;}
+    if( $target== '' ){ $sel= ' selected' ;}else{ $sel== '' ;}
     $c= $c . '  <option' . $sel . ' value=\'\'>本页打开</option>' . vbCrlf();
-    if( $Target== '_blank' ){ $sel= ' selected' ;}else{ $sel== '' ;}
+    if( $target== '_blank' ){ $sel= ' selected' ;}else{ $sel== '' ;}
     $c= $c . '  <option value="_blank"' . $sel . '>新页打开</option>' . vbCrlf();
-    if( $Target== 'Index' ){ $sel= ' selected' ;}else{ $sel== '' ;}
+    if( $target== 'Index' ){ $sel= ' selected' ;}else{ $sel== '' ;}
     $c= $c . '  <option value="Index"' . $sel . '>Index页打开</option>' . vbCrlf();
-    if( $Target== 'Main' ){ $sel= ' selected' ;}else{ $sel== '' ;}
+    if( $target== 'Main' ){ $sel= ' selected' ;}else{ $sel== '' ;}
     $c= $c . '  <option value="Main"' . $sel . '>Main页打开</option>' . vbCrlf();
     $c= $c . '</select>' . vbCrlf();
     $selectTarget= $c;
@@ -196,12 +196,12 @@ function showSelectList($IDName, $content, $SplType, $ThisValue){
 
 //显示文章展示列表样式 20150114   例 Call Rw(ShowArticleListStyle("下载列表二.html"))
 function showArticleListStyle( $ThisValue){
-    $showArticleListStyle= HandleArticleListStyleOrInfoStyle('文章展示样式', 'ArticleListStyle', $ThisValue);
+    $showArticleListStyle= handleArticleListStyleOrInfoStyle('文章展示样式', 'ArticleListStyle', $ThisValue);
     return @$showArticleListStyle;
 }
 //显示文章信息展示样式 20150114   例 Call Rw(ShowArticleInfoStyle("下载列表二.html"))
 function showArticleInfoStyle( $ThisValue){
-    $showArticleInfoStyle= HandleArticleListStyleOrInfoStyle('文章信息展示样式', 'ArticleInfoStyle', $ThisValue);
+    $showArticleInfoStyle= handleArticleListStyleOrInfoStyle('文章信息展示样式', 'ArticleInfoStyle', $ThisValue);
     return @$showArticleInfoStyle;
 }
 //处理文章展示列表样式和文章信息样式
@@ -211,7 +211,7 @@ function handleArticleListStyleOrInfoStyle($folderName, $InputName, $ThisValue){
 
     $ResourceDir= getWebImages() . '\\' . $folderName . '\\';
 
-    $content= GetFileFolderList($ResourceDir, true, 'html', '名称', '', '', '');
+    $content= getFileFolderList($ResourceDir, true, 'html', '名称', '', '', '');
 
     $ThisValue= strtolower($ThisValue); //转成小写 好对比
 
@@ -235,7 +235,7 @@ function showWebModuleSkins($InputName, $ThisValue){
     $ResourceDir=''; $content=''; $c=''; $splStr=''; $fileName=''; $sel ='';
     $ResourceDir= getWebSkins() . '\\Index\\column';
     //Call Echo("ResourceDir",ResourceDir)
-    $content= GetDirFolderNameList($ResourceDir);
+    $content= getDirFolderNameList($ResourceDir);
     //Call Echo("Content",Content)
 
     $ThisValue= strtolower($ThisValue); //转成小写 好对比
@@ -277,25 +277,25 @@ function inputCheckBox($textName, $checked, $helpStr){
     //If CStr(valueStr) = "True" Or CStr(checked) = "1" Then sel = " checked" Else sel = ""
     //inputCheckBox = "<input type='checkbox' name='" & textName & "' id='" & textName & "'" & sel & " value='1'>"
     //If helpStr <> "" Then inputCheckBox = "<label for='" & textName & "'>" & inputCheckBox & helpStr & "</label> "
-    $inputCheckBox=handleInputCheckBox($textName, $checked, 1, $helpStr,'');
+    $inputCheckBox= handleInputCheckBox($textName, $checked, 1, $helpStr, '');
     return @$inputCheckBox;
 }
 //显示Input复选 InputCheckBox("Id",ID,"")
 function inputCheckBox3($textName, $checked, $valueStr, $helpStr){
-    $inputCheckBox3=handleInputCheckBox($textName, $checked, $valueStr, $helpStr,'newidname');
+    $inputCheckBox3= handleInputCheckBox($textName, $checked, $valueStr, $helpStr, 'newidname');
     return @$inputCheckBox3;
 }
-function handleInputCheckBox($textName, $checked, $valueStr, $helpStr,$sType){
-    $s='';$sel='';$idName='';
+function handleInputCheckBox($textName, $checked, $valueStr, $helpStr, $sType){
+    $s=''; $sel=''; $idName ='';
     if( CStr($valueStr)== 'True' || CStr($checked)== '1' ){ $sel= ' checked' ;}else{ $sel== '' ;}
-    $idName=$textName;			//id名等于文件名称
-    $sType='|'. $sType .'|';
-    if( instr($sType,'|newidname|')>0 ){
+    $idName= $textName; //id名等于文件名称
+    $sType= '|' . $sType . '|';
+    if( instr($sType, '|newidname|') > 0 ){
         $idName= $textName . phprand(1, 9999);
     }
-    $s='<input type=\'checkbox\' name=\'' . $textName . '\' id=\'' . $idName . '\'' . $sel . ' value=\'' . $valueStr . '\'>';
+    $s= '<input type=\'checkbox\' name=\'' . $textName . '\' id=\'' . $idName . '\'' . $sel . ' value=\'' . $valueStr . '\'>';
     if( $helpStr <> '' ){ $s= '<label for=\'' . $idName . '\'>' . $s . $helpStr . '</label> ' ;}
-    $handleInputCheckBox=$s;
+    $handleInputCheckBox= $s;
     return @$handleInputCheckBox;
 }
 
@@ -359,16 +359,16 @@ function inputLeftTextHelpTextRight($textName, $valueStr, $width, $helpStr){
 }
 //显示Input文本在中边 提示文本在左边
 function inputLeftTextContent($textName, $valueStr, $width, $helpStr){
-    $inputLeftTextContent= HandleInputLeftRightTextContent('左边', $textName, $valueStr, $width, $helpStr);
+    $inputLeftTextContent= handleInputLeftRightTextContent('左边', $textName, $valueStr, $width, $helpStr);
     return @$inputLeftTextContent;
 }
 //显示Input文本在中边 提示文本在右边
 function inputRightTextContent($textName, $valueStr, $width, $helpStr){
-    $inputRightTextContent= HandleInputLeftRightTextContent('右边', $textName, $valueStr, $width, $helpStr);
+    $inputRightTextContent= handleInputLeftRightTextContent('右边', $textName, $valueStr, $width, $helpStr);
     return @$inputRightTextContent;
 }
 //显示Input文本在中边 提示文本在左边 或 提示文本在右边 20150114
-function handleInputLeftRightTextContent($SType, $textName, $valueStr, $width, $helpStr){
+function handleInputLeftRightTextContent($sType, $textName, $valueStr, $width, $helpStr){
     $Css ='';
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
@@ -384,7 +384,7 @@ function handleInputLeftRightTextContent($SType, $textName, $valueStr, $width, $
     }
     $handleInputLeftRightTextContent= '<input name="' . $textName . '" type="text" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />';
 
-    if( $SType== '左边' ){
+    if( $sType== '左边' ){
         $handleInputLeftRightTextContent= $helpStr . $handleInputLeftRightTextContent . vbCrlf();
     }else{
         $handleInputLeftRightTextContent= $handleInputLeftRightTextContent . $helpStr;
@@ -440,7 +440,7 @@ function inputTextArea($textName, $valueStr, $width, $height, $helpStr){
         $Css= ' style=\'width:' . $width . ';\'';
     }
     if( $height <> '' ){
-        if( CheckNumber($height) ){ //自动加个px像素
+        if( checkNumber($height) ){ //自动加个px像素
             $height= $height . 'px';
         }
         $HeightStr= 'height:' . $height . ';';
@@ -480,7 +480,7 @@ function handleInputHiddenTextArea($textName, $valueStr, $width, $height, $class
 //显示目录列表 以Select方式显示
 function showSelectDirList($folderPath, $valueStr){
     $splStr=''; $c=''; $fileName=''; $sel ='';
-    $splStr= aspSplit(GetDirFileSort($folderPath), vbCrlf());
+    $splStr= aspSplit(getDirFileSort($folderPath), vbCrlf());
     foreach( $splStr as $fileName){
         if( $fileName <> '' ){
             $sel= IIF($valueStr== $fileName, ' selected', '');
@@ -498,16 +498,16 @@ function inputDisabled( $content){
 
 //给Input加个rel关系内容
 function inputAddAlt( $content, $AltStr){
-    $SearchStr=''; $ReplaceStr ='';
+    $SearchStr=''; $replaceStr ='';
     $SearchStr= '<input ';
-    $ReplaceStr= $SearchStr . 'alt="' . $AltStr . '" ';
+    $replaceStr= $SearchStr . 'alt="' . $AltStr . '" ';
     if( instr($content, $SearchStr) > 0 ){
-        $content= Replace($content, $SearchStr, $ReplaceStr);
+        $content= Replace($content, $SearchStr, $replaceStr);
     }else{
         $SearchStr= '<textarea ';
-        $ReplaceStr= $SearchStr . 'alt="' . $AltStr . '" ';
+        $replaceStr= $SearchStr . 'alt="' . $AltStr . '" ';
         if( instr($content, $SearchStr) > 0 ){
-            $content= Replace($content, $SearchStr, $ReplaceStr);
+            $content= Replace($content, $SearchStr, $replaceStr);
         }
     }
     $inputAddAlt= $content;
@@ -590,31 +590,31 @@ function showRecommend($Recommend){
     return @$showRecommend;
 }
 //显示开户与关闭图片
-function showOnOffImg($id, $Table, $FieldName, $Recommend, $url){
-    $temp=''; $Img=''; $AUrl ='';
-    if( Rq('page') <> '' ){ $temp= '&page=' . Rq('page') ;}else{ $temp== '' ;}
+function showOnOffImg($id, $Table, $fieldName, $Recommend, $url){
+    $temp=''; $Img=''; $aUrl ='';
+    if( rq('page') <> '' ){ $temp= '&page=' . rq('page') ;}else{ $temp== '' ;}
     if( $Recommend== true ){
-        $Img= '<img src="'. $GLOBALS['adminDir'] .'Images/yes.gif">';
+        $Img= '<img src="' . $GLOBALS['adminDir'] . 'Images/yes.gif">';
     }else{
-        $Img= '<img src="'. $GLOBALS['adminDir'] .'Images/webno.gif">';
+        $Img= '<img src="' . $GLOBALS['adminDir'] . 'Images/webno.gif">';
     }
     //Call Echo(GetUrl(),""& adminDir &"HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id)
-    $AUrl= GetUrlAddToParam(GetUrl(), ''. $GLOBALS['adminDir'] .'HandleDatabase.Asp?act=SetTrueFalse&Table=' . $Table . '&FieldName=' . $FieldName . '&Url=' . $url . '&Id=' . $id, 'replace');
-    $showOnOffImg= '<a href="' . $AUrl . '">' . $Img . '</a>';
+    $aUrl= getUrlAddToParam(getUrl(), '' . $GLOBALS['adminDir'] . 'HandleDatabase.Asp?act=SetTrueFalse&Table=' . $Table . '&FieldName=' . $fieldName . '&Url=' . $url . '&Id=' . $id, 'replace');
+    $showOnOffImg= '<a href="' . $aUrl . '">' . $Img . '</a>';
     //旧版
     //ShowOnOffImg = "<a href="& adminDir &"HandleDatabase.Asp?act=SetTrueFalse&Table=" & Table & "&FieldName=" & FieldName & "&Url=" & Url & "&Id=" & Id & Temp & ">" & Img & "</a>"
     return @$showOnOffImg;
 }
 //显示开户与关闭图片
-function newShowOnOffImg($id, $Table, $FieldName, $Recommend, $url){
+function newShowOnOffImg($id, $Table, $fieldName, $Recommend, $url){
     $temp=''; $Img ='';
-    if( Rq('page') <> '' ){ $temp= '&page=' . Rq('page') ;}else{ $temp== '' ;}
+    if( rq('page') <> '' ){ $temp= '&page=' . rq('page') ;}else{ $temp== '' ;}
     if( $Recommend== 1 ){
         $Img= '<img src="/Images/yes.gif">';
     }else{
         $Img= '<img src="/Images/webno.gif">';
     }
-    $newShowOnOffImg= '<a href=/WebAdmin/ZAction.Asp?act=Through&Table=' . $Table . '&FieldName=' . $FieldName . '&Url=' . $url . '&Id=' . $id . $temp . '>' . $Img . '</a>';
+    $newShowOnOffImg= '<a href=/WebAdmin/ZAction.Asp?act=Through&Table=' . $Table . '&FieldName=' . $fieldName . '&Url=' . $url . '&Id=' . $id . $temp . '>' . $Img . '</a>';
     return @$newShowOnOffImg;
 }
 
@@ -653,16 +653,16 @@ function controlDialogCss(){
 
 
 //删除里暂存代码
-function batchDeleteTempStr($content,$startStr,$endStr){
-    $i='';$s='';
+function batchDeleteTempStr($content, $startStr, $endStr){
+    $i=''; $s ='';
     for( $i= 1 ; $i<= 9; $i++){
-        if( instr($content,$startStr)==false ){
+        if( instr($content, $startStr)== false ){
             break;
         }
-        $s=getStrCut($content,$startStr,$endStr,1);
-        $content=replace($content,$s,'');
+        $s= getStrCut($content, $startStr, $endStr, 1);
+        $content= Replace($content, $s, '');
     }
-    $batchDeleteTempStr=$content;
+    $batchDeleteTempStr= $content;
     return @$batchDeleteTempStr;
 }
 ?>
