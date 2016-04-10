@@ -5,7 +5,9 @@ define('WEBCOLUMNTYPE','首页|文本|产品|新闻|视频|下载|案例|留言|反馈|招聘|订单')
 define('EDITORTYPE','php'); 		//编辑器类型，是ASP,或PHP,或jSP,或.NET
 define('WEB_VIEWURL','../index.php'); 		//网站显示URL
 define('WEB_ADMINURL','/admin/index.php'); 		//后端网站，在线编辑用到20160216
+$webDir='';				//网站目录
 //=========
+
 
 $ReadBlockList='';
 
@@ -21,12 +23,13 @@ $adminDir ='';$adminDir='/admin/';							//后台目录
 
 $openErrorLog =''; $openErrorLog= true; //开启错误日志
 $openWriteSystemLog =''; $openWriteSystemLog= '|txt|database|'; //开启写系统日志 txt写入文本 database写入数据库
-$openTestEcho=''; $openTestEcho=true;											//开关测试回显
+$isTestEcho=''; $isTestEcho=true;											//开关测试回显
 $webVersion =''; $webVersion='ASPPHPCMS v1.2';												//网站版本
 
 
-$WEB_CACHEFile =''; $WEB_CACHEFile='/admin/'. EDITORTYPE .'cachedata.txt';								//缓冲文件
+$WEB_CACHEFile =''; $WEB_CACHEFile=$webDir . '/admin/'. EDITORTYPE .'cachedata.txt';								//缓冲文件
 $WEB_CACHEContent =''; $WEB_CACHEContent='';								//缓冲文件内容
+$isCacheTip =''; $isCacheTip=false;			//是否开启缓冲提示
 
 
 

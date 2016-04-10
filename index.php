@@ -93,7 +93,7 @@ function handleAction($content){
                 $action= XY_getLableValue($action);
                 //标题在搜索引擎里列表
             }else if( checkFunValue($action, 'TitleInSearchEngineList ')== true ){
-                $action= XY_TitleInSearchEngineList($action);
+                $action= $GLOBALS['XY_TitleInSearchEngineList'][$action];
 
                 //加载文件
             }else if( checkFunValue($action, 'Include ')== true ){
@@ -112,7 +112,7 @@ function handleAction($content){
                 $action= XY_AP_SearchStatList($action);
                 //友情链接列表
             }else if( checkFunValue($action, 'Links ')== true ){
-                $action= XY_AP_Links($action);
+                $action= $GLOBALS['XY_AP_Links'][$action];
 
 
                 //显示单页内容
@@ -182,11 +182,11 @@ function handleAction($content){
 
                 //URL加密
             }else if( CheckFunValue($action, 'escape ')==true ){
-                $action= XY_escape($action);
+                $action= $GLOBALS['XY_escape'][$action];
 
                 //URL解密
             }else if( CheckFunValue($action, 'unescape ')==true ){
-                $action= XY_unescape($action);
+                $action= $GLOBALS['XY_unescape'][$action];
 
                 //
 
@@ -353,10 +353,10 @@ function loadWebConfig(){
     $rs=mysql_fetch_array($rsObj);
     if( @mysql_num_rows($rsObj)!=0 ){
         $GLOBALS['cfg_webSiteUrl']= phptrim($rs['websiteurl']); //网址
-        $GLOBALS['cfg_webTemplate']= phptrim($rs['webtemplate']); //模板路径
-        $GLOBALS['cfg_webImages']= phptrim($rs['webimages']); //图片路径
-        $GLOBALS['cfg_webCss']= phptrim($rs['webcss']); //css路径
-        $GLOBALS['cfg_webJs']= phptrim($rs['webjs']); //js路径
+        $GLOBALS['cfg_webTemplate']= $GLOBALS['webDir'] . phptrim($rs['webtemplate']); //模板路径
+        $GLOBALS['cfg_webImages']= $GLOBALS['webDir'] . phptrim($rs['webimages']); //图片路径
+        $GLOBALS['cfg_webCss']= $GLOBALS['webDir'] . phptrim($rs['webcss']); //css路径
+        $GLOBALS['cfg_webJs']= $GLOBALS['webDir'] . phptrim($rs['webjs']); //js路径
         $GLOBALS['cfg_webTitle']= $rs['webtitle']; //网址标题
         $GLOBALS['cfg_webKeywords']= $rs['webkeywords']; //网站关键词
         $GLOBALS['cfg_webDescription']= $rs['webdescription']; //网站描述

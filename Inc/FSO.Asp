@@ -55,7 +55,7 @@ Function existsFile(filePath)
 End Function 
 '创建文件   这种方式创建文件时，会多一行，用WriteToFile创建时没有多一行
 Function createFile(ByVal filePath, ByVal content)
-   ' On Error Resume Next 
+    On Error Resume Next 
     Dim fText, fso 
     Call HandlePath(filePath)                                                       '获得完整路径
     Set fso = CreateObject("Scripting.FileSystemObject")

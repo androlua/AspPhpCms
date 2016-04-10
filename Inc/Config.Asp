@@ -79,8 +79,10 @@ Dim WEBCOLUMNTYPE : WEBCOLUMNTYPE = "Ê×Ò³|ÎÄ±¾|²úÆ·|ĞÂÎÅ|ÊÓÆµ|ÏÂÔØ|°¸Àı|ÁôÑÔ|·´À
 Dim WEB_VIEWURL : WEB_VIEWURL = "/index.asp"                'Ç°Ì¨ÏÔÊ¾
 dim WEB_ADMINURL : WEB_ADMINURL ="/admin/index.asp"				'ºóÌ¨ÏÔÊ¾
 Dim EDITORTYPE : EDITORTYPE = "asp"                                             '³ÌĞòÀàĞÍ£¬ÊÇASP,»òPHP,»òjSP,»ò.NET
-MDBPath = "/Data/Data.mdb"
+dim webDir:webDir=""
+MDBPath = webDir & "/Data/Data.mdb"
 '=========
+
 
 dim ReadBlockList
 
@@ -96,12 +98,13 @@ dim adminDir :adminDir="/admin/"							'ºóÌ¨Ä¿Â¼
 
 Dim openErrorLog : openErrorLog = true                                             '¿ªÆô´íÎóÈÕÖ¾
 Dim openWriteSystemLog : openWriteSystemLog = "|txt|database|"                                             '¿ªÆôĞ´ÏµÍ³ÈÕÖ¾ txtĞ´ÈëÎÄ±¾ databaseĞ´ÈëÊı¾İ¿â
-dim openTestEcho: openTestEcho=true											'¿ª¹Ø²âÊÔ»ØÏÔ
+dim isTestEcho: isTestEcho=true											'¿ª¹Ø²âÊÔ»ØÏÔ
 Dim webVersion : webVersion="ASPPHPCMS v1.2"												'ÍøÕ¾°æ±¾
 
  
-dim WEB_CACHEFile : WEB_CACHEFile="/admin/"& EDITORTYPE &"cachedata.txt"								'»º³åÎÄ¼ş
+dim WEB_CACHEFile : WEB_CACHEFile=webDir & "/admin/"& EDITORTYPE &"cachedata.txt"								'»º³åÎÄ¼ş
 dim WEB_CACHEContent : WEB_CACHEContent=""								'»º³åÎÄ¼şÄÚÈİ
+dim isCacheTip : isCacheTip=false			'ÊÇ·ñ¿ªÆô»º³åÌáÊ¾
 
  
 

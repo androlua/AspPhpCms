@@ -28,7 +28,7 @@ function autoSavePostData(id, tableName, fieldNameList)
         Call errorLog("出错提示：<hr>sql=" & sql & "<br>") 
         Exit Function 
     End If
-	conn.execute(sql)
+	'conn.execute(sql)			'checksql这一步就已经执行了不需要再执行了20160410
 end function
 '获得Post发送表单处理SQL语句 20160309
 Function getPostSql(id, tableName, fieldNameList)

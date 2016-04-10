@@ -1,7 +1,7 @@
 【parentid】ASPPHPCMS
-【title】开源网站内容管理系统ASPPHPCMS下载
-【webtitle】开源网站内容管理系统ASPPHPCMS下载
-【webkeywords】开源网站内容管理系统ASPPHPCMS下载_ASPPHPCMS Download
+【title】免费开源网站内容管理系统ASPPHPCMS下载
+【webtitle】免费开源网站内容管理系统ASPPHPCMS下载
+【webkeywords】免费开源网站内容管理系统ASPPHPCMS下载_ASPPHPCMS Download
 【webdescription】提供ASPPHPCMS最新版本下载，分为ASP开源CMS系统、PHP开源CMS系统，ASPPHPCMS是最好用的开源网站系统 QQ313801120
 【sortrank】1
 【author】sharembweb
@@ -11,7 +11,7 @@
 【flags】|c|
 【relatedtags】ASPPHPCMS
 【bodycontent】
-<strong>开源网站内容管理系统ASPPHPCMS下载</strong><br>
+<strong>免费开源网站内容管理系统ASPPHPCMS下载</strong><br>
 提供ASPPHPCMS最新版本下载，分为ASP开源CMS系统、PHP开源CMS系统，ASPPHPCMS是最好用的开源网站系统<br><br>
 
 <ul class="list">

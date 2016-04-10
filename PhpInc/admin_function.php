@@ -11,7 +11,9 @@ function getHandleTableList(){
         $s= strtolower(getTableList());
         $s= '|' . Replace($s, vbCrlf(), '|') . '|';
         $GLOBALS['WEB_CACHEContent']= setConfigFileBlock($GLOBALS['WEB_CACHEFile'], $s, '#' . $lableStr . '#');
-        sysEcho('缓冲', $lableStr);
+        if( $GLOBALS['isCacheTip']==true ){
+            ASPEcho('缓冲', $lableStr);
+        }
     }
     $getHandleTableList= $s;
     return @$getHandleTableList;
@@ -32,7 +34,9 @@ function getHandleFieldList($tableName, $sType){
             $s= strtolower(getFieldList($tableName));
         }
         $GLOBALS['WEB_CACHEContent']= setConfigFileBlock($GLOBALS['WEB_CACHEFile'], $s, '#' . $tableName . $sType . '#');
-        sysEcho('缓冲', $tableName . $sType);
+        if( $GLOBALS['isCacheTip']==true ){
+            ASPEcho('缓冲', $tableName . $sType);
+        }
     }
     $getHandleFieldList= $s;
     return @$getHandleFieldList;
@@ -82,6 +86,10 @@ function replaceLableContent($content){
     $content= Replace($content, '{$LOCAL_ADDR$}', ServerVariables('LOCAL_ADDR')); //服务器IP
     $content= Replace($content, '{$SERVER_PORT$}', ServerVariables('SERVER_PORT')); //服务器端口
     $content= replaceValueParam($content, 'mdbpath', @$_REQUEST['mdbpath']);
+
+
+    $content= replaceValueParam($content, 'webDir', $GLOBALS['webDir']);
+
     $replaceLableContent= $content;
     return @$replaceLableContent;
 }
@@ -259,12 +267,7 @@ function handlePower($powerName){
         eerr('提示', '你没有【' . $powerName . '】权限，<a href=\'javascript:history.go(-1);\'>点击返回</a>');
     }
 }
-//回显信息
-function sysEcho($title, $content){
-    if( $GLOBALS['openTestEcho']== true ){
-        ASPEcho($title, $content);
-    }
-}
+
 
 
 

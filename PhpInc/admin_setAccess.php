@@ -30,7 +30,7 @@ function resetAccessData(){
     }
 
     ASPEcho('提示', '恢复数据完成');
-    rw('<hr><a href=\'..../index.php\' target=\'_blank\'>进入首页</a> | <a href="?" target=\'_blank\'>进入后台</a>');
+    rw('<hr><a href=\'../index.php\' target=\'_blank\'>进入首页</a> | <a href="?" target=\'_blank\'>进入后台</a>');
 
     $content=''; $filePath=''; $parentid=''; $author=''; $adddatetime=''; $fileName=''; $bodycontent=''; $webtitle=''; $webkeywords=''; $webdescription=''; $sortrank=''; $labletitle=''; $target ='';
     $websitebottom=''; $webtemplate=''; $webimages=''; $webcss=''; $webjs=''; $flags=''; $websiteurl=''; $splxx=''; $columntype=''; $relatedtags=''; $npagesize=''; $customaurl=''; $nofollow ='';

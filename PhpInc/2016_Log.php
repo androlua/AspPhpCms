@@ -11,7 +11,7 @@ function errorLog($content){
 //写入系统操作日志
 function writeSystemLog($tableName, $msgStr){
     $logFile=''; $s=''; $url=''; $ip=''; $addDateTime ='';
-    $logFile= $GLOBALS['adminDir'] . '/data/systemLog/' . format_Time(Now(), 2) . '.txt';
+    $logFile= $GLOBALS['webDir'] . $GLOBALS['adminDir'] . '/data/systemLog/' . format_Time(Now(), 2) . '.txt';
     $url= ADSql(getThisUrlFileParam());
     $addDateTime= format_Time(Now(), 1);
     $ip= getIP();

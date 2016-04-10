@@ -302,10 +302,10 @@ Sub loadWebConfig()
     rs.Open "select * from " & db_PREFIX & "website", conn, 1, 1 
     If Not rs.EOF Then
         cfg_webSiteUrl = phptrim(rs("webSiteUrl"))                                      '网址
-        cfg_webTemplate = phptrim(rs("webTemplate"))                                    '模板路径
-        cfg_webImages = phptrim(rs("webImages"))                                        '图片路径
-        cfg_webCss = phptrim(rs("webCss"))                                              'css路径
-        cfg_webJs = phptrim(rs("webJs"))                                                'js路径
+        cfg_webTemplate = webDir & phptrim(rs("webTemplate"))                                    '模板路径
+        cfg_webImages = webDir & phptrim(rs("webImages"))                                        '图片路径
+        cfg_webCss = webDir & phptrim(rs("webCss"))                                              'css路径
+        cfg_webJs = webDir & phptrim(rs("webJs"))                                                'js路径
         cfg_webTitle = rs("webTitle")                                                   '网址标题
         cfg_webKeywords = rs("webKeywords")                                             '网站关键词
         cfg_webDescription = rs("webDescription")                                       '网站描述

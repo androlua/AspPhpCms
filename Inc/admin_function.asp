@@ -11,7 +11,9 @@ Function getHandleTableList()
         s = LCase(getTableList()) 
         s = "|" & Replace(s, vbCrLf, "|") & "|" 
         WEB_CACHEContent = setConfigFileBlock(WEB_CACHEFile, s, "#" & lableStr & "#") 
-        Call sysEcho("缓冲", lableStr) 
+		if isCacheTip=true then
+        	Call echo("缓冲", lableStr)
+		end if 
     End If 
     getHandleTableList = s 
 End Function 
@@ -30,8 +32,10 @@ Function getHandleFieldList(tableName, sType)
         Else
             s = LCase(getFieldList(tableName)) 
         End If 
-        WEB_CACHEContent = setConfigFileBlock(WEB_CACHEFile, s, "#" & tableName & sType & "#") 
-        Call sysEcho("缓冲", tableName & sType) 
+        WEB_CACHEContent = setConfigFileBlock(WEB_CACHEFile, s, "#" & tableName & sType & "#")
+		if isCacheTip=true then
+        	Call echo("缓冲", tableName & sType) 
+		end if
     End If 
     getHandleFieldList = s 
 End Function 
@@ -79,6 +83,10 @@ Function replaceLableContent(content)
     content = Replace(content, "{$LOCAL_ADDR$}", Request.ServerVariables("LOCAL_ADDR")) '服务器IP
     content = Replace(content, "{$SERVER_PORT$}", Request.ServerVariables("SERVER_PORT")) '服务器端口
     content = replaceValueParam(content, "mdbpath", Request("mdbpath")) 
+	
+	
+    content = replaceValueParam(content, "webDir", webDir) 
+	
     replaceLableContent = content 
 End Function 
 
@@ -250,12 +258,7 @@ Function handlePower(powerName)
         Call eerr("提示", "你没有【" & powerName & "】权限，<a href='javascript:history.go(-1);'>点击返回</a>") 
     End If 
 End Function 
-'回显信息
-Function sysEcho(title, content)
-    If openTestEcho = True Then
-        Call echo(title, content) 
-    End If 
-End Function 
+ 
 
 
 
