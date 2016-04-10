@@ -3,6 +3,10 @@
 '新的截取字符20160216
 Function newGetStrCut(content, title)
     Dim s 
+	'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+	if instr(content,vbcrlf)=false then  
+		content=replace(content,chr(10),vbcrlf)  
+	end if
     If InStr(content, "【/" & title & "】") > 0 Then
         s = ADSql(phptrim(getStrCut(content, "【" & title & "】", "【/" & title & "】", 0))) 
     Else
@@ -74,13 +78,13 @@ Sub resetAccessData()
         If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
             Call echo("导航", filePath) 
             content = getftext(filePath) 
+			'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+			if instr(content,vbcrlf)=false then  
+				content=replace(content,chr(10),vbcrlf)  
+			end if
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
                 If InStr(s, "【webtitle】") > 0 Then 
-					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-					if instr(s,vbcrlf)=false then 
-						s=replace(s,chr(10),vbcrlf)  
-					end if
 					s=s & vbcrlf 
                     webtitle = newGetStrCut(s, "webtitle") 
                     webkeywords = newGetStrCut(s, "webkeywords") 

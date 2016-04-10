@@ -3,6 +3,10 @@
 //新的截取字符20160216
 function newGetStrCut($content, $title){
     $s ='';
+    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+    if( instr($content,vbCrlf())==false ){
+        $content=replace($content,chr(10),vbCrlf());
+    }
     if( instr($content, '【/' . $title . '】') > 0 ){
         $s= ADSql(phptrim(getStrCut($content, '【' . $title . '】', '【/' . $title . '】', 0)));
     }else{
@@ -75,13 +79,13 @@ function resetAccessData(){
         if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1))== false ){
             ASPEcho('导航', $filePath);
             $content= getftext($filePath);
+            //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+            if( instr($content,vbCrlf())==false ){
+                $content=replace($content,chr(10),vbCrlf());
+            }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【webtitle】') > 0 ){
-                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-                    if( instr($s,vbCrlf())==false ){
-                        $s=replace($s,chr(10),vbCrlf());
-                    }
                     $s=$s . vbCrlf();
                     $webtitle= newGetStrCut($s, 'webtitle');
                     $webkeywords= newGetStrCut($s, 'webkeywords');
