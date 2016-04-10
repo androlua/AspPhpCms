@@ -45,11 +45,12 @@ function resetAccessData(){
     $smallimage=''; $bigImage=''; $bannerimage ='';//文章表
     $httpurl='';
 
-
-
-
     //网站配置
     $content= getftext($webdataDir . '/website.txt');
+    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+    if( instr($content,vbCrlf())==false ){
+        $content=replace($content,chr(10),vbCrlf());
+    }
     if( $content <> '' ){
         $webtitle= newGetStrCut($content, 'webtitle');
         $webkeywords= newGetStrCut($content, 'webkeywords');
@@ -424,13 +425,13 @@ function resetAccessData(){
         if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1))== false ){
             ASPEcho('评论', $filePath);
             $content= getftext($filePath);
+            //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+            if( instr($content,vbCrlf())==false ){
+                $content=replace($content,chr(10),vbCrlf());
+            }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
-                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-                    if( instr($s,vbCrlf())==false ){
-                        $s=replace($s,chr(10),vbCrlf());
-                    }
                     $s=$s . vbCrlf();
 
                     $title= newGetStrCut($s, 'title');

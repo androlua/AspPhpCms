@@ -43,12 +43,13 @@ Sub resetAccessData()
     Dim columnenname                                                                '导航表
     Dim smallimage, bigImage, bannerimage                                           '文章表
 	dim httpurl
-
-
-
-
+ 
     '网站配置
     content = getftext(webdataDir & "/website.txt") 
+	'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+	if instr(content,vbcrlf)=false then  
+		content=replace(content,chr(10),vbcrlf)  
+	end if
     If content <> "" Then
         webtitle = newGetStrCut(content, "webtitle") 
         webkeywords = newGetStrCut(content, "webkeywords") 
@@ -423,13 +424,13 @@ dim itemid,username,ip,reply,tablename			'评论
         If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
             Call echo("评论", filePath) 
             content = getftext(filePath) 
+			'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+			if instr(content,vbcrlf)=false then  
+				content=replace(content,chr(10),vbcrlf)  
+			end if
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
-                If InStr(s, "【title】") > 0 Then
-					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-					if instr(s,vbcrlf)=false then 
-						s=replace(s,chr(10),vbcrlf)  
-					end if
+                If InStr(s, "【title】") > 0 Then 
 					s=s & vbcrlf 
 					
                     title = newGetStrCut(s, "title")  
