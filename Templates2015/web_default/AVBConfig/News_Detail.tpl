@@ -113,6 +113,8 @@
     {$ReadColumeSetTitle title='[\$detailTitle\$]' style='22' contentwidth='720' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName详细内容\' file=\'\'$]'$}
     <div class="clear10"></div>
     
+   {$ReadColumeSetTitle title='评论' style='22' contentwidth='720' moreclass='leftmore' morestr='More' moreurl=' ' stylevalue='0' value='[$读出内容 block=\'BlockName评论\' file=\'\'$]'$}
+    <div class="clear10"></div>
      
 
 <!--#Module module_Right end#-->
@@ -132,7 +134,43 @@
  
 
 <R#读出内容BlockName详细内容 end#>
+<R#读出内容BlockName评论 start#>
+                <ul class="commentlist">
 
+
+                    <sPAn class="testhidde">{$CommentList topnumb='8' itemid='[$glb_Id$]' addsql='' default='[_2016年01月15日 Comment]'$}</sPAn>
+                    <!--#[_2016年01月15日 Comment]
+[list]<li class="usermsg">IP：[$ip$] &nbsp; 时间：[$adddatetime format_time='1'$]</li>
+<li class="contentcontent">[$bodycontent$]</li>
+<div><b>管理员回复：</b><font color="#FF0000">[$reply$]</font></div>
+<li class="line"></li>
+
+[/list]
+[list-end]<li class="usermsg">IP：[$ip$] &nbsp; 时间：[$adddatetime format_time='1'$]</li>
+<li class="contentcontent">[$bodycontent$]</li>
+<div><b>管理员回复：</b><font color="#FF0000">[$reply$]</font></div>
+<div class="clear10"></div>
+[/list-end]
+
+                    #-->
+                     
+              <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=articlecomment&itemid=[$glb_Id$]" target="_blank"  onSubmit="return formSubmit()">
+                <textarea name="content" placeholder="我也来说两句..."></textarea>
+                <input type="submit" class="mybtn" value="评论" />
+评论支持使用[code][/code]标签添加代码
+              </form>
+<script language="javascript">
+function formSubmit(){
+    if(document.all.formcomment.content.value==""){
+        document.all.formcomment.content.focus();
+        alert("评论内容不能为空");
+        return false;
+    }
+}
+</script>
+ 
+
+<R#读出内容BlockName评论 end#>
 </text>
 ---------------------
 【返回顶部 返回底部】

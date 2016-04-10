@@ -158,13 +158,13 @@ function resetAccessData(){
         if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1))== false ){
             ASPEcho('文章', $filePath);
             $content= getftext($filePath);
+            //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+            if( instr($content,vbCrlf())==false ){
+                $content=replace($content,chr(10),vbCrlf());
+            }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
-                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-                    if( instr($s,vbCrlf())==false ){
-                        $s=replace($s,chr(10),vbCrlf());
-                    }
                     $s= $s . vbCrlf();
                     $parentid= newGetStrCut($s, 'parentid');
                     $parentid= getColumnId($parentid);
@@ -228,13 +228,13 @@ function resetAccessData(){
         if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1))== false ){
             ASPEcho('单页', $filePath);
             $content= getftext($filePath);
+            //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+            if( instr($content,vbCrlf())==false ){
+                $content=replace($content,chr(10),vbCrlf());
+            }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【webkeywords】') > 0 ){
-                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-                    if( instr($s,vbCrlf())==false ){
-                        $s=replace($s,chr(10),vbCrlf());
-                    }
                     $s= $s . vbCrlf();
                     $title= newGetStrCut($s, 'title');
                     $displaytitle= newGetStrCut($s, 'displaytitle');
@@ -287,13 +287,13 @@ function resetAccessData(){
         if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1))== false ){
             ASPEcho('竞价', $filePath);
             $content= getftext($filePath);
+            //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+            if( instr($content,vbCrlf())==false ){
+                $content=replace($content,chr(10),vbCrlf());
+            }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【webkeywords】') > 0 ){
-                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-                    if( instr($s,vbCrlf())==false ){
-                        $s=replace($s,chr(10),vbCrlf());
-                    }
                     $s=$s . vbCrlf();
                     $webkeywords= newGetStrCut($s, 'webkeywords');
                     $showreason= newGetStrCut($s, 'showreason');
@@ -321,13 +321,13 @@ function resetAccessData(){
         if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1))== false ){
             ASPEcho('搜索统计', $filePath);
             $content= getftext($filePath);
+            //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+            if( instr($content,vbCrlf())==false ){
+                $content=replace($content,chr(10),vbCrlf());
+            }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
-                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-                    if( instr($s,vbCrlf())==false ){
-                        $s=replace($s,chr(10),vbCrlf());
-                    }
                     $s=$s . vbCrlf();
                     $title= newGetStrCut($s, 'title');
                     $webtitle= newGetStrCut($s, 'webtitle');
@@ -376,13 +376,13 @@ function resetAccessData(){
         if( $filePath <> '' && instr('_#', substr($fileName, 0 , 1))== false ){
             ASPEcho('评论', $filePath);
             $content= getftext($filePath);
+            //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
+            if( instr($content,vbCrlf())==false ){
+                $content=replace($content,chr(10),vbCrlf());
+            }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $s){
                 if( instr($s, '【title】') > 0 ){
-                    //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-                    if( instr($s,vbCrlf())==false ){
-                        $s=replace($s,chr(10),vbCrlf());
-                    }
                     $s=$s . vbCrlf();
 
                     $tablename= newGetStrCut($s, 'tablename');

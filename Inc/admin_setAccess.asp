@@ -157,13 +157,13 @@ Sub resetAccessData()
         If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
             Call echo("文章", filePath) 
             content = getftext(filePath) 
+			'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+			if instr(content,vbcrlf)=false then  
+				content=replace(content,chr(10),vbcrlf)  
+			end if
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
-                If InStr(s, "【title】") > 0 Then
-					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-					if instr(s,vbcrlf)=false then 
-						s=replace(s,chr(10),vbcrlf)  
-					end if
+                If InStr(s, "【title】") > 0 Then 
                     s = s & vbCrLf 
                     parentid = newGetStrCut(s, "parentid") 
                     parentid = getColumnId(parentid) 
@@ -227,13 +227,13 @@ Sub resetAccessData()
         If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
             Call echo("单页", filePath) 
             content = getftext(filePath) 
+			'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+			if instr(content,vbcrlf)=false then  
+				content=replace(content,chr(10),vbcrlf)  
+			end if
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
-                If InStr(s, "【webkeywords】") > 0 Then
-					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-					if instr(s,vbcrlf)=false then 
-						s=replace(s,chr(10),vbcrlf)  
-					end if
+                If InStr(s, "【webkeywords】") > 0 Then 
                     s = s & vbCrLf 
                     title = newGetStrCut(s, "title") 
                     displaytitle = newGetStrCut(s, "displaytitle") 
@@ -286,13 +286,13 @@ Sub resetAccessData()
         If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
             Call echo("竞价", filePath) 
             content = getftext(filePath) 
+			'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+			if instr(content,vbcrlf)=false then  
+				content=replace(content,chr(10),vbcrlf)  
+			end if
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
-                If InStr(s, "【webkeywords】") > 0 Then
-					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-					if instr(s,vbcrlf)=false then 
-						s=replace(s,chr(10),vbcrlf)  
-					end if
+                If InStr(s, "【webkeywords】") > 0 Then 
 					s=s & vbcrlf 
                     webkeywords = newGetStrCut(s, "webkeywords") 
                     showreason = newGetStrCut(s, "showreason") 
@@ -320,13 +320,13 @@ Sub resetAccessData()
         If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
             Call echo("搜索统计", filePath) 
             content = getftext(filePath) 
+			'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+			if instr(content,vbcrlf)=false then  
+				content=replace(content,chr(10),vbcrlf)  
+			end if
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
-                If InStr(s, "【title】") > 0 Then
-					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-					if instr(s,vbcrlf)=false then 
-						s=replace(s,chr(10),vbcrlf)  
-					end if
+                If InStr(s, "【title】") > 0 Then 
 					s=s & vbcrlf 
                     title = newGetStrCut(s, "title") 
                     webtitle = newGetStrCut(s, "webtitle") 
@@ -364,7 +364,7 @@ Sub resetAccessData()
             Next 
         End If 
     Next 
-dim itemid,username,ip,reply,tablename			'评论
+	dim itemid,username,ip,reply,tablename			'评论
     '评论
     conn.Execute("delete from " & db_PREFIX & "TableComment")  
     content = getDirTxtList(webdataDir & "/TableComment/") 
@@ -375,13 +375,13 @@ dim itemid,username,ip,reply,tablename			'评论
         If filePath <> "" And InStr("_#", Left(fileName, 1)) = False Then
             Call echo("评论", filePath) 
             content = getftext(filePath) 
+			'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409 
+			if instr(content,vbcrlf)=false then  
+				content=replace(content,chr(10),vbcrlf)  
+			end if
             splxx = Split(content, vbCrLf & "-------------------------------") 
             For Each s In splxx
-                If InStr(s, "【title】") > 0 Then
-					'这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-					if instr(s,vbcrlf)=false then 
-						s=replace(s,chr(10),vbcrlf)  
-					end if
+                If InStr(s, "【title】") > 0 Then 
 					s=s & vbcrlf 
 					
                     tablename = newGetStrCut(s, "tablename") 
