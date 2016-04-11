@@ -131,5 +131,5 @@ function UBound($content){
 </pre>
 
 <br>
-{$TitleInSearchEngineList title='让字母字符串位置打乱与恢复ASPPHP通用双版本代码'$}
+{$TitleInSearchEngineList title='26字母相互组合获得676条变量列表'$}
 【/bodycontent】

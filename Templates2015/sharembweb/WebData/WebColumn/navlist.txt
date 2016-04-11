@@ -28,7 +28,7 @@
 【webdescription】提供在线ASP代码转PHP代码服务 QQ313801120
 【bodycontent】
 
-<div class="divtip">输入你的ASP代码，提交后等待几秒即可生成PHP代码：(更新于20160308)</div>
+<div class="divtip">输入你的ASP代码，提交后等待几秒即可生成PHP代码：(更新于20160411)</div>
 
 <form name="form1" method="post" action="[$cfg_websiteurl$]asptophp/asptophp.asp?act=handlecontent" target="_blank">
   <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;"><% 

@@ -190,5 +190,5 @@ function Mid($content,$nStart,$nLength=-1){
 
 </pre>
 <br>
-{$TitleInSearchEngineList title='让字母字符串位置打乱与恢复ASPPHP通用双版本代码'$}
+{$TitleInSearchEngineList title='截取字符串ASP/PHP通用双版本代码'$}
 【/bodycontent】

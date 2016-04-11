@@ -1,5 +1,5 @@
 <% 
-'邮箱发送 例：Response.Write( ServerSend_Email("m18251922007","mydd3a","313801120@qq.com", "标题", "11@aa.com", "内容" & Action ) )
+'发送邮箱 call Send_Email("313801120@qq.com", "标题", "111", "内容") 
 Function Send_Email(ToMail, ToTitle, MyEmalName, ToContent)
     Dim JMail, isgo, MailBody 
     Response.AddHeader "Content-Type", "text/html; charset=gb2312" 
@@ -22,10 +22,11 @@ Function Send_Email(ToMail, ToTitle, MyEmalName, ToContent)
         MailBody = MailBody & ToContent 
         MailBody = MailBody & "</body></html>" 
         JMail.Body = MailBody    '邮件正文 
-        Send_Email = JMail.Send("smtp.163.com")    'SMTP服务器地址         //返回发送是否成功 
+        Send_Email = JMail.Send("smtp.163.com")    'SMTP服务器地址         //返回发送是否成功
         JMail.Close 
     Set JMail = Nothing 
 End Function 
+'邮箱发送 例：Response.Write( ServerSend_Email("m18251922007","mydd3a","313801120@qq.com", "标题", "11@aa.com", "内容" & Action ) )
 '邮箱发送 
 Function ServerSend_Email(ServerUserName, ServerPassword, ToMail, ToTitle, MyEmalName, ToContent)
     Dim JMail, isgo, MailBody 
@@ -37,7 +38,7 @@ Function ServerSend_Email(ServerUserName, ServerPassword, ToMail, ToTitle, MyEma
         JMail.ContentType = "text/html"    '正常显示内容的代码 
         JMail.silent = True 
         JMail.Logging = True 
-        JMail.CharSet = "gb2312" 
+        JMail.CharSet = "gb2312"
         JMail.MailServerUserName = ServerUserName    '此为您邮箱的登录帐号，使用时请更改为自己的邮箱登录帐号 
         JMail.MailServerPassword = ServerPassword    '此为您邮箱的登录密码，使用时请更改为自己的邮箱登录密码 
         JMail.From = "m18251922007@163.com"    '"m18251922007@163.com" '发件人Email 
@@ -583,9 +584,7 @@ Function HandlSqlInUrl(HttpUrl)
         End If 
     Next 
     HandlSqlInUrl = Url 
-End Function 
-
-
+End Function
 
 '获得扫描后函数名称列表
 Function GetScanFunctionNameList(Content)

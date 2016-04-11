@@ -81,6 +81,13 @@ dim WEB_ADMINURL : WEB_ADMINURL ="/admin/index.asp"				'后台显示
 Dim EDITORTYPE : EDITORTYPE = "asp"                                             '程序类型，是ASP,或PHP,或jSP,或.NET
 dim webDir:webDir=""
 MDBPath = webDir & "/Data/Data.mdb"
+If checkFile(MDBPath) = False Then
+    webDir = "/" & getUrlDir(remoteUrlFileName(getThisUrl())) 
+	webDir=mid(webDir,1,len(webDir)-1)
+    webDir = Replace(LCase(webDir), "admin/", "") 
+    MDBPath = webDir & "/Data/Data.mdb" 
+'call echo(webDir,mdbpath)
+End If
 '=========
 
 

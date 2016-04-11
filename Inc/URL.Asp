@@ -24,6 +24,7 @@
 '主机（host）：http://127.0.0.1/
 '获得当前网址加参数（GetUrlAddToParam）：http://127.0.0.1/atemp.asp?PageSize=20&act=1
 'getThisUrlFileName()    : 4.asp
+'getThisUrlFileParam()    : 4.asp?act=11
 
 'Url = getUrlAddToParam("http://www.baidu.com/?a=1&b=2&c=3","?a=11&b=22&c=333","")        'http://www.baidu.com/?a=1&b=2&c=3
 'Url = getUrlAddToParam("http://www.baidu.com/?a=1&b=2&c=3","?a=11&b=22&c=333","replace")        'http://www.baidu.com/?a=11&b=22&c=333
@@ -73,7 +74,37 @@ Function getGoToUrlNoFileName()
     End If 
     If Right(url, 1) <> "/" Then url = url & "/" 
     getGoToUrlNoFileName = url 
-End Function 
+End Function
+'移除网址文件名部分
+function remoteUrlFileName(url)
+    If Right(url, 1) <> "/" Then
+        If InStrRev(url, "/") > 0 Then
+            url = Mid(url, 1, InStrRev(url, "/")) 
+        End If 
+    End If 
+	remoteUrlFileName=url
+end function
+'移除网址参数部分
+function remoteUrlParam(url)
+    If Right(url, 1) <> "?" Then
+        If InStrRev(url, "?") > 0 Then
+            url = Mid(url, 1, InStrRev(url, "?")-1) 
+        End If 
+    End If 
+	remoteUrlParam=url
+end function
+'获得网址目录部分
+function getUrlDir(url)
+	url=trim(url)
+	if left(url,7)="http://" then
+		url = mid(url,8)
+	end if
+	if instr(url,"/")>0 then
+		url=Mid(url,instr(url,"/")+1)
+	end if
+	getUrlDir=url
+end function
+
 
 '获取客户端IP地址第二种
 Function getIP2()

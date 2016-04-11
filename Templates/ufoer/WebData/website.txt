@@ -1,6 +1,6 @@
-【webtitle】分享模板网站 | ASP/PHP通用双版本网站程序,在线ASP转PHP,在线仿站,AspPhpCMS
-【webkeywords】分享模板网站,ASP/PHP通用双版本网站程序,AspPhpCMS,在线ASP转PHP,在线仿站
-【webdescription】分享模板网站 - 为站长免费提供了ASP/PHP通用双版本AspPhpCMS网站内容管理系统,在线ASP转PHP，在线仿站服务。站长QQ313801120 邮箱313801120@qq.com
+【webtitle】分享模板网站 | ASP/PHP通用双版本网站程序,在线ASP转PHP,在线仿站,ASPPHPCMS
+【webkeywords】分享模板网站,ASP/PHP通用双版本网站程序,ASPPHPCMS,在线ASP转PHP,在线仿站
+【webdescription】分享模板网站 - 为站长免费提供了ASP/PHP通用双版本ASPPHPCMS网站内容管理系统,在线ASP转PHP，在线仿站服务。站长QQ313801120 邮箱313801120@qq.com
 【websitebottom】
 
 
@@ -18,7 +18,7 @@ var _hmt = _hmt || [];
 </script>
 {$JsWebStat filename='[$WEB_VIEWURL$]?dataact=WebStat'$}   
 
-<br>版权 sharembweb.com | Powered by AspPhpCMS
+<br>版权 sharembweb.com | Powered by ASPPHPCMS
 【/websitebottom】
 
 【webtemplate】/Templates2015/sharembweb/

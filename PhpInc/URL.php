@@ -24,6 +24,7 @@
 //主机（host）：http://127.0.0.1/
 //获得当前网址加参数（GetUrlAddToParam）：http://127.0.0.1/atemp.asp?PageSize=20&act=1
 //getThisUrlFileName()    : 4.asp
+//getThisUrlFileParam()    : 4.asp?act=11
 
 //Url = getUrlAddToParam("http://www.baidu.com/?a=1&b=2&c=3","?a=11&b=22&c=333","")        'http://www.baidu.com/?a=1&b=2&c=3
 //Url = getUrlAddToParam("http://www.baidu.com/?a=1&b=2&c=3","?a=11&b=22&c=333","replace")        'http://www.baidu.com/?a=11&b=22&c=333
@@ -79,6 +80,39 @@ function getGoToUrlNoFileName(){
     $getGoToUrlNoFileName= $url;
     return @$getGoToUrlNoFileName;
 }
+//移除网址文件名部分
+function remoteUrlFileName($url){
+    if( substr($url, - 1) <> '/' ){
+        if( strrpos($url, '/') > 0 ){
+            $url= mid($url, 1, strrpos($url, '/'));
+        }
+    }
+    $remoteUrlFileName=$url;
+    return @$remoteUrlFileName;
+}
+//移除网址参数部分
+function remoteUrlParam($url){
+    if( substr($url, - 1) <> '?' ){
+        if( strrpos($url, '?') > 0 ){
+            $url= mid($url, 1, strrpos($url, '?')-1);
+        }
+    }
+    $remoteUrlParam=$url;
+    return @$remoteUrlParam;
+}
+//获得网址目录部分
+function getUrlDir($url){
+    $url=AspTrim($url);
+    if( substr($url, 0 ,7)=='http://' ){
+        $url= mid($url,8,-1);
+    }
+    if( instr($url,'/')>0 ){
+        $url=mid($url,instr($url,'/')+1,-1);
+    }
+    $getUrlDir=$url;
+    return @$getUrlDir;
+}
+
 
 //获取客户端IP地址第二种
 function getIP2(){
