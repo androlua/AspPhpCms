@@ -213,7 +213,7 @@ End Function
 
 
 '生成 Install.php 文件
-Sub printAccessToPHPInstallFile()
+function printAccessToPHPInstallFile()
     Dim content, splTableName, tableName, splFieldName, fieldName, fieldType, c ,tempTableName
 	dim tableNameList			'表名称列表
     Call openconn() 
@@ -238,10 +238,16 @@ Sub printAccessToPHPInstallFile()
 					fieldName = LCase(fieldName)                                                    '转成小写
 					fieldType = getFieldAlt(tempTableName, fieldName) 
 					'call echo(copyStr("&nbsp;",8) & "fieldName",fieldName   & "("& fieldType &")")        'mediumtext
+					
 					If fieldType = "VarChar" Then
 						c = c & "`" & fieldName & "` varchar(255) NOT NULL default ''," & vbCrLf 
 					ElseIf fieldType = "Int" Then
 						c = c & "`" & fieldName & "` int(8) NOT NULL default '0'," & vbCrLf 
+					ElseIf fieldType = "Float" Then
+						c = c & "`" & fieldName & "` float(8) NOT NULL default '0'," & vbCrLf  
+					ElseIf fieldType = "YesNo" Then
+						c = c & "`" & fieldName & "` tinyint(1) NOT NULL default '0'," & vbCrLf  						
+						
 					'  InStr("|aboutcontent|bodycontent|content|template|", "|" & fieldName & "|") > 0 Or InStr(fieldName, "module") > 0
 					ElseIf fieldType="Text" Then
 						c = c & "`" & fieldName & "` mediumtext," & vbCrLf 
@@ -265,6 +271,6 @@ Sub printAccessToPHPInstallFile()
     content = Replace(content, searchStr, replaceStr) 
     'call eerr("",content)
     Call createfile(installFilePath, content) 
-    Call echo("操作完成，打印数据库到php能生成文件", "<a href=""http://127.0.0.1/PHP2/ImageWaterMark/Include/Install.php"">http://127.0.0.1/PHP2/ImageWaterMark/Include/Install.php</a>") 
-End Sub 
+    Call echo("操作完成，打印数据库到php能生成文件", "<a href=""http://127.0.0.1/PHP2/ImageWaterMark/Include/Install.php?db_PREFIX=xy_"">http://127.0.0.1/PHP2/ImageWaterMark/Include/Install.php?db_PREFIX=xy_</a>") 
+End function 
 %> 

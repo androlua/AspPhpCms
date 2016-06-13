@@ -120,6 +120,25 @@ call aa()
 
 <!--#include virtual="/Inc/AspBox/Cls_AB.asp" -->          绝对路径加载asp文件
 
+
+字典操作
+dim i,s,key
+Set aspD = Server.CreateObject("Scripting.Dictionary")
+aspD.add "Abs", "返回数字的绝对值11111111" 
+aspD.add "Sqr", "返回数值表达式的平方根aaaaaaaaaaaaaaaaaaaaaaaa" 
+aspD.add "Sgn", "返回表示数字符号的整数22222222" 
+aspD.add "Rnd", "返回一个随机生成的数字33333333333333" 
+aspD.add "Log", "返回指定数值的自然对数ssssssssssssssss" 
+
+'上面必需换行，要想让ASP输出的值与PHP里一致，就必需这么做
+For Each s In aspD
+	key=s'phpno
+	s=aspD(key)'phpno
+	call echo(key, s)
+next
+
+
+
  
 {$TitleInSearchEngineList title='ASP在线帮助手册速查版'$}
 【/bodycontent】

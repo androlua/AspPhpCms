@@ -21,7 +21,7 @@
 	<div class="clear">
 	</div>
 	<div class="acontent">
-        <form name="listform" method="post" action="?act=dispalyManageHandle&actionType=[$actionType$]&lableTitle=[$lableTitle$]&page=[$page$]">
+         <form name="listform" method="post" action="" onSubmit="refreshPage('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');return false;">
         <div class="explain-col">
                 <select name="searchfield" id="searchfield">
                 <option value="webkeywords" selected>ËÑË÷×Ö¶Î</option>
@@ -29,8 +29,8 @@
                 <option value="ncomputersearch"[$searchfield if='ncomputersearch' value=' selected'$]>µçÄÔä¯ÀÀÁ¿</option>
                 </select>
                 ¹Ø¼ü×Ö£º			 
-                <input type="text" name="keyword" value="[$keyword$]" style="width:200px">			 
-                <input type="submit" value="ËÑË÷" class="btnclick2" id="dosubmit" name="dosubmit">		         
+                <input type="text" name="keyword" value="[$keyword$]" style="width:200px">			  
+						<input type="submit" value="ËÑË÷" class="btnclick2" id="dosubmit" name="dosubmit">	         
         </div>
 		<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#CFCFCF" align="center" style="margin-top:8px">
 		<tbody>

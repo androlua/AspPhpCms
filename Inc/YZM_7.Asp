@@ -27,7 +27,7 @@ Dim Lines(), LineCount
 Dim CursorX, CursorY, DirX, DirY
 
 Randomize
-Call CreatValidCode("YZM")
+Call CreatValidCode("yzm")
 
 Sub CDGen_Reset()
 	' 复位矢量笔和环境变量

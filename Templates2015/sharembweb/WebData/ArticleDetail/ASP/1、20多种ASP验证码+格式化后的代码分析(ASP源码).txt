@@ -31,6 +31,12 @@
 <li><a href="http://www.codesky.net/codedown/html/29007.htm" rel="nofollow" rel="nofollow" target="_blank">【codesky】12个ASP验证码+代码超美化分析(ASP源码)</a></li>  
 
 </ul>
+
+
+
+ 
+
+
 <br>
 <b>下面这些下载地址我没有发布过，可能是从上面引用过来，链接：</b><br> 
 <ul class="list">
@@ -44,6 +50,16 @@
 <li><a href="http://www.pudn.com/downloads608/sourcecode/web/detail2479216.html" rel="nofollow" rel="nofollow" target="_blank">【pudn】20多种ASP验证码源码 v1.0 (ASP源码)</a></li> 
 
 </ul>
+
+
+<br>
+<b>下面文章引用：</b><br>
+<ul class="list">  
+<li><a href="http://aspforever.com/asp/gaojijishu/chengxuanquan/neirong/299/" rel="nofollow" target="_blank"> asp中使用验证码来彻底防止网络垃圾信息群发和暴力破解密码</a></li> 
+
+</ul>
+
+
  <br><br>
 {$TitleInSearchEngineList title='20多种ASP验证码 v1.0'$}
 

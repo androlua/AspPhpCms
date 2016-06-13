@@ -3,7 +3,7 @@
 【webtitle】什么是网页快照？
 【webkeywords】什么是网页快照？_网页快照介绍
 【webdescription】搜索引擎在收录网页时，对网页进行备份，存在自己的服务器缓存里，当用户在搜索引擎中点击“网页快照”链接时，搜索引擎将Spider系统当时所抓取并保存的网页内容展现出来，称为“网页快照” QQ313801120
-【sortrank】10
+【sortrank】11
 【author】sharembweb
 【adddatetime】2016-03-31 07:14:05
 【filename】/SEO/WebCache-about.html

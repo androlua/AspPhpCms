@@ -17,11 +17,13 @@
 </div>
 <div class="mg10">
 	<div class="atitleleft">[$lableTitle$]信息</div>
-	<a href="javascript:clickControl('?act=updateWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要更新全部统计吗？\n操作需要较长时间')" class="atitleleft mgl10">更新全部统计</a>
-	<a href="javascript:clickControl('?act=clearWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要清空全部统计吗？\n操作后将不可恢复')" class="atitleleft mgl10">清空全部统计</a>
-	<a href="javascript:clickControl('?act=updateTodayWebStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要更新今天统计吗？\n操作需要较长时间')" class="atitleleft mgl10">更新今天统计</a>
+	<a href="javascript:clickControl('?act=function&stype=updateWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要更新全部统计吗？\n操作需要较长时间')" class="atitleleft mgl10">更新全部统计</a>
+	<a href="javascript:clickControl('?act=function&stype=clearWebsiteStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要清空全部统计吗？\n操作后将不可恢复')" class="atitleleft mgl10">清空全部统计</a>
+	<a href="javascript:clickControl('?act=function&stype=updateTodayWebStat','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要更新今天统计吗？\n操作需要较长时间')" class="atitleleft mgl10">更新今天统计</a>
+	<a href="javascript:clickControl('?act=function&stype=updateTodayWebStat&date=-1','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" onClick="return new xyClass().myConfirm('你确定要更新今天统计吗？\n操作需要较长时间')" class="atitleleft mgl10">更新昨天统计</a>
     
-	<a href="javascript:clickControl('?act=websiteDetail','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')" class="atitleleft mgl10">网站统计详细</a>
+	<a href="javascript:clickControl('?act=function&stype=websiteDetail','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')"  onClick="return new xyClass().myConfirm('你确定要网站统计详细吗？\n操作需要较长时间')"  class="atitleleft mgl10">网站统计详细</a>
+	<a href="javascript:clickControl('?act=function&stype=displayAccessDomain','[$actionType$]','[$lableTitle$]','[$page$]','[$id$]')"  onClick="return new xyClass().myConfirm('你确定要显示访问域名吗？\n操作需要较长时间')"  class="atitleleft mgl10">显示访问域名</a>
 	<a href="javascript:addEditHandle('[$actionType$]','[$lableTitle$]','[$page$]','');" class="atitleright">添加[$lableTitle$]</a>&nbsp;
 	<div class="clear">
 	</div>
@@ -45,8 +47,9 @@
             <option value="order by aaa desc" [$addsql if='order by aaa desc' value=' selected'$]>让程序出错</option>
             </select>            
             关键字：				 
-            <input type="text" name="keyword" value="[$keyword$]" style="width:200px">				 
-            <input type="submit" value="搜索" class="btnclick2" id="dosubmit" name="dosubmit">        
+            <input type="text" name="keyword" value="[$keyword$]" style="width:200px">				
+						 
+						<input type="submit" value="搜索" class="btnclick2" id="dosubmit" name="dosubmit">		      
         </div>
 		<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#CFCFCF" align="center" style="margin-top:8px">
 		<tbody>
@@ -99,6 +102,9 @@
               <option value="20"[$nPageSize if='20' value=' selected'$]>每页显示20条</option>
               <option value="30"[$nPageSize if='30' value=' selected'$]>每页显示30条</option>
               <option value="40"[$nPageSize if='40' value=' selected'$]>每页显示40条</option>
+              <option value="50"[$nPageSize if='50' value=' selected'$]>每页显示50条</option>
+              <option value="100"[$nPageSize if='100' value=' selected'$]>每页显示100条</option>
+              <option value="300"[$nPageSize if='300' value=' selected'$]>每页显示300条</option>
             </select>            </td>
 		</tr> 
 		<tr align="right" bgcolor="#F9FCEF">

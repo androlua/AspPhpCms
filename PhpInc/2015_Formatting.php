@@ -26,7 +26,7 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
 
     $action= '|' . $action . '|'; //动作
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $tempS= $s ; $elseS= $s;
         $s= trimVbCrlf($s) ; $lCaseS= strtolower($s);
         //判断于20150710
@@ -91,7 +91,7 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
             //开始
             if( $keyWord <> '' ){
                 $s= copyStr('    ', $nLevel) . $s;
-                if( substr($lCaseS, - 3 + strlen($lableName)) <> '</' . $lableName . '>' && instr($lCaseS, '</' . $lableName . '>')== false ){
+                if( Right($lCaseS, 3 + Len($lableName)) <> '</' . $lableName . '>' && instr($lCaseS, '</' . $lableName . '>')== false ){
                     $nLevel= $nLevel + 1;
                     if( $nLevel >= 0 ){
                         $levelArray[$nLevel]= $keyWord;
@@ -103,22 +103,22 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
             }else{
                 $s= copyStr('    ', $nLevel) . $s;
                 //最后是结束标签则减一级
-                if( substr($lCaseS, - 6)== '</div>' ){
+                if( Right($lCaseS, 6)== '</div>' ){
                     if( checkHtmlFormatting($lCaseS)== false ){
-                        $s= substr($s, 0 , strlen($s) - 6);
+                        $s= substr($s, 0 , Len($s) - 6);
                         $nLevel= $nLevel - 1;
                         $s= $s . vbCrlf() . copyStr('    ', $nLevel) . '</div>';
                     }
-                }else if( substr($lCaseS, - 7)== '</span>' ){
+                }else if( Right($lCaseS, 7)== '</span>' ){
                     if( checkHtmlFormatting($lCaseS)== false ){
-                        $s= substr($s, 0 , strlen($s) - 7);
+                        $s= substr($s, 0 , Len($s) - 7);
                         $nLevel= $nLevel - 1;
                         $s= $s . vbCrlf() . copyStr('    ', $nLevel) . '</span>';
                     }
                 }else if( instr('|</ul>|</dt>|<dl>|<dd>|', $left5Str) > 0 ){
-                    $s= substr($s, 0 , strlen($s) - 5);
+                    $s= substr($s, 0 , Len($s) - 5);
                     $nLevel= $nLevel - 1;
-                    $s= $s . vbCrlf() . copyStr('    ', $nLevel) . substr($lCaseS, - 5);
+                    $s= $s . vbCrlf() . copyStr('    ', $nLevel) . Right($lCaseS, 5);
                 }
 
 
@@ -167,18 +167,18 @@ function formatting($content, $action){
     $isA= false ; $isTextarea= false ; $isScript= false ; $isStyle= false ; $isPre= false;
     $content= Replace(Replace($content, vbCrlf(), Chr(10)), "\t", '    ');
 
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         $endStr= mid($content, $i,-1);
         if( $s== '<' ){
             if( instr($endStr, '>') > 0 ){
                 $s= mid($endStr, 1, instr($endStr, '>'));
-                $i= $i + strlen($s) - 1;
-                $s= mid($s, 2, strlen($s) - 2);
-                if( substr($s, - 1)== '/' ){
-                    $s= phptrim(substr($s, 0 , strlen($s) - 1));
+                $i= $i + Len($s) - 1;
+                $s= mid($s, 2, Len($s) - 2);
+                if( Right($s, 1)== '/' ){
+                    $s= phptrim(substr($s, 0 , Len($s) - 1));
                 }
-                $endStr= substr($endStr, - strlen($endStr) - strlen($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
+                $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面
                 $labelName= mid($s, 1, instr($s . ' ', ' ') - 1);
                 $labelName= strtolower($labelName);
@@ -224,7 +224,7 @@ function formatting($content, $action){
                     //处理这个            aaaaa</span>
                     if( $isA== false && $isYes== false && substr($labelName, 0 , 1)== '/' && $labelName <> '/script' && $labelName <> '/a' ){
                         //排除这种    <span>天天发团</span>     并且判断上一个字段不等于vbcrlf换行
-                        if( '/' . $parentLableName <> $labelName && substr(AspTrim($c), - 1) <> Chr(10) ){
+                        if( '/' . $parentLableName <> $labelName && Right(AspTrim($c), 1) <> Chr(10) ){
                             $s= Chr(10) . $s;
                         }
                     }
@@ -255,7 +255,7 @@ function formatting($content, $action){
                         $s= Chr(10);
                     }
                     // Right(Trim(c), 1) = ">")   为在压缩时用到
-                }else if( (substr(AspTrim($c), - 1)== Chr(10) || substr(AspTrim($c), - 1)== '>') && phptrim($s)== '' && $isTextarea== false && $isScript== false ){
+                }else if( (Right(AspTrim($c), 1)== Chr(10) || Right(AspTrim($c), 1)== '>') && phptrim($s)== '' && $isTextarea== false && $isScript== false ){
                     $s= '';
                 }
             }
@@ -277,7 +277,7 @@ function checkHtmlFormatting( $content){
     $splStr=''; $s=''; $c=''; $splxx=''; $nLable=''; $lableStr ='';
     $content= strtolower($content);
     $splStr= aspSplit('ul|li|dt|dd|dl|div|span', '|');
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $s= phptrim($s);
         if( $s <> '' ){
             $nLable= 0;

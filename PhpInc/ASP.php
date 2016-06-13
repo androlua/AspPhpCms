@@ -23,6 +23,46 @@ function RR($url){
 }
 //thinkphpdel end
 
+/**
+* 方法:isdate()   引用别人加自我改进 20160425
+*/
+function isDate($str){
+	$str=str_replace('/', '-', $str);
+	$strArr = explode("-",$str);
+	if(instr($str," ")>0){
+		$format="Y-m-d H:i:s";
+	}else{
+		$format="Y-m-d";
+	}	
+	if(empty($strArr)){
+		return 0;
+	}
+	foreach($strArr as $val){
+		if(strlen($val)<2){
+			$val="0".$val;
+		}
+		$newArr[]=$val;
+	}
+	$str = implode("-",$newArr);
+    $unixTime=strtotime($str);
+    $checkDate= date($format,$unixTime);
+    if($checkDate==$str){
+        return 1;
+    }else{
+        return 0;
+	}
+}
+/*
+//判断时间
+function isDate($timeStr){
+	if(instr($timeStr,"-")>0 || instr($timeStr,"\/")>0 || instr($timeStr," ")>0){
+		return true;
+	}else{
+		return false;
+	}
+}
+*/
+
 //给ASP用  使用echo(rnd());
 function Rnd(){
 	return (float)("0.".rand(1000000,9999999));
@@ -39,36 +79,7 @@ function Replace2($c,$findStr,$replaceStr){
 function aspSplit($contnet,$splStr){
 	return explode($splStr,$contnet);
 }
-//字符长度
-function Len($content){
-	return strlen($content);				//采用这种
-	//return strlen($content);
-	//	return mb_strlen($content,'gb2312');
-	$split = 1;	
-	$n = 0;
-	$array = array ();
-	//echo (strlen ( $content ) . "<hr>");
-	for($i = 0; $i < strlen ( $content );) {
-		$value = ord ( $content [$i] );
-		if ($value > 127) {
-			if ($value >= 192 && $value <= 223)
-				$split = 2;
-			elseif ($value >= 224 && $value <= 239)
-				$split = 3;
-			elseif ($value >= 240 && $value <= 247)
-				$split = 4;
-		} else {
-			$split = 1;
-		}
-		$key = NULL;
-		for($j = 0; $j < $split; $j ++, $i ++) {
-			$key .= $content [$i];
-			$n ++;
-		} 
-		array_push ( $array, $key );
-	} 
-	return Count ( $array );
-}
+
 //获得时间
 function Now(){
 	$s=date('Y/m/d H:i:s');
@@ -181,83 +192,11 @@ function Cstr($str){
 	return strval($str);
 	
 }
+//判断是否为空
+function IsNull($content){
+	return is_null($content);
+}
 
-/*测试 mid正确性
-dim c,s
-c="000000000{@1111标题2222@}333333333"
-response.Write(c & "<hr>")
-s=mid(c,1,instr(c,"@}"))
-response.Write(s & "<hr>")
-s=mid(c,1,instr(s,"{@"))
-response.Write(s & "<hr>")
-*/
-
-//截取字符(完善于20150806)
-function Mid($content,$nStart,$nLength=-1){
-	$nStart--;				//可以从1开始
-	if($nLength==-1){
-		$nLength=strlen ( $content );
-	}else{
-		//$nLength--;
-	} 
-	return substr($content, $nStart, $nLength) ;
-}
-function Mid2($content,$nStart,$nLength=-1){
-	$split = 1;	
-	$n = 0;	
-	if($nLength==-1){
-		$nLength=strlen ( $content );
-	}else{
-		$nLength +=$nStart-1;
-	}
-	if($nLength>strlen ( $content )){
-		$nLength=strlen ( $content );
-	}
-	$array = array ();
-	//echo (strlen ( $content ) . "<hr>");
-	for($i = 0; $i < strlen ( $content );) {
-		$value = ord ( $content [$i] );
-		if ($value > 127) {
-			if ($value >= 192 && $value <= 223)
-				$split = 2;
-			elseif ($value >= 224 && $value <= 239)
-				$split = 3;
-			elseif ($value >= 240 && $value <= 247)
-				$split = 4;
-		} else {
-			$split = 1;
-		}
-		$key = NULL;
-		for($j = 0; $j < $split; $j ++, $i ++) {
-			$key .= $content [$i];
-			$n ++;
-		} 
-		array_push ( $array, $key );
-	}
-	$c="";
-	for($i=$nStart-1;$i<=Count($array);$i++){
-		if($i>=$nLength){
-			break;
-		}		
-		$c=$c.$array[$i];
-	}
-	return $c;
-}
-//查找字符所在位置
-function InStr($content,$search){	 
-	if(is_array($content)){ 
-		$content=arrayToString($content,"");
-	}	
-	if( $search!=""){
-		if(strstr($content,$search)){
-			return strpos($content,$search)+1;
-		}else{
-			return 0;
-		}
-	}else{
-		return 0;
-	}
-}
 //PHP正则表达式
 function test_regexp($content,$search){
 	$newSearch=replace($search,'.', '\.');
@@ -297,14 +236,7 @@ function FormatNumber($content,$n){
 }
 
 
-//判断时间
-function isDate($timeStr){
-	if(instr($timeStr,"-")>0 || instr($timeStr,"\/")>0 || instr($timeStr," ")>0){
-		return true;
-	}else{
-		return false;
-	}
-}
+
 //获得年
 function Year($timeStr){
 	return (int)getYMDHMS($timeStr,0);
@@ -456,14 +388,49 @@ function Int($string){
 	//$string1=intval($string); 	
 	return intval($string);
 }
+//同一使用gb2312字符操作方式操作20160520 
 //left函数
 function left($str,$nlength){
-	return substr($str, 0 ,$nlength);
+	return mb_substr($str, 0 ,$nlength,'gb2312');
 }
 //right函数
 function right($str,$nlength){
-	return substr($str, $nlength*-1);
+	return mb_substr($str, $nlength*-1,999999,'gb2312');			//用  mb_substr  比用 substr  更适用于asp转换php用法   20160511  用999999不能用-1，那样就少截取一个字符
 }
+//Mid
+function Mid($content,$nStart,$nLength=-1){
+	$nStart-=1;
+ 	if($nLength==-1){
+		$nLength=Len($content);
+	}
+	return mb_substr($content,$nStart,$nLength,'gb2312');
+}
+//字符长度
+function Len($content){
+	//return strlen($content);				//采用这种   不采用这种，对汉字处理不了20160413
+	return mb_strlen($content,'gb2312');	//用这会
+}
+function PHPStrLen_temp($content){
+	return Len($content);
+}
+//查找字符所在位置
+function InStr($content,$search){	 
+	if(is_array($content)){ 
+		$content=arrayToString($content,"");
+	}	
+	if( $search!=""){
+		
+		if(strstr($content,$search)!=''){
+			return mb_strpos($content,$search,0,"gb2312")+1;
+		}else{
+			return 0;
+		}
+	}else{
+		return 0;
+	}
+}
+
+
 //vbcrlf
 function vbCrlf(){
 	return chr(13) . chr(10);
@@ -629,24 +596,39 @@ function getFieldConfigList($tableName){
 	}
 	return $c;
 }
-//url加密    //url解码  unescape  待添加
-function escape($str){
-    $sublen=strlen($str);
-    $retrunString="";
-    for ($i=0;$i<$sublen;$i++){
-        if(ord($str[$i])>=127)
-            {
-            $tmpString=bin2hex(iconv("gb2312","ucs-2",substr($str,$i,2)));
-            //$tmpString=substr($tmpString,2,2).substr($tmpString,0,2);window下可能要打开此项
-            $retrunString.="%u".$tmpString;
-            $i++;
-        } else
-            {
-            $retrunString.="%".dechex(ord($str[$i]));
-        }
-    }
-    return $retrunString;
+
+/* sys_URL.php有更完善
+//url解密  20160506    待测试
+function unescape($str){ 
+    $ret = ''; 
+    $len = strlen($str); 
+    for ($i = 0; $i < $len; $i ++) 
+    { 
+        if ($str[$i] == '%' && $str[$i + 1] == 'u') 
+        { 
+            $val = hexdec(substr($str, $i + 2, 4)); 
+            if ($val < 0x7f) 
+                $ret .= chr($val); 
+            else  
+                if ($val < 0x800) 
+                    $ret .= chr(0xc0 | ($val >> 6)) . 
+                     chr(0x80 | ($val & 0x3f)); 
+                else 
+                    $ret .= chr(0xe0 | ($val >> 12)) . 
+                     chr(0x80 | (($val >> 6) & 0x3f)) . 
+                     chr(0x80 | ($val & 0x3f)); 
+            $i += 5; 
+        } else  
+            if ($str[$i] == '%') 
+            { 
+                $ret .= urldecode(substr($str, $i, 3)); 
+                $i += 2; 
+            } else 
+                $ret .= $str[$i]; 
+    } 
+    return $ret; 
 }
+*/
 //获得当前时期还可以计算
 function getHandleDate($numb){
 	if($numb<>''){ 
@@ -655,6 +637,16 @@ function getHandleDate($numb){
 		return date("Y-m-d" );
 	}
 } 
+
+//获得POST字段名称列表 20160226
+function getFormFieldList(){
+    $s='';$c='';$splstr='';
+	foreach( @$_POST as $key=>$s){ 
+        if( $c<>'' ){ $c=$c . '|';}
+        $c=$c . $key;
+    }
+    return $c;
+}
 
 //删除Html
 function delHtml($str){
@@ -667,8 +659,7 @@ function clearCookie($cookieName){
 //移除cookie
 function removeCookie($cookieName){
 	setcookie($cookieName);
-}
-
+} 
 function XY_AutoAddHandle($Action){
 	return "";
 }

@@ -3,7 +3,7 @@
 【webtitle】sublime text3 使用技术及常用插件介绍 - 分享模板网站
 【webkeywords】sublimetext3使用技术，sublimetext3常用插件介绍 - 分享模板网站
 【webdescription】sublime text3 使用技术及常用插件介绍 - 分享模板网站
-【sortrank】6
+【sortrank】1
 【author】sharembweb
 【adddatetime】2016-03-17 13:20:26
 【filename】/morearticle/sublime-text3-use.html

@@ -50,8 +50,7 @@ Public Sub OpenConn()
 			
 		ElseIf SqlServerDatabaseName<>"" Then 
 			SqlServerHostIP = "127.0.0.1,1433" 'SQL主机IP地址（服务器名）在2008版本使用 
-			'SqlServerHostIP ="(local),1433"  '不可以
-			
+			'SqlServerHostIP ="(local),1433"  '不可以 
 			
 		End If 
 		ConnStr = " Password = " & SqlServerPassword & "; user id =" & SqlServerUsername & "; Initial Catalog =" & SqlServerDatabaseName & "; data source =" & SqlServerHostIP & ";Provider = sqloledb;"

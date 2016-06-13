@@ -1,5 +1,5 @@
 <!--#Include File = "../Inc/Config.Asp"--> 
-<!--#Include File = "function.asp"--> 
+<!--#Include File = "../Inc/admin_function.asp"--> 
 <!DOCTYPE html> 
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 <head> 
@@ -51,10 +51,10 @@ End If
 
 
 Select Case Request("act")
-    Case "templateFileList" : folderSearch(Request("dir")) : templateFileList(Request("dir"))'模板列表
-    Case "delTemplateFile" : Call delTemplateFile(Request("dir"), Request("fileName")) : folderSearch(Request("dir")) : templateFileList(Request("dir"))
-    Case "addEditFile" : folderSearch(Request("dir")) : Call addEditFile(Request("dir"), Request("fileName"))'显示添加修改文件
-    Case Else : folderSearch(Request("dir"))                                        '默认
+    Case "templateFileList" : displayTemplateDirDialog(Request("dir")) : templateFileList(Request("dir"))'模板列表
+    Case "delTemplateFile" : Call delTemplateFile(Request("dir"), Request("fileName")) : displayTemplateDirDialog(Request("dir")) : templateFileList(Request("dir"))		'删除模板文件
+    Case "addEditFile" : displayTemplateDirDialog(Request("dir")) : Call addEditFile(Request("dir"), Request("fileName"))'显示添加修改文件
+    Case Else : displayTemplateDirDialog(Request("dir"))                                        '显示模板目录面板
 End Select
 
 '模板文件列表
@@ -69,7 +69,7 @@ Sub templateFileList(dir)
     For Each fileName In splStr
 		if fileName<>"" then
 			s = "<a href=""../index.asp?templatedir=" & escape(dir) & "&templateName=" & fileName & """ target='_blank'>预览</a> " 
-			Call echo(fileName, s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>修改</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>删除</a>") 
+			Call echo("<img src='Images/Icon/2/htm.gif'>" & fileName, s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>修改</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>删除</a>") 
 		end if
     Next 
 End Sub
@@ -84,11 +84,24 @@ Sub delTemplateFile(dir, fileName)
     Call deleteFile(filePath) 
     Call echo("删除文件", filePath) 
 End Sub
+
+'显示面板样式列表
+function displayPanelList(dir)
+	dim content,splstr,s,c
+	content=getDirFolderNameList(dir)
+	splstr=split(content,vbcrlf)
+	c="<select name='selectLeftStyle'>"
+	for each s in splstr
+		s="<option value=''>"& s &"</option>"
+		c=c & s & vbcrlf
+	next
+	displayPanelList = c & "</select>"	
+end function
  
 
 '添加修改文件
 Function addEditFile(dir, fileName)
-    Dim filePath 
+    Dim filePath,promptMsg
 	
     If Right(LCase(fileName), 5) <> ".html" and Session("adminusername") <> "ASPPHPCMS" Then
         fileName = fileName & ".html" 
@@ -104,19 +117,20 @@ Function addEditFile(dir, fileName)
     '保存内容
     If Request("issave") = "true" Then
         Call createfile(filePath, Request("content")) 
+		promptMsg="保存成功"
     End If 
 %> 
 <form name="form1" method="post" action="?act=addEditFile&issave=true"> 
-  <table width="800" border="0" cellspacing="0" cellpadding="0" class="tableline"> 
+  <table width="99%" border="0" cellspacing="0" cellpadding="0" class="tableline"> 
     <tr> 
       <td height="30">目录<% =dir%><br> 
       <input name="dir" type="hidden" id="dir" value="<% =dir%>" /></td> 
     </tr> 
     <tr> 
       <td>文件名称 
-      <input name="fileName" type="text" id="fileName" value="<% =fileName%>" size="40"> 
+      <input name="fileName" type="text" id="fileName" value="<% =fileName%>" size="40"><%=promptMsg%>
       <br> 
-      <textarea name="content" cols="110" rows="25" id="content"><%call rw(getFText(filePath))%></textarea></td> 
+      <textarea name="content"  style="width:99%;height:480px;"id="content"><%call rw(getFText(filePath))%></textarea></td> 
     </tr> 
     <tr> 
       <td height="40" align="center"><input type="submit" name="button" id="button" value=" 保存 " /></td> 
@@ -125,13 +139,23 @@ Function addEditFile(dir, fileName)
 </form>
 <% End Function
 '文件夹搜索
-Function folderSearch(dir)
+Function displayTemplateDirDialog(dir)
+	dim folderPath
 %> 
 <form name="form2" method="post" action="?act=templateFileList"> 
-  <table width="800" border="0" cellspacing="0" cellpadding="0" class="tableline"> 
+  <table width="99%" border="0" cellspacing="0" cellpadding="0" class="tableline"> 
     <tr> 
       <td height="30"><input name="dir" type="text" id="dir" value="<% =dir%>" size="60" /> 
-        <input type="submit" name="button2" id="button2" value=" 进入 " /></td> 
+        <input type="submit" name="button2" id="button2" value=" 进入 " /><%
+		folderPath=dir & "/images/column/"
+		if checkFolder(folderPath) then
+			call rw("面板样式" & displayPanelList(folderPath))
+		end if
+		folderPath=dir & "/images/nav/"
+		if checkFolder(folderPath) then
+			call rw("导航样式" & displayPanelList(folderPath))
+		end if
+		%></td> 
     </tr> 
   </table> 
 </form> 

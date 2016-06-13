@@ -117,7 +117,7 @@ function XY_ReadColumeSetTitle($action){
     $valueStr= findModuleStr($GLOBALS['code'], $valueStr); //找模块对应内容
 
     $MoreClass= RParam($action, 'MoreClass');
-    $MoreUrl= AspTrim(RParam($action, 'MoreUrl'));
+    $MoreUrl= PHPTrim(RParam($action, 'MoreUrl'));
     $MoreStr= RParam($action, 'MoreStr');
     $valueStr= handleInModule($valueStr, 'end');
     $c= readColumeSetTitle($action, $Style, $title, $valueStr);
@@ -125,7 +125,7 @@ function XY_ReadColumeSetTitle($action){
     if( $MoreClass== '' ){ $MoreClass= 'more' ;}//More链接为空 则用默认代替
     //If MoreUrl="" Then MoreUrl="#"                    'More链接网址为空 则用默认#代替
     //More链接样式不能为空，因为没有样式它就不能让More在最近边
-    if( $MoreUrl <> '' && $MoreStr <> '' ){ 
+    if( $MoreUrl <> '' && $MoreStr <> '' ){
         //AStr = "<a href='"& MoreUrl &"' class='"& MoreClass &"'>"& MoreStr &"</a>"
         $aStr= '<a ' . AHref($MoreUrl, $title, '') . ' class=\'' . $MoreClass . '\'>' . $MoreStr . '</a>';
         $c= Replace($c, '<!--#AMore#-->', $aStr);
@@ -150,22 +150,22 @@ function readColumeSetTitle($action, $id, $ColumeTitle, $ColumeContent){
     //标题宽
     $TitleWidth= AspTrim($TitleWidth);
     //自动加px单位，不加会无效果 20150115
-    if( substr($TitleHeight, - 1) <> '%' && substr($TitleHeight, - 2) <> 'px' && $TitleHeight <> '' && $TitleHeight <> 'auto' ){
+    if( Right($TitleHeight, 1) <> '%' && Right($TitleHeight, 2) <> 'px' && $TitleHeight <> '' && $TitleHeight <> 'auto' ){
         $TitleHeight= $TitleHeight . 'px';
     }
-    if( substr($TitleWidth, - 1) <> '%' && substr($TitleWidth, - 2) <> 'px' && $TitleWidth <> '' && $TitleWidth <> 'auto' ){
+    if( Right($TitleWidth, 1) <> '%' && Right($TitleWidth, 2) <> 'px' && $TitleWidth <> '' && $TitleWidth <> 'auto' ){
         $TitleWidth= $TitleWidth . 'px';
     }
     //内容高
     $ContentHeight= AspTrim($ContentHeight);
     //自动加px单位，不加会无效果 20150115
-    if( substr($ContentHeight, - 1) <> '%' && substr($ContentHeight, - 2) <> 'px' && $ContentHeight <> '' && $ContentHeight <> 'auto' ){
+    if( Right($ContentHeight, 1) <> '%' && Right($ContentHeight, 2) <> 'px' && $ContentHeight <> '' && $ContentHeight <> 'auto' ){
         $ContentHeight= $ContentHeight . 'px';
     }
     //内容宽
     $ContentWidth= AspTrim($ContentWidth);
     //自动加px单位，不加会无效果 20150115
-    if( substr($ContentWidth, - 1) <> '%' && substr($ContentWidth, - 2) <> 'px' && $ContentWidth <> '' && $ContentWidth <> 'auto' ){
+    if( Right($ContentWidth, 1) <> '%' && Right($ContentWidth, 2) <> 'px' && $ContentWidth <> '' && $ContentWidth <> 'auto' ){
         $ContentWidth= $ContentWidth . 'px';
     }
 

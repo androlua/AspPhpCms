@@ -1,0 +1,31 @@
+【parentid】JS
+【title】JS常用代码与案例
+【webtitle】JS常用代码与案例
+【webkeywords】JS常用代码与案例
+【webdescription】JS常用代码与案例 QQ313801120
+【sortrank】2
+【author】sharembweb
+【adddatetime】2016-05-10 09:45:02
+【filename】/js/js-use-cases.html
+【flags】|
+【relatedtags】HTML5
+【bodycontent】[&全部换行&][&html转码&]【strong】JS常用代码与案例【/strong】
+【b】js while循环数组另一种方法【/b】
+while ( (cur = cur.parentNode) ) {
+	bp.unshift( cur );
+}
+
+【b】JS代码借鉴与学习【/b】
+return JSON.parse( data + "" );
+
+【b】循环数组 另一种方法【/b】
+splstr=new Array("a","1111","bbbb",2222,"cccc");
+for(var i in splstr){
+	document.write(i+"、"+splstr[i] + "<hr>\n");
+}
+
+
+
+{$TitleInSearchEngineList title='JS常用代码与案例'$}
+
+【/bodycontent】 

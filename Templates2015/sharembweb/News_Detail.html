@@ -23,12 +23,14 @@
             <li class="title"><h1>[$detailTitle$]</h1></li>
             <li class="content">
            <div class="articletimes">作者：[$glb_artitleAuthor$] 发表于：[$glb_artitleAdddatetime format_time='1'$]</div>
+           		<div style="font-size:16px;padding:0 20px;line-height:30px;  font-family: SimSun;">
                 [$detailContent$]
                 [$glb_aritcleRelatedTags$]
                 <ul class=""updownarticlewrap"">
                 <li>{$glb_upArticle$}</li>
                 <li>{$glb_downArticle$}</li>
                 </ul>
+                </div>
             </li>
         </ul>
         
@@ -74,14 +76,23 @@
                 </ul> 
               <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=articlecomment&itemid=[$glb_Id$]" target="_blank"  onSubmit="return formSubmit()">
                 <textarea name="content" placeholder="我也来说两句..."></textarea>
+                <br>
+                验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="\inc/yzm_7.asp" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '/inc/yzm_7.asp?'+Math.random()*10000"/><br>
+                
+                
                 <input type="submit" class="mybtn" value="评论" />
 评论支持使用[code][/code]标签添加代码
               </form>
 <script language="javascript">
 function formSubmit(){
-    if(document.all.formcomment.content.value==""){
-        document.all.formcomment.content.focus();
+    if(formcomment.content.value==""){
+        formcomment.content.focus();
         alert("评论内容不能为空");
+        return false;
+    }
+    if(formcomment.yzm.value==''){
+        formcomment.yzm.focus();
+        alert('请输入验证码');
         return false;
     }
 }

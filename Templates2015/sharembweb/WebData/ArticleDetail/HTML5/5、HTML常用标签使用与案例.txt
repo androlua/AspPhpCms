@@ -1,0 +1,25 @@
+【parentid】HTML5
+【title】HTML常用标签使用与案例
+【webtitle】HTML常用标签使用与案例
+【webkeywords】HTML常用标签使用与案例
+【webdescription】HTML常用标签使用与案例 QQ313801120
+【sortrank】5
+【author】sharembweb
+【adddatetime】2016-05-06 09:45:02
+【filename】/html5/html-use-cases.html
+【flags】|
+【relatedtags】HTML5
+【bodycontent】[&全部换行&][&html转码&]【strong】HTML常用标签使用与案例【/strong】
+【b】命名标记【/b】
+<a href="#1">#1</a> |　<a href="#2">#2</a>　｜　<a href="#3">#3</a>
+<div style=" background-color:#CCCCCC;height:500px;"></div>
+<a name="1"></a>111111111111
+<div style=" background-color:#CCCCCC;height:500px;"></div>
+<a name="2"></a>111111111111
+<div style=" background-color:#CCCCCC;height:500px;"></div>
+<a name="3"></a>111111111111
+
+
+{$TitleInSearchEngineList title='HTML常用标签使用与案例'$}
+
+【/bodycontent】 

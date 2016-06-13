@@ -1,4 +1,38 @@
 <% 
+
+'调用function文件函数
+Function callFunction()
+    Select Case Request("stype")
+    Case "updateWebsiteStat" : updateWebsiteStat()                                  '更新网站统计
+    Case "clearWebsiteStat" : clearWebsiteStat()                                    '清空网站统计
+    Case "updateTodayWebStat" : updateTodayWebStat()                                '更新网站今天统计
+    Case "websiteDetail" : websiteDetail()                                          '详细网站统计
+	case "displayAccessDomain" : displayAccessDomain()										'显示访问域名
+		
+        Case Else : Call eerr("function1页里没有动作", Request("stype"))
+    End Select
+End Function
+
+'显示访问域名
+function displayAccessDomain()
+	dim visitWebSite,visitWebSiteList,urlList,nOK
+    Call openconn() 							
+	nOK=0		
+    rs.Open "select * from " & db_PREFIX & "websitestat", conn, 1, 1
+    While Not rs.EOF
+		visitWebSite=lcase(getWebSite(rs("visiturl")))
+		'call echo("visitWebSite",visitWebSite)
+		if instr(vbcrlf & visitWebSiteList & vbcrlf,vbcrlf & visitWebSite & vbcrlf)=false then
+			if visitWebSite<>lcase(getWebSite(webDoMain())) then
+				visitWebSiteList=visitWebSiteList & visitWebSite & vbcrlf
+				nOK=nOK+1
+				urlList=urlList & nOK & "、<a href='" & rs("visiturl") & "' target='_blank'>" & rs("visiturl") & "</a><br>"
+			end if
+		end if
+	rs.movenext:wend:rs.close
+	call echo("显示访问域名","操作完成 <a href='javascript:history.go(-1)'>点击返回</a>")
+	call rwend(visitWebSiteList & "<br><hr><br>" & urlList)
+end function
 '获得处理后表列表 20160313
 Function getHandleTableList()
     Dim s, lableStr 
@@ -43,7 +77,7 @@ End Function
 Function getTemplateContent(templateFileName)
     Call loadWebConfig() 
     '读模板
-    Dim templateFile, customTemplateFile, content 
+    Dim templateFile, customTemplateFile, c
     customTemplateFile = ROOT_PATH & "template/" & db_PREFIX & "/" & templateFileName 
     '为手机端
     If checkMobile() = True Then
@@ -57,9 +91,9 @@ Function getTemplateContent(templateFileName)
             templateFile = ROOT_PATH & templateFileName 
         End If 
     End If 
-    content = getFText(templateFile) 
-    content = replaceLableContent(content) 
-    getTemplateContent = content 
+    c = getFText(templateFile) 
+    c = replaceLableContent(c) 
+    getTemplateContent = c
 End Function 
 '替换标签内容
 Function replaceLableContent(content)
@@ -230,17 +264,21 @@ Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId
             End If 
         rs.MoveNext : Next : rs.Close 
         showColumnList = c 
-End Function
-
-
-
+End Function 
 'msg1  辅助
 Function getMsg1(msgStr, url)
     Dim content 
     content = getFText(ROOT_PATH & "msg.html") 
     msgStr = msgStr & "<br>" & jsTiming(url, 5) 
     content = Replace(content, "[$msgStr$]", msgStr) 
-    content = Replace(content, "[$url$]", url) 
+    content = Replace(content, "[$url$]", url)
+	
+	
+    content = replaceL(content, "提示信息")
+    content = replaceL(content, "如果您的浏览器没有自动跳转，请点击这里")
+    content = replaceL(content, "倒计时")
+	
+	
     getMsg1 = content 
 End Function 
 
@@ -324,6 +362,7 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
         nCount = rs.RecordCount 
         nPage = Request("page") 
         content = Replace(content, "[$pageInfo$]", webPageControl(nCount, nPageSize, nPage, url, "")) 
+        content = Replace(content, "[$accessSql$]", sql) 
 
         If EDITORTYPE = "asp" Then
             x = getRsPageNumber(rs, nCount, nPageSize, nPage)                               '获得Rs页数                                                  '记录总数
@@ -413,13 +452,13 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
     content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE)                        'asp与phh
     content = Replace(content, "{$WEB_VIEWURL$}", WEB_VIEWURL)                      '前端浏览网址
     content = Replace(content, "{$Web_Title$}", cfg_webTitle) 
-
-
-
+ 
     content = content & stat2016(True) 
+	
+	content=handleDisplayLanguage(content,"handleDisplayLanguage")			'语言处理
+	
     Call rw(content) 
-End Function 
-
+End Function  
 
 '添加修改界面
 Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
@@ -600,6 +639,8 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
                 content = Replace(content, "[$input_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "500px", "input-text", "")) 
             ElseIf fieldSetType = "password" Then
                 content = Replace(content, "[$input_" & fieldName & "$]", "<input name='" & fieldName & "' type='password' id='" & fieldName & "' value='" & fieldValue & "' style='width:97%;' class='input-text'>") 
+			elseif instr(content,"[$textarea1_" & fieldName & "$]")>0 then
+			    content = Replace(content, "[$textarea1_" & fieldName & "$]", handleInputHiddenTextArea(fieldName, fieldValue, "97%", "120px", "input-text", "")) 
             Else
                 content = Replace(content, "[$input_" & fieldName & "$]", inputText2(fieldName, fieldValue, "97%", "input-text", "")) 
             End If 
@@ -651,6 +692,9 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
         content = Replace(content, "[$phpArray$]", "[]") 
     End If 
 
+
+	content=handleDisplayLanguage(content,"handleDisplayLanguage")			'语言处理
+	
     Call rw(content) 
 End Function 
 
@@ -714,9 +758,7 @@ Function del(actionName, lableTitle)
     tableName = LCase(actionName)                                                   '表名称
     Dim id 
 
-    Call handlePower("删除" & lableTitle)                                           '管理权限处理
-
-
+    Call handlePower("删除" & lableTitle)                                           '管理权限处理 
 
     id = Request("id") 
     If id <> "" Then
@@ -736,8 +778,7 @@ Function del(actionName, lableTitle)
 
         Call writeSystemLog(tableName, "删除" & lableTitle)                             '系统日志
     End If 
-End Function 
-
+End Function  
 
 '排序处理
 Function sortHandle(actionType)
@@ -781,9 +822,7 @@ Function updateField()
     url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
     Call rw(getMsg1("操作成功，正在返回列表...", url)) 
 
-End Function 
-
-
+End Function  
 
 '保存robots.txt 20160118
 Sub saveRobots()
@@ -791,172 +830,10 @@ Sub saveRobots()
     Call handlePower("修改生成Robots")                                              '管理权限处理
     bodycontent = Request("bodycontent") 
     Call createfile(ROOT_PATH & "/../robots.txt", bodycontent) 
-    url = "?act=displayLayout&templateFile=makeRobots.html&lableTitle=生成Robots" 
+    url = "?act=displayLayout&templateFile=layout_makeRobots.html&lableTitle=生成Robots" 
     Call rw(getMsg1("保存Robots成功，正在进入Robots界面...", url)) 
 
     Call writeSystemLog("", "保存Robots.txt")                                       '系统日志
-End Sub 
-
-
-'保存sitemap.xml 20160118
-Sub saveSiteMap()
-    Dim isWebRunHtml                                                                '是否为html方式显示网站
-    Dim changefreg                                                                  '更新频率
-    Dim priority                                                                    '优先级
-    Dim c, url 
-    Call handlePower("修改生成SiteMap")                                             '管理权限处理
-
-    changefreg = Request("changefreg") 
-    priority = Request("priority") 
-    Call loadWebConfig()                                                            '加载配置
-    'call eerr("cfg_flags",cfg_flags)
-    If InStr(cfg_flags, "|htmlrun|") > 0 Then
-        isWebRunHtml = True 
-    Else
-        isWebRunHtml = False 
-    End If 
-
-    c = c & "<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf 
-    c = c & vbTab & "<urlset xmlns=""http://www.sitemaps.org/schemas/sitemap/0.9"">" & vbCrLf 
-
-    '栏目
-    rsx.Open "select * from " & db_PREFIX & "webcolumn order by sortrank asc", conn, 1, 1 
-    While Not rsx.EOF
-        If rsx("nofollow") = False Then
-            c = c & copystr(vbTab, 2) & "<url>" & vbCrLf 
-
-            If isWebRunHtml = True Then
-                url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
-            Else
-                url = escape("?act=nav&columnName=" & rsx("columnname")) 
-            End If 
-            url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-            'call echo(cfg_webSiteUrl,url)
-
-            c = c & copystr(vbTab, 3) & "<loc>" & url & "</loc>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<lastmod>" & format_Time(rsx("updatetime"), 2) & "</lastmod>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<changefreq>" & changefreg & "</changefreq>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<priority>" & priority & "</priority>" & vbCrLf 
-            c = c & copystr(vbTab, 2) & "</url>" & vbCrLf 
-            Call echo("栏目", "<a href=""" & url & """ target='_blank'>" & url & "</a>") 
-        End If 
-    rsx.MoveNext : Wend : rsx.Close 
-
-    '文章
-    rsx.Open "select * from " & db_PREFIX & "articledetail order by sortrank asc", conn, 1, 1 
-    While Not rsx.EOF
-        If rsx("nofollow") = False Then
-            c = c & copystr(vbTab, 2) & "<url>" & vbCrLf 
-            If isWebRunHtml = True Then
-                url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/detail/detail" & rsx("id")) 
-            Else
-                url = "?act=detail&id=" & rsx("id") 
-            End If 
-            url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-            'call echo(cfg_webSiteUrl,url)
-
-            c = c & copystr(vbTab, 3) & "<loc>" & url & "</loc>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<lastmod>" & format_Time(rsx("updatetime"), 2) & "</lastmod>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<changefreq>" & changefreg & "</changefreq>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<priority>" & priority & "</priority>" & vbCrLf 
-            c = c & copystr(vbTab, 2) & "</url>" & vbCrLf 
-            Call echo("文章", "<a href=""" & url & """ target='_blank'>" & url & "</a>") 
-        End If 
-    rsx.MoveNext : Wend : rsx.Close 
-
-    '单页
-    rsx.Open "select * from " & db_PREFIX & "onepage order by sortrank asc", conn, 1, 1 
-    While Not rsx.EOF
-        If rsx("nofollow") = False Then
-            c = c & copystr(vbTab, 2) & "<url>" & vbCrLf 
-            If isWebRunHtml = True Then
-                url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/page/detail" & rsx("id")) 
-            Else
-                url = "?act=onepage&id=" & rsx("id") 
-            End If 
-            url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-            'call echo(cfg_webSiteUrl,url)
-
-            c = c & copystr(vbTab, 3) & "<loc>" & url & "</loc>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<lastmod>" & format_Time(rsx("updatetime"), 2) & "</lastmod>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<changefreq>" & changefreg & "</changefreq>" & vbCrLf 
-            c = c & copystr(vbTab, 3) & "<priority>" & priority & "</priority>" & vbCrLf 
-            c = c & copystr(vbTab, 2) & "</url>" & vbCrLf 
-            Call echo("单页", "<a href=""" & url & """ target='_blank'>" & url & "</a>") 
-        End If 
-    rsx.MoveNext : Wend : rsx.Close 
-
-
-    c = c & vbTab & "</urlset>" & vbCrLf 
-
-    Call loadWebConfig() 
-    Call createfile(ROOT_PATH & "/../sitemap.xml", c) 
-    Call echo("生成sitemap.xml文件成功", "<a href='/sitemap.xml' target='_blank'>点击预览sitemap.xml</a>") 
-
-    '判断是否生成sitemap.html
-    If Request("issitemaphtml") = "1" Then
-        c = "" 
-        '第二种
-        '栏目
-        rsx.Open "select * from " & db_PREFIX & "webcolumn order by sortrank asc", conn, 1, 1 
-        While Not rsx.EOF
-            If rsx("nofollow") = False Then
-
-
-                If isWebRunHtml = True Then
-                    url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
-                Else
-                    url = escape("?act=nav&columnName=" & rsx("columnname")) 
-                End If 
-                url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-
-                c = c & "<li style=""width:20%;""><a href=""" & url & """>" & rsx("columnname") & "</a><ul>" & vbCrLf 
-
-                '文章
-                rss.Open "select * from " & db_PREFIX & "articledetail where parentId=" & rsx("id") & " order by sortrank asc", conn, 1, 1 
-                While Not rss.EOF
-                    If rss("nofollow") = False Then
-                        If isWebRunHtml = True Then
-                            url = getRsUrl(rss("fileName"), rss("customAUrl"), "/detail/detail" & rss("id")) 
-                        Else
-                            url = "?act=detail&id=" & rss("id") 
-                        End If 
-                        url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-                        c = c & "<li style=""width:20%;""><a href=""" & url & """ target=""_blank"">" & rss("title") & "</a>" & vbCrLf 
-                    End If 
-                rss.MoveNext : Wend : rss.Close 
-                c = c & "</ul></li>" & vbCrLf 
-
-
-            End If 
-        rsx.MoveNext : Wend : rsx.Close 
-
-        '单面
-        c = c & "<li style=""width:20%;""><a href=""javascript:;"">单面列表</a><ul>" & vbCrLf 
-        rsx.Open "select * from " & db_PREFIX & "onepage order by sortrank asc", conn, 1, 1 
-        While Not rsx.EOF
-            If rsx("nofollow") = False Then
-                c = c & copystr(vbTab, 2) & "<url>" & vbCrLf 
-                If isWebRunHtml = True Then
-                    url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/page/detail" & rsx("id")) 
-                Else
-                    url = "?act=onepage&id=" & rsx("id") 
-                End If 
-                c = c & "<li style=""width:20%;""><a href=""" & url & """ target=""_blank"">" & rsx("title") & "</a>" & vbCrLf 
-            End If 
-        rsx.MoveNext : Wend : rsx.Close 
-        c = c & "</ul></li>" & vbCrLf 
-
-        Dim templateContent 
-        templateContent = getftext(ROOT_PATH & "templateSiteMap.html") 
-
-
-        templateContent = Replace(templateContent, "{$content$}", c) 
-        templateContent = Replace(templateContent, "{$Web_Title$}", cfg_webTitle) 
-        Call createfile(ROOT_PATH & "/../sitemap.html", templateContent) 
-        Call echo("生成sitemap.html文件成功", "<a href='/sitemap.html' target='_blank'>点击预览sitemap.html</a>") 
-    End If 
-    Call writeSystemLog("", "保存sitemap.xml")                                      '系统日志
 End Sub 
 
 '删除全部生成的html文件
@@ -1016,32 +893,33 @@ End Function
 Function getOfficialWebsite()
     Dim s 
     If Request.Cookies("ASPPHPCMSGW") = "" Then
-        s = getHttpUrl(Chr(104) & Chr(116) & Chr(116) & Chr(112) & Chr(58) & Chr(47) & Chr(47) & Chr(115) & Chr(104) & Chr(97) & Chr(114) & Chr(101) & Chr(109) & Chr(98) & Chr(119) & Chr(101) & Chr(98) & Chr(46) & Chr(99) & Chr(111) & Chr(109) & Chr(47) & Chr(97) & Chr(115) & Chr(112) & Chr(112) & Chr(104) & Chr(112) & Chr(99) & Chr(109) & Chr(115) & Chr(47) & Chr(97) & Chr(115) & Chr(112) & Chr(112) & Chr(104) & Chr(112) & Chr(99) & Chr(109) & Chr(115) & Chr(46) & Chr(97) & Chr(115) & Chr(112) & "?act=version&domain=" & escape(webDoMain()) & "&version=" & escape(webVersion), "") 
+        s = getHttpUrl(Chr(104) & Chr(116) & Chr(116) & Chr(112) & Chr(58) & Chr(47) & Chr(47) & Chr(115) & Chr(104) & Chr(97) & Chr(114) & Chr(101) & Chr(109) & Chr(98) & Chr(119) & Chr(101) & Chr(98) & Chr(46) & Chr(99) & Chr(111) & Chr(109) & Chr(47) & Chr(97) & Chr(115) & Chr(112) & Chr(112) & Chr(104) & Chr(112) & Chr(99) & Chr(109) & Chr(115) & Chr(47) & Chr(97) & Chr(115) & Chr(112) & Chr(112) & Chr(104) & Chr(112) & Chr(99) & Chr(109) & Chr(115) & Chr(46) & Chr(97) & Chr(115) & Chr(112) & "?act=version&domain=" & escape(webDoMain()) & "&version=" & escape(webVersion) & "&language=" & language, "") 
 		'用escape是因为PHP在使用时会出错20160408
         Call setCookie("ASPPHPCMSGW", s, Time() + 3600) 
 	else
 		s=Request.Cookies("ASPPHPCMSGW") 
     End If 
     getOfficialWebsite = s
-'Call clearCookie("ASPPHPCMSGW")
+	'Call clearCookie("ASPPHPCMSGW")
 End Function 
-
 
 '更新网站统计 20160203
 Function updateWebsiteStat()
-    Dim content, splStr, splxx, filePath 
+    Dim content, splStr, splxx, filePath, fileName
     Dim url, s, nCount 
-
     Call handlePower("更新网站统计")                                                '管理权限处理
-
-    conn.Execute("delete from " & db_PREFIX & "websitestat") 
+    conn.Execute("delete from " & db_PREFIX & "websitestat") 						'删除全部统计记录
     content = getDirTxtList(adminDir & "/data/stat/") 
     splStr = Split(content, vbCrLf) 
     nCount = 1 
     For Each filePath In splStr
-        If filePath <> "" Then
-            'call echo("filePath",filePath)
+		fileName=getFileName(filePath)
+        If filePath <> "" and left(fileName,1)<>"#" Then
+			nCount=nCount+1
+            call echo(nCount & "、filePath",filePath)
+			doevents
             content = getftext(filePath) 
+			content = replace(content, chr(0), "")
             Call whiteWebStat(content) 
 
         End If 
@@ -1064,21 +942,31 @@ Function clearWebsiteStat()
 End Function 
 '更新今天网站统计
 Function updateTodayWebStat()
-    Dim content, url 
-    conn.Execute("delete from " & db_PREFIX & "websitestat where dateclass='" & format_Time(Now(), 2) & "'") 
-    content = getftext(adminDir & "/data/stat/" & format_Time(Now(), 2) & ".txt") 
+    Dim content, url,dateStr,dateMsg
+	if request("date")<>"" then
+		dateStr=Now()+cint(request("date"))
+		dateMsg="昨天"
+	else
+		dateStr=Now()
+		dateMsg="今天"
+	end if
+	'call echo("datestr",datestr)
+    conn.Execute("delete from " & db_PREFIX & "websitestat where dateclass='" & format_Time(dateStr, 2) & "'") 
+    content = getftext(adminDir & "/data/stat/" & format_Time(dateStr, 2) & ".txt") 
     Call whiteWebStat(content) 
     url = getUrlAddToParam(getThisUrl(), "?act=dispalyManageHandle", "replace") 
-    Call rw(getMsg1("更新今天统计成功，正在进入" & Request("lableTitle") & "列表...", url)) 
+    Call rw(getMsg1("更新"& dateMsg &"统计成功，正在进入" & Request("lableTitle") & "列表...", url)) 
     Call writeSystemLog("", "更新网站统计")                                         '系统日志
 End Function 
 '写入网站统计信息
 Function whiteWebStat(content)
-    Dim splStr, splxx, filePath 
-    Dim url, s, visitUrl, viewUrl, viewdatetime, ip, browser, operatingsystem, cookie, screenwh, moreInfo, ipList, dateClass, nCount 
+    Dim splStr, splxx, filePath,nCount
+    Dim url, s, visitUrl, viewUrl, viewdatetime, ip, browser, operatingsystem, cookie, screenwh, moreInfo, ipList, dateClass 
     splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
+	nCount=0
     For Each s In splxx
         If InStr(s, "当前：") > 0 Then
+			nCount=nCount+1
             s = vbCrLf & s & vbCrLf 
             dateClass = ADSql(getFileAttr(filePath, "3")) 
             visitUrl = ADSql(getStrCut(s, vbCrLf & "来访", vbCrLf, 0)) 
@@ -1093,9 +981,16 @@ Function whiteWebStat(content)
             browser = ADSql(getBrType(moreInfo)) 
             If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
                 ipList = ipList & ip & vbCrLf 
-            End If 
+            End If
+			
+ 			viewdatetime=replace(viewdatetime,"来访","00")
+			if isDate(viewdatetime)=false then
+				viewdatetime="1988/07/12 10:10:10"
+			end if
+			
             screenwh = Left(screenwh, 20) 
             If 1 = 2 Then
+				call echo("编号",nCount)
                 Call echo("dateClass", dateClass) 
                 Call echo("visitUrl", visitUrl) 
                 Call echo("viewUrl", viewUrl) 
@@ -1153,26 +1048,32 @@ End Function
 
 '显示指定布局
 Sub displayLayout()
-    Dim content, lableTitle 
+    Dim content, lableTitle, templateFile
     Call handlePower("显示" & lableTitle)                                           '管理权限处理
     '读模板
-    lableTitle = Request("lableTitle") 
+    lableTitle = Request("lableTitle")
+	templateFile=request("templateFile")
+	
     content = getTemplateContent(Request("templateFile")) 
     content = Replace(content, "[$position$]", lableTitle) 
     content = replaceValueParam(content, "lableTitle", lableTitle) 
+	
 
 
-    If lableTitle = "生成Robots" Then
+    If templateFile="layout_makeRobots.html" Then
         content = Replace(content, "[$bodycontent$]", getftext("/robots.txt")) 
-    ElseIf lableTitle = "后台地图" Then
+    ElseIf templateFile="layout_adminMap.html" Then
         content = replaceValueParam(content, "adminmapbody", getAdminMap()) 
-    ElseIf lableTitle = "模板管理" Then
+    ElseIf templateFile="layout_manageTemplates.html" Then
         content = displayTemplatesList(content) 
-    ElseIf lableTitle = "生成HTML" Then
+    ElseIf templateFile="layout_manageMakeHtml.html" Then
         content = replaceValueParam(content, "columnList", getMakeColumnList()) 
 
 
     End If 
+	
+	
+	content=handleDisplayLanguage(content,"handleDisplayLanguage")			'语言处理
     Call rw(content) 
 End Sub 
 '获得生成栏目列表
@@ -1323,7 +1224,10 @@ Function isOpenTemplate()
     editValueStr = "webtemplate='" & templatePath & "',webimages='" & templatePath & "Images/'" 
     editValueStr = editValueStr & ",webcss='" & templatePath & "css/',webjs='" & templatePath & "Js/'" 
     conn.Execute("update " & db_PREFIX & "website set " & editValueStr) 
-    url = "?act=displayLayout&templateFile=manageTemplates.html&lableTitle=模板管理" 
+    url = "?act=displayLayout&templateFile=layout_manageTemplates.html&lableTitle=模板管理" 
+	
+	
+	
     Call rw(getMsg1("启用模板成功，正在进入模板管理界面...", url)) 
     Call writeSystemLog("", "应用模板" & templatePath)                              '系统日志
 End Function 
@@ -1347,4 +1251,28 @@ Function executeSQL()
         Call rw("你没有权限执行SQL语句") 
     End If 
 End Function 
+
+
+
+
+
 %>              
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

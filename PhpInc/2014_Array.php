@@ -1,11 +1,42 @@
 <?PHP
 //数据处理函数库
 
+
+//内容名称排序
+function contentNameSort($content, $sType){
+    $splStr=''; $arrayStr=array(99); $fileName=''; $isOther='';$otherStr=''; $id=''; $c='';$s='';$i='';$left1='';
+    $splStr= aspSplit($content, vbCrlf());
+    foreach( $splStr as $key=>$s){
+        if( $s <>'' ){
+            $fileName= getStrFileName($s);
+            $isOther=true;
+            $left1=substr($fileName, 0 ,1);
+            if( instr($fileName, '、') > 0 ){
+                $id= Replace(substr($fileName, 0 , 2), '、', '');
+                if( isNumber($id) ){
+                    $arrayStr[$id]= $arrayStr[$id] . $s . vbCrlf();
+                    $isOther=false;
+                }
+            }
+
+            if( instr($sType, $left1)== false && $isOther==true ){
+                $otherStr= $otherStr . $s . vbCrlf();
+            }
+        }
+    }
+    for( $i= 0 ; $i<= UBound($arrayStr); $i++){
+        $c= $c . $arrayStr[$i];
+    }
+    $contentNameSort= $c . $otherStr;
+    return @$contentNameSort;
+}
+
+
 //删除内容有#号列表(20150818)
 function remoteContentJingHao($content, $splType){
     $splStr=''; $s=''; $c ='';
     $splStr= aspSplit($content, $splType);
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( substr(phpTrim($s), 0 , 1) <> '#' && substr(phpTrim($s), 0 , 1) <> '_' ){
             if( $c <> '' ){ $c= $c . $splType ;}
             $c= $c . $s;
@@ -18,7 +49,7 @@ function remoteContentJingHao($content, $splType){
 function remoteArrayJingHao($splStr){
     $s=''; $c=''; $splType ='';
     $splType= '[|-|_]';
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( substr(phpTrim($s), 0 , 1) <> '#' && substr(phpTrim($s), 0 , 1) <> '_' ){
             if( $c <> '' ){ $c= $c . $splType ;}
             $c= $c . $s;
@@ -32,7 +63,7 @@ function remoteArrayJingHao($splStr){
 //每个字符加指定值
 function getEachStrAddValue($content, $valueStr){
     $i=''; $s=''; $c ='';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         $c= $c . $s . $valueStr;
     }
@@ -68,14 +99,14 @@ function checkValueInArray($splStr, $valueStr){
 function deleteRepeatArray($splStr){
     $SplType=''; $s=''; $c ='';
     $SplType= '[|-|_]';
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $s <> '' ){
             if( instr($SplType . $c . $SplType, $SplType . $s . $SplType)== false ){
                 $c= $c . $s . $SplType;
             }
         }
     }
-    if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - strlen($SplType)) ;}
+    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - Len($SplType)) ;}
     $splStr= aspSplit($c, $SplType);
     $deleteRepeatArray= $splStr;
     return @$deleteRepeatArray;
@@ -84,7 +115,7 @@ function deleteRepeatArray($splStr){
 function deleteRepeatContent($content, $splType){
     $splStr=''; $s=''; $c ='';
     $splStr= aspSplit($content, $splType);
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $s <> '' ){
             if( instr($splType . $c . $splType, $splType . $s . $splType)== false ){
                 if( $c <> '' ){ $c= $c . $splType ;}
@@ -113,7 +144,7 @@ function randomShow($content, $SplType,$NSwitch){
 
     for( $i= 1 ; $i<= $NSwitch; $i++){
         $splStr= aspSplit($content, $SplType);
-        foreach( $splStr as $s){
+        foreach( $splStr as $key=>$s){
             $n= intval(rnd() * 100);
             if( $n > 50 ){
                 $c= $c . $s . $SplType;
@@ -121,7 +152,7 @@ function randomShow($content, $SplType,$NSwitch){
                 $c= $s . $SplType . $c;
             }
         }
-        if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - strlen($SplType)) ;}
+        if( $c <> '' ){ $c= substr($c, 0 , Len($c) - Len($SplType)) ;}
         $content= $c;
         $c= '';
     }
@@ -135,7 +166,7 @@ function arrayRandomShow( $splStr, $NSwitch){
     $SplType= '[|-|_]';
 
     for( $i= 1 ; $i<= $NSwitch; $i++){
-        foreach( $splStr as $s){
+        foreach( $splStr as $key=>$s){
             $n= intval(rnd() * 100);
             if( $n > 50 ){
                 $c= $c . $s . $SplType;
@@ -144,7 +175,7 @@ function arrayRandomShow( $splStr, $NSwitch){
             }
             //Call Echo(S,N)
         }
-        if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - strlen($SplType)) ;}
+        if( $c <> '' ){ $c= substr($c, 0 , Len($c) - Len($SplType)) ;}
         $splStr= aspSplit($c, $SplType) ; $c= '';
     }
     $arrayRandomShow= $splStr;
@@ -166,11 +197,11 @@ function echoArray($splStr){
 function PHPStr_Shuffle($content){
     $i=''; $s=''; $c=''; $n ='';
 
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( $c== '' ){
             $c= $s;
-        }else if( strlen($c)== 1 ){
+        }else if( Len($c)== 1 ){
             $n= intval(rnd() * 100);
             if( $n > 50 ){
                 $c= $c . $s;
@@ -178,7 +209,7 @@ function PHPStr_Shuffle($content){
                 $c= $s . $c;
             }
         }else{
-            $n= intval(rnd() * strlen($c)) + 1;
+            $n= intval(rnd() * Len($c)) + 1;
             $c= mid($c, 1, $n) . $s . mid($c, $n + 1,-1);
         }
     }
@@ -195,7 +226,7 @@ function PHPStr_Split($content, $Split_Length){
     $i=''; $s=''; $c=''; $n=''; $ArrStr=array(99); $nArray ='';
     if( $Split_Length <= 0 ){ $Split_Length= 1 ;}
     $n= 0 ; $nArray= 0;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         $c= $c . $s;
         $n= $n + 1;
@@ -223,7 +254,7 @@ function handleArray($content, $SplType, $SType){
     $splStr=''; $s=''; $c=''; $OKYes ='';
     $SType= '|' . strtolower($SType) . '|';
     $splStr= aspSplit($content, $SplType);
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $OKYes= true;
         if( instr($SType, '|nonull|') > 0 && $OKYes== true ){
             if( $s== '' ){ $OKYes= false ;}
@@ -233,14 +264,14 @@ function handleArray($content, $SplType, $SType){
         }
         if( $OKYes== true ){ $c= $c . $s . $SplType ;}
     }
-    if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - strlen($SplType)) ;}
+    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - Len($SplType)) ;}
     $handleArray= $c;
     return @$handleArray;
 }
 //处理转字符(20151124)
 function arrayToString($splStr, $addtoStr){
     $s=''; $c ='';
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $s <> '' ){
             $c= $c . $s . $addtoStr;
         }
@@ -375,7 +406,7 @@ function responseArray($a_Data, $str){
     for( $i= 0 ; $i<= UBound($a_Data); $i++){
         $s= $s . $a_Data[$i] . ',';
     }
-    $s= substr($s, 0 , strlen($s) - 1);
+    $s= substr($s, 0 , Len($s) - 1);
     echo $s;
     echo '<hr>';
 }
@@ -452,8 +483,8 @@ function handleSplitArray($content, $SplOneType, $SplTowType){
             $SplB= $SplB . $splxx[1] . $SplType;
         }
     }
-    if( $SplA <> '' ){ $SplA= substr($SplA, 0 , strlen($SplA) - strlen($SplType)) ;}
-    if( $SplB <> '' ){ $SplB= substr($SplB, 0 , strlen($SplB) - strlen($SplType)) ;}
+    if( $SplA <> '' ){ $SplA= substr($SplA, 0 , Len($SplA) - Len($SplType)) ;}
+    if( $SplB <> '' ){ $SplB= substr($SplB, 0 , Len($SplB) - Len($SplType)) ;}
     $SplA= aspSplit($SplA, $SplType);
     $SplB= aspSplit($SplB, $SplType);
 

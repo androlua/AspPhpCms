@@ -84,14 +84,14 @@ function lTrimVbTab($str){
             $isBlankChar= false;
         }
     }
-    $lTrimVbTab= substr($str, - strlen($str) - $pos + 1);
+    $lTrimVbTab= Right($str, Len($str) - $pos + 1);
     return @$lTrimVbTab;
 }
 
 //去掉字符串末尾的连续的Tab退格和空格
 function rTrimVBTab($str){
     $pos=''; $isBlankChar ='';
-    $pos= strlen($str);
+    $pos= Len($str);
     $isBlankChar= true;
     while( $isBlankChar && $pos >= 2){
         if( mid($str, $pos, 1)== ' ' ){
@@ -113,12 +113,12 @@ function getHtmlCssStyle( $content){
     $splStr= aspSplit($content, vbCrlf()); //分割行
     $StyleYes= false; //Css样式默认为假
     //循环分行
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $StyleYes== false ){
             if( instr(strtolower($s), '<style') > 0 ){
                 $StyleStartStr= mid($s, instr(strtolower($s), '<style'),-1);
                 $StyleStartStr= mid($StyleStartStr, 1, instr($StyleStartStr, '>'));
-                $StyleEndStr= mid($s, instr(strtolower($s), $StyleStartStr) + strlen($StyleStartStr),-1);
+                $StyleEndStr= mid($s, instr(strtolower($s), $StyleStartStr) + Len($StyleStartStr),-1);
                 //HTML中定义的Css在一行
                 if( instr($StyleEndStr, '</style>') > 0 ){
                     $StyleStr= mid($StyleEndStr, 1, instr($StyleEndStr, '</style>') - 1);
@@ -159,7 +159,7 @@ function handleCleanCss( $content){
 
     $splStr= aspSplit($content, vbCrlf());
     $AddStrYes= false; //追加字符默认为假
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $s= trimVbCrlf($s);
         $CustomS= ''; //自定义S值
         if( $s <> '' ){
@@ -189,13 +189,13 @@ function handleCleanCss( $content){
 function removeExcessRow($content){
     $splStr=''; $s=''; $c=''; $TempS ='';
     $splStr= aspSplit($content, vbCrlf()); //分割行
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $TempS= Replace(Replace($s, ' ', ''), "\t", '');
         if( $TempS <> '' ){
             $c= $c . $s . vbCrlf();
         }
     }
-    if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - 2) ;}
+    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 2) ;}
     $removeExcessRow= $c;
     return @$removeExcessRow;
 }
@@ -251,7 +251,7 @@ function cssStyleAddToParam( $CssStyleStr, $CssStyleStrTwo){
         $CssStyleStrTwo= mid($CssStyleStrTwo, 1, instr($CssStyleStrTwo, '}') - 1);
     }
     $splStr= aspSplit(Replace($CssStyleStr . ';' . $CssStyleStrTwo, vbCrlf(), ''), ';');
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $s= AspTrim($s);
         if( instr($s, ':') > 0 && $s <> '' ){
             $ParamName= AspTrim(mid($s, 1, instr($s, ':') - 1));
@@ -277,7 +277,7 @@ function findCssStyle( $content, $StyleName){
     //CAll Echo("Content",Content)
     $StyleName= AspTrim($StyleName);
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( instr($s, $StyleName) > 0 ){
             $FindStyleName= AspTrim($s);
             if( instr($FindStyleName, '{') > 0 ){
@@ -312,7 +312,7 @@ function handleCutCssCode($dirPath, $CssStr){
     $startStr= 'url\\(' ; $endStr= '\\)';
     $content= getArray($CssStr, $startStr, $endStr, false, false);
     $splStr= aspSplit($content, '$Array$');
-    foreach( $splStr as $ImageFile){
+    foreach( $splStr as $key=>$ImageFile){
         if( $ImageFile <> '' && instr($ImageFile, '.') > 0 && instr(vbCrlf() . $listStr . vbCrlf(), vbCrlf() . $ImageFile . vbCrlf())== false ){//对重复使用的图片处理
             $listStr= $listStr . $ImageFile . vbCrlf();
             $fileName= Replace(Replace(Replace($ImageFile, '"', ''), '\'', ''), '\\', '/');
@@ -332,7 +332,7 @@ function handleCutDivCode($dirPath, $DivStr){
     $startStr= 'url\\(' ; $endStr= '\\)';
     $content= GetArray($DivStr, $startStr, $endStr, false, false);
     $splStr= aspSplit($content, '$Array$');
-    foreach( $splStr as $ImageFile){
+    foreach( $splStr as $key=>$ImageFile){
 
         if( $ImageFile <> '' && instr($ImageFile, '.') > 0 && instr($ImageFile, '{$#')== false ){
             //判断是否有域名 20150202
@@ -349,7 +349,7 @@ function handleCutDivCode($dirPath, $DivStr){
     //Content = GetIMG(DivStr) & vbCrlf & GetHtmlBackGroundImgList(DivStr)        '再加个Html背景图片
     $content= GetImgJsUrl($DivStr, '不重复') . vbCrlf() . GetHtmlBackGroundImgList($DivStr); //再加个Html背景图片  加强版20150126
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $ImageFile){
+    foreach( $splStr as $key=>$ImageFile){
         if( $ImageFile <> '' ){ //当链接地址当前为HTTP:时则不处理20150313
             $isHandle= false;
 
@@ -390,7 +390,7 @@ function getHandleWebHtmlLink($RootPath, $content){
     $ImgList= GetArray($content, $startStr, $endStr, false, false);
     //Call RwEnd(ImgList)
     $splStr= aspSplit($ImgList, '$Array$');
-    foreach( $splStr as $CssUrl){
+    foreach( $splStr as $key=>$CssUrl){
         if( $CssUrl <> '' && instr(strtolower($CssUrl), 'stylesheet') > 0 ){
             //获得Css加强版，改于20141125
             $CssUrl= strtolower(Replace(Replace(Replace($CssUrl, '"', ''), '\'', ''), '>', ' ')) . ' ';
@@ -408,7 +408,7 @@ function getHandleWebHtmlLink($RootPath, $content){
             }
         }
     }
-    if( $CssStr <> '' ){ $CssStr= substr($CssStr, 0 , strlen($CssStr) - 2) ;}
+    if( $CssStr <> '' ){ $CssStr= substr($CssStr, 0 , Len($CssStr) - 2) ;}
     $getHandleWebHtmlLink= $CssStr;
     return @$getHandleWebHtmlLink;
 }
@@ -423,7 +423,7 @@ function getCssListUrlList($content){
     $ImgList= GetArray($content, $startStr, $endStr, false, false);
     //Call RwEnd(ImgList)
     $splStr= aspSplit($ImgList, '$Array$');
-    foreach( $splStr as $CssUrl){
+    foreach( $splStr as $key=>$CssUrl){
         if( $CssUrl <> '' && instr(strtolower($CssUrl), 'stylesheet') > 0 ){
             //获得Css加强版，改于20141125
             $CssUrl= strtolower(Replace(Replace(Replace($CssUrl, '"', ''), '\'', ''), '>', ' ')) . ' ';
@@ -467,14 +467,12 @@ function handleReadCssContent($cssFilePath, $LabelName, $isHandleCss){
 //处理Css样式里PX或T
 function handleCssPX( $nValue){
     $nValue= strtolower(AspTrim($nValue));
-    if( substr($nValue, - 1) <> '%' && substr($nValue, - 2) <> 'px' ){
+    if( Right($nValue, 1) <> '%' && Right($nValue, 2) <> 'px' ){
         $nValue= $nValue . 'px';
     }
     $handleCssPX= $nValue;
     return @$handleCssPX;
 }
-
-
 
 //call rw(handleHtmlStyle(getftext("1.html")))
 //压缩html里的style样式 (20151008)

@@ -1,17 +1,41 @@
 <?PHP
-//保存数据
+//保存数据   ?act=saveData
 function saveData($sType){
+
+    if( @$_SESSION['yzm']=='' ){
+        eerr('提示','验证码失效');
+    }
+
+    //if instr("|"& getFormFieldList() &"|","|yzm|") then
+    if( @$_SESSION['yzm']<>@$_POST['yzm'] ){
+        eerr('提示','验证码错误');
+    }
+
+
     //保存文章评论
     if( $sType== 'articlecomment' ){
+        if( @$_POST['content']=='' ){
+            eerr('提示','评论为空');
+        }
         saveArticleComment(@$_REQUEST['itemid'], ADSql(@$_REQUEST['content']));
     }else if( $sType== 'feedback' ){
+        if( @$_POST['guestname']=='' ){
+            eerr('提示','姓名为空');
+        }
         autoSavePostData('', 'feedback', 'isthrough|numb|0,ip||'. getip() .',columnid||' . @$_GET['columnid']);
         ASPEcho('提示', '反馈提交成功，等待管理员审核');
     }else if( $sType== 'guestbook' ){
-        //call echo("columnid",request.QueryString("columnid"))
+
+        if( @$_POST['guestname']=='' ){
+            eerr('提示','姓名为空');
+        }
+
         autoSavePostData('', 'guestbook', 'isthrough|numb|0,ip||'. getip() .',columnid||' . @$_GET['columnid']);
         ASPEcho('提示', '留言提交成功，等待管理员审核');
 
+    }else if( $sType== 'articledetail' ){
+        autoSavePostData('', 'articledetail', 'title|bodycontent,ip||'. getip());
+        ASPEcho('提示', '文章提交成功');
     }
     die();
 }
@@ -44,9 +68,9 @@ function getPostSql($id, $tableName, $fieldNameList){
 
     $postFieldList ='';//post字段列表
     $splPost=''; $fieldContent=''; $fieldConfig ='';
-    $postFieldList= getFormFieldName();
+    $postFieldList= getFormFieldList();
     $splPost= aspSplit($postFieldList, '|');
-    foreach( $splPost as $fieldName){
+    foreach( $splPost as $key=>$fieldName){
         $fieldContent= @$_POST[$fieldName];
         if( instr($systemFieldList, ',' . $fieldName . '|') > 0 && instr(',' . $fieldList . ',', ',' . $fieldName . ',')== false ){
             //为自定义的
@@ -101,6 +125,9 @@ function getPostSql($id, $tableName, $fieldNameList){
             }else{
                 $fieldValue= '\'' . $fieldValue . '\'';
             }
+
+            $fieldValue=unescape($fieldValue);			//解码20160418
+
             if( $fieldList <> '' ){
                 $fieldList= $fieldList . ',';
                 $valueStr= $valueStr . ',';
@@ -113,7 +140,7 @@ function getPostSql($id, $tableName, $fieldNameList){
     }
     //自定义字段是否需要写入默认值
     $splStr= aspSplit($fieldNameList, ',');
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( instr($s, '|') > 0 ){
             $splxx= aspSplit($s . '|||', '|');
             $fieldName= $splxx[0]; //字段名称

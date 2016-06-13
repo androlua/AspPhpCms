@@ -22,6 +22,7 @@ var _hmt = _hmt || [];
 
 <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101292533" data-redirecturi="http://sharembweb.com/" charset="utf-8"></script>
 <script src="/Jquery/jquery.Min.js"></script>
+<script src="/Jquery/qq.js"></script>
 <script src="/Templates2015/sharembweb/Images/qqlogin.js"></script>
 
 
@@ -42,6 +43,8 @@ var _hmt = _hmt || [];
 【flags】|addwebsite|iscloseeditor|htmlrun|ziphtml|
 【websiteurl】http://sharembweb.com/
 
+百度站内搜索
+http://zhannei.baidu.com/cse/search?s=2053070418731876318&entry=1&q=%E7%AB%99%E9%95%BF%E5%B7%A5%E5%85%B7
 
 
 瑞星安全证明

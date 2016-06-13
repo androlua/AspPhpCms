@@ -7,7 +7,7 @@ function checkUrlFileNameParam($httpurl,$sList){
     $url=strtolower($httpurl);
     $sList=strtolower($sList);
     $splstr=aspSplit($sList,'|');
-    foreach( $splstr as $searchStr){
+    foreach( $splstr as $key=>$searchStr){
         if( $searchStr<>'' ){
             $searchStr='.'. $searchStr .'?';
             //call echo("searchStr",searchStr)
@@ -25,7 +25,7 @@ function checkUrlFileNameParam($httpurl,$sList){
 function isUCase($content){
     $i=''; $s ='';
     $isUCase= true;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $s)== false ){
             $isUCase= false;
@@ -38,7 +38,7 @@ function isUCase($content){
 function isLCase($content){
     $i=''; $s ='';
     $isLCase= true;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('abcdefghijklmnopqrstuvwxyz', $s)== false ){
             $isLCase= false;
@@ -119,7 +119,7 @@ function chkPost(){
     $Server_v1= CStr(ServerVariables('HTTP_REFERER'));
     $Server_v2= CStr(ServerVariables('SERVER_NAME'));
     ASPEcho($Server_v1, $Server_v2);
-    if( mid($Server_v1, 8, strlen($Server_v2)) <> $Server_v2 ){
+    if( mid($Server_v1, 8, Len($Server_v2)) <> $Server_v2 ){
         $chkPost= false;
     }else{
         $chkPost= true;
@@ -136,16 +136,16 @@ function isValidEmail($email){
     $isValidEmail= true;
     $names= aspSplit($email, '@');
     if( UBound($names) <> 1 ){ $isValidEmail= false ; return @$isValidEmail; }
-    foreach( $names as $Name){
-        if( strlen($Name) <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
-        for( $i= 1 ; $i<= strlen($Name); $i++){
+    foreach( $names as $key=>$Name){
+        if( Len($Name) <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
+        for( $i= 1 ; $i<= Len($Name); $i++){
             $c= strtolower(mid($Name, $i, 1));
             if( instr('abcdefghijklmnopqrstuvwxyz_-.', $c) <= 0 && is_numeric($c) ){ $isValidEmail= false ; return @$isValidEmail; }
         }
-        if( substr($Name, 0 , 1)== '.' || substr($Name, - 1)== '.' ){ $isValidEmail= false ; return @$isValidEmail; }
+        if( substr($Name, 0 , 1)== '.' || Right($Name, 1)== '.' ){ $isValidEmail= false ; return @$isValidEmail; }
     }
     if( instr($names[1], '.') <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
-    $i= strlen($names[1]) - strrpos($names[1], '.');
+    $i= Len($names[1]) - strrpos($names[1], '.');
     if( $i <> 2 && $i <> 3 ){ $isValidEmail= false ; return @$isValidEmail; }
     if( instr($email, '..') > 0 ){ $isValidEmail= false ;}
     return @$isValidEmail;
@@ -163,9 +163,9 @@ function isCode( $content){
 //²âÊÔÊÇ·ñÎªÊý×Ö
 function checkNumber( $content){
     $i=''; $s ='';
-    if( strlen($content)== 0 ){ $checkNumber= false ; return @$checkNumber; }
+    if( Len($content)== 0 ){ $checkNumber= false ; return @$checkNumber; }
     $checkNumber= true;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789', strtolower($s))== false ){
             $checkNumber= false;
@@ -183,7 +183,7 @@ function isNumber( $content){
 function checkABC( $content){
     $i=''; $s ='';
     $checkABC= true;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('abcdefghijklmnopqrstuvwxyz', strtolower($s))== false ){
             $checkABC= false;
@@ -196,7 +196,7 @@ function checkABC( $content){
 function getLen($content){
     $i=''; $s=''; $n ='';
     $n= 0;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= ord(mid(CStr($content), $i, 1));
         if( $s < 0 ){
             $n= $n + 2;

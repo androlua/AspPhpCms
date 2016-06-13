@@ -4,8 +4,9 @@ require_once './../PHP2/ImageWaterMark/Include/ASP.php';
 require_once './../PHP2/ImageWaterMark/Include/sys_FSO.php';
 require_once './../PHP2/ImageWaterMark/Include/Conn.php';
 require_once './../PHP2/ImageWaterMark/Include/MySqlClass.php'; 
+require_once './../PHP2/ImageWaterMark/Include/sys_Url.php'; 
 
-require_once './../PHP2/Web/Inc/Common.php'; 
+require_once './../PHP2/Web/Inc/Common.php';  
 
 require_once './config.php'; 
 require_once './setAccess.php';

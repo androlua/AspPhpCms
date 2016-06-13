@@ -2,7 +2,8 @@
 '######################################################################
 '引用别人20150724  这种引用虽然快，但最好是以后自己来写
 '######################################################################
-
+'Dim obj : Set obj = New Cls_AB_JSON
+'call rw(obj.toJSON)
 Class Cls_AB_JSON
 	Public Collection, Count, QuotedVars, Kind, StrEncode
 	Private s_charset

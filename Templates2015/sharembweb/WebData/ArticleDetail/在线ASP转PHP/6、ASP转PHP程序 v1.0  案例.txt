@@ -211,6 +211,7 @@ End Sub
 
 <b>PHP部分：</b><br>
 <pre class="brush: php;">
+[&html转码&]
 <?PHP
 //作者：云端 QQ313801120  http://sharembweb.com/
 //循环类
@@ -465,7 +466,7 @@ function Request($name){
 }
 
 ?>
-
+[&html转码end&]
 
 </pre>
 

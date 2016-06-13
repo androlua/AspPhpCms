@@ -43,7 +43,7 @@ function delTemplateMyNote($code){
         if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
             $lableName= StrCut($code, $startStr, $endStr, 2);
             if( instr($lableName,' start')>0 ){
-                $lableName=mid($lableName,1,strlen($lableName)-6);
+                $lableName=mid($lableName,1,len($lableName)-6);
             }
 
             $s=$startStr . $lableName . $endStr;
@@ -127,10 +127,10 @@ function delTemplateMyNote($code){
         $endStr= '</dIv>';
         $content= GetArray($code, $startStr, $endStr, false, false);
         $splStr= aspSplit($content, '$Array$');
-        foreach( $splStr as $s){
+        foreach( $splStr as $key=>$s){
             $startStr= '¡¾DatId¡¿\'';
             $id= mid($s, 1, instr($s, $startStr) - 1);
-            $s= mid($s, instr($s, $startStr) + strlen($startStr),-1);
+            $s= mid($s, instr($s, $startStr) + Len($startStr),-1);
             //C=C & "<li><div title='"& Id &"'>" & vbcrlf & "<div " & S & "</div>"& vbcrlf &"<div class='clear'></div></div><div class='clear'></div></li>"
             $s= '<div' . $s . '</div>';
             //Call Die(S)
@@ -397,7 +397,7 @@ function handleDisplayOnlineEditDialog($url, $content, $cssStyle, $replaceStr){
         $controlStr= getControlStr($url) . '"' . $cssStyle;
         if( $replaceStr <> '' ){
             $splStr= aspSplit($replaceStr, '|');
-            foreach( $splStr as $s){
+            foreach( $splStr as $key=>$s){
                 if( $s <> '' && instr($content, $s) > 0 ){
                     $content= Replace2($content, $s, $s . $controlStr);
                     $addOK= true;
@@ -443,7 +443,7 @@ function htmlAddAction($content, $jsAction){
     }
 
     if( $isHandle== true ){
-        $content= $startStr . $jsAction . substr($s, - strlen($s) - strlen($startStr));
+        $content= $startStr . $jsAction . Right($s, Len($s) - Len($startStr));
     }
     $htmlAddAction= $content;
     return @$htmlAddAction;

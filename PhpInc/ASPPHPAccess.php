@@ -1,7 +1,7 @@
 <?PHP
 //ASP PHP数据操作通用文件
 
-//判断追加Sql是加Where 还是And   Sql = GetWhereAnd(Sql,AddSql)        修改于20141007 加强版
+//判断追加Sql是加Where 还是And   sql = getWhereAnd(sql,addSql)        修改于20141007 加强版
 function getWhereAnd( $sql, $addSql){
     $LCaseAddSql=''; $AddType ='';
     //追加SQl为空则退出
@@ -33,7 +33,7 @@ function orAndSearch($addSql, $SeectField, $SearchValue){
     $SearchValue= RegExp_Replace($SearchValue, ' and ', ' And ');
     if( instr($SearchValue, ' Or ') > 0 ){
         $splStr= aspSplit($SearchValue, ' Or ');
-        foreach( $splStr as $s){
+        foreach( $splStr as $key=>$s){
             if( $s <> '' ){
                 if( $c <> '' ){ $c= $c . ' Or ' ;}
                 $c= $c . ' ' . $SeectField . ' Like \'%' . $s . '%\'';
@@ -41,7 +41,7 @@ function orAndSearch($addSql, $SeectField, $SearchValue){
         }
     }else if( instr($SearchValue, ' And ') > 0 ){
         $splStr= aspSplit($SearchValue, ' And ');
-        foreach( $splStr as $s){
+        foreach( $splStr as $key=>$s){
             if( $s <> '' ){
                 if( $c <> '' ){ $c= $c . ' And ' ;}
                 $c= $c . ' ' . $SeectField . ' Like \'%' . $s . '%\'';
@@ -49,7 +49,7 @@ function orAndSearch($addSql, $SeectField, $SearchValue){
         }
     }else if( $SearchValue <> '' ){
         $splStr= aspSplit($SearchValue, ' And ');
-        foreach( $splStr as $s){
+        foreach( $splStr as $key=>$s){
             if( $s <> '' ){
                 if( $c <> '' ){ $c= $c . ' And ' ;}
                 $c= $c . ' ' . $SeectField . ' Like \'%' . $s . '%\'';

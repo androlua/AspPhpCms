@@ -1,17 +1,41 @@
 <% 
-'保存数据
+'保存数据   ?act=saveData
 Function saveData(sType)
+	
+	if session("yzm")="" then
+		call eerr("提示","验证码失效")
+	end if
+	
+	'if instr("|"& getFormFieldList() &"|","|yzm|") then		 
+	if session("yzm")<>request.Form("yzm") then
+		call eerr("提示","验证码错误")
+	end if
+	 
+
     '保存文章评论
-    If sType = "articlecomment" Then
-        Call saveArticleComment(Request("itemid"), ADSql(Request("content"))) 
+    If sType = "articlecomment" Then 
+		if request.Form("content")="" then
+			call eerr("提示","评论为空")
+		end if
+        Call saveArticleComment(Request("itemid"), ADSql(Request("content")))
     ElseIf sType = "feedback" Then
+		if request.Form("guestname")="" then
+			call eerr("提示","姓名为空")
+		end if
 		call autoSavePostData("", "feedback", "isthrough|numb|0,ip||"& getip() &",columnid||" & request.QueryString("columnid"))
 		Call echo("提示", "反馈提交成功，等待管理员审核") 
     ElseIf sType = "guestbook" Then
-		'call echo("columnid",request.QueryString("columnid"))
-		call autoSavePostData("", "guestbook", "isthrough|numb|0,ip||"& getip() &",columnid||" & request.QueryString("columnid"))
-		Call echo("提示", "留言提交成功，等待管理员审核") 
 		
+		if request.Form("guestname")="" then
+			call eerr("提示","姓名为空")
+		end if
+	
+		call autoSavePostData("", "guestbook", "isthrough|numb|0,ip||"& getip() &",columnid||" & request.QueryString("columnid"))
+		Call echo("提示", "留言提交成功，等待管理员审核")
+	
+	 ElseIf sType = "articledetail" Then	
+		call autoSavePostData("", "articledetail", "title|bodycontent,ip||"& getip())
+		Call echo("提示", "文章提交成功")		
     End If 
 	response.End()
 End Function 
@@ -44,10 +68,10 @@ Function getPostSql(id, tableName, fieldNameList)
 
     Dim postFieldList                                                               'post字段列表
     Dim splPost, fieldContent, fieldConfig 
-    postFieldList = getFormFieldName() 
+    postFieldList = getFormFieldList() 
     splPost = Split(postFieldList, "|") 
     For Each fieldName In splPost
-        fieldContent = Request.Form(fieldName) 
+        fieldContent = Request.Form(fieldName)  
         If InStr(systemFieldList, "," & fieldName & "|") > 0 And InStr("," & fieldList & ",", "," & fieldName & ",") = False Then
             '为自定义的
             If InStr(fieldNameList, "," & fieldName & "|") > 0 Then
@@ -101,6 +125,9 @@ Function getPostSql(id, tableName, fieldNameList)
             Else
                 fieldValue = "'" & fieldValue & "'" 
             End If 
+			
+			fieldValue=unescape(fieldValue)			'解码20160418
+		
             If fieldList <> "" Then
                 fieldList = fieldList & "," 
                 valueStr = valueStr & "," 

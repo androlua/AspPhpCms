@@ -483,8 +483,6 @@ Function handleCssPX(ByVal nValue)
     handleCssPX = nValue 
 End Function 
 
-
-
 'call rw(handleHtmlStyle(getftext("1.html")))
 '压缩html里的style样式 (20151008)
 Function handleHtmlStyle(content)

@@ -31,7 +31,7 @@ Function writeSystemLog(tableName, msgStr)
         Call OpenConn()
 		'ÅÐ¶Ï±í´æÔÚ
 		if instr(getHandleTableList(),"|"&  db_PREFIX & "systemlog" &"|")>0 then
-			conn.Execute("insert into " & db_PREFIX & "SystemLog (tablename,msgstr,url,adminname,ip,adddatetime) values('" & tableName & "','" & msgStr & "','" & url & "','" & Session("adminusername") & "','" & ip & "','" & addDateTime & "')") 
+			conn.Execute("insert into " & db_PREFIX & "SystemLog (tablename,msgstr,url,adminname,ip,adddatetime) values('" & tableName & "','" & msgStr & "','" & url & "','" & Session("adminusername") & "','" & ip & "','" & addDateTime & "')")
 		end if
     End If 
 

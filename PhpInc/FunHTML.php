@@ -184,7 +184,7 @@ function showSelectList($IDName, $content, $SplType, $ThisValue){
     if( $IDName <> '' ){ $c= $c . '  <select name="' . $IDName . '" id="' . $IDName . '">' . vbCrlf() ;}
 
     $splStr= aspSplit($content, $SplType);
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $sel= '';
         if( $s== $ThisValue ){ $sel= ' selected' ;}
         $c= $c . '    <option value="' . $s . '"' . $sel . '>' . $s . '</option>' . vbCrlf();
@@ -218,7 +218,7 @@ function handleArticleListStyleOrInfoStyle($folderName, $InputName, $ThisValue){
     $c= $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . vbCrlf();
     $c= $c . '    <option value=""></option>' . vbCrlf();
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $fileName){
+    foreach( $splStr as $key=>$fileName){
         if( $fileName <> '' ){
             $sel= IIF(strtolower($fileName)== $ThisValue, ' selected', '');
             $c= $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . vbCrlf();
@@ -243,7 +243,7 @@ function showWebModuleSkins($InputName, $ThisValue){
     $c= $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . vbCrlf();
     $c= $c . '    <option value=""></option>' . vbCrlf();
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $fileName){
+    foreach( $splStr as $key=>$fileName){
         if( $fileName <> '' ){
             $sel= IIF(strtolower($fileName)== $ThisValue, ' selected', '');
             $c= $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . vbCrlf();
@@ -262,7 +262,7 @@ function showRadioList($IDName, $content, $SplType, $ThisValue){
     if( $SplType== '' ){ $SplType= '|_-|' ;}
     $i= 0;
     $splStr= aspSplit($content, $SplType);
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $sel= '' ; $i= $i + 1;
         if( $s== $ThisValue ){ $sel= ' checked' ;}
         $c= $c . '<input type="radio" name="' . $IDName . '" id="' . $IDName . $i . '" value="radio" ' . $sel . '><label for="' . $IDName . $i . '">' . $s . '</label>' . vbCrlf();
@@ -305,7 +305,7 @@ function inputText($textName, $valueStr, $width, $helpStr){
 
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -323,7 +323,7 @@ function inputText2($textName, $valueStr, $width, $className, $helpStr){
     }
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -336,7 +336,7 @@ function inputLeftText($textName, $valueStr, $width, $helpStr){
     $Css ='';
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -349,7 +349,7 @@ function inputLeftTextHelpTextRight($textName, $valueStr, $width, $helpStr){
     $Css ='';
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -372,7 +372,7 @@ function handleInputLeftRightTextContent($sType, $textName, $valueStr, $width, $
     $Css ='';
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -398,7 +398,7 @@ function inputLeftPassText($textName, $valueStr, $width, $helpStr){
     $Css ='';
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -411,7 +411,7 @@ function inputLeftPassTextContent($textName, $valueStr, $width, $helpStr){
     $Css ='';
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -434,7 +434,7 @@ function inputTextArea($textName, $valueStr, $width, $height, $helpStr){
     $Css=''; $HeightStr ='';
     $width= AspTrim(strtolower($width));
     if( $width <> '' ){
-        if( substr($width, - 1) <> '%' && substr($width, - 2) <> 'px' ){
+        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -481,7 +481,7 @@ function handleInputHiddenTextArea($textName, $valueStr, $width, $height, $class
 function showSelectDirList($folderPath, $valueStr){
     $splStr=''; $c=''; $fileName=''; $sel ='';
     $splStr= aspSplit(getDirFileSort($folderPath), vbCrlf());
-    foreach( $splStr as $fileName){
+    foreach( $splStr as $key=>$fileName){
         if( $fileName <> '' ){
             $sel= IIF($valueStr== $fileName, ' selected', '');
             $c= $c . '<option value="' . $folderPath . $fileName . '" ' . $sel . '>' . $fileName . '</option>' . vbCrlf();

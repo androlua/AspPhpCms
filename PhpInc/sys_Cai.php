@@ -15,12 +15,28 @@ function get_url_content($url){
    }
    return $file_contents;
 }
+//获得网址状态
+function getHttpUrlState_2($httpurl){
+	$ch = curl_init($httpurl);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_exec($ch);
+	$n=curl_getinfo($ch, CURLINFO_HTTP_CODE); // 200
+	curl_close($ch);
+	return $n;
+}
+//获得内容与状态
+function handleXmlGet($httpurl, $codeset=''){
+	//toGB2312Char(content)
+	return array(get_url_content($httpurl),getHttpUrlState($httpurl));
+}
+
+
 //获得网址内容页  (辅助上面)
 function getHttpPage($url){
 	return get_url_content($url);
 }
 //获得网址内容页  (辅助上面)
-function getHttpUrl($url,$rel){
+function getHttpUrl($url,$rel=''){
 	return get_url_content($url);
 }
 

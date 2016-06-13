@@ -8,15 +8,15 @@ function format_Time($timeStr, $nType){
     if( IsDate($timeStr)== false ){ return @$format_Time; }
     $y= CStr(Year($timeStr));
     $m= CStr(Month($timeStr));
-    if( strlen($m)== 1 ){ $m= '0' . $m ;}
+    if( Len($m)== 1 ){ $m= '0' . $m ;}
     $d= CStr(Day($timeStr)); //在vb.net里要这样用  D = CStr(CDate(timeStr).Day)
-    if( strlen($d)== 1 ){ $d= '0' . $d ;}
+    if( Len($d)== 1 ){ $d= '0' . $d ;}
     $h= CStr(Hour($timeStr));
-    if( strlen($h)== 1 ){ $h= '0' . $h ;}
+    if( Len($h)== 1 ){ $h= '0' . $h ;}
     $mi= CStr(Minute($timeStr));
-    if( strlen($mi)== 1 ){ $mi= '0' . $mi ;}
+    if( Len($mi)== 1 ){ $mi= '0' . $mi ;}
     $s= CStr(Second($timeStr));
-    if( strlen($s)== 1 ){ $s= '0' . $s ;}
+    if( Len($s)== 1 ){ $s= '0' . $s ;}
     switch ( $nType ){
         case 1;
         //yyyy-mm-dd hh:mm:ss
@@ -72,7 +72,7 @@ function format_Time($timeStr, $nType){
 function getDayStatus($h, $SType){
     $c ='';
     if( substr($h, 0 , 1)== '0' ){
-        $h= substr($h, - 1);
+        $h= Right($h, 1);
     }
     $h= intval($h);
     if( $h >= 0 && $h <= 5 ){
@@ -170,27 +170,27 @@ function getTimer(){
     return @$getTimer;
 }
 //获得时间
-function vBGetTimer(){
+function VBGetTimer(){
     $n ='';
     $n= DateDiff('s', $GLOBALS['PubTimer'], Now());
     $n= printTimeValue($n);
-    $vBGetTimer= vbCrlf() . '------------------------------------' . vbCrlf() . '运行时间：' . $n;
-    return @$vBGetTimer;
+    $VBGetTimer= vbCrlf() . '------------------------------------' . vbCrlf() . '运行时间：' . $n;
+    return @$VBGetTimer;
 }
 //获得第三种
-function vBEchoTimer(){
+function VBEchoTimer(){
     $n ='';
     $n= DateDiff('s', $GLOBALS['PubTimer'], Now());
     $n= printTimeValue($n);
-    $vBEchoTimer= '运行时间：' . $n;
-    return @$vBEchoTimer;
+    $VBEchoTimer= '运行时间：' . $n;
+    return @$VBEchoTimer;
 }
 //获得时间第四种
-function vBRunTimer($startTime){
+function VBRunTimer($startTime){
     $n ='';
     $n= DateDiff('s', $startTime, Now());
     $n= printTimeValue($n);
-    $vBRunTimer= '运行时间：' . $n;
-    return @$vBRunTimer;
+    $VBRunTimer= '运行时间：' . $n;
+    return @$VBRunTimer;
 }
 ?>

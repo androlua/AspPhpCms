@@ -168,25 +168,25 @@ Function getTimer()
     getTimer = "<br>------------------------------------<br>页面执行时间：" & getTimerSet() & " 秒" 
 End Function 
 '获得时间
-Function vBGetTimer()
+Function VBGetTimer()
     Dim n 
     n = DateDiff("s", PubTimer, Now()) 
     n = printTimeValue(n) 
-    vBGetTimer = vbCrLf & "------------------------------------" & vbCrLf & "运行时间：" & n 
+    VBGetTimer = vbCrLf & "------------------------------------" & vbCrLf & "运行时间：" & n 
 End Function 
 '获得第三种
-Function vBEchoTimer()
+Function VBEchoTimer()
     Dim n 
     n = DateDiff("s", PubTimer, Now()) 
     n = printTimeValue(n) 
-    vBEchoTimer = "运行时间：" & n 
+    VBEchoTimer = "运行时间：" & n 
 End Function 
 '获得时间第四种
-Function vBRunTimer(startTime)
+Function VBRunTimer(startTime)
     Dim n 
     n = DateDiff("s", startTime, Now()) 
     n = printTimeValue(n) 
-    vBRunTimer = "运行时间：" & n 
+    VBRunTimer = "运行时间：" & n 
 End Function 
 %>  
 

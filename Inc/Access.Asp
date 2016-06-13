@@ -200,8 +200,10 @@ Function getFieldAlt(tableName, fieldName)
                             getFieldAlt = "Int" 
                         Case "11"
                             getFieldAlt = "YesNo" 
+                        Case "5"
+                            getFieldAlt = "float" 
                         Case Else
-                            MsgBox(rs.Fields(n).Type & vbCrLf & Table & "没有类型") 
+                            MsgBox(rs.Fields(n).Type & vbCrLf & fieldName & "没有类型") 
                             getFieldAlt = "没类型" & rs.Fields(n).Type 
                     End Select
                     Exit For 

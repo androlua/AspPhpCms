@@ -102,7 +102,7 @@ function XY_AP_ArticleList($action){
     }
     if( $s <> '' ){
         $splStr= aspSplit($s, '[Array]');
-        foreach( $splStr as $columnName){
+        foreach( $splStr as $key=>$columnName){
             $columnId= getColumnId($columnName);
             if( $columnId <> '' ){
                 if( $columnIdList <> '' ){
@@ -158,8 +158,6 @@ function XY_AP_Links($action){
     $XY_AP_Links= XY_AP_GeneralList($action, 'FriendLink', $addSql);
     return @$XY_AP_Links;
 }
-
-
 
 //通用信息列表
 function XY_AP_GeneralList($action, $tableName, $addSql){
@@ -659,11 +657,11 @@ function XY_TitleInSearchEngineList($action){
     $c= $c . '<ul class="list"> ' . vbCrlf();
     $c= $c . '<li><a href="https://www.baidu.com/s?ie=gb2312&word=' . $title . '" rel="nofollow" target="_blank">【baidu搜索】在百度里搜索(' . $title . ')</a></li>' . vbCrlf();
     $c= $c . '<li><a href="http://www.haosou.com/s?ie=gb2312&q=' . $title . '" rel="nofollow" target="_blank">【haosou搜索】在好搜里搜索(' . $title . ')</a></li>' . vbCrlf();
-    $c= $c . '<li><a href="https://www.sogou.com/sogou?query=' . $title . '" rel="nofollow" target="_blank">【sogou搜索】在搜狗里搜索(' . $title . ')</a></li>' . vbCrlf();
-    $c= $c . '<li><a href="https://search.yahoo.com/search;_ylt=A86.JmbkJatWH5YARmebvZx4?p=' . $title . '&toggle=1&cop=mss&ei=gb2312&fr=yfp-t-901&fp=1" rel="nofollow" target="_blank">【yahoo搜索】在雅虎里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="https://search.yahoo.com/search;_ylt=A86.JmbkJatWH5YARmebvZx4?toggle=1&cop=mss&ei=gb2312&fr=yfp-t-901&fp=1&p=' . $title . '" rel="nofollow" target="_blank">【yahoo搜索】在雅虎里搜索(' . $title . ')</a></li>' . vbCrlf();
 
-    $c= $c . '<li><a href="https://www.sogou.com/sogou?query=' . GBtoUTF8($title) . '&ie=utf8" rel="nofollow" target="_blank">【sogou搜索】在必应里搜索(' . $title . ')</a></li>' . vbCrlf();
-    $c= $c . '<li><a href="http://www.youdao.com/search?q=' . GBtoUTF8($title) . '&ue=utf8" rel="nofollow" target="_blank">【youdao搜索】在有道里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="https://www.sogou.com/sogou?ie=utf8&query=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【sogou搜索】在搜狗里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="http://www.youdao.com/search?ue=utf8&q=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【youdao搜索】在有道里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="http://search.yam.com/Search/Web/DefaultKSA.aspx?SearchType=web&l=0&p=0&k=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【yam搜索(google提供技术)】在蕃薯藤里搜索(' . $title . ')</a></li>' . vbCrlf();
 
 
     $c= $c . '<li><a href="http://cn.bing.com/search?q=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【bing搜索】在必应里搜索(' . $title . ')</a></li>' . vbCrlf();

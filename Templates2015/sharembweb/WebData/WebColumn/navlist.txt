@@ -28,10 +28,19 @@
 【webdescription】提供在线ASP代码转PHP代码服务 QQ313801120
 【bodycontent】
 
-<div class="divtip">输入你的ASP代码，提交后等待几秒即可生成PHP代码：(更新于20160411)</div>
+<div class="divtip">输入你的ASP代码，提交后等待几秒即可生成PHP代码：(更新于20160412)<br> 
+作者在【百度贴吧】<a href="http://tieba.baidu.com/p/4313938260" target="_blank" rel="nofollow" class="ablue">http://tieba.baidu.com/p/4313938260</a>上进行“ASP转PHP”更新，
+有兴趣的朋友可以去看看，记得给好评哟，你的支持才是作者不解努力的动力
+<br>
+更多其他人开发的ASP转PHP程序：<br>
+<a href="http://www.resources.fortunedesign.co.uk/jspack/asp2php.html" target="_blank" rel="nofollow" class="ablue">http://www.resources.fortunedesign.co.uk/jspack/asp2php.html</a>asp转php<br>
+<a href="http://design215.com/toolbox/translator/index.php" target="_blank" rel="nofollow" class="ablue">http://design215.com/toolbox/translator/index.php</a> 需要注册  用js开发的ASP转PHP，效果不太理想  
+
+</div>
 
 <form name="form1" method="post" action="[$cfg_websiteurl$]asptophp/asptophp.asp?act=handlecontent" target="_blank">
-  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;"><% 
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
+[&html转码&]<% 
 '作者：云端 QQ313801120  http://sharembweb.com/
 '循环类
 Class whileclass
@@ -39,7 +48,7 @@ Class whileclass
         If nNumb = 1 Then
             Response.Write("hello world<hr>") 
         Else
-            Response.Write("no numb<hr>") 
+            Response.Write("no numb<hr>")
         End If 
     End Function 
     Sub nfor(n)
@@ -134,7 +143,7 @@ End Sub
 
 
 '截取字符串 更新20160114
-'c=[A]sharembweb.com[/A]
+'c=作者小云[A]sharembweb.com[/A]QQ313801120
 '0=sharembweb.com
 '1=[A]sharembweb.com[/A]
 '3=[A]sharembweb.com
@@ -180,16 +189,16 @@ End Function
 '测试实例
 sub testcase()
 
-	Dim c 
-	c = "[A]sharembweb.com[/A]" 
-	
-	Response.Write("c=" & c & "<br>") 
-	
-	Response.Write("0=" & strCutTest(c, "[A]", "[/A]", 0) & "<br>" & vbCrLf) 
-	Response.Write("1=" & strCutTest(c, "[A]", "[/A]", 1) & "<br>" & vbCrLf) 
-	'response.Write("2=" & strCutTest(c,"[A]","[/A]",2) & "<br>" & vbcrlf)
-	Response.Write("3=" & strCutTest(c, "[A]", "[/A]", 3) & "<br>" & vbCrLf) 
-	Response.Write("4=" & strCutTest(c, "[A]", "[/A]", 4) & "<br>" & vbCrLf) 
+    Dim c 
+    c = "作者小云[A]sharembweb.com[/A]QQ313801120" 
+    
+    Response.Write("c=" & c & "<br>") 
+    
+    Response.Write("0=" & strCutTest(c, "[A]", "[/A]", 0) & "<br>" & vbCrLf) 
+    Response.Write("1=" & strCutTest(c, "[A]", "[/A]", 1) & "<br>" & vbCrLf) 
+    'response.Write("2=" & strCutTest(c,"[A]","[/A]",2) & "<br>" & vbcrlf)
+    Response.Write("3=" & strCutTest(c, "[A]", "[/A]", 3) & "<br>" & vbCrLf) 
+    Response.Write("4=" & strCutTest(c, "[A]", "[/A]", 4) & "<br>" & vbCrLf) 
 
 end sub
 
@@ -200,7 +209,7 @@ Select Case Request("act")
     Case "testif" : testif()                                              '测试判断
     Case "testzd" : testzd()                                              '测试字典
     Case "testcase" : testcase()                                              '测试实例
-	
+    
 
     Case Else : displayDefault()                                          '显示默认
 End Select
@@ -215,8 +224,7 @@ Sub displayDefault()
     Response.Write("<a href='?act=testzd'>测试字典</a> <br>") 
     Response.Write("<a href='?act=testcase'>测试实例</a> <br>") 
 End Sub  
-%>  
-   
+%>[&html转码end&]
 
   </textarea>
 <div class="clear10"></div>
@@ -287,10 +295,10 @@ end if
 【webdescription】仿站是指借鉴和参考别人网站的优点,对喜欢的网站进行风格仿制或者功能仿制,在最短的时间内达到预期的效果,是一个快速并且省钱的选择 QQ313801120
 【bodycontent】 
 
-<form id="form1" name="form1" method="post" action="/url.asp?act=fangzhan" onSubmit="formSubmit()" target="_blank">
+<form id="form1" name="form1" method="post" action="/url.asp?act=fangzhan" onSubmit="formFangZhanSubmit()" target="_blank">
 <div>
   <div>网址：
-  <input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" class="inputstyle" style="width:80%;" />
+  <input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" class="inputstyle" style="width:88%;" />
   </div>
 编码：
 <select name="Char_Set" id="Char_Set" class="inputstyle">
@@ -308,16 +316,13 @@ end if
 <input name="verificationTime" type="hidden" id="verificationTime" value="aabbccddeeffgg" />
 </form>
 
-<!--
-http://www.thinkphp.cn/
-
 <script language="javascript">
-function formSubmit(){
-	var url = document.form1.selectServer.value + "?act=downweb&n="+Math.random() 
-	document.form1.action = url 
+function formFangZhanSubmit(){
+	var url = document.form1.selectServer.value + "?act=downweb&n="+Math.random();
+	document.form1.action = url;
 }
 </script>
--->
+ 
 <br>
 <div class="bodywrap">
 使用帮助：<br>
@@ -326,6 +331,9 @@ function formSubmit(){
 第三步，把*.xmp和asp.vbs放到D盘<br>
 第四步，update.xml改名为1.xml<br>
 第五步，双击asp.vbs =》 就会看到一个web文件夹
+<p><br>
+
+<a href='/imitateWeb.asp' class="ablue" rel="nofollow" target='_blank'>高级仿站入口</a><br>
 </div>
 
 
@@ -380,32 +388,53 @@ function formSubmit(){
 【bodycontent】
 
 【/bodycontent】
+
+-------------------------------
+【columnname】BBS论坛
+【columntype】文本
+【sortrank】6
+【filename】
+【templatepath】
+【customaurl】http://aspphpcms.com/bbs/
+【flags】|top|
+【parentid】-1
+【isonhtml】0
+【labletitle】BBS论坛
+【target】_blank
+【webtitle】BBS论坛_ASPPHPCMS论坛BBS
+【webkeywords】BBS论坛_ASPPHPCMS论坛BBS
+【webdescription】BBS论坛_ASPPHPCMS论坛BBS QQ313801120
+【bodycontent】
+
+【/bodycontent】
 -------------------------------
 【columnname】联系作者
 【columntype】文本
-【sortrank】6
+【sortrank】7
 【filename】/about/contact.html
 【flags】|top|
 【parentid】-1
 【labletitle】联系作者
 【target】
 【npagesize】20
-【webtitle】联系作者_联系作者_sharembweb_313801120_云端
-【webkeywords】联系作者_联系作者_sharembweb_313801120_云端
+【webtitle】联系作者_GoodCloud++_sharembweb_313801120_云端
+【webkeywords】联系作者_GoodCloud++_sharembweb_313801120_云端
 【webdescription】如果你有什么作者可以帮助得到的，可联系QQ313801120
 
 
 【aboutcontent】
 
 作者：云端<br>
+英文名：GoodCloud++<br>
 QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="ablue" rel="nofollow" title="在线与313801120交流">313801120</a><br>
-邮箱：313801120@qq.com<br>
+邮箱：<a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=313801120@qq.com" class="ablue" rel="nofollow" title="在线与313801120交流" target="_blank">313801120@qq.com</a> <br>postmaster@aspphpcms.com
+<br>qq313801120@gmail.com<br>
 交流群：<a href="/url.asp?title=qq群35915100" class="ablue" target="_blank">35915100</a><br>
 
 【/aboutcontent】
 
 【bodycontent】 
-<div><img src="{$cfg_webimages$}me.jpg" alt="作者云端"></div>
+<div><img src="{$cfg_webimages$}me.jpg" alt="作者云端/Cloud+"></div>
 
 
 <br><strong>作者介绍</strong><br>
@@ -415,16 +444,31 @@ QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="abl
 4、擅长把复杂的事情简单化，开发一套ASPPHPCMS内容管理系统<br>
 5、发布【ASPPHPCMS】/【在线ASP转PHP】/【在线格式化ASP】【在线仿站】等开源项目<br>
 6、上海，南京等大城市从事网站开发工作多年<br>
- 
-
 
 <br><strong>联系方式</strong><br>
+作者：云端<br>
+英文名：GoodCloud++<br>
 QQ：<a href="tencent://message/?uin=313801120&Site=作者云端&Menu=yes" class="ablue" rel="nofollow" title="在线与313801120交流">313801120</a><br>
-邮箱：313801120@qq.com<br>
+微信：MQ313801120<br>
+邮箱：313801120@qq.com &nbsp; postmaster@aspphpcms.com &nbsp; qq313801120@gmail.com<br>
 交流群：<a href="http://shang.qq.com/wpa/qunwpa?idkey=253822bd485c454811141c731156d2ecd4dba04ecf647ce81dc97d16a563137b" class="ablue" rel="nofollow" target="_blank">35915100</a><br>
-网址：http://sharembweb.com/<br><br>
-Github主页：http://313801120.github.io/sharembweb/<br>
+作者主页：http://sharembweb.com/<br>
+Github主页：<a href="http://313801120.github.io/sharembweb/" target="_blank" class="ablue" rel="nofollow">http://313801120.github.io/sharembweb/</a><br>
+Stackoverflow主页：<a href="http://stackoverflow.com/users/6438976/sharembweb" target="_blank" class="ablue" rel="nofollow">http://stackoverflow.com/users/6438976/sharembweb</a><br>
 
+
+Facebook主页：<a href="https://www.facebook.com/people/%E5%AD%99%E4%BA%91/100012053984946" target="_blank" class="ablue" rel="nofollow">https://www.facebook.com/people/%E5%AD%99%E4%BA%91/100012053984946</a><br>
+Twitter主页：<a href="https://twitter.com/sharembweb" target="_blank" class="ablue" rel="nofollow">https://twitter.com/sharembweb</a><br>
+
+Youtube主页：<a href="https://www.youtube.com/playlist?list=PLbK00KrGciSfG1sS1HWSU-bZqtUe5dYtR" target="_blank" class="ablue" rel="nofollow">https://www.youtube.com/playlist?list=PLbK00KrGciSfG1sS1HWSU-bZqtUe5dYtR</a><br>
+
+Sites.google主页：<a href="https://sites.google.com/site/sharembweb/" target="_blank" class="ablue" rel="nofollow">https://sites.google.com/site/sharembweb/</a><br>
+Google+主页：<a href="https://plus.google.com/u/0/104905646792634838247?hl=zh-CN" target="_blank" class="ablue" rel="nofollow">
+https://plus.google.com/u/0/104905646792634838247?hl=zh-CN</a><br>
+
+Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" rel="nofollow">http://digg.com/u/sharembweb</a><br>
+领英主页：<a href="https://cn.linkedin.com/in/晓云-孙-1a9829118" target="_blank" class="ablue" rel="nofollow">https://cn.linkedin.com/in/晓云-孙-1a9829118</a><br>
+<br>
 
 【/bodycontent】
 -------------------------------
@@ -584,22 +628,29 @@ QQ：<br><input type="text" name="qq" id="qq" style="width:98%;margin:6px 0" clas
 电话：<br><input type="text" name="tel" id="tel" style="width:98%;margin:6px 0" class="inputstyle" /><br>
 地址：<br><input type="text" name="address" id="address" style="width:98%;margin:6px 0" class="inputstyle" /><br>
 反馈内容：<textarea name="bodycontent" placeholder="我也来说两句..."  class="inputstyle"></textarea>
+验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="/inc/yzm_7.asp" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '/inc/yzm_7.asp?'+Math.random()*10000"/><br>
+
 <input type="submit" class="mybtn" value="提交反馈"></form>
 <script type="text/javascript">
 function formcommentSubmit(){
 	if(formcomment.guestname.value==''){
 		formcomment.guestname.focus();
-		alert('姓名不能为空');
+		alert('请输入姓名');
 		return false;
 	}
-	if(formcomment.tel.value==''){
-		formcomment.tel.focus();
-		alert('电话不能为空');
+	if(formcomment.qq.value==''){
+		formcomment.qq.focus();
+		alert('请输入QQ号');
 		return false;
 	}
 	if(formcomment.bodycontent.value==''){
 		formcomment.bodycontent.focus();
-		alert('反馈内容不能为空');
+		alert('请输入内容');
+		return false;
+	}
+	if(formcomment.yzm.value==''){
+		formcomment.yzm.focus();
+		alert('请输入验证码');
 		return false;
 	}
 }
@@ -639,9 +690,25 @@ function formcommentSubmit(){
 【bodycontent】
 【/bodycontent】
 -------------------------------
-【columnname】作品展示
+【columnname】程序员
 【columntype】新闻
 【sortrank】23
+【filename】/programmer/
+【templatepath】
+【flags】||
+【parentid】-1
+【labletitle】程序员
+【target】
+【npagesize】10
+【webtitle】程序员
+【webkeywords】程序员_ASP程序员_PHP程序员
+【webdescription】程序员_ASP程序员_PHP程序员 QQ313801120
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】作品展示
+【columntype】新闻
+【sortrank】24
 【filename】/myworks/
 【templatepath】
 【flags】||
@@ -654,10 +721,10 @@ function formcommentSubmit(){
 【webdescription】作品展示 QQ313801120
 【bodycontent】
 【/bodycontent】
--------------------------------
+------------------------------- 
 【columnname】其它
 【columntype】新闻
-【sortrank】22
+【sortrank】66
 【filename】/morearticle/
 【templatepath】
 【flags】||

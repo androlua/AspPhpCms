@@ -9,21 +9,19 @@
 【filename】/css3/css-skills.html
 【flags】|
 【relatedtags】CSS3 
-【bodycontent】
-[&全部换行&]
-<strong>CSS是什么</strong>
+【bodycontent】[&全部换行&][&html转码&]【strong】CSS是什么【/strong】
 CSS是层叠样式表，层叠样式表是一种用来表现HTML（标准通用标记语言的一个应用）或XML（标准通用标记语言的一个子集）等文件样式的计算机语言。
 
-<strong>引入CSS</strong>
-[&html转码&]第一种引入CSS方法：
+【strong】引入CSS【/strong】
+第一种引入CSS方法：
 <link href="mystyle.css" rel="stylesheet" type="text/css"/>
 
 第二种引入CSS方法：
 <style type="text/css">
 @import"mystyle.css"; 此处要注意.css文件的路径
 </style>
-[&html转码end&]
-<strong>CSS边框</strong>
+
+【strong】CSS边框【/strong】
 CSS border 属性允许你规定元素边框的样式、宽度和颜色。
 
 例如，你可以把一幅图片的边框定义为 outset，使之看上去像是“凸起按钮”：
@@ -53,10 +51,10 @@ p {
 透明边框
 我们刚才讲过，如果边框没有样式，就没有宽度。不过有些情况下您可能希望创建一个不可见的边框。
 CSS2 引入了边框颜色值 transparent。这个值用于创建有宽度的不可见边框。请看下面的例子：
-[&html转码&]<a href="#">AAA</a>
+<a href="#">AAA</a>
 <a href="#">BBB</a>
 <a href="#">CCC</a>
-[&html转码end&]
+
 我们为上面的链接定义了如下样式：
 a:link, a:visited {
   border-style: solid;
@@ -65,7 +63,7 @@ a:link, a:visited {
 }
 a:hover {border-color: gray;}
 
-<strong>CSS定位</strong>
+【strong】CSS定位【/strong】
 分为CSS相对定位、CSS绝对定位两种
 
 CSS 相对定位
@@ -85,8 +83,10 @@ CSS 绝对定位
   left: 30px;
   top: 20px;
 }
+注意：
+一定要设置:left和top值，默认为零都要设置下，因为在IE浏览器里没设置的话会变形
 
-<strong>CSS动画</strong>
+【strong】CSS动画【/strong】
 如需在 CSS3 中创建动画，您需要学习 @keyframes 规则。
 @keyframes 规则用于创建动画。在 @keyframes 中规定某项 CSS 样式，就能创建由当前样式逐渐改为新样式的动画效果。
 
@@ -102,22 +102,21 @@ Chrome 和 Safari 需要前缀 -webkit-。
 
 实例
 把 "myfirst" 动画捆绑到 div 元素，时长：5 秒：
-div
-{
+div{
 animation: myfirst 5s;
 -moz-animation: myfirst 5s;	/* Firefox */
 -webkit-animation: myfirst 5s;	/* Safari 和 Chrome */
 -o-animation: myfirst 5s;	/* Opera */
 }
 
-<strong>CSS content</strong>
+【strong】CSS content【/strong】
 下面的例子在每个链接后插入括号中的 URL：
 a:after
   {
   content: " (" attr(href) ")";
 }
 
-<strong>CSS布局</strong>
+【strong】CSS布局【/strong】
 1、单列布局
 2、水平居中
 3、垂直居中
@@ -127,7 +126,7 @@ a:after
 7、全屏布局
 8、响应式布局
 
-<strong>CSS隐藏</strong>
+【strong】CSS隐藏【/strong】
 [&html转码&]1、css隐藏DIV及内容，完全隐藏内容与布局
 解释：使用CSS单词display:none;完全隐藏文本及图片
 <div style="display:none;">你是看不见我的</div> 
@@ -142,13 +141,13 @@ a:after
 3、CSS隐藏滚动条
 使用overflow-y:hidden;和overflow-x:hidden来隐藏或显示对应横或竖方向的滚动条。此案例可以进入css手册的overflow-y和css在线手册的overflow-x有详细的讲解对滚动条的设置隐藏或显示方法。
 [&html转码end&]
-<strong>CSS DIV 居中</strong>
+【strong】CSS DIV 居中【/strong】
 对需要水平居中的DIV层添加以下属性:
 margin-left: auto;
 margin-right: auto;
 margin:0 auto;  
 
-<strong>CSS透明度的设置（兼容所有浏览器）</strong>
+【strong】CSS透明度的设置（兼容所有浏览器）【/strong】
 .transparent_class {      
 filter:alpha(opacity=50);
 -moz-opacity:0.5;      
@@ -156,7 +155,47 @@ filter:alpha(opacity=50);
 opacity: 0.5;
 }
 
+【strong】CSS设置图片模糊（匹配各个浏览器）【/strong】
+.imgblur {    
+	-webkit-filter: blur(5px); /* Chrome, Opera */
+	-moz-filter: blur(5px);
+	-ms-filter: blur(5px);    
+	filter: blur(5px);     
+	filter:progid:DXImageTransform.Microsoft.Blur(pixelradius=5);
+}
+
+【strong】CSS设置图片灰色（匹配各个浏览器）【/strong】
+.imggray { 
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+	filter: grayscale(100%);
+	filter: gray;
+}
+
+【b】技巧【/b】
+1、当设置图片模糊时，设置图片宽高和隐藏超出部分，因为在Chrome浏览器里有超出图片大小的羽化
+
+【b】设置选中后文字颜色与背景颜色【/b】
+::-moz-selection{ background:#FF5E99; color:#fff; }
+::selection { background:#FF5E99; color:#fff; }
+
+overflow-x: hidden;
+overflow-y: hidden;
+overflow: hidden;
+
+字体标准用法
+font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+font: 25px "Myriad Pro";  英文标题字体
+
+文字隐藏后添加省略号
+overflow: hidden; /*自动隐藏文字*/
+text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+white-space: nowrap;/*强制不换行*/ 
+
 {$TitleInSearchEngineList title='收集大量CSS实用技巧'$}
+
 
 【/bodycontent】
 

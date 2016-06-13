@@ -19,24 +19,24 @@ function unDisplayHtml($str){
 }
 
 //处理闭合HTML标签(20150902)  比上面的更好用 第二种
-function handleCloseHtml($content, $ImgAddAlt, $action){
+function handleCloseHtml($content, $imgAddAlt, $action){
     $i=''; $endStr=''; $s=''; $s2=''; $c=''; $labelName=''; $startLabel=''; $endLabel ='';
     $action= '|' . $action . '|';
     $startLabel= '<';
     $endLabel= '>';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         $endStr= mid($content, $i,-1);
         if( $s== '<' ){
             if( instr($endStr, '>') > 0 ){
                 $s= mid($endStr, 1, instr($endStr, '>'));
-                $i= $i + strlen($s) - 1;
-                $s= mid($s, 2, strlen($s) - 2);
+                $i= $i + Len($s) - 1;
+                $s= mid($s, 2, Len($s) - 2);
                 $s= phptrim($s);
-                if( substr($s, - 1)== '/' ){
-                    $s= phptrim(substr($s, 0 , strlen($s) - 1));
+                if( Right($s, 1)== '/' ){
+                    $s= phptrim(substr($s, 0 , Len($s) - 1));
                 }
-                $endStr= substr($endStr, - strlen($endStr) - strlen($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
+                $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面
                 $labelName= mid($s, 1, instr($s . ' ', ' ') - 1);
                 $labelName= strtolower($labelName);
@@ -47,13 +47,13 @@ function handleCloseHtml($content, $ImgAddAlt, $action){
                 }else if( instr($action, '|处理A链接第二种|') > 0 ){
                     $s= handleHtmlAHref($s, $labelName, 'http://127.0.0.1/debugRemoteWeb.asp?url=', '处理A链接'); //处理干净html标签
                 }
-
                 //call echo(s,labelName)   param与embed是Flash用到，不过embed有结束标签的
                 if( instr('|meta|link|embed|param|input|img|br|hr|rect|line|area|script|div|span|a|', '|' . $labelName . '|') > 0 ){
                     $s= Replace(Replace(Replace(Replace($s, ' class=""', ''), ' alt=""', ''), ' title=""', ''), ' name=""', ''); //临时这么做一下，以后要完整系统的做
                     $s= Replace(Replace(Replace(Replace($s, ' class=\'\'', ''), ' alt=\'\'', ''), ' title=\'\'', ''), ' name=\'\'', '');
+
                     //给vb.net软件用的 要不然它会报错，晕
-                    if( $labelName== 'img' && $ImgAddAlt== true ){
+                    if( $labelName== 'img' && $imgAddAlt== true ){
                         if( instr($s, ' alt')== false ){
                             $s= $s . ' alt=""';
                         }
@@ -64,6 +64,9 @@ function handleCloseHtml($content, $ImgAddAlt, $action){
                         if( instr($s, ' type')== false ){
                             $s= $s . ' type="text/javascript"';
                         }
+                    }else if( Right(AspTrim($s), 1) <> '/' && instr('|meta|link|embed|param|input|img|br|hr|rect|line|area|', '|' . $labelName . '|') > 0 ){
+                        $s= AspTrim($s);
+                        $s= $s . ' /';
                     }
                 }
                 $s= $startLabel . $s . $endLabel;
@@ -72,7 +75,7 @@ function handleCloseHtml($content, $ImgAddAlt, $action){
                     $s2= mid($endStr, 1, instr($endStr, '</script>') + 8);
 
                     //call eerr("",s2)
-                    $i= $i + strlen($s2);
+                    $i= $i + Len($s2);
                     $s= $s . $s2;
                 }
                 //call echo("s",replace(s,"<","&lt;"))
@@ -96,14 +99,14 @@ function handleHtmlAHref( $content, $labelName, $addToHttpUrl, $action){
     $content= Replace($content . ' ', "\t", ' '); //退格替换成空格，最后加一个空格，方便计算
     $content= Replace(Replace($content, ' =', '='), ' =', '=');
     $isValue= false; //默认内容为假，因为先是获得标签名称
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1); //获得当前一个字符
         $behindStr= mid($content, $i,-1); //后面字符
         if( $s== '=' && $isValue== false ){ //不是内容值，并为=号
             $isValue= true;
             $valueStr= '';
             $yinghaoLabel= '';
-            if( $c <> '' && substr($c, - 1) <> ' ' ){ $c= $c . ' ' ;}
+            if( $c <> '' && Right($c, 1) <> ' ' ){ $c= $c . ' ' ;}
             $parentName= strtolower($temp); //参数名称转小写
             $c= $c . $parentName . $s;
             $temp= '';
@@ -168,7 +171,7 @@ function handleHtmlAHref( $content, $labelName, $addToHttpUrl, $action){
     return @$handleHtmlAHref;
 }
 //追加或替换网址(20150922) 配合上面   addToOrAddHttpUrl("http://127.0.0.1/aa/","http://127.0.0.1/4.asp","替换") = http://127.0.0.1/aa/4.asp
-function addToOrAddHttpUrl($httpUrl, $url, $action){
+function addToOrAddHttpUrl($httpurl, $url, $action){
     $s ='';
     $action= '|' . $action . '|';
     if( instr($action, '|替换|') > 0 ){
@@ -177,11 +180,11 @@ function addToOrAddHttpUrl($httpUrl, $url, $action){
             $url= Replace($url, $s, '');
         }
     }
-    if( instr($url, $httpUrl)== false ){
-        if( substr($httpUrl, - 1)== '/' &&(substr($url, 0 , 1)== '/' || substr($url, 0 , 1)== '\\') ){
+    if( instr($url, $httpurl)== false ){
+        if( Right($httpurl, 1)== '/' &&(substr($url, 0 , 1)== '/' || substr($url, 0 , 1)== '\\') ){
             $url= mid($url, 2,-1);
         }
-        $url= $httpUrl . $url;
+        $url= $httpurl . $url;
     }
 
     $addToOrAddHttpUrl= $url;
@@ -192,19 +195,19 @@ function addToOrAddHttpUrl($httpUrl, $url, $action){
 function getHtmlLableName($content, $nThisLabel){
     $i=''; $endStr=''; $s=''; $c=''; $labelName=''; $nLabelCount ='';
     $nLabelCount= 0;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         $endStr= mid($content, $i,-1);
         if( $s== '<' ){
             if( instr($endStr, '>') > 0 ){
                 $s= mid($endStr, 1, instr($endStr, '>'));
-                $i= $i + strlen($s) - 1;
-                $s= mid($s, 2, strlen($s) - 2);
+                $i= $i + Len($s) - 1;
+                $s= mid($s, 2, Len($s) - 2);
                 $s= phptrim($s);
-                if( substr($s, - 1)== '/' ){
-                    $s= phptrim(substr($s, 0 , strlen($s) - 1));
+                if( Right($s, 1)== '/' ){
+                    $s= phptrim(substr($s, 0 , Len($s) - 1));
                 }
-                $endStr= substr($endStr, - strlen($endStr) - strlen($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
+                $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面
                 $labelName= mid($s, 1, instr($s . ' ', ' ') - 1);
                 $labelName= strtolower($labelName);
@@ -224,7 +227,7 @@ function getHtmlLableName($content, $nThisLabel){
 function removeBlankLines($content){
     $s=''; $c=''; $splStr ='';
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( Replace(Replace($s, "\t", ''), ' ', '') <> '' ){
             if( $c <> '' ){ $c= $c . vbCrlf() ;}
             $c= $c . $s;
@@ -235,6 +238,77 @@ function removeBlankLines($content){
 }
 
 
+//call echo("webtitle",getHtmlValue(content,"webtitle"))
+//call echo("webdescription",getHtmlValue(content,"webdescription"))
+//call echo("webkeywords",getHtmlValue(content,"webkeywords"))
+//获得html里面指定值20160520 call echo("webtitle",getHtmlValue(content,"webtitle"))
+function getHtmlValue($content, $sType){
+    $i=''; $endStr=''; $s=''; $labelName=''; $startLabel=''; $endLabel=''; $LCaseEndStr=''; $paramName ='';
+    $startLabel= '<';
+    $endLabel= '>';
+    for( $i= 1 ; $i<= Len($content); $i++){
+        $s= mid($content, $i, 1);
+        $endStr= mid($content, $i,-1);
+        if( $s== '<' ){
+            if( instr($endStr, '>') > 0 ){
+                $s= mid($endStr, 1, instr($endStr, '>'));
+                $i= $i + Len($s) - 1;
+                $s= mid($s, 2, Len($s) - 2);
+                $s= phptrim($s);
+                if( Right($s, 1)== '/' ){
+                    $s= phptrim(substr($s, 0 , Len($s) - 1));
+                }
+                $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
+                //注意之前放在labelName下面
+                $labelName= mid($s, 1, instr($s . ' ', ' ') - 1);
+                $labelName= strtolower($labelName);
 
+                if( $labelName== 'title' && $sType== 'webtitle' ){
+                    $LCaseEndStr= strtolower($endStr);
+                    if( instr($LCaseEndStr, '</title>')>0 ){
+                        $s= mid($endStr, 1, instr($LCaseEndStr, '</title>') - 1);
+                    }else{
+                        $s='';
+                    }
+                    $getHtmlValue= $s;
+                    return @$getHtmlValue;
+                }else if( $labelName== 'meta' &&($sType== 'webkeywords' || $sType== 'webdescription') ){
+                    $LCaseEndStr= strtolower($endStr);
+                    $paramName= phptrim(strtolower(getParamValue($s, 'name')));
+                    if( 'web' . $paramName== $sType ){
+                        $getHtmlValue= getParamValue($s, 'content');
+                        return @$getHtmlValue;
+                    }
+
+
+                }
+
+            }
+        }
+    }
+    $getHtmlValue= '';
+    return @$getHtmlValue;
+}
+
+//获得参数值20160520  call rwend(getParamValue("meta name=""keywords"" content=""{$web_keywords$}""","name"))
+function getParamValue($content, $paramName){
+    $LCaseContent=''; $s=''; $splStart=''; $splEnd=''; $i=''; $startStr=''; $endStr ='';
+    $LCaseContent= strtolower($content);
+
+    $splStart= array('="', '=\'', '=');
+    $splEnd= array('"', '\'', '>');
+    for( $i= 0 ; $i<= UBound($splStart); $i++){
+        $startStr= $paramName . $splStart[$i];
+        $endStr= $splEnd[$i];
+        if( instr($LCaseContent, $startStr) > 0 && instr($LCaseContent, $endStr) > 0 ){
+            $s= strCut($content, $startStr, $endStr, 2);
+            if( $s <> '' ){
+                $getParamValue= $s;
+                return @$getParamValue;
+            }
+        }
+    }
+    return @$getParamValue;
+}
 
 ?>

@@ -169,7 +169,7 @@ function createLableStr() {
 			var value = a[i].value.replace(/'/g, "\\'");
 			if (value.indexOf("\n") != -1) {
 				var TemplateID = format_Time("", 12)
-				infoStr += "<!--#test start#-->\n<!--#" + TemplateID + " start#-->\n\n<!--#" + TemplateID + " end#-->\n"
+				infoStr += "<!--#test start#-->\n<!--#" + TemplateID + " start#-->\n\n<!--#" + TemplateID + " end#-->\n<!--#test end#-->\n"
 				infoStr += "\n\n第二种方法：\n<!--#" + TemplateID + a[i].value + "#-->"
 				value = TemplateID
 

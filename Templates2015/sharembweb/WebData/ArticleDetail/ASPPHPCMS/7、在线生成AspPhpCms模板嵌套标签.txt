@@ -27,6 +27,13 @@
 	</div>
 
 <br><br> 
+ 
+<ul class="list">
+<li><a href="http://pan.baidu.com/s/1eSoDtJ0"  rel="nofollow" target="_blank">【百度云盘】ASPPHPCMS模板标签生成器绿色版</a></li> 
+<li><a href="http://sharembweb.com/tagdoc/v1/"  rel="nofollow" target="_blank">AspPhpCMS v1标签手册</a></li> 
+</ul>
+ 
+<br><br> 
 {$TitleInSearchEngineList title='在线生成ASPPHPCMS模板嵌套标签'$}
 
 【/bodycontent】

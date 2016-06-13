@@ -38,16 +38,16 @@ Sub FormSubmit()
 End Sub
 
 '获得POST字段名称列表 20160226
-function getFormFieldName()
+function getFormFieldList()
 	dim s,c,splstr,fieldName
 	splstr=split(Request.Form,"&")
 	for each s in splstr
-		fieldName = LCase(Mid(s, 1, InStr(s, "=") - 1)) 
+		fieldName = LCase(Mid(s, 1, InStr(s, "=") - 1))
 		if c<>"" then c=c & "|"
 		c=c & fieldName
 	next
-	getFormFieldName=c
-end function
+	getFormFieldList=c
+end function 
  
 %>
 

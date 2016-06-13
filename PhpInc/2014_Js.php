@@ -1,6 +1,60 @@
 <?PHP
 //Js
 
+//删除JS注释 20160602
+function delJsNote($content){
+    $splstr='';$s='';$c='';$isMultiLineNote='';$s2='';
+    $isMultiLineNote=false;			//多行注释默认为假
+    $splstr=aspSplit($content,vbCrlf());
+    foreach( $splstr as $key=>$s){
+        $s2=phptrim($s);
+        if( $isMultiLineNote==true ){
+            if( len($s2)>=2 ){
+                if( right($s2,2)=='*/' ){
+                    $isMultiLineNote=false;
+                }
+            }
+            $s='';
+        }else{
+            if( substr($s2, 0 ,2)=='/*' ){
+                if( right($s2,2)<>'*/' ){
+                    $isMultiLineNote=true;
+                }
+                $s='';
+            }else if( substr($s2, 0 ,2)=='//' ){
+                $s='';
+            }
+        }
+        $c=$c . $s . vbCrlf();
+    }
+    $delJsNote=$c;
+    return @$delJsNote;
+}
+
+//JS转换，引用别人
+function JsEncode__( $s){
+
+    if( isNul($s) ){ $JsEncode__= '' ; return @$JsEncode__;}
+    $arr1=''; $arr2=''; $i=''; $j=''; $c=''; $p=''; $t='';
+    $arr1= array(chr(34),chr(92),chr(47),chr(8),chr(12),chr(10),chr(13),chr(9)); 		//34|",92|\,47|/,8|,12|,10| ,13| ,9|	,
+    $arr2= array(chr(34),chr(92),chr(47),chr(98),chr(102),chr(110),chr(114)); 		//34|",92|\,47|/,98|b,102|f,110|n,114|r,1865|,
+    for( $i= 1 ; $i<= Len($s); $i++){
+        $p= true;
+        $c= mid($s, $i, 1);
+        for( $j= 0 ; $j<= Ubound($arr1); $j++){
+            if( $c== $arr1[$j] ){
+                $t= $t . '\\' . $arr2[$j];
+                $p= false;
+                break;
+            }
+        }
+        if( $p ){ $t= $t . $c;}
+    }
+    $JsEncode__= $t;
+    return @$JsEncode__;
+}
+
+
 //远程网站会员统计2010330
 //<script>document.writeln("<script src=\'http://127.0.0.1/web_soft/R.Asp?act=Stat&GoToUrl="+escape(document.referrer)+"&ThisUrl="+escape(window.location.href)+"&screen="+escape(window.screen.width+"x"+window.screen.height)+"&co="+escape(document.cookie)+" \'><\/script>");<'/script>
 function showStatJSCode($url){

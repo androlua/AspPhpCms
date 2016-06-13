@@ -1,0 +1,154 @@
+【parentid】CSS3
+【title】十六进制颜色码
+【webtitle】十六进制颜色码
+【webkeywords】十六进制颜色码
+【webdescription】十六进制颜色码 QQ313801120
+【sortrank】4
+【author】sharembweb
+【adddatetime】2016-04-27 20:20:25
+【filename】/css3/sixteen-color-code.html
+【flags】|
+【relatedtags】CSS3
+【bodycontent】
+<strong>十六进制颜色码</strong><br>
+浅粉色&nbsp;&nbsp;<span style="color:LightPink">#FFB6C1</span> &nbsp;&nbsp;255,182,193<br>
+粉红&nbsp;&nbsp;<span style="color:Pink">#FFC0CB</span> &nbsp;&nbsp;255,192,203<br>
+猩红&nbsp;&nbsp;<span style="color:Crimson">#DC143C</span> &nbsp;&nbsp;220,20,60<br>
+脸红的淡紫色&nbsp;&nbsp;<span style="color:LavenderBlush">#FFF0F5</span> &nbsp;&nbsp;255,240,245<br>
+苍白的紫罗兰红色&nbsp;&nbsp;<span style="color:PaleVioletRed">#DB7093</span> &nbsp;&nbsp;219,112,147<br>
+热情的粉红&nbsp;&nbsp;<span style="color:HotPink">#FF69B4</span> &nbsp;&nbsp;255,105,180<br>
+深粉色&nbsp;&nbsp;<span style="color:DeepPink">#FF1493</span> &nbsp;&nbsp;255,20,147<br>
+适中的紫罗兰红色&nbsp;&nbsp;<span style="color:MediumVioletRed">#C71585</span> &nbsp;&nbsp;199,21,133<br>
+兰花的紫色&nbsp;&nbsp;<span style="color:Orchid">#DA70D6</span> &nbsp;&nbsp;218,112,214<br>
+蓟&nbsp;&nbsp;<span style="color:Thistle">#D8BFD8</span> &nbsp;&nbsp;216,191,216<br>
+李子&nbsp;&nbsp;<span style="color:plum">#DDA0DD</span> &nbsp;&nbsp;221,160,221<br>
+紫罗兰&nbsp;&nbsp;<span style="color:Violet">#EE82EE</span> &nbsp;&nbsp;238,130,238<br>
+洋红&nbsp;&nbsp;<span style="color:Magenta">#FF00FF</span> &nbsp;&nbsp;255,0,255<br>
+灯笼海棠（紫红色）&nbsp;&nbsp;<span style="color:Fuchsia">#FF00FF</span> &nbsp;&nbsp;255,0,255<br>
+深洋红色&nbsp;&nbsp;<span style="color:DarkMagenta">#8B008B</span> &nbsp;&nbsp;139,0,139<br>
+紫色&nbsp;&nbsp;<span style="color:Purple">#800080</span> &nbsp;&nbsp;128,0,128<br>
+适中的兰花紫&nbsp;&nbsp;<span style="color:MediumOrchid">#BA55D3</span> &nbsp;&nbsp;186,85,211<br>
+深紫罗兰色&nbsp;&nbsp;<span style="color:DarkVoilet">#9400D3</span> &nbsp;&nbsp;148,0,211<br>
+深兰花紫&nbsp;&nbsp;<span style="color:DarkOrchid">#9932CC</span> &nbsp;&nbsp;153,50,204<br>
+靛青&nbsp;&nbsp;<span style="color:Indigo">#4B0082</span> &nbsp;&nbsp;75,0,130<br>
+深紫罗兰的蓝色&nbsp;&nbsp;<span style="color:BlueViolet">#8A2BE2</span> &nbsp;&nbsp;138,43,226<br>
+适中的紫色&nbsp;&nbsp;<span style="color:MediumPurple">#9370DB</span> &nbsp;&nbsp;147,112,219<br>
+适中的板岩暗蓝灰色&nbsp;&nbsp;<span style="color:MediumSlateBlue">#7B68EE</span> &nbsp;&nbsp;123,104,238<br>
+板岩暗蓝灰色&nbsp;&nbsp;<span style="color:SlateBlue">#6A5ACD</span> &nbsp;&nbsp;106,90,205<br>
+深岩暗蓝灰色&nbsp;&nbsp;<span style="color:DarkSlateBlue">#483D8B</span> &nbsp;&nbsp;72,61,139<br>
+薰衣草花的淡紫色&nbsp;&nbsp;<span style="color:Lavender">#E6E6FA</span> &nbsp;&nbsp;230,230,250<br>
+幽灵的白色&nbsp;&nbsp;<span style="color:GhostWhite">#F8F8FF</span> &nbsp;&nbsp;248,248,255<br>
+纯蓝&nbsp;&nbsp;<span style="color:Blue">#0000FF</span> &nbsp;&nbsp;0,0,255<br>
+适中的蓝色&nbsp;&nbsp;<span style="color:MediumBlue">#0000CD</span> &nbsp;&nbsp;0,0,205<br>
+午夜的蓝色&nbsp;&nbsp;<span style="color:MidnightBlue">#191970</span> &nbsp;&nbsp;25,25,112<br>
+深蓝色&nbsp;&nbsp;<span style="color:DarkBlue">#00008B</span> &nbsp;&nbsp;0,0,139<br>
+海军蓝&nbsp;&nbsp;<span style="color:Navy">#000080</span> &nbsp;&nbsp;0,0,128<br>
+皇军蓝&nbsp;&nbsp;<span style="color:RoyalBlue">#4169E1</span> &nbsp;&nbsp;65,105,225<br>
+矢车菊的蓝色&nbsp;&nbsp;<span style="color:CornflowerBlue">#6495ED</span> &nbsp;&nbsp;100,149,237<br>
+淡钢蓝&nbsp;&nbsp;<span style="color:LightSteelBlue">#B0C4DE</span> &nbsp;&nbsp;176,196,222<br>
+浅石板灰&nbsp;&nbsp;<span style="color:LightSlateGray">#778899</span> &nbsp;&nbsp;119,136,153<br>
+石板灰&nbsp;&nbsp;<span style="color:SlateGray">#708090</span> &nbsp;&nbsp;112,128,144<br>
+道奇蓝&nbsp;&nbsp;<span style="color:DoderBlue">#1E90FF</span> &nbsp;&nbsp;30,144,255<br>
+爱丽丝蓝&nbsp;&nbsp;<span style="color:AliceBlue">#F0F8FF</span> &nbsp;&nbsp;240,248,255<br>
+钢蓝&nbsp;&nbsp;<span style="color:SteelBlue">#4682B4</span> &nbsp;&nbsp;70,130,180<br>
+淡蓝色&nbsp;&nbsp;<span style="color:LightSkyBlue">#87CEFA</span> &nbsp;&nbsp;135,206,250<br>
+天蓝色&nbsp;&nbsp;<span style="color:SkyBlue">#87CEEB</span> &nbsp;&nbsp;135,206,235<br>
+深天蓝&nbsp;&nbsp;<span style="color:DeepSkyBlue">#00BFFF</span> &nbsp;&nbsp;0,191,255<br>
+淡蓝&nbsp;&nbsp;<span style="color:LightBLue">#ADD8E6</span> &nbsp;&nbsp;173,216,230<br>
+火药蓝&nbsp;&nbsp;<span style="color:PowDerBlue">#B0E0E6</span> &nbsp;&nbsp;176,224,230<br>
+军校蓝&nbsp;&nbsp;<span style="color:CadetBlue">#5F9EA0</span> &nbsp;&nbsp;95,158,160<br>
+蔚蓝色&nbsp;&nbsp;<span style="color:Azure">#F0FFFF</span> &nbsp;&nbsp;240,255,255<br>
+淡青色&nbsp;&nbsp;<span style="color:LightCyan">#E1FFFF</span> &nbsp;&nbsp;225,255,255<br>
+苍白的绿宝石&nbsp;&nbsp;<span style="color:PaleTurquoise">#AFEEEE</span> &nbsp;&nbsp;175,238,238<br>
+青色&nbsp;&nbsp;<span style="color:Cyan">#00FFFF</span> &nbsp;&nbsp;0,255,255<br>
+水绿色&nbsp;&nbsp;<span style="color:Aqua">#00FFFF</span> &nbsp;&nbsp;0,255,255<br>
+深绿宝石&nbsp;&nbsp;<span style="color:DarkTurquoise">#00CED1</span> &nbsp;&nbsp;0,206,209<br>
+深石板灰&nbsp;&nbsp;<span style="color:DarkSlateGray">#2F4F4F</span> &nbsp;&nbsp;47,79,79<br>
+深青色&nbsp;&nbsp;<span style="color:DarkCyan">#008B8B</span> &nbsp;&nbsp;0,139,139<br>
+水鸭色&nbsp;&nbsp;<span style="color:Teal">#008080</span> &nbsp;&nbsp;0,128,128<br>
+适中的绿宝石&nbsp;&nbsp;<span style="color:MediumTurquoise">#48D1CC</span> &nbsp;&nbsp;72,209,204<br>
+浅海洋绿&nbsp;&nbsp;<span style="color:LightSeaGreen">#20B2AA</span> &nbsp;&nbsp;32,178,170<br>
+绿宝石&nbsp;&nbsp;<span style="color:Turquoise">#40E0D0</span> &nbsp;&nbsp;64,224,208<br>
+绿玉\碧绿色&nbsp;&nbsp;<span style="color:Auqamarin">#7FFFAA</span> &nbsp;&nbsp;127,255,170<br>
+适中的碧绿色&nbsp;&nbsp;<span style="color:MediumAquamarine">#00FA9A</span> &nbsp;&nbsp;0,250,154<br>
+适中的春天的绿色&nbsp;&nbsp;<span style="color:MediumSpringGreen">#F5FFFA</span> &nbsp;&nbsp;245,255,250<br>
+薄荷奶油&nbsp;&nbsp;<span style="color:MintCream">#00FF7F</span> &nbsp;&nbsp;0,255,127<br>
+春天的绿色&nbsp;&nbsp;<span style="color:SpringGreen">#3CB371</span> &nbsp;&nbsp;60,179,113<br>
+海洋绿&nbsp;&nbsp;<span style="color:SeaGreen">#2E8B57</span> &nbsp;&nbsp;46,139,87<br>
+蜂蜜&nbsp;&nbsp;<span style="color:Honeydew">#F0FFF0</span> &nbsp;&nbsp;240,255,240<br>
+淡绿色&nbsp;&nbsp;<span style="color:LightGreen">#90EE90</span> &nbsp;&nbsp;144,238,144<br>
+苍白的绿色&nbsp;&nbsp;<span style="color:PaleGreen">#98FB98</span> &nbsp;&nbsp;152,251,152<br>
+深海洋绿&nbsp;&nbsp;<span style="color:DarkSeaGreen">#8FBC8F</span> &nbsp;&nbsp;143,188,143<br>
+酸橙绿&nbsp;&nbsp;<span style="color:LimeGreen">#32CD32</span> &nbsp;&nbsp;50,205,50<br>
+酸橙色&nbsp;&nbsp;<span style="color:Lime">#00FF00</span> &nbsp;&nbsp;0,255,0<br>
+森林绿&nbsp;&nbsp;<span style="color:ForestGreen">#228B22</span> &nbsp;&nbsp;34,139,34<br>
+纯绿&nbsp;&nbsp;<span style="color:Green">#008000</span> &nbsp;&nbsp;0,128,0<br>
+深绿色&nbsp;&nbsp;<span style="color:DarkGreen">#006400</span> &nbsp;&nbsp;0,100,0<br>
+查特酒绿&nbsp;&nbsp;<span style="color:Chartreuse">#7FFF00</span> &nbsp;&nbsp;127,255,0<br>
+草坪绿&nbsp;&nbsp;<span style="color:LawnGreen">#7CFC00</span> &nbsp;&nbsp;124,252,0<br>
+绿黄色&nbsp;&nbsp;<span style="color:GreenYellow">#ADFF2F</span> &nbsp;&nbsp;173,255,47<br>
+橄榄土褐色&nbsp;&nbsp;<span style="color:OliveDrab">#556B2F</span> &nbsp;&nbsp;85,107,47<br>
+米色（浅褐色）&nbsp;&nbsp;<span style="color:Beige">#6B8E23</span> &nbsp;&nbsp;107,142,35<br>
+浅秋麒麟黄&nbsp;&nbsp;<span style="color:LightGoldenrodYellow">#FAFAD2</span> &nbsp;&nbsp;250,250,210<br>
+象牙色&nbsp;&nbsp;<span style="color:Ivory">#FFFFF0</span> &nbsp;&nbsp;255,255,240<br>
+浅黄色&nbsp;&nbsp;<span style="color:LightYellow">#FFFFE0</span> &nbsp;&nbsp;255,255,224<br>
+纯黄&nbsp;&nbsp;<span style="color:Yellow">#FFFF00</span> &nbsp;&nbsp;255,255,0<br>
+橄榄&nbsp;&nbsp;<span style="color:Olive">#808000</span> &nbsp;&nbsp;128,128,0<br>
+深卡其布&nbsp;&nbsp;<span style="color:DarkKhaki">#BDB76B</span> &nbsp;&nbsp;189,183,107<br>
+柠檬薄纱&nbsp;&nbsp;<span style="color:LemonChiffon">#FFFACD</span> &nbsp;&nbsp;255,250,205<br>
+灰秋麒麟&nbsp;&nbsp;<span style="color:PaleGodenrod">#EEE8AA</span> &nbsp;&nbsp;238,232,170<br>
+卡其布&nbsp;&nbsp;<span style="color:Khaki">#F0E68C</span> &nbsp;&nbsp;240,230,140<br>
+金&nbsp;&nbsp;<span style="color:Gold">#FFD700</span> &nbsp;&nbsp;255,215,0<br>
+玉米色&nbsp;&nbsp;<span style="color:Cornislk">#FFF8DC</span> &nbsp;&nbsp;255,248,220<br>
+秋麒麟&nbsp;&nbsp;<span style="color:GoldEnrod">#DAA520</span> &nbsp;&nbsp;218,165,32<br>
+花的白色&nbsp;&nbsp;<span style="color:FloralWhite">#FFFAF0</span> &nbsp;&nbsp;255,250,240<br>
+老饰带&nbsp;&nbsp;<span style="color:OldLace">#FDF5E6</span> &nbsp;&nbsp;253,245,230<br>
+小麦色&nbsp;&nbsp;<span style="color:Wheat">#F5DEB3</span> &nbsp;&nbsp;245,222,179<br>
+鹿皮鞋&nbsp;&nbsp;<span style="color:Moccasin">#FFE4B5</span> &nbsp;&nbsp;255,228,181<br>
+橙色&nbsp;&nbsp;<span style="color:Orange">#FFA500</span> &nbsp;&nbsp;255,165,0<br>
+番木瓜&nbsp;&nbsp;<span style="color:PapayaWhip">#FFEFD5</span> &nbsp;&nbsp;255,239,213<br>
+漂白的杏仁&nbsp;&nbsp;<span style="color:BlanchedAlmond">#FFEBCD</span> &nbsp;&nbsp;255,235,205<br>
+Navajo白&nbsp;&nbsp;<span style="color:NavajoWhite">#FFDEAD</span> &nbsp;&nbsp;255,222,173<br>
+古代的白色&nbsp;&nbsp;<span style="color:AntiqueWhite">#FAEBD7</span> &nbsp;&nbsp;250,235,215<br>
+晒黑&nbsp;&nbsp;<span style="color:Tan">#D2B48C</span> &nbsp;&nbsp;210,180,140<br>
+结实的树&nbsp;&nbsp;<span style="color:BrulyWood">#DEB887</span> &nbsp;&nbsp;222,184,135<br>
+（浓汤）乳脂，番茄等&nbsp;&nbsp;<span style="color:Bisque">#FFE4C4</span> &nbsp;&nbsp;255,228,196<br>
+深橙色&nbsp;&nbsp;<span style="color:DarkOrange">#FF8C00</span> &nbsp;&nbsp;255,140,0<br>
+亚麻布&nbsp;&nbsp;<span style="color:Linen">#FAF0E6</span> &nbsp;&nbsp;250,240,230<br>
+秘鲁&nbsp;&nbsp;<span style="color:Peru">#CD853F</span> &nbsp;&nbsp;205,133,63<br>
+桃色&nbsp;&nbsp;<span style="color:PeachPuff">#FFDAB9</span> &nbsp;&nbsp;255,218,185<br>
+沙棕色&nbsp;&nbsp;<span style="color:SandyBrown">#F4A460</span> &nbsp;&nbsp;244,164,96<br>
+巧克力&nbsp;&nbsp;<span style="color:Chocolate">#D2691E</span> &nbsp;&nbsp;210,105,30<br>
+马鞍棕色&nbsp;&nbsp;<span style="color:SaddleBrown">#8B4513</span> &nbsp;&nbsp;139,69,19<br>
+海贝壳&nbsp;&nbsp;<span style="color:SeaShell">#FFF5EE</span> &nbsp;&nbsp;255,245,238<br>
+黄土赭色&nbsp;&nbsp;<span style="color:Sienna">#A0522D</span> &nbsp;&nbsp;160,82,45<br>
+浅鲜肉（鲑鱼）色&nbsp;&nbsp;<span style="color:LightSalmon">#FFA07A</span> &nbsp;&nbsp;255,160,122<br>
+珊瑚&nbsp;&nbsp;<span style="color:Coral">#FF7F50</span> &nbsp;&nbsp;255,127,80<br>
+橙红色&nbsp;&nbsp;<span style="color:OrangeRed">#FF4500</span> &nbsp;&nbsp;255,69,0<br>
+深鲜肉（鲑鱼）色&nbsp;&nbsp;<span style="color:DarkSalmon">#E9967A</span> &nbsp;&nbsp;233,150,122<br>
+番茄&nbsp;&nbsp;<span style="color:Tomato">#FF6347</span> &nbsp;&nbsp;255,99,71<br>
+薄雾玫瑰&nbsp;&nbsp;<span style="color:MistyRose">#FFE4E1</span> &nbsp;&nbsp;255,228,225<br>
+鲜肉（鲑鱼）色&nbsp;&nbsp;<span style="color:Salmon">#FA8072</span> &nbsp;&nbsp;250,128,114<br>
+雪&nbsp;&nbsp;<span style="color:Snow">#FFFAFA</span> &nbsp;&nbsp;255,250,250<br>
+淡珊瑚色&nbsp;&nbsp;<span style="color:LightCoral">#F08080</span> &nbsp;&nbsp;240,128,128<br>
+玫瑰棕色&nbsp;&nbsp;<span style="color:RosyBrown">#BC8F8F</span> &nbsp;&nbsp;188,143,143<br>
+印度红&nbsp;&nbsp;<span style="color:IndianRed">#CD5C5C</span> &nbsp;&nbsp;205,92,92<br>
+纯红&nbsp;&nbsp;<span style="color:Red">#FF0000</span> &nbsp;&nbsp;255,0,0<br>
+棕色&nbsp;&nbsp;<span style="color:Brown">#A52A2A</span> &nbsp;&nbsp;165,42,42<br>
+耐火砖&nbsp;&nbsp;<span style="color:FireBrick">#B22222</span> &nbsp;&nbsp;178,34,34<br>
+深红色&nbsp;&nbsp;<span style="color:DarkRed">#8B0000</span> &nbsp;&nbsp;139,0,0<br>
+栗色&nbsp;&nbsp;<span style="color:Maroon">#800000</span> &nbsp;&nbsp;128,0,0<br>
+纯白&nbsp;&nbsp;<span style="color:White">#FFFFFF</span> &nbsp;&nbsp;255,255,255<br>
+白烟&nbsp;&nbsp;<span style="color:WhiteSmoke">#F5F5F5</span> &nbsp;&nbsp;245,245,245<br>
+Gainsboro&nbsp;&nbsp;<span style="color:Gainsboro">#DCDCDC</span> &nbsp;&nbsp;220,220,220<br>
+浅灰色&nbsp;&nbsp;<span style="color:LightGrey">#D3D3D3</span> &nbsp;&nbsp;211,211,211<br>
+银白色&nbsp;&nbsp;<span style="color:Silver">#C0C0C0</span> &nbsp;&nbsp;192,192,192<br>
+深灰色&nbsp;&nbsp;<span style="color:DarkGray">#A9A9A9</span> &nbsp;&nbsp;169,169,169<br>
+灰色&nbsp;&nbsp;<span style="color:Gray">#808080</span> &nbsp;&nbsp;128,128,128<br>
+暗淡的灰色&nbsp;&nbsp;<span style="color:DimGray">#696969</span> &nbsp;&nbsp;105,105,105<br>
+纯黑&nbsp;&nbsp;<span style="color:Black">#000000</span> &nbsp;&nbsp;0,0,0<br>
+
+<br>
+{$TitleInSearchEngineList title='十六进制颜色码'$}
+
+【/bodycontent】

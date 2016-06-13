@@ -28,7 +28,7 @@ Function encAspContent(ByVal content)
     splStr = Split(c, "|") 
     For Each s In splStr
         If s <> "" Then
-            THStr = UpperCaseORLowerCase(s) 
+            THStr = upperCaseORLowerCase(s) 
             content = Replace(content, Chr(9), "") 'Chr(9) = Tab
             content = Replace(content, s, THStr) 
         End If 
@@ -177,8 +177,6 @@ Function lcaseDec(str)
     lcaseDec = c 
 End Function 
 
-
-
 'html转换成js
 Function htmlToJs(ByVal c)
     c = Replace("" & c, "\", "\\") 
@@ -221,14 +219,14 @@ Function aspToHtml(ByVal c)
 End Function 
 '文件命名规则
 Function setFileName(ByVal fileName)
-    Dim i, s, c, tStr, c2 
-    c = "\/:*?""<>|.," 
-    c2 = "撇揦：星？“左右横。，" 
-    For i = 1 To Len(c)
-        s = Mid(c, i, 1) 
-        tStr = Mid(c2, i, 1) 
-        fileName = Replace(fileName, s, tStr) 
-    Next 
+    Dim i, s,tStr,splstr,splReplace
+	splstr=array("\","/",":","*","?","""","<",">","|",".",",")					'换这种方法是为了与PHP版通用 20160511
+	splReplace=array("撇","揦","：","星","？","“","左","右","横","。","，")
+	for i =0 to ubound(splstr)
+		s=splstr(i)
+		tStr=splReplace(i)
+		fileName = Replace(fileName, s, tStr) 
+	next 
     fileName = Replace(fileName, "&nbsp;", " ") 
     fileName = Replace(fileName, "&quot;", "双") 
     fileName = Replace(fileName, vbCrLf, "") 
@@ -236,15 +234,16 @@ Function setFileName(ByVal fileName)
 End Function 
 '文件命名规则解开
 Function unSetFileName(ByVal fileName)
-    Dim i, s, c, tStr, c2 
-    c = "\/:*?""<>|." 
-    c2 = "撇揦：星？“左右横。，" 
+    Dim i, s,tStr,splstr,splReplace
 
-    For i = 1 To Len(c)
-        s = Mid(c2, i, 1) 
-        tStr = Mid(c, i, 1) 
-        fileName = Replace(fileName, s, tStr) 
-    Next 
+	splstr=array("\","/",":","*","?","""","<",">","|",".",",")
+	splReplace=array("撇","揦","：","星","？","“","左","右","横","。","，")
+	for i =0 to ubound(splstr)
+		s=splstr(i)
+		tStr=splReplace(i)
+		fileName = Replace(fileName, tStr,s) 
+	next 
+	
     unSetFileName = fileName 
 End Function 
 
@@ -319,13 +318,7 @@ Function variableDisplacement(content, nPass)
         c = c & s 
     Next 
     variableDisplacement = c 
-End Function
-
-
-
-
-
-
+End Function 
 
 '【删除此行start】
 
@@ -333,7 +326,7 @@ End Function
 Function xorEnc(code, n)
     Dim c, s1, s2, s3, i 
     c = code 
-    s1 = Len(c) : s3 = ""
+    s1 = Len(c) : s3 = "" 
     For i = 0 To s1 - 1
         s2 = AscW(Right(c, s1 - i)) Xor n 
         s3 = s3 & ChrW(Int(s2)) 
@@ -413,11 +406,11 @@ End Function
 Public Function colorRGB(color)
     Dim ByN, ByN2 
     ByN = "" : ByN2 = "" 
-    Dim ArrayStr(2) 
-    ArrayStr(0) =(color Mod ByN) 
-    ArrayStr(1) =((color Mod ByN2) \ ByN) 
-    ArrayStr(2) =(color \ ByN2) 
-    colorRGB = ArrayStr 
+    Dim arrayStr(2) 
+    arrayStr(0) =(color Mod ByN) 
+    arrayStr(1) =((color Mod ByN2) \ ByN) 
+    arrayStr(2) =(color \ ByN2) 
+    colorRGB = arrayStr 
 End Function 
 
 '简单加密
@@ -484,9 +477,8 @@ Function encAspEvalRun(ByVal content)
     c = c & vbTab & "MyEval=Replace(MyEval,""療"",""e"")" & vbCrLf 
     c = c & "End Function" & vbCrLf 
     encAspEvalRun = "<" & "%" & vbCrLf & c & "%" & ">" 
-End Function  
+End Function 
 
-'【删除此行end】 
-%>   
-
+'【删除此行end】
+%>    
 

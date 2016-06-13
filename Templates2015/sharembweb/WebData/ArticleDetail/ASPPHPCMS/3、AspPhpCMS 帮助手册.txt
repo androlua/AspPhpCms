@@ -24,6 +24,7 @@
 <b>更多帮助：</b>
 <a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">Github下载ASPPHPCMS</a>
 <a href="http://sharembweb.com/Tools/zip/ASPPHPCMS.chm" class="ablue" rel="nofollow" target="_blank">下载ASPPHPCMS帮助文档(chm版)</a>
+<a href="http://sharembweb.com/tagdoc/v1/" class="ablue" target="_blank">AspPhpCMS v1标签手册</a>
 
 
 {$TitleInSearchEngineList title='ASPPHPCMS帮助手册'$}

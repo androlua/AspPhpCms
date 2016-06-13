@@ -1,0 +1,38 @@
+【parentid】HTML5
+【title】PHP常用标签使用与案例
+【webtitle】PHP常用标签使用与案例
+【webkeywords】PHP常用标签使用与案例
+【webdescription】PHP常用标签使用与案例 QQ313801120
+【sortrank】2
+【author】sharembweb
+【adddatetime】2016-05-06 09:45:02
+【filename】/html5/html-use-cases.html
+【flags】|
+【relatedtags】HTML5
+【bodycontent】[&全部换行&][&html转码&]【strong】PHP常用标签使用与案例【/strong】
+【b】php下获取http状态的实现代码【/b】
+/*
+print_r(
+    get_headers('http://www.shaarembweb.com')
+);
+*/
+
+$ch = curl_init('http://www.shaarembweb.com/sdfa/asd/fasdf');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_exec($ch);
+echo curl_getinfo($ch, CURLINFO_HTTP_CODE); // 200
+curl_close($ch);
+
+【b】测试POST数组【/b】
+print_r($_POST);
+foreach( $_POST as $key=>$s){
+	aspecho('key',$key);
+}
+
+【b】dirname函数用法【/b】
+echo(dirname('e:/a/b/c/d'));		//回显 e:/a/b/c
+
+
+{$TitleInSearchEngineList title='PHP常用标签使用与案例'$}
+
+【/bodycontent】 

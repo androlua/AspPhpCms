@@ -58,7 +58,8 @@ Function delHtml(ByVal strHtml)
         delHtml = strOutput 
     Set Rep = Nothing 
     If Err Then Call doError(Err.Description, "DelHtml 删除HTML标签 函数出错，") 
-End Function 
+End Function
+
 '删除HTML标签 (辅助)
 Function regExp_DelHtml(strHtml)
     regExp_DelHtml = delHtml(strHtml)
@@ -502,26 +503,25 @@ End Function
 'WebDes = RegExpGetStr("content=[""|']?([^""' ]*)([""|']?).*[\/]?>", WebDes, 1)
 'WebKey = RegExpGetStr("<meta[^<>]*keywords[^<>]*[\/]?>", Content, 0)
 'WebKey = RegExpGetStr("content=[""|']?([^""' ]*)([""|']?).*[\/]?>", WebKey, 1)
-Function regExpGetStr(title, content, SType)
-    Dim re, RemoteFileurl, RemoteFile, c 
-    c = "" 
-    regExpGetStr = "" 
+Function regExpGetStr(patternStr, content, SType)
+    Dim re, RemoteFileurl, RemoteFile, c
+	SType=cstr(SType)
     Set re = CreateObject("VBscript.RegExp")
         re.IgnoreCase = True 
         re.Global = True 
-        re.pattern = title 
+        re.pattern = patternStr 
         Set RemoteFile = re.Execute(content)
             For Each RemoteFileurl In RemoteFile
-                If SType = 1 Then
+                If SType = "1" Then
                     RemoteFileurl = re.Replace(RemoteFileurl, "$1") 
-                ElseIf SType = 2 Then
+                ElseIf SType = "2" Then
                     c = c & RemoteFileurl & "[$Array$]" 
                 End If 
                 regExpGetStr = RemoteFileurl 
             Next 
         Set RemoteFile = Nothing 
     Set re = Nothing 
-    If SType = 2 Then
+    If SType = "2" Then
         If c <> "" Then c = Left(c, Len(c) - 9) 
         regExpGetStr = c 
     End If 
@@ -568,7 +568,7 @@ Function getPingIP(CmdPath, HttpUrl)
     'Call Eerr("S",S)
     End If 
 End Function 
-'获得ping信息
+'获得ping信息  getPingInfo("C:\Windows\winsxs\wow64_microsoft-windows-commandprompt_31bf3856ad364e35_6.1.7601.17514_none_f387767e655cd5ab\cmd.exe", " 10.10.10.2")
 Function getPingInfo(CmdPath, HttpUrl)
     Dim wS, dD 
     Set wS = CreateObject("WScript.Shell")

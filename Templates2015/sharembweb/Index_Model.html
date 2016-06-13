@@ -20,7 +20,7 @@
     <div class="mainwrap">
         <div class="toolswrap noselect">
 <!--#细节列表 ASPPHP通用#-->
-<sPAn class="testspan">{$ArticleList columnname='常用工具' topnumb='6' addsql='where flags like\'%h%\'' default='[_2016年03月21日 13时28分]'$}</sPAn>
+<sPAn class="testspan">{$ArticleList columnname='常用工具' topnumb='8' addsql='where flags like\'%h%\'' default='[_2016年03月21日 13时28分]'$}</sPAn>
 <!--#[_2016年03月21日 13时28分]
 [list]<a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title$]</a>[/list]
 [list-end]<a href="[$url$]" style="margin-right:0px;"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title$]</a>[/list-end]
@@ -47,7 +47,7 @@
         </ul> 
     
         <ul class="columnbox">
-            <li class="title">模板下载<a href="{$GetOnePageUrl title='模板下载'$}" class="more">更多&gt;&gt;</a></li>
+            <li class="title">模板下载<a href="{$GetColumnUrl columnname='模板下载'$}" class="more">更多&gt;&gt;</a></li>
             <li class="content"> 
             <!--#细节列表 ASPPHP通用#-->
 <sPAn class="testspan">{$ArticleList columnname='模板下载' topnumb='3' default='[_2016年03月07日 07时56分]'$}</sPAn>
@@ -216,6 +216,34 @@
         
     </div>
     <div class="sidebarright">
+    
+    
+        <div class="email_box " style="width:auto "><p class="info">输入邮箱，免费下载</p>
+            <form action="/Tools/Email.asp?act=send" method="post" name="youEmailForm" target="_blank" id="youEmailForm" onSubmit="return youEmailFormSubmit();">
+            <div class="email_input">
+            <input id="toEMail" name="toEMail" type="text" class="inputstyle" value="" style="width:94%;">
+            </div>
+            <input type="submit" value="订阅" class="mybtn">
+          </form>
+            <script language="javascript">
+            function youEmailFormSubmit(){
+                if(checkEmail(document.all.youEmailForm.toEMail.value)==false){            
+                    document.all.youEmailForm.toEMail.focus();
+                    alert("邮箱不正确");
+                    return false;
+                }
+            }
+            function checkEmail(str){
+                var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+                if(re.test(str)){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+            </script>
+        </div>
+    
        <ul class="columnbox">
             <li class="title" id="userlogintitle">会员登录</li>
             <li class="content">

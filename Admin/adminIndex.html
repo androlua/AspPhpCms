@@ -84,7 +84,7 @@
 	width: 91px;
 	height: 33px;
 	float: left;
-	background: url("images/f1png.png") -201px -40px no-repeat;
+	background: url("images/f1png.jpg") -201px -40px no-repeat;
 	line-height: 30px;
 	font-weight: bold;
 	font-size: 15px;
@@ -108,7 +108,7 @@
 	width: 91px;
 	float: left;
 	height: 36px;
-	background: url(images/f1png.png) -4px -5px no-repeat;
+	background: url(images/f1png.jpg) -4px -5px no-repeat;
 	cursor: pointer;
 }
 .mainleft .mleft:hover{background-position:-4px -43px;}
@@ -116,7 +116,7 @@
 	width: 97px;
 	float: right;
 	height: 36px;
-	background: url(images/f1png.png) -95px -5px no-repeat;
+	background: url(images/f1png.jpg) -95px -5px no-repeat;
 	cursor: pointer;
 }
 .mainleft .mright:hover{background-position:-95px -43px}
@@ -139,7 +139,7 @@
 	height: 30px;  
 	line-height: 30px;
 	cursor: pointer; 
-	background: url("images/f1png.png") -198px -1px no-repeat;
+	background: url("images/f1png.jpg") -198px -1px no-repeat;
 	font-size:14px;
 	color:#666666;
 }
@@ -150,7 +150,7 @@
 	height: 30px;  
 	line-height: 30px;
 	cursor: pointer; 
-	background: url("images/f1png.png") -370px -1px no-repeat;
+	background: url("images/f1png.jpg") -370px -1px no-repeat;
 	font-size:14px;
 	color:#666666;
 }
@@ -163,6 +163,7 @@
 	cursor: pointer;
 	color:#666666;
 	margin:3px 0;
+	overflow-y: hidden;
 }
 .mainleft .menubody .navwrap .item:hover{
 	background:url("images/f1.gif") -346px -3px no-repeat; 
@@ -190,9 +191,9 @@
         </li>
         <li class="frightbox"> 
             <a href="javascript:outLogin()" >退出</a>  
-            <a href="javascript:window1('help.html','后台地图');">帮助？</a>
-        	<a href="javascript:window1('?act=displayLayout&templateFile=adminMap.html','后台地图');">后台地图</a>  
-            <a href="?act=clearCache"  onClick="return new xyClass().myConfirm('你确定要清除缓冲吗？')">清除缓冲</a>  
+            <a href="javascript:window1('layout_help.html','后台地图');">帮助？</a>
+        	<a href="javascript:window1('?act=displayLayout&templateFile=layout_adminMap.html','后台地图');">后台地图</a>  
+            <a href="?act=clearCache"  onClick="return new xyClass().myConfirm('你确定要清除缓冲吗？')">清除缓冲</a>   
         </li>
     </div>
     <div class="clear"></div>
@@ -288,8 +289,8 @@
     <div class="mg10">
 	   <div class="lbtop"><div class="lbsub">管理员信息</div></div>
 	   <div class="lbbody">
-            用 户 名：  {$adminusername$}&nbsp; <a href="javascript:window1('?act=addEditHandle&actionType=Admin&id=[$adminId$]','后台管理员');">修改密码</a> <br>
-            权限权限：   超级管理员<br>
+            用户名：  {$adminusername$}&nbsp; <a href="javascript:window1('?act=addEditHandle&actionType=Admin&id=[$adminId$]','后台管理员');">修改密码</a> <br>
+            权限：   超级管理员<br>
             表前缀：   {$DB_PREFIX$}<br> 
        		<input type="button" class="btnclick2" value="进入在线修改模式" onClick="window.open('{$WEB_VIEWURL$}?gl=edit');" />
 	   </div>

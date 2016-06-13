@@ -1,0 +1,19 @@
+【parentid】ASPPHPCMS
+【title】AspPhpCMS v1标签手册
+【webtitle】AspPhpCMS v1标签手册
+【webkeywords】AspPhpCMS v1标签手册
+【webdescription】AspPhpCMS v1标签手册，简单介绍ASPPHPCMS使用教程，从下载到安装，从ASP版演示到PHP演示 QQ313801120
+【sortrank】10
+【author】sharembweb
+【adddatetime】2016-04-17 08:00:12
+【filename】
+【customaurl】http://sharembweb.com/tagdoc/v1/
+【flags】|
+【isonhtml】false
+【relatedtags】ASPPHPCMS
+【bodycontent】 
+
+【/bodycontent】
+
+
+ 

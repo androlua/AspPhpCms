@@ -963,6 +963,19 @@ var JS2015 = (function () {
 		
 		//平分  导航平铺
 		xyObj.setAverageWidth("#navtest1 a", 2).addClass("fl")
+		
+		
+		//drop_down_menu_title
+		
+		//定时切换		
+		$(".drop_down_menu").hover(function(obj) {
+			$(this).find(".drop_down_menu_box").show() 
+			
+		},function() {
+			$(this).find(".drop_down_menu_box").hide() 
+		}).trigger("mouseleave")
+		
+		
 	}
 	//改变
 	function onchange(){
@@ -1023,7 +1036,7 @@ var JS2015 = (function () {
 //调用
 $(function (){ 
 	$("body").mobileMainAction({
-		isOpenMobileStat:true,			//是否开启手机统计
+		isOpenMobileStat:false,			//是否开启手机统计
 		BWebMobileOptions: {
 			isAutoFootFocus:true,								
 			isDebugUrl:false,

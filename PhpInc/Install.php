@@ -31,7 +31,7 @@ require_once './Cai.php';
 `verificationmode` int(8) NOT NULL default '0',
 `adminlevel` varchar(255) NOT NULL default '',
 `channel` varchar(255) NOT NULL default '',
-`mtest` varchar(250) NOT NULL default '',
+`mtest` tinyint(1) NOT NULL default '0',
 `flags` varchar(255) NOT NULL default '',
 `bodycontent` mediumtext,
 PRIMARY KEY  (`Id`)
@@ -53,7 +53,7 @@ PRIMARY KEY  (`Id`)
 `titlecolor` varchar(255) NOT NULL default '',
 `titlealt` varchar(255) NOT NULL default '',
 `labletitle` varchar(255) NOT NULL default '',
-`isthrough` varchar(250) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
 `occasions` varchar(255) NOT NULL default '',
@@ -61,9 +61,9 @@ PRIMARY KEY  (`Id`)
 `model` varchar(255) NOT NULL default '',
 `author` varchar(255) NOT NULL default '',
 `articlesource` varchar(255) NOT NULL default '',
-`price` int(8) NOT NULL default '0',
-`newprice` int(8) NOT NULL default '0',
-`memberprice` int(8) NOT NULL default '0',
+`price` varchar(250) NOT NULL default '',
+`newprice` varchar(250) NOT NULL default '',
+`memberprice` varchar(250) NOT NULL default '',
 `sold` int(8) NOT NULL default '0',
 `membertype` varchar(255) NOT NULL default '',
 `memberuser` varchar(255) NOT NULL default '',
@@ -83,8 +83,8 @@ PRIMARY KEY  (`Id`)
 `fontcolor` varchar(255) NOT NULL default '',
 `nofollow` int(8) NOT NULL default '0',
 `flags` varchar(255) NOT NULL default '',
-`ishtml` varchar(250) NOT NULL default '',
-`isonhtml` varchar(250) NOT NULL default '',
+`ishtml` tinyint(1) NOT NULL default '0',
+`isonhtml` tinyint(1) NOT NULL default '0',
 `articleinfostyle` varchar(255) NOT NULL default '',
 `articleinfophotowidth` varchar(255) NOT NULL default '',
 `articleinfophotoheight` varchar(255) NOT NULL default '',
@@ -158,7 +158,7 @@ PRIMARY KEY  (`Id`)
 `titlealt` varchar(255) NOT NULL default '',
 `smallimage` varchar(255) NOT NULL default '',
 `smallimagealt` varchar(255) NOT NULL default '',
-`isthrough` varchar(250) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
@@ -172,8 +172,8 @@ PRIMARY KEY  (`Id`)
 `fontcolor` varchar(255) NOT NULL default '',
 `nofollow` int(8) NOT NULL default '0',
 `flags` varchar(255) NOT NULL default '',
-`ishtml` varchar(250) NOT NULL default '',
-`isonhtml` varchar(250) NOT NULL default '',
+`ishtml` tinyint(1) NOT NULL default '0',
+`isonhtml` tinyint(1) NOT NULL default '0',
 `weight` int(8) NOT NULL default '0',
 `notebody` mediumtext,
 `aboutcontent` mediumtext,
@@ -241,8 +241,8 @@ PRIMARY KEY  (`Id`)
 `smallimage` varchar(255) NOT NULL default '',
 `smallimagealt` varchar(255) NOT NULL default '',
 `isthrough` int(8) NOT NULL default '0',
-`ishtml` varchar(250) NOT NULL default '',
-`isonhtml` varchar(250) NOT NULL default '',
+`ishtml` tinyint(1) NOT NULL default '0',
+`isonhtml` tinyint(1) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
 `notebody` mediumtext,
@@ -255,8 +255,8 @@ PRIMARY KEY  (`Id`)
 `bigclassname` varchar(255) NOT NULL default '',
 `title` varchar(255) NOT NULL default '',
 `qq` varchar(255) NOT NULL default '',
-`isonlinechat` varchar(250) NOT NULL default '',
-`isaddfriend` varchar(250) NOT NULL default '',
+`isonlinechat` tinyint(1) NOT NULL default '0',
+`isaddfriend` tinyint(1) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
 `bodycontent` mediumtext,
@@ -277,7 +277,7 @@ PRIMARY KEY  (`Id`)
 `num4` int(8) NOT NULL default '0',
 `num5` int(8) NOT NULL default '0',
 `num6` int(8) NOT NULL default '0',
-`isdisplay` varchar(250) NOT NULL default '',
+`isdisplay` tinyint(1) NOT NULL default '0',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
 `webdescription` varchar(255) NOT NULL default '',
@@ -287,11 +287,11 @@ PRIMARY KEY  (`Id`)
 `templatepath` varchar(255) NOT NULL default '',
 `target` varchar(255) NOT NULL default '',
 `fontcolor` varchar(255) NOT NULL default '',
-`fontb` varchar(250) NOT NULL default '',
-`onhtml` varchar(250) NOT NULL default '',
+`fontb` tinyint(1) NOT NULL default '0',
+`onhtml` tinyint(1) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
-`votetype` varchar(250) NOT NULL default '',
+`votetype` tinyint(1) NOT NULL default '0',
 PRIMARY KEY  (`Id`)
 ){$char};",
 "{$DB_PREFIX}listmenu" => "CREATE TABLE `{$DB_PREFIX}listmenu` (
@@ -303,7 +303,7 @@ PRIMARY KEY  (`Id`)
 `customaurl` varchar(255) NOT NULL default '',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
-`isdisplay` varchar(250) NOT NULL default '',
+`isdisplay` tinyint(1) NOT NULL default '0',
 `bodycontent` mediumtext,
 PRIMARY KEY  (`Id`)
 ){$char};",
@@ -355,15 +355,15 @@ PRIMARY KEY  (`Id`)
 `templatepath` varchar(255) NOT NULL default '',
 `target` varchar(255) NOT NULL default '',
 `fontcolor` varchar(255) NOT NULL default '',
-`fontb` varchar(250) NOT NULL default '',
+`fontb` tinyint(1) NOT NULL default '0',
 `nofollow` int(8) NOT NULL default '0',
 `sortrank` int(8) NOT NULL default '0',
 `views` int(8) NOT NULL default '0',
-`isrecommend` varchar(250) NOT NULL default '',
+`isrecommend` tinyint(1) NOT NULL default '0',
 `labletitle` varchar(255) NOT NULL default '',
 `banner` varchar(255) NOT NULL default '',
-`ishtml` varchar(250) NOT NULL default '',
-`isonhtml` varchar(250) NOT NULL default '',
+`ishtml` tinyint(1) NOT NULL default '0',
+`isonhtml` tinyint(1) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
 `notebody` mediumtext,
@@ -402,7 +402,7 @@ PRIMARY KEY  (`Id`)
 `productsum` varchar(255) NOT NULL default '',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
-`through` varchar(250) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
 PRIMARY KEY  (`Id`)
 ){$char};",
 "{$DB_PREFIX}productcomment" => "CREATE TABLE `{$DB_PREFIX}productcomment` (
@@ -416,13 +416,13 @@ PRIMARY KEY  (`Id`)
 `ip` varchar(255) NOT NULL default '',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
-`through` varchar(250) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
 PRIMARY KEY  (`Id`)
 ){$char};",
 "{$DB_PREFIX}searchstat" => "CREATE TABLE `{$DB_PREFIX}searchstat` (
 `id` int(5) unsigned NOT NULL auto_increment,
 `title` varchar(255) NOT NULL default '',
-`isthrough` varchar(250) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
 `webdescription` varchar(255) NOT NULL default '',
@@ -431,8 +431,8 @@ PRIMARY KEY  (`Id`)
 `customaurl` varchar(255) NOT NULL default '',
 `templatepath` varchar(255) NOT NULL default '',
 `target` varchar(255) NOT NULL default '',
-`ishtml` varchar(250) NOT NULL default '',
-`isonhtml` varchar(250) NOT NULL default '',
+`ishtml` tinyint(1) NOT NULL default '0',
+`isonhtml` tinyint(1) NOT NULL default '0',
 `views` int(8) NOT NULL default '0',
 `author` varchar(255) NOT NULL default '',
 `sortrank` int(8) NOT NULL default '0',
@@ -447,9 +447,9 @@ PRIMARY KEY  (`Id`)
 ){$char};",
 "{$DB_PREFIX}systemlog" => "CREATE TABLE `{$DB_PREFIX}systemlog` (
 `id` int(5) unsigned NOT NULL auto_increment,
-`msgstr` varchar(255) NOT NULL default '',
+`msgstr` mediumtext,
 `tablename` varchar(255) NOT NULL default '',
-`url` varchar(255) NOT NULL default '',
+`url` mediumtext,
 `adminid` int(8) NOT NULL default '0',
 `adminname` varchar(255) NOT NULL default '',
 `ip` varchar(255) NOT NULL default '',
@@ -484,7 +484,7 @@ PRIMARY KEY  (`Id`)
 `sortrank` int(8) NOT NULL default '0',
 `views` int(8) NOT NULL default '0',
 `adminid` int(8) NOT NULL default '0',
-`isdisplay` varchar(250) NOT NULL default '',
+`isdisplay` tinyint(1) NOT NULL default '0',
 `smallimage` varchar(255) NOT NULL default '',
 `bigimage` varchar(255) NOT NULL default '',
 `bannerimage` varchar(255) NOT NULL default '',
@@ -501,17 +501,47 @@ PRIMARY KEY  (`Id`)
 `target` varchar(255) NOT NULL default '',
 `nofollow` int(8) NOT NULL default '0',
 `fontcolor` varchar(255) NOT NULL default '',
-`fontb` varchar(250) NOT NULL default '',
-`ismakehtml` varchar(250) NOT NULL default '',
+`fontb` tinyint(1) NOT NULL default '0',
+`ismakehtml` tinyint(1) NOT NULL default '0',
 `npagesize` int(8) NOT NULL default '0',
 `sortsql` varchar(255) NOT NULL default '',
-`ishtml` varchar(250) NOT NULL default '',
-`isonhtml` varchar(250) NOT NULL default '',
+`ishtml` tinyint(1) NOT NULL default '0',
+`isonhtml` tinyint(1) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
 `notebody` mediumtext,
 `aboutcontent` mediumtext,
 `bodycontent` mediumtext,
+PRIMARY KEY  (`Id`)
+){$char};",
+"{$DB_PREFIX}webdomain" => "CREATE TABLE `{$DB_PREFIX}webdomain` (
+`id` int(5) unsigned NOT NULL auto_increment,
+`bigclassname` varchar(255) NOT NULL default '',
+`website` varchar(255) NOT NULL default '',
+`webtitle` varchar(255) NOT NULL default '',
+`webkeywords` varchar(255) NOT NULL default '',
+`webdescription` varchar(255) NOT NULL default '',
+`webstate` int(8) NOT NULL default '0',
+`openspeed` int(8) NOT NULL default '0',
+`charset` varchar(255) NOT NULL default '',
+`content_type` varchar(255) NOT NULL default '',
+`server_name` varchar(255) NOT NULL default '',
+`isasp` tinyint(1) NOT NULL default '0',
+`isaspx` tinyint(1) NOT NULL default '0',
+`isphp` tinyint(1) NOT NULL default '0',
+`isjsp` tinyint(1) NOT NULL default '0',
+`ishtm` tinyint(1) NOT NULL default '0',
+`ishtml` tinyint(1) NOT NULL default '0',
+`nlinks` int(8) NOT NULL default '0',
+`links` mediumtext,
+`homepagelist` varchar(255) NOT NULL default '',
+`flags` varchar(255) NOT NULL default '',
+`websize` int(8) NOT NULL default '0',
+`sortrank` int(8) NOT NULL default '0',
+`adddatetime` varchar(250) NOT NULL default '',
+`updatetime` varchar(250) NOT NULL default '',
+`isdomain` tinyint(1) NOT NULL default '0',
+`isthrough` tinyint(1) NOT NULL default '0',
 PRIMARY KEY  (`Id`)
 ){$char};",
 "{$DB_PREFIX}weblayout" => "CREATE TABLE `{$DB_PREFIX}weblayout` (
@@ -522,7 +552,7 @@ PRIMARY KEY  (`Id`)
 `replacestr` varchar(255) NOT NULL default '',
 `actioncontent` mediumtext,
 `sortrank` int(8) NOT NULL default '0',
-`isdisplay` varchar(250) NOT NULL default '',
+`isdisplay` tinyint(1) NOT NULL default '0',
 `author` varchar(255) NOT NULL default '',
 `views` int(8) NOT NULL default '0',
 `adminid` int(8) NOT NULL default '0',
@@ -538,7 +568,7 @@ PRIMARY KEY  (`Id`)
 `modulename` varchar(255) NOT NULL default '',
 `title` varchar(255) NOT NULL default '',
 `sortrank` int(8) NOT NULL default '0',
-`isdisplay` varchar(250) NOT NULL default '',
+`isdisplay` tinyint(1) NOT NULL default '0',
 `author` varchar(255) NOT NULL default '',
 `views` int(8) NOT NULL default '0',
 `adminid` int(8) NOT NULL default '0',
@@ -581,11 +611,11 @@ PRIMARY KEY  (`Id`)
 `webimages` varchar(255) NOT NULL default '',
 `webcss` varchar(255) NOT NULL default '',
 `webjs` varchar(255) NOT NULL default '',
-`addwebsite` varchar(250) NOT NULL default '',
-`updatehtml` varchar(250) NOT NULL default '',
-`ishtmlformatting` varchar(250) NOT NULL default '',
-`isweblabelclose` varchar(250) NOT NULL default '',
-`iscntoen` varchar(250) NOT NULL default '',
+`addwebsite` tinyint(1) NOT NULL default '0',
+`updatehtml` tinyint(1) NOT NULL default '0',
+`ishtmlformatting` tinyint(1) NOT NULL default '0',
+`isweblabelclose` tinyint(1) NOT NULL default '0',
+`iscntoen` tinyint(1) NOT NULL default '0',
 `flags` varchar(255) NOT NULL default '',
 `moduleskins` varchar(255) NOT NULL default '',
 `findtpl` varchar(255) NOT NULL default '',
@@ -613,6 +643,27 @@ PRIMARY KEY  (`Id`)
 `isthrough` int(8) NOT NULL default '0',
 `noteinfo` mediumtext,
 `bodycontent` mediumtext,
+PRIMARY KEY  (`Id`)
+){$char};",
+"{$DB_PREFIX}weburlscan" => "CREATE TABLE `{$DB_PREFIX}weburlscan` (
+`id` int(5) unsigned NOT NULL auto_increment,
+`bigclassname` varchar(255) NOT NULL default '',
+`linktype` varchar(255) NOT NULL default '',
+`website` varchar(255) NOT NULL default '',
+`title` varchar(255) NOT NULL default '',
+`httpurl` varchar(255) NOT NULL default '',
+`totitle` varchar(255) NOT NULL default '',
+`tohttpurl` varchar(255) NOT NULL default '',
+`webstate` int(8) NOT NULL default '0',
+`openspeed` int(8) NOT NULL default '0',
+`charset` varchar(255) NOT NULL default '',
+`content_type` varchar(255) NOT NULL default '',
+`link_count` int(8) NOT NULL default '0',
+`websize` int(8) NOT NULL default '0',
+`sortrank` int(8) NOT NULL default '0',
+`adddatetime` varchar(250) NOT NULL default '',
+`updatetime` varchar(250) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
 PRIMARY KEY  (`Id`)
 ){$char};",
 //access end
@@ -673,7 +724,7 @@ $nCount = 0;
 foreach( $splStr as $s){
     $tempS = $s ;
     $s = AspTrim($s) ;
-    if( $s <> '' ){
+	if( $tempS <> '' && substr(phptrim($s).' ', 0 ,1)<>'#' ){
         $nCount = $nCount + 1 ;//×ÜÊý
         if( substr($tempS, 0 , 4) == '    ' ){
         }else{
@@ -710,6 +761,31 @@ foreach( $splStr as $s){
 	
 ?>
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

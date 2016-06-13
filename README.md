@@ -47,6 +47,9 @@ ASPPHPCMS从诞生以来一直秉承大道至简的开发理念，无论从底�
 *  在线演示：http://sharembweb.com/
 
 ## 更新日志
+—— 20016.06.16 update ——
+*  1、ASPPHPCMS升级到 ASPPHPCMS v1.5
+*  2、修复完善ASP与PHP程序
 
 —— 20016.04.08 update ——
 *  1、ASPPHPCMS升级到 ASPPHPCMS v1.2

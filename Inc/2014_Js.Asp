@@ -1,6 +1,58 @@
 <% 
 'Js
 
+'删除JS注释 20160602
+function delJsNote(content)
+	dim splstr,s,c,isMultiLineNote,s2
+	isMultiLineNote=false			'多行注释默认为假
+	splstr=split(content,vbcrlf)
+	for each s in splstr
+		s2=phptrim(s)
+		if isMultiLineNote=true then
+			if len(s2)>=2 then
+				if right(s2,2)="*/" then
+					isMultiLineNote=false
+				end if
+			end if				
+			s=""
+		else	
+			if left(s2,2)="/*" then
+				if right(s2,2)<>"*/" then
+					isMultiLineNote=true
+				end if
+				s=""
+			elseif left(s2,2)="//" then
+				s=""
+			end if
+		end if
+		c=c & s & vbcrlf
+	next
+	delJsNote=c
+end function
+
+'JS转换，引用别人
+Function JsEncode__(ByVal s)
+
+	If isNul(s) Then JsEncode__ = "" : Exit Function
+	Dim arr1, arr2, i, j, c, p, t
+	arr1 = Array(chr(34),chr(92),chr(47),chr(8),chr(12),chr(10),chr(13),chr(9))		 '34|",92|\,47|/,8|,12|,10| ,13| ,9|	,
+	arr2 = Array(chr(34),chr(92),chr(47),chr(98),chr(102),chr(110),chr(114))		 '34|",92|\,47|/,98|b,102|f,110|n,114|r,1865|,
+	For i = 1 To Len(s)
+		p = True
+		c = Mid(s, i, 1)
+		For j = 0 To Ubound(arr1)
+			If c = arr1(j) Then
+				t = t & "\" & arr2(j)
+				p = False
+				Exit For
+			End If
+		Next
+		If p Then t = t & c
+	Next
+	JsEncode__ = t
+End Function
+
+
 '远程网站会员统计2010330
 '<script>document.writeln("<script src=\'http://127.0.0.1/web_soft/R.Asp?act=Stat&GoToUrl="+escape(document.referrer)+"&ThisUrl="+escape(window.location.href)+"&screen="+escape(window.screen.width+"x"+window.screen.height)+"&co="+escape(document.cookie)+" \'><\/script>");<'/script>
 Function showStatJSCode(url)

@@ -63,7 +63,7 @@ $glb_columnName=''; $glb_columnId=''; $glb_id=''; $glb_columnType=''; $glb_colum
 $webTemplate ='';//网站模板路径
 $glb_url=''; $glb_filePath ='';//当前链接网址,和文件路径
 $glb_isonhtml ='';//是否生成静态网页
-$glb_locationType						='';//位置类型
+$glb_locationType ='';//位置类型
 
 $glb_bodyContent ='';//主体内容
 $glb_artitleAuthor ='';//文章作者
@@ -82,11 +82,11 @@ function handleAction($content){
     $ActionList= getArray($content, $startStr, $endStr, true, true);
     //Call echo("ActionList ", ActionList)
     $splStr= aspSplit($ActionList, '$Array$');
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $action= AspTrim($s);
         $action= handleInModule($action, 'start'); //处理\'替换掉
         if( $action <> '' ){
-            $action= AspTrim(mid($action, 3, strlen($action) - 4)) . ' ';
+            $action= AspTrim(mid($action, 3, Len($action) - 4)) . ' ';
             //call echo("s",s)
             $HandYes= true; //处理为真
             //{VB #} 这种是放在图片路径里，目的是为了在VB里不处理这个路径
@@ -118,7 +118,6 @@ function handleAction($content){
             }else if( checkFunValue($action, 'Links ')== true ){
                 $action= XY_AP_Links($action);
 
-
                 //显示单页内容
             }else if( checkFunValue($action, 'GetOnePageBody ')== true || checkFunValue($action, 'MainInfo ')== true ){
                 $action= XY_AP_GetOnePageBody($action);
@@ -128,8 +127,6 @@ function handleAction($content){
                 //显示栏目内容
             }else if( checkFunValue($action, 'GetColumnBody ')== true ){
                 $action= XY_AP_GetColumnBody($action);
-
-
 
                 //获得栏目URL
             }else if( checkFunValue($action, 'GetColumnUrl ')== true ){
@@ -177,30 +174,21 @@ function handleAction($content){
                 //网站底部
             }else if( checkFunValue($action, 'WebSiteBottom ')== true ){
                 $action= XY_AP_WebSiteBottom($action);
-
-
-
                 //显示网站栏目 20160331
-            }else if( CheckFunValue($action, 'DisplayWebColumn ')==true ){
+            }else if( checkFunValue($action, 'DisplayWebColumn ')== true ){
                 $action= XY_DisplayWebColumn($action);
-
                 //URL加密
-            }else if( CheckFunValue($action, 'escape ')==true ){
+            }else if( checkFunValue($action, 'escape ')== true ){
                 $action= XY_escape($action);
-
                 //URL解密
-            }else if( CheckFunValue($action, 'unescape ')==true ){
+            }else if( checkFunValue($action, 'unescape ')== true ){
                 $action= XY_unescape($action);
-
-                //
 
                 //暂时不屏蔽
             }else if( checkFunValue($action, 'copyTemplateMaterial ')== true ){
                 $action= '';
             }else if( checkFunValue($action, 'clearCache ')== true ){
                 $action= '';
-
-
             }else{
                 $HandYes= false; //处理为假
             }
@@ -217,31 +205,30 @@ function handleAction($content){
 
 //显示网站栏目 新版 把之前网站 导航程序改进过来的
 function XY_DisplayWebColumn($action){
-    $i=''; $c=''; $s=''; $url=''; $fileName=''; $bigFolder=''; $did=''; $sid=''; $showDid=''; $target=''; $sql=''; $dropDownMenu=''; $focusType='';$addSql='';
-    $smallMenuStr=''; $j=''; $showSid ='';
+    $i=''; $c=''; $s=''; $url=''; $sql=''; $dropDownMenu=''; $focusType=''; $addSql ='';
     $isConcise ='';//简洁显示20150212
     $styleId=''; $styleValue ='';//样式ID与样式内容
     $cssNameAddId ='';
-    $shopnavidwrap				='';//是否显示栏目ID包
+    $shopnavidwrap ='';//是否显示栏目ID包
 
     $styleId= PHPTrim(RParam($action, 'styleID'));
     $styleValue= PHPTrim(RParam($action, 'styleValue'));
     $addSql= PHPTrim(RParam($action, 'addSql'));
     $shopnavidwrap= PHPTrim(RParam($action, 'shopnavidwrap'));
     //If styleId <> "" Then
-    //    Call ReadNavCSS(styleId, styleValue)
+    //Call ReadNavCSS(styleId, styleValue)
     //End If
 
     //为数字类型 则自动提取样式内容  20150615
     if( checkStrIsNumberType($styleValue) ){
         $cssNameAddId= '_' . $styleValue; //Css名称追加Id编号
     }
-    $sql='select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn';
+    $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn';
     //追加sql
     if( $addSql <> '' ){
         $sql= getWhereAnd($sql, $addSql);
     }
-    if( CheckSql($sql)== false ){ eerr('Sql', $sql) ;}
+    if( checkSql($sql)== false ){ eerr('Sql', $sql) ;}
     $rsObj=$GLOBALS['conn']->query( $sql);
     $dropDownMenu= strtolower(RParam($action, 'DropDownMenu'));
     $focusType= strtolower(RParam($action, 'FocusType'));
@@ -251,19 +238,19 @@ function XY_DisplayWebColumn($action){
     }else{
         $isConcise= true;
     }
-    if( $isConcise== true ){ $c= $c . CopyStr(' ', 4) . '<li class=left></li>' . vbCrlf() ;}
+    if( $isConcise== true ){ $c= $c . copyStr(' ', 4) . '<li class=left></li>' . vbCrlf() ;}
     for( $i= 1 ; $i<= @mysql_num_rows($rsObj); $i++){
 
         $rs=mysql_fetch_array($rsObj); //给PHP用，因为在 asptophp转换不完善
-        $url=getColumnUrl($rs['columnname'], 'name');
+        $url= getColumnUrl($rs['columnname'], 'name');
         if( $rs['columnname']== $GLOBALS['glb_columnName'] ){
             if( $focusType== 'a' ){
-                $s= CopyStr(' ', 8) . '<li class=focus><a href="'. $url .'">' . $rs['columname'] . '</a>';
+                $s= copyStr(' ', 8) . '<li class=focus><a href="' . $url . '">' . $rs['columname'] . '</a>';
             }else{
-                $s= CopyStr(' ', 8) . '<li class=focus>' . $rs['columnname'];
+                $s= copyStr(' ', 8) . '<li class=focus>' . $rs['columnname'];
             }
         }else{
-            $s= CopyStr(' ', 8) . '<li><a href="'. $url .'">' . $rs['columnname'] . '</a>';
+            $s= copyStr(' ', 8) . '<li><a href="' . $url . '">' . $rs['columnname'] . '</a>';
         }
         $url= WEB_ADMINURL . '?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=' . $rs['id'] . '&n=' . getRnd(11);
         $s= handleDisplayOnlineEditDialog($url, $s, '', 'div|li|span'); //处理是否添加在线修改管理器
@@ -272,16 +259,16 @@ function XY_DisplayWebColumn($action){
 
         //小类
 
-        $c= $c . CopyStr(' ', 8) . '</li>' . vbCrlf();
+        $c= $c . copyStr(' ', 8) . '</li>' . vbCrlf();
 
-        if( $isConcise== true ){ $c= $c . CopyStr(' ', 8) . '<li class=line></li>' . vbCrlf() ;}
+        if( $isConcise== true ){ $c= $c . copyStr(' ', 8) . '<li class=line></li>' . vbCrlf() ;}
     }
-    if( $isConcise== true ){ $c= $c . CopyStr(' ', 8) . '<li class=right></li>' . vbCrlf() ;}
+    if( $isConcise== true ){ $c= $c . copyStr(' ', 8) . '<li class=right></li>' . vbCrlf() ;}
 
     if( $styleId <> '' ){
         $c= '<ul class=\'nav' . $styleId . $cssNameAddId . '\'>' . vbCrlf() . $c . vbCrlf() . '</ul>' . vbCrlf();
     }
-    if( $shopnavidwrap=='1' || $shopnavidwrap=='true' ){
+    if( $shopnavidwrap== '1' || $shopnavidwrap== 'true' ){
         $c= '<div id=\'nav' . $styleId . $cssNameAddId . '\'>' . vbCrlf() . $c . vbCrlf() . '</div>' . vbCrlf();
     }
 
@@ -340,7 +327,7 @@ function replaceGlobleVariable( $content){
 function handleRGV( $content, $findStr, $replaceStr){
     $lableName ='';
     //对[$$]处理
-    $lableName= mid($findStr, 3, strlen($findStr) - 4) . ' ';
+    $lableName= mid($findStr, 3, Len($findStr) - 4) . ' ';
     $lableName= mid($lableName, 1, instr($lableName, ' ') - 1);
     $content= replaceValueParam($content, $lableName, $replaceStr);
     $content= replaceValueParam($content, strtolower($lableName), $replaceStr);
@@ -371,12 +358,14 @@ function loadWebConfig(){
 
         //改换模板20160202
         if( @$_REQUEST['templatedir'] <> '' ){
+            //删除绝对目录前面的目录，不需要那个东西20160414
+            $templatedir= replace(handlePath(@$_REQUEST['templatedir']),handlePath('/'),'/');
+            //call eerr("templatedir",templatedir)
 
-            $templatedir= @$_REQUEST['templatedir'];
-            if( (instr($templatedir,':')>0 || instr($templatedir,'..')>0) && getip()<>'127.0.0.1' ){
-                eerr('提示','模板目录有非法字符');
+            if((instr($templatedir, ':') > 0 || instr($templatedir, '..') > 0) && getIP() <> '127.0.0.1' ){
+                eerr('提示', '模板目录有非法字符');
             }
-            $templatedir=handlehttpurl(Replace($templatedir, handlePath('/'), '/'));
+            $templatedir= handlehttpurl(Replace($templatedir, handlePath('/'), '/'));
 
             $GLOBALS['cfg_webImages']= Replace($GLOBALS['cfg_webImages'], $GLOBALS['cfg_webTemplate'], $templatedir);
             $GLOBALS['cfg_webCss']= Replace($GLOBALS['cfg_webCss'], $GLOBALS['cfg_webTemplate'], $templatedir);
@@ -395,7 +384,7 @@ function thisPosition($content){
         $c= $c . ' >> <a href="' . getColumnUrl($GLOBALS['glb_columnName'], 'name') . '">' . $GLOBALS['glb_columnName'] . '</a>';
     }
     //20160330
-    if( $GLOBALS['glb_locationType']=='detail' ){
+    if( $GLOBALS['glb_locationType']== 'detail' ){
         $c= $c . ' >> 查看内容';
     }
     //call echo("glb_locationType",glb_locationType)
@@ -411,7 +400,7 @@ function thisPosition($content){
 //显示管理列表
 function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameList, $nPageSize, $nPage, $addSql){
     $GLOBALS['conn=']=OpenConn();
-    $defaultList=''; $i=''; $s=''; $c=''; $tableName=''; $j=''; $splxx ='';$sql='';
+    $defaultList=''; $i=''; $s=''; $c=''; $tableName=''; $j=''; $splxx=''; $sql ='';
     $x=''; $url=''; $nCount ='';
     $pageInfo ='';
 
@@ -422,14 +411,14 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
     $tableName= strtolower($actionName); //表名称
     $listFileName ='';//列表文件名称
     $listFileName= RParam($action, 'listFileName');
-    $abcolorStr																		='';//A加粗和颜色
+    $abcolorStr ='';//A加粗和颜色
     $atargetStr ='';//A链接打开方式
-    $atitleStr																		='';//A链接的title20160407
-    $anofollowStr																	='';//A链接的nofollow
+    $atitleStr ='';//A链接的title20160407
+    $anofollowStr ='';//A链接的nofollow
 
     $id ='';
     $id= rq('id');
-    checkIDSQL( @$_REQUEST['id'] );
+    checkIDSQL(@$_REQUEST['id']);
 
     if( $fieldNameList== '*' ){
         $fieldNameList= getHandleFieldList($GLOBALS['db_PREFIX'] . $tableName, '字段列表');
@@ -445,7 +434,7 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
         $content= Replace($content, $pageInfo, '');
     }
 
-    $sql='select * from ' . $GLOBALS['db_PREFIX'] . $tableName . ' ' . $addSql;
+    $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . $tableName . ' ' . $addSql;
     //检测SQL
     if( checksql($sql)== false ){
         errorLog('出错提示：<br>sql=' . $sql . '<br>');
@@ -457,8 +446,8 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
     //为动态翻页网址
     if( $GLOBALS['isMakeHtml']== true ){
         $url= '';
-        if( strlen($listFileName) > 5 ){
-            $url= mid($listFileName, 1, strlen($listFileName) - 5) . '[id].html';
+        if( Len($listFileName) > 5 ){
+            $url= mid($listFileName, 1, Len($listFileName) - 5) . '[id].html';
             $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
         }
     }else{
@@ -542,7 +531,7 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
 
         }
         //文章列表加在线编辑
-        $url=WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11);
+        $url= WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11);
         $s= handleDisplayOnlineEditDialog($url, $s, '', 'div|li|span');
 
         $c= $c . $s;
@@ -551,8 +540,8 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
 
     if( $GLOBALS['isMakeHtml']== true ){
         $url= '';
-        if( strlen($listFileName) > 5 ){
-            $url= mid($listFileName, 1, strlen($listFileName) - 5) . '[id].html';
+        if( Len($listFileName) > 5 ){
+            $url= mid($listFileName, 1, Len($listFileName) - 5) . '[id].html';
             $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
         }
     }else{
@@ -574,7 +563,7 @@ function defaultListTemplate(){
     $lableName= 'list';
     $startStr= '<!--#' . $lableName . ' start#-->';
     $endStr= '<!--#' . $lableName . ' end#-->';
-    //	call rwend(templateHtml)
+    //call rwend(templateHtml)
     if( instr($templateHtml, $startStr) > 0 && instr($templateHtml, $endStr) > 0 ){
         $listTemplate= strCut($templateHtml, $startStr, $endStr, 2);
     }else{
@@ -617,8 +606,16 @@ $templateName= @$_REQUEST['templateName']; //模板名称
 switch ( @$_REQUEST['act'] ){
     case 'savedata' ; saveData(@$_REQUEST['stype']) ; die(); //保存数据
     break;//'站长统计 | 今日IP[653] | 今日PV[9865] | 当前在线[65]')
-    case 'webstat' ; webStat($adminDir . '/Data/Stat/');
-    die(); //网站统计
+    case 'webstat' ; webStat($adminDir . '/Data/Stat/');die(); //网站统计
+    break;
+    case 'saveSiteMap' ; $isMakeHtml=true;saveSiteMap() ;die(); //保存sitemap.xml
+    break;
+    case 'handleAction';
+    if( @$_REQUEST['ishtml']=='1' ){
+        $isMakeHtml= true;
+    }
+    rwend(handleAction(@$_REQUEST['content']));		//处理动作
+
 }
 
 //生成html
@@ -644,10 +641,10 @@ if( @$_REQUEST['act']== 'makehtml' ){
     $isMakeHtml= true;
 
 
-    checkIDSQL( @$_REQUEST['id'] );
+    checkIDSQL(@$_REQUEST['id']);
     rw(makeWebHtml(' action actionType=\'' . @$_REQUEST['act'] . '\' columnName=\'' . @$_REQUEST['columnName'] . '\' columnType=\'' . @$_REQUEST['columnType'] . '\' id=\'' . @$_REQUEST['id'] . '\' npage=\'' . @$_REQUEST['page'] . '\' '));
     $glb_filePath= Replace($glb_url, $cfg_webSiteUrl, '');
-    if( substr($glb_filePath, - 1)== '/' ){
+    if( Right($glb_filePath, 1)== '/' ){
         $glb_filePath= $glb_filePath . 'index.html';
     }else if( $glb_filePath== '' && $glb_columnType== '首页' ){
         $glb_filePath= 'index.html';
@@ -681,13 +678,13 @@ if( @$_REQUEST['act']== 'makehtml' ){
     if( strtolower(@$_REQUEST['issave'])== '1' ){
         makeAllHtml(@$_REQUEST['columnType'], @$_REQUEST['columnName'], @$_REQUEST['columnId']);
     }else{
-        checkIDSQL( @$_REQUEST['id'] );
+        checkIDSQL(@$_REQUEST['id']);
         rw(makeWebHtml(' action actionType=\'' . @$_REQUEST['act'] . '\' columnName=\'' . @$_REQUEST['columnName'] . '\' columnType=\'' . @$_REQUEST['columnType'] . '\' id=\'' . @$_REQUEST['id'] . '\' npage=\'' . @$_REQUEST['page'] . '\' '));
     }
 }
 //检测ID是否SQL安全
 function checkIDSQL($id){
-    if( checkNumber($id)==false && $id<>'' ){
+    if( checkNumber($id)== false && $id <> '' ){
         eerr('提示', 'id中有非法字符');
     }
 }
@@ -699,7 +696,7 @@ function checkIDSQL($id){
 //http://127.0.0.1/aspweb.asp?act=detail&id=75
 //生成html静态页
 function makeWebHtml($action){
-    $actionType=''; $npagesize=''; $npage=''; $url=''; $addSql=''; $sortSql='';
+    $actionType=''; $npagesize=''; $npage=''; $url=''; $addSql=''; $sortSql ='';
     $actionType= RParam($action, 'actionType');
     $npage= RParam($action, 'npage');
     $npage= getnumber($npage);
@@ -713,8 +710,8 @@ function makeWebHtml($action){
         $GLOBALS['glb_columnType']= RParam($action, 'columnType');
         $GLOBALS['glb_columnName']= RParam($action, 'columnName');
         $GLOBALS['glb_columnId']= RParam($action, 'columnId');
-        if( $GLOBALS['glb_columnId']=='' ){
-            $GLOBALS['glb_columnId']=RParam($action, 'id');
+        if( $GLOBALS['glb_columnId']== '' ){
+            $GLOBALS['glb_columnId']= RParam($action, 'id');
         }
         if( $GLOBALS['glb_columnType'] <> '' ){
             $addSql= 'where columnType=\'' . $GLOBALS['glb_columnType'] . '\'';
@@ -737,7 +734,7 @@ function makeWebHtml($action){
             $GLOBALS['glb_flags']= $rs['flags'];
             $npagesize= $rs['npagesize']; //每页显示条数
             $GLOBALS['glb_isonhtml']= $rs['isonhtml']; //是否生成静态网页
-            $sortSql=' ' . $rs['sortsql'];															//排序SQL
+            $sortSql= ' ' . $rs['sortsql']; //排序SQL
 
             if( $rs['webtitle'] <> '' ){
                 $GLOBALS['cfg_webTitle']= $rs['webtitle']; //网址标题
@@ -776,7 +773,7 @@ function makeWebHtml($action){
         }
         //细节
     }else if( $actionType== 'detail' ){
-        $GLOBALS['glb_locationType']='detail';
+        $GLOBALS['glb_locationType']= 'detail';
         $rsObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where id=' . RParam($action, 'id'));
         $rs=mysql_fetch_array($rsObj);
         if( @mysql_num_rows($rsObj)!=0 ){
@@ -922,11 +919,11 @@ function makeWebHtml($action){
         $GLOBALS['code']= handleHtmlFormatting($GLOBALS['code'], false, 0, '删除空行'); //自定义
         //格式化HTML第二种
     }else if( instr($GLOBALS['cfg_flags'], '|formattinghtmltow|') > 0 ){
-        $GLOBALS['code']= HtmlFormatting($GLOBALS['code']); //简单
+        $GLOBALS['code']= htmlFormatting($GLOBALS['code']); //简单
         $GLOBALS['code']= handleHtmlFormatting($GLOBALS['code'], false, 0, '删除空行'); //自定义
         //压缩HTML
     }else if( instr($GLOBALS['cfg_flags'], '|ziphtml|') > 0 ){
-        $GLOBALS['code']=ziphtml($GLOBALS['code']);
+        $GLOBALS['code']= ziphtml($GLOBALS['code']);
 
     }
     //闭合标签
@@ -1001,7 +998,7 @@ function getDateilTemplate($parentid, $templateType){
 
 //生成全部html页面
 function makeAllHtml($columnType, $columnName, $columnId){
-    $action=''; $s=''; $i=''; $nPageSize=''; $nCountSize=''; $nPage=''; $addSql=''; $url='';$articleSql='';
+    $action=''; $s=''; $i=''; $nPageSize=''; $nCountSize=''; $nPage=''; $addSql=''; $url=''; $articleSql ='';
     handlePower('生成全部HTML页面'); //管理权限处理
     writeSystemLog('', '生成全部HTML页面'); //系统日志
 
@@ -1022,21 +1019,21 @@ function makeAllHtml($columnType, $columnName, $columnId){
         $GLOBALS['glb_columnName']= '';
         //开启生成html
         if( $rss['isonhtml']== true ){
-            if( instr('|产品|新闻|视频|下载|案例|留言|反馈|招聘|订单|','|' . $rss['columntype'] . '|')>0 ){
-                if( $rss['columntype']=='留言' ){
+            if( instr('|产品|新闻|视频|下载|案例|留言|反馈|招聘|订单|', '|' . $rss['columntype'] . '|') > 0 ){
+                if( $rss['columntype']== '留言' ){
                     $nCountSize= getRecordCount($GLOBALS['db_PREFIX'] . 'guestbook', ''); //记录数
                 }else{
                     $nCountSize= getRecordCount($GLOBALS['db_PREFIX'] . 'articledetail', ' where parentid=' . $rss['id']); //记录数
                 }
                 $nPageSize= $rss['npagesize'];
                 $nPage= getPageNumb(intval($nCountSize), intval($nPageSize));
-                if( $nPage<=0 ){
-                    $nPage=1;
+                if( $nPage <= 0 ){
+                    $nPage= 1;
                 }
                 for( $i= 1 ; $i<= $nPage; $i++){
                     $url= getHandleRsUrl($rss['filename'], $rss['customaurl'], '/nav' . $rss['id']);
                     $GLOBALS['glb_filePath']= Replace($url, $GLOBALS['cfg_webSiteUrl'], '');
-                    if( substr($GLOBALS['glb_filePath'], - 1)== '/' || $GLOBALS['glb_filePath']== '' ){
+                    if( Right($GLOBALS['glb_filePath'], 1)== '/' || $GLOBALS['glb_filePath']== '' ){
                         $GLOBALS['glb_filePath']= $GLOBALS['glb_filePath'] . 'index.html';
                     }
                     //call echo("glb_filePath",glb_filePath)
@@ -1044,7 +1041,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
                     //call echo("action",action)
                     makeWebHtml($action);
                     if( $i > 1 ){
-                        $GLOBALS['glb_filePath']= mid($GLOBALS['glb_filePath'], 1, strlen($GLOBALS['glb_filePath']) - 5) . $i . '.html';
+                        $GLOBALS['glb_filePath']= mid($GLOBALS['glb_filePath'], 1, Len($GLOBALS['glb_filePath']) - 5) . $i . '.html';
                     }
                     $s= '<a href="' . $GLOBALS['glb_filePath'] . '" target=\'_blank\'>' . $GLOBALS['glb_filePath'] . '</a>(' . $rss['isonhtml'] . ')';
                     ASPEcho($action, $s);
@@ -1059,7 +1056,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
                 $action= ' action actionType=\'nav\' columnName=\'' . $rss['columnname'] . '\'';
                 makeWebHtml($action);
                 $GLOBALS['glb_filePath']= Replace(getColumnUrl($rss['columnname'], 'name'), $GLOBALS['cfg_webSiteUrl'], '');
-                if( substr($GLOBALS['glb_filePath'], - 1)== '/' || $GLOBALS['glb_filePath']== '' ){
+                if( Right($GLOBALS['glb_filePath'], 1)== '/' || $GLOBALS['glb_filePath']== '' ){
                     $GLOBALS['glb_filePath']= $GLOBALS['glb_filePath'] . 'index.html';
                 }
                 $s= '<a href="' . $GLOBALS['glb_filePath'] . '" target=\'_blank\'>' . $GLOBALS['glb_filePath'] . '</a>(' . $rss['isonhtml'] . ')';
@@ -1076,13 +1073,13 @@ function makeAllHtml($columnType, $columnName, $columnId){
     }
 
     //单独处理指定栏目对应文章
-    if( $columnId<>'' ){
-        $articleSql='select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid='. $columnId .' order by sortrank asc';
+    if( $columnId <> '' ){
+        $articleSql= 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid=' . $columnId . ' order by sortrank asc';
         //批量处理文章
     }else if( $addSql== '' ){
-        $articleSql='select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail order by sortrank asc';
+        $articleSql= 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail order by sortrank asc';
     }
-    if( $articleSql<>'' ){
+    if( $articleSql <> '' ){
         //文章
         ASPEcho('文章', '');
         $rssObj=$GLOBALS['conn']->query( $articleSql);
@@ -1092,7 +1089,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
             //call echo("action",action)
             makeWebHtml($action);
             $GLOBALS['glb_filePath']= Replace($GLOBALS['glb_url'], $GLOBALS['cfg_webSiteUrl'], '');
-            if( substr($GLOBALS['glb_filePath'], - 1)== '/' ){
+            if( Right($GLOBALS['glb_filePath'], 1)== '/' ){
                 $GLOBALS['glb_filePath']= $GLOBALS['glb_filePath'] . 'index.html';
             }
             $s= '<a href="' . $GLOBALS['glb_filePath'] . '" target=\'_blank\'>' . $GLOBALS['glb_filePath'] . '</a>(' . $rss['isonhtml'] . ')';
@@ -1117,7 +1114,7 @@ function makeAllHtml($columnType, $columnName, $columnId){
             //call echo("action",action)
             makeWebHtml($action);
             $GLOBALS['glb_filePath']= Replace($GLOBALS['glb_url'], $GLOBALS['cfg_webSiteUrl'], '');
-            if( substr($GLOBALS['glb_filePath'], - 1)== '/' ){
+            if( Right($GLOBALS['glb_filePath'], 1)== '/' ){
                 $GLOBALS['glb_filePath']= $GLOBALS['glb_filePath'] . 'index.html';
             }
             $s= '<a href="' . $GLOBALS['glb_filePath'] . '" target=\'_blank\'>' . $GLOBALS['glb_filePath'] . '</a>(' . $rss['isonhtml'] . ')';
@@ -1138,23 +1135,31 @@ function makeAllHtml($columnType, $columnName, $columnId){
 
 //复制html到网站
 function copyHtmlToWeb(){
-    $webDir=''; $toFilePath=''; $filePath=''; $fileName=''; $fileList=''; $splStr=''; $content=''; $s=''; $s1=''; $c=''; $webImages=''; $webCss=''; $webJs=''; $splJs ='';
-    $WebFolderName='';$jsFileList='';
+    $webDir='';$toWebDir=''; $toFilePath=''; $filePath=''; $fileName=''; $fileList=''; $splStr=''; $content=''; $s=''; $s1=''; $c=''; $webImages=''; $webCss=''; $webJs=''; $splJs ='';
+    $webFolderName=''; $jsFileList=''; $setFileCode=''; $nErrLevel=''; $jsFilePath='';
+
+    $setFileCode= @$_REQUEST['setcode']; //设置文件保存编码
 
     handlePower('复制生成HTML页面'); //管理权限处理
     writeSystemLog('', '复制生成HTML页面'); //系统日志
 
-    $WebFolderName= $GLOBALS['cfg_webTemplate'];
-    if( substr($WebFolderName, 0 , 1)== '/' ){
-        $WebFolderName= mid($WebFolderName, 2,-1);
+    $webFolderName= $GLOBALS['cfg_webTemplate'];
+    if( substr($webFolderName, 0 , 1)== '/' ){
+        $webFolderName= mid($webFolderName, 2,-1);
     }
-    if( substr($WebFolderName, - 1)== '/' ){
-        $WebFolderName= mid($WebFolderName, 1, strlen($WebFolderName) - 1);
+    if( Right($webFolderName, 1)== '/' ){
+        $webFolderName= mid($webFolderName, 1, Len($webFolderName) - 1);
     }
-    if( instr($WebFolderName, '/') > 0 ){
-        $WebFolderName= mid($WebFolderName, instr($WebFolderName, '/') + 1,-1);
+    if( instr($webFolderName, '/') > 0 ){
+        $webFolderName= mid($webFolderName, instr($webFolderName, '/') + 1,-1);
     }
-    $webDir= '/htmladmin/' . $WebFolderName . '/';
+    $webDir= '/htmladmin/' . $webFolderName . '/';
+    $toWebDir='/htmlw' . 'eb/viewweb/';
+    createDirFolder($toWebDir);
+    $toWebDir= $toWebDir . pinYin2($webFolderName) . '/';
+
+    deleteFolder($toWebDir);				//删除
+    createFolder('/htmlweb/web');		//创建文件夹 防止web文件夹不存在20160504
     deleteFolder($webDir);
     createDirFolder($webDir);
     $webImages= $webDir . 'Images/';
@@ -1167,7 +1172,7 @@ function copyHtmlToWeb(){
 
     //处理Js文件夹
     $splJs= aspSplit(getDirJsList($webJs), vbCrlf());
-    foreach( $splJs as $filePath){
+    foreach( $splJs as $key=>$filePath){
         if( $filePath <> '' ){
             $toFilePath= $webJs . getFileName($filePath);
             ASPEcho('js', $filePath);
@@ -1176,11 +1181,18 @@ function copyHtmlToWeb(){
     }
     //处理Css文件夹
     $splStr= aspSplit(getDirCssList($webCss), vbCrlf());
-    foreach( $splStr as $filePath){
+    foreach( $splStr as $key=>$filePath){
         if( $filePath <> '' ){
             $content= getftext($filePath);
             $content= Replace($content, $GLOBALS['cfg_webImages'], '../images/');
-            createFileGBK($filePath, $content);
+
+            $content= deleteCssNote($content);
+            $content=phptrim($content);
+            //设置为utf-8编码 20160527
+            if( strtolower($setFileCode)=='utf-8' ){
+                $content=replace($content,'gb2312','utf-8');
+            }
+            writeToFile($filePath, $content, $setFileCode);
             ASPEcho('css', $GLOBALS['cfg_webImages']);
         }
     }
@@ -1189,11 +1201,11 @@ function copyHtmlToWeb(){
     $rssObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where isonhtml=true');
     while( $rss= $GLOBALS['conn']->fetch_array($rssObj)){
         $GLOBALS['glb_filePath']= Replace(getColumnUrl($rss['columnname'], 'name'), $GLOBALS['cfg_webSiteUrl'], '');
-        if( substr($GLOBALS['glb_filePath'], - 1)== '/' || substr($GLOBALS['glb_filePath'], - 1)== '' ){
+        if( Right($GLOBALS['glb_filePath'], 1)== '/' || Right($GLOBALS['glb_filePath'], 1)== '' ){
             $GLOBALS['glb_filePath']= $GLOBALS['glb_filePath'] . 'index.html';
         }
-        if( substr($GLOBALS['glb_filePath'], - 5)== '.html' ){
-            if( substr($GLOBALS['glb_filePath'], -11)=='/index.html' ){
+        if( Right($GLOBALS['glb_filePath'], 5)== '.html' ){
+            if( Right($GLOBALS['glb_filePath'], 11)== '/index.html' ){
                 $fileList= $fileList . $GLOBALS['glb_filePath'] . vbCrlf();
             }else{
                 $fileList= $GLOBALS['glb_filePath'] . vbCrlf() . $fileList;
@@ -1209,11 +1221,11 @@ function copyHtmlToWeb(){
     while( $rss= $GLOBALS['conn']->fetch_array($rssObj)){
         $GLOBALS['glb_url']= getHandleRsUrl($rss['filename'], $rss['customaurl'], '/detail/detail' . $rss['id']);
         $GLOBALS['glb_filePath']= Replace($GLOBALS['glb_url'], $GLOBALS['cfg_webSiteUrl'], '');
-        if( substr($GLOBALS['glb_filePath'], - 1)== '/' || substr($GLOBALS['glb_filePath'], - 1)== '' ){
+        if( Right($GLOBALS['glb_filePath'], 1)== '/' || Right($GLOBALS['glb_filePath'], 1)== '' ){
             $GLOBALS['glb_filePath']= $GLOBALS['glb_filePath'] . 'index.html';
         }
-        if( substr($GLOBALS['glb_filePath'], - 5)== '.html' ){
-            if( substr($GLOBALS['glb_filePath'], -11)=='/index.html' ){
+        if( Right($GLOBALS['glb_filePath'], 5)== '.html' ){
+            if( Right($GLOBALS['glb_filePath'], 11)== '/index.html' ){
                 $fileList= $fileList . $GLOBALS['glb_filePath'] . vbCrlf();
             }else{
                 $fileList= $GLOBALS['glb_filePath'] . vbCrlf() . $fileList;
@@ -1229,11 +1241,11 @@ function copyHtmlToWeb(){
     while( $rss= $GLOBALS['conn']->fetch_array($rssObj)){
         $GLOBALS['glb_url']= getHandleRsUrl($rss['filename'], $rss['customaurl'], '/page/page' . $rss['id']);
         $GLOBALS['glb_filePath']= Replace($GLOBALS['glb_url'], $GLOBALS['cfg_webSiteUrl'], '');
-        if( substr($GLOBALS['glb_filePath'], - 1)== '/' || substr($GLOBALS['glb_filePath'], - 1)== '' ){
+        if( Right($GLOBALS['glb_filePath'], 1)== '/' || Right($GLOBALS['glb_filePath'], 1)== '' ){
             $GLOBALS['glb_filePath']= $GLOBALS['glb_filePath'] . 'index.html';
         }
-        if( substr($GLOBALS['glb_filePath'], - 5)== '.html' ){
-            if( substr($GLOBALS['glb_filePath'], -11)=='/index.html' ){
+        if( Right($GLOBALS['glb_filePath'], 5)== '.html' ){
+            if( Right($GLOBALS['glb_filePath'], 11)== '/index.html' ){
                 $fileList= $fileList . $GLOBALS['glb_filePath'] . vbCrlf();
             }else{
                 $fileList= $GLOBALS['glb_filePath'] . vbCrlf() . $fileList;
@@ -1247,28 +1259,28 @@ function copyHtmlToWeb(){
     //批量处理html文件列表
     //call echo(cfg_webSiteUrl,cfg_webTemplate)
     //call rwend(fileList)
-    $sourceUrl='';$replaceUrl ='';
+    $sourceUrl=''; $replaceUrl ='';
     $splStr= aspSplit($fileList, vbCrlf());
-    foreach( $splStr as $filePath){
+    foreach( $splStr as $key=>$filePath){
         if( $filePath <> '' ){
             $filePath= $webDir . Replace($filePath, '/', '_');
             ASPEcho('filePath', $filePath);
             $content= getftext($filePath);
 
-            foreach( $splStr as $s){
+            foreach( $splStr as $key=>$s){
                 $s1= $s;
-                if( substr($s1, - 11)== '/index.html' ){
-                    $s1= substr($s1, 0 , strlen($s1) - 11) . '/';
+                if( Right($s1, 11)== '/index.html' ){
+                    $s1= substr($s1, 0 , Len($s1) - 11) . '/';
                 }
-                $sourceUrl=$GLOBALS['cfg_webSiteUrl'] . $s1;
-                $replaceUrl=$GLOBALS['cfg_webSiteUrl'] . Replace($s, '/', '_');
-                ASPEcho($sourceUrl,$replaceUrl);
-                $content= Replace($content, $sourceUrl,$replaceUrl);
+                $sourceUrl= $GLOBALS['cfg_webSiteUrl'] . $s1;
+                $replaceUrl= $GLOBALS['cfg_webSiteUrl'] . Replace($s, '/', '_');
+                //Call echo(sourceUrl, replaceUrl) 							'屏蔽  否则大量显示20160613
+                $content= Replace($content, $sourceUrl, $replaceUrl);
             }
             $content= Replace($content, $GLOBALS['cfg_webSiteUrl'], ''); //删除网址
             $content= Replace($content, $GLOBALS['cfg_webTemplate'], ''); //删除模板路径
             //content=nullLinkAddDefaultName(content)
-            foreach( $splJs as $s){
+            foreach( $splJs as $key=>$s){
                 if( $s <> '' ){
                     $fileName= getFileName($s);
                     $content= Replace($content, 'Images/' . $fileName, 'js/' . $fileName);
@@ -1278,40 +1290,68 @@ function copyHtmlToWeb(){
                 $content= Replace($content, '/Jquery/Jquery.Min.js', 'js/Jquery.Min.js');
                 copyfile('/Jquery/Jquery.Min.js', $webJs . '/Jquery.Min.js');
             }
-            $content=replace($content,'<a href="" ','<a href="index.html" ');							//让首页加index.html
+            $content= Replace($content, '<a href="" ', '<a href="index.html" '); //让首页加index.html
             createFileGBK($filePath, $content);
         }
     }
 
     //把复制网站夹下的images/文件夹下的js移到js/文件夹下  20160315
-    $htmlFileList='';$splHtmlFile='';$splJsFile='';$htmlFilePath='';$jsFileName='';
-    $jsFileList=getDirJsNameList($webImages);
-    $htmlFileList=getDirHtmlList($webDir);
-    $splHtmlFile=aspSplit($htmlFileList,vbCrlf());
-    $splJsFile=aspSplit($jsFileList,vbCrlf());
-    foreach( $splHtmlFile as $htmlFilePath){
-        $content=getftext($htmlFilePath);
-        foreach( $splJsFile as $jsFileName){
-            $content=regExp_Replace($content,'Images/' . $jsFileName, 'js/' . $jsFileName);
+    $htmlFileList=''; $splHtmlFile=''; $splJsFile=''; $htmlFilePath=''; $jsFileName ='';
+    $jsFileList= getDirJsNameList($webImages);
+    $htmlFileList= getDirHtmlList($webDir);
+    $splHtmlFile= aspSplit($htmlFileList, vbCrlf());
+    $splJsFile= aspSplit($jsFileList, vbCrlf());
+    foreach( $splHtmlFile as $key=>$htmlFilePath){
+        $content= getftext($htmlFilePath);
+        foreach( $splJsFile as $key=>$jsFileName){
+            $content= regExp_Replace($content, 'Images/' . $jsFileName, 'js/' . $jsFileName);
         }
-        ASPEcho('htmlFilePath',$htmlFilePath);
-        writeToFile($htmlFilePath,$content,'gb2312');
+
+        $nErrLevel= 0;
+        $content= handleHtmlFormatting($content, false, $nErrLevel, '|删除空行|'); //|删除空行|
+        $content= handleCloseHtml($content, true, ''); //闭合标签
+        $nErrLevel= checkHtmlFormatting($content);
+        if( checkHtmlFormatting($content)== false ){
+            eerr($htmlFilePath . '(格式化错误)', $nErrLevel);		 //注意
+        }
+        //设置为utf-8编码
+        if( strtolower($setFileCode)=='utf-8' ){
+            $content=replace($content,'<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />','<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />');
+        }
+        $content=phptrim($content);
+        writeToFile($htmlFilePath, $content, $setFileCode);
     }
     //images下js移动到js下
-    foreach( $splJsFile as $jsFileName){
-        moveFile($webImages . $jsFileName,$webJs . $jsFileName);
+    foreach( $splJsFile as $key=>$jsFileName){
+        $jsFilePath=$webImages . $jsFileName;
+        $content= getftext($jsFilePath);
+        $content=phptrim($content);
+        writeToFile($webJs . $jsFileName, $content, $setFileCode);
+        deleteFile($jsFilePath);
     }
-    makeHtmlWebToZip($webDir);
+
+    copyFolder($webDir,$toWebDir);
+    //使htmlWeb文件夹用php压缩
+    if( @$_REQUEST['isMakeZip']=='1' ){
+        makeHtmlWebToZip($webDir);
+    }
+    //使网站用xml打包20160612
+    if( @$_REQUEST['isMakeXml']=='1' ){
+        makeHtmlWebToXmlZip('/htmladmin/', $webFolderName);
+    }
 }
 
 //使htmlWeb文件夹用php压缩
 function makeHtmlWebToZip($webDir){
     $content=''; $splStr=''; $filePath=''; $c=''; $fileArray=''; $fileName=''; $fileType=''; $isTrue ='';
-    $WebFolderName='';
-    $cleanFileList ='';//干净文件列表 为了删除翻页文件
+    $webFolderName ='';
+    $cleanFileList ='';
+    $splStr= aspSplit($webDir, '/');
+    $webFolderName= $splStr[2];
+    //call eerr(webFolderName,webDir)
     $content= getFileFolderList($webDir, true, '全部', '', '全部文件夹', '', '');
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $filePath){
+    foreach( $splStr as $key=>$filePath){
         if( checkfolder($filePath)== false ){
             $fileArray= handleFilePathArray($filePath);
             $fileName= strtolower($fileArray[2]);
@@ -1335,12 +1375,196 @@ function makeHtmlWebToZip($webDir){
     createFileGBK('htmlweb/1.txt', $c);
     ASPEcho('<hr>cccccccccccc', $c);
     //先判断这个文件存在20160309
-    if( checkfile('/myZIP.php')==true ){
-        ASPEcho('', XMLPost('http://127.0.0.1/myZIP.php?webFolderName=' . $WebFolderName, 'content=' . escape($c)));
+    if( checkFile('/myZIP.php')== true ){
+        ASPEcho('', XMLPost(getHost() . '/myZIP.php?webFolderName=' . $webFolderName, 'content=' . escape($c)));
     }
 
 }
+//使网站用xml打包20160612
+function makeHtmlWebToXmlZip($newWebDir,$rootDir){
+    $xmlFileName='';$xmlSize='';
+    $xmlFileName= getIP() . '_update.xml';
 
+    //newWebDir="\Templates2015\"
+    //rootDir="\sharembweb\"
+
+    $objXmlZIP =''; $objXmlZIP= new xmlZIP();
+    $objXmlZIPrun(handlePath($newWebDir), handlePath($newWebDir . $rootDir), false, $xmlFileName);
+    ASPEcho(handlePath($newWebDir), handlePath($newWebDir . $rootDir));
+    $objXmlZIP= $GLOBALS['Nothing'];
+    doevents();
+    $xmlSize=getFSize($xmlFileName);
+    $xmlSize=printSpaceValue($xmlSize);
+    ASPEcho('下载xml打包文件', '<a href=/tools/downfile.asp?act=download&downfile=' . xorEnc('/' . $xmlFileName, 31380) . ' title=\'点击下载\'>点击下载' . $xmlFileName . '('. $xmlSize .')</a>');
+}
+
+
+//生成更新sitemap.xml 20160118
+function saveSiteMap(){
+    $isWebRunHtml ='';//是否为html方式显示网站
+    $changefreg ='';//更新频率
+    $priority ='';//优先级
+    $c=''; $url ='';
+    handlePower('修改生成SiteMap'); //管理权限处理
+
+    $changefreg= @$_REQUEST['changefreg'];
+    $priority= @$_REQUEST['priority'];
+    loadWebConfig(); //加载配置
+    //call eerr("cfg_flags",cfg_flags)
+    if( instr($GLOBALS['cfg_flags'], '|htmlrun|') > 0 ){
+        $isWebRunHtml= true;
+    }else{
+        $isWebRunHtml= false;
+    }
+
+    $c= $c . '<?xml version="1.0" encoding="UTF-8"?>' . vbCrlf();
+    $c= $c . "\t" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . vbCrlf();
+
+    //栏目
+    $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn order by sortrank asc');
+    while( $rsx= $GLOBALS['conn']->fetch_array($rsxObj)){
+        if( $rsx['nofollow']== false ){
+            $c= $c . copystr("\t", 2) . '<url>' . vbCrlf();
+            if( $isWebRunHtml== true ){
+                $url= getRsUrl($rsx['filename'], $rsx['customaurl'], '/nav' . $rsx['id']);
+                $url=handleAction($url);
+            }else{
+                $url= escape('?act=nav&columnName=' . $rsx['columnname']);
+            }
+            $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
+            //call echo(cfg_webSiteUrl,url)
+
+            $c= $c . copystr("\t", 3) . '<loc>' . $url . '</loc>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<lastmod>' . format_Time($rsx['updatetime'], 2) . '</lastmod>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<changefreq>' . $changefreg . '</changefreq>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<priority>' . $priority . '</priority>' . vbCrlf();
+            $c= $c . copystr("\t", 2) . '</url>' . vbCrlf();
+            ASPEcho('栏目', '<a href="' . $url . '" target=\'_blank\'>' . $url . '</a>');
+        }
+    }
+
+    //文章
+    $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail order by sortrank asc');
+    while( $rsx= $GLOBALS['conn']->fetch_array($rsxObj)){
+        if( $rsx['nofollow']== false ){
+            $c= $c . copystr("\t", 2) . '<url>' . vbCrlf();
+            if( $isWebRunHtml== true ){
+                $url= getRsUrl($rsx['filename'], $rsx['customaurl'], '/detail/detail' . $rsx['id']);
+                $url=handleAction($url);
+            }else{
+                $url= '?act=detail&id=' . $rsx['id'];
+            }
+            $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
+            //call echo(cfg_webSiteUrl,url)
+
+            $c= $c . copystr("\t", 3) . '<loc>' . $url . '</loc>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<lastmod>' . format_Time($rsx['updatetime'], 2) . '</lastmod>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<changefreq>' . $changefreg . '</changefreq>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<priority>' . $priority . '</priority>' . vbCrlf();
+            $c= $c . copystr("\t", 2) . '</url>' . vbCrlf();
+            ASPEcho('文章', '<a href="' . $url . '" target=\'_blank\'>' . $url . '</a>');
+        }
+    }
+
+    //单页
+    $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'onepage order by sortrank asc');
+    while( $rsx= $GLOBALS['conn']->fetch_array($rsxObj)){
+        if( $rsx['nofollow']== false ){
+            $c= $c . copystr("\t", 2) . '<url>' . vbCrlf();
+            if( $isWebRunHtml== true ){
+                $url= getRsUrl($rsx['filename'], $rsx['customaurl'], '/page/detail' . $rsx['id']);
+                $url=handleAction($url);
+            }else{
+                $url= '?act=onepage&id=' . $rsx['id'];
+            }
+            $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
+            //call echo(cfg_webSiteUrl,url)
+
+            $c= $c . copystr("\t", 3) . '<loc>' . $url . '</loc>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<lastmod>' . format_Time($rsx['updatetime'], 2) . '</lastmod>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<changefreq>' . $changefreg . '</changefreq>' . vbCrlf();
+            $c= $c . copystr("\t", 3) . '<priority>' . $priority . '</priority>' . vbCrlf();
+            $c= $c . copystr("\t", 2) . '</url>' . vbCrlf();
+            ASPEcho('单页', '<a href="' . $url . '" target=\'_blank\'>' . $url . '</a>');
+        }
+    }
+
+
+    $c= $c . "\t" . '</urlset>' . vbCrlf();
+
+    loadWebConfig();
+
+    createfile('sitemap.xml', $c);
+    ASPEcho('生成sitemap.xml文件成功', '<a href=\'/sitemap.xml\' target=\'_blank\'>点击预览sitemap.xml</a>');
+
+    //判断是否生成sitemap.html
+    if( @$_REQUEST['issitemaphtml']== '1' ){
+        $c= '';
+        //第二种
+        //栏目
+        $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn order by sortrank asc');
+        while( $rsx= $GLOBALS['conn']->fetch_array($rsxObj)){
+            if( $rsx['nofollow']== false ){
+                if( $isWebRunHtml== true ){
+                    $url= getRsUrl($rsx['filename'], $rsx['customaurl'], '/nav' . $rsx['id']);
+                    $url=handleAction($url);
+                }else{
+                    $url= escape('?act=nav&columnName=' . $rsx['columnname']);
+                }
+                $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
+
+                $c= $c . '<li style="width:20%;"><a href="' . $url . '">' . $rsx['columnname'] . '</a><ul>' . vbCrlf();
+
+                //文章
+                $rssObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentId=' . $rsx['id'] . ' order by sortrank asc');
+                while( $rss= $GLOBALS['conn']->fetch_array($rssObj)){
+                    if( $rss['nofollow']== false ){
+                        if( $isWebRunHtml== true ){
+                            $url= getRsUrl($rss['filename'], $rss['customaurl'], '/detail/detail' . $rss['id']);
+                            $url=handleAction($url);
+                        }else{
+                            $url= '?act=detail&id=' . $rss['id'];
+                        }
+                        $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
+                        $c= $c . '<li style="width:20%;"><a href="' . $url . '" target="_blank">' . $rss['title'] . '</a>' . vbCrlf();
+                    }
+                }
+                $c= $c . '</ul></li>' . vbCrlf();
+
+
+            }
+        }
+
+        //单面
+        $c= $c . '<li style="width:20%;"><a href="javascript:;">单面列表</a><ul>' . vbCrlf();
+        $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'onepage order by sortrank asc');
+        while( $rsx= $GLOBALS['conn']->fetch_array($rsxObj)){
+            if( $rsx['nofollow']== false ){
+                $c= $c . copystr("\t", 2) . '<url>' . vbCrlf();
+                if( $isWebRunHtml== true ){
+                    $url= getRsUrl($rsx['filename'], $rsx['customaurl'], '/page/detail' . $rsx['id']);
+                    $url=handleAction($url);
+                }else{
+                    $url= '?act=onepage&id=' . $rsx['id'];
+                }
+                $c= $c . '<li style="width:20%;"><a href="' . $url . '" target="_blank">' . $rsx['title'] . '</a>' . vbCrlf();
+            }
+        }
+        $c= $c . '</ul></li>' . vbCrlf();
+
+        $templateContent ='';
+        $templateContent= getftext($GLOBALS['adminDir'] . '/template_SiteMap.html');
+
+
+        $templateContent= Replace($templateContent, '{$content$}', $c);
+        $templateContent= Replace($templateContent, '{$Web_Title$}', $GLOBALS['cfg_webTitle']);
+
+
+        createfile('sitemap.html', $templateContent);
+        ASPEcho('生成sitemap.html文件成功', '<a href=\'/sitemap.html\' target=\'_blank\'>点击预览sitemap.html</a>');
+    }
+    writeSystemLog('', '保存sitemap.xml'); //系统日志
+}
 ?>
 
 

@@ -120,7 +120,7 @@
 ¡¾sortrank¡¿100
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2015-04-05 15:09:05
-¡¾filename¡¿/xy2/pingyu-game.html
+¡¾filename¡¿/xy2/pintu-game.html
 ¡¾target¡¿_blank
 ¡¾bodycontent¡¿
 

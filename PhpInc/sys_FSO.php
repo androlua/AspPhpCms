@@ -1,6 +1,6 @@
 <?php
 // 读取文件
-function reaFile($file) {
+function reaFile($file, $codeset='') {			// $codeset 给asp设置的
 	$file = handlePath ( $file );
 	if (@is_file ( $file ) == false) {
 		return "";
@@ -20,22 +20,19 @@ function reaFile($file) {
 	}
 }
 // &&&读出文件（辅助上面）
-function getFText($file) {
-	$file = handlePath ( $file );
+function getFText($file) { 
 	return reaFile ( $file );
 }
 // &&&读出文件（辅助上面）
-function getFileText($file) {
-	$file = handlePath ( $file );
+function getFileText($file) { 
 	return reaFile ( $file );
 }
 //以UTF-8方式打开文件（20151201）
 function getFTextUTF($file){
 	return toUTFChar(getFText($file));
 }
-
 // 保存文件
-function AspSaveFile($file, $text) {
+function aspSaveFile($file, $text) {
 	$file = handlePath ( $file );
 	if (! $file || ! $text) {
 		return false;
@@ -53,6 +50,11 @@ function AspSaveFile($file, $text) {
 	}
 	return false;
 }
+//写入文件内容
+function writeToFile($file, $text,$setcode){
+	aspSaveFile($file, $text);
+}
+
 // &&&创建文件
 function createFile($file, $text) {
 	return AspSaveFile ( $file, $text );
@@ -71,6 +73,10 @@ function addToFile($file, $text) {
 }
 // &&&保存累加文件（辅助上面）
 function createAddFile($file, $text) {
+	addToFile ( $file, $text );
+}
+// 同上，这是给ASP里用的，因为php里有两种写入内容方法，一种方法会多出一个换行，所以php里做下处理20160525
+function createAddFile2($file, $text) {
 	addToFile ( $file, $text );
 }
 // &&&保存累加文件（辅助上面）
@@ -182,7 +188,7 @@ function makeDir($dir, $mode = "0777") {
 	}
 }
 // &&&连续创建目录（辅助上面）
-function CreateDirFolder($dir) {
+function createDirFolder($dir) {
 	makeDir ( $dir );
 }
 // 检测文件夹

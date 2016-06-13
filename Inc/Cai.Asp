@@ -2,47 +2,56 @@
 'Cai采集内容(2014)
 
 '获得采集内容
-Function getHttpPage(ByVal HttpUrl, ByVal Char_Set)
-    getHttpPage = handleGetHttpPage(HttpUrl, Char_Set)(0) 
+Function getHttpPage(ByVal httpurl, ByVal Char_Set)
+    getHttpPage = handleGetHttpPage(httpurl, Char_Set)(0) 
 End Function 
 '处理获得采集内容
-Function handleGetHttpPage(ByVal HttpUrl, ByVal Char_Set)
-    On Error Resume Next 
+Function handleGetHttpPage(ByVal httpurl, ByVal Char_Set)
+    On Error Resume Next
     Dim startTime, nStatus, nTime, content, splType, webFileSize 
-    startTime = Now()
+    startTime = Now() 
+    splType = "|-*ypia=|" 
     Char_Set = handleStrCharSet(Char_Set) 
-    If IsNull(HttpUrl) = True Or Len(HttpUrl) < 18 Or HttpUrl = "$False$" Then
-        handleGetHttpPage = "$False$" 
+    If IsNull(httpurl) = True Or Len(httpurl) < 7 Or httpurl = "$False$" Then
+        handleGetHttpPage = Split("" & splType & -1 & splType & nTime & splType & webFileSize, splType) 
         Exit Function 
     End If
-    Dim Http 
-    Set Http = CreateObject("MSXML2.XMLHTTP")
-        Call Http.Open("GET", HttpUrl, False) 
-        Http.send 
-        If Http.readyState <> 4 Then
-            Set Http = Nothing 
-            handleGetHttpPage = "$False$" 
+	
+    Dim http 
+    Set http = CreateObject("MSXML2.XMLHTTP")
+        Call http.Open("GET", httpurl, False) 
+        http.send 
+        If http.readyState <> 4 Then
+            Set http = Nothing 
+            handleGetHttpPage = Split("" & splType & http.readyState & splType & nTime & splType & webFileSize, splType) 
             Exit Function 
         End If 
 
-        content = BytesToBstr(Http.responseBody, Char_Set) 
-        nStatus = Http.Status 
+        content = bytesToBstr(http.responseBody, Char_Set) 
+        nStatus = http.Status 
         nTime = DateDiff("s", startTime, Now()) 
         webFileSize = strLength(content) 
 
-        splType = "|-*ypia=|" 
         handleGetHttpPage = Split(content & splType & nStatus & splType & nTime & splType & webFileSize, splType) 
 
-    Set Http = Nothing 
+    Set http = Nothing 
 End Function 
+'获得请求url状态
+Function getHttpUrlState(httpurl)
+    getHttpUrlState = handleGetHttpPage(httpurl, "")(1) 
+End Function 
+'获得请求url的服务器名称
+function getHttpUrlServerName(httpurl)
+	getHttpUrlServerName=""			'配置php里用的
+end function
 
 '获得采集内容 (辅助)
-Function getURLContent(HttpUrl, Char_Set)
-    getURLContent = getHttpPage(HttpUrl, Char_Set) 
+Function getURLContent(httpurl, Char_Set)
+    getURLContent = getHttpPage(httpurl, Char_Set) 
 End Function 
 '获得采集内容 (辅助)
-Function getHttpUrl(HttpUrl, Char_Set)
-    getHttpUrl = getHttpPage(HttpUrl, Char_Set) 
+Function getHttpUrl(httpurl, Char_Set)
+    getHttpUrl = getHttpPage(httpurl, Char_Set) 
 End Function 
 Function bytesToBstr(body, Cset)
     Dim ObjStream 
@@ -67,54 +76,54 @@ End Function
 '4=abbccdd[/A]
 '截取字符串
 Function strCut(ByVal content, ByVal startStr, ByVal endStr, ByVal cutType)
-    Dim s1, s1Str, s2, s3, c,tempContent,tempStartStr,tempEndStr
-	tempStartStr=startStr
-	tempEndStr=endStr
-	tempContent=content
-	cutType="|"& cutType &"|"
-	'不区分大小写
-	if instr(cutType,"|lu|")>0 then
-		content=lcase(content)
-		startStr=lcase(startStr)
-		endStr=lcase(endStr)
-	end if
+    Dim s1, s1Str, s2, s3, c, tempContent, tempStartStr, tempEndStr 
+    tempStartStr = startStr 
+    tempEndStr = endStr 
+    tempContent = content 
+    cutType = "|" & cutType & "|" 
+    '不区分大小写
+    If InStr(cutType, "|lu|") > 0 Then
+        content = LCase(content) 
+        startStr = LCase(startStr) 
+        endStr = LCase(endStr) 
+    End If 
     If InStr(content, startStr) = False Or InStr(content, endStr) = False Then
         c = "" 
         Exit Function 
     End If 
-	if instr(cutType,"|1|")>0 then
-            s1 = InStr(content, startStr) 
-            s1Str = Mid(content, s1 + Len(startStr)) 
-            s2 = s1 + InStr(s1Str, endStr) + Len(startStr) + Len(endStr) - 1 '为什么要减1
-	else
-            s1 = InStr(content, startStr) + Len(startStr) 
-            s1Str = Mid(content, s1) 
-            'S2 = InStr(S1, content, EndStr)
-            s2 = s1 + InStr(s1Str, endStr) - 1 
-    end if
+    If InStr(cutType, "|1|") > 0 Then
+        s1 = InStr(content, startStr) 
+        s1Str = Mid(content, s1 + Len(startStr)) 
+        s2 = s1 + InStr(s1Str, endStr) + Len(startStr) + Len(endStr) - 1                '为什么要减1
+    Else
+        s1 = InStr(content, startStr) + Len(startStr) 
+        s1Str = Mid(content, s1) 
+        'S2 = InStr(S1, content, EndStr)
+        s2 = s1 + InStr(s1Str, endStr) - 1 
+    End If 
     s3 = s2 - s1 
     If s3 >= 0 Then
-        c = Mid(tempContent, s1, s3)
+        c = Mid(tempContent, s1, s3) 
     Else
         c = "" 
     End If 
-    if instr(cutType,"|3|")>0 then
+    If InStr(cutType, "|3|") > 0 Then
         c = tempStartStr & c 
     End If 
-    if instr(cutType,"|4|")>0 then
+    If InStr(cutType, "|4|") > 0 Then
         c = c & tempEndStr 
     End If 
-    strCut = c  
+    strCut = c 
 End Function 
 '获得截取内容,20150305
-Function getStrCut(ByVal content, ByVal startStr, ByVal endStr, ByVal CutType)
-     getStrCut = strCut(content, startStr, endStr, CutType) 
+Function getStrCut(ByVal content, ByVal startStr, ByVal endStr, ByVal cutType)
+    getStrCut = strCut(content, startStr, endStr, cutType) 
 End Function 
 '接取字符 CutStr(Content,22,"null")
-Function cutStr(ByVal content, ByVal CutNumb, ByVal MoreStr)
+Function cutStr(ByVal content, ByVal cutNumb, ByVal MoreStr)
     Dim i, s, n 
     n = 0 
-    CutNumb = CInt(CutNumb)                                                         '转换成数字类型    追加于20141107
+    cutNumb = CInt(cutNumb)                                                         '转换成数字类型    追加于20141107
     If MoreStr = "" Then MoreStr = "..." 
     If LCase(MoreStr) = "none" Or LCase(MoreStr) = "null" Then MoreStr = "" 
     cutStr = content 
@@ -123,7 +132,7 @@ Function cutStr(ByVal content, ByVal CutNumb, ByVal MoreStr)
         If s < 0 Then s = s + 65536 
         If s < 255 Then n = n + 1 
         If s > 255 Then n = n + 2 
-        If n >= CutNumb Then cutStr = Left(content, i) & MoreStr : Exit Function 
+        If n >= cutNumb Then cutStr = Left(content, i) & MoreStr : Exit Function 
     Next 
 End Function 
 '截取内容，不区分大小写 20150327  C=CutStrNOLU(c,"<heAd",">")
@@ -185,7 +194,7 @@ Function cutTDStr(content, TDWidth)
     cutTDStr = setCutTDStr(content, TDWidth, "#FBE3EF") 
 End Function 
 '分割字符
-Function getArrayList(ByVal content, ByVal startStr, ByVal endStr, ByVal StartType, ByVal EndType, ByVal SType)
+Function getArrayList(ByVal content, ByVal startStr, ByVal endStr, ByVal StartType, ByVal EndType, ByVal sType)
     'on error resume next
     If IsNull(content) = True Or IsNull(startStr) = True Or IsNull(endStr) = True Then
         getArrayList = "" 
@@ -216,7 +225,7 @@ Function getArrayList(ByVal content, ByVal startStr, ByVal endStr, ByVal StartTy
             c = Rep.Replace(c, "") 
         End If 
     Set Rep = Nothing 
-    If SType = "1" Or SType = "去掉字符" Or SType = True Then
+    If sType = "1" Or sType = "去掉字符" Or sType = True Then
         c = Replace(c, """", "") 
         c = Replace(c, "'", "") 
         c = Replace(c, " ", "") 
@@ -248,7 +257,7 @@ Function getSplitCount(ByVal content, ByVal splStr)
 End Function 
 
 '代理 因为它不能与VB软件共存
-Function agent(ByVal HttpUrl)
+Function agent(ByVal httpurl)
     'On Error Resume Next
     Server.ScriptTimeout = 999 
     '----------
@@ -256,7 +265,7 @@ Function agent(ByVal HttpUrl)
     Dim http 
     Set http = CreateObject("WinHttp.WinHttpRequest.5.1")
 
-        http.Open "GET", HttpUrl, False 
+        http.Open "GET", httpurl, False 
         If Request.ServerVariables("HTTP_REFERER") <> "" Then
             http.SetRequestHeader "Referer", Request.ServerVariables("HTTP_REFERER") 
         End If 
@@ -275,5 +284,5 @@ Function agent(ByVal HttpUrl)
         Response.BinaryWrite http.responseBody                                          '输出二进制内容
 End Function
 
-%>  
+%>    
 

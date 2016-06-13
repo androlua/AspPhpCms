@@ -222,14 +222,52 @@ select {
 
 /*文章内容部分*/
 .atitleleft, .atitleright {
-  border: 1px double #A4B2BD;
-  border-bottom: 0;
-  color: #333333;
-  font-weight: bold;
-  float: left;
-  line-height: 28px;
-  background-image: url(../Images/ATitleBg.jpg);
-  padding: 0 10px;
+	border: 1px double #A4B2BD;
+	border-bottom: 0;
+	color: #333333;
+	font-weight: bold;
+	float: left;
+	height:28px;
+	line-height: 28px;
+	background-image: url(../Images/ATitleBg.jpg);
+	padding: 0 10px;
+	position:relative;
+}
+
+/*下拉菜单盒子*/
+.drop_down_menu_box{
+	position:absolute;
+	left:-1px;
+	top:28px;
+	border: 1px double #A4B2BD;
+	background-color:#FFFFFF; 
+	width:auto;
+	display:none;
+}
+.drop_down_menu_title{
+	cursor:default;
+}
+ 
+.drop_down_menu_title .arrow-down { 
+	width: 0; 
+	height: 0; 
+	border-left: 8px solid transparent; 
+	border-right: 8px solid transparent; 
+	border-top: 8px solid #000; 
+	font-size: 0; 
+	line-height: 0;
+	margin-left:8px;
+}
+.drop_down_menu_box a{
+	height:32px;
+	line-height: 32px; 
+	padding: 0 10px;
+	display:block;
+	font-weight:normal;
+	border-bottom:1px solid #A4B2BD;
+}
+.drop_down_menu_box a:hover{
+	background-image: url(../Images/ATitleBg.jpg);
 }
 .atitleright{
 	float:right;

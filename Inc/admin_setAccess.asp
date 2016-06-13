@@ -42,7 +42,7 @@ Sub resetAccessData()
     Dim displaytitle, aboutcontent, isonhtml                                  '单页表
     Dim columnenname                                                                '导航表
     Dim smallimage, bigImage, bannerimage                                           '文章表
-	dim httpurl
+	dim httpurl,price
  
     '网站配置
     content = getftext(webdataDir & "/website.txt") 
@@ -72,6 +72,7 @@ Sub resetAccessData()
     '导航
     conn.Execute("delete from " & db_PREFIX & "webcolumn") 
     content = getDirTxtList(webdataDir & "/webcolumn/") 
+	content=contentNameSort(content,"")
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr
@@ -90,6 +91,7 @@ Sub resetAccessData()
                     webtitle = newGetStrCut(s, "webtitle") 
                     webkeywords = newGetStrCut(s, "webkeywords") 
                     webdescription = newGetStrCut(s, "webdescription") 
+					customaurl= newGetStrCut(s, "customaurl") 
 
                     sortrank = newGetStrCut(s, "sortrank") 
                     If sortrank = "" Then sortrank = 0 
@@ -141,7 +143,7 @@ Sub resetAccessData()
                     bodycontent = newGetStrCut(s, "bodycontent") 
                     bodycontent = contentTranscoding(bodycontent) 
 
-                    conn.Execute("insert into " & db_PREFIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,flags,parentid,labletitle,aboutcontent,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values('" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & columnname & "','" & columnenname & "','" & columntype & "'," & sortrank & ",'" & fileName & "','" & flags & "'," & parentid & ",'" & labletitle & "','" & aboutcontent & "','" & bodycontent & "'," & npagesize & "," & isonhtml & "," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
+                    conn.Execute("insert into " & db_PREFIX & "webcolumn (webtitle,webkeywords,webdescription,columnname,columnenname,columntype,sortrank,filename,customaurl,flags,parentid,labletitle,aboutcontent,bodycontent,npagesize,isonhtml,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values('" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & columnname & "','" & columnenname & "','" & columntype & "'," & sortrank & ",'" & fileName & "','"& customaurl &"','" & flags & "'," & parentid & ",'" & labletitle & "','" & aboutcontent & "','" & bodycontent & "'," & npagesize & "," & isonhtml & "," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
                 End If 
             Next 
         End If 
@@ -150,6 +152,7 @@ Sub resetAccessData()
     '文章
     conn.Execute("delete from " & db_PREFIX & "articledetail") 
     content = getDirAllFileList(webdataDir & "/articledetail/","txt") 
+	content=contentNameSort(content,"") 
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr
@@ -190,8 +193,8 @@ Sub resetAccessData()
                     smallimage = newGetStrCut(s, "smallimage") 
                     bigImage = newGetStrCut(s, "bigImage") 
                     bannerimage = newGetStrCut(s, "bannerimage") 
-				
-				
+                    labletitle = newGetStrCut(s, "labletitle") 
+				 
                     aboutcontent = newGetStrCut(s, "aboutcontent") 
                     aboutcontent = contentTranscoding(aboutcontent) 
 
@@ -210,8 +213,14 @@ Sub resetAccessData()
                         nofollow = 1 
                     Else
                         nofollow = 0 
-                    End If 
-                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,titlecolor,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,aboutcontent,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath) values(" & parentid & ",'" & title & "','"& titlecolor &"','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & author & "'," & sortrank & ",'" & adddatetime & "','" & fileName & "','" & flags & "','" & relatedtags & "','"& aboutcontent &"','" & bodycontent & "','" & Now() & "'," & isonhtml & ",'" & customaurl & "'," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "')") 
+                    End If
+					
+					'价格
+                    price = getDianNumb(newGetStrCut(s, "price"))
+					if price="" then
+						price=0
+					end if					
+                    conn.Execute("insert into " & db_PREFIX & "articledetail (parentid,title,titlecolor,webtitle,webkeywords,webdescription,author,sortrank,adddatetime,filename,flags,relatedtags,aboutcontent,bodycontent,updatetime,isonhtml,customaurl,nofollow,target,smallimage,bigImage,bannerimage,templatepath,labletitle,price) values(" & parentid & ",'" & title & "','"& titlecolor &"','" & webtitle & "','" & webkeywords & "','" & webdescription & "','" & author & "'," & sortrank & ",'" & adddatetime & "','" & fileName & "','" & flags & "','" & relatedtags & "','"& aboutcontent &"','" & bodycontent & "','" & Now() & "'," & isonhtml & ",'" & customaurl & "'," & nofollow & ",'" & target & "','" & smallimage & "','" & bigImage & "','" & bannerimage & "','" & templatepath & "','"& labletitle &"',"& price &")") 
                 End If 
             Next 
         End If 
@@ -220,6 +229,7 @@ Sub resetAccessData()
     '单页
     conn.Execute("delete from " & db_PREFIX & "OnePage") 
     content = getDirTxtList(webdataDir & "/OnePage/") 
+	content=contentNameSort(content,"")
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr
@@ -279,6 +289,7 @@ Sub resetAccessData()
     '竞价
     conn.Execute("delete from " & db_PREFIX & "Bidding") 
     content = getDirTxtList(webdataDir & "/Bidding/") 
+	content=contentNameSort(content,"")
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr
@@ -313,6 +324,7 @@ Sub resetAccessData()
     '搜索统计
     conn.Execute("delete from " & db_PREFIX & "SearchStat") 
     content = getDirTxtList(webdataDir & "/SearchStat/") 
+	content=contentNameSort(content,"")
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr
@@ -368,6 +380,7 @@ Sub resetAccessData()
     '评论
     conn.Execute("delete from " & db_PREFIX & "TableComment")  
     content = getDirTxtList(webdataDir & "/TableComment/") 
+	content=contentNameSort(content,"")
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr
@@ -417,6 +430,7 @@ Sub resetAccessData()
     '友情链接
     conn.Execute("delete from " & db_PREFIX & "FriendLink")  
     content = getDirTxtList(webdataDir & "/FriendLink/") 
+	content=contentNameSort(content,"")
     splStr = Split(content, vbCrLf) 
     Call hr() 
     For Each filePath In splStr

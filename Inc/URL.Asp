@@ -1,6 +1,8 @@
 <% 
 'URL 网址处理 (2013,9,27)
 
+'  byref PubAHrefList, byref PubATitleList   为为什么要加上byref  是因为在转PHP时需要这个判断，请明它是地址传递 是关联变量
+
 'NOVBNet start
 '使用手册
 'call echo("'获得当前网址第一种（getUrl）",getUrl())
@@ -51,7 +53,7 @@ End Function
 '获得传过来网址
 Function getGoToUrl()
     getGoToUrl = Request.ServerVariables("HTTP_REFERER") 
-End Function 
+End Function
 
 '获得传过来网址 无参数
 Function getGoToUrlNoParam()
@@ -153,9 +155,9 @@ Function handleHttpUrl(httpUrl)
     httpUrl = Replace(Trim(httpUrl), "\", "/") 
     headStr = Mid(httpUrl, 1, InStr(httpUrl, ":") + 2) 
     httpUrl = Mid(httpUrl, InStr(httpUrl, ":") + 3) 
-    httpUrl = Replace(httpUrl, "http://", "【|http|】") 
-    httpUrl = Replace(httpUrl, "https://", "【|https|】") 
-    httpUrl = Replace(httpUrl, "ftp://", "【|ftp|】") 
+    httpUrl = Replace(httpUrl, "http://", "【|http|】")
+    httpUrl = Replace(httpUrl, "https://", "【|https|】")
+    httpUrl = Replace(httpUrl, "ftp://", "【|ftp|】")
 
     While InStr(httpUrl, "//") > 0
         httpUrl = Replace(httpUrl, "//", "/") 
@@ -173,9 +175,6 @@ Function handleHttpUrl(httpUrl)
         url = Mid(url, 1, Len(url) - 2) 
     End If 
     handleHttpUrl = url 
-
-
-
 End Function 
 
 '处理文件/转\   使用了While判断，再完善
@@ -309,14 +308,24 @@ End Function
 Function getWebSite(ByVal httpUrl)
     'On Error Resume Next
     '新版获得域名方法
-    Dim url, tempHttpUrl, is_WebSite 
+    Dim url, tempHttpUrl, is_WebSite,httpHead
     tempHttpUrl = httpUrl 
     url = Trim(LCase(Replace(httpUrl, "?", "/"))) 
     url = Replace(Replace(url, "\", "/"), "http://", "") 
     If InStr(url, "/") > 0 Then url = Mid(url, 1, InStr(url, "/") - 1) 
     url = "http://" & url & "/" 
     Dim splStr, s, c 
-    httpUrl = Replace(LCase(httpUrl), "http://", "") 
+    httpUrl = Replace(LCase(httpUrl), "http://", "")
+	httpHead="http://"
+	'增加了https://这种安全请求方式  20160526
+	if instr(LCase(httpUrl), "https://")>0 then
+		httpUrl = Replace(LCase(httpUrl), "https://", "")
+		httpHead="https://"
+	end if
+	'删除/后台的值20160526
+	if instr(httpUrl,"/")>0 then
+		httpUrl=mid(httpUrl,1,instr(httpUrl,"/")-1)
+	end if
     If InStr(httpUrl, "?") > 0 Then httpUrl = Mid(httpUrl, 1, InStr(httpUrl, "?") - 1) 
     If Left(httpUrl, 9) = "localhost" Then
         If InStr(httpUrl, "/") > 0 Then
@@ -343,12 +352,12 @@ Function getWebSite(ByVal httpUrl)
     End If 
     is_WebSite = False                                                              '是域名为假
     c = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn" 
-    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in" 
+    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top" 
     splStr = Split(c, "|") 
     For Each s In splStr
         If s <> "" Then
             If InStr(httpUrl, s) > 0 Then
-                httpUrl = "http://" & Left(httpUrl, InStr(httpUrl, s) + Len(s) - 1) & "/" : is_WebSite = True : Exit For 
+                httpUrl = httpHead & Left(httpUrl, InStr(httpUrl, s) + Len(s) - 1) & "/" : is_WebSite = True : Exit For 
             End If 
         End If 
     Next 
@@ -487,7 +496,7 @@ Function getWebTitle(content)
 End Function 
 
 '获得容中网址列表 (缺陷是网址全部小写了20150728)
-Function getContentAHref(httpUrl, content, PubAHrefList, PubATitleList)
+Function getContentAHref(httpUrl, content, byref PubAHrefList, byref PubATitleList)
     Dim i, s, TempS, LalType, nLen, LalStr, c 
     For i = 1 To Len(content)
         s = Mid(content, i, 1) 
@@ -508,7 +517,7 @@ Function getContentAHref(httpUrl, content, PubAHrefList, PubATitleList)
 End Function 
 
 '获得内容中图片列表
-Function getContentImgSrc(httpUrl, content, PubAHrefList, PubATitleList)
+Function getContentImgSrc(httpUrl, content, byref PubAHrefList, byref PubATitleList)
     Dim i, s, TempS, LalType, nLen, LalStr, c 
     For i = 1 To Len(content)
         s = Mid(content, i, 1) 
@@ -530,7 +539,7 @@ Function getContentImgSrc(httpUrl, content, PubAHrefList, PubATitleList)
 End Function 
 
 '让内容中网址完整 sType=|*|link|img|a|script|embed|param|meta|
-Function handleConentUrl(httpUrl, content, sType, PubAHrefList, PubATitleList)
+Function handleConentUrl(httpUrl, content, sType, byref PubAHrefList, byref PubATitleList)
     Dim i, s, YuanStr, TempS, LalType, nLen, LalStr, c 
     sType = "|" & sType & "|" 
     For i = 1 To Len(content)
@@ -603,7 +612,7 @@ End Function
 
 
 '替换内容里全部Js目录 20150722  call rwend(handleConentUrl("/admin/js/", "<script src='aa/js.js' ><script src=""bb/js.js"" >","",""))
-Function replaceContentJsDir(content, dirPath, PubAHrefList, PubATitleList)
+Function replaceContentJsDir(content, dirPath, byref PubAHrefList, byref PubATitleList)
     Dim splStr, s, c 
     splStr = Split(content, vbCrLf) 
     For Each s In splStr
@@ -619,7 +628,7 @@ End Function
 
 '处理链接地址 HttpUrl=追加网址，Content=内容  SType=类型
 '替换目录方法  call rw(HandleLink("Js/", "111111<script src=""js/Jquery.Min.js""></"& "script>","src", "newurl", "replaceDir","",""))
-Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, PubAHrefList, PubATitleList)
+Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, byref PubAHrefList, byref PubATitleList)
     On Error Resume Next 
     Dim splStr, i, s, c, TempContent, FindUrl, HandleUrl, startStr, endStr, s1, s2, tempHttpUrl 
     tempHttpUrl = httpUrl 
@@ -642,7 +651,7 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, PubAHrefList,
         If SetStr <> "" Then
             HandleUrl = SetStr 
         Else
-            HandleUrl = fullHttpUrl(httpUrl, FindUrl) 
+            HandleUrl = fullHttpUrl(httpUrl, FindUrl)
             '替换目录
             If UrlOrContent = "replacedir" Then
                 HandleUrl = tempHttpUrl & handleFilePathArray(HandleUrl)(2) 
@@ -782,7 +791,7 @@ Function getThisUrlFileName()
 End Function 
 
 '处理网站HTML中Img    写得不是特别的完善好  Content = HandleWebHtmlImg("/aa/bb/",Content)
-Function handleWebHtmlImg(RootPath, content, PubAHrefList, PubATitleList)
+Function handleWebHtmlImg(RootPath, content, byref PubAHrefList, byref PubATitleList)
     Dim ImgList, splStr, imgUrl, NewImgUrl 
     Dim startStr, endStr 
     ImgList = getContentImgSrc("", content, PubAHrefList, PubATitleList) 
@@ -1231,7 +1240,7 @@ End Function
 
 
 
-
+'注意   这里面有问题的
 
 '0 url：http://127.0.0.1/aa/4.asp?act=sdf&v=sdf
 '1 urlDir：http://127.0.0.1/
@@ -1244,6 +1253,7 @@ End Function
 
 '网址处理成数组20150124  数组  0原文件路径 1为文件路径   2为文件名称  3为去除文件类型文件名称   4为文件类型后缀名
 Function handleHttpUrlArray(ByVal url)
+	on error resume next
     Dim urlDir, fileName, FileType, fileStr, httpAgreement, webSite, folderDir 
     url = handleHttpUrl(url) 
 
@@ -1444,7 +1454,7 @@ Function getInChain(httpUrl, urlList)
     urlList = "" 
     For Each url In splStr
         If url <> "" Then
-            urlLCase = LCase(url) 
+            urlLCase = LCase(url)
             If Left(urlLCase, 1) <> "#" And Left(urlLCase, 11) <> "javascript:" Then
                 If InStr(vbCrLf & urlList & vbCrLf, vbCrLf & url & vbCrLf) = False Then
                     url = fullHttpUrl(httpUrl, url) 
@@ -1452,11 +1462,140 @@ Function getInChain(httpUrl, urlList)
                     If isHandle = True Then
                         urlList = urlList & url & vbCrLf 
                     End If 
-                End If 
-            End If 
+                End If
+            End If
         End If 
     Next 
     If urlList <> "" Then urlList = Left(urlList, Len(urlList) - 2) 
     getInChain = urlList 
-End Function 
-%>         
+End Function
+
+
+'处理扫描后网址列表 20160428
+function handleScanUrlList(httpurl,urlList)
+	dim splstr,url,c,lCaseUrl
+	splstr=split(urlList,vbcrlf)
+	for each url in splstr
+		url=phptrim(url)
+		lCaseUrl=lcase(url) 
+		if url<>"" and left(url,10)<>"tencent://" and left(url,11)<>"javascript:" and left(url,1)<>"#" then		
+			url = fullHttpUrl(httpurl,url)
+			if instr(vbcrlf & c & vbcrlf,vbcrlf & url & vbcrlf)=false then
+				c=c & url & vbcrlf			
+			end if
+		end if
+	next
+	handleScanUrlList=c
+end function
+
+'处理相同域名列表 20160501
+function handleWithWebSiteList(httpurl,urllist)
+	dim website,splstr,url,c,urlWebsite,s
+	website=lcase(getwebsite(httpurl))
+	splstr=split(urllist,vbcrlf)
+	for each url in splstr
+		if url <>"" then
+			if right(url,1)<>"/" and instr(url,"?")=false then
+				s=mid(url,instrrev(url,"/"))
+				'call echo("s",s)
+				if (instr(s,".")=false or instr(s,".com")>0 or instr(s,".cn")>0 or instr(s,".net")>0) and instr(s,"@")=false then
+					url = url & "/"
+				end if
+				'call echo("url",url)
+			end if
+			urlWebsite=lcase(getwebsite(url))
+			if website=urlWebsite and instr(vbcrlf & c & vbcrlf,vbcrlf & url & vbcrlf)=false then
+				if c<>"" then 
+					c=c & vbcrlf
+				end if
+				c=c & url
+			end if
+		end if
+	next
+	handleWithWebSiteList=c
+end function
+'处理不同域名列表 20160501
+function handleDifferenceWebSiteList(httpurl,urllist)
+	dim website,splstr,url,c,urlWebsite,websiteList
+	website=lcase(getwebsite(httpurl))
+	splstr=split(urllist,vbcrlf)
+	for each url in splstr
+		urlWebsite=lcase(getwebsite(url))
+		if urlWebsite <>"" and website<>urlWebsite and instr(vbcrlf & websiteList & vbcrlf,vbcrlf & urlWebsite & vbcrlf)=false then
+			websiteList=websiteList & urlWebsite & vbcrlf
+		end if
+	next
+	handleDifferenceWebSiteList=websiteList
+end function
+
+
+
+
+'检测域名存在 20160511   例：checkDomainName('http://www.baidu.com/a/b/sdf')
+function checkDomainName(httpurl)
+	dim url,url2,s,s2
+	url=getwebsite(httpurl)
+	url2=url & "/a/1/b/2/cdefg/"
+	call echo(url,url2)
+	s=getHttpUrl(url,"")
+	s2=getHttpUrl(url2,"")
+	if s=s2 then
+		checkDomainName=false
+	else
+		checkDomainName=true
+	end if
+end function
+
+'获得url状态说明
+function getHttpUrlStateAbout(nState)
+	dim s,c
+	s=cstr(trim(nState))
+	select case s
+		case "100" : c="继续"
+		case "101" : c="开关协议"
+		case "200" : c="成功"
+		case "201" : c="创建"
+		case "202" : c="接受"
+		case "203" : c="非权威信息"
+		case "204" : c="不含内容"
+		case "205" : c="重置内容"
+		case "206" : c="部分内容"
+		case "300" : c="多项选择"
+		case "301" : c="移动永久"
+		case "302" : c="暂时移动"
+		case "303" : c="看其他的"
+		case "304" : c="未修改"
+		case "305" : c="使用代理"
+		case "307" : c="临时重定向"
+		
+		case "400" : c="坏的要求"
+		case "401" : c="未经授权"
+		case "402" : c="付款要求"
+		case "403" : c="禁止"
+		case "404" : c="未找到"
+		case "405" : c="不允许的方法"
+		case "406" : c="不可接受"
+		case "407" : c="代理验证所需"
+		case "408" : c="请求超时"
+		case "409" : c="冲突"
+		case "410" : c="消失"
+		case "411" : c="所需长度"
+		case "412" : c="先决条件"
+		case "413" : c="请求实体过大"
+		case "414" : c="的请求URI太长"
+		case "415" : c="不支持的媒体类型"
+		case "416" : c="的请求范围不满足"
+		case "417" : c="期望失败"
+		
+		case "500" : c="内部服务器错误"
+		case "501" : c="未实施"
+		case "502" : c="坏网关"
+		case "503" : c="服务不可用"
+		case "504" : c="网关超时"
+		case "505" : c="的HTTP版本不支持"
+		case "509" : c="带宽限制超过"
+	end select
+	getHttpUrlStateAbout=c
+end function
+ 
+%>

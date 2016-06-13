@@ -6,7 +6,7 @@
 function aritcleRelatedTags($relatedTags){
     $c=''; $splStr=''; $s=''; $url ='';
     $splStr= aspSplit($relatedTags, ',');
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $s <> '' ){
             if( $c <> '' ){
                 $c= $c . ',';
@@ -32,7 +32,7 @@ function getRandArticleId($addSql, $topNumb){
     }
     $getRandArticleId= randomShow($c, ',', 4);
     $splStr= aspSplit($c, ',') ; $c= '' ; $nIndex= 0;
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $c <> '' ){ $c= $c . ',' ;}
         $c= $c . $s;
         $nIndex= $nIndex + 1;
@@ -84,9 +84,9 @@ function getRsUrl( $fileName, $customAUrl, $defaultFileName){
     }
     //网址
     if( $fileName <> '' ){
-        $fileName=strtolower($fileName);		//让文件名称小写20160315
+        $fileName= strtolower($fileName); //让文件名称小写20160315
         $url= $fileName;
-        if( instr(strtolower($url), '.html')== false && substr($url, - 1) <> '/' ){
+        if( instr(strtolower($url), '.html')== false && Right($url, 1) <> '/' ){
             $url= $url . '.html';
         }
     }
@@ -95,7 +95,7 @@ function getRsUrl( $fileName, $customAUrl, $defaultFileName){
     }
     if( instr($GLOBALS['cfg_flags'], '|addwebsite|') > 0 ){
         //url = replaceGlobleVariable(url)   '替换全局变量
-        if( instr($url,'$cfg_websiteurl$')==false ){
+        if( instr($url, '$cfg_websiteurl$')== false && instr($url, '{$GetColumnUrl ')== false && instr($url, '{$GetArticleUrl ')== false && instr($url, '{$GetOnePageUrl ')== false ){
             $url= urlAddHttpUrl($GLOBALS['cfg_webSiteUrl'], $url);
         }
     }
@@ -104,11 +104,11 @@ function getRsUrl( $fileName, $customAUrl, $defaultFileName){
 }
 //获得处理后RS网址
 function getHandleRsUrl($fileName, $customAUrl, $defaultFileName){
-    $url='';
-    $url=getRsUrl($fileName, $customAUrl, $defaultFileName);
+    $url ='';
+    $url= getRsUrl($fileName, $customAUrl, $defaultFileName);
     //因为URL如果为自定义的则需要处理下全局变量，这样程序运行又会变慢，不就可以使用生成HTML方法解决这个问题，20160308
     $url= replaceGlobleVariable($url);
-    $getHandleRsUrl=$url;
+    $getHandleRsUrl= $url;
     return @$getHandleRsUrl;
 }
 
@@ -205,10 +205,12 @@ function getColumnId($columnName){
 
 //获得栏目ID对应的名称
 function getColumnName($columnID){
-    $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $columnID);
-    $rsx=mysql_fetch_array($rsxObj);
-    if( @mysql_num_rows($rsxObj)!=0 ){
-        $getColumnName= $rsx['columnname'];
+    if( $columnID <> '' ){
+        $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $columnID);
+        $rsx=mysql_fetch_array($rsxObj);
+        if( @mysql_num_rows($rsxObj)!=0 ){
+            $getColumnName= $rsx['columnname'];
+        }
     }
     return @$getColumnName;
 }
@@ -225,6 +227,7 @@ function getColumnType($columnID){
     }
     return @$getColumnType;
 }
+
 
 //获得栏目ID对应的内容
 function getColumnBodyContent($columnID){
@@ -265,7 +268,7 @@ function webStat($folderPath){
     $splStr= aspSplit($content . ';;;;', ';');
     $ie= $splStr[1];
     $xp= AspTrim($splStr[2]);
-    if( substr($XP, - 1)== ')' ){ $XP= mid($XP, 1, strlen($XP) - 1) ;}
+    if( Right($xp, 1)== ')' ){ $xp= mid($xp, 1, Len($xp) - 1) ;}
     $c= '来访' . $goToUrl . vbCrlf();
     $c= $c . '当前：' . $thisUrl . vbCrlf();
     $c= $c . '时间：' . $dateTime . vbCrlf();
@@ -285,15 +288,15 @@ function webStat($folderPath){
     $c= Replace($c, '"', '\\"');
     //Response.Write("eval(""var MyWebStat=\""" & C & "\"""")")
 
-    $splxx=''; $nIP=''; $nPV=''; $ipList=''; $s=''; $ip='';
+    $splxx=''; $nIP=''; $nPV=''; $ipList=''; $s=''; $ip ='';
     //判断是否显示回显记录
-    if( @$_REQUEST['stype']=='display' ){
+    if( @$_REQUEST['stype']== 'display' ){
         $content= getftext($fileName);
         $splxx= aspSplit($content, vbCrlf() . '-------------------------------------------------' . vbCrlf());
         $nIP= 0;
         $nPV= 0;
         $ipList= '';
-        foreach( $splxx as $s){
+        foreach( $splxx as $key=>$s){
             if( instr($s, '当前：') > 0 ){
                 $s= vbCrlf() . $s . vbCrlf();
                 $ip= ADSql(getStrCut($s, vbCrlf() . 'IP:', vbCrlf(), 0));
@@ -304,7 +307,7 @@ function webStat($folderPath){
                 }
             }
         }
-        rw('document.write(\'网长统计 | 今日IP['. $nIP .'] | 今日PV['. $nPV .'] \')');
+        rw('document.write(\'网长统计 | 今日IP[' . $nIP . '] | 今日PV[' . $nPV . '] \')');
     }
     $webStat= $c;
     return @$webStat;
@@ -317,7 +320,7 @@ function setHtmlParam($content, $ParamList){
     $splStr=''; $startStr=''; $endStr=''; $c=''; $paramValue=''; $ReplaceStartStr ='';
     $endStr= '\'';
     $splStr= aspSplit($ParamList, '|');
-    foreach( $splStr as $startStr){
+    foreach( $splStr as $key=>$startStr){
         $startStr= AspTrim($startStr);
         if( $startStr <> '' ){
             //替换开始字符   因为开始字符类型可变 不同

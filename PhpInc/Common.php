@@ -126,6 +126,10 @@ function doEvents(){
 function HR(){
     echo('<hr size=\'1\' color=\'#666666\'> ');
 }
+//BR 20160517
+function BR(){
+    echo('<br/>');
+}
 
 //输出字符串 引用别人20141217
 //Public Sub Echo(ByVal s) : Response.Write(s) : End Sub

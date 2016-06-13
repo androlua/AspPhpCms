@@ -77,7 +77,7 @@ function newRParam($dataCode, $action, $ModuleName){
 function getContentAllRunStr($content){
     $splStr=''; $s=''; $c=''; $tempS='';
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $s<>'' ){
             $tempS= $s;
             $s= Replace(Replace($s, Chr(10), ''), Chr(13), ''); //奇怪为什么 s里会有 chr(10)与chr(13) 呢？
@@ -103,8 +103,8 @@ function checkContentRunStr( $content){
 function handleDoubleQuotation( $s){
     $NewS ='';
     $NewS= PHPTrim($s);
-    if( substr($NewS, 0 , 1)== '"' && substr($NewS, - 1)== '"' ){
-        $s= mid($NewS, 2, strlen($NewS) - 2);
+    if( substr($NewS, 0 , 1)== '"' && Right($NewS, 1)== '"' ){
+        $s= mid($NewS, 2, Len($NewS) - 2);
     }
     $handleDoubleQuotation= $s;
     return @$handleDoubleQuotation;
@@ -480,7 +480,7 @@ function replaceContentModule( $content, $startStr, $endStr, $ReplaceValue, $Rep
     for( $i= 1 ; $i<= 99; $i++){
         if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
             $s= strCut($content, $startStr, $endStr, 1) ; $tempS= $s;
-            $s= mid($s, strlen($startStr) + 1, strlen($s) - strlen($startStr) - strlen($endStr));
+            $s= mid($s, Len($startStr) + 1, Len($s) - Len($startStr) - Len($endStr));
             $newStartStr= getEachStrAddValue($startStr, '|*|');
             if( instr($splType . $valueList . $splType, $splType . $newStartStr . $splType)== false ){
                 if( $valueList <> '' ){ $valueList= $valueList . $splType ;}
@@ -582,11 +582,11 @@ function getRParam( $content, $lableStr){
     $content= ' ' . $content . ' '; //避免更精准获得值
     $contentLCase= strtolower($content);
     $lableStr= strtolower($lableStr);
-    $endS= mid($content, instr($contentLCase, $lableStr) + strlen($lableStr),-1);
+    $endS= mid($content, instr($contentLCase, $lableStr) + Len($lableStr),-1);
     //call echo("ends",ends)
     $isStart= false; //是否有开始类型值
     $isValue= false; //是否有值
-    for( $i= 1 ; $i<= strlen($endS); $i++){
+    for( $i= 1 ; $i<= Len($endS); $i++){
         $s= mid($endS, $i, 1);
         if( $isStart== true ){
             if( $s <> '' ){

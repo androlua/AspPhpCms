@@ -70,15 +70,15 @@ Function handleUpDownArticle(lableTitle, sql)
     handleUpDownArticle = c 
 End Function 
 '获得RS网址 配置上一页 下一页
-Function getRsUrl(byval fileName, customAUrl, defaultFileName)
+Function getRsUrl(ByVal fileName, customAUrl, defaultFileName)
     Dim url 
     '用默认文件名称
     If fileName = "" Then
         fileName = defaultFileName 
     End If 
     '网址
-    If fileName <> "" Then		
-		fileName=lcase(fileName)		'让文件名称小写20160315
+    If fileName <> "" Then
+        fileName = LCase(fileName)                                                      '让文件名称小写20160315
         url = fileName 
         If InStr(LCase(url), ".html") = False And Right(url, 1) <> "/" Then
             url = url & ".html" 
@@ -88,21 +88,21 @@ Function getRsUrl(byval fileName, customAUrl, defaultFileName)
         url = Trim(customAUrl) 
     End If 
     If InStr(cfg_flags, "|addwebsite|") > 0 Then
-		'url = replaceGlobleVariable(url)   '替换全局变量
-		if instr(url,"$cfg_websiteurl$")=false then
-        	url = urlAddHttpUrl(cfg_webSiteUrl, url)
-		end if
+        'url = replaceGlobleVariable(url)   '替换全局变量
+        If InStr(url, "$cfg_websiteurl$") = False And InStr(url, "{$GetColumnUrl ") = False And InStr(url, "{$GetArticleUrl ") = False And InStr(url, "{$GetOnePageUrl ") = False Then
+            url = urlAddHttpUrl(cfg_webSiteUrl, url) 
+        End If 
     End If 
     getRsUrl = url 
-End Function
+End Function 
 '获得处理后RS网址
-function getHandleRsUrl(fileName, customAUrl, defaultFileName)
-		dim url
-		url=getRsUrl(fileName, customAUrl, defaultFileName)
-        '因为URL如果为自定义的则需要处理下全局变量，这样程序运行又会变慢，不就可以使用生成HTML方法解决这个问题，20160308
-        url = replaceGlobleVariable(url)
-		getHandleRsUrl=url
-end function
+Function getHandleRsUrl(fileName, customAUrl, defaultFileName)
+    Dim url 
+    url = getRsUrl(fileName, customAUrl, defaultFileName) 
+    '因为URL如果为自定义的则需要处理下全局变量，这样程序运行又会变慢，不就可以使用生成HTML方法解决这个问题，20160308
+    url = replaceGlobleVariable(url) 
+    getHandleRsUrl = url 
+End Function 
 
 '获得单页url 20160114
 Function getOnePageUrl(title)
@@ -187,10 +187,12 @@ End Function
 
 '获得栏目ID对应的名称
 Function getColumnName(columnID)
-    rsx.Open "Select * from " & db_PREFIX & "webcolumn where id=" & columnID, conn, 1, 1 
-    If Not rsx.EOF Then
-        getColumnName = rsx("columnName") 
-    End If : rsx.Close 
+    If columnID <> "" Then
+        rsx.Open "Select * from " & db_PREFIX & "webcolumn where id=" & columnID, conn, 1, 1 
+        If Not rsx.EOF Then
+            getColumnName = rsx("columnName") 
+        End If : rsx.Close 
+    End If 
 End Function 
 
 
@@ -203,6 +205,7 @@ Function getColumnType(columnID)
         getColumnType = rsx("columnType") 
     End If : rsx.Close 
 End Function 
+
 
 '获得栏目ID对应的内容
 Function getColumnBodyContent(columnID)
@@ -241,7 +244,7 @@ Function webStat(folderPath)
     splStr = Split(content & ";;;;", ";") 
     ie = splStr(1) 
     xp = Trim(splStr(2)) 
-    If Right(XP, 1) = ")" Then XP = Mid(XP, 1, Len(XP) - 1) 
+    If Right(xp, 1) = ")" Then xp = Mid(xp, 1, Len(xp) - 1) 
     c = "来访" & goToUrl & vbCrLf 
     c = c & "当前：" & thisUrl & vbCrLf 
     c = c & "时间：" & dateTime & vbCrLf 
@@ -261,27 +264,27 @@ Function webStat(folderPath)
     c = Replace(c, """", "\""") 
     'Response.Write("eval(""var MyWebStat=\""" & C & "\"""")")
 
-    Dim splxx, nIP, nPV, ipList, s, ip
-	'判断是否显示回显记录
-	if request("stype")="display" then
-		content = getftext(fileName) 
-		splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
-		nIP = 0 
-		nPV = 0 
-		ipList = "" 
-		For Each s In splxx
-			If InStr(s, "当前：") > 0 Then
-				s = vbCrLf & s & vbCrLf 
-				ip = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
-				nPV = nPV + 1 
-				If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
-					ipList = ipList & ip & vbCrLf 
-					nIP = nIP + 1 
-				End If 
-			End If 
-		Next 
-		Call rw("document.write('网长统计 | 今日IP["& nIP &"] | 今日PV["& nPV &"] ')") 
-	end if
+    Dim splxx, nIP, nPV, ipList, s, ip 
+    '判断是否显示回显记录
+    If Request("stype") = "display" Then
+        content = getftext(fileName) 
+        splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
+        nIP = 0 
+        nPV = 0 
+        ipList = "" 
+        For Each s In splxx
+            If InStr(s, "当前：") > 0 Then
+                s = vbCrLf & s & vbCrLf 
+                ip = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
+                nPV = nPV + 1 
+                If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
+                    ipList = ipList & ip & vbCrLf 
+                    nIP = nIP + 1 
+                End If 
+            End If 
+        Next 
+        Call rw("document.write('网长统计 | 今日IP[" & nIP & "] | 今日PV[" & nPV & "] ')") 
+    End If 
     webStat = c 
 End Function 
 
@@ -311,12 +314,11 @@ Function setHtmlParam(content, ParamList)
             startStr = " " & startStr & "='" 
             If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
                 paramValue = strCut(content, startStr, endStr, 2) 
-                paramValue = handleInModule(paramValue, "end")    '处理内部模块
+                paramValue = handleInModule(paramValue, "end")                       '处理内部模块
                 c = c & ReplaceStartStr & paramValue & endStr 
             End If 
         End If 
     Next 
     setHtmlParam = c 
 End Function 
-%>     
-
+%>      

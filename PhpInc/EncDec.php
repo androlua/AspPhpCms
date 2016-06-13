@@ -7,7 +7,7 @@ function specialHtmlUploadEncryptionDecrypt($content, $sType){
     $splStr=''; $splxx=''; $c=''; $s ='';
     $c= '·|[*-24156*]' . vbCrlf();
     $splStr= aspSplit($c, vbCrlf());
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( instr($s, '|') > 0 ){
             $splxx= aspSplit($s, '|');
             if( $sType== '1' || $sType== '解密' || $sType== 'Decrypt' ){
@@ -27,9 +27,9 @@ function encAspContent( $content){
     $c= 'Str=Str&"|Str=Str & |If | Then|End If|&vbCrlf|Temp |Rs(|Rs.|.AddNew|("Title")|("Content")|=False|ElseIf|';
     $c= $c . 'Conn.Execute("| Exit For|[Product]|.Open|.Close|Exit For|Exit Function|MoveNext:Next:|Str ';
     $splStr= aspSplit($c, '|');
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $s <> '' ){
-            $THStr= UpperCaseORLowerCase($s);
+            $THStr= upperCaseORLowerCase($s);
             $content= Replace($content, Chr(9), ''); //Chr(9) = Tab
             $content= Replace($content, $s, $THStr);
         }
@@ -41,7 +41,7 @@ function encAspContent( $content){
 function upperCaseORLowerCase( $content){
     $i=''; $s=''; $c=''; $nRnd ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
 
         $nRnd= intval(rnd() * 1);
@@ -58,7 +58,7 @@ function upperCaseORLowerCase( $content){
 function encCode( $content){
     $i=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $c= $c . '%' . Hex(ord(mid($content, $i, 1)));
     }
     $encCode= $c;
@@ -83,7 +83,7 @@ function toUnicode($str){
     $toUnicode= '';
     $c= '';
     $p= '';
-    for( $i= 1 ; $i<= strlen($str); $i++){
+    for( $i= 1 ; $i<= Len($str); $i++){
         $c= mid($str, $i, 1);
         $j= AscW($c);
         if( $j < 0 ){
@@ -159,7 +159,7 @@ function unHandleHTML( $content){
 function lcaseEnc($str){
     $i=''; $n=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($str); $i++){
+    for( $i= 1 ; $i<= Len($str); $i++){
         $s= mid($str, $i, 1);
         $n= AscW($s);
         if( $n >= 97 && $n <= 122 ){
@@ -176,7 +176,7 @@ function lcaseEnc($str){
 function lcaseDec($str){
     $i=''; $n=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($str); $i++){
+    for( $i= 1 ; $i<= Len($str); $i++){
         $s= mid($str, $i, 1);
         $n= AscW($s);
         if( $n >= 97 && $n <= 123 ){
@@ -189,8 +189,6 @@ function lcaseDec($str){
     $lcaseDec= $c;
     return @$lcaseDec;
 }
-
-
 
 //html转换成js
 function htmlToJs( $c){
@@ -239,12 +237,12 @@ function aspToHtml( $c){
 }
 //文件命名规则
 function setFileName( $fileName){
-    $i=''; $s=''; $c=''; $tStr=''; $c2 ='';
-    $c= '\\/:*?"<>|.,';
-    $c2= '撇揦：星？“左右横。，';
-    for( $i= 1 ; $i<= strlen($c); $i++){
-        $s= mid($c, $i, 1);
-        $tStr= mid($c2, $i, 1);
+    $i=''; $s='';$tStr='';$splstr='';$splReplace='';
+    $splstr=array('\\','/',':','*','?','"','<','>','|','.',',');					//换这种方法是为了与PHP版通用 20160511
+    $splReplace=array('撇','揦','：','星','？','“','左','右','横','。','，');
+    for( $i=0 ; $i<= ubound($splstr); $i++){
+        $s=$splstr[$i];
+        $tStr=$splReplace[$i];
         $fileName= Replace($fileName, $s, $tStr);
     }
     $fileName= Replace($fileName, '&nbsp;', ' ');
@@ -255,15 +253,16 @@ function setFileName( $fileName){
 }
 //文件命名规则解开
 function unSetFileName( $fileName){
-    $i=''; $s=''; $c=''; $tStr=''; $c2 ='';
-    $c= '\\/:*?"<>|.';
-    $c2= '撇揦：星？“左右横。，';
+    $i=''; $s='';$tStr='';$splstr='';$splReplace='';
 
-    for( $i= 1 ; $i<= strlen($c); $i++){
-        $s= mid($c2, $i, 1);
-        $tStr= mid($c, $i, 1);
-        $fileName= Replace($fileName, $s, $tStr);
+    $splstr=array('\\','/',':','*','?','"','<','>','|','.',',');
+    $splReplace=array('撇','揦','：','星','？','“','左','右','横','。','，');
+    for( $i=0 ; $i<= ubound($splstr); $i++){
+        $s=$splstr[$i];
+        $tStr=$splReplace[$i];
+        $fileName= Replace($fileName, $tStr,$s);
     }
+
     $unSetFileName= $fileName;
     return @$unSetFileName;
 }
@@ -272,11 +271,11 @@ function unSetFileName( $fileName){
 function HTMLToAscChr($title){
     $i=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($title); $i++){
+    for( $i= 1 ; $i<= Len($title); $i++){
         $s= mid($title, $i, 1);
         $c= $c . 'Chr(' . ord($s) . ')&';
     }
-    if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - 1) ;}
+    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 1) ;}
     $HTMLToAscChr= $c;
     //HTMLToAscChr = "<" & "%=" & C & "%" & ">"
     return @$HTMLToAscChr;
@@ -304,14 +303,14 @@ function variableDisplacement($content, $nPass){
     //LetterGroup="abcdefghijklmnopqrstuvwxyz"
     $LetterGroup= 'yzoehijklmfgqrstuvpabnwxcd';
     //字母长
-    $nLetterGroup= strlen($LetterGroup);
+    $nLetterGroup= Len($LetterGroup);
     //数字组
     //DigitalGroup="0123456789"
     $DigitalGroup= '4539671820';
     //数字长
-    $nDigitalGroup= strlen($DigitalGroup);
+    $nDigitalGroup= Len($DigitalGroup);
     $c= '';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         $nLetterLen= instr($LetterGroup, $s);
         $nDigitalLen= instr($DigitalGroup, $s);
@@ -343,12 +342,6 @@ function variableDisplacement($content, $nPass){
     $variableDisplacement= $c;
     return @$variableDisplacement;
 }
-
-
-
-
-
-
 
 
 ?>

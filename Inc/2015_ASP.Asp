@@ -495,7 +495,7 @@ function dimAddDefaultValue(dimList)
 			'call echo("s",s)
 		end if
 		
-		if instr(lcase("|c|content|html|htmlstr|strhtml|cssstr|strcss|StyleName|parentUrl|parentParentUrl|parentParentParentUrl|szRet|Url|UrlFileName|urlList|UrlParam|WebSite|FanCharSet|s1|s2|s3|c1|c2|c3|c4|c5|En1|En2|En3|En4|s|temp|temp1|temp2|temp3|yinghaoLabel|parentName|valueStr|valueStr1|valueStr2|valueStr3|noDanYinShuangYinStr|PubAHrefList|PubATitleList|yinghaoLabel|parentName|valueStr|nLen|ParamList|ParamNameList|ParamList|Str_unicode|valueLabel||"), "|" & phptrim(lcase(s)) & "|")>0 or right(phptrim(lcase(s)),3)="str" then
+		if instr(lcase("|c|content|html|htmlstr|strhtml|cssstr|strcss|StyleName|parentUrl|parentParentUrl|parentParentParentUrl|szRet|Url|UrlFileName|urlList|UrlParam|WebSite|FanCharSet|s1|s2|s3|c1|c2|c3|c4|c5|En1|En2|En3|En4|s|temp|temp1|temp2|temp3|yinghaoLabel|parentName|valueStr|valueStr1|valueStr2|valueStr3|noDanYinShuangYinStr|PubAHrefList|PubATitleList|yinghaoLabel|parentName|valueStr|nLen|ParamList|ParamNameList|ParamList|Str_unicode|valueLabel|domainName|labelName|"), "|" & phptrim(lcase(s)) & "|")>0 or right(phptrim(lcase(s)),3)="str" then
 			dimValue= dimValue & s & "=""""" & vbCrlf
 		end if
 		if c<>"" then c=c & ","

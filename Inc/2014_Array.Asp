@@ -1,6 +1,36 @@
 <% 
 '数据处理函数库
 
+
+'内容名称排序
+Function contentNameSort(content, sType)
+    Dim splStr, arrayStr(99), fileName, isOther,otherStr, id, c,s,i,left1
+    splStr = Split(content, vbCrLf) 
+    For Each s In splStr
+		if s <>"" then
+			fileName = getStrFileName(s)
+			isOther=true
+			left1=left(fileName,1)
+			If InStr(fileName, "、") > 0 Then 
+				id = Replace(Left(fileName, 2), "、", "")
+				if isNumber(id) then
+					arrayStr(id) = arrayStr(id) & s & vbCrLf 
+					isOther=false
+				end if
+			end if
+			
+			if InStr(sType, left1) = False and isOther=true then
+				otherStr = otherStr & s & vbCrLf 
+			End If 
+		end if
+    Next 
+    For i = 0 To UBound(arrayStr)
+        c = c & arrayStr(i) 
+    Next 
+    contentNameSort = c & otherStr 
+End Function
+
+
 '删除内容有#号列表(20150818)
 Function remoteContentJingHao(content, splType)
     Dim splStr, s, c 

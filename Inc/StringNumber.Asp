@@ -543,6 +543,7 @@ End Function
 
 '返回字符串左边N个byte
 Function strLen(str)
+	on error resume next
     If IsNull(str) Or str = "" Then
         strLen = 0 
     Else
@@ -727,6 +728,47 @@ Function haveChina(content)
     Next 
 End Function 
 '================================================= 判断有特殊字符 end
+
+
+
+
+'*************************************************
+'函数名：EncodeJP
+'作  用：过滤日本片假名导致Access搜索失效的bug
+'*************************************************
+Function EncodeJP(Str)
+    If Not Str="" Then
+        Str=Replace(Str,"ガ","&#12460;")
+        Str=Replace(Str,"ギ","&#12462;")
+        Str=Replace(Str,"グ","&#12464;")
+        Str=Replace(Str,"ア","&#12450;")
+        Str=Replace(Str,"ゲ","&#12466;")
+        Str=Replace(Str,"ゴ","&#12468;")
+        Str=Replace(Str,"ザ","&#12470;")
+        Str=Replace(Str,"ジ","&#12472;")
+        Str=Replace(Str,"ズ","&#12474;")
+        Str=Replace(Str,"ゼ","&#12476;")
+        Str=Replace(Str,"ゾ","&#12478;")
+        Str=Replace(Str,"ダ","&#12480;")
+        Str=Replace(Str,"ヂ","&#12482;")
+        Str=Replace(Str,"ヅ","&#12485;")
+        Str=Replace(Str,"デ","&#12487;")
+        Str=Replace(Str,"ド","&#12489;")
+        Str=Replace(Str,"バ","&#12496;")
+        Str=Replace(Str,"パ","&#12497;")
+        Str=Replace(Str,"ビ","&#12499;")
+        Str=Replace(Str,"ピ","&#12500;")
+        Str=Replace(Str,"ブ","&#12502;")
+        Str=Replace(Str,"ブ","&#12502;")
+        Str=Replace(Str,"プ","&#12503;")
+        Str=Replace(Str,"ベ","&#12505;")
+        Str=Replace(Str,"ペ","&#12506;")
+        Str=Replace(Str,"ボ","&#12508;")
+        Str=Replace(Str,"ポ","&#12509;")
+        Str=Replace(Str,"ヴ","&#12532;")
+    End If
+    EncodeJP=Str
+End Function
 %>  
 
 

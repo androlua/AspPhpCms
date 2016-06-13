@@ -1,0 +1,33 @@
+【parentid】ASPPHPCMS
+【title】ASPPHPCMS网站内容管理系统视频教程
+【webtitle】ASPPHPCMS网站内容管理系统视频教程
+【webkeywords】ASPPHPCMS网站内容管理系统视频教程
+【webdescription】ASPPHPCMS网站内容管理系统视频教程，简单介绍ASPPHPCMS使用教程，从下载到安装，从ASP版演示到PHP演示 QQ313801120
+【sortrank】9
+【author】sharembweb
+【adddatetime】2016-03-30 06:25:11
+【filename】/ASPPHPCMS/video-demo.html
+【customaurl】
+【flags】|
+【isonhtml】true
+【relatedtags】ASPPHPCMS
+【bodycontent】[&全部换行&]<strong>ASPPHPCMS网站内容管理系统视频教程</strong>
+ASPPHPCMS网站内容管理系统视频教程，简单介绍ASPPHPCMS使用教程，从下载到安装，从ASP版演示到PHP演示
+
+【tudou视频】<a href="http://www.tudou.com/programs/view/cROD-lYVNlw/" target="_blank" rel="nofollow" class="ablue">http://www.tudou.com/programs/view/cROD-lYVNlw/</a>
+【baidu网盘】<a href="http://pan.baidu.com/s/1hr7p32O" target="_blank" rel="nofollow" class="ablue">http://pan.baidu.com/s/1hr7p32O</a>
+【51cto下载】<a href="http://down.51cto.com/data/2211339" target="_blank" rel="nofollow" class="ablue">http://down.51cto.com/data/2211339</a>
+【pudn下载】<a href="http://www.pudn.com/downloads740/ebook/detail2953161.html" target="_blank" rel="nofollow" class="ablue">http://www.pudn.com/downloads740/ebook/detail2953161.html</a>
+【csdn下载】<a href="http://download.csdn.net/detail/mydd3/9486933" target="_blank" rel="nofollow" class="ablue">http://download.csdn.net/detail/mydd3/9486933</a>
+【youtube视频】<a href="https://www.youtube.com/watch?v=17sVH4Cr3Ag" target="_blank" rel="nofollow" class="ablue">https://www.youtube.com/watch?v=17sVH4Cr3Ag</a> 
+【topthink下载】<a href="http://www.topthink.com/topic/23394.html" target="_blank" rel="nofollow" class="ablue">http://www.topthink.com/topic/23394.html</a> 
+【thinkphp下载】<a href="http://www.thinkphp.cn/code/1884.html" target="_blank" rel="nofollow" class="ablue">http://www.thinkphp.cn/code/1884.html</a> 
+ 
+ 
+ 
+{$TitleInSearchEngineList title='ASPPHPCMS网站内容管理系统视频教程'$}
+
+【/bodycontent】
+
+
+ 

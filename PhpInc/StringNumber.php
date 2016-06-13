@@ -4,8 +4,8 @@
 function isStrTransferred($content){
     $splstr='';$i='';$s='';$nCount='';
     $nCount=0;
-    for( $i= 0 ; $i<= strlen($content)-1; $i++){
-        $s=mid($content,strlen($content)-$i,1);
+    for( $i= 0 ; $i<= len($content)-1; $i++){
+        $s=mid($content,len($content)-$i,1);
         if( $s=='\\' ){
             $nCount=$nCount+1;
         }else{
@@ -88,7 +88,7 @@ function getCountStep($nWidthStep, $nHeightStep, $nWidthBL, $nHeightBL, $nCountP
 //获得中文汉字内容
 function getChina($content){
     $i=''; $c=''; $j=''; $s ='';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $j= ord(mid($content, $i, 1));
         $s= mid($content, $i, 1);
         //是汉字累加
@@ -104,7 +104,7 @@ function getChina($content){
 //判断是否有中文
 function isChina($content){
     $i=''; $j=''; $s ='';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $j= ord(mid($content, $i, 1));
         $s= mid($content, $i, 1);
         //是汉字累加
@@ -136,14 +136,14 @@ function deleteRepeatStr($content, $SplType){
     $splStr=''; $s=''; $c ='';
     $c= '';
     $splStr= aspSplit($content, $SplType);
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         if( $s <> '' ){
             if( instr($SplType . $c . $SplType, $SplType . $s . $SplType)== false ){
                 $c= $c . $s . $SplType;
             }
         }
     }
-    if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - strlen($SplType)) ;}
+    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - Len($SplType)) ;}
     $deleteRepeatStr= $c;
     return @$deleteRepeatStr;
 }
@@ -167,7 +167,7 @@ function replaceN($content, $YunStr, $ReplaceStr, $nNumb){
 
 //asp日期补0函数   引用别人20141216
 function fillZero($content){
-    if( strlen($content)== 1 ){
+    if( Len($content)== 1 ){
         $fillZero= '0' . $content;
     }else{
         $fillZero= $content;
@@ -187,7 +187,7 @@ function caseInsensitiveReplace($content, $Check_Str, $Replace_Str){
         if( instr($LowerCase, $Check_Str) > 0 ){
             $StartLen= instr($LowerCase, $Check_Str) - 1;
             $startStr= substr($content, 0 , $StartLen);
-            $EndLen= $StartLen + strlen($Check_Str) + 1;
+            $EndLen= $StartLen + Len($Check_Str) + 1;
             $endStr= mid($content, $EndLen,-1);
             $content= $startStr . $Replace_Str . $endStr;
             //Call Echo(StartLen,EndLen)
@@ -280,7 +280,7 @@ function getRndAZ($nCount){
 
     $zd= 'abcdefghijklmnopqrstuvwxyz' . strtoupper($zd);
     for( $i= 1 ; $i<= $nCount; $i++){
-        $s= mid($zd, pHPRnd(1, strlen($zd)), 1);
+        $s= mid($zd, pHPRnd(1, Len($zd)), 1);
         $c= $c . $s;
     }
     $getRndAZ= $c;
@@ -329,7 +329,7 @@ function contentAddTab( $content, $nNumb){
 
 //删除最后指定字符20150228 Content=DeleteEndStr(Content,2)
 function deleteEndStr($content, $nLen){
-    if( $content <> '' ){ $content= substr($content, 0 , strlen($content) - $nLen) ;}
+    if( $content <> '' ){ $content= substr($content, 0 , Len($content) - $nLen) ;}
     $deleteEndStr= $content;
     return @$deleteEndStr;
 }
@@ -345,7 +345,7 @@ function toNumber( $n, $d){
 function handleNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789', $s) > 0 ){
             $c= $c . $s;
@@ -366,7 +366,7 @@ function getFirstNegativeNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
     $content= AspTrim($content);
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( $s== '-' && $c== '' ){
             $c= $c . $s;
@@ -389,7 +389,7 @@ function checkNumberType( $content){
 function checkStrIsNumberType( $content){
     $i=''; $s ='';
     $checkStrIsNumberType= true;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789', $s)== false ){
             $checkStrIsNumberType= false;
@@ -404,7 +404,7 @@ function handleNumberType( $content){
     $i=''; $s=''; $c ='';
     $c= '';
     $content= AspTrim($content);
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( $i== 1 && instr('+-*/', substr($content, 0 , 1)) > 0 ){
             $c= $c . $s;
@@ -423,7 +423,7 @@ function getNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
     $content= AspTrim($content);
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789', $s) > 0 ){
             if( $c== '' && $s== '0' ){ //待改进，因为现在脑子不够用了，就这么定敢20150322
@@ -453,7 +453,7 @@ function checkNumb($s){
 function getDianNumb( $content){
     $i=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789.', $s) > 0 ){
             $c= $c . $s;
@@ -495,10 +495,10 @@ function getCaiHandleCountPage($content){
     $content= DelHtml($content);
     $content= handleNumber($content);
     $getCaiHandleCountPage= '';
-    if( strlen($content) < 10 ){
-        $getCaiHandleCountPage= substr($content, - 1);
-    }else if( strlen($content) < 200 ){
-        $getCaiHandleCountPage= substr($content, - 2);
+    if( Len($content) < 10 ){
+        $getCaiHandleCountPage= Right($content, 1);
+    }else if( Len($content) < 200 ){
+        $getCaiHandleCountPage= Right($content, 2);
     }
     return @$getCaiHandleCountPage;
 }
@@ -510,11 +510,11 @@ function getCaiSortCountPage( $content){
     $content= DelHtml($content);
     $content= handleNumber($content);
     for( $i= 1 ; $i<= 30; $i++){
-        $s= mid($content, 1, strlen($i));
+        $s= mid($content, 1, Len($i));
         if( $s== CStr($i) ){
             $getCaiSortCountPage= $i;
             //Call Echo(i,s)
-            $content= substr($content, - strlen($content) - strlen($i));
+            $content= Right($content, Len($content) - Len($i));
         }
     }
     return @$getCaiSortCountPage;
@@ -564,12 +564,13 @@ function val( $s){
 
 //返回字符串左边N个byte
 function PHPStrLen($str){
+
     if( IsNull($str) || $str== '' ){
         $PHPStrLen= 0;
     }else{
         $i=''; $n=''; $k=''; $chrA ='';
         $k= 0;
-        $n= strlen($str);
+        $n= Len($str);
         for( $i= 1 ; $i<= $n; $i++){
 
 
@@ -596,7 +597,7 @@ function addIndent($content, $IndentStr){
     $splStr=''; $s=''; $c ='';
     $c= '';
     $splStr= aspSplit($content, vbCrlf());
-    foreach( $splStr as $s){
+    foreach( $splStr as $key=>$s){
         $c= $c . $IndentStr . $s . vbCrlf();
     }
     $addIndent= TrimVbCrlf($c);
@@ -607,7 +608,7 @@ function addIndent($content, $IndentStr){
 function getNumberBeforeStr($content){
     $i=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789', $s) > 0 ){ break; }
         $c= $c . $s;
@@ -661,7 +662,7 @@ function getRandomPhoneNumber($nCount){
     $j= 1;
     while( $j < $nCount){
 
-        while( strlen($rndnum) < 9 ){//产生随机数的个数
+        while( Len($rndnum) < 9 ){//产生随机数的个数
             $num1= CStr(Chr((57 - 48) * rnd() + 48));
             $rndnum= $rndnum . $num1;
         }
@@ -669,7 +670,7 @@ function getRandomPhoneNumber($nCount){
         $rndnum= '';
         $j= $j + 1;
     }
-    if( $c <> '' ){ $c= substr($c, 0 , strlen($c) - 2) ;}
+    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 2) ;}
     $getRandomPhoneNumber= $c;
     return @$getRandomPhoneNumber;
 }
@@ -679,7 +680,7 @@ function lenStr($content){
     $l=''; $t=''; $c ='';
     $c= '';
     $i ='';
-    $l= strlen($content);
+    $l= Len($content);
     $t= 0;
     for( $i= 1 ; $i<= $l; $i++){
         $c= ord(mid($content, $i, 1));
@@ -705,7 +706,7 @@ function toString( $arr){
 //移除数字(20151022)
 function remoteNumber($content){
     $i=''; $s=''; $c ='';
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789.', $s)== false ){
             $c= $c . $s;
@@ -721,7 +722,7 @@ function remoteNumber($content){
 function handleHaveStr($content, $zd){
     $s=''; $i ='';
     $handleHaveStr= false;
-    for( $i= 1 ; $i<= strlen($zd); $i++){
+    for( $i= 1 ; $i<= Len($zd); $i++){
         $s= mid($zd, $i, 1);
         if( instr($content, $s) > 0 ){
             $handleHaveStr= true;
@@ -749,7 +750,7 @@ function haveNumber($content){
 function haveChina($content){
     $i=''; $j ='';
     $haveChina= false;
-    for( $i= 1 ; $i<= strlen($content); $i++){
+    for( $i= 1 ; $i<= Len($content); $i++){
         $j= ord(mid($content, $i, 1));
         //是汉字累加
         if( $j < 0 ){
@@ -762,4 +763,46 @@ function haveChina($content){
     return @$haveChina;
 }
 //================================================= 判断有特殊字符 end
+
+
+
+
+//*************************************************
+//函数名：EncodeJP
+//作  用：过滤日本片假名导致Access搜索失效的bug
+//*************************************************
+function EncodeJP($Str){
+    if( $Str=='' ){
+        $Str=Replace($Str,'ガ','&#12460;');
+        $Str=Replace($Str,'ギ','&#12462;');
+        $Str=Replace($Str,'グ','&#12464;');
+        $Str=Replace($Str,'ア','&#12450;');
+        $Str=Replace($Str,'ゲ','&#12466;');
+        $Str=Replace($Str,'ゴ','&#12468;');
+        $Str=Replace($Str,'ザ','&#12470;');
+        $Str=Replace($Str,'ジ','&#12472;');
+        $Str=Replace($Str,'ズ','&#12474;');
+        $Str=Replace($Str,'ゼ','&#12476;');
+        $Str=Replace($Str,'ゾ','&#12478;');
+        $Str=Replace($Str,'ダ','&#12480;');
+        $Str=Replace($Str,'ヂ','&#12482;');
+        $Str=Replace($Str,'ヅ','&#12485;');
+        $Str=Replace($Str,'デ','&#12487;');
+        $Str=Replace($Str,'ド','&#12489;');
+        $Str=Replace($Str,'バ','&#12496;');
+        $Str=Replace($Str,'パ','&#12497;');
+        $Str=Replace($Str,'ビ','&#12499;');
+        $Str=Replace($Str,'ピ','&#12500;');
+        $Str=Replace($Str,'ブ','&#12502;');
+        $Str=Replace($Str,'ブ','&#12502;');
+        $Str=Replace($Str,'プ','&#12503;');
+        $Str=Replace($Str,'ベ','&#12505;');
+        $Str=Replace($Str,'ペ','&#12506;');
+        $Str=Replace($Str,'ボ','&#12508;');
+        $Str=Replace($Str,'ポ','&#12509;');
+        $Str=Replace($Str,'ヴ','&#12532;');
+    }
+    $EncodeJP=$Str;
+    return @$EncodeJP;
+}
 ?>

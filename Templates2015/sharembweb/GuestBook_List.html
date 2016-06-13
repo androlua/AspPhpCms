@@ -47,23 +47,29 @@
     电话：<br><input type="text" name="tel" id="tel" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     地址：<br><input type="text" name="address" id="address" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     内容：<textarea name="bodycontent" placeholder="我也来说两句..." class="inputstyle"></textarea>
-    <input type="submit" class="mybtn" value="提交留言"></form>
+验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="\inc/yzm_7.asp" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '/inc/yzm_7.asp?'+Math.random()*10000"/><br>
 
+<input type="submit" class="mybtn" value="提交留言"></form>
 <script type="text/javascript">
 function formmessageSubmit(){
     if(formmessage.guestname.value==''){
         formmessage.guestname.focus();
-        alert('姓名不能为空');
+        alert('请输入姓名');
         return false;
     }
-    if(formmessage.tel.value==''){
-        formmessage.tel.focus();
-        alert('电话不能为空');
+    if(formmessage.qq.value==''){
+        formmessage.qq.focus();
+        alert('请输入QQ号');
         return false;
     }
     if(formmessage.bodycontent.value==''){
         formmessage.bodycontent.focus();
-        alert('留言内容不能为空');
+        alert('请输入内容');
+        return false;
+    }
+    if(formmessage.yzm.value==''){
+        formmessage.yzm.focus();
+        alert('请输入验证码');
         return false;
     }
 }
