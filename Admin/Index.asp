@@ -2,9 +2,9 @@
 <% 
 Dim ROOT_PATH : ROOT_PATH = handlePath("./") 
 %>      
-<!--#Include File = "function.Asp"-->  
-<!--#Include File = "function2.Asp"-->      
-<!--#Include File = "setAccess.Asp"-->      
+<!--#Include File = "../Inc/admin_function.asp"-->  
+<!--#Include File = "../Inc/admin_function2.asp"-->      
+<!--#Include File = "../Inc/admin_setAccess.asp"-->      
 <% 
 '=========
 Dim cfg_webSiteUrl, cfg_webTitle, cfg_flags, cfg_webtemplate 
