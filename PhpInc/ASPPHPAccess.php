@@ -14,11 +14,11 @@ function getWhereAnd( $sql, $addSql){
     if( $addSql <> '' ){
         $addSql= AspTrim($addSql);
         $LCaseAddSql= strtolower($addSql);
-        if( substr($LCaseAddSql, 0 , 6)== 'order ' || substr($LCaseAddSql, 0 , 6)== 'group ' ){
+        if( Left($LCaseAddSql, 6)== 'order ' || Left($LCaseAddSql, 6)== 'group ' ){
             $getWhereAnd= $sql . ' ' . $addSql ; return @$getWhereAnd; 								//改进必需加空格，因为前面已经删除了20160115
-        }else if( substr($LCaseAddSql, 0 , 6)== 'where ' ){
+        }else if( Left($LCaseAddSql, 6)== 'where ' ){
             $addSql= mid($addSql, 7,-1);
-        }else if( substr($LCaseAddSql, 0 , 4)== 'and ' ){
+        }else if( Left($LCaseAddSql, 4)== 'and ' ){
             $addSql= mid($addSql, 5,-1);
         }
         $sql= $sql . $AddType . $addSql;

@@ -103,7 +103,7 @@ function checkContentRunStr( $content){
 function handleDoubleQuotation( $s){
     $NewS ='';
     $NewS= PHPTrim($s);
-    if( substr($NewS, 0 , 1)== '"' && Right($NewS, 1)== '"' ){
+    if( Left($NewS, 1)== '"' && Right($NewS, 1)== '"' ){
         $s= mid($NewS, 2, Len($NewS) - 2);
     }
     $handleDoubleQuotation= $s;

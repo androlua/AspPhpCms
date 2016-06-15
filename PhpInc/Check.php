@@ -142,7 +142,7 @@ function isValidEmail($email){
             $c= strtolower(mid($Name, $i, 1));
             if( instr('abcdefghijklmnopqrstuvwxyz_-.', $c) <= 0 && is_numeric($c) ){ $isValidEmail= false ; return @$isValidEmail; }
         }
-        if( substr($Name, 0 , 1)== '.' || Right($Name, 1)== '.' ){ $isValidEmail= false ; return @$isValidEmail; }
+        if( Left($Name, 1)== '.' || Right($Name, 1)== '.' ){ $isValidEmail= false ; return @$isValidEmail; }
     }
     if( instr($names[1], '.') <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
     $i= Len($names[1]) - strrpos($names[1], '.');

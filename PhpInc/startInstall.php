@@ -284,6 +284,10 @@ $dbmsg='';$accessMsg='';
 
 //安装
 if(isset($_GET['act'])){
+	if($_GET['act']=='createAccess'){
+		step3();
+		exit();
+	}	
 	$dbhost=$_POST['dbhost'];
 	$dbuser=$_POST['dbuser']; 
 	$dbpwd=$_POST['dbpwd'];
@@ -515,7 +519,7 @@ function GetStrCut( $Content, $StartStr, $EndStr, $CutType){
 <?php
 function step2(){
 ?>
-<form id="form1" name="form1" method="post" action="install.php">
+<form id="form1" name="form1" method="post" action="?act=createAccess">
 <div class="pright">
     <div class="pr-title"><h3>数据库设定 第二步</h3></div>
     <table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
@@ -551,10 +555,35 @@ function step2(){
         <input name="提交" type="submit" class="btnclick1"  value="下一步创建表">
     </div>
 </div>
+</form>
 <?PHP
 }
+function step3(){
 ?>
-
-
+<form id="form1" name="form1" method="post" action="../admin/index.php?act=setAccess&webdataDir=/Templates2015/sharembweb/WebData&login=out">
+<div class="pright">
+  <div class="pr-title"><h3>数据库设定 第三步</h3></div>
+    
+<table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
+        <tbody>
+            <tr>
+                <td class="onetd"><strong>提示：</strong></td>
+                <td> <div class="mytipwrap">创建数据库成功。(如果不恢复数据库将退出) &nbsp;<a href="../index.php" class="mytip" target="_blank">访问网站首页</a><a href="../admin/index.php" class="mytip" target="_blank">登录网站后台</a> </div> </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+              <iframe src="install.php?db_PREFIX=xy_" width="100%" height="350"></iframe>
+              </td>
+            </tr> 
+      </tbody>
+    </table>
+    <div class="btn-box"> 
+        <input name="提交" type="submit" class="btnclick1"  value="导入默认数据">
+    </div>
+</div>
+</form>
+<?PHP
+} 
+?>
 </body>
 </html>

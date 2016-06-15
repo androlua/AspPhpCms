@@ -102,7 +102,7 @@ function rTrimVBTab($str){
             $isBlankChar= false;
         }
     }
-    $rTrimVBTab= AspRTrim(substr($str, 0 , $pos));
+    $rTrimVBTab= AspRTrim(Left($str, $pos));
     return @$rTrimVBTab;
 }
 
@@ -169,7 +169,7 @@ function handleCleanCss( $content){
             }else if( instr($s, '}') > 0 ){
                 $AddStrYes= false;
             }
-            if( substr($s, 0 , 1) <> '{' ){ $c= $c . vbCrlf() ;}
+            if( Left($s, 1) <> '{' ){ $c= $c . vbCrlf() ;}
             if( $AddStrYes== true ){ $s= '    ' . $s ;}
             if( $CustomS <> '' ){ $s= $CustomS ;}//自定义值不为空则用自定义内容
             $c= $c . $s;
@@ -195,7 +195,7 @@ function removeExcessRow($content){
             $c= $c . $s . vbCrlf();
         }
     }
-    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 2) ;}
+    if( $c <> '' ){ $c= Left($c, Len($c) - 2); }
     $removeExcessRow= $c;
     return @$removeExcessRow;
 }
@@ -353,9 +353,9 @@ function handleCutDivCode($dirPath, $DivStr){
         if( $ImageFile <> '' ){ //当链接地址当前为HTTP:时则不处理20150313
             $isHandle= false;
 
-            if( substr($ImageFile, 0 , 1)== '\\' ){
+            if( Left($ImageFile, 1)== '\\' ){
                 //等处理20150817
-            }else if( instr($ImageFile, '.') > 0 && substr($ImageFile, 0 , 5) <> 'HTTP:' && instr($ImageFile, '{$#')== false ){
+            }else if( instr($ImageFile, '.') > 0 && Left($ImageFile, 5) <> 'HTTP:' && instr($ImageFile, '{$#')== false ){
                 $isHandle= true;
             }
             if( $isHandle== true ){
@@ -408,7 +408,7 @@ function getHandleWebHtmlLink($RootPath, $content){
             }
         }
     }
-    if( $CssStr <> '' ){ $CssStr= substr($CssStr, 0 , Len($CssStr) - 2) ;}
+    if( $CssStr <> '' ){ $CssStr= Left($CssStr, Len($CssStr) - 2); }
     $getHandleWebHtmlLink= $CssStr;
     return @$getHandleWebHtmlLink;
 }

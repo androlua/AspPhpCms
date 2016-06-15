@@ -34,7 +34,7 @@ function handleCloseHtml($content, $imgAddAlt, $action){
                 $s= mid($s, 2, Len($s) - 2);
                 $s= phptrim($s);
                 if( Right($s, 1)== '/' ){
-                    $s= phptrim(substr($s, 0 , Len($s) - 1));
+                    $s= phptrim(Left($s, Len($s) - 1));
                 }
                 $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面
@@ -150,7 +150,7 @@ function handleHtmlAHref( $content, $labelName, $addToHttpUrl, $action){
         }else if( $s== ' ' ){
             //暂存内容不为空
             if( $temp <> '' ){
-                if( substr(AspTrim($behindStr) . ' ', 0 , 1)== '=' ){
+                if( Left(AspTrim($behindStr) . ' ', 1)== '=' ){
                     //后面一个字符等于=不处理
                 }else{
                     //为标签
@@ -181,7 +181,7 @@ function addToOrAddHttpUrl($httpurl, $url, $action){
         }
     }
     if( instr($url, $httpurl)== false ){
-        if( Right($httpurl, 1)== '/' &&(substr($url, 0 , 1)== '/' || substr($url, 0 , 1)== '\\') ){
+        if( Right($httpurl, 1)== '/' &&(Left($url, 1)== '/' || Left($url, 1)== '\\') ){
             $url= mid($url, 2,-1);
         }
         $url= $httpurl . $url;
@@ -205,7 +205,7 @@ function getHtmlLableName($content, $nThisLabel){
                 $s= mid($s, 2, Len($s) - 2);
                 $s= phptrim($s);
                 if( Right($s, 1)== '/' ){
-                    $s= phptrim(substr($s, 0 , Len($s) - 1));
+                    $s= phptrim(Left($s, Len($s) - 1));
                 }
                 $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面
@@ -256,7 +256,7 @@ function getHtmlValue($content, $sType){
                 $s= mid($s, 2, Len($s) - 2);
                 $s= phptrim($s);
                 if( Right($s, 1)== '/' ){
-                    $s= phptrim(substr($s, 0 , Len($s) - 1));
+                    $s= phptrim(Left($s, Len($s) - 1));
                 }
                 $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面

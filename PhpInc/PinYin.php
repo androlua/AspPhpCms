@@ -435,7 +435,7 @@ function pinYin($content, $sType){
                 for( $j= 0 ; $j<= UBound($py); $j++){
                     if( instr($py[$j], $s) > 0 ){
                         $en= mid($py[$j], strrpos($py[$j], '_') + 1,-1);
-                        $en= strtoupper(substr($en, 0 , 1)) . Right($en, Len($en) - 1);
+                        $en= strtoupper(Left($en, 1)) . Right($en, Len($en) - 1);
                         $s= $en;
                         break;
                     }
@@ -470,8 +470,8 @@ function pinYin($content, $sType){
                 for( $j= 0 ; $j<= UBound($py); $j++){
                     if( instr($py[$j], $s) > 0 ){
                         $en= mid($py[$j], strrpos($py[$j], '_') + 1,-1);
-                        $En2= strtoupper(substr($en, 0 , 1)) . ' ';
-                        $En3= strtoupper(substr($en, 0 , 1)) . Right($en, Len($en) - 1);
+                        $En2= strtoupper(Left($en, 1)) . ' ';
+                        $En3= strtoupper(Left($en, 1)) . Right($en, Len($en) - 1);
                         $En4= $En3 . ' '; //加空格
                         $s= $en . ' ';
                         break;
@@ -489,7 +489,7 @@ function pinYin($content, $sType){
         }else if( $sType== '2' ){
             $pinYin= $c2;
         }else if( $sType== '3' ){
-            $C3= strtoupper(substr($C3, 0 , 1)) . mid($C3, 2,-1); //首字母大写
+            $C3= strtoupper(Left($C3, 1)) . mid($C3, 2,-1); //首字母大写
             $pinYin= $C3;
         }else if( $sType== '4' ){
             $pinYin= $C4;

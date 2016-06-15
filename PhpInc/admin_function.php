@@ -1,4 +1,38 @@
 <?PHP
+
+//调用function文件函数
+function callFunction(){
+    switch ( @$_REQUEST['stype'] ){
+        case 'updateWebsiteStat' ; updateWebsiteStat() ;break;//更新网站统计
+        case 'clearWebsiteStat' ; clearWebsiteStat() ;break;//清空网站统计
+        case 'updateTodayWebStat' ; updateTodayWebStat() ;break;//更新网站今天统计
+        case 'websiteDetail' ; websiteDetail() ;break;//详细网站统计
+        case 'displayAccessDomain' ; displayAccessDomain();										//显示访问域名
+        break;
+        default ; eerr('function1页里没有动作', @$_REQUEST['stype']);
+    }
+}
+
+//显示访问域名
+function displayAccessDomain(){
+    $visitWebSite='';$visitWebSiteList='';$urlList='';$nOK='';
+    $GLOBALS['conn=']=OpenConn();
+    $nOK=0;
+    $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'websitestat');
+    while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
+        $visitWebSite=strtolower(getWebSite($rs['visiturl']));
+        //call echo("visitWebSite",visitWebSite)
+        if( instr(vbCrlf() . $visitWebSiteList . vbCrlf(),vbCrlf() . $visitWebSite . vbCrlf())==false ){
+            if( $visitWebSite<>strtolower(getWebSite(webDoMain())) ){
+                $visitWebSiteList=$visitWebSiteList . $visitWebSite . vbCrlf();
+                $nOK=$nOK+1;
+                $urlList=$urlList . $nOK . '、<a href=\'' . $rs['visiturl'] . '\' target=\'_blank\'>' . $rs['visiturl'] . '</a><br>';
+            }
+        }
+    }
+    ASPEcho('显示访问域名','操作完成 <a href=\'javascript:history.go(-1)\'>点击返回</a>');
+    rwend($visitWebSiteList . '<br><hr><br>' . $urlList);
+}
 //获得处理后表列表 20160313
 function getHandleTableList(){
     $s=''; $lableStr ='';
@@ -86,9 +120,13 @@ function replaceLableContent($content){
     $content= Replace($content, '{$LOCAL_ADDR$}', ServerVariables('LOCAL_ADDR')); //服务器IP
     $content= Replace($content, '{$SERVER_PORT$}', ServerVariables('SERVER_PORT')); //服务器端口
     $content= replaceValueParam($content, 'mdbpath', @$_REQUEST['mdbpath']);
-
-
     $content= replaceValueParam($content, 'webDir', $GLOBALS['webDir']);
+
+    //20160614
+    if( EDITORTYPE=='php' ){
+        $content= Replace($content, '{$EDITORTYPE_PHP$}', 'php'); //给phpinc/用
+    }
+    $content= Replace($content, '{$EDITORTYPE_PHP$}', ''); //给phpinc/用
 
     $replaceLableContent= $content;
     return @$replaceLableContent;

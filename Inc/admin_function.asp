@@ -117,9 +117,13 @@ Function replaceLableContent(content)
     content = Replace(content, "{$LOCAL_ADDR$}", Request.ServerVariables("LOCAL_ADDR")) '服务器IP
     content = Replace(content, "{$SERVER_PORT$}", Request.ServerVariables("SERVER_PORT")) '服务器端口
     content = replaceValueParam(content, "mdbpath", Request("mdbpath")) 
-	
-	
     content = replaceValueParam(content, "webDir", webDir) 
+	
+	'20160614
+	if EDITORTYPE="php" then
+		content = Replace(content, "{$EDITORTYPE_PHP$}", "php")                          '给phpinc/用
+	end if
+	content = Replace(content, "{$EDITORTYPE_PHP$}", "")                          '给phpinc/用 
 	
     replaceLableContent = content 
 End Function 
@@ -717,7 +721,8 @@ Function saveAddEdit(actionName, lableTitle, ByVal fieldNameList)
     tableName = LCase(actionName)                                                   '表名称
 
 
-    sql = getPostSql(id, tableName, fieldNameList) 
+    sql = getPostSql(id, tableName, fieldNameList)  
+	'call eerr("sql",sql)												'调试用
     '检测SQL
     If checksql(sql) = False Then
         Call errorLog("出错提示：<hr>sql=" & sql & "<br>") 

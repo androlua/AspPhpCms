@@ -628,7 +628,7 @@ QQ：<br><input type="text" name="qq" id="qq" style="width:98%;margin:6px 0" clas
 电话：<br><input type="text" name="tel" id="tel" style="width:98%;margin:6px 0" class="inputstyle" /><br>
 地址：<br><input type="text" name="address" id="address" style="width:98%;margin:6px 0" class="inputstyle" /><br>
 反馈内容：<textarea name="bodycontent" placeholder="我也来说两句..."  class="inputstyle"></textarea>
-验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="/inc/yzm_7.asp" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '/inc/yzm_7.asp?'+Math.random()*10000"/><br>
+验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]?'+Math.random()*10000"/><br>
 
 <input type="submit" class="mybtn" value="提交反馈"></form>
 <script type="text/javascript">
@@ -755,3 +755,4 @@ function formcommentSubmit(){
  
 【bodycontent】
 【/bodycontent】
+

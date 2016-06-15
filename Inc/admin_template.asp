@@ -69,7 +69,7 @@ Sub templateFileList(dir)
     For Each fileName In splStr
 		if fileName<>"" then
 			s = "<a href=""../index.asp?templatedir=" & escape(dir) & "&templateName=" & fileName & """ target='_blank'>Ô¤ÀÀ</a> " 
-			Call echo("<img src='Images/Icon/2/htm.gif'>" & fileName, s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>ÐÞ¸Ä</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>É¾³ý</a>") 
+			Call echo("<img src='../admin/Images/Icon/2/htm.gif'>" & fileName, s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>ÐÞ¸Ä</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>É¾³ý</a>") 
 		end if
     Next 
 End Sub
@@ -160,3 +160,4 @@ Function displayTemplateDirDialog(dir)
   </table> 
 </form> 
 <% End Function%>
+

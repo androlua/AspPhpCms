@@ -83,7 +83,7 @@ function cutStr( $content, $cutNumb, $MoreStr){
         if( $s < 0 ){ $s= $s + 65536 ;}
         if( $s < 255 ){ $n= $n + 1 ;}
         if( $s > 255 ){ $n= $n + 2 ;}
-        if( $n >= $cutNumb ){ $cutStr= substr($content, 0 , $i) . $MoreStr ; return @$cutStr; }
+        if( $n >= $cutNumb ){ $cutStr= Left($content, $i) . $MoreStr ; return @$cutStr; }
     }
     return @$cutStr;
 }

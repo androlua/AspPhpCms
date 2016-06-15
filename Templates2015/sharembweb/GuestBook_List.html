@@ -30,7 +30,7 @@
             <ul class="guestbooklist">
             [list] 
                 <li class="gbitem">
-                    <div class="gbtitle">姓名：[$guestname$] 于 [$adddatetime time format_time='2'$] 发表</div>
+                    <div class="gbtitle">姓名：[$guestname$] 于 [$adddatetime time format_time='1'$] 发表</div>
                     <div class="gbmessage">[$bodycontent$]</div>
                     <div class="gbreply"><b>管理员</b><br><font color="#339900">回复：</font>[$reply$]</div>
                 </li> 
@@ -47,7 +47,7 @@
     电话：<br><input type="text" name="tel" id="tel" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     地址：<br><input type="text" name="address" id="address" style="width:98%;margin:6px 0" class="inputstyle" /><br>
     内容：<textarea name="bodycontent" placeholder="我也来说两句..." class="inputstyle"></textarea>
-验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="\inc/yzm_7.asp" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '/inc/yzm_7.asp?'+Math.random()*10000"/><br>
+验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]?'+Math.random()*10000"/><br>
 
 <input type="submit" class="mybtn" value="提交留言"></form>
 <script type="text/javascript">
@@ -169,5 +169,6 @@ function formmessageSubmit(){
 
 </body>
 </html>
+
 
 

@@ -216,13 +216,25 @@
 			<link rel="stylesheet" type="text/css" href="js/calendar/win2k.css"/>
             <script type="text/javascript" src="js/calendar/calendar.js"></script>
             <script type="text/javascript" src="js/calendar/lang/en.js"></script>
-            <input type="text" name="info[inputtime]" id="inputtime" value="2015-11-13 13:47:17" size="21" class="date input-text" readonly="">
+            <input type="text" name="info[adddatetime]" id="adddatetime" value="2015-11-13 13:47:17" size="21" class="date input-text" readonly="">
+			<script type="text/javascript">
+			Calendar.setup({
+			weekNumbers: true,
+		    inputField : "adddatetime",
+		    trigger    : "adddatetime",
+		    dateFormat: "%Y-%m-%d %H:%M:%S",
+		    showTime: true,
+		    minuteStep: 1,
+		    onSelect   : function() {this.hide();}
+			});
+        </script> 
+            <input type="text" name="info[inputtime]" id="inputtime" value="2015-11-13" size="21" class="date input-text" readonly="">
 			<script type="text/javascript">
 			Calendar.setup({
 			weekNumbers: true,
 		    inputField : "inputtime",
 		    trigger    : "inputtime",
-		    dateFormat: "%Y-%m-%d %H:%M:%S",
+		    dateFormat: "%Y-%m-%d",
 		    showTime: true,
 		    minuteStep: 1,
 		    onSelect   : function() {this.hide();}

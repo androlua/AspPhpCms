@@ -133,6 +133,10 @@ Function handleAction(content)
             'URL解密
             ElseIf checkFunValue(action, "unescape ") = True Then
                 action = XY_unescape(action) 
+            'asp与php版本
+            ElseIf checkFunValue(action, "EDITORTYPE ") = True Then
+                action = XY_EDITORTYPE(action)
+
 
             '暂时不屏蔽
             ElseIf checkFunValue(action, "copyTemplateMaterial ") = True Then
@@ -1312,7 +1316,7 @@ Function makeHtmlWebToZip(webDir)
     Call echo("<hr>cccccccccccc", c) 
     '先判断这个文件存在20160309
     If checkFile("/myZIP.php") = True Then
-        Call echo("", XMLPost(getHost() & "/myZIP.php?webFolderName=" & webFolderName, "content=" & escape(c))) 
+        Call echo("", XMLPost(getHost() & "/myZIP.php?webFolderName=" & webFolderName , "content=" & escape(c))) 
     End If 
 
 End Function 

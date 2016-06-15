@@ -42,14 +42,14 @@ KindEditor.ready(function(K) {
 <div class="mg10">
 	<ul class="tabbut noselect">
         <li>基本设置</li>
-        <li>更多帮助</li>
+        <li>更多设置</li>
     </ul>&nbsp;
     <div class="clear"></div>
     <div class="acontent">
         <div class="explain-col">
             温馨提示：<font color="#FF0000">*</font>星号为必填
         </div>
-        <table width="100%" class="mgu10 inputtable" id="td2" border="0" cellspacing="1" cellpadding="1" bgcolor="#cfcfcf">
+        <table width="100%" class="mgu10 inputtable" id="tablelist" border="0" cellspacing="1" cellpadding="1" bgcolor="#cfcfcf">
             	<tbody>
                 <tr align="center" bgcolor="#FBFCE2" height="25">
                    <td width="220">参数说明</td>
@@ -92,6 +92,29 @@ KindEditor.ready(function(K) {
                     </tr>
                 </tbody>  
                 <tbody class="tbodybox">
+                    <tr align="center" height="25" bgcolor="#F9FCEF">
+                      <td>添加时间</td>
+                      <td align="left" style="padding:3px;">
+ 			<link rel="stylesheet" type="text/css" href="js/calendar/jscal2.css"/>
+			<link rel="stylesheet" type="text/css" href="js/calendar/border-radius.css"/>
+			<link rel="stylesheet" type="text/css" href="js/calendar/win2k.css"/>
+            <script type="text/javascript" src="js/calendar/calendar.js"></script>
+            <script type="text/javascript" src="js/calendar/lang/en.js"></script>
+            <input type="text" name="adddatetime" id="adddatetime" value="[$adddatetime$]" size="21" class="date input-text" readonly="">
+			<script type="text/javascript">
+			Calendar.setup({
+			weekNumbers: true,
+		    inputField : "adddatetime",
+		    trigger    : "adddatetime",
+		    dateFormat: "%Y-%m-%d %H:%M:%S",
+		    showTime: true,
+		    minuteStep: 1,
+		    onSelect   : function() {this.hide();}
+			});
+        </script> 
+                      </td>
+                      <td>adddatetime</td>
+                    </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>帮助信息</td>
                         <td align="left" style="padding:3px;"> </td>

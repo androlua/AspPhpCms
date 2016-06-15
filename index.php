@@ -183,6 +183,10 @@ function handleAction($content){
                 //URL解密
             }else if( checkFunValue($action, 'unescape ')== true ){
                 $action= XY_unescape($action);
+                //asp与php版本
+            }else if( checkFunValue($action, 'EDITORTYPE ')== true ){
+                $action= XY_EDITORTYPE($action);
+
 
                 //暂时不屏蔽
             }else if( checkFunValue($action, 'copyTemplateMaterial ')== true ){
@@ -1376,7 +1380,7 @@ function makeHtmlWebToZip($webDir){
     ASPEcho('<hr>cccccccccccc', $c);
     //先判断这个文件存在20160309
     if( checkFile('/myZIP.php')== true ){
-        ASPEcho('', XMLPost(getHost() . '/myZIP.php?webFolderName=' . $webFolderName, 'content=' . escape($c)));
+        ASPEcho('', XMLPost(getHost() . '/myZIP.php?webFolderName=' . $webFolderName , 'content=' . escape($c)));
     }
 
 }

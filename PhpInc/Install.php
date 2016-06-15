@@ -689,7 +689,7 @@ if($DB_PREFIX<>''){
 		echo("创建数据表 {$tableName} 成功>><br>");
 	}
 	echo('<a href="../admin/index.php" target="_blank">登录后台</a>');
-	echo('&nbsp; | &nbsp;<a href="../admin/index.php?act=setAccess&webdataDir=/Data/WebData&login=out" target="_blank">导入默认数据</a>');
+	echo('&nbsp; | &nbsp;<a href="../admin/index.php?act=setAccess&webdataDir=/Templates2015/sharembweb/WebData&login=out" target="_blank">导入默认数据</a>');
 	if(@$_POST['loginname']<>'' && @$_POST['loginpwd']<>''){
 			$conn->query('insert into '.$DB_PREFIX.'admin (username,pwd,flags) values(\''.@$_POST['loginname'].'\',\'' . myMD5(@$_POST['loginpwd']) . '\',\'|*|\')') ;
 	}else{

@@ -143,7 +143,7 @@ function deleteRepeatStr($content, $SplType){
             }
         }
     }
-    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - Len($SplType)) ;}
+    if( $c <> '' ){ $c= Left($c, Len($c) - Len($SplType)); }
     $deleteRepeatStr= $c;
     return @$deleteRepeatStr;
 }
@@ -186,7 +186,7 @@ function caseInsensitiveReplace($content, $Check_Str, $Replace_Str){
     for( $i= 1 ; $i<= 99; $i++){
         if( instr($LowerCase, $Check_Str) > 0 ){
             $StartLen= instr($LowerCase, $Check_Str) - 1;
-            $startStr= substr($content, 0 , $StartLen);
+            $startStr= Left($content, $StartLen);
             $EndLen= $StartLen + Len($Check_Str) + 1;
             $endStr= mid($content, $EndLen,-1);
             $content= $startStr . $Replace_Str . $endStr;
@@ -329,7 +329,7 @@ function contentAddTab( $content, $nNumb){
 
 //删除最后指定字符20150228 Content=DeleteEndStr(Content,2)
 function deleteEndStr($content, $nLen){
-    if( $content <> '' ){ $content= substr($content, 0 , Len($content) - $nLen) ;}
+    if( $content <> '' ){ $content= Left($content, Len($content) - $nLen); }
     $deleteEndStr= $content;
     return @$deleteEndStr;
 }
@@ -406,7 +406,7 @@ function handleNumberType( $content){
     $content= AspTrim($content);
     for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
-        if( $i== 1 && instr('+-*/', substr($content, 0 , 1)) > 0 ){
+        if( $i== 1 && instr('+-*/', Left($content, 1)) > 0 ){
             $c= $c . $s;
         }else if( $i > 1 && $s== '.' ){
             $c= $c . $s;
@@ -670,7 +670,7 @@ function getRandomPhoneNumber($nCount){
         $rndnum= '';
         $j= $j + 1;
     }
-    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 2) ;}
+    if( $c <> '' ){ $c= Left($c, Len($c) - 2); }
     $getRandomPhoneNumber= $c;
     return @$getRandomPhoneNumber;
 }

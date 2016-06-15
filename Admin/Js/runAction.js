@@ -975,6 +975,21 @@ var JS2015 = (function () {
 			$(this).find(".drop_down_menu_box").hide() 
 		}).trigger("mouseleave")
 		
+		//表格行变色20160615
+		$("#tablelist tbody").each(function (index,obj) {
+			$(this).find("tr").each(function (subIndex,obj) {		
+				bgcolor="#F9FCEF"
+				if((subIndex+2)%2==0){
+					bgcolor="#FFF"					
+				}
+				var thisBgColor=$(this).attr("bgcolor").toUpperCase()
+				//alert(thisBgColor)
+				if(thisBgColor!='#FBFCE2'){
+					$(this).css("background-color", bgcolor); 
+				}
+			})	
+		})	 
+		
 		
 	}
 	//改变

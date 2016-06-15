@@ -142,7 +142,6 @@ Sub saveAddEditHandle(actionType, lableTitle)
     End If 
 End Sub 
 
-
 Call openconn() 
 Select Case Request("act")
     Case "dispalyManageHandle" : Call dispalyManageHandle(Request("actionType"))    '显示管理处理         ?act=dispalyManageHandle&actionType=WebLayout

@@ -16,12 +16,12 @@ function delJsNote($content){
             }
             $s='';
         }else{
-            if( substr($s2, 0 ,2)=='/*' ){
+            if( left($s2,2)=='/*' ){
                 if( right($s2,2)<>'*/' ){
                     $isMultiLineNote=true;
                 }
                 $s='';
-            }else if( substr($s2, 0 ,2)=='//' ){
+            }else if( left($s2,2)=='//' ){
                 $s='';
             }
         }

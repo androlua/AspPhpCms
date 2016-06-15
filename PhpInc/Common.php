@@ -80,11 +80,19 @@ function ASPEcho($Word, $str){
 }
 //测试显示信息+红色
 function echoRed($Word, $str){
-    echo('<font color=Red>' . $Word . '</font>：' . $str . '<br>');
+    echo('<font color=red>' . $Word . '</font>：' . $str . '<br>');
 }
 //测试显示信息+红色+粗
 function echoRedB($Word, $str){
-    echo('<b><font color=Red>' . $Word . '</font>：' . $str . '</b><br>');
+    echo('<b><font color=red>' . $Word . '</font>：' . $str . '</b><br>');
+}
+//测试显示信息+黄色
+function echoYellow($Word, $str){
+    echo('<font color=#B38704>' . $Word . '</font>：' . $str . '<br>');
+}
+//测试显示信息+黄色+粗
+function echoYellowB($Word, $str){
+    echo('<b><font color=#B38704>' . $Word . '</font>：' . $str . '</b><br>');
 }
 //回显内容
 function echoPrompt($Word, $str){

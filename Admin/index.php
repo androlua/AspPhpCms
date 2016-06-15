@@ -196,7 +196,6 @@ function saveAddEditHandle($actionType, $lableTitle){
     }
 }
 
-
 $conn=OpenConn();
 switch ( @$_REQUEST['act'] ){
     case 'dispalyManageHandle' ; dispalyManageHandle(@$_REQUEST['actionType']) ;break;//显示管理处理         ?act=dispalyManageHandle&actionType=WebLayout
@@ -211,18 +210,13 @@ switch ( @$_REQUEST['act'] ){
     case 'saveRobots' ; saveRobots() ;break;//保存robots.txt
     case 'deleteAllMakeHtml' ; deleteAllMakeHtml(); //删除全部生成的html文件
     break;
-    case 'isOpenTemplate' ; isOpenTemplate(); //更换模板
-    break;
-    case 'updateWebsiteStat' ; updateWebsiteStat() ;break;//更新网站统计
-    case 'clearWebsiteStat' ; clearWebsiteStat() ;break;//清空网站统计
-    case 'updateTodayWebStat' ; updateTodayWebStat() ;break;//更新网站今天统计
+    case 'isOpenTemplate' ; isOpenTemplate() ;break;//更换模板
     case 'executeSQL' ; executeSQL(); //执行SQL
+
+
     break;
-    case 'websiteDetail' ; websiteDetail(); //详细网站统计
-    break;
-    case 'function2' ; callFunction2()												;break;//调用function2文件函数
-    case 'runScanWebUrl' ; runScanWebUrl()											;break;//运行扫描网址
-    case 'scanCheckDomain' ; scanCheckDomain();										//检测域名有效
+    case 'function' ; callFunction()												;break;//调用function文件函数
+    case 'function2' ; callFunction2();												//调用function2文件函数
     break;
     case 'setAccess' ; resetAccessData(); //恢复数据
     break;

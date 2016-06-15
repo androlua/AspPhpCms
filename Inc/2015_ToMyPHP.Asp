@@ -10,6 +10,19 @@ Function XY_AP_WebSiteBottom(action)
     XY_AP_WebSiteBottom = cfg_websitebottom 
 End Function 
 
+'asp与php版本
+function XY_EDITORTYPE(action)
+	dim aspValue,phpValue,s
+	aspValue = LCase(RParam(action, "asp")) 
+	phpValue = LCase(RParam(action, "php")) 
+	if EDITORTYPE="asp" then
+		s=aspValue
+	else
+		s=phpValue
+	end if
+	XY_EDITORTYPE=s
+end function
+
 
 '加载文件
 Function XY_Include(action)

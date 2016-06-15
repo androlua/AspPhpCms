@@ -52,7 +52,7 @@ function getBrType($theInfo){
     if( instr($theInfo, strtoupper('msie')) > 0 ){
         $strType= '[MSIE';
         $tmp1= mid($theInfo,(instr($theInfo, strtoupper('MSIE')) + 4), 6);
-        $tmp1= substr($tmp1, 0 , instr($tmp1, ';') - 1);
+        $tmp1= Left($tmp1, instr($tmp1, ';') - 1);
         $strType= $strType . $tmp1 . ']';
         $s= 'Internet Explorer';
         $s= $strType . $s;

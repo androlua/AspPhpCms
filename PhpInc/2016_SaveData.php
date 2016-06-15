@@ -10,39 +10,32 @@ function saveData($sType){
     if( @$_SESSION['yzm']<>@$_POST['yzm'] ){
         eerr('提示','验证码错误');
     }
+    @$_SESSION['yzm']='';			//清空验证码
 
 
     //保存文章评论
     if( $sType== 'articlecomment' ){
-        if( @$_POST['content']=='' ){
-            eerr('提示','评论为空');
-        }
-        saveArticleComment(@$_REQUEST['itemid'], ADSql(@$_REQUEST['content']));
+        autoSavePostData('', 'tablecomment', 'tablename||ArticleDetail,adddatetime|now,itemid||'. @$_REQUEST['itemid'] .',adddatetime,ip||'. getip());
+        ASPEcho('提示', '评论提交成功，等待管理员审核');
+
     }else if( $sType== 'feedback' ){
         if( @$_POST['guestname']=='' ){
             eerr('提示','姓名为空');
         }
-        autoSavePostData('', 'feedback', 'isthrough|numb|0,ip||'. getip() .',columnid||' . @$_GET['columnid']);
+        autoSavePostData('', 'feedback', 'isthrough|numb|0,adddatetime|now,ip||'. getip() .',columnid||' . @$_GET['columnid']);
         ASPEcho('提示', '反馈提交成功，等待管理员审核');
     }else if( $sType== 'guestbook' ){
-
         if( @$_POST['guestname']=='' ){
             eerr('提示','姓名为空');
         }
-
-        autoSavePostData('', 'guestbook', 'isthrough|numb|0,ip||'. getip() .',columnid||' . @$_GET['columnid']);
+        autoSavePostData('', 'guestbook', 'isthrough|numb|0,adddatetime|now,ip||'. getip() .',columnid||' . @$_GET['columnid']);
         ASPEcho('提示', '留言提交成功，等待管理员审核');
 
     }else if( $sType== 'articledetail' ){
-        autoSavePostData('', 'articledetail', 'title|bodycontent,ip||'. getip());
+        autoSavePostData('', 'articledetail', 'title|bodycontent,adddatetime|now,ip||'. getip());
         ASPEcho('提示', '文章提交成功');
     }
     die();
-}
-//保存文章评论 20160129
-function saveArticleComment($itemid, $bodycontent){
-    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'tablecomment (tableName,itemid,ip,bodycontent,adddatetime) values(\'ArticleDetail\',' . $itemid . ',\'' . getIP() . '\',\'' . $bodycontent . '\',\'' . Now() . '\')');
-    ASPEcho('提示', '评论提交成功，等待管理员审核');
 }
 //自动保存POST数据到表
 function autoSavePostData($id, $tableName, $fieldNameList){
@@ -116,11 +109,18 @@ function getPostSql($id, $tableName, $fieldNameList){
 
                 $fieldValue= '\'' . $fieldValue . '\'';
 
+                //为时间
+            }else if( $fieldSetType== 'time' || $fieldSetType== 'now' ){
+                if( $fieldValue== '' ){
+                    $fieldValue= now();
+                }
+                $fieldValue= '\'' . $fieldValue . '\'';
                 //为时期
             }else if( $fieldSetType== 'date' ){
                 if( $fieldValue== '' ){
                     $fieldValue= ASPDate();
                 }
+                $fieldValue= '\'' . $fieldValue . '\'';
 
             }else{
                 $fieldValue= '\'' . $fieldValue . '\'';
@@ -148,6 +148,18 @@ function getPostSql($id, $tableName, $fieldNameList){
             $fieldValue= $splxx[2]; //默认字段值
 
             if( instr($systemFieldList, ',' . $fieldName . '|') > 0 && instr(',' . $fieldList . ',', ',' . $fieldName . ',')== false ){
+
+
+
+
+
+
+
+                if( $fieldSetType== 'date' && $fieldValue=='' ){
+                    $fieldValue= ASPDate();
+                }else if( ($fieldSetType== 'time' || $fieldSetType== 'now') && $fieldValue=='' ){
+                    $fieldValue= Now();
+                }
                 if( $fieldSetType <> 'yesno' && $fieldSetType <> 'numb' ){
                     $fieldValue= '\'' . $fieldValue . '\'';
                 }

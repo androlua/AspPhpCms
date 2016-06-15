@@ -325,11 +325,11 @@ function setHtmlParam($content, $ParamList){
         if( $startStr <> '' ){
             //替换开始字符   因为开始字符类型可变 不同
             $ReplaceStartStr= $startStr;
-            if( substr($ReplaceStartStr, 0 , 3)== 'img' ){
+            if( Left($ReplaceStartStr, 3)== 'img' ){
                 $ReplaceStartStr= mid($ReplaceStartStr, 4,-1);
-            }else if( substr($ReplaceStartStr, 0 , 1)== 'a' ){
+            }else if( Left($ReplaceStartStr, 1)== 'a' ){
                 $ReplaceStartStr= mid($ReplaceStartStr, 2,-1);
-            }else if( instr('|ul|li|', '|' . substr($ReplaceStartStr, 0 , 2) . '|') > 0 ){
+            }else if( instr('|ul|li|', '|' . Left($ReplaceStartStr, 2) . '|') > 0 ){
                 $ReplaceStartStr= mid($ReplaceStartStr, 3,-1);
             }
             $ReplaceStartStr= ' ' . $ReplaceStartStr . '=\'';

@@ -11,6 +11,20 @@ function XY_AP_WebSiteBottom($action){
     return @$XY_AP_WebSiteBottom;
 }
 
+//asp与php版本
+function XY_EDITORTYPE($action){
+    $aspValue='';$phpValue='';$s='';
+    $aspValue= strtolower(RParam($action, 'asp'));
+    $phpValue= strtolower(RParam($action, 'php'));
+    if( EDITORTYPE=='asp' ){
+        $s=$aspValue;
+    }else{
+        $s=$phpValue;
+    }
+    $XY_EDITORTYPE=$s;
+    return @$XY_EDITORTYPE;
+}
+
 
 //加载文件
 function XY_Include($action){

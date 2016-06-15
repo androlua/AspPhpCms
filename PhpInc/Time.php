@@ -71,7 +71,7 @@ function format_Time($timeStr, $nType){
 //获得当前天状态
 function getDayStatus($h, $SType){
     $c ='';
-    if( substr($h, 0 , 1)== '0' ){
+    if( Left($h, 1)== '0' ){
         $h= Right($h, 1);
     }
     $h= intval($h);

@@ -30,12 +30,12 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
         $tempS= $s ; $elseS= $s;
         $s= trimVbCrlf($s) ; $lCaseS= strtolower($s);
         //判断于20150710
-        if((substr($lCaseS, 0 , 8)== '<script ' || substr($lCaseS, 0 , 8)== '<script>') && instr($s, '</script>')== false && $isJavascript== false ){
+        if((Left($lCaseS, 8)== '<script ' || Left($lCaseS, 8)== '<script>') && instr($s, '</script>')== false && $isJavascript== false ){
             $isJavascript= true;
             $c= $c . phptrim($tempS) . vbCrlf();
         }else if( $isJavascript== true ){
 
-            if( substr($lCaseS, 0 , 9)== '</script>' ){
+            if( Left($lCaseS, 9)== '</script>' ){
                 $isJavascript= false;
                 $c= $c . phptrim($tempS) . vbCrlf(); //最后清除两边空格
             }else{
@@ -43,28 +43,28 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
             }
 
             //表单文本域判断于20151019
-        }else if((substr($lCaseS, 0 , 10)== '<textarea ' || substr($lCaseS, 0 , 10)== '<textarea>') && instr($s, '</textarea>')== false && $isTextarea== false ){
+        }else if((Left($lCaseS, 10)== '<textarea ' || Left($lCaseS, 10)== '<textarea>') && instr($s, '</textarea>')== false && $isTextarea== false ){
             $isTextarea= true;
             $c= $c . phptrim($tempS) . vbCrlf();
         }else if( $isTextarea== true ){
             $c= $c . phptrim($tempS) . vbCrlf();
-            if( substr($lCaseS, 0 , 11)== '</textarea>' ){
+            if( Left($lCaseS, 11)== '</textarea>' ){
                 $isTextarea= false;
             }
             //表单文本域判断于20151019
-        }else if((substr($lCaseS, 0 , 5)== '<pre ' || substr($lCaseS, 0 , 5)== '<pre>') && instr($s, '</pre>')== false && $isPre== false ){
+        }else if((Left($lCaseS, 5)== '<pre ' || Left($lCaseS, 5)== '<pre>') && instr($s, '</pre>')== false && $isPre== false ){
             $isPre= true;
             $c= $c . phptrim($tempS) . vbCrlf();
         }else if( $isPre== true ){
             $c= $c . $tempS . vbCrlf();
-            if( substr($lCaseS, 0 , 6)== '</pre>' ){
+            if( Left($lCaseS, 6)== '</pre>' ){
                 $isPre= false;
             }
 
 
         }else if( $s <> '' && $isJavascript== false && $isTextarea== false ){
-            $left4Str= '|' . substr($lCaseS, 0 , 4) . '|' ; $left5Str= '|' . substr($lCaseS, 0 , 5) . '|' ; $left6Str= '|' . substr($lCaseS, 0 , 6) . '|';
-            $left7Str= '|' . substr($lCaseS, 0 , 7) . '|' ; $left8Str= '|' . substr($lCaseS, 0 , 8) . '|';
+            $left4Str= '|' . Left($lCaseS, 4) . '|' ; $left5Str= '|' . Left($lCaseS, 5) . '|' ; $left6Str= '|' . Left($lCaseS, 6) . '|';
+            $left7Str= '|' . Left($lCaseS, 7) . '|' ; $left8Str= '|' . Left($lCaseS, 8) . '|';
 
             $keyWord= ''; //关键词初始清空
             $lableName= ''; //标签名称
@@ -97,7 +97,7 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
                         $levelArray[$nLevel]= $keyWord;
                     }
                 }
-            }else if( instr('|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|', '|' . substr($lCaseS, 0 , 5) . '|') > 0 || instr('|</div>|', '|' . substr($lCaseS, 0 , 6) . '|') > 0 || instr('|</span>|</form>|', '|' . substr($lCaseS, 0 , 7) . '|') > 0 || instr('|</table>|</tbody>|', '|' . substr($lCaseS, 0 , 8) . '|') > 0 || instr('|</center>|', '|' . substr($lCaseS, 0 , 9) . '|') > 0 ){
+            }else if( instr('|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|', '|' . Left($lCaseS, 5) . '|') > 0 || instr('|</div>|', '|' . Left($lCaseS, 6) . '|') > 0 || instr('|</span>|</form>|', '|' . Left($lCaseS, 7) . '|') > 0 || instr('|</table>|</tbody>|', '|' . Left($lCaseS, 8) . '|') > 0 || instr('|</center>|', '|' . Left($lCaseS, 9) . '|') > 0 ){
                 $nLevel= $nLevel - 1;
                 $s= copyStr('    ', $nLevel) . $s;
             }else{
@@ -105,18 +105,18 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
                 //最后是结束标签则减一级
                 if( Right($lCaseS, 6)== '</div>' ){
                     if( checkHtmlFormatting($lCaseS)== false ){
-                        $s= substr($s, 0 , Len($s) - 6);
+                        $s= Left($s, Len($s) - 6);
                         $nLevel= $nLevel - 1;
                         $s= $s . vbCrlf() . copyStr('    ', $nLevel) . '</div>';
                     }
                 }else if( Right($lCaseS, 7)== '</span>' ){
                     if( checkHtmlFormatting($lCaseS)== false ){
-                        $s= substr($s, 0 , Len($s) - 7);
+                        $s= Left($s, Len($s) - 7);
                         $nLevel= $nLevel - 1;
                         $s= $s . vbCrlf() . copyStr('    ', $nLevel) . '</span>';
                     }
                 }else if( instr('|</ul>|</dt>|<dl>|<dd>|', $left5Str) > 0 ){
-                    $s= substr($s, 0 , Len($s) - 5);
+                    $s= Left($s, Len($s) - 5);
                     $nLevel= $nLevel - 1;
                     $s= $s . vbCrlf() . copyStr('    ', $nLevel) . Right($lCaseS, 5);
                 }
@@ -176,13 +176,12 @@ function formatting($content, $action){
                 $i= $i + Len($s) - 1;
                 $s= mid($s, 2, Len($s) - 2);
                 if( Right($s, 1)== '/' ){
-                    $s= phptrim(substr($s, 0 , Len($s) - 1));
+                    $s= phptrim(Left($s, Len($s) - 1));
                 }
                 $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面
                 $labelName= mid($s, 1, instr($s . ' ', ' ') - 1);
                 $labelName= strtolower($labelName);
-
 
                 //call echo("labelName",labelName)
                 if( $labelName== 'a' ){
@@ -205,7 +204,6 @@ function formatting($content, $action){
                     $isPre= true;
                 }else if( $labelName== '/pre' ){
                     $isPre= false;
-
                 }
 
                 $endLabelStr= $endLabel;
@@ -218,11 +216,16 @@ function formatting($content, $action){
                         }
                     }
                 }
+                //单标签最后加个 /   20160615
+                if( instr('|br|hr|img|input|param|meta|link|','|' . $labelName . '|')>0 ){
+                    $s=$s . ' /';
+                }
+
                 $s= $startLabel . $s . $endLabelStr;
                 //不为压缩HTML
                 if( instr($action, '|ziphtml|')== false && $isPre== false ){
                     //处理这个            aaaaa</span>
-                    if( $isA== false && $isYes== false && substr($labelName, 0 , 1)== '/' && $labelName <> '/script' && $labelName <> '/a' ){
+                    if( $isA== false && $isYes== false && Left($labelName, 1)== '/' && $labelName <> '/script' && $labelName <> '/a' ){
                         //排除这种    <span>天天发团</span>     并且判断上一个字段不等于vbcrlf换行
                         if( '/' . $parentLableName <> $labelName && Right(AspTrim($c), 1) <> Chr(10) ){
                             $s= Chr(10) . $s;

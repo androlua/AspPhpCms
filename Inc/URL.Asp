@@ -352,7 +352,7 @@ Function getWebSite(ByVal httpUrl)
     End If 
     is_WebSite = False                                                              '是域名为假
     c = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn" 
-    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top" 
+    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me" 
     splStr = Split(c, "|") 
     For Each s In splStr
         If s <> "" Then
@@ -1253,7 +1253,7 @@ End Function
 
 '网址处理成数组20150124  数组  0原文件路径 1为文件路径   2为文件名称  3为去除文件类型文件名称   4为文件类型后缀名
 Function handleHttpUrlArray(ByVal url)
-	on error resume next
+	'on error resume next
     Dim urlDir, fileName, FileType, fileStr, httpAgreement, webSite, folderDir 
     url = handleHttpUrl(url) 
 
@@ -1265,8 +1265,13 @@ Function handleHttpUrlArray(ByVal url)
     FileType = Mid(fileName, InStrRev(fileName, ".") + 1) 
     httpAgreement = Mid(url, 1, InStr(url, ":") - 1) 
     webSite = getWebSite(url) 
-    Call echo("url", url) 
-    folderDir = Mid(urlDir, Len(webSite)) 
+    Call echo("url", url)
+	'域名为空则发粗获得文件夹目录20160613
+	if webSite<>"" then
+	    folderDir = Mid(urlDir, Len(webSite)) 
+	else
+		call echo("注意：不是有效网址",url)
+	end if
     'HandleHttpUrlArray = Array(url, urlDir, fileName, fileType, fileStr, HttpAgreement, webSite, folderDir)
     Dim arrayData 
     arrayData = Split(url & vbCrLf & urlDir & vbCrLf & fileName & vbCrLf & FileType & vbCrLf & fileStr & vbCrLf & httpAgreement & vbCrLf & webSite & vbCrLf & folderDir, vbCrLf) 

@@ -57,7 +57,7 @@
                 <ul class="commentlist">
 
 
-                    <sPAn class="testhidde">{$CommentList topnumb='8' itemid='[$glb_Id$]' addsql='' default='[_2016年01月15日 Comment]'$}</sPAn>
+                    <sPAn class="testhidde">{$CommentList topnumb='8' itemid='[$glb_Id$]' addsql='where isthrough<>0' default='[_2016年01月15日 Comment]'$}</sPAn>
                     <!--#[_2016年01月15日 Comment]
 [list]<li class="usermsg">IP：[$ip$] &nbsp; 时间：[$adddatetime format_time='1'$]</li>
 <li class="contentcontent">[$bodycontent$]</li>
@@ -70,23 +70,21 @@
 <div><b>管理员回复：</b><font color="#FF0000">[$reply$]</font></div>
 <div class="clear10"></div>
 [/list-end]
-
                     #-->
                      
                 </ul> 
               <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=articlecomment&itemid=[$glb_Id$]" target="_blank"  onSubmit="return formSubmit()">
-                <textarea name="content" placeholder="我也来说两句..."></textarea>
+                <textarea name="bodycontent" placeholder="我也来说两句..."></textarea>
                 <br>
-                验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="\inc/yzm_7.asp" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '/inc/yzm_7.asp?'+Math.random()*10000"/><br>
-                
+                验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]?'+Math.random()*10000"/><br>   
                 
                 <input type="submit" class="mybtn" value="评论" />
 评论支持使用[code][/code]标签添加代码
               </form>
 <script language="javascript">
 function formSubmit(){
-    if(formcomment.content.value==""){
-        formcomment.content.focus();
+    if(formcomment.bodycontent.value==""){
+        formcomment.bodycontent.focus();
         alert("评论内容不能为空");
         return false;
     }
@@ -165,5 +163,6 @@ function formSubmit(){
 
 </body>
 </html>
+
 
 

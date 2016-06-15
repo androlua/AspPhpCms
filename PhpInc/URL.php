@@ -105,7 +105,7 @@ function remoteUrlParam($url){
 //获得网址目录部分
 function getUrlDir($url){
     $url=AspTrim($url);
-    if( substr($url, 0 ,7)=='http://' ){
+    if( left($url,7)=='http://' ){
         $url= mid($url,8,-1);
     }
     if( instr($url,'/')>0 ){
@@ -180,7 +180,7 @@ function handleHttpUrl($httpUrl){
 
     $url= $headStr . $httpUrl;
     ///"http://www.qibosoft.com/images/qibosoft/loading.gif/"
-    if( substr($url, 0 , 2)== '/"' ){
+    if( Left($url, 2)== '/"' ){
         $url= mid($url, 3,-1);
     }
     if( Right($url, 2)== '/"' ){
@@ -229,9 +229,9 @@ function urlAddHttpUrl($httpUrl, $url){
     $httpUrl= Replace($httpUrl, '\\', '/');
     $url= handleHttpUrl($url);
     if( instr(strtolower($url), 'http://')== 0 && instr(strtolower($url), 'www.')== 0 ){
-        if( Right($httpUrl, 1)== '/' && substr($url, 0 , 1)== '/' ){
+        if( Right($httpUrl, 1)== '/' && Left($url, 1)== '/' ){
             $url= $httpUrl . mid($url, 2,-1);
-        }else if( Right($httpUrl, 1) <> '/' && substr($url, 0 , 1) <> '/' ){
+        }else if( Right($httpUrl, 1) <> '/' && Left($url, 1) <> '/' ){
             $url= $httpUrl . '/' . $url;
         }else{
             $url= $httpUrl . $url;
@@ -346,13 +346,13 @@ function getWebSite( $httpUrl){
         $httpUrl=mid($httpUrl,1,instr($httpUrl,'/')-1);
     }
     if( instr($httpUrl, '?') > 0 ){ $httpUrl= mid($httpUrl, 1, instr($httpUrl, '?') - 1) ;}
-    if( substr($httpUrl, 0 , 9)== 'localhost' ){
+    if( Left($httpUrl, 9)== 'localhost' ){
         if( instr($httpUrl, '/') > 0 ){
             $httpUrl= mid($httpUrl, 1, instr($httpUrl, '/') - 1);
         }else{
             $httpUrl= 'localhost';
         }
-    }else if( substr($httpUrl, 0 , 8)== '192.168.' || substr($httpUrl, 0 , 9)== '127.0.0.1' ){
+    }else if( Left($httpUrl, 8)== '192.168.' || Left($httpUrl, 9)== '127.0.0.1' ){
         $httpUrl= $httpUrl . '/';
         $httpUrl= 'http://' . mid($httpUrl, 1, instr($httpUrl, '/') - 1) . '/';
         $getWebSite= $httpUrl ; return @$getWebSite;
@@ -371,16 +371,16 @@ function getWebSite( $httpUrl){
     }
     $is_WebSite= false; //是域名为假
     $c= '.com.hk|.sh.cn|.com.cn|.net.cn|.org.cn';
-    $c= $c . '|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in';
+    $c= $c . '|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me';
     $splStr= aspSplit($c, '|');
     foreach( $splStr as $key=>$s){
         if( $s <> '' ){
             if( instr($httpUrl, $s) > 0 ){
-                $httpUrl= $httpHead . substr($httpUrl, 0 , instr($httpUrl, $s) + Len($s) - 1) . '/' ; $is_WebSite= true ; break;
+                $httpUrl= $httpHead . Left($httpUrl, instr($httpUrl, $s) + Len($s) - 1) . '/' ; $is_WebSite= true ; break;
             }
         }
     }
-    $getWebSite= substr($httpUrl, 0 , 255); //域名不存在，则只截取255个字符
+    $getWebSite= Left($httpUrl, 255); //域名不存在，则只截取255个字符
     //GetWebSite = ""                        '域名不存在则为空 20150104
     if( $getWebSite== 'http:///' ){ $getWebSite= '' ;}//没有找到域名
     if( $is_WebSite== false ){
@@ -424,7 +424,7 @@ function fullHttpUrl( $httpUrl, $url){
     $url= Replace($url, '\\', '/'); //把网址\转/符号
 
     //网址前两个字符为//则退出
-    if( substr($url, 0 , 2)== '//' ){
+    if( Left($url, 2)== '//' ){
         $fullHttpUrl= 'http:' . $url;
         return @$fullHttpUrl;
     }
@@ -433,8 +433,8 @@ function fullHttpUrl( $httpUrl, $url){
     $rootUrl= getWebSite($httpUrl); //主域名，也就是主网址
     $rootWebSite= $rootUrl;
     $thisWebSite= getWebSite($url);
-    if( Right($rootUrl, 1)== '/' ){ $rootUrl= substr($rootUrl, 0 , Len($rootUrl) - 1) ;}
-    $thisUrl= substr($httpUrl, 0 , strrpos($httpUrl, '/')); //当前网址
+    if( Right($rootUrl, 1)== '/' ){ $rootUrl= Left($rootUrl, Len($rootUrl) - 1); }
+    $thisUrl= Left($httpUrl, strrpos($httpUrl, '/')); //当前网址
     $splStr= aspSplit($httpUrl, '/');
     for( $i= 0 ; $i<= UBound($splStr); $i++){
         if( $i + 1== UBound($splStr) ){ $parentUrl= $c ;}
@@ -445,7 +445,7 @@ function fullHttpUrl( $httpUrl, $url){
     }
     $url= AspTrim($url); //去除网址左右空格
     $handleYes= false; //操作为假
-    if( $url <> '' && instr(substr($url, 0 , 10), 'www.')== false && instr(substr($url, 0 , 10), 'http://')== false && instr(substr($url, 0 , 10), 'https://')== false ){
+    if( $url <> '' && instr(Left($url, 10), 'www.')== false && instr(Left($url, 10), 'http://')== false && instr(Left($url, 10), 'https://')== false ){
         $handleYes= true;
         if( $rootWebSite <> $thisWebSite ){
             if( $rootWebSite== Replace($thisWebSite, 'http://', 'http://www.') ){
@@ -460,15 +460,15 @@ function fullHttpUrl( $httpUrl, $url){
     }
     //操作是否为真
     if( $handleYes== true ){
-        if( substr($url, 0 , 1)== '/' ){
+        if( Left($url, 1)== '/' ){
             $url= $rootUrl . $url;
-        }else if( substr($url, 0 , 9)== '../../../' ){
+        }else if( Left($url, 9)== '../../../' ){
             $url= $parentParentParentUrl . Right($url, Len($url) - 9);
-        }else if( substr($url, 0 , 6)== '../../' ){
+        }else if( Left($url, 6)== '../../' ){
             $url= $parentParentUrl . Right($url, Len($url) - 6);
-        }else if( substr($url, 0 , 3)== '../' ){
+        }else if( Left($url, 3)== '../' ){
             $url= $parentUrl . Right($url, Len($url) - 3);
-        }else if( substr($url, 0 , 2)== './' ){
+        }else if( Left($url, 2)== './' ){
             $url= $thisUrl . mid($url, 3,-1);
         }else{
             $url= $thisUrl . $url;
@@ -541,7 +541,7 @@ function getContentAHref($httpUrl, $content, &$PubAHrefList, &$PubATitleList){
         }
         doEvents( );
     }
-    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 2) ;}
+    if( $c <> '' ){ $c= Left($c, Len($c) - 2); }
     $getContentAHref= $c;
     return @$getContentAHref;
 }
@@ -564,7 +564,7 @@ function getContentImgSrc($httpUrl, $content, &$PubAHrefList, &$PubATitleList){
         }
         doEvents( );
     }
-    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 2) ;}
+    if( $c <> '' ){ $c= Left($c, Len($c) - 2); }
     $getContentImgSrc= $c;
     return @$getContentImgSrc;
 }
@@ -702,7 +702,7 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
             $s1= instr($content, $startStr) - 1 + Len($startStr); //这里面用TempContent而不用Content因为有大小写在里面20140726
             $s2= Right($content, Len($content) - $s1);
             $s2= mid($s2, instr($s2, $endStr),-1);
-            $s1= substr($content, 0 , $s1);
+            $s1= Left($content, $s1);
             $content= $s1 . $HandleUrl . $s2;
         }
         if( $UrlOrContent== 'url' ){
@@ -738,7 +738,7 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
             $s1= instr($content, $startStr) - 1 + Len($startStr);
             $s2= Right($content, Len($content) - $s1);
             $s2= mid($s2, instr($s2, $endStr),-1);
-            $s1= substr($content, 0 , $s1);
+            $s1= Left($content, $s1);
             $content= $s1 . $HandleUrl . $s2;
         }
         if( $UrlOrContent== 'url' ){
@@ -774,7 +774,7 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
             $s1= instr($content, $startStr) - 1 + Len($startStr);
             $s2= Right($content, Len($content) - $s1);
             $s2= mid($s2, instr($s2, $endStr),-1);
-            $s1= substr($content, 0 , $s1);
+            $s1= Left($content, $s1);
             $content= $s1 . $HandleUrl . $s2;
         }
         if( $UrlOrContent== 'url' ){
@@ -822,7 +822,7 @@ function getUrlListInWebSiteList($content){
 function getThisUrlFileName(){
     $url ='';
     $url= ServerVariables('SCRIPT_NAME');
-    if( substr($url, 0 , 1)== '/' ){ $url= Right($url, Len($url) - 1); }
+    if( Left($url, 1)== '/' ){ $url= Right($url, Len($url) - 1); }
     $getThisUrlFileName= $url;
     return @$getThisUrlFileName;
 }
@@ -1005,7 +1005,7 @@ function localUrlOrRemoteUrl($filePath, $UrlYes){
     $UrlYes= false;
     $filePath= AspTrim($filePath);
     $httpUrl= Replace($filePath, '\\', '/');
-    if( substr(strtolower($httpUrl), 0 , 7)== 'http://' || substr(strtolower($httpUrl), 0 , 4)== 'www.' || substr(strtolower($httpUrl), 0 , 4)== '[网址]' ){
+    if( Left(strtolower($httpUrl), 7)== 'http://' || Left(strtolower($httpUrl), 4)== 'www.' || Left(strtolower($httpUrl), 4)== '[网址]' ){
         $UrlYes= true;
     }
     if( $UrlYes== false ){
@@ -1021,8 +1021,8 @@ function checkRemoteUrl($url){
     $url= AspTrim($url);
     $httpUrl= Replace(unSetFileName($url), '\\', '/');
     $checkRemoteUrl= false;
-    if( substr(strtolower($httpUrl), 0 , 7)== 'http://' || substr(strtolower($httpUrl), 0 , 4)== 'www.' || substr(strtolower($httpUrl), 0 , 4)== '[网址]' ){
-        if( substr(strtolower($httpUrl), 0 , 4)== '[网址]' ){
+    if( Left(strtolower($httpUrl), 7)== 'http://' || Left(strtolower($httpUrl), 4)== 'www.' || Left(strtolower($httpUrl), 4)== '[网址]' ){
+        if( Left(strtolower($httpUrl), 4)== '[网址]' ){
             $url= mid($url, instr($url, '[网址]') + 1,-1);
         }
         $checkRemoteUrl= true;
@@ -1074,7 +1074,7 @@ function getUrlAddToParam( $url, $AddToUrl, $sType){
     //处理追加网址
     $AddToUrl= AspTrim($AddToUrl);
     //追加网址最后一个字符为?或&给删除掉 无用
-    if( substr($AddToUrl, 0 , 1)== '?' || substr($AddToUrl, 0 , 1)== '&' ){
+    if( Left($AddToUrl, 1)== '?' || Left($AddToUrl, 1)== '&' ){
         $AddToUrl= AspTrim(mid($AddToUrl, 2,-1));
     }
     //网址为空则返回追加网址 并退出
@@ -1089,7 +1089,7 @@ function getUrlAddToParam( $url, $AddToUrl, $sType){
         $httpUrl= handleHttpUrl($httpUrl);
         if( Right($httpUrl, 1) <> '/' ){
             $urlFileName= mid($httpUrl, strrpos($httpUrl, '/') + 1,-1);
-            $httpUrl= substr($httpUrl, 0 , Len($httpUrl) - Len($urlFileName));
+            $httpUrl= Left($httpUrl, Len($httpUrl) - Len($urlFileName));
             //Call Echo(HttpUrl,UrlFileName)
         }
     }
@@ -1150,7 +1150,7 @@ function getUrlAddToParam( $url, $AddToUrl, $sType){
 
     $c= $urlFileName . $c;
     if( getWebSite($c)== '' ){
-        if( substr($AddToUrl, 0 , 1)== '/' ){
+        if( Left($AddToUrl, 1)== '/' ){
             $c= $webSite . $c;
         }else{
             $c= $httpUrl . $c;
@@ -1182,7 +1182,7 @@ function groupUrl($url1, $url2){
         }
     }
     for( $i= 0 ; $i<= 99; $i++){
-        if( substr($url2, 0 , 1)== $urlType ){
+        if( Left($url2, 1)== $urlType ){
             $url2= mid($url2, 2,-1);
         }else{
             break;
@@ -1261,7 +1261,7 @@ function checkUrlName($searchUrlName){
 
 
 
-
+//注意   这里面有问题的
 
 //0 url：http://127.0.0.1/aa/4.asp?act=sdf&v=sdf
 //1 urlDir：http://127.0.0.1/
@@ -1274,6 +1274,7 @@ function checkUrlName($searchUrlName){
 
 //网址处理成数组20150124  数组  0原文件路径 1为文件路径   2为文件名称  3为去除文件类型文件名称   4为文件类型后缀名
 function handleHttpUrlArray( $url){
+    //on error resume next
     $urlDir=''; $fileName=''; $FileType=''; $fileStr=''; $httpAgreement=''; $webSite=''; $folderDir ='';
     $url= handleHttpUrl($url);
 
@@ -1286,7 +1287,12 @@ function handleHttpUrlArray( $url){
     $httpAgreement= mid($url, 1, instr($url, ':') - 1);
     $webSite= getWebSite($url);
     ASPEcho('url', $url);
-    $folderDir= mid($urlDir, Len($webSite),-1);
+    //域名为空则发粗获得文件夹目录20160613
+    if( $webSite<>'' ){
+        $folderDir= mid($urlDir, Len($webSite),-1);
+    }else{
+        ASPEcho('注意：不是有效网址',$url);
+    }
     //HandleHttpUrlArray = Array(url, urlDir, fileName, fileType, fileStr, HttpAgreement, webSite, folderDir)
     $arrayData ='';
     $arrayData= aspSplit($url . vbCrlf() . $urlDir . vbCrlf() . $fileName . vbCrlf() . $FileType . vbCrlf() . $fileStr . vbCrlf() . $httpAgreement . vbCrlf() . $webSite . vbCrlf() . $folderDir, vbCrlf());
@@ -1337,7 +1343,7 @@ function batchHandleHttpUrlComplete($httpUrl, $content){
     foreach( $splStr as $key=>$url){
         $url= phptrim($url);
         $lCaseUrl= strtolower($url);
-        if( $lCaseUrl <> '#' && substr($lCaseUrl, 0 , 11) <> 'javascript:' ){
+        if( $lCaseUrl <> '#' && Left($lCaseUrl, 11) <> 'javascript:' ){
             if( instr(vbCrlf() . strtolower($c) . vbCrlf(), vbCrlf() . $lCaseUrl . vbCrlf())== false ){
                 if( $c <> '' ){ $c= $c . vbCrlf() ;}
                 $c= $c . urlAddHttpUrl($webSite, $url);
@@ -1367,13 +1373,13 @@ function handleIsWebSite( $url1, $url2, $sType){
     if( instr($url1, '://') > 0 ){
         $url1= mid($url1, instr($url1, '://') + 3,-1);
     }
-    if( substr($url1, 0 , 4)== 'www.' ){
+    if( Left($url1, 4)== 'www.' ){
         $url1= mid($url1, 5,-1);
     }
     if( instr($url2, '://') > 0 ){
         $url2= mid($url2, instr($url2, '://') + 3,-1);
     }
-    if( substr($url2, 0 , 4)== 'www.' ){
+    if( Left($url2, 4)== 'www.' ){
         $url2= mid($url2, 5,-1);
     }
 
@@ -1424,19 +1430,19 @@ function handleGetContentUrlList($httpUrl, $content, $sType){
             $url= '';
             $labelType= '';
             $isHandle= false;
-            if( substr($endSLCase, 0 , 2)== 'a ' ){
+            if( Left($endSLCase, 2)== 'a ' ){
                 $labelType= 'a';
                 $valueLabel= 'href';
                 $isHandle= true;
-            }else if( substr($endSLCase, 0 , 5)== 'link ' ){
+            }else if( Left($endSLCase, 5)== 'link ' ){
                 $labelType= 'link';
                 $valueLabel= 'href';
                 $isHandle= true;
-            }else if( substr($endSLCase, 0 , 4)== 'img ' ){
+            }else if( Left($endSLCase, 4)== 'img ' ){
                 $labelType= 'img';
                 $valueLabel= 'src';
                 $isHandle= true;
-            }else if( substr($endSLCase, 0 , 7)== 'script ' ){
+            }else if( Left($endSLCase, 7)== 'script ' ){
                 $labelType= 'script';
                 $valueLabel= 'src';
                 $isHandle= true;
@@ -1451,7 +1457,7 @@ function handleGetContentUrlList($httpUrl, $content, $sType){
             }
             if( $url <> '' ){
                 $urlLCase= strtolower($url);
-                if( $urlLCase <> '#' && substr($urlLCase, 0 , 11) <> 'javascript:' ){
+                if( $urlLCase <> '#' && Left($urlLCase, 11) <> 'javascript:' ){
                     if( instr(vbCrlf() . $urlList . vbCrlf(), vbCrlf() . $url . vbCrlf())== false ){
                         $url= fullHttpUrl($httpUrl, $url);
                         $isHandle= isSonWebSite($url, $httpUrl);
@@ -1471,7 +1477,7 @@ function handleGetContentUrlList($httpUrl, $content, $sType){
             }
         }
     }
-    if( $urlList <> '' ){ $urlList= substr($urlList, 0 , Len($urlList) - 2) ;}
+    if( $urlList <> '' ){ $urlList= Left($urlList, Len($urlList) - 2); }
     $handleGetContentUrlList= $urlList;
     return @$handleGetContentUrlList;
 }
@@ -1483,7 +1489,7 @@ function getInChain($httpUrl, $urlList){
     foreach( $splStr as $key=>$url){
         if( $url <> '' ){
             $urlLCase= strtolower($url);
-            if( substr($urlLCase, 0 , 1) <> '#' && substr($urlLCase, 0 , 11) <> 'javascript:' ){
+            if( Left($urlLCase, 1) <> '#' && Left($urlLCase, 11) <> 'javascript:' ){
                 if( instr(vbCrlf() . $urlList . vbCrlf(), vbCrlf() . $url . vbCrlf())== false ){
                     $url= fullHttpUrl($httpUrl, $url);
                     $isHandle= isSonWebSite($url, $httpUrl);
@@ -1494,7 +1500,7 @@ function getInChain($httpUrl, $urlList){
             }
         }
     }
-    if( $urlList <> '' ){ $urlList= substr($urlList, 0 , Len($urlList) - 2) ;}
+    if( $urlList <> '' ){ $urlList= Left($urlList, Len($urlList) - 2); }
     $getInChain= $urlList;
     return @$getInChain;
 }
@@ -1507,7 +1513,7 @@ function handleScanUrlList($httpurl,$urlList){
     foreach( $splstr as $key=>$url){
         $url=phptrim($url);
         $lCaseUrl=strtolower($url);
-        if( $url<>'' && substr($url, 0 ,10)<>'tencent://' && substr($url, 0 ,11)<>'javascript:' && substr($url, 0 ,1)<>'#' ){
+        if( $url<>'' && left($url,10)<>'tencent://' && left($url,11)<>'javascript:' && left($url,1)<>'#' ){
             $url= fullHttpUrl($httpurl,$url);
             if( instr(vbCrlf() . $c . vbCrlf(),vbCrlf() . $url . vbCrlf())==false ){
                 $c=$c . $url . vbCrlf();

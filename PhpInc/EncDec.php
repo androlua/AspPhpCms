@@ -275,7 +275,7 @@ function HTMLToAscChr($title){
         $s= mid($title, $i, 1);
         $c= $c . 'Chr(' . ord($s) . ')&';
     }
-    if( $c <> '' ){ $c= substr($c, 0 , Len($c) - 1) ;}
+    if( $c <> '' ){ $c= Left($c, Len($c) - 1); }
     $HTMLToAscChr= $c;
     //HTMLToAscChr = "<" & "%=" & C & "%" & ">"
     return @$HTMLToAscChr;
