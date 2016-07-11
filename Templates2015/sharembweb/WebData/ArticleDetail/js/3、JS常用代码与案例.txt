@@ -9,23 +9,27 @@
 【filename】/js/js-use-cases.html
 【flags】|
 【relatedtags】HTML5
-【bodycontent】[&全部换行&][&html转码&]【strong】JS常用代码与案例【/strong】
-【b】js while循环数组另一种方法【/b】
+【bodycontent】[&全部换行&][&html转码&]【《】div class="article_lable">JS常用代码与案例【《】/div>
+【《】div class="article_lable">js while循环数组另一种方法【《】/div>
 while ( (cur = cur.parentNode) ) {
 	bp.unshift( cur );
 }
 
-【b】JS代码借鉴与学习【/b】
+【《】div class="article_lable">JS代码借鉴与学习【《】/div>
 return JSON.parse( data + "" );
 
-【b】循环数组 另一种方法【/b】
+【《】div class="article_lable">循环数组 另一种方法【《】/div>
 splstr=new Array("a","1111","bbbb",2222,"cccc");
 for(var i in splstr){
 	document.write(i+"、"+splstr[i] + "<hr>\n");
 }
 
+【《】div class="article_lable">三元运算符【《】/div>
+var b=5; 
+(b == 5) ? a="true" : a="false"; 
+document.write(" --------------------------- "+a); 
 
 
-{$TitleInSearchEngineList title='JS常用代码与案例'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='JS常用代码与案例'$}
 
 【/bodycontent】 

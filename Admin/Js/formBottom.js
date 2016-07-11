@@ -19,7 +19,14 @@ $(function(){
 		}
 		$(".tabbut li:eq("+ swtichId +")").click()
 	}
-	$("select").addClass("inputstyle") 
+	$("select").addClass("inputstyle")
+	/* 与表单判断起冲突
+	$("input[type=submit]").click(function(){										   
+		$(this).after("正在处理中..."); 
+		$(this).hide()
+	})
+	*/
+	
 })
 
 

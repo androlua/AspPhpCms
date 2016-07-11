@@ -27,8 +27,8 @@
 [Css保存文件设置]{style.css}
 [ASP动作处理设置]{不处理动作}
 [动作文件设置]{}
-[默认HTML设置]{6、手机端NoJs.Html}
-[默认CSS设置]{自定义CSS}
+[默认HTML设置]{3、手机端.Html}
+[默认CSS设置]{10、2016style.css}
 [自定义模板]{}
 [自定义CSS]{\../DataDir\VB模块\服务器\Template\模块功能列表\sharembweb\home\_style.css}
 [自定义模板动作]{}

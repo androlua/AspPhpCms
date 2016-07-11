@@ -148,11 +148,6 @@ Function getPostSql(id, tableName, fieldNameList)
             fieldValue = splxx(2)                                                           'Ä¬ÈÏ×Ö¶ÎÖµ
 
             If InStr(systemFieldList, "," & fieldName & "|") > 0 And InStr("," & fieldList & ",", "," & fieldName & ",") = False Then
-			
-			
-			
-			
-			
 			 
 			
                 if fieldSetType = "date" and fieldValue="" then

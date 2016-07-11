@@ -3,7 +3,7 @@
 
 '判断追加Sql是加Where 还是And   sql = getWhereAnd(sql,addSql)        修改于20141007 加强版
 Function getWhereAnd(ByVal sql, ByVal addSql)
-    Dim LCaseAddSql, AddType 
+    Dim LCaseAddSql, AddType,s
     '追加SQl为空则退出
     If Trim(addSql) = "" Then getWhereAnd = sql : Exit Function 
     If InStr(LCase(sql), " where ") > 0 Then
@@ -21,7 +21,11 @@ Function getWhereAnd(ByVal sql, ByVal addSql)
         ElseIf Left(LCaseAddSql, 4) = "and " Then
             addSql = Mid(addSql, 5)
         End If 
-        sql = sql & AddType & addSql 
+		'对where 改进   20160623   
+		s=lcase(addSql)
+		if s<>"and" and s<>"or" and s<>"where" then
+	        sql = sql & AddType & addSql 
+		end if
     End If   
     getWhereAnd = sql 
 End Function 

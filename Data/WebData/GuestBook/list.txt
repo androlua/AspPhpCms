@@ -1,0 +1,28 @@
+【guestname】匿名
+【adddatetime】2015-04-05 15:09:05
+【bodycontent】
+解决方法:An error occurred on the server when processing the URL. Please contact ASP设置--“调试属性”选项 在哪里啊？ 
+【/bodycontent】
+【reply】
+cmd》inetmgr》进入网站》点ASP图标》展开调试属性》将错误发送到浏览器=true
+【/reply】
+-------------------------------
+【guestname】匿名
+【adddatetime】2015-04-05 15:09:05
+【bodycontent】
+IIS8/IIS7出现ADODB.Connection 错误 '800a0e7a'的解决办法
+【/bodycontent】
+【reply】
+IIS》应用程序池》(右侧)设置应用程序池默认属性》常规》启用 32 位应用程序=True
+【/reply】
+-------------------------------
+【guestname】匿名
+【adddatetime】2015-04-05 15:09:05
+【bodycontent】
+php不能报错，咋办？
+【/bodycontent】
+【reply】
+在php.ini文件中，把display_errors 选项设置为On    display_errors = On
+【/reply】
+-------------------------------
+ 

@@ -102,7 +102,7 @@ function rTrimVBTab($str){
             $isBlankChar= false;
         }
     }
-    $rTrimVBTab= AspRTrim(Left($str, $pos));
+    $rTrimVBTab= aspRTrim(Left($str, $pos));
     return @$rTrimVBTab;
 }
 
@@ -206,7 +206,7 @@ function removeExcessRow($content){
 function cssAddToStyle($content, $AddToStyle){
     $StyleName=''; $YunStyleStr=''; $ReplaceStyleStr=''; $c ='';
     if( instr($AddToStyle, '{') > 0 ){
-        $StyleName= AspTrim(mid($AddToStyle, 1, instr($AddToStyle, '{') - 1));
+        $StyleName= aspTrim(mid($AddToStyle, 1, instr($AddToStyle, '{') - 1));
     }
     $YunStyleStr= FindCssStyle($content, $StyleName);
     $ReplaceStyleStr= CssStyleAddToParam($YunStyleStr, $AddToStyle); //Css样式累加参数
@@ -223,7 +223,7 @@ function checkCssStyle($content, $StyleStr){
     $StyleName ='';
     $checkCssStyle= true;
     if( instr($StyleStr, '{') > 0 ){
-        $StyleName= AspTrim(mid($StyleStr, 1, instr($StyleStr, '{') - 1));
+        $StyleName= aspTrim(mid($StyleStr, 1, instr($StyleStr, '{') - 1));
     }
     if( $StyleName== '' ){
         $checkCssStyle= false;
@@ -252,9 +252,9 @@ function cssStyleAddToParam( $CssStyleStr, $CssStyleStrTwo){
     }
     $splStr= aspSplit(Replace($CssStyleStr . ';' . $CssStyleStrTwo, vbCrlf(), ''), ';');
     foreach( $splStr as $key=>$s){
-        $s= AspTrim($s);
+        $s= aspTrim($s);
         if( instr($s, ':') > 0 && $s <> '' ){
-            $ParamName= AspTrim(mid($s, 1, instr($s, ':') - 1));
+            $ParamName= aspTrim(mid($s, 1, instr($s, ':') - 1));
             if( instr('|' . $ParamList . '|', '|' . $ParamName . '|')== false ){
                 $ParamList= $ParamList . $ParamName . '|';
                 //Call Echo("ParamName",ParamName)
@@ -275,13 +275,13 @@ function findCssStyle( $content, $StyleName){
     $splStr=''; $s=''; $TempS=''; $FindStyleName ='';
     //CAll Echo("StyleName",StyleName)
     //CAll Echo("Content",Content)
-    $StyleName= AspTrim($StyleName);
+    $StyleName= aspTrim($StyleName);
     $splStr= aspSplit($content, vbCrlf());
     foreach( $splStr as $key=>$s){
         if( instr($s, $StyleName) > 0 ){
-            $FindStyleName= AspTrim($s);
+            $FindStyleName= aspTrim($s);
             if( instr($FindStyleName, '{') > 0 ){
-                $FindStyleName= AspTrim(mid($FindStyleName, 1, instr($FindStyleName, '{') - 1));
+                $FindStyleName= aspTrim(mid($FindStyleName, 1, instr($FindStyleName, '{') - 1));
             }
             if( $FindStyleName== $StyleName ){
                 //Call Eerr( FindStyleName , StyleName)
@@ -466,7 +466,7 @@ function handleReadCssContent($cssFilePath, $LabelName, $isHandleCss){
 
 //处理Css样式里PX或T
 function handleCssPX( $nValue){
-    $nValue= strtolower(AspTrim($nValue));
+    $nValue= strtolower(aspTrim($nValue));
     if( Right($nValue, 1) <> '%' && Right($nValue, 2) <> 'px' ){
         $nValue= $nValue . 'px';
     }

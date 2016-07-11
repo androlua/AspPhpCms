@@ -5,23 +5,25 @@
 ¡¾webdescription¡¿¡¿Ìá¹©ASP×ªPHP×îÐÂ°æ±¾ÏÂÔØ£¬¹úÄÚÊ×´´¹¦ÄÜ×îÈ«µÃASP×ªPHPÏÂÔØ QQ313801120
 ¡¾sortrank¡¿2
 ¡¾author¡¿sharembweb
-¡¾adddatetime¡¿2016-01-11 10:14:10
+¡¾adddatetime¡¿2015-02-11 10:14:10
 ¡¾filename¡¿/asptophp/download.html
 ¡¾flags¡¿|c|
 ¡¾relatedtags¡¿ÔÚÏßASP×ªPHP
 ¡¾bodycontent¡¿
-ASP×ªPHP³ÌÐò v1.0 ÊÇÒ»¿î¿ÉÒÔ°ÑASP´úÂë×ª»»³ÉPHP´úÂë£¬Ò²¿ÉÒÔ×ª»»³É.Net/javascriptµÈÓïÑÔ£¬À©Õ¹ÐÔ·Ç³£Ç¿¡£<br>
-<b>ASP×ªPHPÂÌÉ«Ãâ°²×°Èí¼þÏÂÔØµØÖ·</b><br>
+ASP×ªPHP³ÌÐò v1.0 ÊÇÒ»¿î¿ÉÒÔ°ÑASP´úÂë×ª»»³ÉPHP´úÂë£¬Ò²¿ÉÒÔ×ª»»³É.Net/javascriptµÈÓïÑÔ£¬À©Õ¹ÐÔ·Ç³£Ç¿¡£<br><br>
+
+ASP×ªPHPÂÌÉ«Ãâ°²×°Èí¼þÏÂÔØµØÖ·¡¾article_lable¡¿
 <ul class="list">
 
 <li><a href="http://pan.baidu.com/s/1nv4EdZV"  rel="nofollow" target="_blank">¡¾baiduÍøÅÌ¡¿ASP×ªPHPÂÌÉ«Ãâ°²×°Èí¼þ</a></li> 
 </ul>
 <br>
-<b>ÏÂÃæÎª<strong>ASP×ªPHP</strong>Ô´ÂëÔÚ¸÷´óÔ´ÂëÏÂÔØÀàÍøÕ¾µØÖ·£º</b><br>
+
+ÏÂÃæÎª<strong>ASP×ªPHP</strong>Ô´ÂëÔÚ¸÷´óÔ´ÂëÏÂÔØÀàÍøÕ¾µØÖ·£º¡¾article_lable¡¿
 
 <ul class="list">
 
-<li><a href="https://github.com/313801120/AspToPhp"  rel="nofollow" target="_blank">¡¾GithubÏÂÔØ¡¿ASP×ªPHP³ÌÐò ×îÐÂ°æ±¾</a></li>
+<li><a href="https://github.com/313801120/AspToPhp"  rel="nofollow" target="_blank">¡¾githubÏÂÔØ¡¿ASP×ªPHP³ÌÐò ×îÐÂ°æ±¾</a></li>
 <li><a href="http://down.chinaz.com/soft/37718.htm"  rel="nofollow" target="_blank">¡¾chinazÏÂÔØ¡¿ASP×ªPHP³ÌÐò v1.0(ASPÔ´Âë) ÀïÃæÓÐ±¾Õ¾µÄä¯ÀÀµØÖ·</a></li>
 <li><a href="http://member.down.admin5.com/asp/130795.html"  rel="nofollow" target="_blank">¡¾admin5ÏÂÔØ¡¿ASP×ªPHP³ÌÐò v1.0(ASPÔ´Âë) ÀïÃæÓÐ±¾Õ¾µÄä¯ÀÀµØÖ·</a></li> 
 <li><a href="http://down.cnzz.cn/201601/29838db7.shtml"  rel="nofollow" target="_blank">¡¾cnzzÏÂÔØ¡¿ASP×ªPHP³ÌÐò v1.0(ASPÔ´Âë) ÀïÃæÓÐ±¾Õ¾µÄä¯ÀÀµØÖ·</a></li> 
@@ -51,11 +53,12 @@ ASP×ªPHP³ÌÐò v1.0 ÊÇÒ»¿î¿ÉÒÔ°ÑASP´úÂë×ª»»³ÉPHP´úÂë£¬Ò²¿ÉÒÔ×ª»»³É.Net/javascriptµ
 
 </ul>
 <br>
-{$TitleInSearchEngineList title='ASP×ªPHP³ÌÐò v1.0ÏÂÔØ'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASP×ªPHP³ÌÐò v1.0ÏÂÔØ'$}
 
 <br>
 
 ¡¾/bodycontent¡¿
+
 
 
 

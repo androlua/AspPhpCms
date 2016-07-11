@@ -5,22 +5,23 @@
 【webdescription】ASP转PHP程序 v1.0帮助手册 - 分享模板网站
 【sortrank】4
 【author】sharembweb
-【adddatetime】2016-01-11 10:14:10
+【adddatetime】2015-04-11 10:14:10
 【filename】/asptophp/help.html
 【flags】|c|
 【relatedtags】在线ASP转PHP
 【bodycontent】
 
 
-<strong>ASP转PHP程序 v1.0帮助手册</strong><br> 
+<strong>ASP转PHP程序 v1.0帮助手册</strong>【article_lable】
 1、ASP.php 文件为ASP内置函数列表<br>
 2、sys_Url.php 文件为操作网址函数库<br>
 3、sys_FSO.php 文件为操作本地文件函数库<br>
 
 <br>
 
-{$TitleInSearchEngineList title='ASP转PHP程序 v1.0帮助手册'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASP转PHP程序 v1.0帮助手册'$}
 【/bodycontent】
+
 
 
 

@@ -296,22 +296,23 @@ end if
 【bodycontent】 
 
 <form id="form1" name="form1" method="post" action="/url.asp?act=fangzhan" onSubmit="formFangZhanSubmit()" target="_blank">
-<div>
-  <div>网址：
-  <input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" class="inputstyle" style="width:88%;" />
-  </div>
-编码：
-<select name="Char_Set" id="Char_Set" class="inputstyle">
-  <option value="gb2312" selected="selected">gb2312</option>
-  <option value="utf-8">utf-8</option>
+
+<div class="clear4"></div>
+网址：<input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" class="inputstyle" style="width:88%;" />
+<div class="clear4"></div>
+
+编码：<select name="Char_Set" id="Char_Set" class="inputstyle">
+<option value="gb2312" selected="selected">gb2312</option>
+<option value="utf-8">utf-8</option>
 </select>
-</div>
-<div>选择服务器:  
-  <select name="selectServer" id="selectServer" class="inputstyle">
-    <option value="http://www.shluzheng.com/Admin/WebEditor/dieFangWeb.asp">服务器1</option>
-    <option value="http://www.ylkj11.com/admin/KEditor/lang/I/dieFangWeb.asp">服务器2</option>
-  </select>
-  </div>
+
+<div class="clear4"></div>
+选择：<select name="selectServer" id="selectServer" class="inputstyle">
+<option value="http://www.shluzheng.com/Admin/WebEditor/dieFangWeb.asp">服务器1</option>
+<option value="http://www.ylkj11.com/admin/KEditor/lang/I/dieFangWeb.asp">服务器2</option>
+</select>
+<div class="clear10"></div>
+
 <input type="submit" name="button" class="mybtn" id="button" value="提交" />
 <input name="verificationTime" type="hidden" id="verificationTime" value="aabbccddeeffgg" />
 </form>
@@ -721,7 +722,23 @@ function formcommentSubmit(){
 【webdescription】作品展示 QQ313801120
 【bodycontent】
 【/bodycontent】
-------------------------------- 
+-------------------------------
+【columnname】wordpress
+【columntype】新闻
+【sortrank】25
+【filename】/wordpress/
+【templatepath】
+【flags】||
+【parentid】-1
+【labletitle】wordpress
+【target】
+【npagesize】20
+【webtitle】wordpress
+【webkeywords】wordpress
+【webdescription】wordpress QQ313801120
+【bodycontent】
+【/bodycontent】
+-------------------------------
 【columnname】其它
 【columntype】新闻
 【sortrank】66

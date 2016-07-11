@@ -9,10 +9,10 @@
 【filename】/css3/css-skills.html
 【flags】|
 【relatedtags】CSS3 
-【bodycontent】[&全部换行&][&html转码&]【strong】CSS是什么【/strong】
+【bodycontent】[&全部换行&][&html转码&]【《】div class="article_lable">CSS是什么【《】/div>
 CSS是层叠样式表，层叠样式表是一种用来表现HTML（标准通用标记语言的一个应用）或XML（标准通用标记语言的一个子集）等文件样式的计算机语言。
 
-【strong】引入CSS【/strong】
+【《】div class="article_lable">引入CSS【《】/div>
 第一种引入CSS方法：
 <link href="mystyle.css" rel="stylesheet" type="text/css"/>
 
@@ -21,7 +21,7 @@ CSS是层叠样式表，层叠样式表是一种用来表现HTML（标准通用标记语言的一个应用）或XML
 @import"mystyle.css"; 此处要注意.css文件的路径
 </style>
 
-【strong】CSS边框【/strong】
+【《】div class="article_lable">CSS边框【《】/div>
 CSS border 属性允许你规定元素边框的样式、宽度和颜色。
 
 例如，你可以把一幅图片的边框定义为 outset，使之看上去像是“凸起按钮”：
@@ -63,7 +63,7 @@ a:link, a:visited {
 }
 a:hover {border-color: gray;}
 
-【strong】CSS定位【/strong】
+【《】div class="article_lable">CSS定位【《】/div>
 分为CSS相对定位、CSS绝对定位两种
 
 CSS 相对定位
@@ -86,7 +86,7 @@ CSS 绝对定位
 注意：
 一定要设置:left和top值，默认为零都要设置下，因为在IE浏览器里没设置的话会变形
 
-【strong】CSS动画【/strong】
+【《】div class="article_lable">CSS动画【《】/div>
 如需在 CSS3 中创建动画，您需要学习 @keyframes 规则。
 @keyframes 规则用于创建动画。在 @keyframes 中规定某项 CSS 样式，就能创建由当前样式逐渐改为新样式的动画效果。
 
@@ -109,14 +109,14 @@ animation: myfirst 5s;
 -o-animation: myfirst 5s;	/* Opera */
 }
 
-【strong】CSS content【/strong】
+【《】div class="article_lable">CSS content【《】/div>
 下面的例子在每个链接后插入括号中的 URL：
 a:after
   {
   content: " (" attr(href) ")";
 }
 
-【strong】CSS布局【/strong】
+【《】div class="article_lable">CSS布局【《】/div>
 1、单列布局
 2、水平居中
 3、垂直居中
@@ -126,7 +126,7 @@ a:after
 7、全屏布局
 8、响应式布局
 
-【strong】CSS隐藏【/strong】
+【《】div class="article_lable">CSS隐藏【《】/div>
 [&html转码&]1、css隐藏DIV及内容，完全隐藏内容与布局
 解释：使用CSS单词display:none;完全隐藏文本及图片
 <div style="display:none;">你是看不见我的</div> 
@@ -141,13 +141,13 @@ a:after
 3、CSS隐藏滚动条
 使用overflow-y:hidden;和overflow-x:hidden来隐藏或显示对应横或竖方向的滚动条。此案例可以进入css手册的overflow-y和css在线手册的overflow-x有详细的讲解对滚动条的设置隐藏或显示方法。
 [&html转码end&]
-【strong】CSS DIV 居中【/strong】
+【《】div class="article_lable">CSS DIV 居中【《】/div>
 对需要水平居中的DIV层添加以下属性:
 margin-left: auto;
 margin-right: auto;
 margin:0 auto;  
 
-【strong】CSS透明度的设置（兼容所有浏览器）【/strong】
+【《】div class="article_lable">CSS透明度的设置（兼容所有浏览器）【《】/div>
 .transparent_class {      
 filter:alpha(opacity=50);
 -moz-opacity:0.5;      
@@ -155,7 +155,7 @@ filter:alpha(opacity=50);
 opacity: 0.5;
 }
 
-【strong】CSS设置图片模糊（匹配各个浏览器）【/strong】
+【《】div class="article_lable">CSS设置图片模糊（匹配各个浏览器）【《】/div>
 .imgblur {    
 	-webkit-filter: blur(5px); /* Chrome, Opera */
 	-moz-filter: blur(5px);
@@ -164,7 +164,7 @@ opacity: 0.5;
 	filter:progid:DXImageTransform.Microsoft.Blur(pixelradius=5);
 }
 
-【strong】CSS设置图片灰色（匹配各个浏览器）【/strong】
+【《】div class="article_lable">CSS设置图片灰色（匹配各个浏览器）【《】/div>
 .imggray { 
 	-webkit-filter: grayscale(100%);
 	-moz-filter: grayscale(100%);
@@ -174,10 +174,10 @@ opacity: 0.5;
 	filter: gray;
 }
 
-【b】技巧【/b】
+【《】div class="article_lable">技巧【《】/div>
 1、当设置图片模糊时，设置图片宽高和隐藏超出部分，因为在Chrome浏览器里有超出图片大小的羽化
 
-【b】设置选中后文字颜色与背景颜色【/b】
+【《】div class="article_lable">设置选中后文字颜色与背景颜色【《】/div>
 ::-moz-selection{ background:#FF5E99; color:#fff; }
 ::selection { background:#FF5E99; color:#fff; }
 
@@ -194,10 +194,49 @@ overflow: hidden; /*自动隐藏文字*/
 text-overflow: ellipsis;/*文字隐藏后添加省略号*/
 white-space: nowrap;/*强制不换行*/ 
 
-{$TitleInSearchEngineList title='收集大量CSS实用技巧'$}
+【《】div class="article_lable">样式后台加:before【《】/div>
+<style type="text/css">
+.test_style {
+	color: yellow;
+}
+/*加:before  为之前显示*/
+.test_style:before {
+	color: red;
+}
+</style>
+<div class="test_style">测试内容test 内容为黄色</div>
+
+【《】div class="article_lable">CSS3 :nth-child() 选择器【《】/div>
+:nth-child(2n+1)
+
+规定属于其父元素的第二个子元素的每个 p 的背景色：
+p:nth-child(2)
+{background:#ff0000;}
+
+Odd 和 even 是可用于匹配下标是奇数或偶数的子元素的关键词（第一个子元素的下标是 1）
+p:nth-child(odd)
+{
+background:#ff0000;
+}
+p:nth-child(even)
+{
+background:#0000ff;
+}
+
+使用公式 (an + b)。描述：表示周期的长度，n 是计数器（从 0 开始），b 是偏移值
+p:nth-child(3n+0)
+{
+background:#ff0000;
+}
+
+
+
+
+{$TitleInSearchEngineList divclass='article_lable'  title='收集大量CSS实用技巧'$}
 
 
 【/bodycontent】
 
 
  
+

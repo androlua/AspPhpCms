@@ -83,7 +83,7 @@ function getGoToUrlNoFileName(){
     return @$getGoToUrlNoFileName;
 }
 //移除网址文件名部分
-function remoteUrlFileName($url){
+function remoteUrlFileName( $url){
     if( Right($url, 1) <> '/' ){
         if( strrpos($url, '/') > 0 ){
             $url= mid($url, 1, strrpos($url, '/'));
@@ -93,7 +93,7 @@ function remoteUrlFileName($url){
     return @$remoteUrlFileName;
 }
 //移除网址参数部分
-function remoteUrlParam($url){
+function remoteUrlParam( $url){
     if( Right($url, 1) <> '?' ){
         if( strrpos($url, '?') > 0 ){
             $url= mid($url, 1, strrpos($url, '?')-1);
@@ -103,18 +103,41 @@ function remoteUrlParam($url){
     return @$remoteUrlParam;
 }
 //获得网址目录部分
-function getUrlDir($url){
-    $url=AspTrim($url);
-    if( left($url,7)=='http://' ){
-        $url= mid($url,8,-1);
+function getUrlDir( $url){
+    $getUrlDir=getHandleUrlValue($url,'网址目录');
+    return @$getUrlDir;
+}
+//获得处理后url值 20160701
+function getHandleUrlValue( $url, $sType){
+    $sType='|'. $sType .'|';
+    if( instr($url,'://')>0 ){
+        $url=mid($url,instr($url,'://')+3,-1);
     }
+    //去掉域名
     if( instr($url,'/')>0 ){
         $url=mid($url,instr($url,'/')+1,-1);
     }
-    $getUrlDir=$url;
-    return @$getUrlDir;
-}
 
+    if( instr($sType,'|网址目录|')>0 ){
+        if( instr($url,'/')>0 ){
+            $url=mid($url,1,strrpos($url,'/')-1);
+        }
+    }else{
+        if( instr($url,'/')>0 ){
+            $url=mid($url,strrpos($url,'/')+1,-1);
+        }
+        if( instr($url,'?')>0 ){
+            $url=mid($url,1,instr($url,'?')-1);
+        }
+    }
+    if( instr($sType,'|名称|')>0 || instr($sType,'|name|')>0 ){
+        if( instr($url,'.')>0 ){
+            $url=mid($url,1,strrpos($url,'.')-1);
+        }
+    }
+    $getHandleUrlValue=$url;
+    return @$getHandleUrlValue;
+}
 
 //获取客户端IP地址第二种
 function getIP2(){
@@ -141,7 +164,7 @@ function getIP(){
     }else{
         $strIPAddr= ServerVariables('HTTP_X_FORWARDED_FOR');
     }
-    $getIP= AspTrim(mid($strIPAddr, 1, 30));
+    $getIP= aspTrim(mid($strIPAddr, 1, 30));
     return @$getIP;
 }
 
@@ -164,7 +187,7 @@ function getRemoteIP(){
 function handleHttpUrl($httpUrl){
     $headStr=''; $url ='';
     if( isNul($httpUrl) ){ return ''; }//为空则退出
-    $httpUrl= Replace(AspTrim($httpUrl), '\\', '/');
+    $httpUrl= Replace(aspTrim($httpUrl), '\\', '/');
     $headStr= mid($httpUrl, 1, instr($httpUrl, ':') + 2);
     $httpUrl= mid($httpUrl, instr($httpUrl, ':') + 3,-1);
     $httpUrl= Replace($httpUrl, 'http://', '【|http|】');
@@ -329,7 +352,7 @@ function getWebSite( $httpUrl){
     //新版获得域名方法
     $url=''; $tempHttpUrl=''; $is_WebSite='';$httpHead='';
     $tempHttpUrl= $httpUrl;
-    $url= AspTrim(strtolower(Replace($httpUrl, '?', '/')));
+    $url= aspTrim(strtolower(Replace($httpUrl, '?', '/')));
     $url= Replace(Replace($url, '\\', '/'), 'http://', '');
     if( instr($url, '/') > 0 ){ $url= mid($url, 1, instr($url, '/') - 1) ;}
     $url= 'http://' . $url . '/';
@@ -371,7 +394,7 @@ function getWebSite( $httpUrl){
     }
     $is_WebSite= false; //是域名为假
     $c= '.com.hk|.sh.cn|.com.cn|.net.cn|.org.cn';
-    $c= $c . '|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me';
+    $c= $c . '|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me|.wiki';
     $splStr= aspSplit($c, '|');
     foreach( $splStr as $key=>$s){
         if( $s <> '' ){
@@ -411,15 +434,17 @@ function isHttpUrl($url){
 }
 
 //完整网址
+//对这个处理 style="background: url(20130510162636_96168.jpg) no-repeat scroll center top; height: 426px;cursor:pointer; width: 100%; margin:0 auto;" 20160701
 function fullHttpUrl( $httpUrl, $url){
     //On Error Resume Next
     //清除错误 要不然会报错
-    $rootUrl=''; $thisUrl=''; $splStr=''; $i=''; $s=''; $c=''; $parentUrl=''; $parentParentUrl=''; $parentParentParentUrl=''; $rootWebSite=''; $thisWebSite=''; $handleYes ='';
-    $httpUrl= pHPTrim($httpUrl); //清除两边空格
-    $url= pHPTrim($url); //清除两边空格
-
+    $rootUrl=''; $thisUrl=''; $splStr=''; $i=''; $s=''; $c=''; $parentUrl=''; $parentParentUrl=''; $parentParentParentUrl=''; $rootWebSite=''; $thisWebSite=''; $handleYes='';$lCaseUrl='';
+    $styleStart='';$styleEnd='';
+    $httpUrl= PHPTrim($httpUrl); //清除两边空格
+    $url= PHPTrim($url); //清除两边空格
+    $lCaseUrl=strtolower($url);
     if( $url== '' ){ $fullHttpUrl= '' ; return @$fullHttpUrl; }//网址为空退出(20150805)
-    if( AspTrim($httpUrl)== '' ){ $fullHttpUrl= $url ; return @$fullHttpUrl; }//主网址为空退出 返回网址
+    if( aspTrim($httpUrl)== '' ){ $fullHttpUrl= $url ; return @$fullHttpUrl; }//主网址为空退出 返回网址
     $httpUrl= Replace($httpUrl, '\\', '/'); //把网址\转/符号
     $url= Replace($url, '\\', '/'); //把网址\转/符号
 
@@ -428,8 +453,8 @@ function fullHttpUrl( $httpUrl, $url){
         $fullHttpUrl= 'http:' . $url;
         return @$fullHttpUrl;
     }
-
-
+    //处理style样式里背景图片
+    $url=hanldeStyleBackgroundUrl($url,$styleStart,$styleEnd);
     $rootUrl= getWebSite($httpUrl); //主域名，也就是主网址
     $rootWebSite= $rootUrl;
     $thisWebSite= getWebSite($url);
@@ -443,7 +468,7 @@ function fullHttpUrl( $httpUrl, $url){
         $s= $splStr[$i];
         $c= $c . $s . '/';
     }
-    $url= AspTrim($url); //去除网址左右空格
+    $url= aspTrim($url); //去除网址左右空格
     $handleYes= false; //操作为假
     if( $url <> '' && instr(Left($url, 10), 'www.')== false && instr(Left($url, 10), 'http://')== false && instr(Left($url, 10), 'https://')== false ){
         $handleYes= true;
@@ -481,9 +506,25 @@ function fullHttpUrl( $httpUrl, $url){
             $url= 'https://' . $url;
         }
     }
-    $fullHttpUrl= $url;
+    $fullHttpUrl= $styleStart . $url . $styleEnd;
 
     return @$fullHttpUrl;
+}
+//处理样式里背景图片20160701
+function hanldeStyleBackgroundUrl( $url,$styleStart,$styleEnd){
+    $lCaseUrl='';
+    $url= PHPTrim($url); //清除两边空格
+    $lCaseUrl=strtolower($url);
+    $url= Replace($url, '\\', '/'); //把网址\转/符号
+    if( instr($url,'background:')>0 && instr($url,'(')>0 && instr($url,')')>0 ){
+        $styleStart=mid($url,1,instr($url,'('));
+        $styleEnd=mid($url,instr($url,')'),-1);
+        $url=mid($url,len($styleStart)+1,-1);
+        $url=phptrim(mid($url,1,instr($url,')')-1));
+        $url=replace(replace($url,'\'',''),'"','');
+    }
+    $hanldeStyleBackgroundUrl=$url;
+    return @$hanldeStyleBackgroundUrl;
 }
 
 //批量处理网址完整20150728
@@ -630,6 +671,16 @@ function handleConentUrl($httpUrl, $content, $sType, &$PubAHrefList, &$PubATitle
                     $c= $c . $LalStr;
                 }
                 $i= $i + $nLen;
+
+            }else if( $LalType== '<input ' &&(instr($sType, '|src|') > 0 || instr($sType, '|*|') > 0) && instr(strtolower($LalStr),' src=')>0 ){
+                $nLen= Len($LalStr) - 1;
+                $c= $c . handleLink($httpUrl, $LalStr, 'src', '', '', $PubAHrefList, $PubATitleList);
+                $i= $i + $nLen;
+
+            }else if( instr($sType, '|imgstyle|') > 0 ){
+                $nLen= Len($LalStr) - 1;
+                $c= $c . handleLink($httpUrl, $LalStr, 'style', '', '', $PubAHrefList, $PubATitleList);
+                $i= $i + $nLen;
             }else{
                 $c= $c . $s;
             }
@@ -670,7 +721,7 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
     $content= Replace(Replace($content, ' =', '='), ' =', '=');
     $TempContent= strtolower($content);
     //没有链接退出
-    if( instr($TempContent, ' href=')== 0 && instr($TempContent, ' src=')== 0 ){
+    if( instr($TempContent, ' href=')== 0 && instr($TempContent, ' src=')== 0 && $sType<>'style' ){
         $handleLink= '';
         return @$handleLink;
     }else if( instr($TempContent, ' href=\\"') > 0 ){
@@ -689,7 +740,7 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
             if( $UrlOrContent== 'replacedir' ){
                 $HandleUrl= $tempHttpUrl . handleFilePathArray($HandleUrl)[2];
             }
-            $PubAHrefList= $PubAHrefList . $HandleUrl . vbCrlf();
+            $PubAHrefList= $PubAHrefList . hanldeStyleBackgroundUrl($HandleUrl,'','') . vbCrlf();
             //链接标题
             $s1= instr($content, '>');
             $s2= Right($content, Len($content) - $s1);
@@ -725,7 +776,7 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
             if( $UrlOrContent== 'replacedir' ){
                 $HandleUrl= $tempHttpUrl . handleFilePathArray($HandleUrl)[2];
             }
-            $PubAHrefList= $PubAHrefList . $HandleUrl . vbCrlf();
+            $PubAHrefList= $PubAHrefList . hanldeStyleBackgroundUrl($HandleUrl,'','') . vbCrlf();
             //链接标题
             $s1= instr($content, '>');
             $s2= Right($content, Len($content) - $s1);
@@ -761,7 +812,7 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
             if( $UrlOrContent== 'replacedir' ){
                 $HandleUrl= $tempHttpUrl . handleFilePathArray($HandleUrl)[2];
             }
-            $PubAHrefList= $PubAHrefList . handleHttpUrl($HandleUrl) . vbCrlf();
+            $PubAHrefList= $PubAHrefList . hanldeStyleBackgroundUrl(handleHttpUrl($HandleUrl),'','') . vbCrlf();
             //链接标题
             $s1= instr($content, '>');
             $s2= Right($content, Len($content) - $s1);
@@ -785,17 +836,16 @@ function handleLink($httpUrl, $content, $sType, $SetStr, $UrlOrContent, &$PubAHr
         return @$handleLink;
     }
 
-
-
     if( $UrlOrContent <> 'url' ){ $handleLink= $content ;}
     createAddFile('出错内容列表.txt', $httpUrl . vbCrlf() . $content . vbCrlf() . $sType . vbCrlf() . $SetStr . vbCrlf() . $UrlOrContent . vbCrlf() . '----------------------' . vbCrlf());
     return @$handleLink;
 }
 
+
 //获得网站目录文件夹名称 \Templates\WeiZhanLue\  得到WeiZhanLue
 function getEndUrlHandleName($FileUrl){
     $url ='';
-    $url= Replace(AspTrim($FileUrl), '\\', '/');
+    $url= Replace(aspTrim($FileUrl), '\\', '/');
     if( Right($url, 1)== '/' ){ $url= mid($url, 1, Len($url) - 1) ;}
     $url= mid($url, strrpos($url, '/') + 1,-1);
     $getEndUrlHandleName= $url;
@@ -1003,7 +1053,7 @@ function getLinkUrl( $LinkStr, $LinkType){
 function localUrlOrRemoteUrl($filePath, $UrlYes){
     $httpUrl ='';
     $UrlYes= false;
-    $filePath= AspTrim($filePath);
+    $filePath= aspTrim($filePath);
     $httpUrl= Replace($filePath, '\\', '/');
     if( Left(strtolower($httpUrl), 7)== 'http://' || Left(strtolower($httpUrl), 4)== 'www.' || Left(strtolower($httpUrl), 4)== '[网址]' ){
         $UrlYes= true;
@@ -1018,7 +1068,7 @@ function localUrlOrRemoteUrl($filePath, $UrlYes){
 //检测是否为远程网址
 function checkRemoteUrl($url){
     $httpUrl ='';
-    $url= AspTrim($url);
+    $url= aspTrim($url);
     $httpUrl= Replace(unSetFileName($url), '\\', '/');
     $checkRemoteUrl= false;
     if( Left(strtolower($httpUrl), 7)== 'http://' || Left(strtolower($httpUrl), 4)== 'www.' || Left(strtolower($httpUrl), 4)== '[网址]' ){
@@ -1066,16 +1116,16 @@ function getUrlAddToParam( $url, $AddToUrl, $sType){
     $AddToUrl= handleHttpUrl($AddToUrl);
 
     //处理网址
-    $url= AspTrim($url);
+    $url= aspTrim($url);
     //当前网址最后一个字符为?或&给删除掉 无用
     if( Right($url, 1)== '?' || Right($url, 1)== '&' ){
-        $url= AspTrim(mid($url, 1, Len($url) - 1));
+        $url= aspTrim(mid($url, 1, Len($url) - 1));
     }
     //处理追加网址
-    $AddToUrl= AspTrim($AddToUrl);
+    $AddToUrl= aspTrim($AddToUrl);
     //追加网址最后一个字符为?或&给删除掉 无用
     if( Left($AddToUrl, 1)== '?' || Left($AddToUrl, 1)== '&' ){
-        $AddToUrl= AspTrim(mid($AddToUrl, 2,-1));
+        $AddToUrl= aspTrim(mid($AddToUrl, 2,-1));
     }
     //网址为空则返回追加网址 并退出
     if( $url== '' ){ $getUrlAddToParam= '?' . $AddToUrl ; return @$getUrlAddToParam; }
@@ -1286,12 +1336,12 @@ function handleHttpUrlArray( $url){
     $FileType= mid($fileName, strrpos($fileName, '.') + 1,-1);
     $httpAgreement= mid($url, 1, instr($url, ':') - 1);
     $webSite= getWebSite($url);
-    ASPEcho('url', $url);
+    //Call echo("url", url)
     //域名为空则发粗获得文件夹目录20160613
     if( $webSite<>'' ){
         $folderDir= mid($urlDir, Len($webSite),-1);
     }else{
-        ASPEcho('注意：不是有效网址',$url);
+        echoYellowB('注意：不是有效网址',$url);
     }
     //HandleHttpUrlArray = Array(url, urlDir, fileName, fileType, fileStr, HttpAgreement, webSite, folderDir)
     $arrayData ='';
@@ -1319,7 +1369,7 @@ function handleRemoteJsCssParam($content, $urlList, $sType){
             $fileName= $dataArray[2];
             $fileType= strtolower($dataArray[3]);
             $fileStr= strtolower($dataArray[4]);
-            if(($fileType== 'js' || $fileType== 'css') && instr($fileStr, '?') > 0 ){
+            if(($fileType== 'js' || $fileType== 'css') && instr($fileStr, '?') > 0 && instr($fileName,'.')>0 ){
                 $replaceStr= mid($url, 1, instr($url, '?') - 1);
                 //call echo(replaceStr,fileStr)
                 //这种替换方法还是不精准，待改进
@@ -1420,7 +1470,7 @@ function getContentUrlList($httpUrl, $content){
 //处理获得内容里网址列表(20161025)
 function handleGetContentUrlList($httpUrl, $content, $sType){
     $i=''; $s=''; $nextS=''; $endSLCase=''; $endS=''; $urlStr=''; $nLen=''; $urlList=''; $url=''; $urlLCase=''; $webSite=''; $labelType=''; $isHandle=''; $valueLabel ='';
-    $sType= '|' . strtolower(AspTrim($sType)) . '|';
+    $sType= '|' . strtolower(aspTrim($sType)) . '|';
     $webSite= getwebsite($httpUrl);
     for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
@@ -1566,16 +1616,13 @@ function handleDifferenceWebSiteList($httpurl,$urllist){
     return @$handleDifferenceWebSiteList;
 }
 
-
-
-
 //检测域名存在 20160511   例：checkDomainName('http://www.baidu.com/a/b/sdf')
 
 
 //获得url状态说明
 function getHttpUrlStateAbout($nState){
     $s='';$c='';
-    $s=cstr(AspTrim($nState));
+    $s=cstr(aspTrim($nState));
     switch ( $s ){
         case '100' ; $c='继续';break;
         case '101' ; $c='开关协议';break;

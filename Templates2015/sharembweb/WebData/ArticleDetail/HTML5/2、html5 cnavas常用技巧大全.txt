@@ -164,7 +164,7 @@ ctx.lineTo(200, 300);
 ctx.closePath(); /*可选步骤，关闭绘制的路径*/
 ctx.stroke();
 
-{$TitleInSearchEngineList title='html5 cnavas常用技巧大全'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='html5 cnavas常用技巧大全'$}
 [&全部换行end&]
 <br>
 <p>本文版权归作者所有，转摘请注明作者和出处！<br />

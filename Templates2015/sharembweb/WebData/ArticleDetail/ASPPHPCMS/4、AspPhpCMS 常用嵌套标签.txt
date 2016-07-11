@@ -5,7 +5,7 @@
 【webdescription】ASPPHPCMS常用嵌套标签 - 分享模板网站
 【sortrank】4
 【author】sharembweb
-【adddatetime】2016-02-22 18:33:11
+【adddatetime】2015-04-22 18:33:11
 【filename】/ASPPHPCMS/Common-tags.html
 【customaurl】
 【flags】|c|
@@ -42,9 +42,10 @@ ArticleList 信息列表
 <a href="http://sharembweb.com/tagdoc/v1/" class="ablue" target="_blank">AspPhpCMS v1标签手册</a>
 
  
-{$TitleInSearchEngineList title='ASPPHPCMS常用嵌套标签'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASPPHPCMS常用嵌套标签'$}
 
 【/bodycontent】
 
 
  
+

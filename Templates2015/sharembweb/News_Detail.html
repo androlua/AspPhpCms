@@ -6,8 +6,11 @@
 <meta name="keywords" content="{$Web_KeyWords$}" />
 <meta name="description" content="{$Web_Description$}" /> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
 <link rel="Shortcut Icon" href="[$cfg_webimages$]favicon.ico" />
-<!--#JS#-->
+<script src="/Jquery/Jquery.Min.js" type="text/javascript"></script>
+<script src="[$WebImages$]runAction.js" type="text/javascript"></script><!--#JS#-->
 <link href="[$WebCss$]style.css" rel="stylesheet" type="text/css" /><!--#Css#-->
 </head>
 <body>
@@ -23,10 +26,10 @@
             <li class="title"><h1>[$detailTitle$]</h1></li>
             <li class="content">
            <div class="articletimes">作者：[$glb_artitleAuthor$] 发表于：[$glb_artitleAdddatetime format_time='1'$]</div>
-           		<div style="font-size:16px;padding:0 20px;line-height:30px;  font-family: SimSun;">
+                <div class="articlecontent">
                 [$detailContent$]
                 [$glb_aritcleRelatedTags$]
-                <ul class=""updownarticlewrap"">
+                <ul class="updownarticlewrap">
                 <li>{$glb_upArticle$}</li>
                 <li>{$glb_downArticle$}</li>
                 </ul>
@@ -70,16 +73,17 @@
 <div><b>管理员回复：</b><font color="#FF0000">[$reply$]</font></div>
 <div class="clear10"></div>
 [/list-end]
+
                     #-->
                      
                 </ul> 
               <form class="comment" name="formcomment" method="post" action="[$WEB_VIEWURL$]?act=savedata&stype=articlecomment&itemid=[$glb_Id$]" target="_blank"  onSubmit="return formSubmit()">
                 <textarea name="bodycontent" placeholder="我也来说两句..."></textarea>
                 <br>
-                验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]?'+Math.random()*10000"/><br>   
+                验证码：<input type="text" name="yzm" id="yzm" style="width:100px;margin:6px 0;text-align:center;" class="inputstyle" /><img id="yzmimg" src="{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]" title="看不清楚，换一张" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;" onClick="this.src = '{$EDITORTYPE asp='/inc' php=/phpinc$}/yzm_7.[$EDITORTYPE$]?'+Math.random()*10000"/><br>            
                 
                 <input type="submit" class="mybtn" value="评论" />
-评论支持使用[code][/code]标签添加代码
+期待你一针见血的评论，Come on！
               </form>
 <script language="javascript">
 function formSubmit(){
@@ -115,7 +119,8 @@ function formSubmit(){
         </ul>
  
         <ul class="columnbox">
-            <li class="title">常用工具</li>
+            
+            <li class="title">常用工具<a href="{$GetColumnUrl columnname='常用工具'$}" class="more">更多&gt;&gt;</a></li>
             <li class="content">
             
             

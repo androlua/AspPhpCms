@@ -5,12 +5,12 @@
 【webdescription】本文讲述了如何申请从谷歌的索引中删除内容，包括你自己拥有的内容及其他你所不拥有但是包含特殊信息的内容，如不健康内容或你的个人信息 QQ313801120
 【sortrank】12
 【author】sharembweb
-【adddatetime】2016-03-31 07:14:05
+【adddatetime】2016-06-28 07:14:05
 【filename】/SEO/delete-search-engines-content.html
 【customaurl】
 【flags】|c|
 【relatedtags】SEO
-【bodycontent】[&全部换行&][&html转码&]【strong】如何从搜索引擎的索引中删除内容【/strong】
+【bodycontent】[&全部换行&][&html转码&]【《】div class="article_lable">如何从搜索引擎的索引中删除内容【《】/div>
 本文讲述了如何申请从谷歌的索引中删除内容，包括你自己拥有的内容及其他你所不拥有但是包含特殊信息的内容，如不健康内容或你的个人信息。
 作为网站拥有者，网站的什么内容被搜索引擎索引，你完全可以控制。当你想让搜索引擎知道什么样的内容您不希望它们索引时，最简单的方法是使用robots.txt文件或robots元标记。
 但有时候，你想要删除已经被索引的内容。有什么最好的方法来做到这一点呢？
@@ -76,8 +76,9 @@ Disallow: /myfolder
 老的URL删除工具中的请求会有什么样的结果呢？
 如果您已经用老的URL删除工具提交了删除请求，你仍然可以登录来查阅这些请求的状态。但是，如果你有新的请求，请使用现在的新的和改进的工具版本。
 
-{$TitleInSearchEngineList title='如何从搜索引擎的索引中删除内容'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='如何从搜索引擎的索引中删除内容'$}
 【/bodycontent】
 
 
  
+

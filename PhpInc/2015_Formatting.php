@@ -86,7 +86,7 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
                 $keyWord= $left8Str;
                 $lableName= mid($left8Str, 3, 6);
             }
-            $keyWord= AspTrim(Replace(Replace($keyWord, '<', ''), '>', ''));
+            $keyWord= aspTrim(Replace(Replace($keyWord, '<', ''), '>', ''));
             //call echo(KeyWord,lableName)
             //开始
             if( $keyWord <> '' ){
@@ -227,7 +227,7 @@ function formatting($content, $action){
                     //处理这个            aaaaa</span>
                     if( $isA== false && $isYes== false && Left($labelName, 1)== '/' && $labelName <> '/script' && $labelName <> '/a' ){
                         //排除这种    <span>天天发团</span>     并且判断上一个字段不等于vbcrlf换行
-                        if( '/' . $parentLableName <> $labelName && Right(AspTrim($c), 1) <> Chr(10) ){
+                        if( '/' . $parentLableName <> $labelName && Right(aspTrim($c), 1) <> Chr(10) ){
                             $s= Chr(10) . $s;
                         }
                     }
@@ -258,7 +258,7 @@ function formatting($content, $action){
                         $s= Chr(10);
                     }
                     // Right(Trim(c), 1) = ">")   为在压缩时用到
-                }else if( (Right(AspTrim($c), 1)== Chr(10) || Right(AspTrim($c), 1)== '>') && phptrim($s)== '' && $isTextarea== false && $isScript== false ){
+                }else if( (Right(aspTrim($c), 1)== Chr(10) || Right(aspTrim($c), 1)== '>') && phptrim($s)== '' && $isTextarea== false && $isScript== false ){
                     $s= '';
                 }
             }

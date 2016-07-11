@@ -5,14 +5,14 @@
 【webdescription】ASP转PHP程序 v1.0使用规则 - 分享模板网站
 【sortrank】5
 【author】sharembweb
-【adddatetime】2016-01-12 10:14:10
+【adddatetime】2015-05-12 10:14:10
 【filename】/asptophp/use-rule.html
 【flags】|c|
 【relatedtags】在线ASP转PHP
 【bodycontent】
 
 
-<strong>ASP转PHP程序 v1.0使用规则</strong><br>
+<strong>ASP转PHP程序 v1.0使用规则</strong>【article_lable】
 1、保持变量名称大小写一致<br>
 2、暂不支持对FSO文件操作与正则表达式处理<br>
 3、do until 不支持这种循环<br>
@@ -20,8 +20,9 @@
 
 <br>
 
-{$TitleInSearchEngineList title='ASP转PHP程序 v1.0使用规则'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASP转PHP程序 v1.0使用规则'$}
 【/bodycontent】
+
 
 
 

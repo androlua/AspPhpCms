@@ -149,6 +149,7 @@ Gainsboro&nbsp;&nbsp;<span style="color:Gainsboro">#DCDCDC</span> &nbsp;&nbsp;22
 纯黑&nbsp;&nbsp;<span style="color:Black">#000000</span> &nbsp;&nbsp;0,0,0<br>
 
 <br>
-{$TitleInSearchEngineList title='十六进制颜色码'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='十六进制颜色码'$}
 
 【/bodycontent】
+

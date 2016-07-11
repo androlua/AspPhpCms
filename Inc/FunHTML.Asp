@@ -29,14 +29,14 @@ Function imgError()
     imgError = " onerror=""this.src='/UploadFiles/NoImg.jpg'""" 
 End Function 
 '获得target样式
-Function targetStr(ByVal sType)
+Function handleTargetStr(ByVal sType)
     If sType <> "" Then
-        targetStr = " target='" & sType & "'" 
+        handleTargetStr = " target='" & sType & "'" 
     End If 
 End Function 
 '打开方式  (辅助)
 Function aTarget(sType)
-    aTarget = targetStr(sType) 
+    aTarget = handleTargetStr(sType) 
 End Function 
 '获得链接Title样式
 Function aTitle(ByVal title)

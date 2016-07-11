@@ -1,9 +1,7 @@
 var thisLableName = ''; //当前标签名称
 
 $(function() {
-
 		$("#didlist").append("<option value=''>选择大类列表</option>");
-
 		var splstr, splxx;
 		splstr = getConfig().split("==========================");
 		splxx = splstr[0].split("\n");
@@ -33,17 +31,21 @@ $(function() {
 			//处理字符里标签关闭
 			sidValue = handleLable(sidValue);
 
-			sidValue = sidValue.substr(sidValue.indexOf("(") + 1);
+			sidValue = sidValue.substr(sidValue.indexOf("(") + 1); 
 			if (sidValue.indexOf("\)") != -1) {
 				sidValue = sidValue.substr(0, sidValue.indexOf("\)"));
 			}
 			sidValue = $.trim(sidValue);
-			displayLayoutframe(sidValue);
+			
+			var helpStr = "<br>动作名称："+getStrCut(getConfig(), sid+"(", ")",2)  +"<br><br>"
+			displayLayoutframe(sidValue,helpStr); 
+			
+			
 		})
 
 	})
 	//显示输入框架
-function displayLayoutframe(content) {
+function displayLayoutframe(content,helpStr) {
 	var splstr, splxx, s, c = '';
 	var inputName, inputValue, inputType, selStr, findStr,lableTitle;
 	splstr = content.split("|");
@@ -92,9 +94,8 @@ function displayLayoutframe(content) {
 				c += '<div style="margin:10px 0 0 0">' + lableTitle + '<input type="text" style="width:80%" name="' + inputName + '" id="' + inputName + '" value="' + inputValue + '"  onchange="createLableStr()" class="inputstyle" /></div>';
 			}
 		}
-	}
-
-	$("#bodywrap").html(c);
+	} 
+	$("#bodywrap").html(helpStr+c);
 	createLableStr()		//生成标签
 
 }
@@ -185,10 +186,13 @@ function createLableStr() {
 		c = c.replace(/\$\}/g, "\$\\\}");
 		c = c.replace(/\'/g, "\\\'");
 	}
-
-	//内容模块 
-
-	document.all.txtEchoInfo.value = labelStartStr + c + labelEndStr + "\n\n" + infoStr
+	
+	//20160629	
+	var sid = $("#sidlist").children('option:selected').html();			
+	var helpStr = "<!--#"+getStrCut(getConfig(), sid+"(", ")",2)  +"#-->\n"
+	 
+	//内容模块
+	document.all.txtEchoInfo.value = helpStr + labelStartStr + c + labelEndStr + "\n\n" + infoStr
 }
 
 function format_Time(timeStr, nType) {

@@ -5,7 +5,7 @@
 【webdescription】在线生成ASPPHPCMS模板嵌套标签 - 分享模板网站
 【sortrank】7
 【author】sharembweb
-【adddatetime】2016-02-14 22:38:35
+【adddatetime】2015-07-14 22:38:35
 【filename】/ASPPHPCMS/online-make-Tags.html
 【customaurl】
 【flags】|
@@ -34,9 +34,10 @@
 </ul>
  
 <br><br> 
-{$TitleInSearchEngineList title='在线生成ASPPHPCMS模板嵌套标签'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='在线生成ASPPHPCMS模板嵌套标签'$}
 
 【/bodycontent】
 
 
  
+

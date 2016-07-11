@@ -57,15 +57,15 @@ function handleCloseHtml($content, $imgAddAlt, $action){
                         if( instr($s, ' alt')== false ){
                             $s= $s . ' alt=""';
                         }
-                        $s= AspTrim($s);
+                        $s= aspTrim($s);
                         $s= $s . ' /';
                         //补齐<script>20160106  暂时不能用这个，等改进
                     }else if( $labelName== 'script' ){
                         if( instr($s, ' type')== false ){
                             $s= $s . ' type="text/javascript"';
                         }
-                    }else if( Right(AspTrim($s), 1) <> '/' && instr('|meta|link|embed|param|input|img|br|hr|rect|line|area|', '|' . $labelName . '|') > 0 ){
-                        $s= AspTrim($s);
+                    }else if( Right(aspTrim($s), 1) <> '/' && instr('|meta|link|embed|param|input|img|br|hr|rect|line|area|', '|' . $labelName . '|') > 0 ){
+                        $s= aspTrim($s);
                         $s= $s . ' /';
                     }
                 }
@@ -150,7 +150,7 @@ function handleHtmlAHref( $content, $labelName, $addToHttpUrl, $action){
         }else if( $s== ' ' ){
             //暂存内容不为空
             if( $temp <> '' ){
-                if( Left(AspTrim($behindStr) . ' ', 1)== '=' ){
+                if( Left(aspTrim($behindStr) . ' ', 1)== '=' ){
                     //后面一个字符等于=不处理
                 }else{
                     //为标签
@@ -166,7 +166,7 @@ function handleHtmlAHref( $content, $labelName, $addToHttpUrl, $action){
         }
 
     }
-    $c= AspTrim($c);
+    $c= aspTrim($c);
     $handleHtmlAHref= $c;
     return @$handleHtmlAHref;
 }

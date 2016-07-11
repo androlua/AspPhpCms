@@ -99,7 +99,6 @@ function createFileUTF($file,$content){
 	createUTFFile($file,$content);
 }
 
-
 //删除utf-8中BOM
 function delFileBOM($file,$content="") {
 	$file = handlePath ( $file );
@@ -165,11 +164,60 @@ function getFileSize($file) {
 	$file = handlePath ( $file );
 	return filesize ( $file );
 }
+// 获得文件大小 辅助上面
 function getFsize($file) {
 	return getFileSize ( $file );
 }
+//获得文件创建时间
+function getFileCreateTime($filePath){
+	$filePath = handlePath ( $filePath );
+	if(checkFile($filePath)){
+		return date("Y-m-d H:i:s",filectime($filePath));
+	}
+}
+//获得文件修改时间 
+function getFileEditTime($filePath){
+	$filePath = handlePath ( $filePath );
+	if(checkFile($filePath)){
+		$fileTime=filemtime($filePath);
+
+		return date("Y-m-d H:i:s",filemtime($filePath));
+	}
+}
+//获得文件访问时间 
+function getFileVisitTime($filePath){
+	$filePath = handlePath ( $filePath );
+	if(checkFile($filePath)){
+		return date("Y-m-d H:i:s",fileatime($filePath));
+	}
+}
 
 // 《文件夹区》
+//获得文件创建时间
+function getFolderCreateTime($folderPath){
+	$folderPath = handlePath ( $folderPath );
+	if(checkFolder($folderPath)){
+		return date("Y-m-d H:i:s",filectime($folderPath));
+	}
+}
+//获得文件修改时间 
+function getFolderEditTime($folderPath){
+	$folderPath = handlePath ( $folderPath );
+	if(checkFolder($folderPath)){
+		$folderTime=filemtime($folderPath);
+
+		return date("Y-m-d H:i:s",filemtime($folderPath));
+	}
+}
+//获得文件访问时间 
+function getFolderVisitTime($folderPath){
+	$folderPath = handlePath ( $folderPath );
+	if(checkFolder($folderPath)){
+		return date("Y-m-d H:i:s",fileatime($folderPath));
+	}
+}
+
+
 // 创建文件夹
 function createFolder($folderPath) {
 	$folderPath = handlePath ( $folderPath );

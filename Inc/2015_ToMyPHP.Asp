@@ -56,14 +56,21 @@ End Function
 
 '栏目菜单
 Function XY_AP_ColumnMenu(action)
-    Dim defaultStr, thisId, parentid 
-    parentid = Trim(RParam(action, "parentid")) 
+    Dim defaultStr, thisId, parentid,c
+    parentid = Trim(RParam(action, "parentid"))
+	parentid=getColumnId(parentid)
+	
     If parentid = "" Then parentid = -1 
 
     thisId = glb_columnId 
     If thisId = "" Then thisId = -1 
     defaultStr = getDefaultValue(action)                                            '获得默认内容
-    XY_AP_ColumnMenu = showColumnList(parentid, thisId, 0, defaultStr) 
+	
+	
+	
+	defaultStr=defaultStr & "[topnav]"& parentid &"[/topnav]"
+     XY_AP_ColumnMenu = showColumnList( parentid, "webcolumn", "columnname",thisId , 0, defaultStr)
+ 
 End Function 
 
 
@@ -213,6 +220,7 @@ Function XY_AP_GeneralList(action, tableName, addSql)
     End If 
     rs.Open sql, conn, 1, 1 
     For i = 1 To rs.RecordCount
+		startStr = "" : endStr = ""
         'call echo(sql,i & "," & nTop)
         If i > nTop Then
             Exit For 
@@ -635,11 +643,22 @@ Function XY_getLableValue(action)
 End Function 
 '标题在搜索引擎中搜索列表
 Function XY_TitleInSearchEngineList(action)
-    Dim title, sType 
+    Dim title, sType,divclass,spanclass,s,c
+	
     title = RParam(action, "title") 
     sType = RParam(action, "sType") 
-    Dim c 
-    c = c & "<strong>更多关于《" & title & "》在各大搜索引擎中相关信息</strong><br>" & vbCrLf 
+    divclass = RParam(action, "divclass") 
+    spanclass = RParam(action, "spanclass")
+	 
+	s="<strong>更多关于《" & title & "》</strong>"
+	if divclass<>"" then
+		s="<div class="""& divclass &""">"& s &"</div>"
+	elseif spanclass<>"" then
+		s="<span class="""& spanclass &""">"& s &"</span>" & "<br>"
+	else
+		s=s & "<br>"
+	end if
+    c = c & s & vbCrLf 
     c = c & "<ul class=""list""> " & vbCrLf 
     c = c & "<li><a href=""https://www.baidu.com/s?ie=gb2312&word=" & title & """ rel=""nofollow"" target=""_blank"">【baidu搜索】在百度里搜索(" & title & ")</a></li>" & vbCrLf 
     c = c & "<li><a href=""http://www.haosou.com/s?ie=gb2312&q=" & title & """ rel=""nofollow"" target=""_blank"">【haosou搜索】在好搜里搜索(" & title & ")</a></li>" & vbCrLf 
@@ -668,7 +687,12 @@ Function XY_unescape(action)
     content = RParam(action, "content") 
     XY_unescape = escape(content) 
 End Function 
-
+'获得网址
+function XY_getUrl(action)
+    Dim stype 
+    stype = RParam(action, "stype") 
+	XY_getUrl=getThisUrlNoParam()
+end function
 %>           
 
 

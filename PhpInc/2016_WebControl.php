@@ -437,7 +437,7 @@ function htmlAddAction($content, $jsAction){
     $endStr= '>';
     $isHandle= true;
 
-    $lableName= AspTrim(strtolower(Replace($startStr, '<', '')));
+    $lableName= aspTrim(strtolower(Replace($startStr, '<', '')));
     if( instr($s, $startStr)== false || instr($s, $endStr)== false || instr('|a|div|span|font|h1|h2|h3|h4|h5|h6|dt|dd|dl|li|ul|table|tr|td|', '|' . $lableName . '|')== false ){
         $isHandle= false;
     }

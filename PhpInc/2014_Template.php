@@ -148,7 +148,7 @@ function readColumeSetTitle($action, $id, $ColumeTitle, $ColumeContent){
     $ContentHeight= RParam($action, 'ContentHeight'); //获得内容高度
 
     //标题宽
-    $TitleWidth= AspTrim($TitleWidth);
+    $TitleWidth= aspTrim($TitleWidth);
     //自动加px单位，不加会无效果 20150115
     if( Right($TitleHeight, 1) <> '%' && Right($TitleHeight, 2) <> 'px' && $TitleHeight <> '' && $TitleHeight <> 'auto' ){
         $TitleHeight= $TitleHeight . 'px';
@@ -157,13 +157,13 @@ function readColumeSetTitle($action, $id, $ColumeTitle, $ColumeContent){
         $TitleWidth= $TitleWidth . 'px';
     }
     //内容高
-    $ContentHeight= AspTrim($ContentHeight);
+    $ContentHeight= aspTrim($ContentHeight);
     //自动加px单位，不加会无效果 20150115
     if( Right($ContentHeight, 1) <> '%' && Right($ContentHeight, 2) <> 'px' && $ContentHeight <> '' && $ContentHeight <> 'auto' ){
         $ContentHeight= $ContentHeight . 'px';
     }
     //内容宽
-    $ContentWidth= AspTrim($ContentWidth);
+    $ContentWidth= aspTrim($ContentWidth);
     //自动加px单位，不加会无效果 20150115
     if( Right($ContentWidth, 1) <> '%' && Right($ContentWidth, 2) <> 'px' && $ContentWidth <> '' && $ContentWidth <> 'auto' ){
         $ContentWidth= $ContentWidth . 'px';

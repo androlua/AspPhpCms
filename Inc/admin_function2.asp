@@ -13,7 +13,7 @@ Function callFunction2()
 		case "printOKWebSite" : printOKWebSite()										'打印有效网址
 		case "printAspServerWebSite" : printAspServerWebSite()										'打印asp类型网站
 		
-		case "clearAllData" : clearAllData()										'清除全部数据
+		case "clearAllData" : fun2_clearAllData()										'清除全部数据
 
 		case "function2test" : function2test()											'测试
         Case Else : Call eerr("function2页里没有动作", Request("stype"))
@@ -30,7 +30,7 @@ function function2test()
 	rs.movenext:wend:rs.close
 end function
 '清除全部数据
-function clearAllData()
+function fun2_clearAllData()
     Call openconn() 
     conn.Execute("delete from " & db_PREFIX & "webdomain") 
     Call echo("操作完成", "<a href='?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名'>OK</a>") 

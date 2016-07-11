@@ -57,7 +57,7 @@ str = sessionStorage.obj;
 obj = JSON.parse(str);
 alert(obj.name) 
 
-{$TitleInSearchEngineList title='HTML5 LocalStorage 本地存储'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='HTML5 LocalStorage 本地存储'$}
 [&全部换行end&]
 <br>
 <p>本文版权归作者所有，转摘请注明作者和出处！<br />

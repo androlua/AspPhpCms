@@ -1,0 +1,58 @@
+【bigclassname】admin5_asp
+【stype】截取
+【sortrank】0
+【adddatetime】2016-06-22 15:09:05
+【startstr】<div class="b_700 dhbg">
+【endstr】<ul class="pagelist">
+【startaddstr】111
+【endaddstr】222
+【isthrough】1
+-------------------------------
+【bigclassname】admin5_asp
+【stype】分割
+【sortrank】1
+【adddatetime】2016-06-22 15:09:05
+【startstr】<div class="lists_bigimg">
+【endstr】<div class="delfloat"></div>
+【startaddstr】3333
+【endaddstr】4444
+【isthrough】1
+-------------------------------
+【bigclassname】admin5_asp
+【stype】内容1
+【saction】处理成完整网址
+【sortrank】2
+【adddatetime】2016-06-22 15:09:05
+【startstr】<a href="
+【endstr】"
+【startaddstr】
+【endaddstr】
+【isthrough】1
+【fieldname】customaurl
+【fieldcheck】1
+-------------------------------
+【bigclassname】admin5_asp
+【stype】内容2
+【saction】
+【sortrank】3
+【adddatetime】2016-06-22 15:09:05
+【startstr】title="
+【endstr】"
+【startaddstr】
+【endaddstr】
+【isthrough】1
+【fieldname】title
+-------------------------------
+【bigclassname】admin5_asp
+【stype】内容3
+【saction】处理成完整网址
+【sortrank】4
+【adddatetime】2016-06-22 15:09:05
+【startstr】src="
+【endstr】"
+【startaddstr】
+【endaddstr】
+【isthrough】1
+【fieldname】smallimage
+-------------------------------
+

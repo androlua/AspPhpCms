@@ -425,7 +425,7 @@ function setRParam($ConfigPath, $paramName, $paramValue, $isNoAdd){
         $content= Replace($content, $startStr . $s . $endStr, $startStr . $paramValue . $endStr);
         CreateFile($ConfigPath, $content);
 
-    }else if( AspTrim($isNoAdd)== '1' ){
+    }else if( aspTrim($isNoAdd)== '1' ){
         createAddFile($ConfigPath, $startStr . $paramValue . $endStr);
     }
 }

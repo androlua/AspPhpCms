@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<title>{$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
+<link href="css/style.css" rel="stylesheet"  type="text/css">
+<script type="text/javascript" src="../Jquery/Jquery.Min.js"></script> 
+<script src="js/runAction.js"></script>
+</head>
+<body>
+
+<div id="positionwrap">
+    <div class="msg">当前位置：[$position$]</div>
+</div> 
+<div class="mg10">
+	<ul class="tabbut noselect">
+        <li>备份数据库</li>   
+        <li>恢复数据库</li>   
+    </ul>&nbsp;
+    <div class="clear"></div>
+    <div class="acontent">
+        <div class="explain-col">
+            温馨提示：<font color="#FF0000">*</font>星号为必填
+        </div>
+        <table width="100%" class="mgu10 inputtable" id="tablelist" border="0" cellspacing="1" cellpadding="1" bgcolor="#cfcfcf">
+            	<tbody>
+                <tr align="center" bgcolor="#FBFCE2" height="25">
+                   <td width="220">说明</td>
+                   <td>动作</td>
+                   <td width="180">帮助</td>
+                </tr>
+                </tbody>
+                
+				<form action="?act=file_setAccess&stype=backupDatabase" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+                <tbody class="tbodybox">
+                    <tr align="center" height="25" bgcolor="#ffffff">
+                      <td>自动义表列表</td>
+                      <td align="left" style="padding:3px;"><input type="text" name="tableNameList" id="tableNameList" style="width:92%;"></td>
+                      <td>webcolumn|articledetail</td>
+                    </tr>
+                    <!--
+                    <tr align="center" height="25" bgcolor="#ffffff">
+                      <td>备份数据库</td>
+                      <td align="left" style="padding:3px;">
+                      <label for="isUnifyToFile"><input name="isUnifyToFile" type="checkbox" id="isUnifyToFile" value="1">统一放入一个文件里</label>
+                        </td>
+                        <td>isUnifyToFile</td>
+                    </tr>
+                    -->
+                    <tr align="center" height="25" bgcolor="#ffffff">
+                      <td colspan="3"><input type="submit" name="button" id="button" value="备份数据库"  class="btnclick2"></td>
+                    </tr>
+                </tbody>
+                </form>
+				<form action="?act=file_setAccess&stype=recoveryDatabase" method="post" name="formsubmit" onSubmit="return new xyClass().checkForm(this)">
+                <tbody class="tbodybox">
+                    <tr align="center" height="25" bgcolor="#ffffff">
+                      <td>选择数据库</td>
+                      <td align="left" style="padding:3px;"><select name="databaseName" id="databaseName">{$backupDatabaseSelectHtml$}</select>
+                      </td>
+                      <td>databaseName</td>
+                    </tr>                    
+                    <tr align="center" height="25" bgcolor="#ffffff">
+                      <td colspan="3"><input type="submit" name="button" id="button" value="恢复数据库"  class="btnclick2"></td>
+                    </tr>
+                </tbody>
+                </form>
+        </table>
+    </div>
+</div> 
+ 
+ <input name="switchId" type="hidden" id="switchId" value="0" /> 
+ 
+<script language="javascript" type="text/javascript" src="js/formBottom.js"></script>
+</body>
+</html>
+

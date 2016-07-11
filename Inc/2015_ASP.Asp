@@ -785,4 +785,543 @@ function getFunctionStrDim(byval content)
 	getFunctionStrDim=c
 end function
 
+
+
+'Asp代码混淆处理
+Function aspCodeConfusion(content)
+    Dim splStr, i, YesASP, YesWord, Sx, s, Wc, Zc, s1, AspCode, SYHCount, UpWord 
+    Dim UpWordn, tempS, DimList 
+    Dim YesFunction                                                                 '函数是否为真
+    Dim StartFunction                                                               '开始函数 目的是为了让function default 处理函数后面没有()   20150218
+    StartFunction = False                                                           '默认开始函数为假
+    'If nType="" Then  nType  = 0
+    YesASP = False                                                                  '是ASP 默认为假
+    YesFunction = False                                                             '是函数 默认为假
+    YesWord = False                                                                 '是单词 默认为假
+    SYHCount = 0                                                                    '双引号默认为0
+    splStr = Split(content, vbCrLf)                                                 '分割行
+    '循环分行
+    For Each s In splStr
+        '循环每个字符
+        For i = 1 To Len(s)
+            Sx = Mid(s, i, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then                                                 '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(s, i + 1, 1) = "%" Then
+                    YesASP = True                                                                   'ASP为真
+                    i = i + 1                                                                       '加1而不能加2，要不然<%function Test() 就截取不到
+                    Sx = Mid(s, i, 1) 
+                    AspCode = AspCode & "<" 
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(s, i + 1, 1) = ">" And Wc = "" Then                     'Wc为输出内容
+                YesASP = False                                                                  'ASP为假
+                i = i + 1                                                                       '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假
+                Sx = Mid(s, i, 1) 
+                AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1 
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(s, i + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            s1 = Right(Replace(Mid(s, 1, i - Len(Wc)), " ", ""), 1)                         '必需放在这里，要不会出错
+                            AspCode = AspCode & Wc                                                          '函数代码累加
+                            SYHCount = 0 : Wc = ""                                                          '清除
+                        Else
+                            Wc = Wc & Sx 
+                        End If 
+                    Else
+                        Wc = Wc & Sx 
+                    End If 
+                ElseIf Sx = "'" Then                                                            '注释则退出
+                    AspCode = AspCode & Mid(s, i) 
+                    Exit For 
+                '字母
+                ElseIf checkABC(Sx) = True Or(Sx = "_" And Zc <> "") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    s1 = LCase(Mid(s & " ", i + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", s1) = 0 And Not(s1 = "_" And Zc <> "") Then'最简单判断
+                        tempS = Mid(s, i + 1) 
+
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then
+                            '函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" Then
+                                YesFunction = True 
+                                DimList = getFunDimName(tempS) 
+                                StartFunction = True 
+                            ElseIf YesFunction = True And LCase(UpWord) = "end" Then                        '获得上一个单词
+                                YesFunction = False 
+                            End If 
+                        ElseIf YesFunction = True And LCase(Zc) = "dim" Then
+                            DimList = DimList & "," & getDimName(tempS) 
+                        ElseIf YesFunction = True Then
+                            '排除函数后面每一个名称
+                            If StartFunction = False Then
+                                Zc = replaceDim2(DimList, Zc) 
+                            End If 
+                            StartFunction = False 
+                        End If 
+                        UpWord = Zc                                                                     '记住当前单词
+                        AspCode = AspCode & Zc 
+                        Zc = "" 
+                    End If 
+                Else
+                    AspCode = AspCode & Sx 
+                End If 
+            Else
+                AspCode = AspCode & Sx 
+            End If 
+            doEvents 
+        Next 
+        AspCode = RTrim(AspCode)                                                        '去除右边空格
+        AspCode = AspCode & vbCrLf                                                      'Asp换行
+        doEvents 
+    Next 
+    aspCodeConfusion = AspCode 
+End Function 
+'Asp变量乱码 只对大小写乱
+Function ASPVariableGarbled(content)
+    Dim splStr, i, YesASP, YesWord, Sx, s, Wc, Zc, s1, AspCode, SYHCount, UpWord 
+    Dim UpWordn, tempS, DimList 
+    Dim YesFunction                                                                 '函数是否为真
+    'If nType="" Then  nType  = 0
+    YesASP = False                                                                  '是ASP 默认为假
+    YesFunction = False                                                             '是函数 默认为假
+    YesWord = False                                                                 '是单词 默认为假
+    SYHCount = 0                                                                    '双引号默认为0
+    splStr = Split(content, vbCrLf)                                                 '分割行
+    '循环分行
+    For Each s In splStr
+        '循环每个字符
+        For i = 1 To Len(s)
+            Sx = Mid(s, i, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then                                                 '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(s, i + 1, 1) = "%" Then
+                    YesASP = True                                                                   'ASP为真
+                    i = i + 1                                                                       '加1而不能加2，要不然<%function Test() 就截取不到
+                    Sx = Mid(s, i, 1) 
+                    AspCode = AspCode & "<" 
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(s, i + 1, 1) = ">" And Wc = "" Then                     'Wc为输出内容
+                YesASP = False                                                                  'ASP为假
+                i = i + 1                                                                       '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假
+                Sx = Mid(s, i, 1) 
+                AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1 
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(s, i + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            s1 = Right(Replace(Mid(s, 1, i - Len(Wc)), " ", ""), 1)                         '必需放在这里，要不会出错
+                            AspCode = AspCode & Wc                                                          '函数代码累加
+                            SYHCount = 0 : Wc = ""                                                          '清除
+                        Else
+                            Wc = Wc & Sx 
+                        End If 
+                    Else
+                        Wc = Wc & Sx 
+                    End If 
+                ElseIf Sx = "'" Then                                                            '注释则退出
+                    AspCode = AspCode & Mid(s, i) 
+                    Exit For 
+                '字母
+                ElseIf checkABC(Sx) = True Or(Sx = "_" And Zc <> "") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    s1 = LCase(Mid(s & " ", i + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", s1) = 0 And Not(s1 = "_" And Zc <> "") Then'最简单判断
+                        tempS = Mid(s, i + 1) 
+
+                        AspCode = AspCode & LUCaseGarbled(Zc) 
+                        Zc = "" 
+                    End If 
+                Else
+                    AspCode = AspCode & Sx 
+                End If 
+            Else
+                AspCode = AspCode & Sx 
+            End If 
+            doEvents 
+        Next 
+        AspCode = RTrim(AspCode)                                                        '去除右边空格
+        AspCode = AspCode & vbCrLf                                                      'Asp换行
+        doEvents 
+    Next 
+    ASPVariableGarbled = AspCode 
+End Function 
+'让大小写乱掉
+Function LUCaseGarbled(content)
+    Dim LenStr, splStr, i, s, c, numb 
+    numb = 0 
+    For i = 1 To Len(content)
+        s = Mid(content, i, 1) 
+        numb = numb + 1 
+        If numb = 1 Then
+            s = LCase(s) 
+        ElseIf numb = 2 Or numb = 3 Then
+            s = UCase(s) 
+        ElseIf numb = 4 Then
+            s = LCase(s) : numb = 1 
+        End If 
+        c = c & s 
+    Next 
+    LUCaseGarbled = c 
+End Function 
+
+'Asp函数名称混淆处理20160120   call rw(AspFunctionConfusion(getftext("5.asp")))
+Function aspFunctionConfusion(content)
+    Dim splStr, splxx, i, j, YesASP, YesWord, Sx, s, Wc, Zc, s1, AspCode, SYHCount, UpWord, nNumb 
+    Dim UpWordn, tempS, funList 
+    Dim YesFunction                                                                 '函数是否为真
+    Dim StartFunction                                                               '开始函数 目的是为了让function default 处理函数后面没有()   20150218
+    StartFunction = False                                                           '默认开始函数为假
+    Dim nFunIndex                                                                   '函数索引
+    nFunIndex = 0 
+    Dim splNewFun 
+    '注意as是不能用的
+    splNewFun = Split("aa|ab|ac|ad|ae|af|ag|ah|ai|aj|ak|al|am|an|ao|ap|aq|ar|at|au|av|aw|ax|ay|az|ba|bb|bc|bd|be|bf|bg|bh|bi|bj|bk|bl|bm|bn|bo|bp|bq|br|bs|bt|bu|bv|bw|bx|by|bz|ca|cb|cc|cd|ce|cf|cg|ch|ci|cj|ck|cl|cm|cn|co|cp|cq|cr|cs|ct|cu|cv", "|") 
+    Dim splYunFun, yunFunList 
+    yunFunList = "|" & LCase(getAspFunNameList(content)) & "|" 
+    splYunFun = Split(yunFunList, "|") 
+
+    'If nType="" Then  nType  = 0
+    YesASP = False                                                                  '是ASP 默认为假
+    YesFunction = False                                                             '是函数 默认为假
+    YesWord = False                                                                 '是单词 默认为假
+    SYHCount = 0                                                                    '双引号默认为0
+    funList = "|"                                                                   '函数名称列表
+    splStr = Split(content, vbCrLf)                                                 '分割行
+    '循环分行
+    For Each s In splStr
+        '循环每个字符
+        For i = 1 To Len(s)
+            Sx = Mid(s, i, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then                                                 '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(s, i + 1, 1) = "%" Then
+                    YesASP = True                                                                   'ASP为真
+                    i = i + 1                                                                       '加1而不能加2，要不然<%function Test() 就截取不到
+                    Sx = Mid(s, i, 1) 
+                    AspCode = AspCode & "<" 
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(s, i + 1, 1) = ">" And Wc = "" Then                     'Wc为输出内容
+                YesASP = False                                                                  'ASP为假
+                i = i + 1                                                                       '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假
+                Sx = Mid(s, i, 1) 
+                AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1 
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(s, i + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            s1 = Right(Replace(Mid(s, 1, i - Len(Wc)), " ", ""), 1)                         '必需放在这里，要不会出错
+                            AspCode = AspCode & Wc                                                          '函数代码累加
+                            SYHCount = 0 : Wc = ""                                                          '清除
+                        Else
+                            Wc = Wc & Sx 
+                        End If 
+                    Else
+                        Wc = Wc & Sx 
+                    End If 
+                ElseIf Sx = "'" Then                                                            '注释则退出
+                    AspCode = AspCode & Mid(s, i) 
+                    Exit For 
+                '字母
+                ElseIf checkABC(Sx) = True Or(Sx = "_" And Zc <> "") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    s1 = LCase(Mid(s & " ", i + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", s1) = 0 And Not(s1 = "_" And Zc <> "") Then'最简单判断
+                        tempS = Mid(s, i + 1) 
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then
+                            '函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" And LCase(UpWord) <> "exit" Then
+                                funList = funList & LCase(getFunName(tempS)) & "," & splNewFun(nFunIndex) & "|" 
+                                nFunIndex = nFunIndex + 1 
+                                'call echo("funList",funList)
+                                StartFunction = True 
+                            ElseIf YesFunction = True And LCase(UpWord) = "end" Then                        '获得上一个单词
+                                StartFunction = False 
+                            End If 
+                        ElseIf YesFunction = True And LCase(Zc) = "dim" Then
+
+
+                        End If 
+
+                        nNumb = InStr(yunFunList, "|" & LCase(Zc) & "|") 
+                        If nNumb > 0 Then
+                            For j = 1 To UBound(splYunFun)
+                                If splYunFun(j) = LCase(Zc) Then
+                                    'call echo(zc,splNewFun(j))
+                                    Zc = splNewFun(j) 
+                                    Exit For 
+                                End If 
+                            Next 
+                        End If 
+
+                        UpWord = Zc                                                                     '记住当前单词
+                        AspCode = AspCode & Zc 
+                        Zc = "" 
+                    End If 
+                Else
+                    AspCode = AspCode & Sx 
+                End If 
+            Else
+                AspCode = AspCode & Sx 
+            End If 
+            doEvents 
+        Next 
+        AspCode = RTrim(AspCode)                                                        '去除右边空格
+        AspCode = AspCode & vbCrLf                                                      'Asp换行
+        doEvents 
+    Next 
+    aspFunctionConfusion = AspCode 
+End Function 
+
+'找ASP函数列表如：Sub a(b,c)
+Function findAspCode(ByVal content)
+    content = getAspCode(content) 
+    content = getASPFunctionList(content)                                           '获得函数列表
+    findAspCode = content 
+End Function 
+'扫描ASP中函数名称列表
+Function findAspFunList(ByVal content)
+    Dim splStr, nLen, SubStr, s, tempS, c 
+    content = findAspCode(content)                                                  '获得ASP代码
+    splStr = Split(content, vbCrLf) 
+    For Each s In splStr
+        tempS = s : s = LCase(s) 
+        If s <> "" Then
+            nLen = 0 
+            If InStr(s, "function ") > 0 Then
+                nLen = InStr(s, "function ") + 8 
+            ElseIf InStr(s, "sub ") > 0 Then
+                nLen = InStr(s, "sub ") + 3 
+            End If 
+            If nLen > 0 Then
+                tempS = Mid(tempS, nLen) 
+                If InStr(tempS, "(") > 0 Then
+                    tempS = Mid(tempS, 1, InStr(tempS, "(") - 1) 
+                Else
+                    tempS = Mid(tempS, 1, InStr(tempS & " ", " ") - 1) 
+                End If 
+                c = c & Trim(tempS) & vbCrLf                                                    '去除函数名称两边空格
+            End If 
+        End If 
+        doEvents 
+    Next 
+    findAspFunList = c 
+End Function 
+
+'找到指定Asp函数全部代码 感觉不精准
+Function findAspFunctionCode(ByVal content, ByVal FunctionName)
+    Dim FunctionType, splStr, s, c 
+    If checkStr(FunctionName, "sub ") Then
+        FunctionType = "end sub" 
+    Else
+        FunctionType = "end function" 
+    End If 
+    content = Right(content, Len(content) - InStr(LCase(content), LCase(FunctionName)) + 1) 
+    splStr = Split(content, vbCrLf) 
+    For Each s In splStr
+        c = c & s & vbCrLf 
+        If checkStr(s, FunctionType) = True Then Exit For 
+    Next 
+    findAspFunctionCode = c 
+End Function 
+'获得函数名称与变量 ，加强版,添加于2013,10,5
+Function getFunNameDim(ByVal c, FunName, FunDim)
+    Dim FunType, s1, s2, FunValue 
+    c = Trim(c) 
+    If InStr(LCase(c), "sub ") > 0 Then
+        FunType = "sub" 
+    ElseIf InStr(LCase(c), "function ") > 0 Then
+        FunType = "function" 
+    Else
+        Exit Function 
+    End If 
+    c = Replace(c, ":", ")") & ")" 
+    s1 = InStr(c, FunType & " ") + Len(FunType & " ") 
+    s2 = InStr(s1, c, ")") 
+    c = Mid(c, s1, s2 - s1) 
+    FunValue = FunType & " " & c 
+    If InStr(c, "(") > 0 Then
+        FunName = Left(c, InStr(c, "(") - 1) 
+        If InStr(FunName, " ") Then
+            FunName = Mid(FunName, InStr(FunName, " "))                                     '可把Priver与Public去除掉
+        End If 
+        FunValue = FunValue & ")" 
+        s1 = InStr(FunValue, "(") + 1 
+        s2 = InStr(s1, FunValue, ")") 
+        FunDim = Mid(FunValue, s1, s2 - s1) 
+        FunDim = regExp_Replace(FunDim, "ByVal ", "")                                   'ByVal重新定义变更
+        FunDim = regExp_Replace(FunDim, "ByRef ", "")                                   'ByRef为不重新定义变量,默认为它，也就量用上一级函数变量
+        FunDim = Replace(FunDim, " ", "") 
+    Else
+        FunName = c 
+    End If 
+    'Response.Write("FunType=" & FunType & "|C="&C&"|FunValue="&FunValue&"|FunName="&FunName&"|FunDim="&FunDim&"<hr>")
+    getFunNameDim = FunValue 
+End Function 
+'在函数里加乱的Dim，这个Dim出现次数等于函数参数值，这个Dim是没有任何意思的
+Function inFunAddDim(ByVal content)
+    Dim splStr, splxx, SplTemp, s, i, VbCrlfNumb, FunDimNumb, ExceptNumb, c, RootNumb 
+    splxx = Split("A_p,B_p,C_4,D_2,E_4,F_9,G_1,H_2,I_2,J_3,K_1,L_o,M_m,N_u,O_o,P_n,Q_o,R_l,S_i,T_2,U_2,V_2,W_2,X_2,Y_2,Z_2", ",") 
+    splStr = Split(content, vbCrLf) 
+    VbCrlfNumb = UBound(splStr) - 1                                                 '换行数
+    s = strCut(content, "(", ")", 2) 
+    SplTemp = Split(s, ",") 
+    FunDimNumb = UBound(SplTemp) + 1                                                '函数
+    '为0表示没有则退出，
+    If FunDimNumb = 0 Then
+        inFunAddDim = content 
+        Exit Function 
+    End If 
+    ExceptNumb = CInt(VbCrlfNumb / FunDimNumb)                                      '除数
+    RootNumb = 0 
+    For i = 0 To UBound(splStr)
+        s = splStr(i) 
+        If Trim(s) <> "" Then
+            c = c & splStr(i) & vbCrLf 
+        End If 
+        If ExceptNumb <> 0 Then
+            If i Mod ExceptNumb = 0 And UBound(SplTemp) >= RootNumb And i <> UBound(splStr) Then
+                c = c & "dIm " & splxx(RootNumb) & vbCrLf 
+                RootNumb = RootNumb + 1 
+            End If 
+        End If 
+    Next 
+    If c <> "" Then c = Left(c, Len(c) - 2) 
+    inFunAddDim = c 
+End Function 
+
+'处理成AspExecute
+Function handleAspExecute(ByVal content)
+    Dim splStr, s, c 
+    If Left(content, 2) = "<" & "%" Then
+        content = Right(content, Len(content) - 2) 
+    End If 
+    If Right(content, 2) = "%" & ">" Then
+        content = Left(content, Len(content) - 2) 
+    End If 
+    'Content=Replace(Content,"""","""""")                '这个不需要，要不会出错
+    splStr = Split(content, vbCrLf) 
+    For Each s In splStr
+        s = trimVbCrlf(s) 
+        If s <> "" Then
+            c = c & s & ":" 
+        End If 
+    Next 
+    If c <> "" Then c = Left(c, Len(c) - 1) 
+    If Left(c, 1) = "=" Then c = "Response.Write " & Right(c, Len(c) - 1) 
+    handleAspExecute = c 
+End Function 
+
+'获得ASP函数名称列表 20160120 如  aa|bb|cc
+Function getAspFunNameList(content)
+    Dim splStr, splxx, i, YesASP, YesWord, Sx, s, Wc, Zc, s1, AspCode, SYHCount, UpWord, nNumb 
+    Dim UpWordn, tempS, funList 
+    Dim YesFunction                                                                 '函数是否为真
+    Dim StartFunction                                                               '开始函数 目的是为了让function default 处理函数后面没有()   20150218
+    StartFunction = False                                                           '默认开始函数为假
+    'If nType="" Then  nType  = 0
+    YesASP = False                                                                  '是ASP 默认为假
+    YesFunction = False                                                             '是函数 默认为假
+    YesWord = False                                                                 '是单词 默认为假
+    SYHCount = 0                                                                    '双引号默认为0
+
+    splStr = Split(content, vbCrLf)                                                 '分割行
+    '循环分行
+    For Each s In splStr
+        '循环每个字符
+        For i = 1 To Len(s)
+            Sx = Mid(s, i, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then                                                 '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(s, i + 1, 1) = "%" Then
+                    YesASP = True                                                                   'ASP为真
+                    i = i + 1                                                                       '加1而不能加2，要不然<%function Test() 就截取不到
+                    Sx = Mid(s, i, 1) 
+                    AspCode = AspCode & "<" 
+                End If 
+            'ASP结束
+            ElseIf Sx = "%" And Mid(s, i + 1, 1) = ">" And Wc = "" Then                     'Wc为输出内容
+                YesASP = False                                                                  'ASP为假
+                i = i + 1                                                                       '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假
+                Sx = Mid(s, i, 1) 
+                AspCode = AspCode & "%" 
+            End If 
+            If YesASP = True Then
+                '输入文本
+                If(Sx = """" Or Wc <> "") Then
+                    '双引号累加
+                    If Sx = """" Then SYHCount = SYHCount + 1 
+                    '判断是否"在最后
+                    If SYHCount Mod 2 = 0 Then
+                        If Mid(s, i + 1, 1) <> """" Then
+                            Wc = Wc & Sx 
+                            s1 = Right(Replace(Mid(s, 1, i - Len(Wc)), " ", ""), 1)                         '必需放在这里，要不会出错
+                            AspCode = AspCode & Wc                                                          '函数代码累加
+                            SYHCount = 0 : Wc = ""                                                          '清除
+                        Else
+                            Wc = Wc & Sx 
+                        End If 
+                    Else
+                        Wc = Wc & Sx 
+                    End If 
+                ElseIf Sx = "'" Then                                                            '注释则退出
+                    AspCode = AspCode & Mid(s, i) 
+                    Exit For 
+                '字母
+                ElseIf checkABC(Sx) = True Or(Sx = "_" And Zc <> "") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    s1 = LCase(Mid(s & " ", i + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", s1) = 0 And Not(s1 = "_" And Zc <> "") Then'最简单判断
+                        tempS = Mid(s, i + 1) 
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then
+                            '函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" And LCase(UpWord) <> "exit" Then
+                                funList = funList & getFunName(tempS) & "|" 
+
+                            End If 
+                        End If 
+                        UpWord = Zc                                                                     '记住当前单词
+                        Zc = "" 
+                    End If 
+                End If 
+            End If 
+            doEvents 
+        Next 
+    Next 
+    getAspFunNameList = funList 
+End Function 
+'ASP安全处理
+Function aspCodeSafe(content)
+    '这是处理后会出错，因为它调用了多个文件了
+    If InStr(content, "'【Asp函数" & "名称混淆】") > 0 Then                         '不分开的话会处理此页
+        content = aspFunctionConfusion(content)                                         'Asp函数名称混淆处理 20160120
+    End If 
+    content = delAspNote(content)                                                   '删除ASP里注释
+    content = optimizeAspCode(content)                                              '优化ASP代码
+    content = aspCodeConfusion(content)                                             'Asp代码混淆处理
+    content = ASPVariableGarbled(content)                                           'Asp变量乱码 只对大小写乱
+    aspCodeSafe = content 
+End Function 
+
 %>

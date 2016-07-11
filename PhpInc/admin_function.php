@@ -53,7 +53,7 @@ function getHandleTableList(){
     return @$getHandleTableList;
 }
 
-//获得处理的字段列表
+//获得处理的字段列表   getHandleFieldList("ArticleDetail","字段列表")
 function getHandleFieldList($tableName, $sType){
     $s ='';
     if( $GLOBALS['WEB_CACHEContent']== '' ){
@@ -82,7 +82,7 @@ function getTemplateContent($templateFileName){
     $templateFile=''; $customTemplateFile=''; $c='';
     $customTemplateFile= ROOT_PATH . 'template/' . $GLOBALS['db_PREFIX'] . '/' . $templateFileName;
     //为手机端
-    if( checkMobile()== true ){
+    if( checkMobile()== true || @$_REQUEST['m']=='mobile' ){
         $templateFile= ROOT_PATH . '/Template/mobile/' . $templateFileName;
     }
     //判断手机端文件是否存在20160330
@@ -100,6 +100,7 @@ function getTemplateContent($templateFileName){
 }
 //替换标签内容
 function replaceLableContent($content){
+    $s='';$c='';$splstr='';$list='';
     $content= Replace($content, '{$webVersion$}', $GLOBALS['webVersion']); //网站版本
     $content= Replace($content, '{$Web_Title$}', $GLOBALS['cfg_webTitle']); //网站标题
     $content= Replace($content, '{$EDITORTYPE$}', EDITORTYPE); //ASP与PHP
@@ -121,6 +122,16 @@ function replaceLableContent($content){
     $content= Replace($content, '{$SERVER_PORT$}', ServerVariables('SERVER_PORT')); //服务器端口
     $content= replaceValueParam($content, 'mdbpath', @$_REQUEST['mdbpath']);
     $content= replaceValueParam($content, 'webDir', $GLOBALS['webDir']);
+
+    //20160628
+    if( instr($content,'{$backupDatabaseSelectHtml$}')>0 ){
+        $c=getDirTxtNameList($GLOBALS['adminDir'] . '/Data/BackUpDateBases/');
+        $splstr=aspSplit($c,vbCrlf());
+        foreach( $splstr as $key=>$s){
+            $list=$list . '<option value="'. $s .'">'. $s .'</option>' . vbCrlf();
+        }
+        $content=replace($content,'{$backupDatabaseSelectHtml$}',$list);
+    }
 
     //20160614
     if( EDITORTYPE=='php' ){
@@ -166,11 +177,24 @@ function displayFlags($flags){
 }
 
 
-//栏目类别循环配置       showColumnList(-1, 0,defaultList)   nCount为深度值
-function showColumnList( $parentid, $tableName, $fileName, $thisPId, $nCount, $action){
-    $i=''; $s=''; $c=''; $selectcolumnname=''; $selStr=''; $url=''; $isFocus=''; $sql=''; $addSql ='';
+//栏目类别循环配置        showColumnList(parentid, "webcolumn", ,"",0, defaultStr,3,"")   nCount为深度值   thisPId为交点的id
+function showColumnList( $parentid, $tableName, $showFieldName, $thisPId, $nCount, $action){
+    $i=''; $s=''; $c=''; $selectcolumnname=''; $selStr=''; $url=''; $isFocus=''; $sql=''; $addSql='';$listLableStr='';$topnav='';
+    $parentid=aspTrim($parentid);
+    $listLableStr='list';
 
-    $fieldNameList=''; $splFieldName=''; $k=''; $fieldName=''; $replaceStr=''; $startStr=''; $endStr=''; $topNumb=''; $modI ='';
+    $topnav= getStrCut($action, '[topnav]', '[/topnav]', 2);
+
+    //call echo(parentid,topnav)
+
+    if( $parentid<>$topnav ){
+        if( instr($action,'[small-list')>0 ){
+            $listLableStr='small-list';
+        }
+    }
+    //call echo("listLableStr",listLableStr)
+
+    $fieldNameList=''; $splFieldName=''; $k=''; $fieldName=''; $replaceStr=''; $startStr=''; $endStr=''; $topNumb=''; $modI='';$title='';
     $subHeaderStr=''; $subFooterStr ='';
 
     $subHeaderStr= getStrCut($action, '[subheader]', '[/subheader]', 2);
@@ -179,6 +203,7 @@ function showColumnList( $parentid, $tableName, $fileName, $thisPId, $nCount, $a
     $fieldNameList= getHandleFieldList($GLOBALS['db_PREFIX'] . $tableName, '字段列表');
     $splFieldName= aspSplit($fieldNameList, ',');
     $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . $tableName . ' where parentid=' . $parentid;
+    //  call echo("sql1111111111111",tableName)
     //处理追加SQL
     $startStr= '[sql-' . $nCount . ']' ; $endStr= '[/sql-' . $nCount . ']';
     if( instr($action, $startStr)== false && instr($action, $endStr)== false ){
@@ -188,33 +213,32 @@ function showColumnList( $parentid, $tableName, $fileName, $thisPId, $nCount, $a
     if( $addSql <> '' ){
         $sql= getWhereAnd($sql, $addSql);
     }
-    //call echo("addsql",addsql)
     $rsObj=$GLOBALS['conn']->query( $sql . ' order by sortrank asc');
     for( $i= 1 ; $i<= @mysql_num_rows($rsObj); $i++){
         $rs=mysql_fetch_array($rsObj);
         if( @mysql_num_rows($rsObj)!=0 ){
+            $startStr= '' ; $endStr= '';
             $selStr= '';
             $isFocus= false;
             if( CStr($rs['id'])== CStr($thisPId) ){
                 $selStr= ' selected ';
                 $isFocus= true;
             }
-
             //网址判断
             if( $isFocus== true ){
-                $startStr= '[list-focus]' ; $endStr= '[/list-focus]';
+                $startStr= '['. $listLableStr .'-focus]' ; $endStr= '[/'. $listLableStr .'-focus]';
             }else{
-                $startStr= '[list-' . $i . ']' ; $endStr= '[/list-' . $i . ']';
+                $startStr= '['. $listLableStr .'-' . $i . ']' ; $endStr= '[/'. $listLableStr .'-' . $i . ']';
             }
 
             //在最后时排序当前交点20160202
             if( $i== $topNumb && $isFocus== false ){
-                $startStr= '[list-end]' ; $endStr= '[/list-end]';
+                $startStr= '['. $listLableStr .'-end]' ; $endStr= '[/'. $listLableStr .'-end]';
             }
             //例[list-mod2]  [/list-mod2]    20150112
             for( $modI= 6 ; $modI>= 2 ; $modI--){
                 if( instr($action, $startStr)== false && $i % $modI== 0 ){
-                    $startStr= '[list-mod' . $modI . ']' ; $endStr= '[/list-mod' . $modI . ']';
+                    $startStr= '['. $listLableStr .'-mod' . $modI . ']' ; $endStr= '[/'. $listLableStr .'-mod' . $modI . ']';
                     if( instr($action, $startStr) > 0 ){
                         break;
                     }
@@ -223,9 +247,8 @@ function showColumnList( $parentid, $tableName, $fileName, $thisPId, $nCount, $a
 
             //没有则用默认
             if( instr($action, $startStr)== false ){
-                $startStr= '[list]' ; $endStr= '[/list]';
+                $startStr= '['. $listLableStr .']' ; $endStr= '[/'. $listLableStr .']';
             }
-
             //call rwend(action)
             //call echo(startStr,endStr)
             if( instr($action, $startStr) > 0 && instr($action, $endStr) > 0 ){
@@ -233,11 +256,12 @@ function showColumnList( $parentid, $tableName, $fileName, $thisPId, $nCount, $a
 
                 $s= replaceValueParam($s, 'id', $rs['id']);
                 $s= replaceValueParam($s, 'selected', $selStr);
-                $selectcolumnname= $rs[$fileName];
+                $selectcolumnname= $rs[$showFieldName] ;$title=$selectcolumnname;
                 if( $nCount >= 1 ){
                     $selectcolumnname= copystr('&nbsp;&nbsp;', $nCount) . '├─' . $selectcolumnname;
                 }
                 $s= replaceValueParam($s, 'selectcolumnname', $selectcolumnname);
+                $s= replaceValueParam($s, 'title', $title);
 
 
                 for( $k= 0 ; $k<= UBound($splFieldName); $k++){
@@ -249,12 +273,12 @@ function showColumnList( $parentid, $tableName, $fileName, $thisPId, $nCount, $a
                     }
                 }
 
-                //url = WEB_VIEWURL & "?act=nav&columnName=" & rs(fileName)             '以栏目名称显示列表
+                //url = WEB_VIEWURL & "?act=nav&columnName=" & rs(showFieldName)             '以栏目名称显示列表
                 $url= WEB_VIEWURL . '?act=nav&id=' . $rs['id']; //以栏目ID显示列表
 
                 //自定义网址
-                if( AspTrim($rs['customaurl']) <> '' ){
-                    $url= AspTrim($rs['customaurl']);
+                if( aspTrim($rs['customaurl']) <> '' ){
+                    $url= aspTrim($rs['customaurl']);
                 }
                 $s= Replace($s, '[$viewWeb$]', $url);
                 $s= replaceValueParam($s, 'url', $url);
@@ -267,7 +291,7 @@ function showColumnList( $parentid, $tableName, $fileName, $thisPId, $nCount, $a
 
                 //s=copystr("",nCount) & rs("columnname") & "<hr>"
                 $c= $c . $s . vbCrlf();
-                $s= showColumnList($rs['id'], $tableName, $fileName, $thisPId, $nCount + 1, $action);
+                $s= showColumnList($rs['id'], $tableName, $showFieldName, $thisPId, $nCount + 1, $action);
                 if( $s <> '' ){ $s= vbCrlf() . $subHeaderStr . $s . $subFooterStr ;}
                 $c= $c . $s;
             }
@@ -347,7 +371,7 @@ function dispalyManage($actionName, $lableTitle, $nPageSize, $addSql){
     $splFieldName= aspSplit($fieldNameList, ','); //字段分割成数组
 
     //读模板
-    $content= getTemplateContent('manage' . $tableName . '.html');
+    $content= getTemplateContent('manage_' . $tableName . '.html');
 
     $action= getStrCut($content, '[list]', '[/list]', 2);
     //网站栏目单独处理      栏目不一样20160301
@@ -421,8 +445,8 @@ function dispalyManage($actionName, $lableTitle, $nPageSize, $addSql){
             //必需有自定义字段
             if( instr($fieldNameList, 'customaurl') > 0 ){
                 //自定义网址
-                if( AspTrim($rs['customaurl']) <> '' ){
-                    $url= AspTrim($rs['customaurl']);
+                if( aspTrim($rs['customaurl']) <> '' ){
+                    $url= aspTrim($rs['customaurl']);
                 }
             }
             $s= Replace($s, '[$viewWeb$]', $url);
@@ -513,7 +537,7 @@ function addEditDisplay($actionName, $lableTitle, $fieldNameList){
 
 
     //读模板
-    $content= getTemplateContent('addEdit' . $tableName . '.html');
+    $content= getTemplateContent('addEdit_' . $tableName . '.html');
 
     //关闭编辑器
     if( instr($GLOBALS['cfg_flags'], '|iscloseeditor|') > 0 ){
@@ -732,6 +756,7 @@ function saveAddEdit($actionName, $lableTitle, $fieldNameList){
 
 
     $sql= getPostSql($id, $tableName, $fieldNameList);
+    //call eerr("sql",sql)												'调试用
     //检测SQL
     if( checksql($sql)== false ){
         errorLog('出错提示：<hr>sql=' . $sql . '<br>');
@@ -931,7 +956,7 @@ function updateWebsiteStat(){
     $nCount= 1;
     foreach( $splStr as $key=>$filePath){
         $fileName=getFileName($filePath);
-        if( $filePath <> '' && substr($fileName, 0 ,1)<>'#' ){
+        if( $filePath <> '' && left($fileName,1)<>'#' ){
             $nCount=$nCount+1;
             ASPEcho($nCount . '、filePath',$filePath);
             doevents();
@@ -1005,7 +1030,7 @@ function whiteWebStat($content){
                 $viewdatetime='1988/07/12 10:10:10';
             }
 
-            $screenwh= substr($screenwh, 0 , 20);
+            $screenwh= Left($screenwh, 20);
             if( 1== 2 ){
                 ASPEcho('编号',$nCount);
                 ASPEcho('dateClass', $dateClass);
@@ -1206,11 +1231,14 @@ function displayTemplatesList($content){
             $folderList= getDirFolderNameList($templatesFolder);
             $splStr= aspSplit($folderList, vbCrlf());
             foreach( $splStr as $key=>$templateName){
-                if( $templateName <> '' && instr('#_', substr($templateName, 0 , 1))== false ){
+                if( $templateName <> '' && instr('#_', Left($templateName, 1))== false ){
                     $templatePath= $templatesFolder . $templateName . '/';
                     $templatePath2= $templatePath;
                     $s= $defaultList;
-                    if( $GLOBALS['cfg_webtemplate']== $templatePath ){
+                    //call echo(cfg_webtemplate & "("& len(cfg_webtemplate) &")" , templatePath & "("& len(templatePath) &")")
+                    //call echo(lcase(cfg_webtemplate) , lcase(templatePath))
+
+                    if( strtolower($GLOBALS['cfg_webtemplate'])== strtolower($templatePath) ){
                         $templateName= '<font color=red>' . $templateName . '</font>';
                         $templatePath2= '<font color=red>' . $templatePath2 . '</font>';
                         $s= Replace($s, '启用</a>', '</a>');

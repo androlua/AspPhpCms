@@ -9,8 +9,8 @@
 【filename】/html5/html-use-cases.html
 【flags】|
 【relatedtags】HTML5
-【bodycontent】[&全部换行&][&html转码&]【strong】PHP常用标签使用与案例【/strong】
-【b】php下获取http状态的实现代码【/b】
+【bodycontent】[&全部换行&][&html转码&]【《】div class="article_lable">PHP常用标签使用与案例【《】/div>
+【《】div class="article_lable">php下获取http状态的实现代码【《】/div>
 /*
 print_r(
     get_headers('http://www.shaarembweb.com')
@@ -23,16 +23,36 @@ curl_exec($ch);
 echo curl_getinfo($ch, CURLINFO_HTTP_CODE); // 200
 curl_close($ch);
 
-【b】测试POST数组【/b】
+【《】div class="article_lable">测试POST数组【《】/div>
 print_r($_POST);
 foreach( $_POST as $key=>$s){
 	aspecho('key',$key);
 }
 
-【b】dirname函数用法【/b】
+【《】div class="article_lable">dirname函数用法【《】/div>
 echo(dirname('e:/a/b/c/d'));		//回显 e:/a/b/c
 
 
-{$TitleInSearchEngineList title='PHP常用标签使用与案例'$}
+【《】div class="article_lable">glob函数用法【《】/div>
+//合并压缩CSS
+header( 'Content-type: text/css' );
+foreach( glob( '*.css' ) as $file ){
+	include( $file );
+	echo "\n";
+}
+//合并压缩JS
+header( 'Content-type: application/javascript' );
+foreach( glob( '*.js' ) as $file ){
+	include( $file );
+	echo "\n";
+}
+
+【《】div class="article_lable">三元运算符【《】/div>
+$a=1;
+echo $a?'true':'false';
+
+
+
+{$TitleInSearchEngineList divclass='article_lable'  title='PHP常用标签使用与案例'$}
 
 【/bodycontent】 

@@ -7,7 +7,7 @@ function FormSubmit(){
     $GLOBALS['conn=']=OpenConn();
     $SplStr=aspSplit(@$_POST[],'&');
     $TableName= Rf('TableName');
-    $YZM= AspTrim(Rf('YZM'));
+    $YZM= aspTrim(Rf('YZM'));
 
     if( $YZM<>'' ){
         if( @$_SESSION['YZM'] <>$YZM ){

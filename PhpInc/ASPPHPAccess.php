@@ -3,16 +3,16 @@
 
 //判断追加Sql是加Where 还是And   sql = getWhereAnd(sql,addSql)        修改于20141007 加强版
 function getWhereAnd( $sql, $addSql){
-    $LCaseAddSql=''; $AddType ='';
+    $LCaseAddSql=''; $AddType='';$s='';
     //追加SQl为空则退出
-    if( AspTrim($addSql)== '' ){ $getWhereAnd= $sql ; return @$getWhereAnd; }
+    if( aspTrim($addSql)== '' ){ $getWhereAnd= $sql ; return @$getWhereAnd; }
     if( instr(strtolower($sql), ' where ') > 0 ){
         $AddType= ' And ';
     }else{
         $AddType= ' Where ';
     }
     if( $addSql <> '' ){
-        $addSql= AspTrim($addSql);
+        $addSql= aspTrim($addSql);
         $LCaseAddSql= strtolower($addSql);
         if( Left($LCaseAddSql, 6)== 'order ' || Left($LCaseAddSql, 6)== 'group ' ){
             $getWhereAnd= $sql . ' ' . $addSql ; return @$getWhereAnd; 								//改进必需加空格，因为前面已经删除了20160115
@@ -21,7 +21,11 @@ function getWhereAnd( $sql, $addSql){
         }else if( Left($LCaseAddSql, 4)== 'and ' ){
             $addSql= mid($addSql, 5,-1);
         }
-        $sql= $sql . $AddType . $addSql;
+        //对where 改进   20160623
+        $s=strtolower($addSql);
+        if( $s<>'and' && $s<>'or' && $s<>'where' ){
+            $sql= $sql . $AddType . $addSql;
+        }
     }
     $getWhereAnd= $sql;
     return @$getWhereAnd;

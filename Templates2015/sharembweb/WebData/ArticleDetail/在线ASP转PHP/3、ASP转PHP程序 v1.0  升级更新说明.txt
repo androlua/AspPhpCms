@@ -5,46 +5,42 @@
 【webdescription】ASP转PHP程序 v1.0升级更新说明 - 分享模板网站
 【sortrank】3
 【author】sharembweb
-【adddatetime】2016-01-11 10:14:10
+【adddatetime】2015-03-11 10:14:10
 【filename】/asptophp/update.html
 【flags】|c|
 【relatedtags】在线ASP转PHP
 【bodycontent】
 
 
-<strong>ASP转PHP程序 v1.0升级更新说明</strong><br> 
+<strong>ASP转PHP程序 v1.0升级更新说明</strong>【article_lable】
 
 [&全部换行&]
 
-——- 20016.03.21 update ——
+——- 20016.03.21 update ——【article_lable】
 1、更新了连续给多个变量赋值，与if语句里=号冲突，因为在php里 if(1==1) 是双=号  赋值是单=号
 
-——- 20016.03.08 update ——
+——- 20016.03.08 update ——【article_lable】
 1、ASP转PHP程序 v1.0 再一次升级
 2、对类与字典等复杂的ASP函数处理
 3、ASP转PHP程序 进行了大幅度优化
 
-——- 20016.01.11 update ——
+——- 20016.01.11 update ——【article_lable】
 1、ASP转PHP程序 v1.0 正式版完成
 2、程序发布到github/admin5/chinaz/csdn等网站上
 
-——- 20015.12.01 update ——
+——- 20015.12.01 update ——【article_lable】
 1、ASP转PHP程序 v1.0 修改版完成
 2、对数组及多维数组处理
 3、加入sys_FSO.php操作文件函数类
 
-——- 2015.08.01 update ——
+——- 2015.08.01 update ——【article_lable】
 1、ASP转PHP程序 v1.0 初步开发完成
 2、对if/while/do/select/function/sub等ASP函数处理
-3、加入ASP.php系统函数文件
-
-<b>更多帮助：</b>
-<a href="https://github.com/313801120/AspToPhp" class="ablue"  target="_blank">Github下载ASP转PHP程序</a>
-<br>
+3、加入ASP.php系统函数文件 
  
-
-{$TitleInSearchEngineList title='ASP转PHP程序 v1.0升级更新说明'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASP转PHP程序 v1.0升级更新说明'$}
 【/bodycontent】
+
 
 
 

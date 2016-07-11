@@ -49,8 +49,7 @@
          .success(function(s) {
            //成功回调，通过s.data获取OpenAPI的返回数据
            //alert("获取用户信息成功！当前用户昵称为：" + s.data.nickname);
-
-
+ 
            var dataStr = "openid=" + openid + "&accesstoken=" + accesstoken + "&nickname=" + escape(s.data.nickname)
            dataStr += "&qqphoto=" + escape(s.data.figureurl) + "&sex=" + escape(s.data.gender) + "&year=" + escape(s.data.year)
            $.ajax({

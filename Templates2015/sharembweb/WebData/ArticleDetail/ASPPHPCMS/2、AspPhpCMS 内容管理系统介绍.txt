@@ -5,25 +5,24 @@
 ¡¾webdescription¡¿ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³£¬Í¬Ê±¿ª·¢ÁËASPºÍPHPÁ½Ì×°æ±¾£¬²ÉÓÃHTMLÓë³ÌÐò·ÖÀë£¬ÍøÕ¾Éú³É´¿¾²Ì¬¡£ ¶ÔHTMLÎÄ¼þ¿ÉÖØÃû³Æ£¬ºóÌ¨¶ÔÍøÕ¾SEOÓÅ»¯×öµ½ÁË¼«ÖÂ£¬ÈÃÄãµÄÍøÕ¾¿ÉÒÔÔÚ×î¿ìµÃÊ±¼äÄÚÈÝ±»¸÷´óËÑË÷ÒýÇæÊÕÂ¼ QQ313801120
 ¡¾sortrank¡¿2
 ¡¾author¡¿sharembweb
-¡¾adddatetime¡¿2016-02-18 08:51:11
+¡¾adddatetime¡¿2015-02-18 08:51:11
 ¡¾filename¡¿/ASPPHPCMS/about.html
 ¡¾customaurl¡¿
 ¡¾flags¡¿|c|
 ¡¾relatedtags¡¿ASPPHPCMS
 
 
-¡¾aboutcontent¡¿
-ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³£¬Í¬Ê±¿ª·¢ÁËASP+PHPË«°æ±¾Í¨ÓÃCMSÄÚÈÝ¹ÜÀíÏµÍ³£¬²ÉÓÃHTMLÓë³ÌÐò·ÖÀë¡£<br>
-ÈÃÄãÖÆ×÷³öÀ´µÄHTMLÄ£°å¿ÉÒÔÔËÐÐÔÚASP·þÎñÆ÷ºÍPHP·þÎñÆ÷ÉÏ¡£<br>
-ÍøÕ¾¿ÉÉú³É´¿¾²Ì¬£¬¶ÔHTMLÎÄ¼þ¿ÉÖØÃû³Æ£¬ºóÌ¨¶ÔÍøÕ¾SEOÓÅ»¯×öµ½ÁË¼«ÖÂ£¬ÈÃÄãµÄÍøÕ¾¿ÉÒÔÔÚ×î¿ìµÃÊ±¼äÄÚÈÝ±»¸÷´óËÑË÷ÒýÇæÊÕÂ¼¡£<br>
-<br>
-
-
-
+¡¾aboutcontent¡¿[&È«²¿»»ÐÐ&]ASPPHPCMS ÊÇÒ»¿îÃâ·Ñ¿ªÔ´µÄ£¬¿ìËÙ¡¢¼òµ¥¡¢ÇáÁ¿¼¶ÍøÕ¾ÄÚÈÝ¹ÜÀíÏµÍ³¡£
+ÓÐASPºÍPHPÁ½ÖÖ°æ±¾£¬²¢ÇÒÊÇÏà»¥Í¨ÓÃµÄ¡£
+Ö»ÒªÄãÐ´Ò»´Î£¬¾Í¿ÉÒÔÍ¬Ê±ÔÚASPÆ½Ì¨ºÍPHPÆ½Ì¨ÔËÐÐ¡£ 
+´´Á¢ÓÚ2015Äê³õ£¬ÊÇÎªÁËÃô½ÝWEBÓ¦ÓÃ¿ª·¢ºÍ¼ò»¯ÆóÒµÓ¦ÓÃ¿ª·¢¶øµ®ÉúµÄ¡£
+ASPPHPCMS´Óµ®ÉúÒÔÀ´Ò»Ö±±ü³Ð¼ò½àÊµÓÃµÄÉè¼ÆÔ­Ôò£¬ÔÚ±£³Ö³öÉ«µÄÐÔÄÜºÍÖÁ¼òµÄ´úÂëµÄÍ¬Ê±£¬Ò²×¢ÖØÒ×ÓÃÐÔ¡£ 
+²¢ÇÒÓµÓÐÖÚ¶àµÄÔ­´´¹¦ÄÜºÍÌØÐÔ£¬ÔÚÒ×ÓÃÐÔ¡¢À©Õ¹ÐÔºÍÐÔÄÜ·½Ãæ²»¶ÏÓÅ»¯ºÍ¸Ä½ø£¬±Ø½«³ÉÎª¹úÄÚ×îÁìÏÈºÍ×î¾ßÓ°ÏìÁ¦µÄWEBÓ¦ÓÃ¿ª·¢¿ò¼Ü£¬ÖÚ¶àµÄµäÐÍ°¸ÀýÈ·±£¿ÉÒÔÎÈ¶¨ÓÃÓÚÉÌÒµÒÔ¼°ÃÅ»§¼¶µÄ¿ª·¢¡£
 ¡¾/aboutcontent¡¿
 
+
 ¡¾bodycontent¡¿
-[&È«²¿»»ÐÐ&]<strong>ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³½éÉÜ</strong>
+[&È«²¿»»ÐÐ&]¡¾¡¶¡¿div class="article_lable"><strong>ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³½éÉÜ</strong>¡¾¡¶¡¿/div>
 »¶Ó­Ê¹ÓÃ¹úÄÚ×î×¨ÒµµÄASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³£¬Í¬Ê±¿ª·¢ÁË(ASP+PHP)Á½ÖÖ°æ±¾£¬Ëü½«ÊÇÄúÇáËÉ½¨Õ¾µÄÊ×Ñ¡ÀûÆ÷¡£
 
 ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³·ÖÎª£¬ASP°æ(ASP+Access)ºÍPHP°æ(PHP+MYSQL) ½øÐÐ´î½¨¡£
@@ -37,49 +36,49 @@ ASPPHPCMS´Ó¿ªÊ¼µÄASPPHPCMS v1.0µ½ASPPHPCMS v1.5£¬ËýµÄ¹¦ÄÜ½øÐÐÁËÊý´Î·ÉÔ¾ÐÔµÄ¸ïÐÂ£
 
 ASPPHPCMSÔÚ2016Äê½øÐÐÁËÈ«ÐÂµÄÉý¼¶£¬¶ÔÐÂ°æ±¾×÷³öÖØ´óµÄ´´ÐÂ£¬ÒÔÆÚ´ýÈ«ÐÂµÄASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³·þÎñ¸ü¶àµÄÓÃ»§¡£
 
-<strong>ASPPHPCMS²úÆ·ÌØÉ«</strong>
-1¡¢È«ÐÂ¿ò¼Ü
+¡¾¡¶¡¿div class="article_lable"><strong>ASPPHPCMS²úÆ·ÌØÉ«</strong>¡¾¡¶¡¿/div>
+¡¾b¡¿1¡¢È«ÐÂ¿ò¼Ü¡¾/b¡¿
 ²ÉÓÃASP+PHPÁ½ÖÖÓïÑÔ½øÐÐ¼æÈÝ¿ª·¢£¬½øÐÐÈ«ÐÂ¿ò¼ÜÉè¼Æ¡£¿ò¼Ü½á¹¹¸üÎªÇåÎú£¬´úÂë¸üÒ×ÓÚÎ¬»¤¡£Ä£¿é»¯×öÎª¹¦ÄÜµÄ¿ª·¢ÐÎÊ½£¬ÈÃÀ©Õ¹ÐÔµÃµ½±£Ö¤¡£ASPPHPCMSÌØ±ðÉè¼ÆµÄ¶þ´Î¿ª·¢À©Õ¹·½Ê½£¬ÈÃÄã²»ÔÙÐÞ¸Ä¹Ù·½µÄ´úÂëÎÄ¼þ£¬¾Í¿ÉÒÔ¶Ô¹¦ÄÜ´úÂë½øÐÐÖØÐ´¡£ÈÃÄãÇáËÉÏíÊÜ¶þ´Î¿ª·¢´øÀ´µÄ±ã½ÝµÄÍ¬Ê±£¬²»ÔÙÎª¹Ù·½Éý¼¶¶øµ£ÓÇ¡£
 
-2¡¢Ä£°åÏµÍ³
+¡¾b¡¿2¡¢Ä£°åÏµÍ³¡¾/b¡¿
 ASPPHPCMS¿É×Ô¶¨ÒåÄ£°å£¬Ä£°åÓëÄ£°åÖ®¼ä²Ù×÷»¥²»Ó°Ïì¡£
 
-3¡¢¶ÀÌØË¼Î¬
+¡¾b¡¿3¡¢¶ÀÌØË¼Î¬¡¾/b¡¿
 ASPPHPCMSÊ¹ÓÃASPÓëPHPÁ½ÖÖÓïÑÔ£¬²»¹ÜÄãµÄ·þÎñÆ÷ÊÇIIS»¹ÊÇApache£¬Ò²²»¹ÜÄãµÄÊý¾Ý¿âÊÇAccess»¹ÊÇMySQL£¬¶¼¿ÉÒÔÊ¹ÓÃÎÒÃÇµÄÏµÍ³¡£
 
-4¡¢Êý¾Ý±í·ÖÀë
+¡¾b¡¿4¡¢Êý¾Ý±í·ÖÀë¡¾/b¡¿
 ASPPHPCMSÊý¾ÝÄ£ÐÍ¹¦ÄÜ£¬²»Í¬Ä£°åÊ¹ÓÃ²»Í¬Êý¾Ý±í¡£
 
-5¡¢Ä£°åÖÆ×÷·½±ã
+¡¾b¡¿5¡¢Ä£°åÖÆ×÷·½±ã¡¾/b¡¿
 ASPPHPCMS²ÉÓÃMVCÌåÏµÉè¼ÆÆäÄ£°åÒýÇæ£¬¼°Ä£°åÓë³ÌÐò·ÖÀë£¬¼òµ¥Ò×¶®µÄÄ£°åÒýÇæ£¬ÈÃÃÀ¹¤ÈËÔ±¿É¶ÀÁ¢Íê³ÉÄ£°åÖÆ×÷¼°Êý¾Ýµ÷ÓÃ£¬¿ÉÈÃ³ÌÐòÈËÔ±ºÍÃÀ¹¤ÈËÔ±·Ö¹¤Ð­×÷£¬×î´ó¿ÉÄÜÌá¸ßÍÅ¶ÓÖ´ÐÐÁ¦¡£¶à¸ö¹¤¾ßÏä£¬¿É·½±ãµÄµ÷ÓÃÀ´×ÔÆäËûÏµÍ³µÄÊý¾Ý¡£ 
 
-6¡¢ÓÅÐãµÄÓÃ»§ÌåÑé
+¡¾b¡¿6¡¢ÓÅÐãµÄÓÃ»§ÌåÑé¡¾/b¡¿
 ASPPHPCMS¸ü¼Ó¼ò½à£¬½á¹¹¸üÎªºÏÀíµÄºóÌ¨¹ÜÀíÏµÍ³£¬ÈÃÉÏÊÖ¸üÎªÈÝÒ×£¬²Ù×÷¸üÎª¼òµ¥¡£ºóÌ¨Ä£°å¿ò¼Ü¿É×Ô¶¨ÒåÀ©Õ¹£¬ºÍthinkphpÊ¹ÓÃÒ»Ñù·½±ã¡£
 
-7¡¢¹¦ÄÜ²å¼þÔÚÏßÉý¼¶
+¡¾b¡¿7¡¢¹¦ÄÜ²å¼þÔÚÏßÉý¼¶¡¾/b¡¿
 ÌáÊ¾´óÁ¿¹¦ÄÜ²å¼þ¿É¹©ÏÂÔØÊ¹ÓÃ£¬Èç²É¼¯£¬¸ñÊ½»¯HTMLµÈ²å¼þ
 
-8¡¢Ãâ·Ñ¿ªÔ´
+¡¾b¡¿8¡¢Ãâ·Ñ¿ªÔ´¡¾/b¡¿
 ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³µÃÔ´´úÂë°Ù·ÖÖ®°ÙµÄ¿ªÔ´
 
 
-<strong>ASPPHPCMSÓ¦ÓÃÁìÓò</strong>
-1¡¢ÆóÒµÍøÕ¾
+¡¾¡¶¡¿div class="article_lable"><strong>ASPPHPCMSÓ¦ÓÃÁìÓò</strong>¡¾¡¶¡¿/div>
+¡¾b¡¿1¡¢ÆóÒµÍøÕ¾¡¾/b¡¿
 ÎÞÂÛ´óÐÍ»¹ÊÇÖÐÐ¡ÐÍÆóÒµ£¬ÀûÓÃÍøÂç´«µÝÐÅÏ¢ÔÚÒ»¶¨³Ì¶ÈÉÏÌá¸ßÁË°ìÊÂµÄÐ§ÂÊ£¬Ìá¸ßÆóÒµµÄ¾ºÕùÁ¦£»
 
-2¡¢ÐÐÒµÍøÕ¾
+¡¾b¡¿2¡¢ÐÐÒµÍøÕ¾¡¾/b¡¿
 Õë¶Ô²»Í¬ÐÐÒµ£¬Ç¿»¯ÄÚ²¿µÄÐÅÏ¢»®·Ö£¬ÌåÏÖÐÐÒµµÄÌØÉ«£¬ÍøÕ¾º¬ÓÐÐÐÒµµÄ¶¯Ì¬ÐÅÏ¢¡¢²úÆ·¡¢ÊÐ³¡¡¢¼¼Êõ¡¢ÈË²ÅµÈÐÅÏ¢£¬Ê÷Á¢ÐÐÒµÐÅÏ¢È¨ÍþÐÎÏó£¬ÎªÐÐÒµÄÚ²úÆ·¹©Ó¦Á´¹ÜÀí£¬Ìá¹©Êµ¼ÊµÄÉÌÒµ»ú»á
 
-3¡¢¸öÈËÕ¾³¤
+¡¾b¡¿3¡¢¸öÈËÕ¾³¤¡¾/b¡¿
 ÐËÈ¤ÎªÖ÷µ¼£¬½¨Á¢¸÷ÖÖÌâ²ÄÐÂÓ±£¬ÄÚÈÝ·á¸»µÄÍøÕ¾£¬Í¨¹ý¹²Í¬ÐËÈ¤µÄÐÅÏ¢½»Á÷£¬¿ÉÒÔÈÃÄúÐÎ³É×Ô¼º¾ßÓÐÌØÉ«µÄÓÃ»§È¦£¬²úÉú¸öÈËÐèÇó£¬²¢ÎªÆä·þÎñ
 
-4¡¢ÊÕ·ÑÍøÕ¾
+¡¾b¡¿4¡¢ÊÕ·ÑÍøÕ¾¡¾/b¡¿
 ÄÚÈÝÊÕ·ÑÀàÐÍµÄÍøÕ¾£¬ÓÃ»§¿ÉÒÔÔÚÏßÌá¹©²úÆ·ÏúÊÛ£¬»òÕßÄÚÈÝÊÕ·Ñ£¬¼òµ¥ÇåÎúµÄÓ¯ÀûÄ£Ê½£¬È·±£ÄúÒÔ×îÐ¡µÄÍ¶×Ê£¬È¡µÃ×î´óµÄ»Ø±¨
 
-<b>¸ü¶à°ïÖú£º</b>
+¡¾¡¶¡¿div class="article_lable">¸ü¶à°ïÖú£º¡¾¡¶¡¿/div>
 <a href="https://github.com/313801120/ASPPHPCMS" class="ablue"  target="_blank">GithubÏÂÔØASPPHPCMS</a>
 
-{$TitleInSearchEngineList title='ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³½éÉÜ'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASPPHPCMSÄÚÈÝ¹ÜÀíÏµÍ³½éÉÜ'$}
 
 ¡¾/bodycontent¡¿
 
@@ -103,3 +102,4 @@ ASPºóÌ¨µÇÂ¼£º<a href="/web/1.asp" class="ablue" target="_blank">µÇÂ¼ASPPHPCMSµÃA
 PHPºóÌ¨µÇÂ¼£º<a href="/web/1.php" class="ablue" target="_blank">µÇÂ¼ASPPHPCMSµÃPHPºóÌ¨</a> &nbsp; ÕËºÅ£ºtestÃÜÂë£ºtest
 
  
+

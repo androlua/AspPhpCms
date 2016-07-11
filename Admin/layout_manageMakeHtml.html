@@ -45,12 +45,14 @@
             </form>
             <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
                 <td> </td>
-                <td><a href="{$WEB_VIEWURL$}?act=makeallhtml" target="_blank" onClick="return new xyClass().myConfirm('你确定要生成全部HTML吗？')">生成全部HTML页面</a> |
-                    <a href="?act=deleteAllMakeHtml" target="_blank" onClick="return new xyClass().myConfirm('你确定要删除吗？\n删除后将不可恢复')">删除全部HTML页面</a>                </td>
+                <td>
+                    <input onclick="if(new xyClass().myConfirm('你确定要生成全部HTML吗？')){window.open('{$WEB_VIEWURL$}?act=makeallhtml')}" type="button" name="button_a0" class="btnclick2"  value="生成全部HTML页面" > &nbsp; 
+                    <input onclick="if(new xyClass().myConfirm('你确定要删除吗？\n删除后将不可恢复')){window.open('?act=deleteAllMakeHtml')}" type="button" name="button_a0" class="btnclick2"  value="删除全部HTML页面" >
+                    </td>
             </tr>
 
             <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
-                <td> </td>
+                <td></td>
                 <td>
                 	<!--
                 	<a href="{$WEB_VIEWURL$}?act=copyHtmlToWeb" target="_blank">复制生成HTML页面</a> |

@@ -5,7 +5,7 @@
 ¡¾webdescription¡¿¸ù¾İ¹Ø¼ü×ÖÎŞËù²»ÔÚµÄÔ­Ôò,¿ÉÒÔÔÚÄ¿Â¼Ãû³ÆºÍÎÄ¼şÃû³ÆÖĞÊ¹ÓÃµ½¹Ø¼ü´Ê¡£µ«Èç¹ûÊÇ¹Ø¼ü´Ê×é,ÔòĞèÒªÓÃ·Ö¸ô·û·Ö¿ª QQ313801120
 ¡¾sortrank¡¿1
 ¡¾author¡¿sharembweb
-¡¾adddatetime¡¿2016-03-28 10:37:05
+¡¾adddatetime¡¿2015-07-28 05:28:27
 ¡¾filename¡¿/SEO/filename-rule.html
 ¡¾customaurl¡¿
 ¡¾flags¡¿|c|
@@ -48,10 +48,11 @@ URLÓ¦¸ÃÔ½¶ÌÔ½ºÃ¡£ÓĞÈËÎªÁËµ¥´¿Ôö¼Ó¹Ø¼ü×Ö¶ø¶îÍâ½¨¶àÒ»¸ö´øÓĞ¹Ø¼ü×ÖµÄ×ÓÄ¿Â¼£¬¸Ä±äÄ¿Â
 
 
 [&È«²¿»»ĞĞend&] 
-{$TitleInSearchEngineList title='ÓĞÀûÓÚSEOµÄÎÄ¼şÃüÃû¹æÔòĞ¡½á'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ÓĞÀûÓÚSEOµÄÎÄ¼şÃüÃû¹æÔòĞ¡½á'$}
 
 <br>
 ¡¾/bodycontent¡¿
 
 
  
+

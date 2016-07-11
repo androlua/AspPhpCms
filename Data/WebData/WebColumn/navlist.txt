@@ -1,0 +1,131 @@
+【columnname】首页
+【columntype】首页
+【sortrank】0
+【filename】/
+【flags】|top|foot|
+【parentid】-1
+【labletitle】
+【target】
+【webtitle】首页 标题
+【webkeywords】首页 关键词
+【webdescription】首页 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】关于我们
+【columntype】文本
+【sortrank】10
+【filename】/asptophp/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】
+【target】
+【webtitle】关于我们 标题
+【webkeywords】关于我们 关键词
+【webdescription】关于我们 描述
+【bodycontent】
+关于我们 详细内容
+【/bodycontent】
+-------------------------------
+【columnname】新闻中心
+【columntype】新闻
+【sortrank】20
+【filename】/asptophp/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】新闻中心 标题
+【webkeywords】新闻中心 关键词
+【webdescription】新闻中心 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】产品展示
+【columntype】产品
+【sortrank】30
+【filename】/asptophp/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】产品展示 标题
+【webkeywords】产品展示 关键词
+【webdescription】产品展示 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】留言
+【columntype】留言
+【sortrank】40
+【filename】/asptophp/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】留言 标题
+【webkeywords】留言 关键词
+【webdescription】留言 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】反馈
+【columntype】反馈
+【sortrank】50
+【filename】/asptophp/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】反馈 标题
+【webkeywords】反馈 关键词
+【webdescription】反馈 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】招聘
+【columntype】招聘
+【sortrank】60
+【filename】/asptophp/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】招聘 标题
+【webkeywords】招聘 关键词
+【webdescription】招聘 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】联系我们
+【columntype】文本
+【sortrank】90
+【filename】/asptophp/
+【templatepath】
+【flags】|top|
+【parentid】-1
+【labletitle】
+【target】
+【webtitle】联系我们 标题
+【webkeywords】联系我们 关键词
+【webdescription】联系我们 描述
+【bodycontent】
+联系我们 详细内容
+【/bodycontent】

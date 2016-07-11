@@ -18,15 +18,15 @@ var _hmt = _hmt || [];
 </script>
 {$JsWebStat filename='[$WEB_VIEWURL$]?dataact=WebStat'$}   
 
-<br>경홈 sharembweb.com | Powered by ASPPHPCMS
+<br>경홈 ufoer.com | Powered by ASPPHPCMS
 ±/websitebottom×
 
-±webtemplate×/Templates2015/sharembweb/
-±webimages×/Templates2015/sharembweb/Images/
-±webcss×/Templates2015/sharembweb/Css/
-±webjs×/Templates2015/sharembweb/Js/
+±webtemplate×/Templates/ufoer/
+±webimages×/Templates/ufoer/Images/
+±webcss×/Templates/ufoer/Css/
+±webjs×/Templates/ufoer/Js/
 ±flags×|addwebsite|iscloseeditor|htmlrun|
-±websiteurl×http://sharembweb.com/
+±websiteurl×http://ufoer.com/
 
 
 

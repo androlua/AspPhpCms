@@ -179,7 +179,7 @@ function selectSessionCookies($VerificationMode){
 //显示选择分割内容  showSelectList("aa","aa|bb|cc","|","bb")
 function showSelectList($IDName, $content, $SplType, $ThisValue){
     $c=''; $sel=''; $splStr=''; $s ='';
-    $IDName= AspTrim($IDName);
+    $IDName= aspTrim($IDName);
     if( $SplType== '' ){ $SplType= '|_-|' ;}
     if( $IDName <> '' ){ $c= $c . '  <select name="' . $IDName . '" id="' . $IDName . '">' . vbCrlf() ;}
 
@@ -258,7 +258,7 @@ function showWebModuleSkins($InputName, $ThisValue){
 //显示单选项列表
 function showRadioList($IDName, $content, $SplType, $ThisValue){
     $c=''; $sel=''; $splStr=''; $s=''; $i ='';
-    $IDName= AspTrim($IDName);
+    $IDName= aspTrim($IDName);
     if( $SplType== '' ){ $SplType= '|_-|' ;}
     $i= 0;
     $splStr= aspSplit($content, $SplType);
@@ -303,7 +303,7 @@ function handleInputCheckBox($textName, $checked, $valueStr, $helpStr, $sType){
 function inputText($textName, $valueStr, $width, $helpStr){
     $Css ='';
 
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
@@ -321,7 +321,7 @@ function inputText2($textName, $valueStr, $width, $className, $helpStr){
 
         $className= ' class="' . $className . '"';
     }
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
@@ -334,7 +334,7 @@ function inputText2($textName, $valueStr, $width, $className, $helpStr){
 //显示Input文本在左边  InputLeftText(TextName, ValueStr, "98%", "")
 function inputLeftText($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
@@ -347,7 +347,7 @@ function inputLeftText($textName, $valueStr, $width, $helpStr){
 //显示Input文本在左边 帮助文字在右边
 function inputLeftTextHelpTextRight($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
@@ -370,7 +370,7 @@ function inputRightTextContent($textName, $valueStr, $width, $helpStr){
 //显示Input文本在中边 提示文本在左边 或 提示文本在右边 20150114
 function handleInputLeftRightTextContent($sType, $textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
@@ -396,7 +396,7 @@ function handleInputLeftRightTextContent($sType, $textName, $valueStr, $width, $
 //显示Input文本在左边密码
 function inputLeftPassText($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
@@ -409,7 +409,7 @@ function inputLeftPassText($textName, $valueStr, $width, $helpStr){
 //显示Input文本在左边密码类型
 function inputLeftPassTextContent($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';
@@ -432,7 +432,7 @@ function inputHiddenText($textName, $valueStr){
 //显示Input文本域 InputTextArea("FindTpl", FindTpl, "60%" , "120px", "")
 function inputTextArea($textName, $valueStr, $width, $height, $helpStr){
     $Css=''; $HeightStr ='';
-    $width= AspTrim(strtolower($width));
+    $width= aspTrim(strtolower($width));
     if( $width <> '' ){
         if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
             $width= $width . 'px';

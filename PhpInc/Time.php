@@ -116,7 +116,7 @@ function printTimeValue($vv){
         $c= $c . $v . '分';
         $v= $n;
     }
-    if( $v >= 0 ){
+    if( $v > 0 ){
         $c= $c . $v . '秒';
     }
 
@@ -152,14 +152,14 @@ function printAskTime($vv){
 //获得时间
 function getTimerSet(){
     $n ='';
-    $n= FormatNumber((Timer() - $GLOBALS['PubTimer']) * 1000, 2, - 1) / 1000;
+    $n= formatNumber((Timer() - $GLOBALS['PubTimer']) * 1000, 2, - 1) / 1000;
     $getTimerSet= toNumber($n, 3);
     return @$getTimerSet;
 }
 //计算时间
 function calculationTimer($PubTimer){
     $n ='';
-    $n= FormatNumber((Timer() - $PubTimer) * 1000, 2, - 1) / 1000;
+    $n= formatNumber((Timer() - $PubTimer) * 1000, 2, - 1) / 1000;
     $calculationTimer= toNumber($n, 3);
     return @$calculationTimer;
 }

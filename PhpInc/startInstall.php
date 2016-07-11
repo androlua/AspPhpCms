@@ -559,6 +559,11 @@ function step2(){
 <?PHP
 }
 function step3(){
+$db_PREFIX=@lcase(trim($_REQUEST['db_PREFIX']));
+if($db_PREFIX==''){
+	$db_PREFIX='xy_';
+}
+
 ?>
 <form id="form1" name="form1" method="post" action="../admin/index.php?act=setAccess&webdataDir=/Templates2015/sharembweb/WebData&login=out">
 <div class="pright">
@@ -572,7 +577,7 @@ function step3(){
             </tr>
             <tr>
               <td colspan="2">
-              <iframe src="install.php?db_PREFIX=xy_" width="100%" height="350"></iframe>
+              <iframe src="install.php?db_PREFIX=<?PHP echo($db_PREFIX);?>" width="100%" height="350"></iframe>
               </td>
             </tr> 
       </tbody>

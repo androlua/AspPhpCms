@@ -5,8 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-  <title>Bootstrap 101 Template</title>
-
+<title>{$EDITORTYPE$}版 {$Web_Title$} - :::企业后台管理系统,QQ:313801120:::</title>
   <!-- Bootstrap -->
   <link href="{$adminDir$}/Template/mobile/css/bootstrap.min.css" rel="stylesheet">
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -50,8 +49,12 @@
             <a href="?act=dispalyManageHandle&actionType=SystemLog&addsql=order by id desc&lableTitle=[$title escape='1' default='后台操作日志'$]" target="_blank">后台操作日志</a>
           </li>
           <li>
-            <a href="?act=displayLayout&templateFile=manageMakeHtml.html&lableTitle=[$title escape='1' default='生成HTML'$]" target="_blank">生成HTML</a>
+            <a href="?act=dispalyManageHandle&actionType=WebsiteStat&addsql= order by id desc&lableTitle=网站统计" target="_blank">网站统计</a>
           </li>
+          <li>
+            <a href="?act=displayLayout&templateFile=layout_manageMakeHtml.html&lableTitle=生成HTML" target="_blank">生成HTML</a>
+          </li>
+          
  
         </ul>
       </div>

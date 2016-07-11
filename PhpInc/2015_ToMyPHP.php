@@ -59,14 +59,21 @@ function XY_Include($action){
 
 //栏目菜单
 function XY_AP_ColumnMenu($action){
-    $defaultStr=''; $thisId=''; $parentid ='';
-    $parentid= AspTrim(RParam($action, 'parentid'));
+    $defaultStr=''; $thisId=''; $parentid='';$c='';
+    $parentid= aspTrim(RParam($action, 'parentid'));
+    $parentid=getColumnId($parentid);
+
     if( $parentid== '' ){ $parentid= -1 ;}
 
     $thisId= $GLOBALS['glb_columnId'];
     if( $thisId== '' ){ $thisId= -1 ;}
     $defaultStr= getDefaultValue($action); //获得默认内容
-    $XY_AP_ColumnMenu= showColumnList($parentid, $thisId, 0, $defaultStr);
+
+
+
+    $defaultStr=$defaultStr . '[topnav]'. $parentid .'[/topnav]';
+    $XY_AP_ColumnMenu= showColumnList( $parentid, 'webcolumn', 'columnname',$thisId , 0, $defaultStr);
+
     return @$XY_AP_ColumnMenu;
 }
 
@@ -182,7 +189,7 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
     $noFollow ='';//不追踪 20141222
     $defaultStr= getDefaultValue($action); //获得默认内容
     $modI ='';//余循环20150112
-    $noFollow= AspTrim(strtolower(RParam($action, 'noFollow'))); //不追踪
+    $noFollow= aspTrim(strtolower(RParam($action, 'noFollow'))); //不追踪
     $lableTitle ='';//标题标题
     $target ='';//a链接打开目标方式
     $adddatetime ='';//添加时间
@@ -222,6 +229,7 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
     }
     $rsObj=$GLOBALS['conn']->query( $sql);
     for( $i= 1 ; $i<= @mysql_num_rows($rsObj); $i++){
+        $startStr= '' ; $endStr= '';
         //call echo(sql,i & "," & nTop)
         if( $i > $nTop ){
             break;
@@ -533,7 +541,7 @@ function XY_AP_GetFieldValue($action, $sql, $fieldName){
 function XY_JsWebStat($action){
     $s=''; $fileName=''; $sType ='';
     $sType= RParam($action, 'stype');
-    $fileName= AspTrim(RParam($action, 'fileName'));
+    $fileName= aspTrim(RParam($action, 'fileName'));
     if( $fileName== '' ){
         $fileName= '[$WEB_VIEWURL$]?act=webstat&stype=' . $sType;
     }
@@ -663,11 +671,22 @@ function XY_getLableValue($action){
 }
 //标题在搜索引擎中搜索列表
 function XY_TitleInSearchEngineList($action){
-    $title=''; $sType ='';
+    $title=''; $sType='';$divclass='';$spanclass='';$s='';$c='';
+
     $title= RParam($action, 'title');
     $sType= RParam($action, 'sType');
-    $c ='';
-    $c= $c . '<strong>更多关于《' . $title . '》在各大搜索引擎中相关信息</strong><br>' . vbCrlf();
+    $divclass= RParam($action, 'divclass');
+    $spanclass= RParam($action, 'spanclass');
+
+    $s='<strong>更多关于《' . $title . '》</strong>';
+    if( $divclass<>'' ){
+        $s='<div class="'. $divclass .'">'. $s .'</div>';
+    }else if( $spanclass<>'' ){
+        $s='<span class="'. $spanclass .'">'. $s .'</span>' . '<br>';
+    }else{
+        $s=$s . '<br>';
+    }
+    $c= $c . $s . vbCrlf();
     $c= $c . '<ul class="list"> ' . vbCrlf();
     $c= $c . '<li><a href="https://www.baidu.com/s?ie=gb2312&word=' . $title . '" rel="nofollow" target="_blank">【baidu搜索】在百度里搜索(' . $title . ')</a></li>' . vbCrlf();
     $c= $c . '<li><a href="http://www.haosou.com/s?ie=gb2312&q=' . $title . '" rel="nofollow" target="_blank">【haosou搜索】在好搜里搜索(' . $title . ')</a></li>' . vbCrlf();
@@ -699,5 +718,11 @@ function XY_unescape($action){
     $XY_unescape= escape($content);
     return @$XY_unescape;
 }
-
+//获得网址
+function XY_getUrl($action){
+    $stype ='';
+    $stype= RParam($action, 'stype');
+    $XY_getUrl=getThisUrlNoParam();
+    return @$XY_getUrl;
+}
 ?>

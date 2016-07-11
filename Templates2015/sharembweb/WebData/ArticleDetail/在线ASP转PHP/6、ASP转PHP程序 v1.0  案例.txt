@@ -5,14 +5,14 @@
 【webdescription】ASP转PHP程序 v1.0案例 - 分享模板网站
 【sortrank】6
 【author】sharembweb
-【adddatetime】2016-01-11 10:14:10
+【adddatetime】2015-06-11 10:14:10
 【filename】/asptophp/cases.html
 【flags】|c|
 【relatedtags】在线ASP转PHP
 【bodycontent】
 {$displayEditor $}
 
-<strong>ASP转PHP程序 v1.0案例</strong><br>
+<strong>ASP转PHP程序 v1.0案例</strong>【article_lable】
 <b>ASP部分：</b><br>
 <pre class="brush: vb;">
  
@@ -472,8 +472,9 @@ function Request($name){
 
 <br>
 
-{$TitleInSearchEngineList title='ASP转PHP程序 v1.0案例'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASP转PHP程序 v1.0案例'$}
 【/bodycontent】
+
 
 
 

@@ -4,6 +4,8 @@ Dim ROOT_PATH : ROOT_PATH = handlePath("./")
 %>      
 <!--#Include File = "../Inc/admin_function.asp"-->  
 <!--#Include File = "../Inc/admin_function2.asp"-->      
+<!--#Include File = "../Inc/admin_function_cai.asp"-->      
+
 <!--#Include File = "../Inc/admin_setAccess.asp"-->      
 <% 
 '=========
@@ -12,7 +14,7 @@ Dim cfg_webSiteUrl, cfg_webTitle, cfg_flags, cfg_webtemplate
 
 
 '加载网址配置
-Sub loadWebConfig()
+function loadWebConfig()
     Call openconn() 
     '判断表存在
     If InStr(getHandleTableList(), "|" & db_PREFIX & "website" & "|") > 0 Then
@@ -24,7 +26,7 @@ Sub loadWebConfig()
             cfg_webtemplate = rs("webtemplate") & ""                  '模板路径
         End If : rs.Close 
     End If 
-End Sub 
+End function
 
 
 '登录判断
@@ -96,7 +98,9 @@ Sub adminOut()
 End Sub 
 '清除缓冲
 Sub clearCache()
-    Call deleteFile(WEB_CACHEFile) 
+    Call deleteFile(WEB_CACHEFile)
+	call deleteFolder("./../cache/html")
+	call createFolder("./../cache/html")
     Call rw(getMsg1(setL("清除缓冲完成，正在进入后台界面..."), "?act=displayAdminLogin")) 
 End Sub 
 '后台首页
@@ -163,6 +167,9 @@ Select Case Request("act")
 	
 	case "function" : callFunction()												'调用function文件函数
 	case "function2" : callFunction2()												'调用function2文件函数
+	case "function_cai" : callFunction_cai()										'调用function_cai文件函数
+	case "file_setAccess" : callfile_setAccess()										'调用file_setAccess文件函数
+	
 
     Case "setAccess" : resetAccessData()                                            '恢复数据
 

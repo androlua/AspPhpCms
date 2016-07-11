@@ -5,7 +5,7 @@
 【webdescription】文章标题，即title标签。就是一整篇文章的题目。大多数搜索引擎都是提取文章标题的全部或部分内容作为摘要信息中的标题。因此，我们在写文章标题时，要做到主题突出、内容简洁 QQ313801120
 【sortrank】5
 【author】sharembweb
-【adddatetime】2016-03-28 10:37:05
+【adddatetime】2015-11-28 09:11:23
 【filename】/SEO/seo-webtitle.html
 【customaurl】
 【flags】|c|
@@ -49,7 +49,7 @@
 文章标题的字数最好控制在30字以内。
 
 [&全部换行end&] 
-{$TitleInSearchEngineList title='如何进行文章标题优化？'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='如何进行文章标题优化？'$}
 
 <br>
 【/bodycontent】
@@ -58,3 +58,4 @@
 
 
  
+

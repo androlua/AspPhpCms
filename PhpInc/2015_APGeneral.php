@@ -26,6 +26,7 @@ function aritcleRelatedTags($relatedTags){
 function getRandArticleId($addSql, $topNumb){
     $splStr=''; $s=''; $c=''; $nIndex ='';
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail ' . $addSql);
+    $rs=mysql_fetch_array($rsObj);
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
         if( $c <> '' ){ $c= $c . ',' ;}
         $c= $c . $rs['id'];
@@ -41,34 +42,68 @@ function getRandArticleId($addSql, $topNumb){
     $getRandArticleId= $c;
     return @$getRandArticleId;
 }
+//获得网站栏目排序SQL
+function getWebColumnSortSql($id){
+    $sql='';
+    $tempRs2Obj=$GLOBALS['conn']->query('select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $id);
+    if( @mysql_num_rows($tempRs2Obj)!=0 ){
+        $tempRs2=mysql_fetch_array($tempRs2Obj);
+        $sql=$tempRs2['sortsql'];
+    }
+    $getWebColumnSortSql=$sql;
+    return @$getWebColumnSortSql;
+}
 
 //上一篇文章 这里面的sortrank(排序)也可以改为id,在引用的时候就要用id
-function upArticle($parentid, $lableName, $lableValue){
-    $sql ='';
-    $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid=' . $parentid . ' and ' . $lableName . '<' . $lableValue . ' order by ' . $lableName . ' desc';
-    $upArticle= handleUpDownArticle('上一篇：', $sql);
+function upArticle($parentid, $lableName, $lableValue, $ascOrDesc){
+    $upArticle= handleUpDownArticle('上一篇：','uppage',$parentid, $lableName,$lableValue,$ascOrDesc);
     return @$upArticle;
 }
 //下一篇文章
-function downArticle($parentid, $lableName, $lableValue){
-    $sql ='';
-    $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid=' . $parentid . ' and ' . $lableName . '>' . $lableValue . ' order by ' . $lableName . ' asc';
-    $downArticle= handleUpDownArticle('下一篇：', $sql);
+function downArticle($parentid, $lableName, $lableValue,$ascOrDesc){
+    $downArticle= handleUpDownArticle('下一篇：','downpage', $parentid,$lableName,$lableValue,$ascOrDesc);
     return @$downArticle;
 }
 //处理上下页
-function handleUpDownArticle($lableTitle, $sql){
-    $c=''; $url ='';
+function handleUpDownArticle($lableTitle,$sType,$parentid, $lableName,$lableValue,$ascOrDesc){
+    $c=''; $url='';$target='';$targetStr='';
+
+    $sql='';
+    if( $lableName=='adddatetime' ){
+        $lableValue='#'. $lableValue .'#';
+    }
+    //位置互换
+    if( $ascOrDesc=='desc' ){
+        if( $sType=='uppage' ){
+            $sType='downpage';
+        }else{
+            $sType='uppage';
+        }
+    }
+    if( $sType=='uppage' ){
+        $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid=' . $parentid . ' and ' . $lableName . '<' . $lableValue . ' order by ' . $lableName . ' desc';
+    }else{
+        $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . 'articledetail where parentid=' . $parentid . ' and ' . $lableName . '>' . $lableValue . ' order by ' . $lableName . ' asc';
+    }
+
     //call echo("sql",sql)
     $rsxObj=$GLOBALS['conn']->query( $sql);
     $rsx=mysql_fetch_array($rsxObj);
     if( @mysql_num_rows($rsxObj)!=0 ){
+        $target=$rsx['target'];
+        if( $target<>'' ){
+            $targetStr=' target="'. $target .'"';
+        }
         if( $GLOBALS['isMakeHtml']== true ){
             $url= getRsUrl($rsx['filename'], $rsx['customaurl'], '/detail/detail' . $rsx['id']);
         }else{
-            $url= handleWebUrl('?act=detail&id=' . $rsx['id']);
+            if( $rsx['customaurl']=='' ){
+                $url= handleWebUrl('?act=detail&id=' . $rsx['id']);
+            }else{
+                $url= handleWebUrl($rsx['customaurl']);
+            }
         }
-        $c= '<a href="' . $url . '">' . $lableTitle . $rsx['title'] . '</a>';
+        $c= '<a href="' . $url . '"'. $targetStr .'>' . $lableTitle . $rsx['title'] . '</a>';
     }else{
         $c= $lableTitle . '没有';
     }
@@ -90,8 +125,8 @@ function getRsUrl( $fileName, $customAUrl, $defaultFileName){
             $url= $url . '.html';
         }
     }
-    if( AspTrim($customAUrl) <> '' ){
-        $url= AspTrim($customAUrl);
+    if( aspTrim($customAUrl) <> '' ){
+        $url= aspTrim($customAUrl);
     }
     if( instr($GLOBALS['cfg_flags'], '|addwebsite|') > 0 ){
         //url = replaceGlobleVariable(url)   '替换全局变量
@@ -201,12 +236,23 @@ function getColumnId($columnName){
     }
     return @$getColumnId;
 }
+//获得后台菜单名称对应的id
+function getListMenuId($title){
+    $title= Replace($title, '\'', ''); //注意，这个不能留
+    $getListMenuId= -1;
+    $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'listmenu where title=\'' . $title. '\'');
+    $rsx=mysql_fetch_array($rsxObj);
+    if( @mysql_num_rows($rsxObj)!=0 ){
+        $getListMenuId= $rsx['id'];
+    }
+    return @$getListMenuId;
+}
 
 
 //获得栏目ID对应的名称
-function getColumnName($columnID){
-    if( $columnID <> '' ){
-        $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $columnID);
+function getColumnName($id){
+    if( $id <> '' ){
+        $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'webcolumn where id=' . $id);
         $rsx=mysql_fetch_array($rsxObj);
         if( @mysql_num_rows($rsxObj)!=0 ){
             $getColumnName= $rsx['columnname'];
@@ -214,6 +260,19 @@ function getColumnName($columnID){
     }
     return @$getColumnName;
 }
+
+//获得后台菜单ID对应的名称
+function getListMenuName($id){
+    if( $id <> '' ){
+        $rsxObj=$GLOBALS['conn']->query( 'Select * from ' . $GLOBALS['db_PREFIX'] . 'listmenu where id=' . $id);
+        $rsx=mysql_fetch_array($rsxObj);
+        if( @mysql_num_rows($rsxObj)!=0 ){
+            $getListMenuName= $rsx['title'];
+        }
+    }
+    return @$getListMenuName;
+}
+
 
 
 
@@ -267,7 +326,7 @@ function webStat($folderPath){
 
     $splStr= aspSplit($content . ';;;;', ';');
     $ie= $splStr[1];
-    $xp= AspTrim($splStr[2]);
+    $xp= aspTrim($splStr[2]);
     if( Right($xp, 1)== ')' ){ $xp= mid($xp, 1, Len($xp) - 1) ;}
     $c= '来访' . $goToUrl . vbCrlf();
     $c= $c . '当前：' . $thisUrl . vbCrlf();
@@ -321,7 +380,7 @@ function setHtmlParam($content, $ParamList){
     $endStr= '\'';
     $splStr= aspSplit($ParamList, '|');
     foreach( $splStr as $key=>$startStr){
-        $startStr= AspTrim($startStr);
+        $startStr= aspTrim($startStr);
         if( $startStr <> '' ){
             //替换开始字符   因为开始字符类型可变 不同
             $ReplaceStartStr= $startStr;

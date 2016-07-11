@@ -151,6 +151,8 @@ function adminOut(){
 //清除缓冲
 function clearCache(){
     deleteFile($GLOBALS['WEB_CACHEFile']);
+    deleteFolder('./../cache/html');
+    createFolder('./../cache/html');
     rw(getMsg1(setL('清除缓冲完成，正在进入后台界面...'), '?act=displayAdminLogin'));
 }
 //后台首页
@@ -216,7 +218,10 @@ switch ( @$_REQUEST['act'] ){
 
     break;
     case 'function' ; callFunction()												;break;//调用function文件函数
-    case 'function2' ; callFunction2();												//调用function2文件函数
+    case 'function2' ; callFunction2()												;break;//调用function2文件函数
+    case 'function_cai' ; callFunction_cai()										;break;//调用function_cai文件函数
+    case 'file_setAccess' ; callfile_setAccess();										//调用file_setAccess文件函数
+
     break;
     case 'setAccess' ; resetAccessData(); //恢复数据
     break;

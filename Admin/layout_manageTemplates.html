@@ -16,10 +16,8 @@
 	</div>
 </div>
 <div class="mg10">
-	<div class="atitleleft">[$lableTitle$]信息</div>
- 
+	<div class="atitleleft">[$lableTitle$]信息</div>&nbsp;
 	<div class="clear">
-	</div>
 	<div class="acontent">
         <div class="explain-col">
             温馨提示： 
@@ -38,7 +36,7 @@
 		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 		  <td>[$templatename$] </td>
 		  <td><a href="../{$EDITORTYPE_PHP$}inc/admin_template.{$EDITORTYPE$}?act=templateFileList&dir=[$templatepath$]">[$templatepath2$]</a></td>
-		  <td><a href="?act=isOpenTemplate&templatepath=[$templatepath$]&templatename=[$templatename$]">启用</a> 
+		  <td><a href="?act=isOpenTemplate&templatepath=[$templatepath$]&templatename=[$templatename$]" onClick="return new xyClass().myConfirm('你确定要使用当前模板？')">启用</a> 
           <a href="{$WEB_VIEWURL$}?templatedir=[$templatepath$]" target="_blank"><img src="images/icon/part-list.gif" title="预览" alt="预览" style="cursor:pointer" border="0" width="16" height="16"></a>
           <a href="?act=setAccess&webdataDir=[$templatepath$]WebData"  onClick="return new xyClass().myConfirm('你确定要恢复默认数据吗？\n操作后将不可恢复')">恢复数据</a> 
            

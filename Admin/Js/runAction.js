@@ -1101,7 +1101,8 @@ function getInputValue(fieldName){
 		if(s==undefined){
 			s=""	
 		}
-		return s.replace(/\//g,"//");
+		//s=s.replace(/\//g,"//");			//不处理这个
+		return s
 	}catch(exception){
 		return ""
 	}

@@ -1,0 +1,18 @@
+¡¾bigclassname¡¿admin5_asp
+¡¾columnname¡¿ASP
+¡¾sortrank¡¿0
+¡¾httpurl¡¿http://down.admin5.com/asp/list_1_{*}.html
+¡¾charset¡¿gb2312
+¡¾thispage¡¿1
+¡¾countpage¡¿66
+¡¾adddatetime¡¿2016-06-22 15:09:05
+-------------------------------
+¡¾bigclassname¡¿chinaz_asp
+¡¾columnname¡¿ASP
+¡¾sortrank¡¿2
+¡¾httpurl¡¿http://down.chinaz.com/class/3_{*}.htm
+¡¾charset¡¿gb2312
+¡¾thispage¡¿1
+¡¾countpage¡¿1051
+¡¾adddatetime¡¿2016-06-22 15:09:05
+-------------------------------

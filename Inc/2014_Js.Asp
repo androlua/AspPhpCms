@@ -1,6 +1,134 @@
 <% 
 'Js
 
+'Asp代码混淆处理 20160624
+Function jsCodeConfusion(content)
+    Dim splStr, i, YesJs, YesWord, Sx, s, Wc, Zc, s1, AspCode, SYHCount, UpWord 
+    Dim UpWordn, tempS, DimList 
+    Dim YesFunction                                                                 '函数是否为真
+    Dim StartFunction                                                               '开始函数 目的是为了让function default 处理函数后面没有()   20150218
+    StartFunction = False                                                           '默认开始函数为假
+    'If nType="" Then  nType  = 0
+    yesJs = False                                                                  '是ASP 默认为假
+    YesFunction = False                                                             '是函数 默认为假
+    YesWord = False                                                                 '是单词 默认为假
+    SYHCount = 0                                                                    '双引号默认为0
+    splStr = Split(content, vbCrLf)                                                 '分割行
+    Dim wcType                                                                      '输入文本类型，如 " 或 '
+    Dim isAddToSYH                                                                  '是否累加双引号
+	dim beforeStr, afterStr, endCode,nSYHCount
+    '循环分行
+    For Each s In splStr
+        '循环每个字符
+        For i = 1 To Len(s)
+            Sx = Mid(s, i, 1) 
+            'Asp开始
+            If Sx = "<" And Wc = "" Then                                                 '输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                If Mid(s, i + 1, 6) = "script" Then
+                    yesJs = True                                                                   'ASP为真
+                    i = i + 1                                                                       '加1而不能加2，要不然<%function Test() 就截取不到
+                    Sx = Mid(s, i, 1) 
+                    AspCode = AspCode & "<" 
+                End If 
+            'ASP结束
+            ElseIf Sx = "<" And Mid(s, i + 1, 8) = "/script>" And Wc = "" Then                     'Wc为输出内容
+                yesJs = False                                                                  'ASP为假
+                i = i + 1                                                                       '不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假
+                Sx = Mid(s, i, 8) 
+                AspCode = AspCode & "/script>" 
+            End If 
+            If yesJs = True Then
+             
+				beforeStr = Right(Replace(Mid(s, 1, i - 1), " ", ""), 1)                        '上一个字符
+				afterStr = Left(Replace(Mid(s, i + 1), " ", ""), 1)                             '下一个字符
+				endCode = Mid(s, i + 1)                                                         '当前字符往后面代码 一行
+				'输入文本
+				If(sx = """" Or sx = "'" And wcType = "") Or sx = wcType Or wc <> "" Then
+					isAddToSYH = True 
+					'这是一种简单的方法，等完善(20150914)
+					If isAddToSYH = True And beforeStr = "\" Then
+						
+						If Len(wc) >=1 Then
+							If isStrTransferred(wc)=true Then		'为转义字符为真
+								'call echo(wc,isStrTransferred(wc))
+								isAddToSYH = False 
+							End If 
+						Else
+							isAddToSYH = False 
+						End If 
+						'call echo(wc,isAddToSYH)
+					End If 
+					If wc = "" Then
+						wcType = sx 
+					End If 
+	
+					'双引号累加
+					If sx = wcType And isAddToSYH = True Then nSYHCount = nSYHCount + 1             '排除上一个字符为\这个转义字符(20150914)
+	
+	
+					'判断是否"在最后
+					If nSYHCount Mod 2 = 0 And beforeStr <> "\" Then
+						If Mid(s, i + 1, 1) <> wcType Then
+							wc = wc & sx 
+							AspCode = AspCode & wc                      '行代码累加
+							'call echo("wc",wc)
+							nSYHCount = 0 : wc = ""               '清除
+							wcType = "" 
+						Else
+							wc = wc & sx 
+						End If 
+					Else
+						wc = wc & sx 
+					End If
+					
+                ElseIf Sx = "'" Then                                                            '注释则退出
+                    AspCode = AspCode & Mid(s, i) 
+                    Exit For 
+                '字母
+                ElseIf checkABC(Sx) = True Or(Sx = "_" And Zc <> "") Or Zc <> "" Then
+                    Zc = Zc & Sx 
+                    s1 = LCase(Mid(s & " ", i + 1, 1)) 
+                    If InStr("abcdefghijklmnopqrstuvwxyz0123456789", s1) = 0 And Not(s1 = "_" And Zc <> "") Then'最简单判断
+                        tempS = Mid(s, i + 1) 
+
+                        If InStr("|function|sub|", "|" & LCase(Zc) & "|") Then
+                            '函数开始
+                            If YesFunction = False And LCase(UpWord) <> "end" Then
+                                YesFunction = True 
+                                DimList = getFunDimName(tempS) 
+                                StartFunction = True 
+                            ElseIf YesFunction = True And LCase(UpWord) = "end" Then                        '获得上一个单词
+                                YesFunction = False 
+                            End If 
+                        ElseIf YesFunction = True And LCase(Zc) = "var" Then
+                            DimList = DimList & "," & getVarName(tempS) 
+                        ElseIf YesFunction = True Then
+                            '排除函数后面每一个名称
+                            If StartFunction = False Then
+                                Zc = replaceDim2(DimList, Zc) 
+                            End If 
+                            StartFunction = False 
+                        End If 
+                        UpWord = Zc                                                                     '记住当前单词
+                        AspCode = AspCode & Zc 
+                        Zc = "" 
+                    End If 
+                Else
+                    AspCode = AspCode & Sx 
+                End If 
+            Else
+                AspCode = AspCode & Sx 
+            End If 
+            doEvents 
+        Next 
+        AspCode = RTrim(AspCode)                                                        '去除右边空格
+        AspCode = AspCode & vbCrLf                                                      'Asp换行
+        doEvents 
+    Next 
+    jsCodeConfusion = AspCode 
+End Function 
+
+
 '删除JS注释 20160602
 function delJsNote(content)
 	dim splstr,s,c,isMultiLineNote,s2

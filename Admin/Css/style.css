@@ -157,7 +157,7 @@ select {
 .btnclick2:active{
 	background-color:#E6E6E6;
 } 
-
+ 
 /*Ω‚ Õ“ª––*/
 .explain-col {
   border: 1px solid #ffbe7a;
@@ -341,7 +341,7 @@ a.close-own:hover{background-position: left -46px}
 	color: #004092;
 	font-size: 14px;
 	padding:0 20px;
-	background-color:#666666; 
+	background-color:#EBF2FA; 
 	border:1px solid #6A8FBA;
 	text-decoration:none;
 	cursor:pointer;
@@ -350,6 +350,7 @@ a.close-own:hover{background-position: left -46px}
 }
 .fixed-but .buttonwrap .mybtn2:hover {
 	background-image:url(../images/buttonbg.jpg);
+	background-color:#E7E9E8;
 	background-position: 0px -50px;	
 }
 

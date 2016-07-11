@@ -10,7 +10,7 @@
 -------------------------------
 【parentid】常用工具
 【title】格式化PHP
-【sortrank】1
+【sortrank】10
 【author】sharembweb
 【adddatetime】2015-03-21 15:09:05
 【filename】/asptophp/formatphp.html
@@ -41,7 +41,7 @@ echo("else");
 -------------------------------
 【parentid】常用工具
 【title】格式化JS
-【sortrank】2
+【sortrank】20
 【author】sharembweb
 【adddatetime】2015-03-21 15:09:05
 【filename】/asptophp/formatjs.html
@@ -70,7 +70,7 @@ document.write("else");
 -------------------------------
 【parentid】常用工具
 【title】格式化HTML
-【sortrank】3
+【sortrank】30
 【author】sharembweb
 【adddatetime】2015-03-21 15:09:05
 【filename】/asptophp/formathtml.html
@@ -132,7 +132,7 @@ function do_js_beautify() {
 -------------------------------
 【parentid】常用工具
 【title】格式化CSS
-【sortrank】4
+【sortrank】40
 【author】sharembweb
 【adddatetime】2015-01-28 15:09:05
 【nofollow】1
@@ -141,8 +141,121 @@ function do_js_beautify() {
 【customaurl】http://sharembweb.com/Tools/FormattingTools/Tools/CSS压缩格式化工具.html
 -------------------------------
 【parentid】常用工具
+【title】ASP代码混淆
+【sortrank】41
+【author】sharembweb
+【adddatetime】2015-03-21 15:09:05
+【filename】/asptophp/aspCodeConfusion.html
+【webtitle】ASP代码混淆_在线ASP代码混淆
+【webkeywords】ASP代码混淆_在线ASP代码混淆
+【webdescription】提供在线ASP代码混淆功能 QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的ASP代码，提交后等待几秒即可输出格式化后的ASP代码：(更新于20160308)</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/Tools.Asp?act=aspCodeConfusion" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
+&lt;%
+function testfun(title,about,content)
+	dim authorName,authorQQ
+	authorName="云端"
+	authorQQ="313801120"
+	response.write("title=" & title & "<br>")
+	response.write("about=" & about & "<br>")
+	response.write("content=" & content & "<br>")
+	response.write("authorName=" & authorName & "<br>")
+	response.write("authorQQ=" & authorQQ & "<br>")
+
+end function
+call testfun("测试标题","关于我们","更多内容")
+%&gt;
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+</form> 
+<br> 
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
+【title】JS代码混淆
+【sortrank】42
+【author】sharembweb
+【adddatetime】2015-03-21 15:09:05
+【filename】/asptophp/jsCodeConfusion.html
+【webtitle】JS代码混淆_在线JS代码混淆
+【webkeywords】JS代码混淆_在线JS代码混淆
+【webdescription】提供在线JS代码混淆功能 QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的JS代码，提交后等待几秒即可输出格式化后的JS代码：(更新于20160308)</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/Tools.Asp?act=jsCodeConfusion" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
+&lt;script type="text/javascript">
+function testfun(title,about,content){
+	var aa='',bb="",dd='asdf';
+    var authorName=''
+	var authorQQ='';
+	var aabbcc
+    authorName='云端';
+    authorQQ='313801120';
+	aabbcc="eeeeee11\"11eeee";
+    document.write('title=' + title + '<br />');
+    document.write('about=' + about + '<br />');
+    document.write('content=' + content + '<br />');
+    document.write('authorName=' + authorName + '<br />');
+    document.write('authorQQ=' + authorQQ + '<br />');
+    document.write('aabbcc=' + aabbcc + '<br />');
+ 
+}
+testfun('测试标题','关于我们','更多内容');
+</script>
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+</form> 
+<br> 
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
+【title】PHP代码混淆
+【sortrank】43
+【author】sharembweb
+【adddatetime】2015-03-21 15:09:05
+【filename】/asptophp/phpCodeConfusion.html
+【webtitle】PHP代码混淆_在线PHP代码混淆
+【webkeywords】PHP代码混淆_在线PHP代码混淆
+【webdescription】提供在线PHP代码混淆功能 QQ313801120
+【bodycontent】
+
+<div class="divtip">输入你的PHP代码，提交后等待几秒即可输出格式化后的PHP代码：(更新于20160308)</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/Tools.Asp?act=phpCodeConfusion" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
+&lt;?PHP
+function testfun($title,$about,$content){
+    $authorName='';$authorQQ='';
+    $authorName='云端';
+    $authorQQ='313801120';
+    echo('title=' . $title . '<br />');
+    echo('about=' . $about . '<br />');
+    echo('content=' . $content . '<br />');
+    echo('authorName=' . $authorName . '<br />');
+    echo('authorQQ=' . $authorQQ . '<br />');
+
+}
+testfun('测试标题','关于我们','更多内容');
+?>
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">
+</form> 
+<br> 
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
 【title】生成嵌套标签
-【sortrank】5
+【sortrank】50
 【author】sharembweb
 【adddatetime】2015-01-28 15:09:05
 【nofollow】0
@@ -151,7 +264,7 @@ function do_js_beautify() {
 -------------------------------
 【parentid】常用工具
 【title】创建Asp函数
-【sortrank】11
+【sortrank】60
 【author】sharembweb
 【adddatetime】2015-01-28 15:09:05
 【nofollow】1
@@ -160,7 +273,7 @@ function do_js_beautify() {
 -------------------------------
 【parentid】常用工具
 【title】在线ASP转JS
-【sortrank】20
+【sortrank】70
 【flags】|h|
 【author】sharembweb
 【adddatetime】2015-03-21 15:09:05
@@ -214,7 +327,7 @@ next
 -------------------------------
 【parentid】常用工具
 【title】ASP源码下载
-【sortrank】21
+【sortrank】80
 【flags】|h|
 【author】sharembweb
 【adddatetime】2016-05-30 15:09:05
@@ -226,7 +339,7 @@ next
 -------------------------------
 【parentid】常用工具
 【title】PHP源码下载
-【sortrank】21
+【sortrank】90
 【flags】|h|
 【author】sharembweb
 【adddatetime】2016-05-30 15:09:05
@@ -238,7 +351,7 @@ next
 -------------------------------
 【parentid】常用工具
 【title】在线GB2312字符转UTF8字符
-【sortrank】21
+【sortrank】100
 【flags】||
 【author】sharembweb
 【adddatetime】2015-03-21 15:09:05
@@ -268,7 +381,7 @@ aa
 -------------------------------
 【parentid】常用工具
 【title】在线汉字转拼音
-【sortrank】22
+【sortrank】110
 【flags】|h|
 【author】sharembweb
 【adddatetime】2015-03-22 15:09:05
@@ -276,7 +389,7 @@ aa
 
 【webtitle】在线汉字转拼音工具，汉字转拼音，汉字到拼音 - 分享模板网站
 【webkeywords】在线汉字转拼音工具，汉字转拼音，汉字到拼音 - 分享模板网站
-【webdescription】在线汉字转拼音工具，汉字转拼音，汉字到拼音 - 分享模板网站QQ313801120
+【webdescription】在线汉字转拼音工具，汉字转拼音，汉字到拼音 - 分享模板网站 QQ313801120
 【bodycontent】
 
 <div class="divtip">输入汉字内容，提交后等待几秒即可生成(更新于20160322)</div>
@@ -295,8 +408,37 @@ aa
 【/bodycontent】
 -------------------------------
 【parentid】常用工具
+【title】在线简体繁体互转
+【sortrank】110
+【flags】|h|
+【author】sharembweb
+【adddatetime】2016-06-27 15:09:05
+【filename】/toolslist/Simplified-and-complex-interaction.html
+
+【webtitle】在线汉简体繁体互转
+【webkeywords】在线简体繁体互转
+【webdescription】在线简体繁体互转 QQ313801120
+【bodycontent】
+
+<div class="divtip">输入汉字内容，提交后等待几秒即可生成(更新于20160322)</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/toolslist/tools.asp?act=simplifiedTab" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">作者：云端 QQ313801120  http://sharembweb.com/
+分享模板网站
+  </textarea>
+<div class="clear10"></div>
+<label for="isFan"><input name="isFan" type="checkbox" id="isFan" value="1" checked>转成繁体</label><br>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn">   
+</form>
+
+<br>
+
+
+【/bodycontent】
+-------------------------------
+【parentid】常用工具
 【title】在线计算器
-【sortrank】23
+【sortrank】120
 【flags】|h|
 【author】sharembweb
 【adddatetime】2015-03-22 15:09:05
@@ -334,7 +476,7 @@ function myevaljsq(str){
 -------------------------------
 【parentid】常用工具
 【title】在线聊天机器人
-【sortrank】23
+【sortrank】130
 【flags】|h|
 【author】sharembweb
 【adddatetime】2015-03-22 15:09:05
@@ -372,7 +514,7 @@ function chatrobot(){
 -------------------------------
 【parentid】常用工具
 【title】搜索引擎收录
-【sortrank】24
+【sortrank】140
 【flags】|h|
 【author】sharembweb
 【adddatetime】2015-03-22 15:09:05
@@ -395,6 +537,7 @@ function chatrobot(){
 
 <a href="javascript:displaySearchList('php在线格式化')" class='ablue'>php在线格式化</a>  bing第1页   20160518<br>
 <a href="javascript:displaySearchList('网站在线克隆')" class='ablue'>网站在线克隆</a>  sogou第2页   20160525<br>
+<a href="javascript:displaySearchList('php/asp互转网站')" class='ablue'>php/asp互转网站</a>  sogou第1页   20160627<br>
  
 
 <br>
@@ -412,7 +555,7 @@ function chatrobot(){
 
 <div id="searchbody">
 
-{$TitleInSearchEngineList title='site:sharembweb.com'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='site:sharembweb.com'$}
 
 </div>
 <script>

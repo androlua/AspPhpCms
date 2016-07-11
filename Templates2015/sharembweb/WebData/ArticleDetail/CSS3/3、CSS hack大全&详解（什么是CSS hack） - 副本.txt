@@ -205,6 +205,7 @@ head:first-child+body #demo { color:red; } /* IE7+、FF、Chrome、Safari、Opera 可
 <!--[if lte IE 7]> IE7以及IE7以下版本可识别<![endif]-->
 <!--[if !IE]>此处内容只有非IE可见<![endif]-->
 [&html转码end&]   
-{$TitleInSearchEngineList title='CSS hack大全&详解（什么是CSS hack）'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='CSS hack大全&详解（什么是CSS hack）'$}
 
 【/bodycontent】
+

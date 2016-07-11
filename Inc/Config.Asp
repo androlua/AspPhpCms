@@ -60,7 +60,6 @@
 <!--#Include File = "SystemInfo.Asp"-->    
 <!--#Include File = "Json.Asp"-->
 <!--#Include File = "2016_PackXML.Asp"--> 
-
 <% 
 
  
@@ -91,6 +90,7 @@ If checkFile(MDBPath) = False Then
     MDBPath = webDir & "/Data/Data.mdb" 
 'call echo(webDir,mdbpath)
 End If
+dim onCacheHtml:onCacheHtml=false					'是否开启缓冲html
 '=========
 
 
@@ -117,6 +117,7 @@ dim WEB_CACHEContent : WEB_CACHEContent=""								'缓冲文件内容
 dim isCacheTip : isCacheTip=false			'是否开启缓冲提示
 
 dim language : language="#en-us"			'en-us  | zh-cn | zh-tw
+dim moduleReplaceArray:moduleReplaceArray=Array("","")				'替换数组20160630
 
 '批量替换语言
 function batchReplaceL(content,str)

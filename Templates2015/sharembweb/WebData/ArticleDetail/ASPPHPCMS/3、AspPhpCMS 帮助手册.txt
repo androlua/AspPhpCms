@@ -5,7 +5,7 @@
 【webdescription】ASPPHPCMS帮助手册 - 分享模板网站
 【sortrank】3
 【author】sharembweb
-【adddatetime】2016-02-18 08:51:11
+【adddatetime】2015-03-18 08:51:11
 【filename】/ASPPHPCMS/help.html
 【customaurl】
 【flags】
@@ -27,10 +27,11 @@
 <a href="http://sharembweb.com/tagdoc/v1/" class="ablue" target="_blank">AspPhpCMS v1标签手册</a>
 
 
-{$TitleInSearchEngineList title='ASPPHPCMS帮助手册'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='ASPPHPCMS帮助手册'$}
 
 <br>
 【/bodycontent】
 
 
  
+

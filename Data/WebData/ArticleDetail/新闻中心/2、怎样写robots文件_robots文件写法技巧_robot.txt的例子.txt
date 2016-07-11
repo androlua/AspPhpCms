@@ -1,0 +1,114 @@
+【parentid】新闻中心
+【title】怎样写robots文件_robots文件写法技巧_robot.txt的例子
+【webtitle】怎样写robots文件_robots文件写法技巧_robot.txt的例子
+【webkeywords】怎样写robots文件_robots文件写法技巧_robot.txt的例子
+【webdescription】robots.txt是一个纯文本文件，是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。每个站点最好建立一个robots.txt文件，对SEO更友好 QQ313801120
+【sortrank】2
+【author】sharembweb
+【adddatetime】2015-08-28 06:02:08
+【filename】/SEO/write-robots.html
+【customaurl】
+【flags】|c|
+【relatedtags】SEO
+【bodycontent】[&全部换行&]【《】div class="article_lable"><strong>1、robots.txt文件是什么</strong>【《】/div>
+robots.txt是一个纯文本文件，是搜索引擎中访问网站的时候要查看的第一个文件。
+robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。
+每个站点最好建立一个robots.txt文件，对SEO更友好。
+每当搜索蜘蛛来寻找并不存在的robots.txt文件时，服务器将在日志中记录一条404错误，所以你应该在网站中添加一个robots.txt（即使这个robots.txt文件只是一个空文件）。
+
+
+【《】div class="article_lable">2、robots.txt的写法（语法）【《】/div>
+1、User-agent: 该项的值用于描述搜索引擎蜘蛛的名字。如果该项的值设为*，则该协议对任何机器人均有效。
+2、Disallow: 该项的值用于描述不希望被访问到的一个URL，一个目录或者整个网站。以Disallow 开头的URL 均不会被搜索引擎蜘蛛访问到。
+任何一条Disallow 记录为空，说明该网站的所有部分都允许被访问。
+3、robots.txt文件里还可以直接加入sitemap文件的链接。就像这样：Sitemap: http://sharembweb.com/sitemap.xml
+
+User-agent: * 这里的*代表的所有的搜索引擎种类，*是一个通配符
+Disallow: /admin/ 这里定义是禁止爬寻admin目录下面的目录
+Disallow: /sharembweb/ 这里定义是禁止爬寻sharembweb目录下面的目录
+Disallow: /ABC/ 这里定义是禁止爬寻ABC目录下面的目录
+Disallow: /cgi-bin/*.html 禁止访问/cgi-bin/目录下的所有以".html"为后缀的URL(包含子目录)。
+Disallow: /*?* 禁止访问网站中所有的动态页面
+Disallow: /jpg$ 禁止抓取网页所有的.jpg格式的图片
+Disallow:/ab/adc.html 禁止爬去ab文件夹下面的adc.html文件。
+Allow: /cgi-bin/ 这里定义是允许爬寻cgi-bin目录下面的目录
+Allow: /tmp 这里定义是允许爬寻tmp的整个目录
+Allow: .htm$ 仅允许访问以".htm"为后缀的URL。
+Allow: .gif$ 允许抓取网页和gif格式图片
+
+【《】div class="article_lable">3、robots.txt用法举例【《】/div>
+网站目录下所有文件均能被所有搜索引擎蜘蛛访问
+User-agent: *
+Disallow:
+
+禁止所有搜索引擎蜘蛛访问网站的任何部分
+User-agent: *
+Disallow: /
+
+禁止所有的搜索引擎蜘蛛访问网站的几个目录
+User-agent: *
+Disallow: /inc
+Disallow: /admin
+
+禁止搜索引擎蜘蛛访问目录a和目录b
+Disallow: /a/
+Disallow: /b/
+
+只允许某个搜索引擎蜘蛛访问
+User-agent: Googlebot
+Disallow:
+
+【《】div class="article_lable">3、robots.txt文件带来的风险以及解决【《】/div>
+robots.txt 文件在使用中也带来了一定的风险：给攻击者指明了网站的目录结构和私密数据所在的位置。
+解决办法就是设置访问权限，对您的隐私内容实施密码保护，这样，攻击者便无从进入。
+为安全考虑，建议很重要的文件夹不要写在robots.txt文件中。
+
+【《】div class="article_lable">4、常见搜索引擎蜘蛛Robots名字【《】/div>
+Baiduspider ：http://www.baidu.com
+Scooter ：http://www.altavista.com
+ia_archiver： http://www.alexa.com
+Googlebot ：http://www.google.com
+Inktomi Slurp ：http://www.yahoo.com
+FAST-WebCrawler： http://www.alltheweb.com
+Slurp ：http://www.inktomi.com
+MSNBOT ：http://search.msn.com
+
+【《】div class="article_lable">5、robots.txt编写时注意事项【《】/div>
+1、robots.txt必须放置在站点的根目录下，而且文件名必须全部小写
+2、不要在robots.txt文件中设置所有的文件都可以被搜索蜘蛛抓取
+3、为安全考虑，建议很重要的文件夹不要写在robots.txt文件中
+
+
+【《】div class="article_lable">6、robots.txt使用误区【《】/div>
+【b】误区一【/b】
+网站上所有的文件都需要被蜘蛛抓取，那就没必要添加robots.txt文件了。反正如果该文件不存在，所有的搜索蜘蛛将默认能够访问网站上所有没有被口令保护的页面。
+
+【b】误区二【/b】
+在robots.txt文件中设置所有的文件都可以被搜索蜘蛛抓取，这样可以增加网站的收录率。
+网站中的脚本程序、样式表等文件即使被蜘蛛收录，也不会增加网站的收录率，还只会占用服务器存储空间。
+因此必须在robots.txt文件里设置不要让搜索蜘蛛索引脚本程序、样式表等文件。
+
+【b】误区三【/b】
+搜索蜘蛛抓取网页太浪费服务器资源，在robots.txt文件中设置所有的搜索蜘蛛都不能抓取全部的网页。
+如果这样的话，会导致整个网站不能被搜索引擎收录。
+
+【《】div class="article_lable">7、百度各个产品使用不同的user-agent【《】/div>
+无线搜索 Baiduspider-mobile
+图片搜索 Baiduspider-image
+视频搜索 Baiduspider-video
+新闻搜索 Baiduspider-news
+百度搜藏 Baiduspider-favo
+百度联盟 Baiduspider-cpro
+商务搜索 Baiduspider-ads
+网页以及其他搜索 Baiduspider
+
+
+[&全部换行end&] 
+{$TitleInSearchEngineList divclass='article_lable'  title='怎样写robots文件'$}
+
+<br>
+【/bodycontent】
+
+
+ 
+

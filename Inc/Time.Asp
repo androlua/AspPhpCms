@@ -119,7 +119,7 @@ Function printTimeValue(vv)
         c = c & v & "·Ö" 
         v = n 
     End If 
-    If v >= 0 Then
+    If v > 0 Then
         c = c & v & "Ãë" 
     End If 
     If Err.Number <> 0 Then MsgBox(vv) 

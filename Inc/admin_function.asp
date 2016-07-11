@@ -52,7 +52,7 @@ Function getHandleTableList()
     getHandleTableList = s 
 End Function 
 
-'获得处理的字段列表
+'获得处理的字段列表   getHandleFieldList("ArticleDetail","字段列表")
 Function getHandleFieldList(tableName, sType)
     Dim s 
     If WEB_CACHEContent = "" Then
@@ -80,7 +80,7 @@ Function getTemplateContent(templateFileName)
     Dim templateFile, customTemplateFile, c
     customTemplateFile = ROOT_PATH & "template/" & db_PREFIX & "/" & templateFileName 
     '为手机端
-    If checkMobile() = True Then
+    If checkMobile() = True or request("m")="mobile" Then			
         templateFile = ROOT_PATH & "/Template/mobile/" & templateFileName 
     End If 
     '判断手机端文件是否存在20160330
@@ -97,6 +97,7 @@ Function getTemplateContent(templateFileName)
 End Function 
 '替换标签内容
 Function replaceLableContent(content)
+	dim s,c,splstr,list
     content = Replace(content, "{$webVersion$}", webVersion)                        '网站版本
     content = Replace(content, "{$Web_Title$}", cfg_webTitle)                       '网站标题
     content = Replace(content, "{$EDITORTYPE$}", EDITORTYPE)                        'ASP与PHP
@@ -118,6 +119,16 @@ Function replaceLableContent(content)
     content = Replace(content, "{$SERVER_PORT$}", Request.ServerVariables("SERVER_PORT")) '服务器端口
     content = replaceValueParam(content, "mdbpath", Request("mdbpath")) 
     content = replaceValueParam(content, "webDir", webDir) 
+	
+	'20160628
+	if instr(content,"{$backupDatabaseSelectHtml$}")>0 then
+		c=getDirTxtNameList(adminDir & "/Data/BackUpDateBases/")
+		splstr=split(c,vbcrlf) 
+		for each s in splstr
+			list=list  & "<option value="""& s &""">"& s &"</option>" & vbcrlf
+		next
+		content=replace(content,"{$backupDatabaseSelectHtml$}",list)
+	end if
 	
 	'20160614
 	if EDITORTYPE="php" then
@@ -161,11 +172,24 @@ Function displayFlags(flags)
 End Function 
 
 
-'栏目类别循环配置       showColumnList(-1, 0,defaultList)   nCount为深度值
-Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId, nCount, ByVal action)
-    Dim i, s, c, selectcolumnname, selStr, url, isFocus, sql, addSql 
+'栏目类别循环配置        showColumnList(parentid, "webcolumn", ,"",0, defaultStr,3,"")   nCount为深度值   thisPId为交点的id
+Function showColumnList(ByVal parentid, ByVal tableName, showFieldName, ByVal thisPId, nCount, ByVal action)
+    Dim i, s, c, selectcolumnname, selStr, url, isFocus, sql, addSql,listLableStr,topnav
+	parentid=trim(parentid)	
+	listLableStr="list"
+	
+     topnav = getStrCut(action, "[topnav]", "[/topnav]", 2) 
+ 
+	'call echo(parentid,topnav)
+	
+	if parentid<>topnav then
+		if instr(action,"[small-list")>0 then		
+			listLableStr="small-list"
+		end if
+	end if
+	'call echo("listLableStr",listLableStr)
     Dim rs : Set rs = CreateObject("Adodb.RecordSet")
-        Dim fieldNameList, splFieldName, k, fieldName, replaceStr, startStr, endStr, topNumb, modI 
+        Dim fieldNameList, splFieldName, k, fieldName, replaceStr, startStr, endStr, topNumb, modI,title
         Dim subHeaderStr, subFooterStr 
 
         subHeaderStr = getStrCut(action, "[subheader]", "[/subheader]", 2) 
@@ -174,6 +198,7 @@ Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId
         fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表") 
         splFieldName = Split(fieldNameList, ",") 
         sql = "select * from " & db_PREFIX & tableName & " where parentid=" & parentid 
+      '  call echo("sql1111111111111",tableName)
         '处理追加SQL
         startStr = "[sql-" & nCount & "]" : endStr = "[/sql-" & nCount & "]" 
         If InStr(action, startStr) = False And InStr(action, endStr) = False Then
@@ -183,32 +208,31 @@ Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId
         If addSql <> "" Then
             sql = getWhereAnd(sql, addSql) 
         End If 
-        'call echo("addsql",addsql)
         rs.Open sql & " order by sortrank asc", conn, 1, 1 
         For i = 1 To rs.RecordCount
             If Not rs.EOF Then
+				startStr = "" : endStr = ""
                 selStr = "" 
                 isFocus = False 
                 If CStr(rs("id")) = CStr(thisPId) Then
                     selStr = " selected " 
                     isFocus = True 
-                End If 
-
+                End If  
                 '网址判断
                 If isFocus = True Then
-                    startStr = "[list-focus]" : endStr = "[/list-focus]" 
+                    startStr = "["& listLableStr &"-focus]" : endStr = "[/"& listLableStr &"-focus]" 
                 Else
-                    startStr = "[list-" & i & "]" : endStr = "[/list-" & i & "]" 
+                    startStr = "["& listLableStr &"-" & i & "]" : endStr = "[/"& listLableStr &"-" & i & "]" 
                 End If 
 
                 '在最后时排序当前交点20160202
                 If i = topNumb And isFocus = False Then
-                    startStr = "[list-end]" : endStr = "[/list-end]" 
+                    startStr = "["& listLableStr &"-end]" : endStr = "[/"& listLableStr &"-end]" 
                 End If 
                 '例[list-mod2]  [/list-mod2]    20150112
                 For modI = 6 To 2 Step - 1
                     If InStr(action, startStr) = False And i Mod modI = 0 Then
-                        startStr = "[list-mod" & modI & "]" : endStr = "[/list-mod" & modI & "]" 
+                        startStr = "["& listLableStr &"-mod" & modI & "]" : endStr = "[/"& listLableStr &"-mod" & modI & "]" 
                         If InStr(action, startStr) > 0 Then
                             Exit For 
                         End If 
@@ -217,9 +241,8 @@ Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId
 
                 '没有则用默认
                 If InStr(action, startStr) = False Then
-                    startStr = "[list]" : endStr = "[/list]" 
+                    startStr = "["& listLableStr &"]" : endStr = "[/"& listLableStr &"]" 
                 End If 
-
                 'call rwend(action)
                 'call echo(startStr,endStr)
                 If InStr(action, startStr) > 0 And InStr(action, endStr) > 0 Then
@@ -227,11 +250,12 @@ Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId
 
                     s = replaceValueParam(s, "id", rs("id")) 
                     s = replaceValueParam(s, "selected", selStr) 
-                    selectcolumnname = rs(fileName) 
+                    selectcolumnname = rs(showFieldName) :title=selectcolumnname
                     If nCount >= 1 Then
                         selectcolumnname = copystr("&nbsp;&nbsp;", nCount) & "├─" & selectcolumnname 
                     End If 
                     s = replaceValueParam(s, "selectcolumnname", selectcolumnname) 
+                    s = replaceValueParam(s, "title", title) 
 
 
                     For k = 0 To UBound(splFieldName)
@@ -243,8 +267,8 @@ Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId
                         End If 
                     Next 
 
-                    'url = WEB_VIEWURL & "?act=nav&columnName=" & rs(fileName)             '以栏目名称显示列表
-                    url = WEB_VIEWURL & "?act=nav&id=" & rs("id")                               '以栏目ID显示列表
+                    'url = WEB_VIEWURL & "?act=nav&columnName=" & rs(showFieldName)             '以栏目名称显示列表
+                    url = WEB_VIEWURL & "?act=nav&id=" & rs("id")                               '以栏目ID显示列表 
 
                     '自定义网址
                     If Trim(rs("customaurl")) <> "" Then
@@ -261,7 +285,7 @@ Function showColumnList(ByVal parentid, ByVal tableName, fileName, ByVal thisPId
 
                     's=copystr("",nCount) & rs("columnname") & "<hr>"
                     c = c & s & vbCrLf 
-                    s = showColumnList(rs("id"), tableName, fileName, thisPId, nCount + 1, action) 
+                    s = showColumnList(rs("id"), tableName, showFieldName, thisPId, nCount + 1, action) 
                     If s <> "" Then s = vbCrLf & subHeaderStr & s & subFooterStr 
                     c = c & s 
                 End If 
@@ -338,7 +362,7 @@ Function dispalyManage(actionName, lableTitle, ByVal nPageSize, addSql)
     splFieldName = Split(fieldNameList, ",")                                        '字段分割成数组
 
     '读模板
-    content = getTemplateContent("manage" & tableName & ".html") 
+    content = getTemplateContent("manage_" & tableName & ".html") 
 
     action = getStrCut(content, "[list]", "[/list]", 2) 
     '网站栏目单独处理      栏目不一样20160301
@@ -504,7 +528,7 @@ Function addEditDisplay(actionName, lableTitle, ByVal fieldNameList)
 
 
     '读模板
-    content = getTemplateContent("addEdit" & tableName & ".html") 
+    content = getTemplateContent("addEdit_" & tableName & ".html") 
 
     '关闭编辑器
     If InStr(cfg_flags, "|iscloseeditor|") > 0 Then
@@ -1194,10 +1218,13 @@ Function displayTemplatesList(content)
                     templatePath = templatesFolder & templateName & "/" 
                     templatePath2 = templatePath 
                     s = defaultList 
-                    If cfg_webtemplate = templatePath Then
+					'call echo(cfg_webtemplate & "("& len(cfg_webtemplate) &")" , templatePath & "("& len(templatePath) &")")
+					'call echo(lcase(cfg_webtemplate) , lcase(templatePath))
+					
+                    If lcase(cfg_webtemplate) = lcase(templatePath) Then
                         templateName = "<font color=red>" & templateName & "</font>" 
                         templatePath2 = "<font color=red>" & templatePath2 & "</font>" 
-                        s = Replace(s, "启用</a>", "</a>") 
+                        s = Replace(s, "启用</a>", "</a>")  
                     Else
                         s = Replace(s, "恢复数据</a>", "</a>") 
                     End If 

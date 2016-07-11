@@ -1,6 +1,135 @@
 <?PHP
 //Js
 
+//Asp代码混淆处理 20160624
+function jsCodeConfusion($content){
+    $splStr=''; $i=''; $YesJs=''; $YesWord=''; $Sx=''; $s=''; $Wc=''; $Zc=''; $s1=''; $AspCode=''; $SYHCount=''; $UpWord ='';
+    $UpWordn=''; $tempS=''; $DimList ='';
+    $YesFunction ='';//函数是否为真
+    $StartFunction ='';//开始函数 目的是为了让function default 处理函数后面没有()   20150218
+    $StartFunction= false; //默认开始函数为假
+    //If nType="" Then  nType  = 0
+    $yesJs= false; //是ASP 默认为假
+    $YesFunction= false; //是函数 默认为假
+    $YesWord= false; //是单词 默认为假
+    $SYHCount= 0; //双引号默认为0
+    $splStr= aspSplit($content, vbCrlf()); //分割行
+    $wcType ='';//输入文本类型，如 " 或 '
+    $isAddToSYH ='';//是否累加双引号
+    $beforeStr=''; $afterStr=''; $endCode='';$nSYHCount='';
+    //循环分行
+    foreach( $splStr as $key=>$s){
+        //循环每个字符
+        for( $i= 1 ; $i<= Len($s); $i++){
+            $Sx= mid($s, $i, 1);
+            //Asp开始
+            if( $Sx== '<' && $Wc== '' ){ //输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
+                if( mid($s, $i + 1, 6)== 'script' ){
+                    $yesJs= true; //ASP为真
+                    $i= $i + 1; //加1而不能加2，要不然<%function Test() 就截取不到
+                    $Sx= mid($s, $i, 1);
+                    $AspCode= $AspCode . '<';
+                }
+                //ASP结束
+            }else if( $Sx== '<' && mid($s, $i + 1, 8)== '/script>' && $Wc== '' ){ //Wc为输出内容
+                $yesJs= false; //ASP为假
+                $i= $i + 1; //不能加2，只能加1，因为这里定义ASP为假，它会在下一次显示上面的 'ASP运行为假
+                $Sx= mid($s, $i, 8);
+                $AspCode= $AspCode . '/script>';
+            }
+            if( $yesJs== true ){
+
+                $beforeStr= Right(Replace(mid($s, 1, $i - 1), ' ', ''), 1); //上一个字符
+                $afterStr= Left(Replace(mid($s, $i + 1,-1), ' ', ''), 1); //下一个字符
+                $endCode= mid($s, $i + 1,-1); //当前字符往后面代码 一行
+                //输入文本
+                if(($sx== '"' || $sx== '\'' && $wcType== '') || $sx== $wcType || $wc <> '' ){
+                    $isAddToSYH= true;
+                    //这是一种简单的方法，等完善(20150914)
+                    if( $isAddToSYH== true && $beforeStr== '\\' ){
+
+                        if( Len($wc) >=1 ){
+                            if( isStrTransferred($wc)==true ){		//为转义字符为真
+                                //call echo(wc,isStrTransferred(wc))
+                                $isAddToSYH= false;
+                            }
+                        }else{
+                            $isAddToSYH= false;
+                        }
+                        //call echo(wc,isAddToSYH)
+                    }
+                    if( $wc== '' ){
+                        $wcType= $sx;
+                    }
+
+                    //双引号累加
+                    if( $sx== $wcType && $isAddToSYH== true ){ $nSYHCount= $nSYHCount + 1 ;}//排除上一个字符为\这个转义字符(20150914)
+
+
+                    //判断是否"在最后
+                    if( $nSYHCount % 2== 0 && $beforeStr <> '\\' ){
+                        if( mid($s, $i + 1, 1) <> $wcType ){
+                            $wc= $wc . $sx;
+                            $AspCode= $AspCode . $wc; //行代码累加
+                            //call echo("wc",wc)
+                            $nSYHCount= 0 ; $wc= ''; //清除
+                            $wcType= '';
+                        }else{
+                            $wc= $wc . $sx;
+                        }
+                    }else{
+                        $wc= $wc . $sx;
+                    }
+
+                }else if( $Sx== '\'' ){ //注释则退出
+                    $AspCode= $AspCode . mid($s, $i,-1);
+                    break;
+                    //字母
+                }else if( checkABC($Sx)== true ||($Sx== '_' && $Zc <> '') || $Zc <> '' ){
+                    $Zc= $Zc . $Sx;
+                    $s1= strtolower(mid($s . ' ', $i + 1, 1));
+                    if( instr('abcdefghijklmnopqrstuvwxyz0123456789', $s1)== 0 && ($s1== '_' && $Zc <> '') ){//最简单判断
+                        $tempS= mid($s, $i + 1,-1);
+
+                        if( instr('|function|sub|', '|' . strtolower($Zc) . '|') ){
+                            //函数开始
+                            if( $YesFunction== false && strtolower($UpWord) <> 'end' ){
+                                $YesFunction= true;
+                                $DimList= getFunDimName($tempS);
+                                $StartFunction= true;
+                            }else if( $YesFunction== true && strtolower($UpWord)== 'end' ){ //获得上一个单词
+                                $YesFunction= false;
+                            }
+                        }else if( $YesFunction== true && strtolower($Zc)== 'var' ){
+                            $DimList= $DimList . ',' . getVarName($tempS);
+                        }else if( $YesFunction== true ){
+                            //排除函数后面每一个名称
+                            if( $StartFunction== false ){
+                                $Zc= replaceDim2($DimList, $Zc);
+                            }
+                            $StartFunction= false;
+                        }
+                        $UpWord= $Zc; //记住当前单词
+                        $AspCode= $AspCode . $Zc;
+                        $Zc= '';
+                    }
+                }else{
+                    $AspCode= $AspCode . $Sx;
+                }
+            }else{
+                $AspCode= $AspCode . $Sx;
+            }
+            doEvents( );
+        }
+        $AspCode= aspRTrim($AspCode); //去除右边空格
+        $AspCode= $AspCode . vbCrlf(); //Asp换行
+        doEvents( );
+    }
+    $jsCodeConfusion= $AspCode;
+    return @$jsCodeConfusion;
+}
+
+
 //删除JS注释 20160602
 function delJsNote($content){
     $splstr='';$s='';$c='';$isMultiLineNote='';$s2='';

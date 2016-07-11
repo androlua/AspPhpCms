@@ -150,11 +150,6 @@ function getPostSql($id, $tableName, $fieldNameList){
             if( instr($systemFieldList, ',' . $fieldName . '|') > 0 && instr(',' . $fieldList . ',', ',' . $fieldName . ',')== false ){
 
 
-
-
-
-
-
                 if( $fieldSetType== 'date' && $fieldValue=='' ){
                     $fieldValue= ASPDate();
                 }else if( ($fieldSetType== 'time' || $fieldSetType== 'now') && $fieldValue=='' ){

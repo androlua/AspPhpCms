@@ -32,17 +32,17 @@ function getBL($setWidth, $setHeight, $nDanFuXianZhi){
         $nHeightZheFu= -1;
     }
     if( $setWidth > $setHeight ){
-        $nBFB= FormatNumber($setWidth / $setHeight, 2); ////长宽 百分比
+        $nBFB= formatNumber($setWidth / $setHeight, 2); ////长宽 百分比
         $splStr[0]= $nBFB;
         $splStr[1]= 1;
     }else{
-        $nBFB= FormatNumber($setHeight / $setWidth, 2); ////高宽 百分比
+        $nBFB= formatNumber($setHeight / $setWidth, 2); ////高宽 百分比
         $splStr[0]= 1;
         $splStr[1]= $nBFB;
     }
     //每步超出指定值，处理
     //if nBFB>=nDanFuXianZhi then
-    $nXXFBX= FormatNumber($nDanFuXianZhi / $nBFB, 2);
+    $nXXFBX= formatNumber($nDanFuXianZhi / $nBFB, 2);
     $splStr[0]= $splStr[0] * $nXXFBX;
     $splStr[1]= $splStr[1] * $nXXFBX;
     //end if
@@ -51,7 +51,7 @@ function getBL($setWidth, $setHeight, $nDanFuXianZhi){
     $splStr[1]= $splStr[1] * $nHeightZheFu;
     $splStr[2]= $nBFB;
     $splStr[3]= GetCountPage($setWidth, $splStr[0]);
-    ASPEcho('page count 页数', $splStr[3]);
+    //Call echo("page count 页数", splStr(3))
     $splStr[3]= getCountStep($setWidth, $setHeight, $splStr[0], $splStr[1], $splStr[3]);
 
     $getBL= $splStr;
@@ -337,7 +337,7 @@ function deleteEndStr($content, $nLen){
 
 //StringNumber (2013,9,27)
 function toNumber( $n, $d){
-    $toNumber= FormatNumber($n, $d, - 1);
+    $toNumber= formatNumber($n, $d, - 1);
     return @$toNumber;
 }
 
@@ -365,7 +365,7 @@ function strDrawInt( $content){
 function getFirstNegativeNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
-    $content= AspTrim($content);
+    $content= aspTrim($content);
     for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( $s== '-' && $c== '' ){
@@ -403,7 +403,7 @@ function checkStrIsNumberType( $content){
 function handleNumberType( $content){
     $i=''; $s=''; $c ='';
     $c= '';
-    $content= AspTrim($content);
+    $content= aspTrim($content);
     for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( $i== 1 && instr('+-*/', Left($content, 1)) > 0 ){
@@ -422,7 +422,7 @@ function handleNumberType( $content){
 function getNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
-    $content= AspTrim($content);
+    $content= aspTrim($content);
     for( $i= 1 ; $i<= Len($content); $i++){
         $s= mid($content, $i, 1);
         if( instr('0123456789', $s) > 0 ){

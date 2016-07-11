@@ -126,10 +126,11 @@ arr/arrow箭头
 *类别选择器(type selector)：HTML标签选择，比如div .demo,div元素下含有class为demo的元素 
 *伪对象选择器(pseudo-element selector)：比如div:first-letter,div元素下的第一个单词。 
 [&html转码end&]
-{$TitleInSearchEngineList title='有利于SEO的DIV+CSS的命名规则小结'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='有利于SEO的DIV+CSS的命名规则小结'$}
 
 
 【/bodycontent】
 
 
  
+

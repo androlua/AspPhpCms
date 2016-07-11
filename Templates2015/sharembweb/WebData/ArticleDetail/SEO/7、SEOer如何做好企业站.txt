@@ -5,7 +5,7 @@
 ¡¾webdescription¡¿¶ÔÓÚÒ»¸öseoÀ´ËµÒ»¸öÆóÒµÕ¾ÈçºÎĞ´±êÌâ×öÄÚÈİ£¬ÊÇÒ»¸öºÜÓĞ¼¼ÇÉµÄ¹¤×÷£¬×öºÃÁËÊÂ°ë¹¦±¶×ö²»ºÃÁËÊÂ±¶¹¦°ë QQ313801120
 ¡¾sortrank¡¿7
 ¡¾author¡¿sharembweb
-¡¾adddatetime¡¿2016-03-28 10:37:05
+¡¾adddatetime¡¿2016-01-28 11:36:12
 ¡¾filename¡¿/SEO/seo-company-website.html
 ¡¾customaurl¡¿
 ¡¾flags¡¿|c|
@@ -68,10 +68,11 @@ SEOerµÄÖ÷Òª¹¤×÷ÊÇÍ¨¹ıÁË½â¸÷ÀàËÑË÷ÒıÇæÈçºÎ×¥È¡»¥ÁªÍøÒ³Ãæ¡¢ÈçºÎ½øĞĞË÷ÒıÒÔ¼°ÈçºÎÈ·¶
 
 
 [&È«²¿»»ĞĞend&] 
-{$TitleInSearchEngineList title='SEOerÈçºÎ×öºÃÆóÒµÕ¾'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='SEOerÈçºÎ×öºÃÆóÒµÕ¾'$}
 
 <br>
 ¡¾/bodycontent¡¿
 
 
  
+

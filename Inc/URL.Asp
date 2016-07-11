@@ -78,7 +78,7 @@ Function getGoToUrlNoFileName()
     getGoToUrlNoFileName = url 
 End Function
 '移除网址文件名部分
-function remoteUrlFileName(url)
+function remoteUrlFileName(byval url)
     If Right(url, 1) <> "/" Then
         If InStrRev(url, "/") > 0 Then
             url = Mid(url, 1, InStrRev(url, "/")) 
@@ -87,7 +87,7 @@ function remoteUrlFileName(url)
 	remoteUrlFileName=url
 end function
 '移除网址参数部分
-function remoteUrlParam(url)
+function remoteUrlParam(byval url)
     If Right(url, 1) <> "?" Then
         If InStrRev(url, "?") > 0 Then
             url = Mid(url, 1, InStrRev(url, "?")-1) 
@@ -96,17 +96,39 @@ function remoteUrlParam(url)
 	remoteUrlParam=url
 end function
 '获得网址目录部分
-function getUrlDir(url)
-	url=trim(url)
-	if left(url,7)="http://" then
-		url = mid(url,8)
-	end if
+function getUrlDir(byval url)
+	getUrlDir=getHandleUrlValue(url,"网址目录")
+end function
+'获得处理后url值 20160701
+function getHandleUrlValue(byval url, byval sType)
+	sType="|"& sType &"|"
+	if instr(url,"://")>0 then
+		url=mid(url,instr(url,"://")+3)
+	end if	
+	'去掉域名
 	if instr(url,"/")>0 then
 		url=Mid(url,instr(url,"/")+1)
 	end if
-	getUrlDir=url
+		
+	if instr(sType,"|网址目录|")>0 then
+		if instr(url,"/")>0 then
+			url=Mid(url,1,instrrev(url,"/")-1)
+		end if
+	else
+		if instr(url,"/")>0 then
+			url=Mid(url,instrrev(url,"/")+1)
+		end if
+		if instr(url,"?")>0 then
+			url=Mid(url,1,instr(url,"?")-1)
+		end if
+	end if
+	if instr(sType,"|名称|")>0 or instr(sType,"|name|")>0 then
+		if instr(url,".")>0 then
+			url=Mid(url,1,instrrev(url,".")-1)
+		end if		
+	end if
+	getHandleUrlValue=url
 end function
-
 
 '获取客户端IP地址第二种
 Function getIP2()
@@ -352,7 +374,7 @@ Function getWebSite(ByVal httpUrl)
     End If 
     is_WebSite = False                                                              '是域名为假
     c = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn" 
-    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me" 
+    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me|.wiki" 
     splStr = Split(c, "|") 
     For Each s In splStr
         If s <> "" Then
@@ -386,14 +408,16 @@ Function isHttpUrl(url)
     isHttpUrl = checkUrl(url) 
 End Function 
 
-'完整网址
+'完整网址 
+'对这个处理 style="background: url(20130510162636_96168.jpg) no-repeat scroll center top; height: 426px;cursor:pointer; width: 100%; margin:0 auto;" 20160701
 Function fullHttpUrl(ByVal httpUrl, ByVal url)
     'On Error Resume Next
     Err.Clear                                                                       '清除错误 要不然会报错
-    Dim rootUrl, thisUrl, splStr, i, s, c, parentUrl, parentParentUrl, parentParentParentUrl, rootWebSite, thisWebSite, handleYes 
-    httpUrl = pHPTrim(httpUrl)                                                      '清除两边空格
-    url = pHPTrim(url)                                                              '清除两边空格
-
+    Dim rootUrl, thisUrl, splStr, i, s, c, parentUrl, parentParentUrl, parentParentParentUrl, rootWebSite, thisWebSite, handleYes,lCaseUrl
+	dim styleStart,styleEnd
+    httpUrl = PHPTrim(httpUrl)                                                      '清除两边空格
+    url = PHPTrim(url)                                                              '清除两边空格
+	lCaseUrl=lcase(url)
     If url = "" Then fullHttpUrl = "" : Exit Function                               '网址为空退出(20150805)
     If Trim(httpUrl) = "" Then fullHttpUrl = url : Exit Function                    '主网址为空退出 返回网址
     httpUrl = Replace(httpUrl, "\", "/")                                            '把网址\转/符号
@@ -404,8 +428,8 @@ Function fullHttpUrl(ByVal httpUrl, ByVal url)
         fullHttpUrl = "http:" & url 
         Exit Function 
     End If 
-
-
+	'处理style样式里背景图片
+	url=hanldeStyleBackgroundUrl(url,styleStart,styleEnd)
     rootUrl = getWebSite(httpUrl)                                                   '主域名，也就是主网址
     rootWebSite = rootUrl 
     thisWebSite = getWebSite(url) 
@@ -457,9 +481,24 @@ Function fullHttpUrl(ByVal httpUrl, ByVal url)
             url = "https://" & url 
         End If 
     End If 
-    fullHttpUrl = url 
+    fullHttpUrl = styleStart & url & styleEnd
     If Err Then doError Err.Description, "FullHttpUrl 获得域名 完整网址，HttpUrl=" & httpUrl & "<hr>Url=" & url 
 End Function 
+'处理样式里背景图片20160701
+function hanldeStyleBackgroundUrl(byval url,styleStart,styleEnd)
+	dim lCaseUrl
+    url = PHPTrim(url)                                                              '清除两边空格
+	lCaseUrl=lcase(url)
+    url = Replace(url, "\", "/")                                                    '把网址\转/符号
+	if instr(url,"background:")>0 and instr(url,"(")>0 and instr(url,")")>0 then
+		styleStart=mid(url,1,instr(url,"("))
+		styleEnd=mid(url,instr(url,")"))
+		url=mid(url,len(styleStart)+1)
+		url=phptrim(mid(url,1,instr(url,")")-1))
+		url=replace(replace(url,"'",""),"""","")
+	end if
+	hanldeStyleBackgroundUrl=url
+end function
 
 '批量处理网址完整20150728
 Function batchFullHttpUrl(webSite, urlList)
@@ -598,7 +637,17 @@ Function handleConentUrl(httpUrl, content, sType, byref PubAHrefList, byref PubA
                 Else
                     c = c & LalStr 
                 End If 
-                i = i + nLen 
+                i = i + nLen
+				
+            ElseIf LalType = "<input " And(InStr(sType, "|src|") > 0 Or InStr(sType, "|*|") > 0) and instr(lcase(LalStr)," src=")>0 Then
+				nLen = Len(LalStr) - 1  
+                c = c & handleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList)
+                i = i + nLen
+				
+            ElseIf InStr(sType, "|imgstyle|") > 0 Then
+				nLen = Len(LalStr) - 1  
+                c = c & handleLink(httpUrl, LalStr, "style", "", "", PubAHrefList, PubATitleList)
+                i = i + nLen				
             Else
                 c = c & s 
             End If 
@@ -637,7 +686,7 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, byref PubAHre
     content = Replace(Replace(content, " =", "="), " =", "=") 
     TempContent = LCase(content) 
     '没有链接退出
-    If InStr(TempContent, " href=") = 0 And InStr(TempContent, " src=") = 0 Then
+    If InStr(TempContent, " href=") = 0 And InStr(TempContent, " src=") = 0 and sType<>"style" Then
         handleLink = "" 
         Exit Function 
     ElseIf InStr(TempContent, " href=\""") > 0 Then
@@ -647,7 +696,7 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, byref PubAHre
     endStr = """" 
     If InStr(TempContent, startStr) > 0 And InStr(TempContent, endStr) > 0 Then
         'call echo("提示","1")
-        FindUrl = strCut(content, startStr, endStr, 2) 
+        FindUrl = strCut(content, startStr, endStr, 2)		
         If SetStr <> "" Then
             HandleUrl = SetStr 
         Else
@@ -656,7 +705,7 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, byref PubAHre
             If UrlOrContent = "replacedir" Then
                 HandleUrl = tempHttpUrl & handleFilePathArray(HandleUrl)(2) 
             End If 
-            PubAHrefList = PubAHrefList & HandleUrl & vbCrLf 
+            PubAHrefList = PubAHrefList & hanldeStyleBackgroundUrl(HandleUrl,"","") & vbCrLf 
             '链接标题
             s1 = InStr(content, ">") 
             s2 = Right(content, Len(content) - s1) 
@@ -692,7 +741,7 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, byref PubAHre
             If UrlOrContent = "replacedir" Then
                 HandleUrl = tempHttpUrl & handleFilePathArray(HandleUrl)(2) 
             End If 
-            PubAHrefList = PubAHrefList & HandleUrl & vbCrLf 
+            PubAHrefList = PubAHrefList & hanldeStyleBackgroundUrl(HandleUrl,"","") & vbCrLf 
             '链接标题
             s1 = InStr(content, ">") 
             s2 = Right(content, Len(content) - s1) 
@@ -728,7 +777,7 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, byref PubAHre
             If UrlOrContent = "replacedir" Then
                 HandleUrl = tempHttpUrl & handleFilePathArray(HandleUrl)(2) 
             End If 
-            PubAHrefList = PubAHrefList & handleHttpUrl(HandleUrl) & vbCrLf 
+            PubAHrefList = PubAHrefList & hanldeStyleBackgroundUrl(handleHttpUrl(HandleUrl),"","") & vbCrLf 
             '链接标题
             s1 = InStr(content, ">") 
             s2 = Right(content, Len(content) - s1) 
@@ -752,11 +801,10 @@ Function handleLink(httpUrl, content, sType, SetStr, UrlOrContent, byref PubAHre
         Exit Function 
     End If 
 
-
-
     If UrlOrContent <> "url" Then handleLink = content 
     Call createAddFile("出错内容列表.txt", httpUrl & vbCrLf & content & vbCrLf & sType & vbCrLf & SetStr & vbCrLf & UrlOrContent & vbCrLf & "----------------------" & vbCrLf) 
 End Function 
+
 
 '获得网站目录文件夹名称 \Templates\WeiZhanLue\  得到WeiZhanLue
 Function getEndUrlHandleName(FileUrl)
@@ -1265,12 +1313,12 @@ Function handleHttpUrlArray(ByVal url)
     FileType = Mid(fileName, InStrRev(fileName, ".") + 1) 
     httpAgreement = Mid(url, 1, InStr(url, ":") - 1) 
     webSite = getWebSite(url) 
-    Call echo("url", url)
+    'Call echo("url", url)
 	'域名为空则发粗获得文件夹目录20160613
 	if webSite<>"" then
 	    folderDir = Mid(urlDir, Len(webSite)) 
 	else
-		call echo("注意：不是有效网址",url)
+		call echoYellowB("注意：不是有效网址",url)
 	end if
     'HandleHttpUrlArray = Array(url, urlDir, fileName, fileType, fileStr, HttpAgreement, webSite, folderDir)
     Dim arrayData 
@@ -1296,7 +1344,7 @@ Function handleRemoteJsCssParam(content, urlList, sType)
             fileName = dataArray(2) 
             fileType = LCase(dataArray(3)) 
             fileStr = LCase(dataArray(4)) 
-            If(fileType = "js" Or fileType = "css") And InStr(fileStr, "?") > 0 Then
+            If(fileType = "js" Or fileType = "css") And InStr(fileStr, "?") > 0 and instr(fileName,".")>0 Then
                 replaceStr = Mid(url, 1, InStr(url, "?") - 1) 
                 'call echo(replaceStr,fileStr)
                 '这种替换方法还是不精准，待改进
@@ -1532,9 +1580,6 @@ function handleDifferenceWebSiteList(httpurl,urllist)
 	next
 	handleDifferenceWebSiteList=websiteList
 end function
-
-
-
 
 '检测域名存在 20160511   例：checkDomainName('http://www.baidu.com/a/b/sdf')
 function checkDomainName(httpurl)

@@ -495,12 +495,12 @@ function pinYin($content, $sType){
             $pinYin= $C4;
         }else{
             ASPEcho('转换字符', $content);
-            ASPEcho('拼音小写', AspTrim($c));
-            ASPEcho('首字母大写', AspTrim($C4));
-            ASPEcho('取首字母', AspTrim($c2));
+            ASPEcho('拼音小写', aspTrim($c));
+            ASPEcho('首字母大写', aspTrim($C4));
+            ASPEcho('取首字母', aspTrim($c2));
             ASPEcho('公司标准', enToCompany($C4));
-            ASPEcho('无空格首字母小写', AspTrim(Replace($c, ' ', '')));
-            ASPEcho('无空格首字母大写', AspTrim(Replace($C3, ' ', '')));
+            ASPEcho('无空格首字母小写', aspTrim(Replace($c, ' ', '')));
+            ASPEcho('无空格首字母大写', aspTrim(Replace($C3, ' ', '')));
         }
     }
     return @$pinYin;
@@ -517,7 +517,7 @@ function pinYin2($content){
 function enToCompany( $content){
     $content= Replace($content, 'Shang Hai', 'Shanghai');
     $content= Replace($content, 'You Xian Gong Si', ' Co.,Ltd.');
-    $enToCompany= AspTrim($content);
+    $enToCompany= aspTrim($content);
     return @$enToCompany;
 }
 

@@ -11,15 +11,15 @@
 【relatedtags】ASP
 【bodycontent】
 {$displayEditor $}
-[&全部换行&][&html转码&]【strong】快速掌握正则表达式技巧【/strong】
+[&全部换行&][&html转码&]【《】div class="article_lable">快速掌握正则表达式技巧【《】/div>
 
-【b】正则表达式概念【/b】
+【《】div class="article_lable">正则表达式概念【《】/div>
 正则表达式，又称正规表示法、常规表示法（英语：Regular Expression，在代码中常简写为regex、regexp或RE），计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些符合某个模式的文本。
 
-【b】什么是正则 【/b】
+【《】div class="article_lable">什么是正则 【《】/div>
 正则表达式是一种用来描述一定数量文本的模式，用来匹配相同规范样式的文本。在JavaScript中用RegExp对象表示正则表达式( 即Regular Eexpression)，它是对字符串执行模式匹配的强大工具。
 
-【b】一、校验数字的表达式 【/b】
+【《】div class="article_lable">一、校验数字的表达式 【《】/div>
 数字：^[0-9]*$
 n位的数字：^\d{n}$
 至少n位的数字：^\d{n,}$
@@ -40,7 +40,7 @@ m-n位的数字：^\d{m,n}$
 负浮点数：^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$ 或 ^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$
 浮点数：^(-?\d+)(\.\d+)?$ 或 ^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$
 
-【b】二、校验字符的表达式 【/b】
+【《】div class="article_lable">二、校验字符的表达式 【《】/div>
 汉字：^[\u4e00-\u9fa5]{0,}$
 英文和数字：^[A-Za-z0-9]+$ 或 ^[A-Za-z0-9]{4,40}$
 长度为3-20的所有字符：^.{3,20}$
@@ -54,7 +54,7 @@ m-n位的数字：^\d{m,n}$
 可以输入含有^%&',;=?$\”等字符：[^%&',;=?$\x22]+
 禁止输入含有~的字符：[^~\x22]+
 
-【b】三、特殊需求表达式 【/b】
+【《】div class="article_lable">三、特殊需求表达式 【《】/div>
 Email地址：^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$
 域名：[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?
 InternetURL：[a-zA-z]+://[^\s]* 或 ^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$
@@ -261,9 +261,10 @@ response.End()
 %>[&html转码end&]
 </pre>
 <br>
-{$TitleInSearchEngineList title='快速掌握正则表达式技巧'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='快速掌握正则表达式技巧'$}
 
 【/bodycontent】
 
 
  
+

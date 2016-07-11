@@ -39,31 +39,64 @@ Function getRandArticleId(addSql, topNumb)
     Next 
     getRandArticleId = c 
 End Function 
+'获得网站栏目排序SQL
+function getWebColumnSortSql(id)
+	dim sql
+	tempRs2.open"select * from " & db_PREFIX & "webcolumn where id=" & id,conn,1,1
+	if not tempRs2.eof then
+		 '【PHP】$tempRs2=mysql_fetch_array($tempRs2Obj);
+		sql=tempRs2("sortsql")
+	end if:tempRs2.close
+	getWebColumnSortSql=sql
+end function
 
 '上一篇文章 这里面的sortrank(排序)也可以改为id,在引用的时候就要用id
-Function upArticle(parentid, lableName, lableValue)
-    Dim sql 
-    sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & "<" & lableValue & " order by " & lableName & " desc" 
-    upArticle = handleUpDownArticle("上一篇：", sql) 
+Function upArticle(parentid, lableName, lableValue, ascOrDesc)
+    upArticle = handleUpDownArticle("上一篇：","uppage",parentid, lableName,lableValue,ascOrDesc) 
 End Function 
 '下一篇文章
-Function downArticle(parentid, lableName, lableValue)
-    Dim sql 
-    sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & ">" & lableValue & " order by " & lableName & " asc" 
-    downArticle = handleUpDownArticle("下一篇：", sql) 
+Function downArticle(parentid, lableName, lableValue,ascOrDesc)
+    downArticle = handleUpDownArticle("下一篇：","downpage", parentid,lableName,lableValue,ascOrDesc) 
 End Function 
 '处理上下页
-Function handleUpDownArticle(lableTitle, sql)
-    Dim c, url 
+Function handleUpDownArticle(lableTitle,sType,parentid, lableName,lableValue,ascOrDesc)
+    Dim c, url,target,targetStr
+	
+	dim sql
+	if lableName="adddatetime" then
+		lableValue="#"& lableValue &"#"
+	end if
+	'位置互换
+	if ascOrDesc="desc" then
+		if sType="uppage" then
+			sType="downpage"
+		else
+			sType="uppage"
+		end if
+	end if
+	if sType="uppage" then
+    	sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & "<" & lableValue & " order by " & lableName & " desc"  
+	else
+	    sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & ">" & lableValue & " order by " & lableName & " asc" 
+	end if
+
     'call echo("sql",sql)
     rsx.Open sql, conn, 1, 1 
     If Not rsx.EOF Then
+		target=rsx("target")
+		if target<>"" then
+			targetStr=" target="""& target &""""
+		end if
         If isMakeHtml = True Then
             url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/detail/detail" & rsx("id")) 
-        Else
-            url = handleWebUrl("?act=detail&id=" & rsx("id")) 
+        Else	
+			if rsx("customAUrl")="" then
+            	url = handleWebUrl("?act=detail&id=" & rsx("id")) 
+			else
+				url = handleWebUrl(rsx("customAUrl"))
+			end if
         End If 
-        c = "<a href=""" & url & """>" & lableTitle & rsx("title") & "</a>" 
+        c = "<a href=""" & url & """"& targetStr &">" & lableTitle & rsx("title") & "</a>" 
     Else
         c = lableTitle & "没有" 
     End If : rsx.Close 
@@ -183,17 +216,37 @@ Function getColumnId(columnName)
         getColumnId = rsx("id") 
     End If : rsx.Close 
 End Function 
+'获得后台菜单名称对应的id
+Function getListMenuId(title)
+    title= Replace(title, "'", "")                                       '注意，这个不能留
+    getListMenuId = -1 
+    rsx.Open "Select * from " & db_PREFIX & "listmenu where title='" & title& "'", conn, 1, 1 
+    If Not rsx.EOF Then
+        getListMenuId = rsx("id") 
+    End If : rsx.Close 
+End Function 
 
 
 '获得栏目ID对应的名称
-Function getColumnName(columnID)
-    If columnID <> "" Then
-        rsx.Open "Select * from " & db_PREFIX & "webcolumn where id=" & columnID, conn, 1, 1 
+Function getColumnName(id)
+    If id <> "" Then
+        rsx.Open "Select * from " & db_PREFIX & "webcolumn where id=" & id, conn, 1, 1 
         If Not rsx.EOF Then
             getColumnName = rsx("columnName") 
         End If : rsx.Close 
     End If 
 End Function 
+
+'获得后台菜单ID对应的名称
+Function getListMenuName(id)
+    If id <> "" Then
+        rsx.Open "Select * from " & db_PREFIX & "listmenu where id=" & id, conn, 1, 1 
+        If Not rsx.EOF Then
+            getListMenuName = rsx("title") 
+        End If : rsx.Close 
+    End If 
+End Function 
+
 
 
 

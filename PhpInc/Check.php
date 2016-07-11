@@ -54,13 +54,13 @@ function isLCase($content){
 
 //把字符true转真类型 false转假类型
 function strToTrueFalse( $content){
-    $content= AspTrim(strtolower($content));
+    $content= aspTrim(strtolower($content));
     $strToTrueFalse= IIF($content== 'true', true, false);
     return @$strToTrueFalse;
 }
 //把字符true转1类型 false转0类型
 function strTrueFalseToInt( $content){
-    $content= AspTrim(strtolower($content));
+    $content= aspTrim(strtolower($content));
     $strTrueFalseToInt= IIF($content== 'true', 1, 0);
     return @$strTrueFalseToInt;
 }
@@ -101,7 +101,7 @@ function replace_SQLText($fString){
         $replace_SQLText= '';
         return @$replace_SQLText;
     }else{
-        $fString= AspTrim($fString);
+        $fString= aspTrim($fString);
         $fString= Replace($fString, '\'', '\'\'');
         $fString= Replace($fString, ';', '；');
         $fString= Replace($fString, '--', '—');
@@ -233,12 +233,12 @@ function foundInArr($strArr, $strToFind, $strSplit){
     if( instr($strArr, $strSplit) > 0 ){
         $arrTemp= aspSplit($strArr, $strSplit);
         for( $i= 0 ; $i<= UBound($arrTemp); $i++){
-            if( strtolower(AspTrim($arrTemp[$i]))== strtolower(AspTrim($strToFind)) ){
+            if( strtolower(aspTrim($arrTemp[$i]))== strtolower(aspTrim($strToFind)) ){
                 $foundInArr= true ; break;
             }
         }
     }else{
-        if( strtolower(AspTrim($strArr))== strtolower(AspTrim($strToFind)) ){ $foundInArr= true ;}
+        if( strtolower(aspTrim($strArr))== strtolower(aspTrim($strToFind)) ){ $foundInArr= true ;}
     }
     return @$foundInArr;
 }

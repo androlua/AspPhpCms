@@ -13,7 +13,7 @@ function callFunction2(){
         case 'printOKWebSite' ; printOKWebSite()										;break;//打印有效网址
         case 'printAspServerWebSite' ; printAspServerWebSite();										//打印asp类型网站
         break;
-        case 'clearAllData' ; clearAllData();										//清除全部数据
+        case 'clearAllData' ; fun2_clearAllData();										//清除全部数据
         break;
         case 'function2test' ; function2test()											;break;//测试
         default ; eerr('function2页里没有动作', @$_REQUEST['stype']);
@@ -30,7 +30,7 @@ function function2test(){
     }
 }
 //清除全部数据
-function clearAllData(){
+function fun2_clearAllData(){
     $GLOBALS['conn=']=OpenConn();
     connExecute('delete from ' . $GLOBALS['db_PREFIX'] . 'webdomain');
     ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
@@ -445,7 +445,7 @@ function scanUrl($httpUrl, $toTitle, $codeset){
                     }else{
                         $isThrough= 1; //不用true 因为写入数据会有问题
                     }
-                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(tohttpurl,totitle,httpurl,title,isthrough,charset) values(\'' . $httpUrl . '\',\'' . $toTitle . '\',\'' . $url . '\',\'' . substr($title, 0 , 255) . '\',' . $isThrough . ',\'' . $codeset . '\')');
+                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(tohttpurl,totitle,httpurl,title,isthrough,charset) values(\'' . $httpUrl . '\',\'' . $toTitle . '\',\'' . $url . '\',\'' . Left($title, 255) . '\',' . $isThrough . ',\'' . $codeset . '\')');
                     $nOK= $nOK + 1;
                     ASPEcho($i, $url);
                 }else{

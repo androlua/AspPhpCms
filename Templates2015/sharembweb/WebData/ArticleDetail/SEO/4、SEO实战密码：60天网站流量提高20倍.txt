@@ -5,7 +5,7 @@
 【webdescription】《SEO实战密码：60天网站流量提高20倍》作者为毕业于北京航空航天大学电子工程系的昝辉，不仅对需要做SEO的人员有帮助，如个人站长、公司SEO或网络营销人员、SEO服务公司人员等 QQ313801120
 【sortrank】4
 【author】sharembweb
-【adddatetime】2016-03-28 10:37:05
+【adddatetime】2015-10-28 08:04:12
 【filename】/SEO/60day-flow-20times.html
 【customaurl】
 【flags】|c|
@@ -555,10 +555,11 @@
 14.6 执行、效果及后续
 
 [&全部换行end&] 
-{$TitleInSearchEngineList title='EO实战密码：60天网站流量提高20倍'$}
+{$TitleInSearchEngineList divclass='article_lable'  title='EO实战密码：60天网站流量提高20倍'$}
 
 <br>
 【/bodycontent】
 
 
  
+

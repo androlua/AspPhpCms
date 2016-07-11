@@ -43,14 +43,14 @@ Function getBL(setWidth, setHeight, nDanFuXianZhi)
     'if nBFB>=nDanFuXianZhi then
     nXXFBX = FormatNumber(nDanFuXianZhi / nBFB, 2) 
     splStr(0) = splStr(0) * nXXFBX 
-    splStr(1) = splStr(1) * nXXFBX 
+    splStr(1) = splStr(1) * nXXFBX
     'end if
 
     splStr(0) = splStr(0) * nWidthZheFu 
     splStr(1) = splStr(1) * nHeightZheFu 
     splStr(2) = nBFB 
     splStr(3) = GetCountPage(setWidth, splStr(0)) 
-    Call echo("page count Ò³Êý", splStr(3)) 
+    'Call echo("page count Ò³Êý", splStr(3)) 
     splStr(3) = getCountStep(setWidth, setHeight, splStr(0), splStr(1), splStr(3)) 
 
     getBL = splStr 
