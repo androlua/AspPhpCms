@@ -59,7 +59,7 @@ End Select
 
 '模板文件列表
 Sub templateFileList(dir)
-    Dim content, splStr, fileName, s 
+    Dim content, splStr, fileName, s,fileType
 	if  Session("adminusername") = "ASPPHPCMS"  then
 		content = getDirFileNameList(dir,"")
 	else
@@ -68,8 +68,14 @@ Sub templateFileList(dir)
     splStr = Split(content, vbCrLf) 
     For Each fileName In splStr
 		if fileName<>"" then
+			fileType=lcase(getFileAttr(fileName,4))
+			'call echo("fileType",fileType)
+			if instr("|asa|asp|aspx|bat|bmp|cfm|cmd|com|css|db|default|dll|doc|exe|fla|folder|gif|h|htm|html|inc|ini|jpg|js|jtbc|log|mdb|mid|mp3|php|png|rar|real|rm|swf|txt|wav|xls|xml|zip|","|"& fileType &"|")=false then
+				fileType="default"			
+			end if
+			
 			s = "<a href=""../index.asp?templatedir=" & escape(dir) & "&templateName=" & fileName & """ target='_blank'>预览</a> " 
-			Call echo("<img src='../admin/Images/Icon/2/htm.gif'>" & fileName, s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>修改</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>删除</a>") 
+			Call echo("<img src='../admin/Images/file/"& fileType &".gif'>" & fileName, s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>修改</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>删除</a>") 
 		end if
     Next 
 End Sub

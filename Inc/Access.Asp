@@ -259,7 +259,8 @@ Function getFieldConfigList(tableName)
     c = "," 
     For n = 1 To Fn - 1
         Set Fld = tempRs.Fields.Item(n)
-			if Fld.Type=3 or Fld.Type=11 then
+			'5ΪFloat
+			if Fld.Type=3 or Fld.Type=5 or Fld.Type=11 then
 				s="|numb|0"
 			elseif Fld.Type=7 then
 				s="|time|"

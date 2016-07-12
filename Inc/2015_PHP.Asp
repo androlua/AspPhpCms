@@ -236,20 +236,20 @@ function printAccessToPHPInstallFile()
 			For Each fieldName In splFieldName
 				If fieldName <> "" Then 
 					fieldName = LCase(fieldName)                                                    '×ª³ÉÐ¡Ð´
-					fieldType = getFieldAlt(tempTableName, fieldName) 
+					fieldType = lcase(getFieldAlt(tempTableName, fieldName))
 					'call echo(copyStr("&nbsp;",8) & "fieldName",fieldName   & "("& fieldType &")")        'mediumtext
-					
-					If fieldType = "VarChar" Then
+					'call echo(fieldname,fieldType)
+					If fieldType = "varchar" Then
 						c = c & "`" & fieldName & "` varchar(255) NOT NULL default ''," & vbCrLf 
-					ElseIf fieldType = "Int" Then
+					ElseIf fieldType = "int" Then
 						c = c & "`" & fieldName & "` int(8) NOT NULL default '0'," & vbCrLf 
-					ElseIf fieldType = "Float" Then
+					ElseIf fieldType = "float" Then
 						c = c & "`" & fieldName & "` float(8) NOT NULL default '0'," & vbCrLf  
-					ElseIf fieldType = "YesNo" Then
+					ElseIf fieldType = "yesno" Then
 						c = c & "`" & fieldName & "` tinyint(1) NOT NULL default '0'," & vbCrLf  						
 						
 					'  InStr("|aboutcontent|bodycontent|content|template|", "|" & fieldName & "|") > 0 Or InStr(fieldName, "module") > 0
-					ElseIf fieldType="Text" Then
+					ElseIf fieldType="text" Then
 						c = c & "`" & fieldName & "` mediumtext," & vbCrLf 
 	
 					Else

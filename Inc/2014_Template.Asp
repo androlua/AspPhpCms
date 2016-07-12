@@ -46,19 +46,27 @@ Function readTemplateModuleStr(filePath, defaultContent, moduleId)
         filePath = webTemplate & filePath 
     End If 
 
+    filePath = handleRGV(filePath, "[$模块目录$]", "Module/")                              'Module 
+	
     If defaultContent <> "" Then
         content = defaultContent 
     ElseIf checkFile(filePath) = True Then
         content = getFText(filePath) 
     Else
         content = code                                                                  '默认用内容指定内容
-    End If 
-    'Call Die("显示" & ModuleId & "," & Content)
-    'Call Eerr(filepath & checkfile(filepath), Content)
+    End If
+
+	if InStr(content, startStr)=false then
+		startStr = "<!--#Module " & moduleId & " Start#-->" 
+	end if
+	if InStr(content, endStr)=false then
+		endStr = "<!--#Module " & moduleId & " End#-->" 
+	end if
     If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
         readTemplateModuleStr = strCut(content, startStr, endStr, 2) 
     Else
         readTemplateModuleStr = "模块[" & moduleId & "]不存在,路径=" & filePath 
+		call die( readTemplateModuleStr & content) 
     End If 
 End Function 
 '找模块对应内容

@@ -89,6 +89,8 @@ Function handleAction(content)
             ElseIf checkFunValue(action, "GetOnePageUrl ") = True Then
                 action = XY_GetOnePageUrl(action) 
 
+
+            '------------------- 模板模块区 -----------------------
             '显示包裹块 作用不大
             ElseIf checkFunValue(action, "DisplayWrap ") = True Then
                 action = XY_DisplayWrap(action) 
@@ -98,17 +100,21 @@ Function handleAction(content)
             '显示模块
             ElseIf checkFunValue(action, "Module ") = True Then
                 action = XY_Module(action) 
+			'读模块内容
+			ElseIf CheckFunValue(action, "ReadTemplateModule ")=True Then
+				action = XY_ReadTemplateModule(action)
             '获得内容模块 20150108
             ElseIf checkFunValue(action, "GetContentModule ") = True Then
                 action = XY_ReadTemplateModule(action) 
             '读模板样式并设置标题与内容   软件里有个栏目Style进行设置
             ElseIf checkFunValue(action, "ReadColumeSetTitle ") = True Then
                 action = XY_ReadColumeSetTitle(action) 
-
+				
+				
+            '------------------- 其它区 -----------------------
             '显示JS渲染ASP/PHP/VB等程序的编辑器
             ElseIf checkFunValue(action, "displayEditor ") = True Then
                 action = displayEditor(action) 
-
             'Js版网站统计
             ElseIf checkFunValue(action, "JsWebStat ") = True Then
                 action = XY_JsWebStat(action) 
@@ -117,13 +123,14 @@ Function handleAction(content)
             '普通链接A
             ElseIf checkFunValue(action, "HrefA ") = True Then
                 action = XY_HrefA(action) 
-
             '栏目菜单(引用后台栏目程序)
             ElseIf checkFunValue(action, "ColumnMenu ") = True Then
                 action = XY_AP_ColumnMenu(action) 
+				
 
-            '网站底部
-            ElseIf checkFunValue(action, "WebSiteBottom ") = True Then
+            '------------------- 待分区 -----------------------
+            '网站底部  
+            ElseIf checkFunValue(action, "WebSiteBottom ") = True Or checkFunValue(action, "WebBottom ") = True Then
                 action = XY_AP_WebSiteBottom(action) 
             '显示网站栏目 20160331
             ElseIf checkFunValue(action, "DisplayWebColumn ") = True Then
@@ -243,7 +250,8 @@ Function replaceGlobleVariable(ByVal content)
     content = handleRGV(content, "{$cfg_webTitle$}", cfg_webTitle)                  '网站标题
     content = handleRGV(content, "{$cfg_webKeywords$}", cfg_webKeywords)            '网站关键词
     content = handleRGV(content, "{$cfg_webDescription$}", cfg_webDescription)      '网站描述
-    content = handleRGV(content, "{$cfg_webSiteBottom$}", cfg_webSiteBottom)        '网站描述
+	
+    content = handleRGV(content, "{$cfg_webSiteBottom$}", cfg_webSiteBottom)        '网站底部内容
 
     content = handleRGV(content, "{$glb_columnId$}", glb_columnId)                  '栏目Id
     content = handleRGV(content, "{$glb_columnName$}", glb_columnName)              '栏目名称
@@ -252,6 +260,8 @@ Function replaceGlobleVariable(ByVal content)
 
     content = handleRGV(content, "{$glb_Table$}", glb_table)                        '表
     content = handleRGV(content, "{$glb_Id$}", glb_id)                              'id
+	
+    content = handleRGV(content, "[$模块目录$]", "Module/")                              'Module 
 
 
     '兼容旧版本 渐渐把它去掉
@@ -513,8 +523,14 @@ Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameL
 	
 			Next 
 		end if
-        '文章列表加在线编辑
-        url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
+		'call echo("actionName",actionName)
+		if actionName="GuestBook" then			
+			'留言 
+			url = WEB_ADMINURL & "?act=addEditHandle&actionType=GuestBook&lableTitle=留言&nPageSize=10&parentid=&searchfield=bodycontent&keyword=&addsql=&page=&id=" & rs("id") & "&n=" & getRnd(11)  
+		else
+			'文章列表加在线编辑
+			url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
+		end if
         s = handleDisplayOnlineEditDialog(url, s, "", "div|li|span") 
 
         c = c & s 
@@ -947,7 +963,7 @@ Function makeWebHtml(action)
     '在线编辑20160127
     If rq("gl") = "edit" Then
         If InStr(code, "</head>") > 0 Then
-            If InStr(code, "jquery.Min.js") = False Then
+            If InStr(lcase(code), "jquery.min.js") = False Then
                 code = Replace(code, "</head>", "<script src=""/Jquery/jquery.Min.js""></script></head>") 
             End If 
             code = Replace(code, "</head>", "<script src=""/Jquery/Callcontext_menu.js""></script></head>") 
@@ -1393,7 +1409,7 @@ End Function
 '使网站用xml打包20160612
 function makeHtmlWebToXmlZip(newWebDir,rootDir)
         Dim xmlFileName,xmlSize
-        xmlFileName = getIP() & "_update.xml" 
+        xmlFileName = setFileName(getIP()) & "_update.xml" 			'获得ip有可能为空:: 创建时会有问题
 
 		'newWebDir="\Templates2015\"
 		'rootDir="\sharembweb\"

@@ -3,11 +3,21 @@
 
 '获得网站底部内容aa
 Function XY_AP_WebSiteBottom(action)
-    If InStr(cfg_websitebottom, "[$aoutadd$]") > 0 Then
-        cfg_websitebottom = getDefaultValue(action)                                     '获得默认内容
-        conn.Execute("update " & db_PREFIX & "website set websitebottom='" & ADSql(cfg_websitebottom) & "'") 
+	dim s,url
+	If InStr(cfg_webSiteBottom, "[$aoutadd$]") > 0 Then
+        cfg_webSiteBottom = getDefaultValue(action)                                     '获得默认内容
+        conn.Execute("update " & db_PREFIX & "website set websitebottom='" & ADSql(cfg_webSiteBottom) & "'") 
     End If 
-    XY_AP_WebSiteBottom = cfg_websitebottom 
+	
+	s=cfg_webSiteBottom
+	'网站底部
+	If Request("gl") = "edit" Then
+		s = "<span>" & s & "</span>" 
+	End If 
+	url = WEB_ADMINURL & "?act=addEditHandle&switchId=2&id=*&actionType=WebSite&lableTitle=站点配置&n=" & getRnd(11) 
+	s = handleDisplayOnlineEditDialog(url, s, "", "span") 	 
+	
+    XY_AP_WebSiteBottom = s 
 End Function 
 
 'asp与php版本
@@ -391,7 +401,14 @@ End Function
 '处理获得表内容
 Function XY_handleGetTableBody(action, tableName, fieldParamName, defaultFileName, adminUrl)
     Dim url, content, id, sql, addSql, fieldName, fieldParamValue, fieldNameList, nLen, delHtmlYes, trimYes 
-    fieldName = RParam(action, "fieldname")                                         '字段名称
+	dim noisonhtml,intoFieldStr,valuesStr
+    fieldName = RParam(action, "fieldname")                                         '字段名称	
+    noisonhtml = RParam(action, "noisonhtml") 					'不生成html
+	 
+	if noisonhtml="true" then
+		intoFieldStr=",isonhtml"
+		valuesStr=",0"
+	end if
 
     fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表") 
     '字段名称不为空，并且要在表字段里
@@ -413,7 +430,7 @@ Function XY_handleGetTableBody(action, tableName, fieldParamName, defaultFileNam
     If rs.EOF Then
         '自动添加 20160113
         If RParam(action, "autoadd") = "true" Then
-            conn.Execute("insert into " & db_PREFIX & tableName & " (" & fieldParamName & "," & fieldName & ") values('" & fieldParamValue & "','" & ADSql(content) & "')") 
+            conn.Execute("insert into " & db_PREFIX & tableName & " (" & fieldParamName & "," & fieldName & intoFieldStr & ") values('" & fieldParamValue & "','" & ADSql(content) & "'"& valuesStr &")") 
         End If 
     Else
         id = rs("id") 
@@ -475,10 +492,11 @@ Function XY_GetColumnUrl(action)
     Dim columnName, url 
     columnName = RParam(action, "columnName") 
     url = getColumnUrl(columnName, "name") 
-    'call echo(columnName, url)
-    If Request("gl") <> "" Then
-        url = url & "&gl=" & Request("gl") 
-    End If 
+    'handleWebUrl  有对gl处理
+	
+    'If Request("gl") <> "" Then
+    '    url = url & "&gl=" & Request("gl") 
+    'End If 
     XY_GetColumnUrl = url 
 
 End Function 
@@ -488,9 +506,9 @@ Function XY_GetArticleUrl(action)
     Dim title, url 
     title = RParam(action, "title") 
     url = getArticleUrl(title) 
-    If Request("gl") <> "" Then
-        url = url & "&gl=" & Request("gl") 
-    End If 
+    'If Request("gl") <> "" Then
+    '    url = url & "&gl=" & Request("gl") 
+    'End If 
     XY_GetArticleUrl = url 
 End Function 
 
@@ -499,9 +517,9 @@ Function XY_GetOnePageUrl(action)
     Dim title, url 
     title = RParam(action, "title") 
     url = getOnePageUrl(title) 
-    If Request("gl") <> "" Then
-        url = url & "&gl=" & Request("gl") 
-    End If 
+    'If Request("gl") <> "" Then
+    '    url = url & "&gl=" & Request("gl") 
+    'End If 
     XY_GetOnePageUrl = url 
 End Function 
 

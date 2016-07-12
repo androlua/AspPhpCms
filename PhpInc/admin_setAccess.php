@@ -1,4 +1,5 @@
 <?PHP
+//【#stop#】1     这种为不导入当前条数据
 
 //调用callfile_setAccess文件函数
 function callfile_setAccess(){
@@ -29,25 +30,22 @@ function recoveryDatabase(){
             ASPEcho($tableName, importTXTData($s, $tableName, '添加'));
         }
     }
-
-
-
     ASPEcho('恢复数据库完成', '');
 }
 
 //备份数据库
 function backupDatabase(){
-    $isUnifyToFile=''; $tableNameList=''; $databaseTableNameList=''; $fieldConfig=''; $fieldName=''; $fieldType=''; $splField=''; $fieldValue ='';
+    $isUnifyToFile=''; $tableNameList=''; $databaseTableNameList=''; $fieldConfig=''; $fieldName=''; $fieldType=''; $splField=''; $fieldValue='';$nLen='';$isOK='';
     $splStr=''; $splxx=''; $tableName=''; $s=''; $c=''; $backupDir=''; $backupFilePath ='';
     $tableNameList= strtolower(@$_REQUEST['tableNameList']); //自定义备份数据表列表
     $isUnifyToFile= @$_REQUEST['isUnifyToFile']; //统一放到一个文件里
-    $databaseTableNameList= strtolower(getTableList());
+    $databaseTableNameList= strtolower($GLOBALS['db_PREFIX'] . 'webcolumn'. vbCrlf() . getTableList());		 //让db_PREFIX在最前面，因为文章类型要从这里读取
+    $nLen=len($GLOBALS['db_PREFIX']);
 
     //处理自定义表列表
     if( $tableNameList <> '' ){
         $splStr= aspSplit($tableNameList, '|');
         foreach( $splStr as $key=>$tableName){
-            $tableName= aspTrim($tableName);
             if( instr(vbCrlf() . $databaseTableNameList . vbCrlf(), vbCrlf() . $GLOBALS['db_PREFIX'] . $tableName . vbCrlf()) > 0 ){
                 if( $c <> '' ){
                     $c= $c . vbCrlf();
@@ -64,53 +62,58 @@ function backupDatabase(){
     $c= '';
     foreach( $splStr as $key=>$tableName){
         $tableName= aspTrim($tableName);
-        $fieldConfig= strtolower(getFieldConfigList($tableName));
-        ASPEcho($tableName, $fieldConfig);
-        $rsObj=$GLOBALS['conn']->query( 'select * from ' . $tableName);
-        $c= $c . '【table】' . mid($tableName, len($GLOBALS['db_PREFIX']) + 1,-1) . vbCrlf();
-        while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
-            $splField= aspSplit($fieldConfig, ',');
-            foreach( $splField as $key=>$s){
-                if( instr($s, '|') > 0 ){
-                    $splxx= aspSplit($s, '|');
-                    $fieldName= $splxx[0];
-                    $fieldType= $splxx[1];
-                    $fieldValue= $rs[$fieldName];
-                    if( $fieldType== 'numb' ){
-                        $fieldValue= replace(replace($fieldValue, 'True', '1'), 'False', '0');
-                    }
-                    //后台菜单
-                    if( $tableName== $GLOBALS['db_PREFIX'] . 'listmenu' && $fieldName== 'parentid' ){
-                        $fieldValue= getListMenuName($fieldValue);
-                        //网站栏目
-                    }else if( $tableName== $GLOBALS['db_PREFIX'] . 'webcolumn' && $fieldName== 'parentid' ){
-                        $fieldValue= getColumnName($fieldValue);
-                    }
-                    if( $fieldValue <> '' ){
-                        if( instr($fieldValue, vbCrlf()) > 0 ){
-                            $fieldValue= $fieldValue . '【/' . $fieldName . '】';
+        $isOK=true;
+        //判断前缀是否一样
+        if( $nLen>0 ){
+            if( mid($tableName,1,$nLen)<>$GLOBALS['db_PREFIX'] ){
+                $isOK=false;
+            }
+        }
+        if( $isOK==true ){
+            $fieldConfig= strtolower(getFieldConfigList($tableName));
+            ASPEcho($tableName, $fieldConfig);
+            $rsObj=$GLOBALS['conn']->query( 'select * from ' . $tableName);
+            $c= $c . '【table】' . mid($tableName, len($GLOBALS['db_PREFIX']) + 1,-1) . vbCrlf();
+            while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
+                $splField= aspSplit($fieldConfig, ',');
+                foreach( $splField as $key=>$s){
+                    if( instr($s, '|') > 0 ){
+                        $splxx= aspSplit($s, '|');
+                        $fieldName= $splxx[0];
+                        $fieldType= $splxx[1];
+                        $fieldValue= $rs[$fieldName];
+                        if( $fieldType== 'numb' ){
+                            $fieldValue= replace(replace($fieldValue, 'True', '1'), 'False', '0');
                         }
-                        $c= $c . '【' . $fieldName . '】' . $fieldValue . vbCrlf();
+                        //后台菜单
+                        if( $tableName== $GLOBALS['db_PREFIX'] . 'listmenu' && $fieldName== 'parentid' ){
+                            $fieldValue= getListMenuName($fieldValue);
+                            //网站栏目
+                        }else if( $tableName== $GLOBALS['db_PREFIX'] . 'webcolumn' && $fieldName== 'parentid' ){
+                            $fieldValue= getColumnName($fieldValue);
+                        }
+                        if( $fieldValue <> '' ){
+                            if( instr($fieldValue, vbCrlf()) > 0 ){
+                                $fieldValue= $fieldValue . '【/' . $fieldName . '】';
+                            }
+                            $c= $c . '【' . $fieldName . '】' . $fieldValue . vbCrlf();
+                        }
                     }
                 }
+                $c= $c . '-------------------------------' . vbCrlf();
             }
-            $c= $c . '-------------------------------' . vbCrlf();
+            $c= $c . '===============================' . vbCrlf();
         }
-        $c= $c . '===============================' . vbCrlf();
     }
     $backupDir= $GLOBALS['adminDir'] . '/Data/BackUpDateBases/';
     $backupFilePath= $backupDir . '/' . format_Time(now(), 4) . '.txt';
     createDirFolder($backupDir);
     deleteFile($backupFilePath); //删除旧备份文件
     createfile($backupFilePath, $c); //创建备份文件
+    hr();
     ASPEcho('backupDir', $backupDir);
     ASPEcho('backupFilePath', $backupFilePath);
-    rwend('操作完成');
-    ASPEcho('tableNameList', $tableNameList);
-    ASPEcho('isUnifyToFile', $isUnifyToFile);
-    ASPEcho('databaseTableNameList', $databaseTableNameList);
-    ASPEcho('backupDatabase', 'backupDatabase');
-    ASPEcho('c', $c);
+    eerr('操作完成','<a href=\'?act=displayLayout&templateFile=layout_manageDatabases.html&lableTitle=数据库\'>点击返回 备份恢复数据</a>');
 }
 
 //重置数据库数据
@@ -191,69 +194,73 @@ function importTXTData($content, $tableName, $sType){
         $addFieldList= ''; //添加字段列表清空
         $addValueList= ''; //添加字段列表值
         $updateValueList= ''; //修改字段列表
-        foreach( $splStr as $key=>$fieldStr){
-            if( $fieldStr <> '' ){
-                $splxx= aspSplit($fieldStr, '|');
-                $fieldName= $splxx[0];
-                $fieldType= $splxx[1];
-                if( instr($listStr, '【' . $fieldName . '】') > 0 ){
-                    $listStr= $listStr . vbCrlf(); //加个换行是为了让最后一个参数能添加进去 20160629
-                    if( $addFieldList <> '' ){
-                        $addFieldList= $addFieldList . ',';
-                        $addValueList= $addValueList . ',';
-                        $updateValueList= $updateValueList . ',';
-                    }
-                    $addFieldList= $addFieldList . $fieldName;
 
-                    $fieldValue= newGetStrCut($listStr, $fieldName);
-                    if( $fieldType== 'textarea' ){
-                        $fieldValue= contentTranscoding($fieldValue);
-                    }
-                    //call echo(tableName,fieldName)
-                    //文章大类
-                    if(($tableName== 'articledetail' || $tableName== 'webcolumn') && $fieldName== 'parentid' ){
+        $s= strtolower(newGetStrCut($listStr, '#stop#'));
+        if( $s<>'1' && $s<>'true' ){
+
+            foreach( $splStr as $key=>$fieldStr){
+                if( $fieldStr <> '' ){
+                    $splxx= aspSplit($fieldStr, '|');
+                    $fieldName= $splxx[0];
+                    $fieldType= $splxx[1];
+                    if( instr($listStr, '【' . $fieldName . '】') > 0 ){
+                        $listStr= $listStr . vbCrlf(); //加个换行是为了让最后一个参数能添加进去 20160629
+                        if( $addFieldList <> '' ){
+                            $addFieldList= $addFieldList . ',';
+                            $addValueList= $addValueList . ',';
+                            $updateValueList= $updateValueList . ',';
+                        }
+                        $addFieldList= $addFieldList . $fieldName;
+
+                        $fieldValue= newGetStrCut($listStr, $fieldName);
+                        if( $fieldType== 'textarea' ){
+                            $fieldValue= contentTranscoding($fieldValue);
+                        }
                         //call echo(tableName,fieldName)
-                        //call echo("fieldValue",fieldValue)
-                        $fieldValue= getColumnId($fieldValue);
-                        //call echo("fieldValue",fieldValue)
-                        //后台菜单
-                    }else if( $tableName== 'listmenu' && $fieldName== 'parentid' ){
-                        $fieldValue= getListMenuId($fieldValue);
-                    }
-                    if( $fieldType== 'date' && $fieldValue== '' ){
-                        $fieldValue= ASPDate();
-                    }else if(($fieldType== 'time' || $fieldType== 'now') && $fieldValue== '' ){
-                        $fieldValue= now();
-                    }
-                    if( $fieldType <> 'yesno' && $fieldType <> 'numb' ){
-                        $fieldValue= '\'' . $fieldValue . '\'';
-                        //默认数值类型为0
-                    }else if( $fieldValue== '' ){
-                        $fieldValue= 0;
-                    }
+                        //文章大类
+                        if(($tableName== 'articledetail' || $tableName== 'webcolumn') && $fieldName== 'parentid' ){
+                            //call echo(tableName,fieldName)
+                            //call echo("fieldValue",fieldValue)
+                            $fieldValue= getColumnId($fieldValue);
+                            //call echo("fieldValue",fieldValue)
+                            //后台菜单
+                        }else if( $tableName== 'listmenu' && $fieldName== 'parentid' ){
+                            $fieldValue= getListMenuId($fieldValue);
+                        }
+                        if( $fieldType== 'date' && $fieldValue== '' ){
+                            $fieldValue= ASPDate();
+                        }else if(($fieldType== 'time' || $fieldType== 'now') && $fieldValue== '' ){
+                            $fieldValue= now();
+                        }
+                        if( $fieldType <> 'yesno' && $fieldType <> 'numb' ){
+                            $fieldValue= '\'' . $fieldValue . '\'';
+                            //默认数值类型为0
+                        }else if( $fieldValue== '' ){
+                            $fieldValue= 0;
+                        }
 
-                    $addValueList= $addValueList . $fieldValue; //添加值
-                    $updateValueList= $updateValueList . $fieldName . '=' . $fieldValue; //修改值
+                        $addValueList= $addValueList . $fieldValue; //添加值
+                        $updateValueList= $updateValueList . $fieldName . '=' . $fieldValue; //修改值
+                    }
                 }
             }
-        }
+            //字段列表为空 则退出
+            if( $addFieldList== '' ){
+                $importTXTData= $nOK;
+                return @$importTXTData;
+            }
 
-        //字段列表为空 则退出
-        if( $addFieldList== '' ){
-            $importTXTData= $nOK;
-            return @$importTXTData;
+            if( $sType== '修改' ){
+                $sql= 'update ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' set ' . $updateValueList;
+            }else{
+                $sql= 'insert into ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' (' . $addFieldList . ') values(' . $addValueList . ')';
+            }
+            //检测SQL
+            if( checksql($sql)== false ){
+                eerr('出错提示', '<hr>sql=' . $sql . '<br>');
+            }
+            $nOK= $nOK + 1;
         }
-
-        if( $sType== '修改' ){
-            $sql= 'update ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' set ' . $updateValueList;
-        }else{
-            $sql= 'insert into ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' (' . $addFieldList . ') values(' . $addValueList . ')';
-        }
-        //检测SQL
-        if( checksql($sql)== false ){
-            eerr('出错提示', '<hr>sql=' . $sql . '<br>');
-        }
-        $nOK= $nOK + 1;
 
     }
     $importTXTData= $nOK;

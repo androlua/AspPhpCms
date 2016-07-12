@@ -3,11 +3,21 @@
 
 //获得网站底部内容aa
 function XY_AP_WebSiteBottom($action){
-    if( instr($GLOBALS['cfg_websitebottom'], '[$aoutadd$]') > 0 ){
-        $GLOBALS['cfg_websitebottom']= getDefaultValue($action); //获得默认内容
-        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'website set websitebottom=\'' . ADSql($GLOBALS['cfg_websitebottom']) . '\'');
+    $s='';$url='';
+    if( instr($GLOBALS['cfg_webSiteBottom'], '[$aoutadd$]') > 0 ){
+        $GLOBALS['cfg_webSiteBottom']= getDefaultValue($action); //获得默认内容
+        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'website set websitebottom=\'' . ADSql($GLOBALS['cfg_webSiteBottom']) . '\'');
     }
-    $XY_AP_WebSiteBottom= $GLOBALS['cfg_websitebottom'];
+
+    $s=$GLOBALS['cfg_webSiteBottom'];
+    //网站底部
+    if( @$_REQUEST['gl']== 'edit' ){
+        $s= '<span>' . $s . '</span>';
+    }
+    $url= WEB_ADMINURL . '?act=addEditHandle&switchId=2&id=*&actionType=WebSite&lableTitle=站点配置&n=' . getRnd(11);
+    $s= handleDisplayOnlineEditDialog($url, $s, '', 'span');
+
+    $XY_AP_WebSiteBottom= $s;
     return @$XY_AP_WebSiteBottom;
 }
 
@@ -401,7 +411,14 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
 //处理获得表内容
 function XY_handleGetTableBody($action, $tableName, $fieldParamName, $defaultFileName, $adminUrl){
     $url=''; $content=''; $id=''; $sql=''; $addSql=''; $fieldName=''; $fieldParamValue=''; $fieldNameList=''; $nLen=''; $delHtmlYes=''; $trimYes ='';
+    $noisonhtml='';$intoFieldStr='';$valuesStr='';
     $fieldName= RParam($action, 'fieldname'); //字段名称
+    $noisonhtml= RParam($action, 'noisonhtml');					 //不生成html
+
+    if( $noisonhtml=='true' ){
+        $intoFieldStr=',isonhtml';
+        $valuesStr=',0';
+    }
 
     $fieldNameList= getHandleFieldList($GLOBALS['db_PREFIX'] . $tableName, '字段列表');
     //字段名称不为空，并且要在表字段里
@@ -424,7 +441,7 @@ function XY_handleGetTableBody($action, $tableName, $fieldParamName, $defaultFil
     if( @mysql_num_rows($rsObj)==0 ){
         //自动添加 20160113
         if( RParam($action, 'autoadd')== 'true' ){
-            connExecute('insert into ' . $GLOBALS['db_PREFIX'] . $tableName . ' (' . $fieldParamName . ',' . $fieldName . ') values(\'' . $fieldParamValue . '\',\'' . ADSql($content) . '\')');
+            connExecute('insert into ' . $GLOBALS['db_PREFIX'] . $tableName . ' (' . $fieldParamName . ',' . $fieldName . $intoFieldStr . ') values(\'' . $fieldParamValue . '\',\'' . ADSql($content) . '\''. $valuesStr .')');
         }
     }else{
         $id= $rs['id'];
@@ -490,10 +507,11 @@ function XY_GetColumnUrl($action){
     $columnName=''; $url ='';
     $columnName= RParam($action, 'columnName');
     $url= getColumnUrl($columnName, 'name');
-    //call echo(columnName, url)
-    if( @$_REQUEST['gl'] <> '' ){
-        $url= $url . '&gl=' . @$_REQUEST['gl'];
-    }
+    //handleWebUrl  有对gl处理
+
+    //If Request("gl") <> "" Then
+    //    url = url & "&gl=" & Request("gl")
+    //End If
     $XY_GetColumnUrl= $url;
 
     return @$XY_GetColumnUrl;
@@ -504,9 +522,9 @@ function XY_GetArticleUrl($action){
     $title=''; $url ='';
     $title= RParam($action, 'title');
     $url= getArticleUrl($title);
-    if( @$_REQUEST['gl'] <> '' ){
-        $url= $url . '&gl=' . @$_REQUEST['gl'];
-    }
+    //If Request("gl") <> "" Then
+    //    url = url & "&gl=" & Request("gl")
+    //End If
     $XY_GetArticleUrl= $url;
     return @$XY_GetArticleUrl;
 }
@@ -516,9 +534,9 @@ function XY_GetOnePageUrl($action){
     $title=''; $url ='';
     $title= RParam($action, 'title');
     $url= getOnePageUrl($title);
-    if( @$_REQUEST['gl'] <> '' ){
-        $url= $url . '&gl=' . @$_REQUEST['gl'];
-    }
+    //If Request("gl") <> "" Then
+    //    url = url & "&gl=" & Request("gl")
+    //End If
     $XY_GetOnePageUrl= $url;
     return @$XY_GetOnePageUrl;
 }

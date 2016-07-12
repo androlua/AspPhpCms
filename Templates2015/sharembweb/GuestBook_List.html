@@ -31,6 +31,7 @@
 
             <!--#list start#-->
             <ul class="guestbooklist">
+            <!--#body start#-->
             [list] 
                 <li class="gbitem">
                     <div class="gbtitle">姓名：[$guestname$] 于 [$adddatetime time format_time='1'$] 发表</div>
@@ -38,6 +39,7 @@
                     <div class="gbreply"><font color="#339900">回复：</font>[$reply$]</div>
                 </li> 
             [/list]
+            <!--#body end#-->
             </ul>
             <div>[$pageInfo$]</div>
 
@@ -89,11 +91,9 @@ function formmessageSubmit(){
        <ul class="columnbox">
             <li class="title" id="userlogintitle">会员登录</li>
             <li class="content">
-            <span id="qqLoginBtn"></span>
-            <div>
-            <img src="/Templates2015/sharembweb/Images/aspphpcmserweima.jpg" width="100%" alt="ASPPHPCMS二维码" title="ASPPHPCMS二维码"> 
-            扫描二维码，获得更多ASPPHPCMS相关知识
-            </div>
+            
+<!--#获得单面内容#-->
+<sPAn class="testspan">{$GetOnePageBody title='扫描微信' fieldname='aboutcontent'$}</sPAn>
             </li>
         </ul>
         <ul class="columnbox">

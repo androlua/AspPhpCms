@@ -586,8 +586,9 @@ function getFieldConfigList($tableName){
 	while($row = mysql_fetch_array($rescolumns)){
 		//  echo '字段名称：'.$row['Field'].'-数据类型：'.$row['Type'].'-注释：'.$row['Comment'];
 		//  print_r($row);
+		//aspecho($row['Field'],$row['Type']);
 		
-		if( instr($row['Type'],'int(')>0 ){
+		if( instr($row['Type'],'int(')>0 || instr($row['Type'],'float(')>0 ){
 			$s='|numb|0';
 		}else if(instr($row['Type'],'mediumtext')>0){		
 			$s="|textarea|";
@@ -664,10 +665,16 @@ function clearCookie($cookieName){
 function removeCookie($cookieName){
 	setcookie($cookieName);
 } 
+
 function XY_AutoAddHandle($Action){
 	return "";
 }
 function DisplayOnlineEditDialog($a,$Action){
 	return "";
 }
+//css.asp文件里用到的正则表达式处理20160712
+function RegExp_Replace($s,$s2,$s3){
+	return "";
+}
+
 ?>

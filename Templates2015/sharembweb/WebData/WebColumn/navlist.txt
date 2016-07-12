@@ -15,7 +15,7 @@
 -------------------------------
 【columnname】在线ASP转PHP
 【columntype】新闻
-【sortrank】1
+【sortrank】10
 【filename】/asptophp/
 【templatepath】Article_AspToPhpList.html
 【flags】|top|
@@ -236,55 +236,11 @@ End Sub
 
 
 【/bodycontent】
--------------------------------
-【columnname】在线格式化ASP
-【columntype】文本
-【sortrank】22
-【filename】/formatasp/
-【flagtops】||
-【parentid】-1
-【labletitle】在线格式化ASP
-【target】
-【webtitle】在线格式化ASP_ASP代码格式化_ASP检测_ASP混淆_ASP美化
-【webkeywords】在线格式化ASP_ASP代码格式化_ASP检测_ASP混淆_ASP美化
-【webdescription】提供在线ASP代码检测，格式化，混淆，和偏好处理等 QQ313801120
-【bodycontent】
 
-
-
-<div class="divtip">输入你的ASP代码，提交后等待几秒输出格式化后的ASP代码：</div>
-
-<form name="form1" method="post" action="http://sharembweb.com/Tools/FormattingTools/ClassAspCode.Asp?act={$escape content='处理编辑函数'$}" target="_blank">
-  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:300px;"><%
-'作者：云端 QQ313801120  http://sharembweb.com/
-dim var1,var2,var3
-if 0=0 then
-if 1=1 then
-response.write("111")
-elseif 2=2 then
-response.write("111")
-end if
-end if
-
-%> 
-  </textarea>
-<div class="clear10"></div>
-  <input type="submit" name="button" id="button" value="提交" class="mybtn"> 
-</form>
-
-
-<br><br>
-格式化ASP程序源码下载地址：<br>
-<ul class="list">
-<li><a href="http://www.codesky.net/codedown/html/29984.htm   " rel="nofollow" target="_blank">【codesky下载】格式化ASP程序V1.0</a></li>
-</ul>
-
-
-【/bodycontent】
 -------------------------------
 【columnname】在线仿站
 【columntype】文本
-【sortrank】2
+【sortrank】20
 【filename】/fangzhan/
 【flags】|top|
 【parentid】-1
@@ -343,7 +299,7 @@ function formFangZhanSubmit(){
 -------------------------------
 【columnname】模板下载
 【columntype】新闻
-【sortrank】3
+【sortrank】30
 【filename】/mobandown/
 【flags】|top|
 【parentid】-1
@@ -359,7 +315,7 @@ function formFangZhanSubmit(){
 -------------------------------
 【columnname】SEO
 【columntype】新闻
-【sortrank】4
+【sortrank】40
 【filename】/SEO/
 【templatepath】
 【flags】|top|
@@ -375,7 +331,7 @@ function formFangZhanSubmit(){
 -------------------------------
 【columnname】ASPPHPCMS
 【columntype】新闻
-【sortrank】5
+【sortrank】50
 【filename】/ASPPHPCMS/
 【templatepath】Article_ASPPHPCMS.html
 【flags】|top|foot|
@@ -393,7 +349,7 @@ function formFangZhanSubmit(){
 -------------------------------
 【columnname】BBS论坛
 【columntype】文本
-【sortrank】6
+【sortrank】60
 【filename】
 【templatepath】
 【customaurl】http://aspphpcms.com/bbs/
@@ -411,7 +367,7 @@ function formFangZhanSubmit(){
 -------------------------------
 【columnname】联系作者
 【columntype】文本
-【sortrank】7
+【sortrank】70
 【filename】/about/contact.html
 【flags】|top|
 【parentid】-1
@@ -473,9 +429,55 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 
 【/bodycontent】
 -------------------------------
+
+【columnname】在线格式化ASP
+【columntype】文本
+【sortrank】100
+【filename】/formatasp/
+【flagtops】||
+【parentid】-1
+【labletitle】在线格式化ASP
+【target】
+【webtitle】在线格式化ASP_ASP代码格式化_ASP检测_ASP混淆_ASP美化
+【webkeywords】在线格式化ASP_ASP代码格式化_ASP检测_ASP混淆_ASP美化
+【webdescription】提供在线ASP代码检测，格式化，混淆，和偏好处理等 QQ313801120
+【bodycontent】
+
+
+
+<div class="divtip">输入你的ASP代码，提交后等待几秒输出格式化后的ASP代码：</div>
+
+<form name="form1" method="post" action="http://sharembweb.com/Tools/FormattingTools/ClassAspCode.Asp?act={$escape content='处理编辑函数'$}" target="_blank">
+  <textarea name="content" id="content" class="inputstyle" style="width:99%;height:300px;"><%
+'作者：云端 QQ313801120  http://sharembweb.com/
+dim var1,var2,var3
+if 0=0 then
+if 1=1 then
+response.write("111")
+elseif 2=2 then
+response.write("111")
+end if
+end if
+
+%> 
+  </textarea>
+<div class="clear10"></div>
+  <input type="submit" name="button" id="button" value="提交" class="mybtn"> 
+</form>
+
+
+<br><br>
+格式化ASP程序源码下载地址：<br>
+<ul class="list">
+<li><a href="http://www.codesky.net/codedown/html/29984.htm   " rel="nofollow" target="_blank">【codesky下载】格式化ASP程序V1.0</a></li>
+</ul>
+
+
+【/bodycontent】
+-------------------------------
 【columnname】ASP
 【columntype】新闻
-【sortrank】11
+【sortrank】110
 【filename】/asp/
 【flags】||
 【parentid】-1
@@ -491,7 +493,7 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 -------------------------------
 【columnname】PHP
 【columntype】新闻
-【sortrank】12
+【sortrank】120
 【filename】/php/
 【flags】||
 【parentid】-1
@@ -505,9 +507,25 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 
 【/bodycontent】
 -------------------------------
+【columnname】JSP
+【columntype】新闻
+【sortrank】125
+【filename】/jsp/
+【flags】||
+【parentid】-1
+【labletitle】JSP
+【target】
+【npagesize】20
+【webtitle】JSP_JSP教程_JSP学习_JSP代码_JSP帮助
+【webkeywords】JSP_JSP教程_JSP学习_JSP代码_JSP帮助
+【webdescription】提供JSP网站开发中用到得实用代码与教程 QQ313801120
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
 【columnname】JS
 【columntype】新闻
-【sortrank】13
+【sortrank】130
 【filename】/js/
 【flags】||
 【parentid】-1
@@ -523,7 +541,7 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 -------------------------------
 【columnname】HTML5
 【columntype】新闻
-【sortrank】14
+【sortrank】140
 【filename】/html5/
 【flags】||
 【parentid】-1
@@ -539,7 +557,7 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 -------------------------------
 【columnname】CSS3
 【columntype】新闻
-【sortrank】15
+【sortrank】150
 【filename】/css3/
 【flags】||
 【parentid】-1
@@ -555,7 +573,7 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 -------------------------------
 【columnname】问答Q/A
 【columntype】新闻
-【sortrank】17
+【sortrank】160
 【filename】/ask/
 【flags】||
 【parentid】-1
@@ -577,7 +595,7 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 -------------------------------
 【columnname】常用工具
 【columntype】新闻
-【sortrank】18
+【sortrank】170
 【filename】/mytools/
 【flags】||
 【parentid】-1
@@ -592,7 +610,7 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 -------------------------------
 【columnname】网站作品
 【columntype】新闻
-【sortrank】19
+【sortrank】180
 【filename】/webworks/
 【flags】||
 【parentid】-1
@@ -607,7 +625,7 @@ Digg主页：<a href="http://digg.com/u/sharembweb" target="_blank" class="ablue" r
 -------------------------------
 【columnname】在线反馈
 【columntype】文本
-【sortrank】20
+【sortrank】190
 【filename】/feedback/
 【flags】|foot|
 【parentid】-1
@@ -661,7 +679,7 @@ function formcommentSubmit(){
 -------------------------------
 【columnname】在线留言
 【columntype】留言
-【sortrank】21
+【sortrank】200
 【filename】/guestbook/
 【templatepath】GuestBook_List.html
 【flags】|foot|
@@ -677,7 +695,7 @@ function formcommentSubmit(){
 -------------------------------
 【columnname】网络文摘
 【columntype】新闻
-【sortrank】22
+【sortrank】210
 【filename】/digest/
 【templatepath】
 【flags】||
@@ -693,7 +711,7 @@ function formcommentSubmit(){
 -------------------------------
 【columnname】程序员
 【columntype】新闻
-【sortrank】23
+【sortrank】220
 【filename】/programmer/
 【templatepath】
 【flags】||
@@ -709,7 +727,7 @@ function formcommentSubmit(){
 -------------------------------
 【columnname】作品展示
 【columntype】新闻
-【sortrank】24
+【sortrank】230
 【filename】/myworks/
 【templatepath】
 【flags】||
@@ -725,7 +743,7 @@ function formcommentSubmit(){
 -------------------------------
 【columnname】wordpress
 【columntype】新闻
-【sortrank】25
+【sortrank】240
 【filename】/wordpress/
 【templatepath】
 【flags】||
@@ -741,7 +759,7 @@ function formcommentSubmit(){
 -------------------------------
 【columnname】其它
 【columntype】新闻
-【sortrank】66
+【sortrank】250
 【filename】/morearticle/
 【templatepath】
 【flags】||
@@ -758,7 +776,7 @@ function formcommentSubmit(){
 -------------------------------
 【columnname】网站地图
 【columntype】文本
-【sortrank】99
+【sortrank】9999
 【filename】/sitemap.html
 【templatepath】
 【flags】|foot|

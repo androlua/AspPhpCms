@@ -32,7 +32,7 @@
 [默认HTML设置]{3、手机端.Html}
 [默认CSS设置]{10、2016style.css}
 [自定义模板]{}
-[自定义CSS]{}
+[自定义CSS]{\../DataDir\VB模块\服务器\Template\模块功能列表\sharembweb\home\_style.css}
 [自定义模板动作]{}
 [自定义CSS动作]{}
 [txtIsCodeHtmlTemplate]{1}

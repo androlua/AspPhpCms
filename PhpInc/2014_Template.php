@@ -47,6 +47,8 @@ function readTemplateModuleStr($filePath, $defaultContent, $moduleId){
         $filePath= $GLOBALS['webTemplate'] . $filePath;
     }
 
+    $filePath= handleRGV($filePath, '[$模块目录$]', 'Module/'); //Module
+
     if( $defaultContent <> '' ){
         $content= $defaultContent;
     }else if( checkFile($filePath)== true ){
@@ -54,12 +56,18 @@ function readTemplateModuleStr($filePath, $defaultContent, $moduleId){
     }else{
         $content= $GLOBALS['code']; //默认用内容指定内容
     }
-    //Call Die("显示" & ModuleId & "," & Content)
-    //Call Eerr(filepath & checkfile(filepath), Content)
+
+    if( instr($content, $startStr)==false ){
+        $startStr= '<!--#Module ' . $moduleId . ' Start#-->';
+    }
+    if( instr($content, $endStr)==false ){
+        $endStr= '<!--#Module ' . $moduleId . ' End#-->';
+    }
     if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
         $readTemplateModuleStr= strCut($content, $startStr, $endStr, 2);
     }else{
         $readTemplateModuleStr= '模块[' . $moduleId . ']不存在,路径=' . $filePath;
+        $GLOBALS['PHPDie']( $readTemplateModuleStr . $content);
     }
     return @$readTemplateModuleStr;
 }

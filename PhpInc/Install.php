@@ -61,9 +61,9 @@ PRIMARY KEY  (`Id`)
 `model` varchar(255) NOT NULL default '',
 `author` varchar(255) NOT NULL default '',
 `articlesource` varchar(255) NOT NULL default '',
-`price` varchar(250) NOT NULL default '',
-`newprice` varchar(250) NOT NULL default '',
-`memberprice` varchar(250) NOT NULL default '',
+`price` float(8) NOT NULL default '0',
+`newprice` float(8) NOT NULL default '0',
+`memberprice` float(8) NOT NULL default '0',
 `sold` int(8) NOT NULL default '0',
 `membertype` varchar(255) NOT NULL default '',
 `memberuser` varchar(255) NOT NULL default '',
@@ -108,6 +108,73 @@ PRIMARY KEY  (`Id`)
 `sortrank` int(8) NOT NULL default '0',
 `adddatetime` varchar(250) NOT NULL default '',
 `updatetime` varchar(250) NOT NULL default '',
+`bodycontent` mediumtext,
+PRIMARY KEY  (`Id`)
+){$char};",
+"{$DB_PREFIX}caiconfig" => "CREATE TABLE `{$DB_PREFIX}caiconfig` (
+`id` int(5) unsigned NOT NULL auto_increment,
+`bigclassname` varchar(255) NOT NULL default '',
+`stype` varchar(255) NOT NULL default '',
+`saction` varchar(255) NOT NULL default '',
+`startstr` varchar(255) NOT NULL default '',
+`endstr` varchar(255) NOT NULL default '',
+`startaddstr` varchar(255) NOT NULL default '',
+`endaddstr` varchar(255) NOT NULL default '',
+`fieldname` varchar(255) NOT NULL default '',
+`fieldcheck` int(8) NOT NULL default '0',
+`sortrank` int(8) NOT NULL default '0',
+`adddatetime` varchar(250) NOT NULL default '',
+`updatetime` varchar(250) NOT NULL default '',
+`ip` varchar(255) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
+`bodycontent` mediumtext,
+PRIMARY KEY  (`Id`)
+){$char};",
+"{$DB_PREFIX}caidata" => "CREATE TABLE `{$DB_PREFIX}caidata` (
+`id` int(5) unsigned NOT NULL auto_increment,
+`bigclassname` varchar(255) NOT NULL default '',
+`columnname` varchar(255) NOT NULL default '',
+`stype` varchar(255) NOT NULL default '',
+`value1` mediumtext,
+`value2` mediumtext,
+`value3` mediumtext,
+`value4` mediumtext,
+`value5` mediumtext,
+`value6` mediumtext,
+`fieldname1` varchar(255) NOT NULL default '',
+`fieldname2` varchar(255) NOT NULL default '',
+`fieldname3` varchar(255) NOT NULL default '',
+`fieldname4` varchar(255) NOT NULL default '',
+`fieldname5` varchar(255) NOT NULL default '',
+`fieldname6` varchar(255) NOT NULL default '',
+`fieldcheck1` varchar(255) NOT NULL default '',
+`fieldcheck2` varchar(255) NOT NULL default '',
+`fieldcheck3` varchar(255) NOT NULL default '',
+`fieldcheck4` varchar(255) NOT NULL default '',
+`fieldcheck5` varchar(255) NOT NULL default '',
+`fieldcheck6` varchar(255) NOT NULL default '',
+`sortrank` int(8) NOT NULL default '0',
+`adddatetime` varchar(250) NOT NULL default '',
+`updatetime` varchar(250) NOT NULL default '',
+`ip` varchar(255) NOT NULL default '',
+`isthrough` tinyint(1) NOT NULL default '0',
+`bodycontent` mediumtext,
+PRIMARY KEY  (`Id`)
+){$char};",
+"{$DB_PREFIX}caiweb" => "CREATE TABLE `{$DB_PREFIX}caiweb` (
+`id` int(5) unsigned NOT NULL auto_increment,
+`bigclassname` varchar(255) NOT NULL default '',
+`columnname` varchar(255) NOT NULL default '',
+`httpurl` varchar(255) NOT NULL default '',
+`morepageurl` varchar(255) NOT NULL default '',
+`charset` varchar(255) NOT NULL default '',
+`thispage` int(8) NOT NULL default '0',
+`countpage` int(8) NOT NULL default '0',
+`stype` varchar(255) NOT NULL default '',
+`sortrank` int(8) NOT NULL default '0',
+`adddatetime` varchar(250) NOT NULL default '',
+`updatetime` varchar(250) NOT NULL default '',
+`ip` varchar(255) NOT NULL default '',
 `bodycontent` mediumtext,
 PRIMARY KEY  (`Id`)
 ){$char};",
@@ -679,7 +746,7 @@ if($DB_PREFIX<>''){
 		$s=strCut( $content, '; $db_PREFIX= \'', '\'', 1);
 		$content=replace($content,$s,'; $db_PREFIX= \''.$DB_PREFIX.'\'');
 		createFile($configPath, $content);
-		echo('修改config.php配置文件完成');
+		echo('修改config.php配置文件完成<hr>');
 	}
 }
 
@@ -690,8 +757,8 @@ if($DB_PREFIX<>''){
 	}
 	echo('<a href="../admin/index.php" target="_blank">登录后台</a>');
 	echo('&nbsp; | &nbsp;<a href="../admin/index.php?act=setAccess&webdataDir=/Templates2015/sharembweb/WebData&login=out" target="_blank">导入默认数据</a>');
-	if(@$_POST['loginname']<>'' && @$_POST['loginpwd']<>''){
-			$conn->query('insert into '.$DB_PREFIX.'admin (username,pwd,flags) values(\''.@$_POST['loginname'].'\',\'' . myMD5(@$_POST['loginpwd']) . '\',\'|*|\')') ;
+	if(@$_REQUEST['loginname']<>'' && @$_REQUEST['loginpwd']<>''){
+			$conn->query('insert into '.$DB_PREFIX.'admin (pseudonym,username,pwd,flags) values(\''.@$_REQUEST['loginname'].'\',\''.@$_REQUEST['loginname'].'\',\'' . myMD5(@$_REQUEST['loginpwd']) . '\',\'|*|\')') ;
 	}else{
 		$splStr = aspSplit('admin|test|guest', '|');
 		foreach( $splStr as $s){
@@ -761,6 +828,8 @@ foreach( $splStr as $s){
 	
 ?>
  
+
+
 
 
 

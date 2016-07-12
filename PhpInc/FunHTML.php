@@ -31,15 +31,15 @@ function imgError(){
     return @$imgError;
 }
 //获得target样式
-function targetStr( $sType){
+function handleTargetStr( $sType){
     if( $sType <> '' ){
-        $targetStr= ' target=\'' . $sType . '\'';
+        $handleTargetStr= ' target=\'' . $sType . '\'';
     }
-    return @$targetStr;
+    return @$handleTargetStr;
 }
 //打开方式  (辅助)
 function aTarget($sType){
-    $aTarget= targetStr($sType);
+    $aTarget= handleTargetStr($sType);
     return @$aTarget;
 }
 //获得链接Title样式

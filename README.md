@@ -47,6 +47,10 @@ ASPPHPCMS从诞生以来一直秉承大道至简的开发理念，无论从底�
 *  在线演示：http://sharembweb.com/
 
 ## 更新日志
+—— 20016.07.12 update ——
+*  1、修复PHP数据类型
+*  2、修复后台打包html
+
 —— 20016.06.16 update ——
 *  1、ASPPHPCMS升级到 ASPPHPCMS v1.5
 *  2、修复完善ASP与PHP程序

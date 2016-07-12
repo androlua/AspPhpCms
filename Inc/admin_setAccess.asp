@@ -30,31 +30,28 @@ function recoveryDatabase()
             call echo(tableName, importTXTData(s, tableName, "添加")) 
         end if 
     next 
-
-
-
     call echo("恢复数据库完成", "") 
 end function 
 
 '备份数据库
 function backupDatabase()
-    dim isUnifyToFile, tableNameList, databaseTableNameList, fieldConfig, fieldName, fieldType, splField, fieldValue 
+    dim isUnifyToFile, tableNameList, databaseTableNameList, fieldConfig, fieldName, fieldType, splField, fieldValue,nLen,isOK
     dim splStr, splxx, tableName, s, c, backupDir, backupFilePath 
     tableNameList = lcase(request("tableNameList"))                                 '自定义备份数据表列表
     isUnifyToFile = request("isUnifyToFile")                                        '统一放到一个文件里
-    databaseTableNameList = lcase(getTableList()) 
-
+    databaseTableNameList = lcase(db_PREFIX & "webcolumn"& vbcrlf & getTableList()) 		'让db_PREFIX在最前面，因为文章类型要从这里读取
+	nLen=len(db_PREFIX)
+	
     '处理自定义表列表
     if tableNameList <> "" then
         splStr = split(tableNameList, "|") 
-        for each tableName in splStr
-            tableName = trim(tableName) 
-            if instr(vbCrLf & databaseTableNameList & vbCrLf, vbCrLf & db_PREFIX & tableName & vbCrLf) > 0 then
-                if c <> "" then
-                    c = c & vbCrLf 
-                end if 
-                c = c & db_PREFIX & tableName 
-            end if 
+        for each tableName in splStr  
+			if instr(vbCrLf & databaseTableNameList & vbCrLf, vbCrLf & db_PREFIX & tableName & vbCrLf) > 0 then
+				if c <> "" then
+					c = c & vbCrLf 
+				end if 
+				c = c & db_PREFIX & tableName 
+			end if  
         next 
         if c = "" then
             call eerr("自定义备份表不正确 <a href=""javascript:history.go(-1)"">点击返回</a>", tableNameList) 
@@ -65,53 +62,58 @@ function backupDatabase()
     c = "" 
     for each tableName in splStr
         tableName = trim(tableName) 
-        fieldConfig = lcase(getFieldConfigList(tableName)) 
-        call echo(tableName, fieldConfig) 
-        rs.open "select * from " & tableName, conn, 1, 1 
-        c = c & "【table】" & mid(tableName, len(db_PREFIX) + 1) & vbCrLf 
-        while not rs.eof
-            splField = split(fieldConfig, ",") 
-            for each s in splField
-                if instr(s, "|") > 0 then
-                    splxx = split(s, "|") 
-                    fieldName = splxx(0) 
-                    fieldType = splxx(1) 
-                    fieldValue = rs(fieldName) 
-                    if fieldType = "numb" then
-                        fieldValue = replace(replace(fieldValue, "True", "1"), "False", "0") 
-                    end if 
-                    '后台菜单
-                    if tableName = db_PREFIX & "listmenu" and fieldName = "parentid" then
-                        fieldValue = getListMenuName(fieldValue) 
-                    '网站栏目
-                    elseif tableName = db_PREFIX & "webcolumn" and fieldName = "parentid" then
-                        fieldValue = getColumnName(fieldValue) 
-                    end if 
-                    if fieldValue <> "" then
-                        if instr(fieldValue, vbCrLf) > 0 then
-                            fieldValue = fieldValue & "【/" & fieldName & "】" 
-                        end if 
-                        c = c & "【" & fieldName & "】" & fieldValue & vbCrLf 
-                    end if 
-                end if 
-            next 
-            c = c & "-------------------------------" & vbCrLf 
-        rs.movenext : wend : rs.close 
-        c = c & "===============================" & vbCrLf 
+		isOK=true 
+		'判断前缀是否一样
+		if nLen>0 then 
+			if mid(tableName,1,nLen)<>db_PREFIX then
+				isOK=false
+			end if
+		end if
+		if isOK=true then
+			fieldConfig = lcase(getFieldConfigList(tableName)) 
+			call echo(tableName, fieldConfig) 
+			rs.open "select * from " & tableName, conn, 1, 1 
+			c = c & "【table】" & mid(tableName, len(db_PREFIX) + 1) & vbCrLf 
+			while not rs.eof
+				splField = split(fieldConfig, ",") 
+				for each s in splField
+					if instr(s, "|") > 0 then
+						splxx = split(s, "|") 
+						fieldName = splxx(0) 
+						fieldType = splxx(1) 
+						fieldValue = rs(fieldName) 
+						if fieldType = "numb" then
+							fieldValue = replace(replace(fieldValue, "True", "1"), "False", "0") 
+						end if 
+						'后台菜单
+						if tableName = db_PREFIX & "listmenu" and fieldName = "parentid" then
+							fieldValue = getListMenuName(fieldValue) 
+						'网站栏目
+						elseif tableName = db_PREFIX & "webcolumn" and fieldName = "parentid" then
+							fieldValue = getColumnName(fieldValue) 
+						end if 
+						if fieldValue <> "" then
+							if instr(fieldValue, vbCrLf) > 0 then
+								fieldValue = fieldValue & "【/" & fieldName & "】" 
+							end if 
+							c = c & "【" & fieldName & "】" & fieldValue & vbCrLf 
+						end if 
+					end if 
+				next 
+				c = c & "-------------------------------" & vbCrLf 
+			rs.movenext : wend : rs.close 
+        	c = c & "===============================" & vbCrLf 
+		end if
     next 
     backupDir = adminDir & "/Data/BackUpDateBases/" 
     backupFilePath = backupDir & "/" & format_Time(now(), 4) & ".txt" 
     call createDirFolder(backupDir) 
     call deleteFile(backupFilePath)                                                 '删除旧备份文件
     call createfile(backupFilePath, c)                                              '创建备份文件
+	call hr()
     call echo("backupDir", backupDir) 
     call echo("backupFilePath", backupFilePath) 
-    call rwend("操作完成") 
-    call echo("tableNameList", tableNameList) 
-    call echo("isUnifyToFile", isUnifyToFile) 
-    call echo("databaseTableNameList", databaseTableNameList) 
-    call echo("backupDatabase", "backupDatabase") 
-    call echo("c", c) 
+    call eerr("操作完成","<a href='?act=displayLayout&templateFile=layout_manageDatabases.html&lableTitle=数据库'>点击返回 备份恢复数据</a>") 
 end function 
 
 '重置数据库数据

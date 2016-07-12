@@ -45,7 +45,7 @@
 
                     <sPAn class="testhidde">{$ArticleList columnname='[$glb_columnname$]' topnumb='8' addsql='where id<>[$glb_id$]' order by sortrank desc' default='[_2016年01月15日 14时11分]'$}</sPAn>
                     <!--#[_2016年01月15日 14时11分]
-                    [list]<li><a href="[$url$]" title="[$title$]">[$title len='920'$]</a></li>
+                    [list]<li><a href="[$url$]" title="[$title$]">[$title len='920'$]</a><span class="time">[$adddatetime format_time='7'$]</span></li>
                     [/list] 
                     #-->
                 </ul>
@@ -110,11 +110,11 @@ function formSubmit(){
        <ul class="columnbox">
             <li class="title" id="userlogintitle">会员登录</li>
             <li class="content">
-            <span id="qqLoginBtn"></span>
-            <div>
-            <img src="/Templates2015/sharembweb/Images/aspphpcmserweima.jpg" width="100%" alt="ASPPHPCMS二维码" title="ASPPHPCMS二维码"> 
-            扫描二维码，获得更多ASPPHPCMS相关知识
-            </div>
+            
+<!--#获得单面内容#-->
+<sPAn class="testspan">{$GetOnePageBody title='扫描微信' fieldname='aboutcontent'$}</sPAn>
+ 
+            
             </li>
         </ul>
  

@@ -139,6 +139,8 @@ function handleAction($content){
             }else if( checkFunValue($action, 'GetOnePageUrl ')== true ){
                 $action= XY_GetOnePageUrl($action);
 
+
+                //------------------- 模板模块区 -----------------------
                 //显示包裹块 作用不大
             }else if( checkFunValue($action, 'DisplayWrap ')== true ){
                 $action= XY_DisplayWrap($action);
@@ -148,6 +150,9 @@ function handleAction($content){
                 //显示模块
             }else if( checkFunValue($action, 'Module ')== true ){
                 $action= XY_Module($action);
+                //读模块内容
+            }else if( CheckFunValue($action, 'ReadTemplateModule ')==true ){
+                $action= XY_ReadTemplateModule($action);
                 //获得内容模块 20150108
             }else if( checkFunValue($action, 'GetContentModule ')== true ){
                 $action= XY_ReadTemplateModule($action);
@@ -155,10 +160,11 @@ function handleAction($content){
             }else if( checkFunValue($action, 'ReadColumeSetTitle ')== true ){
                 $action= XY_ReadColumeSetTitle($action);
 
+
+                //------------------- 其它区 -----------------------
                 //显示JS渲染ASP/PHP/VB等程序的编辑器
             }else if( checkFunValue($action, 'displayEditor ')== true ){
                 $action= displayEditor($action);
-
                 //Js版网站统计
             }else if( checkFunValue($action, 'JsWebStat ')== true ){
                 $action= XY_JsWebStat($action);
@@ -167,13 +173,14 @@ function handleAction($content){
                 //普通链接A
             }else if( checkFunValue($action, 'HrefA ')== true ){
                 $action= XY_HrefA($action);
-
                 //栏目菜单(引用后台栏目程序)
             }else if( checkFunValue($action, 'ColumnMenu ')== true ){
                 $action= XY_AP_ColumnMenu($action);
 
+
+                //------------------- 待分区 -----------------------
                 //网站底部
-            }else if( checkFunValue($action, 'WebSiteBottom ')== true ){
+            }else if( checkFunValue($action, 'WebSiteBottom ')== true || checkFunValue($action, 'WebBottom ')== true ){
                 $action= XY_AP_WebSiteBottom($action);
                 //显示网站栏目 20160331
             }else if( checkFunValue($action, 'DisplayWebColumn ')== true ){
@@ -295,7 +302,8 @@ function replaceGlobleVariable( $content){
     $content= handleRGV($content, '{$cfg_webTitle$}', $GLOBALS['cfg_webTitle']); //网站标题
     $content= handleRGV($content, '{$cfg_webKeywords$}', $GLOBALS['cfg_webKeywords']); //网站关键词
     $content= handleRGV($content, '{$cfg_webDescription$}', $GLOBALS['cfg_webDescription']); //网站描述
-    $content= handleRGV($content, '{$cfg_webSiteBottom$}', $GLOBALS['cfg_webSiteBottom']); //网站描述
+
+    $content= handleRGV($content, '{$cfg_webSiteBottom$}', $GLOBALS['cfg_webSiteBottom']); //网站底部内容
 
     $content= handleRGV($content, '{$glb_columnId$}', $GLOBALS['glb_columnId']); //栏目Id
     $content= handleRGV($content, '{$glb_columnName$}', $GLOBALS['glb_columnName']); //栏目名称
@@ -304,6 +312,8 @@ function replaceGlobleVariable( $content){
 
     $content= handleRGV($content, '{$glb_Table$}', $GLOBALS['glb_table']); //表
     $content= handleRGV($content, '{$glb_Id$}', $GLOBALS['glb_id']); //id
+
+    $content= handleRGV($content, '[$模块目录$]', 'Module/'); //Module
 
 
     //兼容旧版本 渐渐把它去掉
@@ -569,8 +579,14 @@ function getDetailList($action, $content, $actionName, $lableTitle, $fieldNameLi
 
             }
         }
-        //文章列表加在线编辑
-        $url= WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11);
+        //call echo("actionName",actionName)
+        if( $actionName=='GuestBook' ){
+            //留言
+            $url= WEB_ADMINURL . '?act=addEditHandle&actionType=GuestBook&lableTitle=留言&nPageSize=10&parentid=&searchfield=bodycontent&keyword=&addsql=&page=&id=' . $rs['id'] . '&n=' . getRnd(11);
+        }else{
+            //文章列表加在线编辑
+            $url= WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11);
+        }
         $s= handleDisplayOnlineEditDialog($url, $s, '', 'div|li|span');
 
         $c= $c . $s;
@@ -624,9 +640,9 @@ function defaultListTemplate($sType,$sName){
         }
     }
     if( $listTemplate== '' ){
-        $c= '<ul class="list"><!--#list start#-->' . vbCrlf();
+        $c= '<ul class="list"><!--#body start#-->' . vbCrlf();
         $c= $c . '[list]    <li><a href="[$url$]"[$atitle$][$atarget$][$abcolor$][$anofollow$]>[$title$]</a><span class="time">[$adddatetime format_time=\'1\'$]</span></li>' . vbCrlf();
-        $c= $c . '[/list]<!--#list end#-->' . vbCrlf();
+        $c= $c . '[/list]11111111111<!--#body end#--> ' . vbCrlf();
         $c= $c . '</ul>' . vbCrlf();
         $c= $c . '<div class="clear10"></div>' . vbCrlf();
         $c= $c . '<div>[$pageInfo$]</div>' . vbCrlf();
@@ -1008,7 +1024,7 @@ function makeWebHtml($action){
     //在线编辑20160127
     if( rq('gl')== 'edit' ){
         if( instr($GLOBALS['code'], '</head>') > 0 ){
-            if( instr($GLOBALS['code'], 'jquery.Min.js')== false ){
+            if( instr(strtolower($GLOBALS['code']), 'jquery.min.js')== false ){
                 $GLOBALS['code']= Replace($GLOBALS['code'], '</head>', '<script src="/Jquery/jquery.Min.js"></script></head>');
             }
             $GLOBALS['code']= Replace($GLOBALS['code'], '</head>', '<script src="/Jquery/Callcontext_menu.js"></script></head>');
@@ -1457,7 +1473,7 @@ function makeHtmlWebToZip($webDir){
 //使网站用xml打包20160612
 function makeHtmlWebToXmlZip($newWebDir,$rootDir){
     $xmlFileName='';$xmlSize='';
-    $xmlFileName= getIP() . '_update.xml';
+    $xmlFileName= setFileName(getIP()) . '_update.xml';			 //获得ip有可能为空:: 创建时会有问题
 
     //newWebDir="\Templates2015\"
     //rootDir="\sharembweb\"

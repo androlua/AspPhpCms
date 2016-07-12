@@ -20,7 +20,7 @@
 #Source参数列表# start
 
 #Source参数列表# end
-[处理动作设置]{保存模板配置}
+[处理动作设置]{生成并IE打开}
 [配置设置]{#dialogbackground='默认' dialogborder='默认' modulebackground='默认' moduleborder='默认' }
 [样式前缀设置]{h_}
 [帮助信息设置]{}
@@ -30,11 +30,10 @@
 [默认HTML设置]{3、手机端.Html}
 [默认CSS设置]{10、2016style.css}
 [自定义模板]{}
-[自定义CSS]{}
+[自定义CSS]{\../DataDir\VB模块\服务器\Template\模块功能列表\sharembweb\home\_style.css}
 [自定义模板动作]{}
 [自定义CSS动作]{}
 [txtIsCodeHtmlTemplate]{1}
 [txtIsCodeCssTemplate]{1}
 [txtIsDeleteRepeatCssClass]{1}
 [txtCopyImageEncryption]{}
-

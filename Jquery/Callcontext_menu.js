@@ -34,7 +34,7 @@ function CommonMenu(eobj,This,delUrl)
 	eobj = eobj?eobj:event;
 	eobj.returnValue=false;
 	eobj.cancelBubble = true; 
-	
+	eobj.preventDefault();		//禁止ie本身动作
 }
  
 
