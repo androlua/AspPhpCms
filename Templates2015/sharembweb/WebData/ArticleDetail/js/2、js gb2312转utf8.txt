@@ -47,7 +47,7 @@ function toHex(n) {
 }
 var okURIchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
 
-function GBtoUTF8(s) {
+function toUTFChar(s) {
 	var s = utf8(s);
 	var c;
 	var enc = "";
@@ -60,8 +60,8 @@ function GBtoUTF8(s) {
 	return enc;
 }
 //案例测试
-alert(GBtoUTF8("汉字")) //gb2312转utf-8
-alert(decodeURIComponent(GBtoUTF8("汉字"))) //解utf-8到gb2312
+alert(toUTFChar("汉字")) //gb2312转utf-8
+alert(decodeURIComponent(toUTFChar("汉字"))) //解utf-8到gb2312
 
  
 </script>

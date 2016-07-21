@@ -61,7 +61,8 @@ Function getPostSql(id, tableName, fieldNameList)
 
     Dim postFieldList                                                               'post字段列表
     Dim splPost, fieldContent, fieldConfig 
-    postFieldList = getFormFieldList() 
+    postFieldList = getFormFieldList()  
+	'以后再把下面与上面这两种处理方法事成一种看看行不行
     splPost = Split(postFieldList, "|") 
     For Each fieldName In splPost
         fieldContent = Request.Form(fieldName)  
@@ -75,70 +76,78 @@ Function getPostSql(id, tableName, fieldNameList)
             fieldConfig = Mid(fieldConfig, 1, InStr(fieldConfig, ",") - 1) 
             'call echo("config",fieldConfig)
             'call echo(fieldName,fieldContent)
-
+			'call echo("fieldConfig",fieldConfig)
             splxx = Split(fieldConfig & "|||", "|") 
             fieldName = splxx(0)                                                            '字段名称
             fieldSetType = splxx(1)                                                         '字段设置类型
             defaultFieldValue = splxx(2)                                                    '默认字段值
             fieldValue = ADSqlRf(fieldName)                                                 '代替上面，因为它处理了'符号
-            'md5加密
-            If fieldSetType = "md5" Then
-                fieldValue = myMD5(fieldValue) 
-            End If 
-
-            If fieldSetType = "yesno" Then
-                If fieldValue = "" Then
-                    fieldValue = defaultFieldValue 
-                End If 
-            '不为数字类型加单引号
-            ElseIf fieldSetType = "numb" Then
-                If fieldValue = "" Then
-                    fieldValue = defaultFieldValue 
-                End If 
-
-            ElseIf fieldName = "flags" Then
-                'PHP里用法
-                If EDITORTYPE = "php" Then
-                    If fieldValue <> "" Then
-                        fieldValue = "|" & arrayToString(fieldValue, "|") 
-                    End If 
-                Else
-                    fieldValue = "|" & arrayToString(Split(fieldValue, ", "), "|") 
-                End If 
-
-
-                fieldValue = "'" & fieldValue & "'" 
-
-            '为时间
-            ElseIf fieldSetType = "time" or fieldSetType = "now" Then
-                If fieldValue = "" Then
-                    fieldValue = now() 
-                End If 
-                fieldValue = "'" & fieldValue & "'" 
-            '为时期
-            ElseIf fieldSetType = "date" Then
-                If fieldValue = "" Then
-                    fieldValue = Date() 
-                End If 
-                fieldValue = "'" & fieldValue & "'" 
-
-            Else
-                fieldValue = "'" & fieldValue & "'" 
-            End If 
+            'call echo("fieldValue",fieldValue)
+			'排序密码不处理
+			if fieldValue<>"#NO******NO#" then
+				'md5加密
+				If fieldSetType = "md5" Then
+					fieldValue = myMD5(fieldValue) 
+				End If 
+	
+				If fieldSetType = "yesno" Then
+					If fieldValue = "" Then
+						fieldValue = defaultFieldValue 
+					End If 
+				'不为数字类型加单引号
+				ElseIf fieldSetType = "numb" Then
+					If fieldValue = "" Then
+						fieldValue = defaultFieldValue 
+					End If 
+	
+				ElseIf fieldName = "flags" Then
+					'PHP里用法
+					If EDITORTYPE = "php" Then
+						If fieldValue <> "" Then
+							fieldValue = "|" & arrayToString(fieldValue, "|") 
+						End If 
+					Else
+						fieldValue = "|" & arrayToString(Split(fieldValue, ", "), "|") 
+					End If 
+	
+	
+					fieldValue = "'" & fieldValue & "'" 
+	
+				'为时间
+				ElseIf fieldSetType = "time" or fieldSetType = "now" Then
+					If fieldValue = "" Then
+						fieldValue = now() 
+					End If 
+					fieldValue = "'" & fieldValue & "'" 
+				'为时期
+				ElseIf fieldSetType = "date" Then
+					If fieldValue = "" Then
+						fieldValue = Date() 
+					End If 
+					fieldValue = "'" & fieldValue & "'" 
+	
+				Else
+					fieldValue = "'" & fieldValue & "'" 
+				End If 
+				
+				fieldValue=unescape(fieldValue)			'解码20160418
 			
-			fieldValue=unescape(fieldValue)			'解码20160418
-		
-            If fieldList <> "" Then
-                fieldList = fieldList & "," 
-                valueStr = valueStr & "," 
-                editValueStr = editValueStr & "," 
-            End If 
-            fieldList = fieldList & fieldName 
-            valueStr = valueStr & fieldValue 
-            editValueStr = editValueStr & fieldName & "=" & fieldValue 
+				If valueStr <> "" Then 
+					valueStr = valueStr & "," 
+					editValueStr = editValueStr & "," 
+				End If  
+				valueStr = valueStr & fieldValue 
+				editValueStr = editValueStr & fieldName & "=" & fieldValue 
+			end if
+			If fieldList <> "" Then
+				fieldList = fieldList & ","  
+			End If 
+			fieldList = fieldList & fieldName 
+			
+			
         End If 
-    Next 
-    '自定义字段是否需要写入默认值
+    Next  
+    '自定义字段是否需要写入默认值  有的
     splStr = Split(fieldNameList, ",") 
     For Each s In splStr
         If InStr(s, "|") > 0 Then
@@ -148,8 +157,7 @@ Function getPostSql(id, tableName, fieldNameList)
             fieldValue = splxx(2)                                                           '默认字段值
 
             If InStr(systemFieldList, "," & fieldName & "|") > 0 And InStr("," & fieldList & ",", "," & fieldName & ",") = False Then
-			 
-			
+			  
                 if fieldSetType = "date" and fieldValue="" then
                     fieldValue = Date() 
                 elseif (fieldSetType = "time" or fieldSetType = "now") and fieldValue="" then

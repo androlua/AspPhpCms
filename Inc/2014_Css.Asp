@@ -45,16 +45,16 @@ End Function
 
 '去掉字符串头尾的连续的回车和空格
 Function trimVbCrlf(str)
-    trimVbCrlf = PHPRTrim(PHPLTrim(str)) 
+    trimVbCrlf = phpRTrim(phpLTrim(str)) 
 End Function 
 
-'PHP里Trim方法
-Function PHPTrim(str)
-    PHPTrim = trimVbCrlf(str) 
+'php里Trim方法
+Function phpTrim(str)
+    phpTrim = trimVbCrlf(str) 
 End Function 
 
 '去掉字符串开头的连续的回车和空格
-Function PHPLTrim(str)
+Function phpLTrim(str)
     Dim pos, isBlankChar 
     pos = 1 
     isBlankChar = True 
@@ -67,11 +67,11 @@ Function PHPLTrim(str)
             isBlankChar = False 
         End If 
     Wend 
-    PHPLTrim = Right(str, Len(str) - pos + 1) 
+    phpLTrim = Right(str, Len(str) - pos + 1) 
 End Function 
 
 '去掉字符串末尾的连续的回车和空格
-Function PHPRTrim(str)
+Function phpRTrim(str)
     Dim pos, isBlankChar 
     pos = Len(str) 
     isBlankChar = True 
@@ -84,7 +84,7 @@ Function PHPRTrim(str)
             isBlankChar = False 
         End If 
     Wend 
-    PHPRTrim = RTrim(Left(str, pos)) 
+    phpRTrim = RTrim(Left(str, pos)) 
 End Function 
 
 
@@ -130,9 +130,13 @@ Function rTrimVBTab(str)
 End Function 
 
 
-'找Html页中Css Style
-Function getHtmlCssStyle(ByVal content)
-    Dim splStr, s, StyleYes, StyleStartStr, StyleEndStr, StyleStr, CssStr 
+'找Html页中Css Style <style></style> 里css内容
+Function getHtmlCssStyle(ByVal content) 
+    getHtmlCssStyle = handleHtmlStyleCss(content,"","") 
+End Function
+'处理html里的css 替换路径
+function handleHtmlStyleCss(content,sType,imgPath)
+    Dim splStr, s, StyleYes, StyleStartStr, StyleEndStr, StyleStr, CssStr ,newCssStr
     splStr = Split(content, vbCrLf)                                                 '分割行
     StyleYes = False                                                                'Css样式默认为假
     '循环分行
@@ -159,18 +163,53 @@ Function getHtmlCssStyle(ByVal content)
         ElseIf StyleYes = True Then
             If InStr(LCase(s), "</style>") > 0 Then
                 StyleStr = Mid(s, 1, InStr(LCase(s), "</style>") - 1) 
-                CssStr = CssStr & StyleStr & vbCrLf 
-                'Call Echo("StyleStr2",ShowHtml(StyleStr))
-                'Call Echo("CssStr2",ShowHtml(CssStr))
-                'Call RwEnd("")
+                CssStr = CssStr & StyleStr & vbCrLf
+               	
+				if sType="替换路径" then
+					newCssStr=replaceCssImgPath(CssStr,imgPath) 
+					content=replace(content,phptrim(cssstr),newCssStr)
+				end if 
+			   
                 StyleYes = False                                                                '收集CssStyle样式结束
             Else
                 CssStr = CssStr & s & vbCrLf 
             End If 
         End If 
     Next 
-    getHtmlCssStyle = CssStr 
-End Function 
+	if sType="替换路径" then
+		handleHtmlStyleCss=content
+	else
+		handleHtmlStyleCss=cssStr
+	end if
+end function
+
+'替换css内容里图片路径 20160718home
+function replaceCssImgPath(byval cssStr,byval imgPath)
+	dim content,splstr,s,c,fileName,toImgPath,lcaseS
+	content=getArray(cssStr,"\(","\)",false,false)
+	splstr=split(content,"$Array$")
+	for each s in splstr
+		if s <>"" then
+			lcaseS=lcase(s)
+			fileName=trim(getFileAttr(s,2))
+			'引用图片 基础判断方法，有待改进，改进也是成长的一部分20160719
+			if instr(lcaseS,"data:image")=false and (instr(lcaseS,".jpg")>0 Or instr(lcaseS,".gif")>0 or instr(lcaseS,".png")>0 or instr(lcaseS,".bmp")>0) then
+				'修复于20160719
+				if instr(""",",left(fileName,1))>0 then
+					fileName=mid(fileName,2)
+				end if
+				if instr(""",",right(fileName,1))>0 then
+					fileName=mid(fileName,1,len(fileName)-1)
+				end if
+				'call echo(s,imgPath  & " and " & fileName)
+				cssStr=replace(cssStr,"("& s &")","(" & imgPath & fileName & ")")
+				'fileName="data:image/" & fileName
+			end if
+		
+		end if
+	next
+	replaceCssImgPath=cssStr
+end function
 
 '处理成干净的Css内容  CSS格式化
 Function handleCleanCss(ByVal content)
@@ -394,7 +433,7 @@ Function getHtmlBackGroundImgList(ByVal content)
 End Function 
 
 
-'处理网站HTML中Css链接    写得不是特别的完善好  Content = HandleWebHtmlImg("/aa/bb/",Content)  外部调用
+'完善html里link css链接 Content = getHandleWebHtmlLink("/aa/bb/",Content)  外部调用
 Function getHandleWebHtmlLink(RootPath, content)
     Dim startStr, endStr, ImgList, splStr, c, CssUrl, NewCssUrl, CssStr 
     startStr = "<link " 
@@ -426,7 +465,7 @@ Function getHandleWebHtmlLink(RootPath, content)
 End Function 
 
 
-'获得css链接地址列表(20150824)
+'获得css链接地址列表(20150824)  找<link>
 Function getCssListUrlList(content)
     Dim startStr, endStr, ImgList, splStr, c, CssUrl, CssStr, urlList 
     startStr = "<link " 
@@ -451,38 +490,6 @@ Function getCssListUrlList(content)
     Next 
     getCssListUrlList = urlList 
 End Function 
-
-'读Css文件内容并处理(20150824) 如call rwend(handleReadCssContent("E:\E盘\WEB网站\至前网站\DataDir\VB模块\服务器\Template\模块功能列表\B站页面设计\home\home.css","aa",true))
-Function handleReadCssContent(cssFilePath, LabelName, isHandleCss)
-    Dim c, startStr, endStr 
-    c = getFText(cssFilePath) 
-    '截取CSS
-    startStr = "/*CssCodeStart*/" 
-    endStr = "/*CssCodeEnd*/" 
-    If InStr(c, startStr) > 0 And InStr(c, endStr) > 0 Then
-        c = StrCut(c, startStr, endStr, 2) 
-    End If 
-    '处理CSS
-    If isHandleCss = True Then
-        c = cssCompression(c, 0) 
-    End If 
-    If LabelName <> "" Then
-        c = "/*" & LabelName & " start*/" & c & "/*" & LabelName & " end*/" 
-    End If 
-    handleReadCssContent = c 
-End Function 
-
-
-
-'处理Css样式里PX或T
-Function handleCssPX(ByVal nValue)
-    nValue = LCase(Trim(nValue)) 
-    If Right(nValue, 1) <> "%" And Right(nValue, 2) <> "px" Then
-        nValue = nValue & "px" 
-    End If 
-    handleCssPX = nValue 
-End Function 
-
 'call rw(handleHtmlStyle(getftext("1.html")))
 '压缩html里的style样式 (20151008)
 Function handleHtmlStyle(content)
@@ -501,6 +508,38 @@ Function handleHtmlStyle(content)
 
     content = Replace(content, serchS, replaceS) 
     handleHtmlStyle = content 
+End Function 
+
+
+
+'读Css文件内容并处理(20150824) 加特殊记录标签   不常用 
+'如call rwend(handleReadCssContent("E:\E盘\WEB网站\至前网站\DataDir\VB模块\服务器\Template\模块功能列表\B站页面设计\home\home.css","aa",true))
+Function handleReadCssContent(cssFilePath, LabelName, isHandleCss)
+    Dim c, startStr, endStr 
+    c = getFText(cssFilePath) 
+    '截取CSS
+    startStr = "/*CssCodeStart*/" 
+    endStr = "/*CssCodeEnd*/" 
+    If InStr(c, startStr) > 0 And InStr(c, endStr) > 0 Then
+        c = StrCut(c, startStr, endStr, 2) 
+    End If 
+    '处理CSS
+    If isHandleCss = True Then
+        c = cssCompression(c, 0) 
+    End If 
+    If LabelName <> "" Then
+        c = "/*" & LabelName & " start*/" & c & "/*" & LabelName & " end*/" 
+    End If 
+    handleReadCssContent = c 
+End Function  
+
+'处理Css样式里PX或%
+Function handleCssPX(ByVal nValue)
+    nValue = LCase(Trim(nValue)) 
+    If Right(nValue, 1) <> "%" And Right(nValue, 2) <> "px" Then
+        nValue = nValue & "px" 
+    End If 
+    handleCssPX = nValue 
 End Function 
 
 %>  

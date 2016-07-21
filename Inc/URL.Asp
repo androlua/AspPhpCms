@@ -374,7 +374,7 @@ Function getWebSite(ByVal httpUrl)
     End If 
     is_WebSite = False                                                              '是域名为假
     c = ".com.hk|.sh.cn|.com.cn|.net.cn|.org.cn" 
-    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me|.wiki" 
+    c = c & "|.com|.net|.org|.tv|.cc|.info|.cn|.tw|:81|:99|.biz|.mobi|.hk|.us|.la|.gl|.in|.top|.win|.vip|.pw|.me|.wiki|.co" 
     splStr = Split(c, "|") 
     For Each s In splStr
         If s <> "" Then
@@ -490,7 +490,7 @@ function hanldeStyleBackgroundUrl(byval url,styleStart,styleEnd)
     url = PHPTrim(url)                                                              '清除两边空格
 	lCaseUrl=lcase(url)
     url = Replace(url, "\", "/")                                                    '把网址\转/符号
-	if instr(url,"background:")>0 and instr(url,"(")>0 and instr(url,")")>0 then
+	if (instr(url,"background")>0 or instr(url,"background-image")>0) and instr(url,"(")>0 and instr(url,")")>0 then
 		styleStart=mid(url,1,instr(url,"("))
 		styleEnd=mid(url,instr(url,")"))
 		url=mid(url,len(styleStart)+1)
@@ -644,10 +644,14 @@ Function handleConentUrl(httpUrl, content, sType, byref PubAHrefList, byref PubA
                 c = c & handleLink(httpUrl, LalStr, "src", "", "", PubAHrefList, PubATitleList)
                 i = i + nLen
 				
-            ElseIf InStr(sType, "|imgstyle|") > 0 Then
-				nLen = Len(LalStr) - 1  
-                c = c & handleLink(httpUrl, LalStr, "style", "", "", PubAHrefList, PubATitleList)
-                i = i + nLen				
+            ElseIf InStr(sType, "|imgstyle|") > 0  Or InStr(sType, "|*|") > 0 Then
+				nLen = Len(LalStr) - 1
+				if instr(lcase(LalStr),"url")>0 and instr(lcase(LalStr),":")>0 and instr(lcase(LalStr),"(")>0 then
+					c = c & handleLink(httpUrl, LalStr, "style", "", "", PubAHrefList, PubATitleList)
+					i = i + nLen	
+				else					
+                	c = c & s 		
+				end if
             Else
                 c = c & s 
             End If 

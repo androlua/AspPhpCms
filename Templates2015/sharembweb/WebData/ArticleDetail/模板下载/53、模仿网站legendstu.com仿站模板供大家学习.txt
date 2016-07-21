@@ -7,7 +7,7 @@
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2016-03-04 12:07:32
 ¡¾filename¡¿/mobandown/copy-legendstu.html
-¡¾smallimage¡¿[$cfg_webimages$]mfweblegendstu.jpg
+¡¾smallimage¡¿[$cfg_webimages$]/mfweblegendstu.jpg
 ¡¾flags¡¿|
 ¡¾relatedtags¡¿Ä£°åÏÂÔØ
 ¡¾bodycontent¡¿

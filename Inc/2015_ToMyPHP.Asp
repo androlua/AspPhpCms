@@ -46,7 +46,7 @@ Function XY_Include(action)
 
     templateFilePath = handleFileUrl(templateFilePath)                              '处理文件路径
     If checkFile(templateFilePath) = False Then
-        templateFilePath = webTemplate & templateFilePath 
+        templateFilePath = webTemplate & "/" & templateFilePath 
     End If 
     content = getFText(templateFilePath) 
     If Block <> "" Then
@@ -76,10 +76,8 @@ Function XY_AP_ColumnMenu(action)
     If thisId = "" Then thisId = -1 
     defaultStr = getDefaultValue(action)                                            '获得默认内容
 	
-	
-	
 	defaultStr=defaultStr & "[topnav]"& parentid &"[/topnav]"
-     XY_AP_ColumnMenu = showColumnList( parentid, "webcolumn", "columnname",thisId , 0, defaultStr)
+    XY_AP_ColumnMenu = showColumnList( parentid, "webcolumn", "columnname",thisId , 0, defaultStr)
  
 End Function 
 
@@ -143,6 +141,7 @@ Function XY_AP_ArticleList(action)
     End If 
     '追加sql
     addSql = RParam(action, "addSql") 
+	'call echo("addsql",addsql)
     If addSql <> "" Then
         sql = getWhereAnd(sql, addSql) 
     End If 
@@ -182,7 +181,7 @@ Function XY_AP_Links(action)
 End Function 
  
 '通用信息列表
-Function XY_AP_GeneralList(action, tableName, addSql)
+Function XY_AP_GeneralList(action, byval tableName, addSql)
     Dim title, topNumb, nTop, isB, sql 
     Dim columnName, columnEnName, aboutcontent, bodyContent, showTitle 
     Dim bannerImage, smallImage, bigImage, id 
@@ -200,8 +199,9 @@ Function XY_AP_GeneralList(action, tableName, addSql)
     Dim atargetStr                                                                  'A链接打开方式
     Dim atitleStr                                                                   'A链接的title20160407
     Dim anofollowStr                                                                'A链接的nofollow
-    Dim splFieldName, fieldName, replaceStr, k 
-
+    Dim splFieldName, fieldName, replaceStr, k,idPage
+	
+	tableName=lcase(tableName)		'转小写
     fieldNameList = getHandleFieldList(db_PREFIX & tableName, "字段列表") 
     splFieldName = Split(fieldNameList, ",") 
 
@@ -235,11 +235,11 @@ Function XY_AP_GeneralList(action, tableName, addSql)
         If i > nTop Then
             Exit For 
         End If 
-        '【PHP】$rs=mysql_fetch_array($rsObj);                                            //给PHP用，因为在 asptophp转换不完善
+        '#【PHP】$rs=mysql_fetch_array($rsObj);                                            //给PHP用，因为在 asptophp转换不完善
         isFocus = False                                                                 '交点为假
         id = rs("id") 
         '【导航】
-        If tableName = "WebColumn" Then
+        If tableName = "webcolumn" Then
             If isMakeHtml = True Then
                 url = getRsUrl(rs("fileName"), rs("customAUrl"), "/nav" & rs("id")) 
             Else
@@ -257,7 +257,7 @@ Function XY_AP_GeneralList(action, tableName, addSql)
                 isFocus = True 
             End If 
         '【文章】
-        ElseIf tableName = "ArticleDetail" Then
+        ElseIf tableName = "articledetail" Then
             If isMakeHtml = True Then
                 url = getRsUrl(rs("fileName"), rs("customAUrl"), "detail/detail" & rs("id")) 
             Else
@@ -267,7 +267,7 @@ Function XY_AP_GeneralList(action, tableName, addSql)
                 End If 
             End If 
         '评论
-        ElseIf tableName = "TableComment" Then
+        ElseIf tableName = "tablecomment" Then
 
         End If 
 
@@ -369,16 +369,23 @@ Function XY_AP_GeneralList(action, tableName, addSql)
 
             '加控制
             '【导航】
-            If tableName = "WebColumn" Then
+            If tableName = "webcolumn" Then
                 url = WEB_ADMINURL & "?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=" & rs("id") & "&n=" & getRnd(11) 
-            '【文章】
-            ElseIf tableName = "ArticleDetail" Then
-                url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
-
+            
+			'【评论】
+			elseif tableName="tablecomment" then		
+				idPage=getThisIdPage(db_PREFIX & tableName ,rs("id"),10) 
+				url = WEB_ADMINURL & "?act=addEditHandle&actionType=TableComment&lableTitle=评论&nPageSize=10&parentid=&searchfield=bodycontent&keyword=&addsql=&page="& idPage &"&id=" & rs("id") & "&n=" & getRnd(11)
+			
+			'【文章】
+            ElseIf tableName = "articledetail" Then 
+				idPage=getThisIdPage(db_PREFIX & tableName ,rs("id"),10)
+                url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page="& idPage &"&parentid="& rs("parentid") &"&id=" & rs("id") & "&n=" & getRnd(11) 
+				
                 s = replaceValueParam(s, "columnurl", getColumnUrl(rs("parentid"), ""))         '文章对应栏目URL 20160304
                 s = replaceValueParam(s, "columnname", getColumnName(rs("parentid")))           '文章对应栏目名称 20160304
 
-            End If 
+            End If  
             s = handleDisplayOnlineEditDialog(url, s, "", "div|li|span")                    '处理是否添加在线修改管理器
             c = c & s 
         End If 
@@ -400,10 +407,11 @@ End Function
 
 '处理获得表内容
 Function XY_handleGetTableBody(action, tableName, fieldParamName, defaultFileName, adminUrl)
-    Dim url, content, id, sql, addSql, fieldName, fieldParamValue, fieldNameList, nLen, delHtmlYes, trimYes 
-	dim noisonhtml,intoFieldStr,valuesStr
+    Dim url, content, id, sql, addSql, fieldName, fieldParamValue, fieldNameList, nLen, delHtmlYes, trimYes,defaultStr
+	dim noisonhtml,intoFieldStr,valuesStr,nonull
     fieldName = RParam(action, "fieldname")                                         '字段名称	
     noisonhtml = RParam(action, "noisonhtml") 					'不生成html
+	nonull=RParam(action, "noisonhtml")							'内容不能为空20160716 home
 	 
 	if noisonhtml="true" then
 		intoFieldStr=",isonhtml"
@@ -424,7 +432,7 @@ Function XY_handleGetTableBody(action, tableName, fieldParamName, defaultFileNam
         addSql = " where id=" & id 
     End If 
 
-    content = getDefaultValue(action)                                               '获得默认内容
+    content = getDefaultValue(action)   :defaultStr=content                                            '获得默认内容
     sql = "select * from " & db_PREFIX & tableName & addSql 
     rs.Open sql, conn, 1, 1 
     If rs.EOF Then
@@ -434,7 +442,11 @@ Function XY_handleGetTableBody(action, tableName, fieldParamName, defaultFileNam
         End If 
     Else
         id = rs("id") 
-        content = rs(fieldName) 
+        content = rs(fieldName)
+		if len(content)<=0 then
+			content=defaultStr
+			conn.execute("update " &  db_PREFIX & tableName & " set " & fieldName & "='"& content &"' where id=" & rs("id"))
+		end if
     End If : rs.Close 
 
     '删除Html
@@ -468,7 +480,7 @@ End Function
 '获得单页内容
 Function XY_AP_GetOnePageBody(action)
     Dim adminUrl 
-    adminUrl = WEB_ADMINURL & "?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&switchId=2" 
+    adminUrl = WEB_ADMINURL & "?act=addEditHandle&actionType=OnePage&lableTitle=单页&nPageSize=10&page=&switchId=2" 
     XY_AP_GetOnePageBody = XY_handleGetTableBody(action, "onepage", "title", "bodycontent", adminUrl) 
 End Function 
 
@@ -682,12 +694,12 @@ Function XY_TitleInSearchEngineList(action)
     c = c & "<li><a href=""http://www.haosou.com/s?ie=gb2312&q=" & title & """ rel=""nofollow"" target=""_blank"">【haosou搜索】在好搜里搜索(" & title & ")</a></li>" & vbCrLf 
     c = c & "<li><a href=""https://search.yahoo.com/search;_ylt=A86.JmbkJatWH5YARmebvZx4?toggle=1&cop=mss&ei=gb2312&fr=yfp-t-901&fp=1&p=" & title & """ rel=""nofollow"" target=""_blank"">【yahoo搜索】在雅虎里搜索(" & title & ")</a></li>" & vbCrLf 
 
-    c = c & "<li><a href=""https://www.sogou.com/sogou?ie=utf8&query=" & GBtoUTF8(title) & """ rel=""nofollow"" target=""_blank"">【sogou搜索】在搜狗里搜索(" & title & ")</a></li>" & vbCrLf 
-    c = c & "<li><a href=""http://www.youdao.com/search?ue=utf8&q=" & GBtoUTF8(title) & """ rel=""nofollow"" target=""_blank"">【youdao搜索】在有道里搜索(" & title & ")</a></li>" & vbCrLf 
-    c = c & "<li><a href=""http://search.yam.com/Search/Web/DefaultKSA.aspx?SearchType=web&l=0&p=0&k=" & GBtoUTF8(title) & """ rel=""nofollow"" target=""_blank"">【yam搜索(google提供技术)】在蕃薯藤里搜索(" & title & ")</a></li>" & vbCrLf 
+    c = c & "<li><a href=""https://www.sogou.com/sogou?ie=utf8&query=" & toUTFChar(title) & """ rel=""nofollow"" target=""_blank"">【sogou搜索】在搜狗里搜索(" & title & ")</a></li>" & vbCrLf 
+    c = c & "<li><a href=""http://www.youdao.com/search?ue=utf8&q=" & toUTFChar(title) & """ rel=""nofollow"" target=""_blank"">【youdao搜索】在有道里搜索(" & title & ")</a></li>" & vbCrLf 
+    c = c & "<li><a href=""http://search.yam.com/Search/Web/DefaultKSA.aspx?SearchType=web&l=0&p=0&k=" & toUTFChar(title) & """ rel=""nofollow"" target=""_blank"">【yam搜索(google提供技术)】在蕃薯藤里搜索(" & title & ")</a></li>" & vbCrLf 
 	
 	
-    c = c & "<li><a href=""http://cn.bing.com/search?q=" & GBtoUTF8(title) & """ rel=""nofollow"" target=""_blank"">【bing搜索】在必应里搜索(" & title & ")</a></li>" & vbCrLf 
+    c = c & "<li><a href=""http://cn.bing.com/search?q=" & toUTFChar(title) & """ rel=""nofollow"" target=""_blank"">【bing搜索】在必应里搜索(" & title & ")</a></li>" & vbCrLf 
     c = c & "</ul>" & vbCrLf 
 
     XY_TitleInSearchEngineList = c 
@@ -711,6 +723,37 @@ function XY_getUrl(action)
     stype = RParam(action, "stype") 
 	XY_getUrl=getThisUrlNoParam()
 end function
+
+
+
+'For循环处理
+function XY_ForArray(action)
+    dim arrayList, splitStr, defaultStr, splStr, forI, title, s, c, nloop 
+    arrayList = atRParam(action, "arraylist")                             'atRParam获得结果处理动作，但不替换动作内容
+    splitStr = rParam(action, "splitstr") 
+    nloop = rParam(action, "nloop")                                       '循环数
+
+    if arrayList = "" then
+        arrayList = copyStr("循环" & splitStr, nloop) 
+    end if 
+
+    defaultStr = getDefaultValue(action) 
+
+    splStr = split(arrayList, splitStr) 
+    for forI = 0 to uBound(splStr)
+        title = splStr(forI) 
+        if title <> "" then
+            s = defaultStr 
+            s = replaceValueParam(s, "fortitle", title) 
+            s = replaceValueParam(s, "forid", forI+1) 
+            s = replaceValueParam(s, "fori", forI) 
+            s = replaceValueParam(s, "forcount", uBound(splStr) + 1) 
+            c = c & s 
+        end if 
+    next 
+    XY_ForArray = c 
+end function 
+
 %>           
 
 

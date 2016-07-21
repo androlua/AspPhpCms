@@ -34,7 +34,7 @@
                 <td width="86%">操作</td>
             </tr>
             <form name="listform" method="post" action="{$WEB_VIEWURL$}?act=makeallhtml">
-                <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+                <tr align="center" height="26"  bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 
                     <td>生成栏目</td>
                     <td><select name="id" id="id">
@@ -43,15 +43,15 @@
                         <input type="submit" name="button" class="btnclick2" id="button" value="提交">                    </td>
                 </tr>
             </form>
-            <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+            <tr align="center" height="26"  bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
                 <td> </td>
                 <td>
-                    <input onclick="if(new xyClass().myConfirm('你确定要生成全部HTML吗？')){window.open('{$WEB_VIEWURL$}?act=makeallhtml')}" type="button" name="button_a0" class="btnclick2"  value="生成全部HTML页面" > &nbsp; 
-                    <input onclick="if(new xyClass().myConfirm('你确定要删除吗？\n删除后将不可恢复')){window.open('?act=deleteAllMakeHtml')}" type="button" name="button_a0" class="btnclick2"  value="删除全部HTML页面" >
+                    <input onClick="if(new xyClass().myConfirm('你确定要生成全部HTML吗？')){window.open('{$WEB_VIEWURL$}?act=makeallhtml')}" type="button" name="button_a0" class="btnclick2"  value="生成全部HTML页面" > &nbsp; 
+                    <input onClick="if(new xyClass().myConfirm('你确定要删除吗？\n删除后将不可恢复')){window.open('?act=deleteAllMakeHtml')}" type="button" name="button_a0" class="btnclick2"  value="删除全部HTML页面" >
                     </td>
             </tr>
 
-            <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+            <tr align="center" height="26" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
                 <td></td>
                 <td>
                 	<!--
@@ -64,8 +64,10 @@
                         <option>选择生成编码</option>
                         <option value="utf-8" selected>生成utf-8编码</option>
                     </select>
-                      <label for="isMakeZip"><input type="checkbox" name="isMakeZip" id="isMakeZip" value="1">打包成Zip</label>
-                      <label for="isMakeXml"><input type="checkbox" name="isMakeXml" id="isMakeXml" value="1">打包成Xml</label>
+                      <label for="isMakeZip"><input name="isMakeZip" type="checkbox" id="isMakeZip" value="1" checked>
+                    打包成Zip</label>
+                      <label for="isMakeXml"><input name="isMakeXml" type="checkbox" id="isMakeXml" value="1" checked>
+                    打包成Xml</label>
                       <input type="submit" name="button" class="btnclick2" id="button" value="提交">         
                   </form>                
             	</td>

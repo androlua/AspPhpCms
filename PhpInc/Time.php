@@ -5,18 +5,18 @@
 function format_Time($timeStr, $nType){
     $y=''; $m=''; $d=''; $h=''; $mi=''; $s ='';
     $format_Time= '';
-    if( IsDate($timeStr)== false ){ return @$format_Time; }
-    $y= CStr(Year($timeStr));
-    $m= CStr(Month($timeStr));
-    if( Len($m)== 1 ){ $m= '0' . $m ;}
-    $d= CStr(Day($timeStr)); //在vb.net里要这样用  D = CStr(CDate(timeStr).Day)
-    if( Len($d)== 1 ){ $d= '0' . $d ;}
-    $h= CStr(Hour($timeStr));
-    if( Len($h)== 1 ){ $h= '0' . $h ;}
-    $mi= CStr(Minute($timeStr));
-    if( Len($mi)== 1 ){ $mi= '0' . $mi ;}
-    $s= CStr(Second($timeStr));
-    if( Len($s)== 1 ){ $s= '0' . $s ;}
+    if( isDate($timeStr)== false ){ return @$format_Time; }
+    $y= cStr(year($timeStr));
+    $m= cStr(month($timeStr));
+    if( len($m)== 1 ){ $m= '0' . $m ;}
+    $d= cStr(day($timeStr)); //在vb.net里要这样用  D = CStr(CDate(timeStr).Day)
+    if( len($d)== 1 ){ $d= '0' . $d ;}
+    $h= cStr(hour($timeStr));
+    if( len($h)== 1 ){ $h= '0' . $h ;}
+    $mi= cStr(minute($timeStr));
+    if( len($mi)== 1 ){ $mi= '0' . $mi ;}
+    $s= cStr(second($timeStr));
+    if( len($s)== 1 ){ $s= '0' . $s ;}
     switch ( $nType ){
         case 1;
         //yyyy-mm-dd hh:mm:ss
@@ -44,7 +44,7 @@ function format_Time($timeStr, $nType){
         $format_Time= $y . '年' . $m . '月' . $d . '日' . ' ' . $h . ':' . $mi . ':' . $s ;break;
         case 9;
         //yyyy年mm月dd日H时mi分S秒 早上
-        $format_Time= $y . '年' . $m . '月' . $d . '日' . ' ' . $h . '时' . $mi . '分' . $s . '秒，' . GetDayStatus($h, 1) ;break;
+        $format_Time= $y . '年' . $m . '月' . $d . '日' . ' ' . $h . '时' . $mi . '分' . $s . '秒，' . getDayStatus($h, 1) ;break;
         case 10;
         //yyyy年mm月dd日H时
         $format_Time= $y . '年' . $m . '月' . $d . '日' . $h . '时' ;break;
@@ -56,7 +56,7 @@ function format_Time($timeStr, $nType){
         $format_Time= $y . '年' . $m . '月' . $d . '日' . ' ' . $h . '时' . $mi . '分' ;break;
         case 13;
         //yyyy年mm月dd日H时mi分 早上
-        $format_Time= $m . '月' . $d . '日' . ' ' . $h . ':' . $mi . ' ' . GetDayStatus($h, 0) ;break;
+        $format_Time= $m . '月' . $d . '日' . ' ' . $h . ':' . $mi . ' ' . getDayStatus($h, 0) ;break;
         case 14;
         //yyyy年mm月dd日
         $format_Time= $y . '/' . $m . '/' . $d ;break;
@@ -71,10 +71,10 @@ function format_Time($timeStr, $nType){
 //获得当前天状态
 function getDayStatus($h, $SType){
     $c ='';
-    if( Left($h, 1)== '0' ){
-        $h= Right($h, 1);
+    if( left($h, 1)== '0' ){
+        $h= right($h, 1);
     }
-    $h= intval($h);
+    $h= CInt($h);
     if( $h >= 0 && $h <= 5 ){
         $c= '凌晨';
     }else if( $h >= 6 && $h <= 8 ){
@@ -99,20 +99,20 @@ function printTimeValue($vv){
     $v= $vv ; $c= '';
     if( $v >= 86400 ){
         $n= $v % 86400;
-        $v= Fix($v / 60 / 60 / 24); //这里面是除24，不是60，因为一天有24个小时，小云你这个傻X  20150119
+        $v= fix($v / 60 / 60 / 24); //这里面是除24，不是60，因为一天有24个小时，小云你这个傻X  20150119
         $c= $c . $v . '天';
         $v= $n;
     }
     if( $v >= 3600 ){
         $n= $v % 3600;
-        $v= Fix($v / 60 / 60);
+        $v= fix($v / 60 / 60);
         $c= $c . $v . '小时';
         $v= $n;
     }
 
     if( $v >= 60 ){
         $n= $v % 60;
-        $v= Fix($v / 60);
+        $v= fix($v / 60);
         $c= $c . $v . '分';
         $v= $n;
     }
@@ -131,14 +131,14 @@ function printAskTime($vv){
     $c= '';
     if( $v >= 3600 ){
         $n= $v % 3600;
-        $v= Fix($v / 60 / 60);
+        $v= fix($v / 60 / 60);
         $c= $c . $v . '小时';
         $v= $n;
         $printAskTime= $c ; return @$printAskTime;
     }
     if( $v >= 60 ){
         $n= $v % 60;
-        $v= Fix($v / 60);
+        $v= fix($v / 60);
         $c= $c . $v . '分钟';
         $v= $n;
         $printAskTime= $c ; return @$printAskTime;
@@ -152,14 +152,14 @@ function printAskTime($vv){
 //获得时间
 function getTimerSet(){
     $n ='';
-    $n= formatNumber((Timer() - $GLOBALS['PubTimer']) * 1000, 2, - 1) / 1000;
+    $n= formatNumber((timer() - $GLOBALS['PubTimer']) * 1000, 2, - 1) / 1000;
     $getTimerSet= toNumber($n, 3);
     return @$getTimerSet;
 }
 //计算时间
 function calculationTimer($PubTimer){
     $n ='';
-    $n= formatNumber((Timer() - $PubTimer) * 1000, 2, - 1) / 1000;
+    $n= formatNumber((timer() - $PubTimer) * 1000, 2, - 1) / 1000;
     $calculationTimer= toNumber($n, 3);
     return @$calculationTimer;
 }
@@ -172,7 +172,7 @@ function getTimer(){
 //获得时间
 function VBGetTimer(){
     $n ='';
-    $n= DateDiff('s', $GLOBALS['PubTimer'], Now());
+    $n= dateDiff('s', $GLOBALS['PubTimer'], now());
     $n= printTimeValue($n);
     $VBGetTimer= vbCrlf() . '------------------------------------' . vbCrlf() . '运行时间：' . $n;
     return @$VBGetTimer;
@@ -180,7 +180,7 @@ function VBGetTimer(){
 //获得第三种
 function VBEchoTimer(){
     $n ='';
-    $n= DateDiff('s', $GLOBALS['PubTimer'], Now());
+    $n= dateDiff('s', $GLOBALS['PubTimer'], now());
     $n= printTimeValue($n);
     $VBEchoTimer= '运行时间：' . $n;
     return @$VBEchoTimer;
@@ -188,7 +188,7 @@ function VBEchoTimer(){
 //获得时间第四种
 function VBRunTimer($startTime){
     $n ='';
-    $n= DateDiff('s', $startTime, Now());
+    $n= dateDiff('s', $startTime, now());
     $n= printTimeValue($n);
     $VBRunTimer= '运行时间：' . $n;
     return @$VBRunTimer;

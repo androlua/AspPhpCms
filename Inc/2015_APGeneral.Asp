@@ -3,301 +3,291 @@
 
 
 '文章相关标签 组  待改进
-Function aritcleRelatedTags(relatedTags)
-    Dim c, splStr, s, url 
-    splStr = Split(relatedTags, ",") 
-    For Each s In splStr
-        If s <> "" Then
-            If c <> "" Then
+function aritcleRelatedTags(relatedTags)
+    dim c, splStr, s, url 
+    splStr = split(relatedTags, ",") 
+    for each s in splStr
+        if s <> "" then
+            if c <> "" then
                 c = c & "," 
-            End If 
+            end if 
             url = getColumnUrl(s, "name") 
             c = c & "<a href=""" & url & """ rel=""category tag"" class=""ablue"">" & s & "</a>" & vbCrLf 
-        End If 
-    Next 
+        end if 
+    next 
 
     c = "<footer class=""articlefooter"">" & vbCrLf & "标签： " & c & "</footer>" & vbCrLf 
     aritcleRelatedTags = c 
-End Function 
+end function 
 
 
 '获得随机文章id列表
-Function getRandArticleId(addSql, topNumb)
-    Dim splStr, s, c, nIndex 
-    rs.Open "select * from " & db_PREFIX & "articledetail " & addSql, conn, 1, 1 
-    While Not rs.EOF
-        If c <> "" Then c = c & "," 
+function getRandArticleId(addSql, topNumb)
+    dim splStr, s, c, nIndex 
+    rs.open "select * from " & db_PREFIX & "articledetail " & addSql, conn, 1, 1 
+    while not rs.EOF
+        if c <> "" then c = c & "," 
         c = c & rs("id") 
-    rs.MoveNext : Wend : rs.Close 
+    rs.moveNext : wend : rs.close 
     getRandArticleId = randomShow(c, ",", 4) 
-    splStr = Split(c, ",") : c = "" : nIndex = 0 
-    For Each s In splStr
-        If c <> "" Then c = c & "," 
+    splStr = split(c, ",") : c = "" : nIndex = 0 
+    for each s in splStr
+        if c <> "" then c = c & "," 
         c = c & s 
         nIndex = nIndex + 1 
-        If nIndex >= topNumb Then Exit For 
-    Next 
+        if nIndex >= topNumb then exit for 
+    next 
     getRandArticleId = c 
-End Function 
+end function 
 '获得网站栏目排序SQL
 function getWebColumnSortSql(id)
-	dim sql
-	tempRs2.open"select * from " & db_PREFIX & "webcolumn where id=" & id,conn,1,1
-	if not tempRs2.eof then
-		 '【PHP】$tempRs2=mysql_fetch_array($tempRs2Obj);
-		sql=tempRs2("sortsql")
-	end if:tempRs2.close
-	getWebColumnSortSql=sql
-end function
+    dim sql 
+    tempRs2.open "select * from " & db_PREFIX & "webcolumn where id=" & id, conn, 1, 1 
+    if not tempRs2.eof then
+
+        sql = tempRs2("sortsql") 
+    end if : tempRs2.close 
+    getWebColumnSortSql = sql 
+end function 
 
 '上一篇文章 这里面的sortrank(排序)也可以改为id,在引用的时候就要用id
-Function upArticle(parentid, lableName, lableValue, ascOrDesc)
-    upArticle = handleUpDownArticle("上一篇：","uppage",parentid, lableName,lableValue,ascOrDesc) 
-End Function 
+function upArticle(parentid, lableName, lableValue, ascOrDesc)
+    upArticle = handleUpDownArticle("上一篇：", "uppage", parentid, lableName, lableValue, ascOrDesc) 
+end function 
 '下一篇文章
-Function downArticle(parentid, lableName, lableValue,ascOrDesc)
-    downArticle = handleUpDownArticle("下一篇：","downpage", parentid,lableName,lableValue,ascOrDesc) 
-End Function 
+function downArticle(parentid, lableName, lableValue, ascOrDesc)
+    downArticle = handleUpDownArticle("下一篇：", "downpage", parentid, lableName, lableValue, ascOrDesc) 
+end function 
 '处理上下页
-Function handleUpDownArticle(lableTitle,sType,parentid, lableName,lableValue,ascOrDesc)
-    Dim c, url,target,targetStr
-	
-	dim sql
-	if lableName="adddatetime" then
-		lableValue="#"& lableValue &"#"
-	end if
-	'位置互换
-	if ascOrDesc="desc" then
-		if sType="uppage" then
-			sType="downpage"
-		else
-			sType="uppage"
-		end if
-	end if
-	if sType="uppage" then
-    	sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & "<" & lableValue & " order by " & lableName & " desc"  
-	else
-	    sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & ">" & lableValue & " order by " & lableName & " asc" 
-	end if
+function handleUpDownArticle(lableTitle, sType, parentid, lableName, lableValue, ascOrDesc)
+    dim c, url, target, targetStr 
+
+    dim sql 
+    if lableName = "adddatetime" then
+        lableValue = "#" & lableValue & "#" 
+    end if 
+    '位置互换
+    if ascOrDesc = "desc" then
+        if sType = "uppage" then
+            sType = "downpage" 
+        else
+            sType = "uppage" 
+        end if 
+    end if 
+    if sType = "uppage" then
+        sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & "<" & lableValue & " order by " & lableName & " desc" 
+    else
+        sql = "select * from " & db_PREFIX & "articledetail where parentid=" & parentid & " and " & lableName & ">" & lableValue & " order by " & lableName & " asc" 
+    end if 
 
     'call echo("sql",sql)
-    rsx.Open sql, conn, 1, 1 
-    If Not rsx.EOF Then
-		target=rsx("target")
-		if target<>"" then
-			targetStr=" target="""& target &""""
-		end if
-        If isMakeHtml = True Then
+    rsx.open sql, conn, 1, 1 
+    if not rsx.EOF then
+        target = rsx("target") 
+        if target <> "" then
+            targetStr = " target=""" & target & """" 
+        end if 
+        if isMakeHtml = true then
             url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/detail/detail" & rsx("id")) 
-        Else	
-			if rsx("customAUrl")="" then
-            	url = handleWebUrl("?act=detail&id=" & rsx("id")) 
-			else
-				url = handleWebUrl(rsx("customAUrl"))
-			end if
-        End If 
-        c = "<a href=""" & url & """"& targetStr &">" & lableTitle & rsx("title") & "</a>" 
-    Else
+        else
+            if rsx("customAUrl") = "" then
+                url = handleWebUrl("?act=detail&id=" & rsx("id")) 
+            else
+                url = handleWebUrl(rsx("customAUrl")) 
+            end if 
+        end if 
+        c = "<a href=""" & url & """" & targetStr & ">" & lableTitle & rsx("title") & "</a>" 
+    else
         c = lableTitle & "没有" 
-    End If : rsx.Close 
+    end if : rsx.close 
     handleUpDownArticle = c 
-End Function 
+end function 
 '获得RS网址 配置上一页 下一页
-Function getRsUrl(ByVal fileName, customAUrl, defaultFileName)
-    Dim url 
+function getRsUrl(byVal fileName, customAUrl, defaultFileName)
+    dim url 
     '用默认文件名称
-    If fileName = "" Then
+    if fileName = "" then
         fileName = defaultFileName 
-    End If 
+    end if 
     '网址
-    If fileName <> "" Then
-        fileName = LCase(fileName)                                                      '让文件名称小写20160315
+    if fileName <> "" then
+        fileName = lCase(fileName)                                                      '让文件名称小写20160315
         url = fileName 
-        If InStr(LCase(url), ".html") = False And Right(url, 1) <> "/" Then
+        if inStr(lCase(url), ".html") = false and right(url, 1) <> "/" then
             url = url & ".html" 
-        End If 
-    End If 
-    If Trim(customAUrl) <> "" Then
-        url = Trim(customAUrl) 
-    End If 
-    If InStr(cfg_flags, "|addwebsite|") > 0 Then
+        end if 
+    end if 
+    if trim(customAUrl) <> "" then
+        url = trim(customAUrl) 
+    end if 
+    if inStr(cfg_flags, "|addwebsite|") > 0 then
         'url = replaceGlobleVariable(url)   '替换全局变量
-        If InStr(url, "$cfg_websiteurl$") = False And InStr(url, "{$GetColumnUrl ") = False And InStr(url, "{$GetArticleUrl ") = False And InStr(url, "{$GetOnePageUrl ") = False Then
+        if inStr(url, "$cfg_websiteurl$") = false and inStr(url, "{$GetColumnUrl ") = false and inStr(url, "{$GetArticleUrl ") = false and inStr(url, "{$GetOnePageUrl ") = false then
             url = urlAddHttpUrl(cfg_webSiteUrl, url) 
-        End If 
-    End If 
+        end if 
+    end if 
     getRsUrl = url 
-End Function 
+end function 
 '获得处理后RS网址
-Function getHandleRsUrl(fileName, customAUrl, defaultFileName)
-    Dim url 
+function getHandleRsUrl(fileName, customAUrl, defaultFileName)
+    dim url 
     url = getRsUrl(fileName, customAUrl, defaultFileName) 
     '因为URL如果为自定义的则需要处理下全局变量，这样程序运行又会变慢，不就可以使用生成HTML方法解决这个问题，20160308
     url = replaceGlobleVariable(url) 
     getHandleRsUrl = url 
-End Function 
+end function 
 
 '获得单页url 20160114
-Function getOnePageUrl(title)
-    Dim url 
-    rsx.Open "select * from " & db_PREFIX & "onepage where title='" & title & "'", conn, 1, 1 
-    If Not rsx.EOF Then
-        If isMakeHtml = True Then
+function getOnePageUrl(title)
+    dim url 
+    rsx.open "select * from " & db_PREFIX & "onepage where title='" & title & "'", conn, 1, 1 
+    if not rsx.EOF then
+        if isMakeHtml = true then
             url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/page/page" & rsx("id")) 
-        Else
+        else
             url = handleWebUrl("?act=onepage&id=" & rsx("id")) 
-            If rsx("customAUrl") <> "" Then
+            if rsx("customAUrl") <> "" then
                 url = rsx("customAUrl") 
-            End If 
-        End If 
-    End If : rsx.Close 
+            end if 
+        end if 
+    end if : rsx.close 
 
     getOnePageUrl = url 
-End Function 
-'获得文章
-Function getArticleUrl(title)
-    Dim url 
-    rsx.Open "select * from " & db_PREFIX & "articledetail where title='" & title & "'", conn, 1, 1 
-    If Not rsx.EOF Then
-        If isMakeHtml = True Then
+end function 
+'获得文章URL
+function getArticleUrl(title)
+    dim url 
+    rsx.open "select * from " & db_PREFIX & "articledetail where title='" & title & "'", conn, 1, 1 
+    if not rsx.EOF then
+        if isMakeHtml = true then
             url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/detail/" & rsx("id")) 
-        Else
+        else
             url = handleWebUrl("?act=article&id=" & rsx("id")) 
-            If rsx("customAUrl") <> "" Then
+            if rsx("customAUrl") <> "" then
                 url = rsx("customAUrl") 
-            End If 
-        End If 
-    End If : rsx.Close 
+            end if 
+        end if 
+    end if : rsx.close 
 
     getArticleUrl = url 
-End Function 
-'获得栏目url 20160114
-Function getColumnUrl(columnNameOrId, sType)
-    Dim url, addSql 
+end function 
+'获得栏目URL 20160114
+function getColumnUrl(columnNameOrId, sType)
+    dim url, addSql 
 
     columnNameOrId = replaceGlobleVariable(columnNameOrId)                          '处理动作 <a href="{$GetColumnUrl columnname='[$glb_columnName$]' $}" >更多图片</a>
 
-    If sType = "name" Then
-        addSql = " where columnname='" & columnNameOrId & "'" 
-    Else
+    if sType = "name" then
+        addSql = " where columnname='" & replace(columnNameOrId, "'", "''") & "'"       '对'号处理，要不然sql查询出错20160716
+    else
         addSql = " where id=" & columnNameOrId & "" 
-    End If 
-    rsx.Open "select * from " & db_PREFIX & "webcolumn" & addSql, conn, 1, 1 
-    If Not rsx.EOF Then
-        If isMakeHtml = True Then
+    end if 
+    rsx.open "select * from " & db_PREFIX & "webcolumn" & addSql, conn, 1, 1 
+    if not rsx.EOF then
+        if isMakeHtml = true then
             url = getRsUrl(rsx("fileName"), rsx("customAUrl"), "/nav" & rsx("id")) 
-        Else
+        else
             url = handleWebUrl("?act=nav&columnName=" & rsx("columnname")) 
-            If rsx("customAUrl") <> "" Then
+            if rsx("customAUrl") <> "" then
                 url = rsx("customAUrl") 
-            End If 
-        End If 
-    End If : rsx.Close 
+            end if 
+        end if 
+    end if : rsx.close 
 
     getColumnUrl = url 
-End Function 
+end function 
 
 '获得文章标题对应的id
-Function getArticleId(title)
-    title = Replace(title, "'", "")                                                 '注意，这个不能留
+function getArticleId(title)
+    title = replace(title, "'", "")                                                 '注意，这个不能留
     getArticleId = -1 
-    rsx.Open "Select * from " & db_PREFIX & "ArticleDetail where title='" & title & "'", conn, 1, 1 
-    If Not rsx.EOF Then
+    rsx.open "Select * from " & db_PREFIX & "ArticleDetail where title='" & title & "'", conn, 1, 1 
+    if not rsx.EOF then
         getArticleId = rsx("id") 
-    End If : rsx.Close 
-End Function 
+    end if : rsx.close 
+end function 
 
-'获得栏目名称对应的id
-Function getColumnId(columnName)
-    columnName = Replace(columnName, "'", "")                                       '注意，这个不能留
+'获得栏目id
+function getColumnId(columnName)
+    'columnName = Replace(columnName, "'", "")           '注意，这个不能留  因为sql里已经处理了 20160716 home 程序写得越来越深，逻辑越多
     getColumnId = -1 
-    rsx.Open "Select * from " & db_PREFIX & "webcolumn where columnName='" & columnName & "'", conn, 1, 1 
-    If Not rsx.EOF Then
+    rsx.open "Select * from " & db_PREFIX & "webcolumn where columnName='" & columnName & "'", conn, 1, 1 
+    if not rsx.EOF then
         getColumnId = rsx("id") 
-    End If : rsx.Close 
-End Function 
-'获得后台菜单名称对应的id
-Function getListMenuId(title)
-    title= Replace(title, "'", "")                                       '注意，这个不能留
-    getListMenuId = -1 
-    rsx.Open "Select * from " & db_PREFIX & "listmenu where title='" & title& "'", conn, 1, 1 
-    If Not rsx.EOF Then
-        getListMenuId = rsx("id") 
-    End If : rsx.Close 
-End Function 
-
-
-'获得栏目ID对应的名称
-Function getColumnName(id)
-    If id <> "" Then
-        rsx.Open "Select * from " & db_PREFIX & "webcolumn where id=" & id, conn, 1, 1 
-        If Not rsx.EOF Then
+    end if : rsx.close 
+end function 
+'获得栏目名称
+function getColumnName(id)
+    if id <> "" then
+        rsx.open "Select * from " & db_PREFIX & "webcolumn where id=" & id, conn, 1, 1 
+        if not rsx.EOF then
             getColumnName = rsx("columnName") 
-        End If : rsx.Close 
-    End If 
-End Function 
+        end if : rsx.close 
+    end if 
+end function 
 
-'获得后台菜单ID对应的名称
-Function getListMenuName(id)
-    If id <> "" Then
-        rsx.Open "Select * from " & db_PREFIX & "listmenu where id=" & id, conn, 1, 1 
-        If Not rsx.EOF Then
-            getListMenuName = rsx("title") 
-        End If : rsx.Close 
-    End If 
-End Function 
-
-
-
-
-
-'获得栏目ID对应的类型
-Function getColumnType(columnID)
-    rsx.Open "Select * from " & db_PREFIX & "webcolumn where id=" & columnID, conn, 1, 1 
-    If Not rsx.EOF Then
+'获得栏目类型
+function getColumnType(columnID)
+    rsx.open "Select * from " & db_PREFIX & "webcolumn where id=" & columnID, conn, 1, 1 
+    if not rsx.EOF then
         getColumnType = rsx("columnType") 
-    End If : rsx.Close 
-End Function 
-
-
-'获得栏目ID对应的内容
-Function getColumnBodyContent(columnID)
-    rsx.Open "Select * from " & db_PREFIX & "webcolumn where id=" & columnID, conn, 1, 1 
-    If Not rsx.EOF Then
+    end if : rsx.close 
+end function 
+ 
+'获得栏目内容
+function getColumnBodyContent(columnID)
+    rsx.open "Select * from " & db_PREFIX & "webcolumn where id=" & columnID, conn, 1, 1 
+    if not rsx.EOF then
         getColumnBodyContent = rsx("bodyContent") 
-    End If : rsx.Close 
-End Function 
+    end if : rsx.close 
+end function 
 
 
+'获得后台菜单名称 
+function getListMenuId(title)
+    title = replace(title, "'", "")                                                 '注意，这个不能留
+    getListMenuId = -1 
+    rsx.open "Select * from " & db_PREFIX & "listmenu where title='" & title & "'", conn, 1, 1 
+    if not rsx.EOF then
+        getListMenuId = rsx("id") 
+    end if : rsx.close 
+end function 
 
-
-
-
+'获得后台菜单ID 
+function getListMenuName(id)
+    if id <> "" then
+        rsx.open "Select * from " & db_PREFIX & "listmenu where id=" & id, conn, 1, 1 
+        if not rsx.EOF then
+            getListMenuName = rsx("title") 
+        end if : rsx.close 
+    end if 
+end function  
 
 '网站统计2014
-Function webStat(folderPath)
-    Dim dateTime, content, splStr 
-    Dim thisUrl, goToUrl, caiShu, c, fileName, co, ie, xp 
-    goToUrl = Request.ServerVariables("HTTP_REFERER") 
-    thisUrl = "http://" & Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("SCRIPT_NAME") 
-    caiShu = Request.ServerVariables("QUERY_STRING") 
-    If caiShu <> "" Then
+function webStat(folderPath)
+    dim dateTime, content, splStr 
+    dim thisUrl, goToUrl, caiShu, c, fileName, co, ie, xp 
+	call createDirFolder(folderPath)		'生成统计指定文件夹
+    goToUrl = request.serverVariables("HTTP_REFERER") 
+    thisUrl = "http://" & request.serverVariables("HTTP_HOST") & request.serverVariables("SCRIPT_NAME") 
+    caiShu = request.serverVariables("QUERY_STRING") 
+    if caiShu <> "" then
         thisUrl = thisUrl & "?" & caiShu 
-    End If 
-    goToUrl = Request("GoToUrl") 
-    thisUrl = Request("ThisUrl") 
-    co = Request.QueryString("co") 
-    dateTime = Now() 
-    content = Request.ServerVariables("HTTP_USER_AGENT") 
-    content = Replace(content, "MSIE", "Internet Explorer") 
-    content = Replace(content, "NT 5.0", "2000") 
-    content = Replace(content, "NT 5.1", "XP") 
-    content = Replace(content, "NT 5.2", "2003") 
+    end if 
+    goToUrl = request("GoToUrl") 
+    thisUrl = request("ThisUrl") 
+    co = request.queryString("co") 
+    dateTime = now() 
+    content = request.serverVariables("HTTP_USER_AGENT") 
+    content = replace(content, "MSIE", "Internet Explorer") 
+    content = replace(content, "NT 5.0", "2000") 
+    content = replace(content, "NT 5.1", "XP") 
+    content = replace(content, "NT 5.2", "2003") 
 
-    splStr = Split(content & ";;;;", ";") 
+    splStr = split(content & ";;;;", ";") 
     ie = splStr(1) 
-    xp = Trim(splStr(2)) 
-    If Right(xp, 1) = ")" Then xp = Mid(xp, 1, Len(xp) - 1) 
+    xp = trim(splStr(2)) 
+    if right(xp, 1) = ")" then xp = mid(xp, 1, len(xp) - 1) 
     c = "来访" & goToUrl & vbCrLf 
     c = c & "当前：" & thisUrl & vbCrLf 
     c = c & "时间：" & dateTime & vbCrLf 
@@ -305,73 +295,74 @@ Function webStat(folderPath)
     c = c & "IE:" & getBrType("") & vbCrLf 
     c = c & "Cookies=" & co & vbCrLf 
     c = c & "XP=" & xp & vbCrLf 
-    c = c & "Screen=" & Request("screen") & vbCrLf                                  '屏幕分辨率
-    c = c & "用户信息=" & Request.ServerVariables("HTTP_USER_AGENT") & vbCrLf       '用户信息
+    c = c & "Screen=" & request("screen") & vbCrLf                                  '屏幕分辨率
+    c = c & "用户信息=" & request.serverVariables("HTTP_USER_AGENT") & vbCrLf       '用户信息
 
     c = c & "-------------------------------------------------" & vbCrLf 
     'c=c & "CaiShu=" & CaiShu & vbcrlf
-    fileName = folderPath & format_Time(Now(), 2) & ".txt" 
-    Call createAddFile(fileName, c) 
+    fileName = folderPath & format_Time(now(), 2) & ".txt" 
+    call createAddFile(fileName, c) 
     c = c & vbCrLf & fileName 
-    c = Replace(c, vbCrLf, "\n") 
-    c = Replace(c, """", "\""") 
+    c = replace(c, vbCrLf, "\n") 
+    c = replace(c, """", "\""") 
     'Response.Write("eval(""var MyWebStat=\""" & C & "\"""")")
 
-    Dim splxx, nIP, nPV, ipList, s, ip 
+    dim splxx, nIP, nPV, ipList, s, ip 
     '判断是否显示回显记录
-    If Request("stype") = "display" Then
+    if request("stype") = "display" then
         content = getftext(fileName) 
-        splxx = Split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
+        splxx = split(content, vbCrLf & "-------------------------------------------------" & vbCrLf) 
         nIP = 0 
         nPV = 0 
         ipList = "" 
-        For Each s In splxx
-            If InStr(s, "当前：") > 0 Then
+        for each s in splxx
+            if inStr(s, "当前：") > 0 then
                 s = vbCrLf & s & vbCrLf 
-                ip = ADSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
+                ip = aDSql(getStrCut(s, vbCrLf & "IP:", vbCrLf, 0)) 
                 nPV = nPV + 1 
-                If InStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = False Then
+                if inStr(vbCrLf & ipList & vbCrLf, vbCrLf & ip & vbCrLf) = false then
                     ipList = ipList & ip & vbCrLf 
                     nIP = nIP + 1 
-                End If 
-            End If 
-        Next 
-        Call rw("document.write('网长统计 | 今日IP[" & nIP & "] | 今日PV[" & nPV & "] ')") 
-    End If 
+                end if 
+            end if 
+        next 
+        call rw("document.write('网长统计 | 今日IP[" & nIP & "] | 今日PV[" & nPV & "] ')") 
+    end if 
     webStat = c 
-End Function 
+end function 
 
 '判断传值是否相等
-Function checkFunValue(action, FunName)
-    checkFunValue =(Left(action, Len(FunName)) = FunName) 
-End Function 
+function checkFunValue(action, funName)
+    checkFunValue =(left(action, len(funName)) = funName) 
+end function 
 'HTML标签参数自动添加(target|title|alt|id|class|style|)    辅助类
-Function setHtmlParam(content, ParamList)
-    Dim splStr, startStr, endStr, c, paramValue, ReplaceStartStr 
+function setHtmlParam(content, paramList)
+    dim splStr, startStr, endStr, c, paramValue, replaceStartStr 
     endStr = "'" 
-    splStr = Split(ParamList, "|") 
-    For Each startStr In splStr
-        startStr = Trim(startStr) 
-        If startStr <> "" Then
+    splStr = split(paramList, "|") 
+    for each startStr in splStr
+        startStr = trim(startStr) 
+        if startStr <> "" then
             '替换开始字符   因为开始字符类型可变 不同
-            ReplaceStartStr = startStr 
-            If Left(ReplaceStartStr, 3) = "img" Then
-                ReplaceStartStr = Mid(ReplaceStartStr, 4) 
-            ElseIf Left(ReplaceStartStr, 1) = "a" Then
-                ReplaceStartStr = Mid(ReplaceStartStr, 2) 
-            ElseIf InStr("|ul|li|", "|" & Left(ReplaceStartStr, 2) & "|") > 0 Then
-                ReplaceStartStr = Mid(ReplaceStartStr, 3) 
-            End If 
-            ReplaceStartStr = " " & ReplaceStartStr & "='" 
+            replaceStartStr = startStr 
+            if left(replaceStartStr, 3) = "img" then
+                replaceStartStr = mid(replaceStartStr, 4) 
+            elseIf left(replaceStartStr, 1) = "a" then
+                replaceStartStr = mid(replaceStartStr, 2) 
+            elseIf inStr("|ul|li|", "|" & left(replaceStartStr, 2) & "|") > 0 then
+                replaceStartStr = mid(replaceStartStr, 3) 
+            end if 
+            replaceStartStr = " " & replaceStartStr & "='" 
 
             startStr = " " & startStr & "='" 
-            If InStr(content, startStr) > 0 And InStr(content, endStr) > 0 Then
+            if inStr(content, startStr) > 0 and inStr(content, endStr) > 0 then
                 paramValue = strCut(content, startStr, endStr, 2) 
                 paramValue = handleInModule(paramValue, "end")                       '处理内部模块
-                c = c & ReplaceStartStr & paramValue & endStr 
-            End If 
-        End If 
-    Next 
+                c = c & replaceStartStr & paramValue & endStr 
+            end if 
+        end if 
+    next 
     setHtmlParam = c 
-End Function 
-%>      
+end function 
+%>       
+

@@ -24,20 +24,20 @@ function getBlankHtmlBody($webTitle, $webBody){
 //错误提示 之前网站用到
 function errorText($Refresh, $str, $url){
     if( $Refresh<>'' ){
-        rw('<meta http-equiv="refresh" content="' . $Refresh . ';URL=' . $url . '""">') . vbCrlf();
+        Rw('<meta http-equiv="refresh" content="' . $Refresh . ';URL=' . $url . '""">') . vbCrlf();
     }
-    rw('<fieldset>') . vbCrlf();
+    Rw('<fieldset>') . vbCrlf();
     //rw("<legend></legend>") & vbCrLf
-    rw('<div style="padding-left:20px;padding-top:10px;color:red;font-weight:bold;text-align:center;">' . $str . '</div>') . vbCrlf();
-    rw('<div style="height:200p;text-align:center;"><P>') . vbCrlf();
-    rw('<a href="' . $url . '">如果您的游览器没有自动跳转,请点这里>></a><P>') . vbCrlf();
-    rw('</div></fieldset>') ; die();
+    Rw('<div style="padding-left:20px;padding-top:10px;color:red;font-weight:bold;text-align:center;">' . $str . '</div>') . vbCrlf();
+    Rw('<div style="height:200p;text-align:center;"><P>') . vbCrlf();
+    Rw('<a href="' . $url . '">如果您的游览器没有自动跳转,请点这里>></a><P>') . vbCrlf();
+    Rw('</div></fieldset>') ; die();
 }
 
 
 //愿形显示内容
 function printPre($content){
-    $content= Replace($content, '<', '&lt;');
+    $content= replace($content, '<', '&lt;');
     $printPre= '<pre>' . $content . '</pre>';
     return @$printPre;
 }
@@ -49,7 +49,7 @@ function foldingMenu($id, $s, $msg){
     $nRnd=''; $c ='';
     if( $id== '' ){
 
-        $nRnd= intval(rnd() * 29252888);
+        $nRnd= cLng(rnd() * 29252888);
     }else{
         $nRnd= $id;
     }

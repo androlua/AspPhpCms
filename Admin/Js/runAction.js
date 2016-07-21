@@ -892,7 +892,7 @@ var JS2015 = (function () {
 		  
 		//配置		
 		//是否开启手机统计
-	 	if(retAction.isOpenMobileStat!=xyObj.UNDEFINED){
+	 	if(retAction.isOpenMobileStat==true){
 			isOpenMobileStat=retAction.isOpenMobileStat
 			xyObj.test_postmobile()				//开启启手机统计
 		}	
@@ -1173,7 +1173,7 @@ function updateFieldHandle(fieldName,fieldValue,actionName,lableTitle,page,id){
 //点击控件
 function clickControl(url,actionName,lableTitle,page,id){
 	url+="&actionType="+actionName+"&lableTitle="+lableTitle+"&nPageSize="+getInputValue("nPageSizeSelect")+"&parentid="+getInputValue("parentid")			
-	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&addsql="+getInputValue("addsql")+"&page="+page+"&id="+id+"&mdbpath=" +getInputValue("mdbpath")
+	url+="&searchfield="+getInputValue("searchfield")+"&keyword="+getInputValue("keyword")+"&addsql="+getInputValue("addsql")+"&page="+page+"&id="+id+"&mdbpath=" +getInputValue("mdbpath")+"&focusid="+getInputValue("focusid")
 	//alert(url)
 	window.location.href=url 
 }

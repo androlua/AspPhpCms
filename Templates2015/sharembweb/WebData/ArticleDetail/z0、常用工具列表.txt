@@ -570,14 +570,14 @@ function displaySearchList(title){
 	c+='<li><a href="http://www.haosou.com/s?ie=gb2312&q=' + title + '" target="_blank">【haosou搜索】在好搜里搜索(' + title + ')</a></li>';
 	c+='<li><a href="https://search.yahoo.com/search;_ylt=A86.JmbkJatWH5YARmebvZx4?toggle=1&cop=mss&ei=gb2312&fr=yfp-t-901&fp=1&p=' + title + '" target="_blank">【yahoo搜索】在雅虎里搜索(' + title + ')</a></li>';
 	
-	c+='<li><a href="https://www.sogou.com/sogou?ie=utf8&query=' + GBtoUTF8(title) + '" target="_blank">【sogou搜索】在搜狗里搜索(' + title + ')</a></li>'; 
+	c+='<li><a href="https://www.sogou.com/sogou?ie=utf8&query=' + toUTFChar(title) + '" target="_blank">【sogou搜索】在搜狗里搜索(' + title + ')</a></li>'; 
 	
 	
-	c+='<li><a href="http://www.youdao.com/search?ue=utf8&q=' + GBtoUTF8(title) + '" target="_blank">【youdao搜索】在有道里搜索(' + title + ')</a></li>'; 
-	c+='<li><a href="http://search.yam.com/Search/Web/DefaultKSA.aspx?SearchType=web&l=0&p=0&k=' + GBtoUTF8(title) + '" target="_blank">【yam搜索(google提供技术)】在蕃薯藤里搜索(' + title + ')</a></li>'; 
+	c+='<li><a href="http://www.youdao.com/search?ue=utf8&q=' + toUTFChar(title) + '" target="_blank">【youdao搜索】在有道里搜索(' + title + ')</a></li>'; 
+	c+='<li><a href="http://search.yam.com/Search/Web/DefaultKSA.aspx?SearchType=web&l=0&p=0&k=' + toUTFChar(title) + '" target="_blank">【yam搜索(google提供技术)】在蕃薯藤里搜索(' + title + ')</a></li>'; 
  
 	
-	c+='<li><a href="http://cn.bing.com/search?q=' + GBtoUTF8(title) + '" target="_blank">【bing搜索】在必应里搜索(' + title + ')</a></li>'; 
+	c+='<li><a href="http://cn.bing.com/search?q=' + toUTFChar(title) + '" target="_blank">【bing搜索】在必应里搜索(' + title + ')</a></li>'; 
 
  
 	
@@ -614,7 +614,7 @@ function toHex(n) {
 }
 var okURIchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
 
-function GBtoUTF8(s) {
+function toUTFChar(s) {
 	var s = utf8(s);
 	var c;
 	var enc = "";

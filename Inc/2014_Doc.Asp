@@ -1,7 +1,7 @@
 <%
 'doc文件操作
 
-'读Doc文件内容 20141218
+'读Doc文件内容 20141218  操作docx 要自己安装一个组件，麻烦
 '例：Call Rw( GetDocText("1.docx"))
 Function GetDocText(ByVal FileName)
     On Error Resume Next

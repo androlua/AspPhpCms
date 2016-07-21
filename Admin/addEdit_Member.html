@@ -40,13 +40,13 @@
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>会员密码</td>
-                        <td align="left" style="padding:3px;"><input name='pwd' type='password' id='pwd' value='' style='width:97%;' class='input-text' alt="请输入密码"></td>
+                        <td align="left" style="padding:3px;"><input name='pwd' type='password' id='pwd' value='[$pwd password='#NO******NO#'$]' style='width:97%;' class='input-text' alt="请输入密码"></td>
                         <td>pwd</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#ffffff">
                         <td>会员昵称</td>
                         <td align="left" style="padding:3px;"><input name="nickname" type="text" id="nickname" value="[$nickname$]" style='width:97%;' class="input-text" /></td>
-                        <td>pseudonym</td>
+                        <td>nickname</td>
                     </tr>
                     <tr align="center" height="25" bgcolor="#F9FCEF">
                         <td>openid</td>
@@ -67,6 +67,13 @@
                         <td>登录IP</td>
                         <td align="left" style="padding:3px;">[$input_loginip$]</td>
                         <td>loginip</td>
+                    </tr>
+                    <tr align="center" height="25" bgcolor="#ffffff">
+                        <td>审核通过</td>
+                        <td align="left" style="padding:3px;">
+                        <label for='isthrough'><input type='checkbox' name='isthrough' id='isthrough' [$isthrough if='False' elseif='0' value='' elsevalue=' checked'$]  value='1'>通过</label>                          
+                        </td>
+                        <td>isonhtml</td>
                     </tr>
                 </tbody> 
                 <tbody class="tbodybox"> 

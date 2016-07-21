@@ -45,8 +45,9 @@ Function readTemplateModuleStr(filePath, defaultContent, moduleId)
     If checkFile(filePath) = False Then
         filePath = webTemplate & filePath 
     End If 
-
-    filePath = handleRGV(filePath, "[$模块目录$]", "Module/")                              'Module 
+	
+	'没有handleRGV这个函数了
+    'filePath = handleRGV(filePath, "[$模块目录$]", "Module/")                              'Module 
 	
     If defaultContent <> "" Then
         content = defaultContent 

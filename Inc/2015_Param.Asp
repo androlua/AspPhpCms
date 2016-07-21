@@ -30,6 +30,7 @@ Function newReplaceValueParam(content, paramName, replaceStr)
         'If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
         If nLen <> "" Then replaceStr = cutStr(replaceStr, nLen, "...")                 'Left(ReplaceStr,nLen)
 
+
         '时间处理
         nTimeFormat = RParam(labelStr, "Format_Time")                                   '时间处理值
         If nTimeFormat <> "" Then
@@ -174,7 +175,7 @@ SplContent = SplContent & "|checkvalueinarray|deleterepeatarray|deleterepeatcont
 SplContent = SplContent & "|arraytostring|testarraydata|selectsort|quicksort|bubblesort|insertsort|requicksort|arrayreverse|responsearray|max|min|testtwodimensionalarray|handlesplitarray|twodimensionalarrayasc|twodimensionalarraydesc|"
 SplContent = SplContent & "|csscompression|deletecssnote|uncsscompression|trimvbcrlf|phptrim|phpltrim|phprtrim|trimvbtab|ltrimvbtab|rtrimvbtab|gethtmlcssstyle|handlecleancss|removeexcessrow|cssaddtostyle|checkcssstyle|cssstyleaddtoparam|"
 SplContent = SplContent & "|findcssstyle|handlecutcsscode|handlecutdivcode|gethtmlbackgroundimglist|gethandlewebhtmllink|getcsslisturllist|handlereadcsscontent|handlecsspx|handlehtmlstyle|utf2gb|checkutftogb2312|convchinese|utf8_urlencoding|"
-SplContent = SplContent & "|toutf8|chinese2unicode|isvalidhex|escape|unescape|chinesetounicode|unicodetochinese|urlencode|urldecode|gbtoutf8|encdecurl|encurl|decurl|infocolor|imgerror|targetstr|atarget|atitle|imgalt|imgtitlealt|arel|"
+SplContent = SplContent & "|toutf8|chinese2unicode|isvalidhex|escape|unescape|chinesetounicode|unicodetochinese|urlencode|urldecode|toUTFChar|encdecurl|encurl|decurl|infocolor|imgerror|targetstr|atarget|atitle|imgalt|imgtitlealt|arel|"
 SplContent = SplContent & "|styleclass|textfontb|textfontcolor|fontcolorfontb|getdefaultfilename|ahref|imgsrc|selecttarget|selectfontcolor|selectsex|selectsessioncookies|showselectlist|showarticleliststyle|showarticleinfostyle|handlearticleliststyleorinfostyle|"
 SplContent = SplContent & "|showwebmoduleskins|showradiolist|inputcheckbox|inputcheckbox3|handleinputcheckbox|inputtext|inputtext2|inputlefttext|inputlefttexthelptextright|inputlefttextcontent|inputrighttextcontent|handleinputleftrighttextcontent|"
 SplContent = SplContent & "|inputleftpasstext|inputleftpasstextcontent|inputhiddentext|inputtextarea|inputhiddentextarea|handleinputhiddentextarea|showselectdirlist|inputdisabled|inputaddalt|webtitle_inputtextarea|webkeywords_inputtext|"
@@ -1433,8 +1434,8 @@ SplContent = SplContent & "|replacecontentmodule|replacecontentrowmodule|handlec
         S = URLEncode(strDQ(S))
     ElseIf LabelName = "urldecode" Then
         S = URLDecode(strDQ(S))
-    ElseIf LabelName = "gbtoutf8" Then
-        S = GBtoUTF8(strDQ(S))
+    ElseIf LabelName = "toUTFChar" Then
+        S = toUTFChar(strDQ(S))
     ElseIf LabelName = "encdecurl" Then
         S = EncDecURL(strDQ(Splxx(0)),strDQ(Splxx(1)))
     ElseIf LabelName = "encurl" Then

@@ -11,7 +11,7 @@ require_once './Cai.php';
 
 
  	$conn=OpenConn(); 
-	$mydbcharset = 'gbk';				//编码
+	$mydbcharset = 'utf8';				//编码 gbk
  	$DB_PREFIX=@$_REQUEST['db_PREFIX'];						//表前面的前缀
 	
 	$char = ' ENGINE=MyISAM DEFAULT CHARSET='.$mydbcharset;
@@ -32,7 +32,7 @@ require_once './Cai.php';
 `adminlevel` varchar(255) NOT NULL default '',
 `channel` varchar(255) NOT NULL default '',
 `mtest` tinyint(1) NOT NULL default '0',
-`flags` varchar(255) NOT NULL default '',
+`flags` mediumtext,
 `bodycontent` mediumtext,
 PRIMARY KEY  (`Id`)
 ){$char};",
@@ -74,7 +74,7 @@ PRIMARY KEY  (`Id`)
 `recordurl` varchar(255) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `templatepath` varchar(255) NOT NULL default '',
@@ -92,6 +92,8 @@ PRIMARY KEY  (`Id`)
 `weight` int(8) NOT NULL default '0',
 `notebody` mediumtext,
 `aboutcontent` mediumtext,
+`temptxt1` mediumtext,
+`temptxt2` mediumtext,
 `bodycontent` mediumtext,
 PRIMARY KEY  (`Id`)
 ){$char};",
@@ -196,7 +198,7 @@ PRIMARY KEY  (`Id`)
 `ip` varchar(255) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `customaurl` varchar(255) NOT NULL default '',
@@ -230,7 +232,7 @@ PRIMARY KEY  (`Id`)
 `updatetime` varchar(250) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `templatepath` varchar(255) NOT NULL default '',
@@ -265,7 +267,7 @@ PRIMARY KEY  (`Id`)
 `ip` varchar(255) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `customaurl` varchar(255) NOT NULL default '',
@@ -295,7 +297,7 @@ PRIMARY KEY  (`Id`)
 `enddatetime` varchar(255) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `templatepath` varchar(255) NOT NULL default '',
@@ -347,7 +349,7 @@ PRIMARY KEY  (`Id`)
 `isdisplay` tinyint(1) NOT NULL default '0',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `banner` varchar(255) NOT NULL default '',
@@ -415,7 +417,7 @@ PRIMARY KEY  (`Id`)
 `adminid` int(8) NOT NULL default '0',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `customaurl` varchar(255) NOT NULL default '',
@@ -492,7 +494,7 @@ PRIMARY KEY  (`Id`)
 `isthrough` tinyint(1) NOT NULL default '0',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `customaurl` varchar(255) NOT NULL default '',
@@ -560,7 +562,7 @@ PRIMARY KEY  (`Id`)
 `labletitle` varchar(255) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `foldername` varchar(255) NOT NULL default '',
 `filename` varchar(255) NOT NULL default '',
 `customaurl` varchar(255) NOT NULL default '',
@@ -587,7 +589,7 @@ PRIMARY KEY  (`Id`)
 `website` varchar(255) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `webstate` int(8) NOT NULL default '0',
 `openspeed` int(8) NOT NULL default '0',
 `charset` varchar(255) NOT NULL default '',
@@ -671,7 +673,7 @@ PRIMARY KEY  (`Id`)
 `webdate` varchar(250) NOT NULL default '',
 `webtitle` varchar(255) NOT NULL default '',
 `webkeywords` varchar(255) NOT NULL default '',
-`webdescription` varchar(255) NOT NULL default '',
+`webdescription` mediumtext,
 `webtemplate` varchar(255) NOT NULL default '',
 `webskins` varchar(255) NOT NULL default '',
 `webfoldername` varchar(255) NOT NULL default '',
@@ -765,18 +767,30 @@ if($DB_PREFIX<>''){
 			if($s=='admin'){
 				$flags='|*|';
 			}else{
-				$flags='|显示站点配置|显示网站栏目|显示分类信息|显示评论|显示单页管理|显示后台管理员|显示搜索统计|显示网站统计|显示生成HTML|显示生成SiteMap|显示生成Robots|显示模板管理|';
+				$flags="|显示站点配置|显示网站统计|显示生成SiteMap|显示生成Robots|显示后台操作日志|显示后台管理员|显示网站栏目|显示分类信息|显示评论|显示搜索统计|显示单页|显示友情链接|显示招聘|显示反馈|显示留言|显示会员|显示模板|显示备份恢复数据|显示生成HTML|显示采集网站|显示采集配置|显示采集数据|显示竞价词|显示网址扫描|显示网站域名|显示网站布局|显示网站模块|显示后台菜单|显示执行SQL|显示仿站|显示后台地图|启用模板|恢复模板数据|";
 			}
 			$conn->query('insert into '.$DB_PREFIX.'admin (username,pwd,flags) values(\''.$s.'\',\'' . myMD5($s) . '\',\''.$flags.'\')') ;
 		}
 	}
 	
 	$conn->query('insert into '.$DB_PREFIX.'website (webtitle) values(\'默认\')') ;
+
 	
-	//给权限，要不然恢复数据不行20160301
+		//给权限，要不然恢复数据不行20160301
 	@$_SESSION['adminusername'] = 'ASPPHPCMS' ;
     @$_SESSION['adminflags'] = '|*|'		;
-	 
+	/*
+    $rssObj=$GLOBALS['conn']->query('select * from ' . $GLOBALS['db_PREFIX'] . 'admin where id=' . @$_SESSION['adminId']);
+    if( @mysql_num_rows($rssObj)!=0 ){
+        $rss=mysql_fetch_array($rssObj);
+        @$_SESSION['adminusername']= $rss['username'];
+        @$_SESSION['adminId']= $rss['id']; //当前登录管理员ID
+        @$_SESSION['DB_PREFIX']= $DB_PREFIX; //保存前缀
+        @$_SESSION['adminflags']= $rss['flags'];
+    }else{
+		die(111);
+	}
+	*/
 
 $splstr='';$s='';
 $conn=OpenConn();
@@ -826,45 +840,4 @@ foreach( $splStr as $s){
 }
 	
 	
-?>
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+?> 

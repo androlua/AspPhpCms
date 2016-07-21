@@ -16,7 +16,7 @@ function callFunction2(){
         case 'clearAllData' ; fun2_clearAllData();										//清除全部数据
         break;
         case 'function2test' ; function2test()											;break;//测试
-        default ; eerr('function2页里没有动作', @$_REQUEST['stype']);
+        default ; Eerr('function2页里没有动作', @$_REQUEST['stype']);
     }
 }
 
@@ -24,45 +24,46 @@ function callFunction2(){
 function function2test(){
     $GLOBALS['conn=']=OpenConn();
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webdomain where isdomain=true');
-    ASPEcho('共', @mysql_num_rows($rsObj));
+    $rs=mysql_fetch_array($rsObj);
+    aspEcho('共', @mysql_num_rows($rsObj));
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
-        ASPEcho($rs['isdomain'],$rs['website']);
+        aspEcho($rs['isdomain'],$rs['website']);
     }
 }
 //清除全部数据
 function fun2_clearAllData(){
     $GLOBALS['conn=']=OpenConn();
-    connExecute('delete from ' . $GLOBALS['db_PREFIX'] . 'webdomain');
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
+    connexecute('delete from ' . $GLOBALS['db_PREFIX'] . 'webdomain');
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
 }
 //打印有效网址
 function printOKWebSite(){
     $GLOBALS['conn=']=OpenConn();
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webdomain where isdomain=true');
-    ASPEcho('共', @mysql_num_rows($rsObj));
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
+    aspEcho('共', @mysql_num_rows($rsObj));
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
         //call echo(rs("isdomain"),rs("website"))
-        rw($rs['website'] . '<br>');
+        Rw($rs['website'] . '<br>');
     }
 }
 //打印asp类型网站
 function printAspServerWebSite(){
     $GLOBALS['conn=']=OpenConn();
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webdomain where isasp=true and (isaspx=false and isphp=false)');
-    ASPEcho('共', @mysql_num_rows($rsObj));
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
+    aspEcho('共', @mysql_num_rows($rsObj));
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
         //call echo(rs("isdomain"),rs("website"))
-        rw($rs['website'] . '<br>');
+        Rw($rs['website'] . '<br>');
     }
 }
 
 //让审核全部为真
 function isthroughTrue(){
     $GLOBALS['conn=']=OpenConn();
-    connExecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain set isthrough=true');
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
+    connexecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain set isthrough=true');
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK</a>');
 }
 
 //扫描首页大小
@@ -74,7 +75,7 @@ function scanDomainHomePageSize(){
     if( $nThis=='' ){
         $nThis=0;
     }else{
-        $nThis=intval($nThis);
+        $nThis=cint($nThis);
     }
 
     $nSetTime= 3;
@@ -86,18 +87,18 @@ function scanDomainHomePageSize(){
     }
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
         $nThis=$nThis+1;
-        ASPEcho($nThis . '/' . $nCount, $rs['website']);
-        doevents( );
+        aspEcho($nThis . '/' . $nCount, $rs['website']);
+        doEvents( );
         $htmlDir= '/../网站UrlScan/域名首页大小/';
-        createDirFolder($htmlDir);
+        CreateDirFolder($htmlDir);
         $txtFilePath= $htmlDir . '/' . setFileName($rs['website']) . '.txt';
-        if( checkFile($txtFilePath)== true ){
-            ASPEcho('类型', '本地');
+        if( CheckFile($txtFilePath)== true ){
+            aspEcho('类型', '本地');
             $nSetTime=1;
         }else{
-            $website=getwebsite($rs['website']);
+            $website=getWebSite($rs['website']);
             if( $website=='' ){
-                eerr('域名为空',$GLOBALS['httpurl']);
+                Eerr('域名为空',$GLOBALS['httpurl']);
             }
             $content=getHttpPage($website,$rs['charset']);
             $content=toGB2312Char($content); //给PHP用，转成gb2312字符
@@ -106,31 +107,31 @@ function scanDomainHomePageSize(){
             }
 
             createFile($txtFilePath, $content);
-            ASPEcho('类型', '网络');
+            aspEcho('类型', '网络');
         }
-        $content=getftext($txtFilePath);
+        $content=getFText($txtFilePath);
         $webtitle=getHtmlValue($content,'webtitle');
         $webkeywords=getHtmlValue($content,'webkeywords');
         $webdescription=getHtmlValue($content,'webdescription');
 
 
-        $websize=getfsize($txtFilePath);
-        ASPEcho('webtitle',$webtitle);
+        $websize=getFSize($txtFilePath);
+        aspEcho('webtitle',$webtitle);
         //这样写是给转PHP时方便
-        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain  set webtitle=\''. ADSql($webtitle) .'\',webkeywords=\''. $webkeywords .'\',webdescription=\''. $webdescription .'\',websize='. $websize .',isthrough=false,updatetime=\'' . Now() . '\'  where id=' . $rs['id'] . '');
+        connexecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain  set webtitle=\''. ADSql($webtitle) .'\',webkeywords=\''. $webkeywords .'\',webdescription=\''. $webdescription .'\',websize='. $websize .',isthrough=false,updatetime=\'' . now() . '\'  where id=' . $rs['id'] . '');
 
         $startTime=@$_REQUEST['startTime'];
         if( $startTime=='' ){
             $startTime=now();
         }
 
-        rw(VBRunTimer($startTime) . '<hr>');
+        Rw(VBRunTimer($startTime) . '<hr>');
         $url= getUrlAddToParam(getThisUrl(), '?nThis='. $nThis .'&nCount='. $nCount .'&startTime='. $startTime .'&N=' . getRnd(11), 'replace');
 
-        rw(jsTiming($url, $nSetTime));
+        Rw(jsTiming($url, $nSetTime));
         die();
     }
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK，共('. $nThis .')条</a>');
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK，共('. $nThis .')条</a>');
 }
 
 //扫描域名首页
@@ -143,7 +144,7 @@ function scanDomainHomePage(){
     if( $nThis=='' ){
         $nThis=0;
     }else{
-        $nThis=intval($nThis);
+        $nThis=cint($nThis);
     }
 
     $nSetTime= 3;
@@ -155,23 +156,23 @@ function scanDomainHomePage(){
     }
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
         $nThis=$nThis+1;
-        ASPEcho($nThis . '/' . $nCount, $rs['website']);
-        doevents( );
+        aspEcho($nThis . '/' . $nCount, $rs['website']);
+        doEvents( );
         $htmlDir= '/../网站UrlScan/域名首页/';
-        createDirFolder($htmlDir);
+        CreateDirFolder($htmlDir);
         $txtFilePath= $htmlDir . '/' . setFileName($rs['website']) . '.txt';
-        if( checkFile($txtFilePath)== true ){
-            $c= phptrim(getFText($txtFilePath));
-            $isAsp=getstrcut($c,'isAsp=',vbCrlf(),1);
-            $isAspx=getstrcut($c,'isAspx=',vbCrlf(),1);
-            $isPhp=getstrcut($c,'isPhp=',vbCrlf(),1);
-            $isJsp=getstrcut($c,'isJsp=',vbCrlf(),1);
-            ASPEcho('类型', '本地');
+        if( CheckFile($txtFilePath)== true ){
+            $c= PHPTrim(getFText($txtFilePath));
+            $isAsp=getStrCut($c,'isAsp=',vbCrlf(),1);
+            $isAspx=getStrCut($c,'isAspx=',vbCrlf(),1);
+            $isPhp=getStrCut($c,'isPhp=',vbCrlf(),1);
+            $isJsp=getStrCut($c,'isJsp=',vbCrlf(),1);
+            aspEcho('类型', '本地');
             $nSetTime=1;
         }else{
-            $website=getwebsite($rs['website']);
+            $website=getWebSite($rs['website']);
             if( $website=='' ){
-                eerr('域名为空',$GLOBALS['httpurl']);
+                Eerr('域名为空',$GLOBALS['httpurl']);
             }
             $splstr=array('index.asp','index.aspx','index.php','index.jsp','index.htm','index.html','default.asp','default.aspx','default.jsp','default.htm','default.html');
             $c2='';
@@ -179,8 +180,8 @@ function scanDomainHomePage(){
             foreach( $splstr as $key=>$s){
                 $url=$website . $s;
                 $nState=getHttpUrlState($url);
-                ASPEcho($url,$nState . '   ('. getHttpUrlStateAbout($nState) .')');
-                doevents();
+                aspEcho($url,$nState . '   ('. getHttpUrlStateAbout($nState) .')');
+                doEvents();
                 if( ($s=='index.asp' || $s=='default.asp') && ($nState=='200' || $nState=='302') ){
                     $isAsp=1;
                 }else if( ($s=='index.aspx' || $s=='default.aspx') && ($nState=='200' || $nState=='302') ){
@@ -205,47 +206,47 @@ function scanDomainHomePage(){
             }
 
             createFile($txtFilePath, $c);
-            ASPEcho('类型', '网络');
+            aspEcho('类型', '网络');
         }
         //这样写是给转PHP时方便
-        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain  set isasp='. $isAsp .',isaspx='. $isAspx .',isphp='. $isPhp .',isjsp='. $isJsp .',isthrough=false,homepagelist=\''. $homePageList .'\',updatetime=\'' . Now() . '\'  where id=' . $rs['id'] . '');
+        connexecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain  set isasp='. $isAsp .',isaspx='. $isAspx .',isphp='. $isPhp .',isjsp='. $isJsp .',isthrough=false,homepagelist=\''. $homePageList .'\',updatetime=\'' . now() . '\'  where id=' . $rs['id'] . '');
 
         $GLOBALS['startTime']=@$_REQUEST['startTime'];
         if( $GLOBALS['startTime']=='' ){
             $GLOBALS['startTime']=now();
         }
 
-        rw(VBRunTimer($GLOBALS['startTime']) . '<hr>');
+        Rw(VBRunTimer($GLOBALS['startTime']) . '<hr>');
         $url= getUrlAddToParam(getThisUrl(), '?nThis='. $nThis .'&nCount='. $nCount .'&startTime='. $GLOBALS['startTime'] .'&N=' . getRnd(11), 'replace');
 
-        rw(jsTiming($url, $nSetTime));
+        Rw(jsTiming($url, $nSetTime));
         die();
     }
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK，共('. $nThis .')条</a>');
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK，共('. $nThis .')条</a>');
 }
 
 //批量导入域名
 function bantchImportDomain(){
     $content=''; $splStr=''; $url=''; $webSite=''; $nOK ='';
-    $content= strtolower(@$_POST['bodycontent']);
+    $content= lCase(@$_POST['bodycontent']);
     $splStr= aspSplit($content, vbCrlf());
     $nOK= 0;
     $GLOBALS['conn=']=OpenConn();
     foreach( $splStr as $key=>$url){
-        $webSite= getwebsite($url);
+        $webSite= getWebSite($url);
         if( $webSite <> '' ){
             $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webdomain where website=\'' . $webSite . '\'');
-            $rs=mysql_fetch_array($rsObj);
             if( @mysql_num_rows($rsObj)==0 ){
-                connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'webdomain(website,isthrough,isdomain) values(\'' . $webSite . '\',true,false)');
-                ASPEcho('添加成功', $webSite);
+                $rs=mysql_fetch_array($rsObj);
+                connexecute('insert into ' . $GLOBALS['db_PREFIX'] . 'webdomain(website,isthrough,isdomain) values(\'' . $webSite . '\',true,false)');
+                aspEcho('添加成功', $webSite);
                 $nOK= $nOK + 1;
             }else{
-                ASPEcho('website', $webSite);
+                aspEcho('website', $webSite);
             }
         }
     }
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK 共(' . $nOK . ')条</a>');
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK 共(' . $nOK . ')条</a>');
 }
 
 //检测域名有效
@@ -256,45 +257,46 @@ function scanCheckDomain(){
     if( $nThis=='' ){
         $nThis=0;
     }else{
-        $nThis=intval($nThis);
+        $nThis=cint($nThis);
     }
     $GLOBALS['conn=']=OpenConn();
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webdomain where isthrough=true');
+    $rs=mysql_fetch_array($rsObj);
     $nCount=@$_REQUEST['nCount'];
     if( $nCount=='' ){
         $nCount= @mysql_num_rows($rsObj);
     }
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
         $nThis=$nThis+1;
-        ASPEcho($nThis . '/' . $nCount, $rs['website']);
-        doevents( );
+        aspEcho($nThis . '/' . $nCount, $rs['website']);
+        doEvents( );
         $htmlDir= '/../网站UrlScan/域名/';
-        createDirFolder($htmlDir);
+        CreateDirFolder($htmlDir);
         $txtFilePath= $htmlDir . '/' . setFileName($rs['website']) . '.txt';
-        if( checkFile($txtFilePath)== true ){
-            $isdomain= phptrim(getFText($txtFilePath));
-            ASPEcho('类型', '本地');
+        if( CheckFile($txtFilePath)== true ){
+            $isdomain= PHPTrim(getFText($txtFilePath));
+            aspEcho('类型', '本地');
             $nSetTime=1;
         }else{
             $isdomain= IIF(checkDomainName($rs['website']), 1, 0);
             createFile($txtFilePath, $isdomain . ' ');			 //防止PHP版写入不进去 0 这个内容
-            ASPEcho('类型', '网络' . $txtFilePath . '('. checkFile($txtFilePath) .')=' . $isdomain);
+            aspEcho('类型', '网络' . $txtFilePath . '('. CheckFile($txtFilePath) .')=' . $isdomain);
         }
         //这样写是给转PHP时方便
-        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain  set isthrough=false,isdomain=' . $isdomain . ',updatetime=\'' . Now() . '\'  where id=' . $rs['id'] . '');
+        connexecute('update ' . $GLOBALS['db_PREFIX'] . 'webdomain  set isthrough=false,isdomain=' . $isdomain . ',updatetime=\'' . now() . '\'  where id=' . $rs['id'] . '');
 
         $startTime=@$_REQUEST['startTime'];
         if( $startTime=='' ){
             $startTime=now();
         }
 
-        rw(VBRunTimer($startTime) . '<hr>');
+        Rw(VBRunTimer($startTime) . '<hr>');
         $url= getUrlAddToParam(getThisUrl(), '?nThis='. $nThis .'&nCount='. $nCount .'&startTime='. $startTime .'&N=' . getRnd(11), 'replace');
 
-        rw(jsTiming($url, $nSetTime));
+        Rw(jsTiming($url, $nSetTime));
         die();
     }
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK，共('. $nThis .')条</a>');
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebDomain&addsql=order by id desc&lableTitle=网站域名\'>OK，共('. $nThis .')条</a>');
 }
 
 //扫描网址
@@ -316,29 +318,28 @@ function runScanWebUrl(){
     if( $nThis=='' ){
         $nThis=0;
     }else{
-        $nThis=intval($nThis);
+        $nThis=cint($nThis);
     }
 
     $GLOBALS['conn=']=OpenConn();
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weburlscan');
-    $rs=mysql_fetch_array($rsObj);
     $nCount=@$_REQUEST['nCount'];
     if( $nCount=='' ){
         $nCount= @mysql_num_rows($rsObj);
     }
     if( @mysql_num_rows($rsObj)==0 ){
-        connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(httpurl,title,isthrough,charset) values(\'' . $httpUrl . '\',\'home\',true,\'' . $setCharSet . '\')');
+        connexecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(httpurl,title,isthrough,charset) values(\'' . $httpUrl . '\',\'home\',true,\'' . $setCharSet . '\')');
     }
     //循环
     $rsxObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weburlscan where isThrough=true');
-    $rsx=mysql_fetch_array($rsxObj);
     if( @mysql_num_rows($rsxObj)!=0 ){
+        $rsx=mysql_fetch_array($rsxObj);
         $nThis=$nThis+1;
-        ASPEcho($nThis, $rsx['httpurl']);
-        doevents( );
+        aspEcho($nThis, $rsx['httpurl']);
+        doEvents( );
         $nSetTime= scanUrl($rsx['httpurl'], $rsx['title'], $rsx['charset']);
         //这样写是给转PHP时方便
-        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'weburlscan  set isthrough=false  where id=' . $rsx['id'] . '');
+        connexecute('update ' . $GLOBALS['db_PREFIX'] . 'weburlscan  set isthrough=false  where id=' . $rsx['id'] . '');
 
         $startTime=@$_REQUEST['startTime'];
         if( $startTime=='' ){
@@ -348,25 +349,25 @@ function runScanWebUrl(){
         VBRunTimer($startTime);
         $url= getUrlAddToParam(getThisUrl(), '?nThis='. $nThis .'&nCount='. $nCount .'&startTime='. $startTime .'&N=' . getRnd(11), 'replace');
 
-        rw(jsTiming($url, $nSetTime));
+        Rw(jsTiming($url, $nSetTime));
         die();
     }
-    ASPEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebUrlScan&addsql=order by id desc&lableTitle=网址扫描\'>OK，共('. $nThis .')条</a>');
+    aspEcho('操作完成', '<a href=\'?act=dispalyManageHandle&actionType=WebUrlScan&addsql=order by id desc&lableTitle=网址扫描\'>OK，共('. $nThis .')条</a>');
     //输入报告
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weburlscan where webstate=404');
     while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
-        ASPEcho('<a href=\'' . $rs['httpurl'] . '\' target=\'_blank\'>' . $rs['httpurl'] . '</a>', '<a href=\'' . $rs['tohttpurl'] . '\' target=\'_blank\'>' . $rs['tohttpurl'] . '</a>');
+        aspEcho('<a href=\'' . $rs['httpurl'] . '\' target=\'_blank\'>' . $rs['httpurl'] . '</a>', '<a href=\'' . $rs['tohttpurl'] . '\' target=\'_blank\'>' . $rs['tohttpurl'] . '</a>');
     }
 }
 //扫描网址
 function scanUrl($httpUrl, $toTitle, $codeset){
     $splStr=''; $i=''; $s=''; $content=''; $PubAHrefList=''; $PubATitleList=''; $splUrl=''; $spltitle=''; $title=''; $url=''; $htmlDir=''; $htmlFilePath=''; $nOK=''; $dataArray=''; $webState=''; $u=''; $iniDir=''; $iniFilePath ='';$websize='';
     $nSetTime=''; $startTime=''; $openSpeed=''; $isLocal=''; $isThrough='';
-    $htmlDir= '/../网站UrlScan/' . setFileName(getwebsite($httpUrl));
-    createDirFolder($htmlDir);
+    $htmlDir= '/../网站UrlScan/' . setFileName(getWebSite($httpUrl));
+    CreateDirFolder($htmlDir);
     $htmlFilePath= $htmlDir . '/' . setFileName($httpUrl) . '.html';
     $iniDir= $htmlDir . '/conifg';
-    createfolder($iniDir);
+    CreateFolder($iniDir);
     $iniFilePath= $iniDir . '/' . setFileName($httpUrl) . '.txt';
 
     //httpurl="http://maiside.net/"
@@ -374,18 +375,18 @@ function scanUrl($httpUrl, $toTitle, $codeset){
     $webState= 0;
     $nSetTime= 1;
     $openSpeed= 0;
-    if( checkFile($htmlFilePath)== false ){
-        $startTime= Now();
-        ASPEcho('codeset', $codeset);
+    if( CheckFile($htmlFilePath)== false ){
+        $startTime= now();
+        aspEcho('codeset', $codeset);
         $dataArray= handleXmlGet($httpUrl, $codeset);
         $content= $dataArray[0];
         $content=toGB2312Char($content); //给PHP用，转成gb2312字符
 
         $webState= $dataArray[1];
-        $openSpeed= DateDiff('s', $startTime, Now());
+        $openSpeed= dateDiff('s', $startTime, now());
         //content=gethttpurl(httpurl,codeset)
         //call createfile(htmlFilePath,content)
-        writeToFile($htmlFilePath, $content, $codeset);
+        WriteToFile($htmlFilePath, $content, $codeset);
         createFile($iniFilePath, $webState . vbCrlf() . $openSpeed);
         $nSetTime= 3;
         $isLocal= 0;
@@ -393,22 +394,22 @@ function scanUrl($httpUrl, $toTitle, $codeset){
         //content=getftext(htmlFilePath)
         $content= reaFile($htmlFilePath, $codeset);
         $content=toGB2312Char($content); //给PHP用，转成gb2312字符
-        $splStr= aspSplit(getftext($iniFilePath), vbCrlf());
-        $webState= intval($splStr[0]);
-        $openSpeed= intval($splStr[0]);
+        $splStr= aspSplit(getFText($iniFilePath), vbCrlf());
+        $webState= CInt($splStr[0]);
+        $openSpeed= CInt($splStr[0]);
         $isLocal= 1;
     }
     $websize=getFSize($htmlFilePath);
     if( $websize=='' ){
         $websize=0;
     }
-    ASPEcho('isLocal', $isLocal);
+    aspEcho('isLocal', $isLocal);
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weburlscan where httpurl=\'' . $httpUrl . '\'');
-    $rs=mysql_fetch_array($rsObj);
     if( @mysql_num_rows($rsObj)==0 ){
-        connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(httpurl,title,charset) values(\'' . $httpUrl . '\',\'' . $toTitle . '\',\'' . $codeset . '\')');
+        $rs=mysql_fetch_array($rsObj);
+        connexecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(httpurl,title,charset) values(\'' . $httpUrl . '\',\'' . $toTitle . '\',\'' . $codeset . '\')');
     }
-    connExecute('update ' . $GLOBALS['db_PREFIX'] . 'weburlscan  set webstate=' . $webState . ',websize=' . $websize . ',openspeed=' . $openSpeed . ',charset=\'' . $codeset . '\'  where httpurl=\'' . $httpUrl . '\'');
+    connexecute('update ' . $GLOBALS['db_PREFIX'] . 'weburlscan  set webstate=' . $webState . ',websize=' . $websize . ',openspeed=' . $openSpeed . ',charset=\'' . $codeset . '\'  where httpurl=\'' . $httpUrl . '\'');
 
     //strLen(content)  不用这个，不精准
 
@@ -421,35 +422,35 @@ function scanUrl($httpUrl, $toTitle, $codeset){
     $nOK= 0;
     $splUrl= aspSplit($PubAHrefList, vbCrlf());
     $spltitle= aspSplit($PubATitleList, vbCrlf());
-    for( $i= 1 ; $i<= UBound($splUrl); $i++){
+    for( $i= 1 ; $i<= uBound($splUrl); $i++){
         $title= $spltitle[$i];
         $url= $splUrl[$i];
         //去掉#号后台的字符20160506
-        if( instr($url, '#') > 0 ){
-            $url= mid($url, 1, instr($url, '#') - 1);
+        if( inStr($url, '#') > 0 ){
+            $url= mid($url, 1, inStr($url, '#') - 1);
         }
         if( $url== '' ){
             if( $title <> '' ){
-                ASPEcho('网址为空', $title);
+                aspEcho('网址为空', $title);
             }
         }else{
             $url= handleScanUrlList($httpUrl, $url);
             $url= handleWithWebSiteList($httpUrl, $url);
             if( $url <> '' ){
                 $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weburlscan where httpurl=\'' . $url . '\'');
-                $rs=mysql_fetch_array($rsObj);
                 if( @mysql_num_rows($rsObj)==0 ){
-                    $u= strtolower($url);
-                    if( instr($u, 'tools/downfile.asp') > 0 || instr($u, '/url.asp?') > 0 || instr($u, '/aspweb.asp?') > 0 || instr($u, '/phpweb.php?') > 0 || $u== 'http://www.maiside.net/qq/' || instr($u, 'mailto:') > 0 || instr($u, 'tel:') > 0 || instr($u, '.html?replytocom') > 0 ){//.html?replytocom  王通网站
+                    $rs=mysql_fetch_array($rsObj);
+                    $u= lCase($url);
+                    if( inStr($u, 'tools/downfile.asp') > 0 || inStr($u, '/url.asp?') > 0 || inStr($u, '/aspweb.asp?') > 0 || inStr($u, '/phpweb.php?') > 0 || $u== 'http://www.maiside.net/qq/' || inStr($u, 'mailto:') > 0 || inStr($u, 'tel:') > 0 || inStr($u, '.html?replytocom') > 0 ){//.html?replytocom  王通网站
                         $isThrough= 0;
                     }else{
                         $isThrough= 1; //不用true 因为写入数据会有问题
                     }
-                    connExecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(tohttpurl,totitle,httpurl,title,isthrough,charset) values(\'' . $httpUrl . '\',\'' . $toTitle . '\',\'' . $url . '\',\'' . Left($title, 255) . '\',' . $isThrough . ',\'' . $codeset . '\')');
+                    connexecute('insert into ' . $GLOBALS['db_PREFIX'] . 'weburlscan(tohttpurl,totitle,httpurl,title,isthrough,charset) values(\'' . $httpUrl . '\',\'' . $toTitle . '\',\'' . $url . '\',\'' . left($title, 255) . '\',' . $isThrough . ',\'' . $codeset . '\')');
                     $nOK= $nOK + 1;
-                    ASPEcho($i, $url);
+                    aspEcho($i, $url);
                 }else{
-                    ASPEcho($title, $url);
+                    aspEcho($title, $url);
                 }
             }
         }

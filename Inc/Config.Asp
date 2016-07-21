@@ -60,6 +60,7 @@
 <!--#Include File = "SystemInfo.Asp"-->    
 <!--#Include File = "Json.Asp"-->
 <!--#Include File = "2016_PackXML.Asp"--> 
+<!--#Include File = "2016_email.Asp"--> 
 <% 
 
  
@@ -162,10 +163,10 @@ function handleDisplayLanguage(c,sType)
 		c = batchReplaceL(c, "后台地图|*|清除缓冲|*|超级管理员|*|当前位置|*|管理员信息|*|修改密码|*|最新访客信息|*|开发团队|*|版权所有|*|开发与支持团队")
 		c = batchReplaceL(c, "进入在线修改模式|*|系统信息|*|免费开源版|*|授权信息|*|服务器名称|*|服务器版本|*|交流群|*|相关链接|*|登录后台")
 		c = batchReplaceL(c, "用户名|*|表前缀|*|帮助|*|退出|*|您好|*|首页|*|权限|*|端口|*|邮箱|*|官网|*|版|*|云端")	
-		c = batchReplaceL(c, "系统管理|*|我的面板|*|栏目管理|*|模板管理|*|会员管理|*|生成管理|*|更多设置")
+		c = batchReplaceL(c, "系统管理|*|我的面板|*|栏目|*|模板|*|会员|*|生成|*|更多设置")
 		
-		c = batchReplaceL(c, "站点配置|*|网站统计|*|生成|*|后台操作日志|*|后台管理员|*|网站栏目|*|分类信息|*|评论|*|搜索统计|*|单页管理|*|友情链接|*|招聘管理")
-		c = batchReplaceL(c, "反馈管理|*|留言管理|*|会员配置|*|竞价词|*|网站布局|*|网站模块|*|后台菜单|*|执行|*|仿站")
+		c = batchReplaceL(c, "站点配置|*|网站统计|*|生成|*|后台操作日志|*|后台管理员|*|网站栏目|*|分类信息|*|评论|*|搜索统计|*|单页|*|友情链接|*|招聘管理")
+		c = batchReplaceL(c, "反馈|*|留言|*|会员配置|*|竞价词|*|网站布局|*|网站模块|*|后台菜单|*|执行|*|仿站")
 		
 		
 	end if
@@ -237,13 +238,13 @@ function languageEN(str)
 		c="System"
 	elseif str="我的面板"	 then
 		c="My panel"
-	elseif str="栏目管理"	 then
+	elseif str="栏目"	 then
 		c="Column"
-	elseif str="模板管理"	 then
+	elseif str="模板"	 then
 		c="Template"
-	elseif str="会员管理"	 then
+	elseif str="会员"	 then
 		c="Member"
-	elseif str="生成管理"	 then
+	elseif str="生成"	 then
 		c="Generation"
 	elseif str="更多设置"	 then
 		c="More settings"
@@ -291,15 +292,15 @@ function languageEN(str)
 		c="Classified information"		
 	elseif str="搜索统计"	 then
 		c="Search statistics"		
-	elseif str="单页管理"	 then
+	elseif str="单页"	 then
 		c="Single page"		
 	elseif str="友情链接"	 then
 		c="Friendship link"		
 	elseif str="招聘管理"	 then
 		c="Recruitment management"		
-	elseif str="反馈管理"	 then
+	elseif str="反馈"	 then
 		c="Feedback management"		
-	elseif str="留言管理"	 then
+	elseif str="留言"	 then
 		c="message management"		
 	elseif str="会员配置"	 then
 		c="Member allocation"		

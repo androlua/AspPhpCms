@@ -4,14 +4,14 @@
 //检测URL文件名称是否带参数，如:.js?  .css?  用法 checkUrlFileNameParam("http://sdfsd.com/aaa.js","js|css|")
 function checkUrlFileNameParam($httpurl,$sList){
     $url='';$splstr='';$searchStr='';
-    $url=strtolower($httpurl);
-    $sList=strtolower($sList);
+    $url=lCase($httpurl);
+    $sList=lCase($sList);
     $splstr=aspSplit($sList,'|');
     foreach( $splstr as $key=>$searchStr){
         if( $searchStr<>'' ){
             $searchStr='.'. $searchStr .'?';
             //call echo("searchStr",searchStr)
-            if( instr($url,$searchStr) > 0 ){
+            if( inStr($url,$searchStr) > 0 ){
                 $checkUrlFileNameParam=true;
                 return @$checkUrlFileNameParam;
             }
@@ -25,9 +25,9 @@ function checkUrlFileNameParam($httpurl,$sList){
 function isUCase($content){
     $i=''; $s ='';
     $isUCase= true;
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $s)== false ){
+        if( inStr('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $s)== false ){
             $isUCase= false;
             return @$isUCase;
         }
@@ -38,9 +38,9 @@ function isUCase($content){
 function isLCase($content){
     $i=''; $s ='';
     $isLCase= true;
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('abcdefghijklmnopqrstuvwxyz', $s)== false ){
+        if( inStr('abcdefghijklmnopqrstuvwxyz', $s)== false ){
             $isLCase= false;
             return @$isLCase;
         }
@@ -54,20 +54,20 @@ function isLCase($content){
 
 //把字符true转真类型 false转假类型
 function strToTrueFalse( $content){
-    $content= aspTrim(strtolower($content));
+    $content= aspTrim(lCase($content));
     $strToTrueFalse= IIF($content== 'true', true, false);
     return @$strToTrueFalse;
 }
 //把字符true转1类型 false转0类型
 function strTrueFalseToInt( $content){
-    $content= aspTrim(strtolower($content));
+    $content= aspTrim(lCase($content));
     $strTrueFalseToInt= IIF($content== 'true', 1, 0);
     return @$strTrueFalseToInt;
 }
 //检查换行
 function checkVbCrlf($content){
     $checkVbCrlf= false;
-    if( instr($content, vbCrlf()) > 0 ){ $checkVbCrlf= true ;}
+    if( inStr($content, vbCrlf()) > 0 ){ $checkVbCrlf= true ;}
     return @$checkVbCrlf;
 }
 //检查换行    辅助
@@ -97,14 +97,14 @@ function checkEval($content){ //留空函数
 //过滤SQL非法字符并格式化html代码
 //********************************************************
 function replace_SQLText($fString){
-    if( IsNull($fString) ){
+    if( isNull($fString) ){
         $replace_SQLText= '';
         return @$replace_SQLText;
     }else{
         $fString= aspTrim($fString);
-        $fString= Replace($fString, '\'', '\'\'');
-        $fString= Replace($fString, ';', '；');
-        $fString= Replace($fString, '--', '—');
+        $fString= replace($fString, '\'', '\'\'');
+        $fString= replace($fString, ';', '；');
+        $fString= replace($fString, '--', '—');
         $fString= displayHtml($fString);
         $replace_SQLText= $fString;
     }
@@ -116,10 +116,10 @@ function replace_SQLText($fString){
 function chkPost(){
     $Server_v1=''; $Server_v2 ='';
     $chkPost= false;
-    $Server_v1= CStr(ServerVariables('HTTP_REFERER'));
-    $Server_v2= CStr(ServerVariables('SERVER_NAME'));
-    ASPEcho($Server_v1, $Server_v2);
-    if( mid($Server_v1, 8, Len($Server_v2)) <> $Server_v2 ){
+    $Server_v1= cStr(serverVariables('HTTP_REFERER'));
+    $Server_v2= cStr(serverVariables('SERVER_NAME'));
+    aspEcho($Server_v1, $Server_v2);
+    if( mid($Server_v1, 8, len($Server_v2)) <> $Server_v2 ){
         $chkPost= false;
     }else{
         $chkPost= true;
@@ -135,39 +135,39 @@ function isValidEmail($email){
     $names=''; $Name=''; $i=''; $c ='';
     $isValidEmail= true;
     $names= aspSplit($email, '@');
-    if( UBound($names) <> 1 ){ $isValidEmail= false ; return @$isValidEmail; }
+    if( uBound($names) <> 1 ){ $isValidEmail= false ; return @$isValidEmail; }
     foreach( $names as $key=>$Name){
-        if( Len($Name) <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
-        for( $i= 1 ; $i<= Len($Name); $i++){
-            $c= strtolower(mid($Name, $i, 1));
-            if( instr('abcdefghijklmnopqrstuvwxyz_-.', $c) <= 0 && is_numeric($c) ){ $isValidEmail= false ; return @$isValidEmail; }
+        if( len($Name) <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
+        for( $i= 1 ; $i<= len($Name); $i++){
+            $c= lCase(mid($Name, $i, 1));
+            if( inStr('abcdefghijklmnopqrstuvwxyz_-.', $c) <= 0 && is_numeric($c) ){ $isValidEmail= false ; return @$isValidEmail; }
         }
-        if( Left($Name, 1)== '.' || Right($Name, 1)== '.' ){ $isValidEmail= false ; return @$isValidEmail; }
+        if( left($Name, 1)== '.' || right($Name, 1)== '.' ){ $isValidEmail= false ; return @$isValidEmail; }
     }
-    if( instr($names[1], '.') <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
-    $i= Len($names[1]) - strrpos($names[1], '.');
+    if( inStr($names[1], '.') <= 0 ){ $isValidEmail= false ; return @$isValidEmail; }
+    $i= len($names[1]) - inStrRev($names[1], '.');
     if( $i <> 2 && $i <> 3 ){ $isValidEmail= false ; return @$isValidEmail; }
-    if( instr($email, '..') > 0 ){ $isValidEmail= false ;}
+    if( inStr($email, '..') > 0 ){ $isValidEmail= false ;}
     return @$isValidEmail;
 }
 //检测为有效字符
 function isCode( $content){
     $c ='';
-    $c= Replace($content, ' ', '');
-    $c= Replace($c, Chr(13), '');
-    $c= Replace($c, Chr(10), '');
-    $c= Replace($c, "\t", '');
+    $c= replace($content, ' ', '');
+    $c= replace($c, chr(13), '');
+    $c= replace($c, chr(10), '');
+    $c= replace($c, vbTab(), '');
     $isCode= IIF($c <> '', true, false);
     return @$isCode;
 }
 //测试是否为数字
 function checkNumber( $content){
     $i=''; $s ='';
-    if( Len($content)== 0 ){ $checkNumber= false ; return @$checkNumber; }
+    if( len($content)== 0 ){ $checkNumber= false ; return @$checkNumber; }
     $checkNumber= true;
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('0123456789', strtolower($s))== false ){
+        if( inStr('0123456789', lCase($s))== false ){
             $checkNumber= false;
             return @$checkNumber;
         }
@@ -183,9 +183,9 @@ function isNumber( $content){
 function checkABC( $content){
     $i=''; $s ='';
     $checkABC= true;
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('abcdefghijklmnopqrstuvwxyz', strtolower($s))== false ){
+        if( inStr('abcdefghijklmnopqrstuvwxyz', lCase($s))== false ){
             $checkABC= false;
             return @$checkABC;
         }
@@ -196,8 +196,8 @@ function checkABC( $content){
 function getLen($content){
     $i=''; $s=''; $n ='';
     $n= 0;
-    for( $i= 1 ; $i<= Len($content); $i++){
-        $s= ord(mid(CStr($content), $i, 1));
+    for( $i= 1 ; $i<= len($content); $i++){
+        $s= asc(mid(cStr($content), $i, 1));
         if( $s < 0 ){
             $n= $n + 2;
         }else{
@@ -209,7 +209,7 @@ function getLen($content){
 }
 //测试是否为时间类型
 function checkTime($DateTime){
-    $checkTime= IIF(IsDate($DateTime)== false, false, true);
+    $checkTime= IIF(isDate($DateTime)== false, false, true);
     return @$checkTime;
 }
 //判断是否为空
@@ -230,15 +230,15 @@ function isNul( $s){ return ''; return ''; return ''; return ''; return ''; retu
 function foundInArr($strArr, $strToFind, $strSplit){
     $arrTemp=''; $i ='';
     $foundInArr= false;
-    if( instr($strArr, $strSplit) > 0 ){
+    if( inStr($strArr, $strSplit) > 0 ){
         $arrTemp= aspSplit($strArr, $strSplit);
-        for( $i= 0 ; $i<= UBound($arrTemp); $i++){
-            if( strtolower(aspTrim($arrTemp[$i]))== strtolower(aspTrim($strToFind)) ){
+        for( $i= 0 ; $i<= uBound($arrTemp); $i++){
+            if( lCase(aspTrim($arrTemp[$i]))== lCase(aspTrim($strToFind)) ){
                 $foundInArr= true ; break;
             }
         }
     }else{
-        if( strtolower(aspTrim($strArr))== strtolower(aspTrim($strToFind)) ){ $foundInArr= true ;}
+        if( lCase(aspTrim($strArr))== lCase(aspTrim($strToFind)) ){ $foundInArr= true ;}
     }
     return @$foundInArr;
 }

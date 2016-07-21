@@ -5,7 +5,7 @@
 
 //显示弹窗对话框20150312
 function msgBox( $content){
-    $content= Replace(Replace($content, Chr(10), '\\n'), Chr(13), '\\n');
+    $content= replace(replace($content, chr(10), '\\n'), chr(13), '\\n');
     echo('<script>alert(\'' . $content . '\');</script>');
 }
 //提示20150729
@@ -58,7 +58,7 @@ function rwEnd($str){
 }
 //HTML结束
 function htmEnd($str){
-    RwEnd($str);
+    rwEnd($str);
 }
 //替换Response.Write对象+Response.End()
 function PHPDie($str){
@@ -105,8 +105,8 @@ function echoStr($Word, $str){
 //打印数组 打印PHP里用到
 function PHPPrint_R($content){
     $i=''; $c ='';
-    if( gettype($content)== 'Variant()' ){
-        for( $i= 0 ; $i<= UBound($content); $i++){
+    if( typeName($content)== 'Variant()' ){
+        for( $i= 0 ; $i<= uBound($content); $i++){
             $c= $c . '[' . $i . '] => ' . $content[$i] . vbCrlf();
         }
     }else{
@@ -186,7 +186,7 @@ function doError($s, $msg){
     //On Error Resume Next
     $nRnd=''; $c ='';
 
-    $nRnd= intval(rnd() * 29252888);
+    $nRnd= cLng(rnd() * 29252888);
     $c= '<br />';
     $c= $c . '<div style="width:100%; font-size:12px;;line-height:150%">';
     $c= $c . '  <label onClick="ERRORDIV' . $nRnd . '.style.display=(ERRORDIV' . $nRnd . '.style.display==\'none\'?\'\':\'none\')">';
@@ -206,7 +206,7 @@ function doError($s, $msg){
 function PHPExec( $tStr){
     if( $tStr== '' ){ return '';  }
 
-    Execute($tStr);
+    execute($tStr);
 
 }
 

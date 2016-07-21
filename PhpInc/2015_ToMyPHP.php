@@ -4,9 +4,9 @@
 //获得网站底部内容aa
 function XY_AP_WebSiteBottom($action){
     $s='';$url='';
-    if( instr($GLOBALS['cfg_webSiteBottom'], '[$aoutadd$]') > 0 ){
+    if( inStr($GLOBALS['cfg_webSiteBottom'], '[$aoutadd$]') > 0 ){
         $GLOBALS['cfg_webSiteBottom']= getDefaultValue($action); //获得默认内容
-        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'website set websitebottom=\'' . ADSql($GLOBALS['cfg_webSiteBottom']) . '\'');
+        connexecute('update ' . $GLOBALS['db_PREFIX'] . 'website set websitebottom=\'' . ADSql($GLOBALS['cfg_webSiteBottom']) . '\'');
     }
 
     $s=$GLOBALS['cfg_webSiteBottom'];
@@ -24,8 +24,8 @@ function XY_AP_WebSiteBottom($action){
 //asp与php版本
 function XY_EDITORTYPE($action){
     $aspValue='';$phpValue='';$s='';
-    $aspValue= strtolower(RParam($action, 'asp'));
-    $phpValue= strtolower(RParam($action, 'php'));
+    $aspValue= lCase(RParam($action, 'asp'));
+    $phpValue= lCase(RParam($action, 'php'));
     if( EDITORTYPE=='asp' ){
         $s=$aspValue;
     }else{
@@ -39,28 +39,28 @@ function XY_EDITORTYPE($action){
 //加载文件
 function XY_Include($action){
     $templateFilePath=''; $Block=''; $startStr=''; $endStr=''; $content ='';
-    $templateFilePath= strtolower(RParam($action, 'File'));
-    $Block= strtolower(RParam($action, 'Block'));
+    $templateFilePath= lCase(RParam($action, 'File'));
+    $Block= lCase(RParam($action, 'Block'));
 
     $findstr=''; $replaceStr ='';//查找字符，替换字符
     $findstr= moduleFindContent($action, 'findstr'); //先找块
     $replaceStr= moduleFindContent($action, 'replacestr'); //先找块
 
     $templateFilePath= handleFileUrl($templateFilePath); //处理文件路径
-    if( checkFile($templateFilePath)== false ){
+    if( CheckFile($templateFilePath)== false ){
         $templateFilePath= $GLOBALS['webTemplate'] . $templateFilePath;
     }
     $content= getFText($templateFilePath);
     if( $Block <> '' ){
         $startStr= '<!--#' . $Block . ' start#-->';
         $endStr= '<!--#' . $Block . ' end#-->';
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-            $content= strCut($content, $startStr, $endStr, 2);
+        if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+            $content= StrCut($content, $startStr, $endStr, 2);
         }
     }
     //替换读出来的内容
     if( $findstr <> '' ){
-        $content= Replace($content, $findstr, $replaceStr);
+        $content= replace($content, $findstr, $replaceStr);
     }
 
     $XY_Include= $content;
@@ -78,8 +78,6 @@ function XY_AP_ColumnMenu($action){
     $thisId= $GLOBALS['glb_columnId'];
     if( $thisId== '' ){ $thisId= -1 ;}
     $defaultStr= getDefaultValue($action); //获得默认内容
-
-
 
     $defaultStr=$defaultStr . '[topnav]'. $parentid .'[/topnav]';
     $XY_AP_ColumnMenu= showColumnList( $parentid, 'webcolumn', 'columnname',$thisId , 0, $defaultStr);
@@ -121,7 +119,7 @@ function XY_AP_ArticleList($action){
 
 
     //id随机
-    $idRand= strtolower(RParam($action, 'rand'));
+    $idRand= lCase(RParam($action, 'rand'));
     if( $idRand== 'true' || $idRand== '1' ){
         $sql= $sql . ' where id in(' . getRandArticleId('', $topNumb) . ')';
     }
@@ -148,6 +146,7 @@ function XY_AP_ArticleList($action){
     }
     //追加sql
     $addSql= RParam($action, 'addSql');
+    //call echo("addsql",addsql)
     if( $addSql <> '' ){
         $sql= getWhereAnd($sql, $addSql);
     }
@@ -199,7 +198,7 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
     $noFollow ='';//不追踪 20141222
     $defaultStr= getDefaultValue($action); //获得默认内容
     $modI ='';//余循环20150112
-    $noFollow= aspTrim(strtolower(RParam($action, 'noFollow'))); //不追踪
+    $noFollow= aspTrim(lCase(RParam($action, 'noFollow'))); //不追踪
     $lableTitle ='';//标题标题
     $target ='';//a链接打开目标方式
     $adddatetime ='';//添加时间
@@ -209,14 +208,15 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
     $atargetStr ='';//A链接打开方式
     $atitleStr ='';//A链接的title20160407
     $anofollowStr ='';//A链接的nofollow
-    $splFieldName=''; $fieldName=''; $replaceStr=''; $k ='';
+    $splFieldName=''; $fieldName=''; $replaceStr=''; $k='';$idPage='';
 
+    $tableName=lCase($tableName);		//转小写
     $fieldNameList= getHandleFieldList($GLOBALS['db_PREFIX'] . $tableName, '字段列表');
     $splFieldName= aspSplit($fieldNameList, ',');
 
     $topNumb= RParam($action, 'topNumb') ; $nTop= $topNumb;
     if( $nTop <> '' ){
-        $nTop= intval($nTop);
+        $nTop= CInt($nTop);
     }else{
         $nTop= 999;
     }
@@ -233,22 +233,23 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
     $sql= replaceGlobleVariable($sql); //替换全局变量
 
     //检测SQL
-    if( checksql($sql)== false ){
+    if( checkSql($sql)== false ){
         errorLog('出错提示：<br>action=' . $action . '<hr>sql=' . $sql . '<br>');
         return '';
     }
     $rsObj=$GLOBALS['conn']->query( $sql);
     for( $i= 1 ; $i<= @mysql_num_rows($rsObj); $i++){
+        $rs=mysql_fetch_array($rsObj);
         $startStr= '' ; $endStr= '';
         //call echo(sql,i & "," & nTop)
         if( $i > $nTop ){
             break;
         }
-        $rs=mysql_fetch_array($rsObj); //给PHP用，因为在 asptophp转换不完善
+        //#【PHP】$rs=mysql_fetch_array($rsObj);                                            //给PHP用，因为在 asptophp转换不完善
         $isFocus= false; //交点为假
         $id= $rs['id'];
         //【导航】
-        if( $tableName== 'WebColumn' ){
+        if( $tableName== 'webcolumn' ){
             if( $GLOBALS['isMakeHtml']== true ){
                 $url= getRsUrl($rs['filename'], $rs['customaurl'], '/nav' . $rs['id']);
             }else{
@@ -266,7 +267,7 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
                 $isFocus= true;
             }
             //【文章】
-        }else if( $tableName== 'ArticleDetail' ){
+        }else if( $tableName== 'articledetail' ){
             if( $GLOBALS['isMakeHtml']== true ){
                 $url= getRsUrl($rs['filename'], $rs['customaurl'], 'detail/detail' . $rs['id']);
             }else{
@@ -276,21 +277,21 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
                 }
             }
             //评论
-        }else if( $tableName== 'TableComment' ){
+        }else if( $tableName== 'tablecomment' ){
 
         }
 
         //A链接添加颜色
         $abcolorStr= '';
-        if( instr($fieldNameList, ',titlecolor,') > 0 ){
+        if( inStr($fieldNameList, ',titlecolor,') > 0 ){
             //A链接颜色
             if( $rs['titlecolor'] <> '' ){
                 $abcolorStr= 'color:' . $rs['titlecolor'] . ';';
             }
         }
-        if( instr($fieldNameList, ',flags,') > 0 ){
+        if( inStr($fieldNameList, ',flags,') > 0 ){
             //A链接加粗
-            if( instr($rs['flags'], '|b|') > 0 ){
+            if( inStr($rs['flags'], '|b|') > 0 ){
                 $abcolorStr= $abcolorStr . 'font-weight:bold;';
             }
         }
@@ -299,17 +300,17 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
         }
 
         //打开方式2016
-        if( instr($fieldNameList, ',target,') > 0 ){
+        if( inStr($fieldNameList, ',target,') > 0 ){
             $atargetStr= IIF($rs['target'] <> '', ' target="' . $rs['target'] . '"', '');
         }
 
         //A的title
-        if( instr($fieldNameList, ',title,') > 0 ){
+        if( inStr($fieldNameList, ',title,') > 0 ){
             $atitleStr= IIF($rs['title'] <> '', ' title="' . $rs['title'] . '"', '');
         }
 
         //A的nofollow
-        if( instr($fieldNameList, ',nofollow,') > 0 ){
+        if( inStr($fieldNameList, ',nofollow,') > 0 ){
             $anofollowStr= IIF($rs['nofollow'] <> 0, ' rel="nofollow"', '');
         }
 
@@ -327,22 +328,22 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
 
         //例[list-mod2]  [/list-mod2]    20150112
         for( $modI= 6 ; $modI>= 2 ; $modI--){
-            if( instr($defaultStr, $startStr)== false && $i % $modI== 0 ){
+            if( inStr($defaultStr, $startStr)== false && $i % $modI== 0 ){
                 $startStr= '[list-mod' . $modI . ']' ; $endStr= '[/list-mod' . $modI . ']';
-                if( instr($defaultStr, $startStr) > 0 ){
+                if( inStr($defaultStr, $startStr) > 0 ){
                     break;
                 }
             }
         }
 
         //没有则用默认
-        if( instr($defaultStr, $startStr)== false ){
+        if( inStr($defaultStr, $startStr)== false ){
             $startStr= '[list]' ; $endStr= '[/list]';
         }
 
 
-        if( instr($defaultStr, $startStr) > 0 && instr($defaultStr, $endStr) > 0 ){
-            $s= strCut($defaultStr, $startStr, $endStr, 2);
+        if( inStr($defaultStr, $startStr) > 0 && inStr($defaultStr, $endStr) > 0 ){
+            $s= StrCut($defaultStr, $startStr, $endStr, 2);
 
             $s= replaceValueParam($s, 'i', $i); //循环编号
             $s= replaceValueParam($s, '编号', $i); //循环编号
@@ -356,7 +357,7 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
 
 
 
-            for( $k= 0 ; $k<= UBound($splFieldName); $k++){
+            for( $k= 0 ; $k<= uBound($splFieldName); $k++){
                 if( $splFieldName[$k] <> '' ){
                     $fieldName= $splFieldName[$k];
                     $replaceStr= $rs[$fieldName] . '';
@@ -367,22 +368,29 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
 
             //开始位置加Dialog内容
             $startStr= '[list-' . $i . ' startdialog]' ; $endStr= '[/list-' . $i . ' startdialog]';
-            if( instr($defaultStr, $startStr) > 0 && instr($defaultStr, $endStr) > 0 ){
-                $s= strCut($defaultStr, $startStr, $endStr, 2) . $s;
+            if( inStr($defaultStr, $startStr) > 0 && inStr($defaultStr, $endStr) > 0 ){
+                $s= StrCut($defaultStr, $startStr, $endStr, 2) . $s;
             }
             //结束位置加Dialog内容
             $startStr= '[list-' . $i . ' enddialog]' ; $endStr= '[/list-' . $i . ' enddialog]';
-            if( instr($defaultStr, $startStr) > 0 && instr($defaultStr, $endStr) > 0 ){
-                $s= $s . strCut($defaultStr, $startStr, $endStr, 2);
+            if( inStr($defaultStr, $startStr) > 0 && inStr($defaultStr, $endStr) > 0 ){
+                $s= $s . StrCut($defaultStr, $startStr, $endStr, 2);
             }
 
             //加控制
             //【导航】
-            if( $tableName== 'WebColumn' ){
+            if( $tableName== 'webcolumn' ){
                 $url= WEB_ADMINURL . '?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=' . $rs['id'] . '&n=' . getRnd(11);
+
+                //【评论】
+            }else if( $tableName=='tablecomment' ){
+                $idPage=getThisIdPage($GLOBALS['db_PREFIX'] . $tableName ,$rs['id'],10);
+                $url= WEB_ADMINURL . '?act=addEditHandle&actionType=TableComment&lableTitle=评论&nPageSize=10&parentid=&searchfield=bodycontent&keyword=&addsql=&page='. $idPage .'&id=' . $rs['id'] . '&n=' . getRnd(11);
+
                 //【文章】
-            }else if( $tableName== 'ArticleDetail' ){
-                $url= WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=' . $rs['id'] . '&n=' . getRnd(11);
+            }else if( $tableName== 'articledetail' ){
+                $idPage=getThisIdPage($GLOBALS['db_PREFIX'] . $tableName ,$rs['id'],10);
+                $url= WEB_ADMINURL . '?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page='. $idPage .'&parentid='. $rs['parentid'] .'&id=' . $rs['id'] . '&n=' . getRnd(11);
 
                 $s= replaceValueParam($s, 'columnurl', getColumnUrl($rs['parentid'], '')); //文章对应栏目URL 20160304
                 $s= replaceValueParam($s, 'columnname', getColumnName($rs['parentid'])); //文章对应栏目名称 20160304
@@ -395,13 +403,13 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
 
     //开始内容加Dialog内容
     $startStr= '[dialog start]' ; $endStr= '[/dialog start]';
-    if( instr($defaultStr, $startStr) > 0 && instr($defaultStr, $endStr) > 0 ){
-        $c= strCut($defaultStr, $startStr, $endStr, 2) . $c;
+    if( inStr($defaultStr, $startStr) > 0 && inStr($defaultStr, $endStr) > 0 ){
+        $c= StrCut($defaultStr, $startStr, $endStr, 2) . $c;
     }
     //结束内容加Dialog内容
     $startStr= '[dialog end]' ; $endStr= '[/dialog end]';
-    if( instr($defaultStr, $startStr) > 0 && instr($defaultStr, $endStr) > 0 ){
-        $c= $c . strCut($defaultStr, $startStr, $endStr, 2);
+    if( inStr($defaultStr, $startStr) > 0 && inStr($defaultStr, $endStr) > 0 ){
+        $c= $c . StrCut($defaultStr, $startStr, $endStr, 2);
     }
     $XY_AP_GeneralList= $c;
     return @$XY_AP_GeneralList;
@@ -410,10 +418,11 @@ function XY_AP_GeneralList($action, $tableName, $addSql){
 
 //处理获得表内容
 function XY_handleGetTableBody($action, $tableName, $fieldParamName, $defaultFileName, $adminUrl){
-    $url=''; $content=''; $id=''; $sql=''; $addSql=''; $fieldName=''; $fieldParamValue=''; $fieldNameList=''; $nLen=''; $delHtmlYes=''; $trimYes ='';
-    $noisonhtml='';$intoFieldStr='';$valuesStr='';
+    $url=''; $content=''; $id=''; $sql=''; $addSql=''; $fieldName=''; $fieldParamValue=''; $fieldNameList=''; $nLen=''; $delHtmlYes=''; $trimYes='';$defaultStr='';
+    $noisonhtml='';$intoFieldStr='';$valuesStr='';$nonull='';
     $fieldName= RParam($action, 'fieldname'); //字段名称
     $noisonhtml= RParam($action, 'noisonhtml');					 //不生成html
+    $nonull=RParam($action, 'noisonhtml');							//内容不能为空20160716 home
 
     if( $noisonhtml=='true' ){
         $intoFieldStr=',isonhtml';
@@ -422,10 +431,10 @@ function XY_handleGetTableBody($action, $tableName, $fieldParamName, $defaultFil
 
     $fieldNameList= getHandleFieldList($GLOBALS['db_PREFIX'] . $tableName, '字段列表');
     //字段名称不为空，并且要在表字段里
-    if( $fieldName== '' || instr($fieldNameList, ',' . $fieldName . ',')== false ){
+    if( $fieldName== '' || inStr($fieldNameList, ',' . $fieldName . ',')== false ){
         $fieldName= $defaultFileName;
     }
-    $fieldName= strtolower($fieldName); //转为小写，因为在PHP里是全小写的
+    $fieldName= lCase($fieldName); //转为小写，因为在PHP里是全小写的
 
     $fieldParamValue= RParam($action, $fieldParamName); //截取字段内容
     $id= handleNumber(RParam($action, 'id')); //获得ID
@@ -434,32 +443,36 @@ function XY_handleGetTableBody($action, $tableName, $fieldParamName, $defaultFil
         $addSql= ' where id=' . $id;
     }
 
-    $content= getDefaultValue($action); //获得默认内容
+    $content= getDefaultValue($action) ;$defaultStr=$content; //获得默认内容
     $sql= 'select * from ' . $GLOBALS['db_PREFIX'] . $tableName . $addSql;
     $rsObj=$GLOBALS['conn']->query( $sql);
-    $rs=mysql_fetch_array($rsObj);
     if( @mysql_num_rows($rsObj)==0 ){
+        $rs=mysql_fetch_array($rsObj);
         //自动添加 20160113
         if( RParam($action, 'autoadd')== 'true' ){
-            connExecute('insert into ' . $GLOBALS['db_PREFIX'] . $tableName . ' (' . $fieldParamName . ',' . $fieldName . $intoFieldStr . ') values(\'' . $fieldParamValue . '\',\'' . ADSql($content) . '\''. $valuesStr .')');
+            connexecute('insert into ' . $GLOBALS['db_PREFIX'] . $tableName . ' (' . $fieldParamName . ',' . $fieldName . $intoFieldStr . ') values(\'' . $fieldParamValue . '\',\'' . ADSql($content) . '\''. $valuesStr .')');
         }
     }else{
         $id= $rs['id'];
         $content= $rs[$fieldName];
+        if( len($content)<=0 ){
+            $content=$defaultStr;
+            connexecute('update ' . $GLOBALS['db_PREFIX'] . $tableName . ' set ' . $fieldName . '=\''. $content .'\' where id=' . $rs['id']);
+        }
     }
 
     //删除Html
     $delHtmlYes= RParam($action, 'delHtml'); //是否删除Html
-    if( $delHtmlYes== 'true' ){ $content= Replace(delHtml($content), '<', '&lt;') ;}//HTML处理
+    if( $delHtmlYes== 'true' ){ $content= replace(delHtml($content), '<', '&lt;') ;}//HTML处理
     //删除两边空格
     $trimYes= RParam($action, 'trim'); //是否删除两边空格
-    if( $trimYes== 'true' ){ $content= trimVbCrlf($content) ;}
+    if( $trimYes== 'true' ){ $content= TrimVbCrlf($content) ;}
 
     //截取字符处理
     $nLen= RParam($action, 'len'); //字符长度值
     $nLen= handleNumber($nLen);
     //If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
-    if( $nLen <> '' ){ $content= cutStr($content, $nLen, '...') ;}//Left(ReplaceStr,nLen)
+    if( $nLen <> '' ){ $content= CutStr($content, $nLen, '...') ;}//Left(ReplaceStr,nLen)
 
 
     if( $id== '' ){
@@ -480,7 +493,7 @@ function XY_handleGetTableBody($action, $tableName, $fieldParamName, $defaultFil
 //获得单页内容
 function XY_AP_GetOnePageBody($action){
     $adminUrl ='';
-    $adminUrl= WEB_ADMINURL . '?act=addEditHandle&actionType=OnePage&lableTitle=单页管理&nPageSize=10&page=&switchId=2';
+    $adminUrl= WEB_ADMINURL . '?act=addEditHandle&actionType=OnePage&lableTitle=单页&nPageSize=10&page=&switchId=2';
     $XY_AP_GetOnePageBody= XY_handleGetTableBody($action, 'onepage', 'title', 'bodycontent', $adminUrl);
     return @$XY_AP_GetOnePageBody;
 }
@@ -546,8 +559,8 @@ function XY_GetOnePageUrl($action){
 function XY_AP_GetFieldValue($action, $sql, $fieldName){
     $title=''; $content ='';
     $rsObj=$GLOBALS['conn']->query( $sql);
-    $rs=mysql_fetch_array($rsObj);
     if( @mysql_num_rows($rsObj)!=0 ){
+        $rs=mysql_fetch_array($rsObj);
         $content= $rs[$fieldName];
     }
     $XY_AP_GetFieldValue= $content;
@@ -563,7 +576,7 @@ function XY_JsWebStat($action){
     if( $fileName== '' ){
         $fileName= '[$WEB_VIEWURL$]?act=webstat&stype=' . $sType;
     }
-    $fileName= Replace($fileName, '/', '\\/');
+    $fileName= replace($fileName, '/', '\\/');
     $s= '<script>document.writeln("<script src=\\\'' . $fileName . '&GoToUrl="';
     $s= $s . '+escape(document.referrer)+"&ThisUrl="+escape(window.location.href)+"&screen="+escape(window.screen.width+"x"+window.screen.height)';
     $s= $s . '+"&co="+escape(document.cookie)'; //收集cookie 不需要则屏蔽掉
@@ -577,7 +590,7 @@ function XY_JsWebStat($action){
 //普通链接A
 function XY_HrefA($action){
     $content=''; $Href=''; $c=''; $AContent=''; $AType=''; $url=''; $title ='';
-    $action= handleInModule($action, 'start');
+    $action= HandleInModule($action, 'start');
     $content= RParam($action, 'Content');
     $AType= RParam($action, 'Type');
     if( $AType== '收藏' ){
@@ -594,7 +607,7 @@ function XY_HrefA($action){
         $content= RParam($action, 'Title');
     }
 
-    $content= handleInModule($content, 'end');
+    $content= HandleInModule($content, 'end');
     if( $c== '' ){ $c= '<a' . setHtmlParam($action, 'href|target|title|alt|id|class|rel|style') . '>' . $content . '</a>' ;}
 
     $XY_HrefA= $c;
@@ -609,8 +622,8 @@ function XY_Layout($action){
 
     $layoutName= RParam($action, 'layoutname');
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'weblayout where layoutname=\'' . $layoutName . '\'');
-    $rs=mysql_fetch_array($rsObj);
     if( @mysql_num_rows($rsObj)!=0 ){
+        $rs=mysql_fetch_array($rsObj);
         $c= $rs['bodycontent'];
 
         $sourceStr= $rs['sourcestr']; //源内容 被替换内容
@@ -618,11 +631,11 @@ function XY_Layout($action){
         $splSource= aspSplit($sourceStr, '[Array]'); //源内容数组
         $splReplace= aspSplit($replaceStr, '[Array]'); //替换内容数组
 
-        for( $i= 0 ; $i<= UBound($splSource); $i++){
+        for( $i= 0 ; $i<= uBound($splSource); $i++){
             $sourceStr= $splSource[$i];
             $replaceStr= $splReplace[$i];
             if( $sourceStr <> '' ){
-                $c= Replace($c, $sourceStr, $replaceStr);
+                $c= replace($c, $sourceStr, $replaceStr);
                 //call echo(sourceStr,replaceStr)
                 //call echo(c,instr(c,sourcestr))
             }
@@ -638,8 +651,8 @@ function XY_Module($action){
     $moduleName=''; $s=''; $c=''; $sourceStr=''; $replaceStr=''; $splSource=''; $splReplace=''; $i ='';
     $moduleName= RParam($action, 'modulename');
     $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'webmodule where modulename=\'' . $moduleName . '\'');
-    $rs=mysql_fetch_array($rsObj);
     if( @mysql_num_rows($rsObj)!=0 ){
+        $rs=mysql_fetch_array($rsObj);
         $c= $rs['bodycontent'];
 
         $sourceStr= RParam($action, 'sourceStr'); //源内容 被替换内容
@@ -648,11 +661,11 @@ function XY_Module($action){
         $splSource= aspSplit($sourceStr, '[Array]'); //源内容数组
         $splReplace= aspSplit($replaceStr, '[Array]'); //替换内容数组
 
-        for( $i= 0 ; $i<= UBound($splSource); $i++){
+        for( $i= 0 ; $i<= uBound($splSource); $i++){
             $sourceStr= $splSource[$i];
             $replaceStr= $splReplace[$i];
             if( $sourceStr <> '' ){
-                $c= Replace($c, $sourceStr, $replaceStr);
+                $c= replace($c, $sourceStr, $replaceStr);
                 //call echo(sourceStr,replaceStr)
                 //call echo(c,instr(c,sourcestr))
             }
@@ -680,10 +693,10 @@ function XY_getLableValue($action){
     //call echo("Action",Action)
     $title= RParam($action, 'title');
     $content= RParam($action, 'content');
-    $c= $c . 'title=' . getContentRunStr($title) . '<hr>';
-    $c= $c . 'content=' . getContentRunStr($content) . '<hr>';
+    $c= $c . 'title=' . GetContentRunStr($title) . '<hr>';
+    $c= $c . 'content=' . GetContentRunStr($content) . '<hr>';
     $XY_getLableValue= $c;
-    ASPEcho('title', $title);
+    aspEcho('title', $title);
     $XY_getLableValue= '【title=】【' . $title . '】';
     return @$XY_getLableValue;
 }
@@ -710,12 +723,12 @@ function XY_TitleInSearchEngineList($action){
     $c= $c . '<li><a href="http://www.haosou.com/s?ie=gb2312&q=' . $title . '" rel="nofollow" target="_blank">【haosou搜索】在好搜里搜索(' . $title . ')</a></li>' . vbCrlf();
     $c= $c . '<li><a href="https://search.yahoo.com/search;_ylt=A86.JmbkJatWH5YARmebvZx4?toggle=1&cop=mss&ei=gb2312&fr=yfp-t-901&fp=1&p=' . $title . '" rel="nofollow" target="_blank">【yahoo搜索】在雅虎里搜索(' . $title . ')</a></li>' . vbCrlf();
 
-    $c= $c . '<li><a href="https://www.sogou.com/sogou?ie=utf8&query=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【sogou搜索】在搜狗里搜索(' . $title . ')</a></li>' . vbCrlf();
-    $c= $c . '<li><a href="http://www.youdao.com/search?ue=utf8&q=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【youdao搜索】在有道里搜索(' . $title . ')</a></li>' . vbCrlf();
-    $c= $c . '<li><a href="http://search.yam.com/Search/Web/DefaultKSA.aspx?SearchType=web&l=0&p=0&k=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【yam搜索(google提供技术)】在蕃薯藤里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="https://www.sogou.com/sogou?ie=utf8&query=' . toUTFChar($title) . '" rel="nofollow" target="_blank">【sogou搜索】在搜狗里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="http://www.youdao.com/search?ue=utf8&q=' . toUTFChar($title) . '" rel="nofollow" target="_blank">【youdao搜索】在有道里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="http://search.yam.com/Search/Web/DefaultKSA.aspx?SearchType=web&l=0&p=0&k=' . toUTFChar($title) . '" rel="nofollow" target="_blank">【yam搜索(google提供技术)】在蕃薯藤里搜索(' . $title . ')</a></li>' . vbCrlf();
 
 
-    $c= $c . '<li><a href="http://cn.bing.com/search?q=' . GBtoUTF8($title) . '" rel="nofollow" target="_blank">【bing搜索】在必应里搜索(' . $title . ')</a></li>' . vbCrlf();
+    $c= $c . '<li><a href="http://cn.bing.com/search?q=' . toUTFChar($title) . '" rel="nofollow" target="_blank">【bing搜索】在必应里搜索(' . $title . ')</a></li>' . vbCrlf();
     $c= $c . '</ul>' . vbCrlf();
 
     $XY_TitleInSearchEngineList= $c;
@@ -743,4 +756,36 @@ function XY_getUrl($action){
     $XY_getUrl=getThisUrlNoParam();
     return @$XY_getUrl;
 }
+
+
+
+//For循环处理
+function XY_ForArray($action){
+    $arrayList=''; $splitStr=''; $defaultStr=''; $splStr=''; $forI=''; $title=''; $s=''; $c=''; $nloop ='';
+    $arrayList= atRParam($action, 'arraylist'); //atRParam获得结果处理动作，但不替换动作内容
+    $splitStr= RParam($action, 'splitstr');
+    $nloop= RParam($action, 'nloop'); //循环数
+
+    if( $arrayList== '' ){
+        $arrayList= copyStr('循环' . $splitStr, $nloop);
+    }
+
+    $defaultStr= getDefaultValue($action);
+
+    $splStr= aspSplit($arrayList, $splitStr);
+    for( $forI= 0 ; $forI<= uBound($splStr); $forI++){
+        $title= $splStr[$forI];
+        if( $title <> '' ){
+            $s= $defaultStr;
+            $s= replaceValueParam($s, 'fortitle', $title);
+            $s= replaceValueParam($s, 'forid', $forI+1);
+            $s= replaceValueParam($s, 'fori', $forI);
+            $s= replaceValueParam($s, 'forcount', uBound($splStr) + 1);
+            $c= $c . $s;
+        }
+    }
+    $XY_ForArray= $c;
+    return @$XY_ForArray;
+}
+
 ?>

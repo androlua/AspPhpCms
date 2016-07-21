@@ -16,6 +16,7 @@ end function
 function recoveryDatabase()
     dim backupDir, backupFilePath 
     dim content, s, splStr, tableName 
+	Call handlePower("恢复数据库")
     backupDir = adminDir & "/Data/BackUpDateBases/" 
     backupFilePath = backupDir & "/" & request("databaseName") 
     if checkFile(backupFilePath) = false then
@@ -37,6 +38,7 @@ end function
 function backupDatabase()
     dim isUnifyToFile, tableNameList, databaseTableNameList, fieldConfig, fieldName, fieldType, splField, fieldValue,nLen,isOK
     dim splStr, splxx, tableName, s, c, backupDir, backupFilePath 
+	Call handlePower("备份数据库")
     tableNameList = lcase(request("tableNameList"))                                 '自定义备份数据表列表
     isUnifyToFile = request("isUnifyToFile")                                        '统一放到一个文件里
     databaseTableNameList = lcase(db_PREFIX & "webcolumn"& vbcrlf & getTableList()) 		'让db_PREFIX在最前面，因为文章类型要从这里读取
@@ -154,7 +156,7 @@ function batchImportDirTXTData(webdataDir, tableNameList)
             tableName = trim(lcase(tableName)) 
             '判断表 不重复操作
             if instr("|" & handleTableNameList & "|", "|" & tableName & "|") = false then
-                handleTableNameList = handleTableNameList & tableName & "|" 
+                handleTableNameList = handleTableNameList & tableName & "|"  
 
                 folderPath = handlePath(webdataDir & "/" & tableName) 
                 if checkFolder(folderPath) = true then
@@ -197,7 +199,6 @@ function importTXTData(content, tableName, sType)
 		
 		s = lcase(newGetStrCut(listStr, "#stop#"))
 		if s<>"1" and s<>"true" then
-			
 			for each fieldStr in splStr
 				if fieldStr <> "" then
 					splxx = split(fieldStr, "|") 
@@ -244,22 +245,22 @@ function importTXTData(content, tableName, sType)
 					end if 
 				end if 
 			next
-			'字段列表为空 则退出
-			if addFieldList = "" then
-				importTXTData = nOK 
-				exit function 
-			end if 
-	
-			if sType = "修改" then
-				sql = "update " & db_PREFIX & "" & tableName & " set " & updateValueList 
+			'字段列表不为空
+			if addFieldList <> "" then 	
+				if sType = "修改" then
+					sql = "update " & db_PREFIX & "" & tableName & " set " & updateValueList 
+				else
+					sql = "insert into " & db_PREFIX & "" & tableName & " (" & addFieldList & ") values(" & addValueList & ")" 
+				end if  
+				'检测SQL
+				if checksql(sql) = false then
+					call eerr("出错提示", "<hr>sql=" & sql & "<br>") 
+				end if 
+				nOK = nOK + 1 
 			else
-				sql = "insert into " & db_PREFIX & "" & tableName & " (" & addFieldList & ") values(" & addValueList & ")" 
+				nOK=batchImportColumnList(splStr,listStr,nOK,tableName) 
+				
 			end if 
-			'检测SQL
-			if checksql(sql) = false then
-				call eerr("出错提示", "<hr>sql=" & sql & "<br>") 
-			end if 
-			nOK = nOK + 1  
 		end if
 
     next 
@@ -267,7 +268,71 @@ function importTXTData(content, tableName, sType)
     'call echo("sql",sql)
     'call echo("addFieldList",addFieldList)
 'call echo("updateValueList",updateValueList)
-end function 
+end function
+'批量导入栏目列表 20160716
+function batchImportColumnList(splField,byval listStr,nOK,tableName)
+	dim splstr,splxx,isColumn,columnName,s,c,nLen,id,parentIdArray(99),columntypeArray(99),flagsArray(99),nIndex,fieldStr,fieldName,valueStr,nCount
+	isColumn=false
+	nCount=0
+	listStr=replace(listStr,vbtab,"    ")
+	splstr=split(listStr,vbcrlf)
+	for each s in splstr
+		if s ="【#sub#】" then
+			isColumn=true
+		elseif isColumn=true then
+			columnName=s
+			if instr(columnName,"【|】")>0 then
+				columnName=mid(columnName,1,instr(columnName,"【|】")-1)
+			end if
+			columnName=rtrim(columnName) 
+			nLen=Len(columnName)
+			columnName=ltrim(columnName)
+			nlen=nLen-Len(columnName)
+			nIndex=cint(nLen/4) 
+			if columnName<>"" then
+				parentIdArray(nIndex)=columnName
+				c=c & "【columnname】" & columnName & vbcrlf
+				for each fieldStr in splField
+					splxx=split(fieldStr & "|","|")
+					fieldName=splxx(0)
+					if fieldName<>"" and fieldName<>"columnname" and instr(s,fieldName & "='")>0 then
+						valueStr=getStrCut(s, fieldName & "='", "'",2)
+						c=c & "【"& fieldName &"】" & valueStr & vbcrlf 
+						
+						if fieldName="columntype" then
+							columntypeArray(nIndex)=valueStr
+						elseif fieldName="flags" then
+							flagsArray(nIndex)=valueStr
+						end if 
+					end if
+				next 
+				if nIndex<>0 then
+					c=c & "【parentid】" & parentIdArray(nIndex-1) & vbcrlf
+					c=c & "【columntype】" & columntypeArray(nIndex-1) & vbcrlf 
+					c=c & "【flags】" & flagsArray(nIndex-1) & vbcrlf 
+					if columntypeArray(nIndex)="" then
+						columntypeArray(nIndex)=columntypeArray(nIndex-1)
+					end if
+					if flagsArray(nIndex)="" then
+						flagsArray(nIndex)=flagsArray(nIndex-1)
+					end if
+					
+				else
+					c=c & "【parentid】-1" & vbcrlf
+				end if
+				c=c & "【sortrank】" & nCount & vbcrlf 
+				nCount=nCount+1
+				c=c & "-------------------------------" & vbcrlf
+			end if
+		end if
+	next 
+	'call die(createfile("1.txt",c))
+	'继续导入
+	if c<>"" then
+		call importTXTData(c, tableName, "添加") 
+	end if
+end function
+
 '新的截取字符20160216
 function newGetStrCut(content, title)
     dim s 

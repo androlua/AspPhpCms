@@ -14,7 +14,7 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
     $nLevel ='';//级别
     $elseS=''; $elseLable ='';
 
-    $levelArray=array(299); $keyWord ='';
+    $levelArray=aspArray(299); $keyWord ='';
     $lableName ='';//标签名称
     $isJavascript ='';//为javascript
     $isTextarea ='';//为表单文本域<textarea
@@ -28,105 +28,105 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
     $splStr= aspSplit($content, vbCrlf());
     foreach( $splStr as $key=>$s){
         $tempS= $s ; $elseS= $s;
-        $s= trimVbCrlf($s) ; $lCaseS= strtolower($s);
+        $s= TrimVbCrlf($s) ; $lCaseS= lCase($s);
         //判断于20150710
-        if((Left($lCaseS, 8)== '<script ' || Left($lCaseS, 8)== '<script>') && instr($s, '</script>')== false && $isJavascript== false ){
+        if((left($lCaseS, 8)== '<script ' || left($lCaseS, 8)== '<script>') && inStr($s, '</script>')== false && $isJavascript== false ){
             $isJavascript= true;
-            $c= $c . phptrim($tempS) . vbCrlf();
+            $c= $c . PHPTrim($tempS) . vbCrlf();
         }else if( $isJavascript== true ){
 
-            if( Left($lCaseS, 9)== '</script>' ){
+            if( left($lCaseS, 9)== '</script>' ){
                 $isJavascript= false;
-                $c= $c . phptrim($tempS) . vbCrlf(); //最后清除两边空格
+                $c= $c . PHPTrim($tempS) . vbCrlf(); //最后清除两边空格
             }else{
                 $c= $c . $tempS . vbCrlf(); //为js则显示原文本  不处理清空两边空格phptrim(tempS)
             }
 
             //表单文本域判断于20151019
-        }else if((Left($lCaseS, 10)== '<textarea ' || Left($lCaseS, 10)== '<textarea>') && instr($s, '</textarea>')== false && $isTextarea== false ){
+        }else if((left($lCaseS, 10)== '<textarea ' || left($lCaseS, 10)== '<textarea>') && inStr($s, '</textarea>')== false && $isTextarea== false ){
             $isTextarea= true;
-            $c= $c . phptrim($tempS) . vbCrlf();
+            $c= $c . PHPTrim($tempS) . vbCrlf();
         }else if( $isTextarea== true ){
-            $c= $c . phptrim($tempS) . vbCrlf();
-            if( Left($lCaseS, 11)== '</textarea>' ){
+            $c= $c . PHPTrim($tempS) . vbCrlf();
+            if( left($lCaseS, 11)== '</textarea>' ){
                 $isTextarea= false;
             }
             //表单文本域判断于20151019
-        }else if((Left($lCaseS, 5)== '<pre ' || Left($lCaseS, 5)== '<pre>') && instr($s, '</pre>')== false && $isPre== false ){
+        }else if((left($lCaseS, 5)== '<pre ' || left($lCaseS, 5)== '<pre>') && inStr($s, '</pre>')== false && $isPre== false ){
             $isPre= true;
-            $c= $c . phptrim($tempS) . vbCrlf();
+            $c= $c . PHPTrim($tempS) . vbCrlf();
         }else if( $isPre== true ){
             $c= $c . $tempS . vbCrlf();
-            if( Left($lCaseS, 6)== '</pre>' ){
+            if( left($lCaseS, 6)== '</pre>' ){
                 $isPre= false;
             }
 
 
         }else if( $s <> '' && $isJavascript== false && $isTextarea== false ){
-            $left4Str= '|' . Left($lCaseS, 4) . '|' ; $left5Str= '|' . Left($lCaseS, 5) . '|' ; $left6Str= '|' . Left($lCaseS, 6) . '|';
-            $left7Str= '|' . Left($lCaseS, 7) . '|' ; $left8Str= '|' . Left($lCaseS, 8) . '|';
+            $left4Str= '|' . left($lCaseS, 4) . '|' ; $left5Str= '|' . left($lCaseS, 5) . '|' ; $left6Str= '|' . left($lCaseS, 6) . '|';
+            $left7Str= '|' . left($lCaseS, 7) . '|' ; $left8Str= '|' . left($lCaseS, 8) . '|';
 
             $keyWord= ''; //关键词初始清空
             $lableName= ''; //标签名称
-            if( instr('|<ul>|<ul |<li>|<li |<dt>|<dt |<dl>|<dl |<dd>|<dd |<tr>|<tr |<td>|<td |', $left4Str) > 0 ){
+            if( inStr('|<ul>|<ul |<li>|<li |<dt>|<dt |<dl>|<dl |<dd>|<dd |<tr>|<tr |<td>|<td |', $left4Str) > 0 ){
                 $keyWord= $left4Str;
                 $lableName= mid($left4Str, 3, 2);
-            }else if( instr('|<div>|<div |', $left5Str) > 0 ){
+            }else if( inStr('|<div>|<div |', $left5Str) > 0 ){
                 $keyWord= $left5Str;
                 $lableName= mid($left5Str, 3, 3);
-            }else if( instr('|<span>|<span |<form>|<form |', $left6Str) > 0 ){
+            }else if( inStr('|<span>|<span |<form>|<form |', $left6Str) > 0 ){
                 $keyWord= $left6Str;
                 $lableName= mid($left6Str, 3, 4);
 
-            }else if( instr('|<table>|<table |<tbody>|<tbody |', $left7Str) > 0 ){
+            }else if( inStr('|<table>|<table |<tbody>|<tbody |', $left7Str) > 0 ){
                 $keyWord= $left7Str;
                 $lableName= mid($left7Str, 3, 5);
 
-            }else if( instr('|<center>|<center |', $left8Str) > 0 ){
+            }else if( inStr('|<center>|<center |', $left8Str) > 0 ){
                 $keyWord= $left8Str;
                 $lableName= mid($left8Str, 3, 6);
             }
-            $keyWord= aspTrim(Replace(Replace($keyWord, '<', ''), '>', ''));
+            $keyWord= aspTrim(replace(replace($keyWord, '<', ''), '>', ''));
             //call echo(KeyWord,lableName)
             //开始
             if( $keyWord <> '' ){
                 $s= copyStr('    ', $nLevel) . $s;
-                if( Right($lCaseS, 3 + Len($lableName)) <> '</' . $lableName . '>' && instr($lCaseS, '</' . $lableName . '>')== false ){
+                if( right($lCaseS, 3 + len($lableName)) <> '</' . $lableName . '>' && inStr($lCaseS, '</' . $lableName . '>')== false ){
                     $nLevel= $nLevel + 1;
                     if( $nLevel >= 0 ){
                         $levelArray[$nLevel]= $keyWord;
                     }
                 }
-            }else if( instr('|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|', '|' . Left($lCaseS, 5) . '|') > 0 || instr('|</div>|', '|' . Left($lCaseS, 6) . '|') > 0 || instr('|</span>|</form>|', '|' . Left($lCaseS, 7) . '|') > 0 || instr('|</table>|</tbody>|', '|' . Left($lCaseS, 8) . '|') > 0 || instr('|</center>|', '|' . Left($lCaseS, 9) . '|') > 0 ){
+            }else if( inStr('|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|', '|' . left($lCaseS, 5) . '|') > 0 || inStr('|</div>|', '|' . left($lCaseS, 6) . '|') > 0 || inStr('|</span>|</form>|', '|' . left($lCaseS, 7) . '|') > 0 || inStr('|</table>|</tbody>|', '|' . left($lCaseS, 8) . '|') > 0 || inStr('|</center>|', '|' . left($lCaseS, 9) . '|') > 0 ){
                 $nLevel= $nLevel - 1;
                 $s= copyStr('    ', $nLevel) . $s;
             }else{
                 $s= copyStr('    ', $nLevel) . $s;
                 //最后是结束标签则减一级
-                if( Right($lCaseS, 6)== '</div>' ){
+                if( right($lCaseS, 6)== '</div>' ){
                     if( checkHtmlFormatting($lCaseS)== false ){
-                        $s= Left($s, Len($s) - 6);
+                        $s= left($s, len($s) - 6);
                         $nLevel= $nLevel - 1;
                         $s= $s . vbCrlf() . copyStr('    ', $nLevel) . '</div>';
                     }
-                }else if( Right($lCaseS, 7)== '</span>' ){
+                }else if( right($lCaseS, 7)== '</span>' ){
                     if( checkHtmlFormatting($lCaseS)== false ){
-                        $s= Left($s, Len($s) - 7);
+                        $s= left($s, len($s) - 7);
                         $nLevel= $nLevel - 1;
                         $s= $s . vbCrlf() . copyStr('    ', $nLevel) . '</span>';
                     }
-                }else if( instr('|</ul>|</dt>|<dl>|<dd>|', $left5Str) > 0 ){
-                    $s= Left($s, Len($s) - 5);
+                }else if( inStr('|</ul>|</dt>|<dl>|<dd>|', $left5Str) > 0 ){
+                    $s= left($s, len($s) - 5);
                     $nLevel= $nLevel - 1;
-                    $s= $s . vbCrlf() . copyStr('    ', $nLevel) . Right($lCaseS, 5);
+                    $s= $s . vbCrlf() . copyStr('    ', $nLevel) . right($lCaseS, 5);
                 }
 
 
                 //对   aaa</li>   这种进处理   20160106
-                $elseS= phptrim(strtolower($elseS));
-                if( instr($elseS, '</') > 0 ){
-                    $elseLable= mid($elseS, instr($elseS, '</'),-1);
-                    if( instr('|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|</div>|</span>|<form>|', '|' . $elseLable . '|') > 0 && $nLevel > 0 ){
+                $elseS= PHPTrim(lCase($elseS));
+                if( inStr($elseS, '</') > 0 ){
+                    $elseLable= mid($elseS, inStr($elseS, '</'),-1);
+                    if( inStr('|</ul>|</li>|</dl>|</dt>|</dd>|</tr>|</td>|</div>|</span>|<form>|', '|' . $elseLable . '|') > 0 && $nLevel > 0 ){
                         $nLevel= $nLevel - 1;
                     }
                 }
@@ -137,15 +137,15 @@ function handleHtmlFormatting( $content, $isMsgBox, $nErrLevel, $action){
             //call echo("",ShowHtml(temps)
             $c= $c . $s . vbCrlf();
         }else if( $s== '' ){
-            if( instr($action, '|delblankline|')== false && instr($action, '|删除空行|')== false ){//删除空行
+            if( inStr($action, '|delblankline|')== false && inStr($action, '|删除空行|')== false ){//删除空行
                 $c= $c . vbCrlf();
             }
         }
     }
     $handleHtmlFormatting= $c;
     $nErrLevel= $nLevel; //获得错误级别
-    if( $nLevel <> 0 &&(strtolower($isMsgBox)== '1' || strtolower($isMsgBox)== 'true') ){
-        ASPEcho('HTML标签有错误', $nLevel);
+    if( $nLevel <> 0 &&(lCase($isMsgBox)== '1' || lCase($isMsgBox)== 'true') ){
+        aspEcho('HTML标签有错误', $nLevel);
     }
     //Call Echo("nLevel",nLevel & "," & levelArray(nLevel))                '显示错误标题20150212
     return @$handleHtmlFormatting;
@@ -165,23 +165,23 @@ function formatting($content, $action){
     $nLevel= 0;
     $action= '|' . $action . '|'; //层级
     $isA= false ; $isTextarea= false ; $isScript= false ; $isStyle= false ; $isPre= false;
-    $content= Replace(Replace($content, vbCrlf(), Chr(10)), "\t", '    ');
+    $content= replace(replace($content, vbCrlf(), chr(10)), vbTab(), '    ');
 
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
         $endStr= mid($content, $i,-1);
         if( $s== '<' ){
-            if( instr($endStr, '>') > 0 ){
-                $s= mid($endStr, 1, instr($endStr, '>'));
-                $i= $i + Len($s) - 1;
-                $s= mid($s, 2, Len($s) - 2);
-                if( Right($s, 1)== '/' ){
-                    $s= phptrim(Left($s, Len($s) - 1));
+            if( inStr($endStr, '>') > 0 ){
+                $s= mid($endStr, 1, inStr($endStr, '>'));
+                $i= $i + len($s) - 1;
+                $s= mid($s, 2, len($s) - 2);
+                if( right($s, 1)== '/' ){
+                    $s= PHPTrim(left($s, len($s) - 1));
                 }
-                $endStr= Right($endStr, Len($endStr) - Len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
+                $endStr= right($endStr, len($endStr) - len($s) - 2); //最后字符减去当前标签  -2是因为它有<>二个字符
                 //注意之前放在labelName下面
-                $labelName= mid($s, 1, instr($s . ' ', ' ') - 1);
-                $labelName= strtolower($labelName);
+                $labelName= mid($s, 1, inStr($s . ' ', ' ') - 1);
+                $labelName= lCase($labelName);
 
                 //call echo("labelName",labelName)
                 if( $labelName== 'a' ){
@@ -209,26 +209,26 @@ function formatting($content, $action){
                 $endLabelStr= $endLabel;
                 $nextLableName= getHtmlLableName($endStr, 0);
                 //不为压缩HTML
-                if( instr($action, '|ziphtml|')== false && $isPre== false ){
+                if( inStr($action, '|ziphtml|')== false && $isPre== false ){
                     if( $isA== false ){
-                        if( instr('|a|strong|u|i|s|script|', '|' . $labelName . '|')== false && '/' . $labelName <> $nextLableName && instr('|/a|/strong|/u|/i|/s|/script|', '|' . $nextLableName . '|')== false ){
-                            $endLabelStr= $endLabelStr . Chr(10);
+                        if( inStr('|a|strong|u|i|s|script|', '|' . $labelName . '|')== false && '/' . $labelName <> $nextLableName && inStr('|/a|/strong|/u|/i|/s|/script|', '|' . $nextLableName . '|')== false ){
+                            $endLabelStr= $endLabelStr . chr(10);
                         }
                     }
                 }
                 //单标签最后加个 /   20160615
-                if( instr('|br|hr|img|input|param|meta|link|','|' . $labelName . '|')>0 ){
+                if( inStr('|br|hr|img|input|param|meta|link|','|' . $labelName . '|')>0 ){
                     $s=$s . ' /';
                 }
 
                 $s= $startLabel . $s . $endLabelStr;
                 //不为压缩HTML
-                if( instr($action, '|ziphtml|')== false && $isPre== false ){
+                if( inStr($action, '|ziphtml|')== false && $isPre== false ){
                     //处理这个            aaaaa</span>
-                    if( $isA== false && $isYes== false && Left($labelName, 1)== '/' && $labelName <> '/script' && $labelName <> '/a' ){
+                    if( $isA== false && $isYes== false && left($labelName, 1)== '/' && $labelName <> '/script' && $labelName <> '/a' ){
                         //排除这种    <span>天天发团</span>     并且判断上一个字段不等于vbcrlf换行
-                        if( '/' . $parentLableName <> $labelName && Right(aspTrim($c), 1) <> Chr(10) ){
-                            $s= Chr(10) . $s;
+                        if( '/' . $parentLableName <> $labelName && right(aspTrim($c), 1) <> chr(10) ){
+                            $s= chr(10) . $s;
                         }
                     }
                 }
@@ -239,33 +239,33 @@ function formatting($content, $action){
             $isYes= false;
             //call echo("isPre",isPre)
             if( $isPre== false ){
-                if( $s== Chr(10) ){
+                if( $s== chr(10) ){
                     if( $isTextarea== false && $isScript== false && $isStyle== false ){
                         $s= '';
                     }else if( $isScript== true ){
-                        if( instr($action, '|zipscripthtml|') > 0 ){
+                        if( inStr($action, '|zipscripthtml|') > 0 ){
                             $s= ' ';
                         }
                     }else if( $isStyle== true ){
-                        if( instr($action, '|zipstylehtml|') > 0 ){
+                        if( inStr($action, '|zipstylehtml|') > 0 ){
                             $s= '';
                         }
                     }else if( $isTextarea== true ){
-                        if( instr($action, '|ziptextareahtml|') > 0 ){
+                        if( inStr($action, '|ziptextareahtml|') > 0 ){
                             $s= '';
                         }
                     }else{
-                        $s= Chr(10);
+                        $s= chr(10);
                     }
                     // Right(Trim(c), 1) = ">")   为在压缩时用到
-                }else if( (Right(aspTrim($c), 1)== Chr(10) || Right(aspTrim($c), 1)== '>') && phptrim($s)== '' && $isTextarea== false && $isScript== false ){
+                }else if( (right(aspTrim($c), 1)== chr(10) || right(aspTrim($c), 1)== '>') && PHPTrim($s)== '' && $isTextarea== false && $isScript== false ){
                     $s= '';
                 }
             }
         }
         $c= $c . $s;
     }
-    $c= Replace($c, Chr(10), vbCrlf());
+    $c= replace($c, chr(10), vbCrlf());
     $formatting= $c;
     return @$formatting;
 }
@@ -278,26 +278,26 @@ function zipHTML($c){
 //检测HTML标签是否成对出现 如（<div><ul><li>aa</li></ul></div></div>）
 function checkHtmlFormatting( $content){
     $splStr=''; $s=''; $c=''; $splxx=''; $nLable=''; $lableStr ='';
-    $content= strtolower($content);
+    $content= lCase($content);
     $splStr= aspSplit('ul|li|dt|dd|dl|div|span', '|');
     foreach( $splStr as $key=>$s){
-        $s= phptrim($s);
+        $s= PHPTrim($s);
         if( $s <> '' ){
             $nLable= 0;
             $lableStr= '<' . $s . ' ';
-            if( instr($content, $lableStr) > 0 ){
+            if( inStr($content, $lableStr) > 0 ){
                 $splxx= aspSplit($content, $lableStr);
-                $nLable= $nLable + UBound($splxx);
+                $nLable= $nLable + uBound($splxx);
             }
             $lableStr= '<' . $s . '>';
-            if( instr($content, $lableStr) > 0 ){
+            if( inStr($content, $lableStr) > 0 ){
                 $splxx= aspSplit($content, $lableStr);
-                $nLable= $nLable + UBound($splxx);
+                $nLable= $nLable + uBound($splxx);
             }
             $lableStr= '</' . $s . '>';
-            if( instr($content, $lableStr) > 0 ){
+            if( inStr($content, $lableStr) > 0 ){
                 $splxx= aspSplit($content, $lableStr);
-                $nLable= $nLable - UBound($splxx);
+                $nLable= $nLable - uBound($splxx);
             }
             //call echo(ShowHtml(lableStr),nLable)
             if( $nLable <> 0 ){

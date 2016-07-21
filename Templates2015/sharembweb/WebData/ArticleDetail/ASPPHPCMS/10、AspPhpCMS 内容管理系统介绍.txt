@@ -3,7 +3,7 @@
 【webtitle】ASPPHPCMS内容管理系统介绍_CMS内容管理系统
 【webkeywords】ASPPHPCMS内容管理系统介绍_CMS内容管理系统_ASPPHPCMS介绍
 【webdescription】ASPPHPCMS内容管理系统，同时开发了ASP和PHP两套版本，采用HTML与程序分离，网站生成纯静态。 对HTML文件可重名称，后台对网站SEO优化做到了极致，让你的网站可以在最快得时间内容被各大搜索引擎收录 QQ313801120
-【sortrank】2
+【sortrank】10
 【author】sharembweb
 【adddatetime】2015-02-18 08:51:11
 【filename】/ASPPHPCMS/about.html

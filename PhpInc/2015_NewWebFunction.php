@@ -3,21 +3,21 @@
 
 //ÌØÊâ×Ö·ûÌæ»»
 function specialStrReplace( $content){
-    $content= Replace($content, '\\|', '[$ÌØÊâ×Ö·ûA]$');
-    $content= Replace($content, '\\-', '[$ÌØÊâ×Ö·ûB]$');
-    $content= Replace($content, '\\,', '[$ÌØÊâ×Ö·ûC]$');
-    $content= Replace($content, '\\\'', '[$ÌØÊâ×Ö·ûD]$');
-    $content= Replace($content, '\\"', '[$ÌØÊâ×Ö·ûE]$');
+    $content= replace($content, '\\|', '[$ÌØÊâ×Ö·ûA]$');
+    $content= replace($content, '\\-', '[$ÌØÊâ×Ö·ûB]$');
+    $content= replace($content, '\\,', '[$ÌØÊâ×Ö·ûC]$');
+    $content= replace($content, '\\\'', '[$ÌØÊâ×Ö·ûD]$');
+    $content= replace($content, '\\"', '[$ÌØÊâ×Ö·ûE]$');
     $specialStrReplace= $content;
     return @$specialStrReplace;
 }
 //½âÌØÊâ×Ö·ûÌæ»»
 function unSpecialStrReplace( $content, $startStr){
-    $content= Replace($content, '[$ÌØÊâ×Ö·ûA]$', $startStr . '|');
-    $content= Replace($content, '[$ÌØÊâ×Ö·ûB]$', $startStr . '-');
-    $content= Replace($content, '[$ÌØÊâ×Ö·ûC]$', $startStr . ',');
-    $content= Replace($content, '[$ÌØÊâ×Ö·ûD]$', $startStr . '\'');
-    $content= Replace($content, '[$ÌØÊâ×Ö·ûE]$', $startStr . '"');
+    $content= replace($content, '[$ÌØÊâ×Ö·ûA]$', $startStr . '|');
+    $content= replace($content, '[$ÌØÊâ×Ö·ûB]$', $startStr . '-');
+    $content= replace($content, '[$ÌØÊâ×Ö·ûC]$', $startStr . ',');
+    $content= replace($content, '[$ÌØÊâ×Ö·ûD]$', $startStr . '\'');
+    $content= replace($content, '[$ÌØÊâ×Ö·ûE]$', $startStr . '"');
     $unSpecialStrReplace= $content;
     return @$unSpecialStrReplace;
 }

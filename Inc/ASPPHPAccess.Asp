@@ -71,4 +71,20 @@ Function orAndSearch(addSql, SeectField, SearchValue)
 End Function 
 
 
+
+'获得当前id当前页数 默认每页显示10条 20160716
+function getThisIdPage(tableName,id,nPageSize) 
+	dim nCount
+	'在php会出错，所以加上这个
+	if id="" then	
+		getThisIdPage=1
+		exit function
+	end if
+	if nPageSize="" then
+		nPageSize=10
+	end if
+	nCount=conn.execute("select count(*) from " & tableName & " where id<=" & id)(0)
+	getThisIdPage=getCountPage(cint(nCount), nPageSize)
+	'call echo("tableName=" & tableName & "id=" & id &",ncount=" & ncount,npagesize & "               ," & getThisIdPage)
+end function
 %>

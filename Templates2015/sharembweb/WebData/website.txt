@@ -36,12 +36,17 @@ var _hmt = _hmt || [];
 
 【/websitebottom】
 
-【webtemplate】/Templates2015/sharembweb/
-【webimages】/Templates2015/sharembweb/Images/
-【webcss】/Templates2015/sharembweb/Css/
-【webjs】/Templates2015/sharembweb/Js/
+【webtemplate】/Templates2015/sharembweb
+【webimages】/Templates2015/sharembweb/Images
+【webcss】/Templates2015/sharembweb/Css
+【webjs】/Templates2015/sharembweb/Js
 【flags】|addwebsite|iscloseeditor|htmlrun|ziphtml|
 【websiteurl】http://sharembweb.com/
+
+技巧
+图片 js css 后面不加/号
+网址后台加/号 
+
 
 百度站内搜索
 http://zhannei.baidu.com/cse/search?s=2053070418731876318&entry=1&q=%E7%AB%99%E9%95%BF%E5%B7%A5%E5%85%B7

@@ -160,7 +160,6 @@ end function
 
 'JS转换，引用别人
 Function JsEncode__(ByVal s)
-
 	If isNul(s) Then JsEncode__ = "" : Exit Function
 	Dim arr1, arr2, i, j, c, p, t
 	arr1 = Array(chr(34),chr(92),chr(47),chr(8),chr(12),chr(10),chr(13),chr(9))		 '34|",92|\,47|/,8|,12|,10| ,13| ,9|	,

@@ -77,7 +77,7 @@ function saveFile(filePath, content)
 end function 
 '创建文件，存在累加 【2013,9,27】
 function createAddFile(byVal filePath, byVal content)
-    on error resume next 
+   on error resume next 
     dim fso, fText 
     call handlePath(filePath)                                                       '获得完整路径
     set fso = createObject("Scripting.FileSystemObject")
@@ -98,7 +98,7 @@ function createAddUpFile(filePath, content)
 end function 
 '追加文件信息
 function addToFile(byVal filePath, byVal content)
-    on error resume next 
+    'on error resume next 
     dim fso, fText 
     call handlePath(filePath)                                                       '获得完整路径
     if existsZhiDuFile(filePath) = true then                                        '判断是否为只读文件
@@ -1059,6 +1059,7 @@ function getFileFolderEditTime(byVal folderPath, sType, byVal timeStr)
             if sType = "文件夹" or sType = "*" then
                 set fc = f.subFolders
                     for each f1 in fc
+						'不比较文件夹
                         if 1 = 2 then
                             set openFolder = fso.getFolder(f1)
                                 folderTime = openFolder.dateLastModified 

@@ -24,7 +24,7 @@
 		<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#CFCFCF" align="center" style="margin-top:8px">
 		<tbody>
 		<tr bgcolor="#E7E7E7">
-			<td height="28" colspan="5" background="images/tbg.gif" style="padding-left:10px;">
+			<td height="28" colspan="6" background="images/tbg.gif" style="padding-left:10px;">
              <!--           ◆ 所有栏目>文档列表  (使用鼠标右键弹出菜单)-->			</td>
 		</tr>
 		<tr align="center" bgcolor="#FBFCE2" height="25">
@@ -33,18 +33,24 @@
 		  <td>信息</td>
 		  <td>时间</td>
 		  <td>IP</td>
+		  <td>操作</td>
 		  </tr> 
         [list]
-		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+		<tr align="center" height="26"   [$focusid if='[$id$]' value='style="background:#F5F9CE;font-weight:bold;"' default='bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor=\'#FCFDEE\';" onMouseOut="javascript:this.bgColor=\'#FFFFFF\';"'$]>
 		  <td align="center">[$adminname$]</td>
           <td>[$tablename$]</td>
                         <td align="left">[$msgstr$]</td>
                         <td>[$adddatetime$] </td>
                         <td>[$ip$]&nbsp;</td>
+                        <td>
+ 
+               <a href="javascript:delHandle('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');" title="删除" onClick="return new xyClass().myConfirm('你确定要删除吗？\n删除后将不可恢复')"><img src="images/icon/gtk-del.png" title="删除" /></a>       
+                        
+                        </td>
           </tr>
         [/list] 
 		<tr bgcolor="#ffffff">
-			<td height="36" colspan="7">  
+			<td height="36" colspan="8">  
             <select name="nPageSizeSelect" id="nPageSizeSelect" class="coolbg" onChange="refreshPage('[$actionType$]','[$lableTitle$]','[$page$]','{$id$}')">
               <option value="10">每页显示10条</option> 
               <option value="20"[$nPageSize if='20' value=' selected'$]>每页显示20条</option>
@@ -54,10 +60,10 @@
             </select>            </td>
 		</tr> 
 		<tr align="right" bgcolor="#F9FCEF">
-			<td height="36" colspan="5" align="center">	
+			<td height="36" colspan="6" align="center">	
                 [$pageInfo$]				
-                <input name="nPageSize" type="hidden" id="nPageSize" value="[$nPageSize$]">
-                </td>
+                <input name="nPageSize" type="hidden" id="nPageSize" value="[$nPageSize$]"> 
+                <input name="focusid" type="hidden" id="focusid" value="[$focusid$]">                 </td>
                 </tr>
 		</table>
       </form>

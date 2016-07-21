@@ -6,7 +6,7 @@
 //处理模块替换数组
 function handleModuleReplaceArray( $content){
     $i=''; $startStr=''; $endStr=''; $s=''; $lableName ='';
-    for( $i= 1 ; $i<= UBound($GLOBALS['ModuleReplaceArray']) - 1; $i++){
+    for( $i= 1 ; $i<= uBound($GLOBALS['ModuleReplaceArray']) - 1; $i++){
         if( $GLOBALS['ModuleReplaceArray'][$i][ 0]== '' ){
             break;
         }
@@ -14,14 +14,14 @@ function handleModuleReplaceArray( $content){
         $lableName= $GLOBALS['ModuleReplaceArray'][$i][ 0];
         $s= $GLOBALS['ModuleReplaceArray'][0][ $i];
         if( $lableName== '【删除】' ){
-            $content= Replace($content, $s, '');
+            $content= replace($content, $s, '');
         }else{
             $startStr= '<replacestrname ' . $lableName . '>' ; $endStr= '</replacestrname ' . $lableName . '>';
-            if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
+            if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
                 $content= replaceContentModule($content, $startStr, $endStr, $s, '');
             }
             $startStr= '<replacestrname ' . $lableName . '/>';
-            if( instr($content, $startStr) > 0 ){
+            if( inStr($content, $startStr) > 0 ){
                 $content= replaceContentRowModule($content, '<replacestrname ' . $lableName . '/>', $s, '');
             }
         }
@@ -40,16 +40,16 @@ function delTemplateMyNote($code){
     //加强版  对这个也可以<!--#aaa start#--><!--#aaa end#-->
     $startStr= '<!--#' ; $endStr= '#-->';
     for( $i= 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+        if( inStr($code, $startStr) > 0 && inStr($code, $endStr) > 0 ){
             $lableName= StrCut($code, $startStr, $endStr, 2);
-            if( instr($lableName,' start')>0 ){
+            if( inStr($lableName,' start')>0 ){
                 $lableName=mid($lableName,1,len($lableName)-6);
             }
 
             $s=$startStr . $lableName . $endStr;
             $lableStartStr=$startStr . $lableName . ' start' . $endStr;
             $lableEndStr=$startStr . $lableName . ' end' . $endStr;
-            if( instr($code, $lableStartStr) > 0 && instr($code, $lableEndStr) > 0 ){
+            if( inStr($code, $lableStartStr) > 0 && inStr($code, $lableEndStr) > 0 ){
                 $s= StrCut($code, $lableStartStr, $lableEndStr, 1);
                 //call echo(">>",s)
             }
@@ -75,9 +75,9 @@ function delTemplateMyNote($code){
         $Block= StrCut($code, $startStr, $endStr, 2);
         if( $Block <> '' ){
             $startStr= '<R#读出内容' . $Block . ' start#>' ; $endStr= '<R#读出内容' . $Block . ' end#>';
-            if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+            if( inStr($code, $startStr) > 0 && inStr($code, $endStr) > 0 ){
                 $s= StrCut($code, $startStr, $endStr, 1);
-                $code= Replace($code, $s, ''); //移除
+                $code= replace($code, $s, ''); //移除
             }
         }else{
             break;
@@ -87,36 +87,36 @@ function delTemplateMyNote($code){
     //删除翻页配置20160309
     $startStr= '<!--#list start#-->';
     $endStr= '<!--#list end#-->';
-    if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+    if( inStr($code, $startStr) > 0 && inStr($code, $endStr) > 0 ){
         $s=StrCut($code, $startStr, $endStr, 2);
         $code=replace($code,$s,'');
     }
 
     if( @$_REQUEST['gl']== 'yun' ){
-        $content= GetFText('/Jquery/dragsort/Config.html');
-        $content= GetFText('/Jquery/dragsort/模块拖拽.html');
+        $content= getFText('/Jquery/dragsort/Config.html');
+        $content= getFText('/Jquery/dragsort/模块拖拽.html');
         //Css样式
         $startStr= '<style>';
         $endStr= '</style>';
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
+        if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
             $DragSortCssStr= StrCut($content, $startStr, $endStr, 1);
         }
         //开始部分
         $startStr= '<!--#top start#-->';
         $endStr= '<!--#top end#-->';
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
+        if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
             $DragSortStart= StrCut($content, $startStr, $endStr, 2);
         }
         //结束部分
         $startStr= '<!--#foot start#-->';
         $endStr= '<!--#foot end#-->';
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
+        if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
             $DragSortEnd= StrCut($content, $startStr, $endStr, 2);
         }
         //显示块内容
         $startStr= '<!--#value start#-->';
         $endStr= '<!--#value end#-->';
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
+        if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
             $DragSortValue= StrCut($content, $startStr, $endStr, 2);
         }
 
@@ -129,70 +129,70 @@ function delTemplateMyNote($code){
         $splStr= aspSplit($content, '$Array$');
         foreach( $splStr as $key=>$s){
             $startStr= '【DatId】\'';
-            $id= mid($s, 1, instr($s, $startStr) - 1);
-            $s= mid($s, instr($s, $startStr) + Len($startStr),-1);
+            $id= mid($s, 1, inStr($s, $startStr) - 1);
+            $s= mid($s, inStr($s, $startStr) + len($startStr),-1);
             //C=C & "<li><div title='"& Id &"'>" & vbcrlf & "<div " & S & "</div>"& vbcrlf &"<div class='clear'></div></div><div class='clear'></div></li>"
             $s= '<div' . $s . '</div>';
             //Call Die(S)
-            $c= $c . Replace(Replace($DragSortValue, '{$value$}', $s), '{$id$', $id);
+            $c= $c . replace(replace($DragSortValue, '{$value$}', $s), '{$id$', $id);
         }
-        $c= Replace($c, '【换行】', vbCrlf());
+        $c= replace($c, '【换行】', vbCrlf());
         $c= $DragSortStart . $c . $DragSortEnd;
-        $code= mid($code, 1, instr($code, '<body>') - 1);
-        $code= Replace($code, '</head>', $DragSortCssStr . '</head></body>' . $c . '</body></html>');
+        $code= mid($code, 1, inStr($code, '<body>') - 1);
+        $code= replace($code, '</head>', $DragSortCssStr . '</head></body>' . $c . '</body></html>');
     }
 
     //删除VB软件生成的垃圾代码
     $startStr= '<dIv datid=\'' ; $endStr= '【DatId】\'';
     for( $i= 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+        if( inStr($code, $startStr) > 0 && inStr($code, $endStr) > 0 ){
             $id= StrCut($code, $startStr, $endStr, 2);
-            $code= Replace2($code, $startStr . $id . $endStr, '<div ');
+            $code= replace2($code, $startStr . $id . $endStr, '<div ');
         }else{
             break;
         }
     }
-    $code= Replace($code, '</dIv>', '</div>'); //替换成这个结束div
+    $code= replace($code, '</dIv>', '</div>'); //替换成这个结束div
 
     //最外围清除
     $startStr= '<!--#dialogteststart#-->' ; $endStr= '<!--#dialogtestend#-->';
-    $code= Replace($code, '<!--#dialogtest start#-->', $startStr);
-    $code= Replace($code, '<!--#dialogtest end#-->', $endStr);
+    $code= replace($code, '<!--#dialogtest start#-->', $startStr);
+    $code= replace($code, '<!--#dialogtest end#-->', $endStr);
     for( $i= 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+        if( inStr($code, $startStr) > 0 && inStr($code, $endStr) > 0 ){
             $s= StrCut($code, $startStr, $endStr, 1);
-            $code= Replace2($code, $s, '');
+            $code= replace2($code, $s, '');
         }else{
             break;
         }
     }
     //内转清除
     $startStr= '<!--#teststart#-->' ; $endStr= '<!--#testend#-->';
-    $code= Replace($code, '<!--#del start#-->', $startStr); //与下面一样
-    $code= Replace($code, '<!--#del end#-->', $endStr); //与下面一样 多样式
-    $code= Replace($code, '<!--#test start#-->', $startStr);
-    $code= Replace($code, '<!--#test end#-->', $endStr);
+    $code= replace($code, '<!--#del start#-->', $startStr); //与下面一样
+    $code= replace($code, '<!--#del end#-->', $endStr); //与下面一样 多样式
+    $code= replace($code, '<!--#test start#-->', $startStr);
+    $code= replace($code, '<!--#test end#-->', $endStr);
 
     for( $i= 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+        if( inStr($code, $startStr) > 0 && inStr($code, $endStr) > 0 ){
             $s= StrCut($code, $startStr, $endStr, 1);
-            $code= Replace2($code, $s, '');
+            $code= replace2($code, $s, '');
         }else{
             break;
         }
     }
     //删除注释的span
-    $code= Replace($code, '<sPAn class="testspan">', ''); //测试Span
-    $code= Replace($code, '<sPAn class="testhidde">', ''); //隐藏Span
-    $code= Replace($code, '</sPAn>', '');
+    $code= replace($code, '<sPAn class="testspan">', ''); //测试Span
+    $code= replace($code, '<sPAn class="testhidde">', ''); //隐藏Span
+    $code= replace($code, '</sPAn>', '');
 
     //delTemplateMyNote = Code:Exit Function
 
     $startStr= '<!--#' ; $endStr= '#-->';
     for( $i= 1 ; $i<= $handleNumb; $i++){
-        if( instr($code, $startStr) > 0 && instr($code, $endStr) > 0 ){
+        if( inStr($code, $startStr) > 0 && inStr($code, $endStr) > 0 ){
             $s= StrCut($code, $startStr, $endStr, 1);
-            $code= Replace2($code, $s, '');
+            $code= replace2($code, $s, '');
         }else{
             break;
         }
@@ -205,8 +205,8 @@ function delTemplateMyNote($code){
 
 //处理替换参数值 20160114
 function handleReplaceValueParam($content, $paramName, $replaceStr){
-    if( instr($content, '[$' . $paramName)== false ){
-        $paramName= strtolower($paramName);
+    if( inStr($content, '[$' . $paramName)== false ){
+        $paramName= lCase($paramName);
     }
     $handleReplaceValueParam= replaceValueParam($content, $paramName, $replaceStr);
     return @$handleReplaceValueParam;
@@ -224,36 +224,36 @@ function replaceValueParam($content, $paramName, $replaceStr){
     $tempReplaceStr																='';//暂存
     //ReplaceStr = ReplaceStr & "这里面放上内容在这时碳呀。"
     //ReplaceStr = CStr(ReplaceStr)            '转成字符类型
-    if( IsNul($replaceStr)== true ){ $replaceStr= '' ;}
+    if( isNul($replaceStr)== true ){ $replaceStr= '' ;}
     $tempReplaceStr=$replaceStr;
 
     //最多处理99个  20160225
-    for( $i=1 ; $i<= 99 ; $i++){
+    for( $i=1 ; $i<= 999 ; $i++){
         $replaceStr=$tempReplaceStr;													//恢复
         $startStr= '[$' . $paramName ; $endStr= '$]';
         //字段名称严格判断 20160226
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 && (instr($content, $startStr . ' ') > 0 || instr($content, $startStr . $endStr) > 0) ){
+        if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 && (inStr($content, $startStr . ' ') > 0 || inStr($content, $startStr . $endStr) > 0) ){
             //获得对应字段加强版20151231
-            if( instr($content, $startStr . $endStr) > 0 ){
+            if( inStr($content, $startStr . $endStr) > 0 ){
                 $labelStr= $startStr . $endStr;
-            }else if( instr($content, $startStr . ' ') > 0 ){
+            }else if( inStr($content, $startStr . ' ') > 0 ){
                 $labelStr= StrCut($content, $startStr . ' ', $endStr, 1);
             }else{
                 $labelStr= StrCut($content, $startStr, $endStr, 1);
             }
 
             $tempLabelStr= $labelStr;
-            $labelStr= handleInModule($labelStr, 'start');
+            $labelStr= HandleInModule($labelStr, 'start');
             //删除Html
             $delHtmlYes= RParam($labelStr, 'delHtml'); //是否删除Html
-            if( $delHtmlYes== 'true' ){ $replaceStr= Replace(DelHtml($replaceStr), '<', '&lt;') ;}//HTML处理
+            if( $delHtmlYes== 'true' ){ $replaceStr= replace(delHtml($replaceStr), '<', '&lt;') ;}//HTML处理
             //删除两边空格
             $trimYes= RParam($labelStr, 'trim'); //是否删除两边空格
             if( $trimYes== 'true' ){ $replaceStr= TrimVbCrlf($replaceStr) ;}
 
             //截取字符处理
             $nLen= RParam($labelStr, 'len'); //字符长度值
-            $nLen= HandleNumber($nLen);
+            $nLen= handleNumber($nLen);
             //If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
             if( $nLen <> '' ){ $replaceStr= CutStr($replaceStr, $nLen, '...') ;}//Left(ReplaceStr,nLen)
 
@@ -269,7 +269,7 @@ function replaceValueParam($content, $paramName, $replaceStr){
                 if( $s== '@ME' ){
                     $s= $replaceStr;
                 }
-                $replaceStr= getcolumnname($s);
+                $replaceStr= getColumnName($s);
             }
             //获得栏目URL
             $s= RParam($labelStr, 'getcolumnurl');
@@ -277,7 +277,14 @@ function replaceValueParam($content, $paramName, $replaceStr){
                 if( $s== '@ME' ){
                     $s= $replaceStr;
                 }
-                $replaceStr= getcolumnurl($s, 'id');
+                $replaceStr= getColumnUrl($s, 'id');
+            }
+            //是否为密码类型
+            $s= RParam($labelStr, 'password');
+            if( $s <> '' ){
+                if( $s<>'' ){
+                    $replaceStr= $s;
+                }
             }
 
             $ifStr= RParam($labelStr, 'if');
@@ -294,16 +301,16 @@ function replaceValueParam($content, $paramName, $replaceStr){
             //call echo("elseIfStr",elseIfStr)
             //call echo("replaceStr",replaceStr)
             if( $ifStr <> '' || $instrStr <> '' ){
-                if(($ifStr== CStr($replaceStr) && $ifStr <> '') ){
+                if(($ifStr== cStr($replaceStr) && $ifStr <> '') ){
                     $replaceStr= $valueStr;
-                }else if( $elseIfStr== CStr($replaceStr) && $elseIfStr <> '' ){
+                }else if( $elseIfStr== cStr($replaceStr) && $elseIfStr <> '' ){
                     $replaceStr= $valueStr;
                     if( $elseifValue<>'' ){
                         $replaceStr= $elseifValue;
                     }
-                }else if( instr(CStr($replaceStr), $instrStr) > 0 && $instrStr <> '' ){
+                }else if( inStr(cStr($replaceStr), $instrStr) > 0 && $instrStr <> '' ){
                     $replaceStr= $valueStr;
-                }else if( instr(CStr($replaceStr), $instr2Str) > 0 && $instr2Str <> '' ){
+                }else if( inStr(cStr($replaceStr), $instr2Str) > 0 && $instr2Str <> '' ){
                     $replaceStr= $valueStr;
                     if( $elseifValue<>'' ){
                         $replaceStr= $elseifValue;
@@ -318,8 +325,8 @@ function replaceValueParam($content, $paramName, $replaceStr){
             //函数处理20151231    [$title  function='left(@ME,40)'$]
             $funStr= RParam($labelStr, 'function'); //函数
             if( $funStr <> '' ){
-                $funStr= Replace($funStr, '@ME', $replaceStr);
-                $replaceStr= handleContentCode($funStr, '');
+                $funStr= replace($funStr, '@ME', $replaceStr);
+                $replaceStr= HandleContentCode($funStr, '');
             }
 
             //默认值
@@ -330,7 +337,7 @@ function replaceValueParam($content, $paramName, $replaceStr){
                 }
             }
             //escape转码
-            $isEscape=strtolower(RParam($labelStr, 'escape'));
+            $isEscape=lCase(RParam($labelStr, 'escape'));
             if( $isEscape=='1' || $isEscape=='true' ){
                 $replaceStr=escape($replaceStr);
             }
@@ -345,7 +352,7 @@ function replaceValueParam($content, $paramName, $replaceStr){
 
 
             //call echo(tempLabelStr,replaceStr)
-            $content= Replace($content, $tempLabelStr, $replaceStr);
+            $content= replace($content, $tempLabelStr, $replaceStr);
         }else{
             break;
         }
@@ -390,7 +397,7 @@ function handleWebUrl($url){
 function handleDisplayOnlineEditDialog($url, $content, $cssStyle, $replaceStr){
     $controlStr=''; $splStr=''; $s=''; $addOK ='';
     if( @$_REQUEST['gl']== 'edit' ){
-        if( instr($url, '&') > 0 ){
+        if( inStr($url, '&') > 0 ){
             $url= $url . '&vbgl=true';
         }
         $addOK= false; //添加默认为假
@@ -398,8 +405,8 @@ function handleDisplayOnlineEditDialog($url, $content, $cssStyle, $replaceStr){
         if( $replaceStr <> '' ){
             $splStr= aspSplit($replaceStr, '|');
             foreach( $splStr as $key=>$s){
-                if( $s <> '' && instr($content, $s) > 0 ){
-                    $content= Replace2($content, $s, $s . $controlStr);
+                if( $s <> '' && inStr($content, $s) > 0 ){
+                    $content= replace2($content, $s, $s . $controlStr);
                     $addOK= true;
                     break;
                 }
@@ -432,18 +439,18 @@ function getControlStr($url){
 function htmlAddAction($content, $jsAction){
     $s=''; $startStr=''; $endStr=''; $isHandle=''; $lableName ='';
     $s= $content;
-    $s= phptrim($s);
-    $startStr= mid($s, 1, instr($s, ' '));
+    $s= PHPTrim($s);
+    $startStr= mid($s, 1, inStr($s, ' '));
     $endStr= '>';
     $isHandle= true;
 
-    $lableName= aspTrim(strtolower(Replace($startStr, '<', '')));
-    if( instr($s, $startStr)== false || instr($s, $endStr)== false || instr('|a|div|span|font|h1|h2|h3|h4|h5|h6|dt|dd|dl|li|ul|table|tr|td|', '|' . $lableName . '|')== false ){
+    $lableName= aspTrim(lCase(replace($startStr, '<', '')));
+    if( inStr($s, $startStr)== false || inStr($s, $endStr)== false || inStr('|a|div|span|font|h1|h2|h3|h4|h5|h6|dt|dd|dl|li|ul|table|tr|td|', '|' . $lableName . '|')== false ){
         $isHandle= false;
     }
 
     if( $isHandle== true ){
-        $content= $startStr . $jsAction . Right($s, Len($s) - Len($startStr));
+        $content= $startStr . $jsAction . right($s, len($s) - len($startStr));
     }
     $htmlAddAction= $content;
     return @$htmlAddAction;

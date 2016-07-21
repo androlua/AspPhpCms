@@ -15,27 +15,28 @@ function newReplaceValueParam($content, $paramName, $replaceStr){
     if( isNul($replaceStr)== true ){ $replaceStr= '' ;}
 
     $startStr= '[$' . $paramName ; $endStr= '$]';
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $labelStr= strCut($content, $startStr, $endStr, 1);
+    if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+        $labelStr= StrCut($content, $startStr, $endStr, 1);
         //删除Html
-        $delHtmlYes= RParam($labelStr, 'DelHtml'); //是否删除Html
-        if( $delHtmlYes== 'true' ){ $replaceStr= Replace(delHtml($replaceStr), '<', '&lt;') ;}//HTML处理
+        $delHtmlYes= rParam($labelStr, 'DelHtml'); //是否删除Html
+        if( $delHtmlYes== 'true' ){ $replaceStr= replace(delHtml($replaceStr), '<', '&lt;') ;}//HTML处理
         //删除两边空格
-        $trimYes= RParam($labelStr, 'Trim'); //是否删除两边空格
-        if( $trimYes== 'true' ){ $replaceStr= trimVbCrlf($replaceStr) ;}
+        $trimYes= rParam($labelStr, 'Trim'); //是否删除两边空格
+        if( $trimYes== 'true' ){ $replaceStr= TrimVbCrlf($replaceStr) ;}
 
         //截取字符处理
-        $nLen= RParam($labelStr, 'Len'); //字符长度值
+        $nLen= rParam($labelStr, 'Len'); //字符长度值
         $nLen= handleNumber($nLen);
         //If nLen<>"" Then ReplaceStr = CutStr(ReplaceStr,nLen,"null")' Left(ReplaceStr,nLen)
-        if( $nLen <> '' ){ $replaceStr= cutStr($replaceStr, $nLen, '...') ;}//Left(ReplaceStr,nLen)
+        if( $nLen <> '' ){ $replaceStr= CutStr($replaceStr, $nLen, '...') ;}//Left(ReplaceStr,nLen)
+
 
         //时间处理
-        $nTimeFormat= RParam($labelStr, 'Format_Time'); //时间处理值
+        $nTimeFormat= rParam($labelStr, 'Format_Time'); //时间处理值
         if( $nTimeFormat <> '' ){
-            $replaceStr= format_Time($replaceStr, $nTimeFormat);
+            $replaceStr= Format_Time($replaceStr, $nTimeFormat);
         }
-        $content= Replace($content, $labelStr, $replaceStr);
+        $content= replace($content, $labelStr, $replaceStr);
 
     }
     $newReplaceValueParam= $content;
@@ -45,19 +46,19 @@ function newReplaceValueParam($content, $paramName, $replaceStr){
 //根据标签找到对应内容
 function newRParam($dataCode, $action, $ModuleName){
     $defaultStr=''; $startStr=''; $endStr ='';
-    $defaultStr= RParam($action, $ModuleName);
+    $defaultStr= rParam($action, $ModuleName);
     $startStr= '<!--#' . $defaultStr . ' start#-->';
     $endStr= '<!--#' . $defaultStr . ' end#-->';
 
     if( $defaultStr <> '' ){
         //判断是否存在
-        if( instr($dataCode, $startStr) > 0 && instr($dataCode, $endStr) > 0 ){
-            $defaultStr= strCut($dataCode, $startStr, $endStr, 2);
+        if( inStr($dataCode, $startStr) > 0 && inStr($dataCode, $endStr) > 0 ){
+            $defaultStr= StrCut($dataCode, $startStr, $endStr, 2);
         }else{
             $startStr= '<!--#' . $defaultStr;
             $endStr= '#-->';
-            if( instr($dataCode, $startStr) > 0 && instr($dataCode, $endStr) > 0 ){
-                $defaultStr= strCut($dataCode, $startStr, $endStr, 2);
+            if( inStr($dataCode, $startStr) > 0 && inStr($dataCode, $endStr) > 0 ){
+                $defaultStr= StrCut($dataCode, $startStr, $endStr, 2);
 
                 //Call Echo("有","StartStr=" & StartStr & ",EndStr=" & EndStr  & ",Default=" & Default)
             }
@@ -80,7 +81,7 @@ function getContentAllRunStr($content){
     foreach( $splStr as $key=>$s){
         if( $s<>'' ){
             $tempS= $s;
-            $s= Replace(Replace($s, Chr(10), ''), Chr(13), ''); //奇怪为什么 s里会有 chr(10)与chr(13) 呢？
+            $s= replace(replace($s, chr(10), ''), chr(13), ''); //奇怪为什么 s里会有 chr(10)与chr(13) 呢？
             $c= $c . $tempS . '=' . handleContentCode($s, '') . vbCrlf();
         }
     }
@@ -103,8 +104,8 @@ function checkContentRunStr( $content){
 function handleDoubleQuotation( $s){
     $NewS ='';
     $NewS= PHPTrim($s);
-    if( Left($NewS, 1)== '"' && Right($NewS, 1)== '"' ){
-        $s= mid($NewS, 2, Len($NewS) - 2);
+    if( left($NewS, 1)== '"' && right($NewS, 1)== '"' ){
+        $s= mid($NewS, 2, len($NewS) - 2);
     }
     $handleDoubleQuotation= $s;
     return @$handleDoubleQuotation;
@@ -117,11 +118,11 @@ function strDQ( $s){
 //处理成数据 20150330
 function handleToArray($content){
     $splStr=''; $i ='';
-    $content= strCut($content, '(', ')', 2);
+    $content= StrCut($content, '(', ')', 2);
     //Call Rw(Content)
     $splStr= aspSplit($content, ',');
     //Call Rw("<hr>")
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
         $splStr[$i]= strDQ($splStr[$i]);
         //Call Echo(I,SplStr(I))
     }
@@ -135,16 +136,16 @@ function handleContentCode( $content, $sType){ return ''; return ''; //留空函数
 
 //内部模块处理 HandleInModule(Content,"start") HandleInModule(Content,"end")
 function handleInModule($content, $sType){
-    $sType= strtolower(CStr($sType));
+    $sType= lCase(cStr($sType));
     if( $sType== '1' || $sType== 'start' ){
-        $content= Replace($content, '\\\'', '\\|*|\\');
-        $content= Replace($content, '\\=', '\\|&|\\'); //后加20141024
+        $content= replace($content, '\\\'', '\\|*|\\');
+        $content= replace($content, '\\=', '\\|&|\\'); //后加20141024
     }else if( $sType== '2' || $sType== 'end' ){
-        $content= Replace($content, '\\|*|\\', '\'');
-        $content= Replace($content, '\\$', '$');
-        $content= Replace($content, '\\}', '}');
+        $content= replace($content, '\\|*|\\', '\'');
+        $content= replace($content, '\\$', '$');
+        $content= replace($content, '\\}', '}');
 
-        $content= Replace($content, '\\|&|\\', '='); //后加20141024
+        $content= replace($content, '\\|&|\\', '='); //后加20141024
     }
     $handleInModule= $content;
     return @$handleInModule;
@@ -153,17 +154,17 @@ function handleInModule($content, $sType){
 function clearRParam( $action, $LableStr){
     $s ='';
     //Action=Replace(Action,"\'","【|\‘|】")
-    $action= Replace($action, '\\\'', ''); //把这种清掉
-    $s= RParam($action, $LableStr);
+    $action= replace($action, '\\\'', ''); //把这种清掉
+    $s= rParam($action, $LableStr);
     //s=replace(s,"【|\‘|】", "\'")
     $clearRParam= $s;
     return @$clearRParam;
 }
 //获得参数内容后 放到动作里处理一下（20151023）
 function atRParam( $action, $LableStr){
-    $atRParam= RParam($action, $LableStr);
-    if( instr(atRParam, '{$') > 0 && instr(atRParam, '$}') > 0 ){
-        $atRParam= handleTemplateAction(atRParam, false); //处理动作
+    $atRParam= rParam($action, $LableStr);
+    if( inStr(atRParam, '{$') > 0 && inStr(atRParam, '$}') > 0 ){
+        $atRParam= HandleTemplateAction(atRParam, false); //处理动作
     }
     return @$atRParam;
 }
@@ -184,28 +185,28 @@ function rParam( $action, $lableStr){
 
     //小写 单引号
     if( $s== '' ){
-        $s= handleRParam($action, strtolower($lableStr), '\'');
+        $s= handleRParam($action, lCase($lableStr), '\'');
     }
     //小写 双引号
     if( $s== '' ){
-        $s= handleRParam($action, strtolower($lableStr), '"');
+        $s= handleRParam($action, lCase($lableStr), '"');
     }
     //小写 空
     if( $s== '' ){
-        $s= handleRParam($action, strtolower($lableStr), '');
+        $s= handleRParam($action, lCase($lableStr), '');
     }
 
     //大写 单引号
     if( $s== '' ){
-        $s= handleRParam($action, strtoupper($lableStr), '\'');
+        $s= handleRParam($action, uCase($lableStr), '\'');
     }
     //大写 双引号
     if( $s== '' ){
-        $s= handleRParam($action, strtoupper($lableStr), '"');
+        $s= handleRParam($action, uCase($lableStr), '"');
     }
     //大写 空
     if( $s== '' ){
-        $s= handleRParam($action, strtoupper($lableStr), '');
+        $s= handleRParam($action, uCase($lableStr), '');
     }
     //不要这个，要不不稳定(20151022)
     //if s=false then s=""
@@ -222,31 +223,31 @@ function handleRParam( $action, $LableStr, $typeStr){
     //默认前面加空格
     $LalbeName= ' ' . $LableStr; //加个空格是为了精准
     //不存在  前面加点
-    if( instr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
+    if( inStr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
         $LalbeName= '\'' . $LableStr;
     }else{
         $isTrue= true;
     }
     //不存在 前面加双引号
-    if( instr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
+    if( inStr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
         $LalbeName= '"' . $LableStr;
     }else{
         $isTrue= true;
     }
     //不存在    前面加TAB
-    if( instr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
-        $LalbeName= "\t" . $LableStr;
+    if( inStr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
+        $LalbeName= vbTab() . $LableStr;
     }else{
         $isTrue= true;
     }
     //不存在    前面加换行
-    if( instr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
+    if( inStr($action, $LalbeName . '=' . $typeStr)== false && $isTrue== false ){
         $LalbeName= vbCrlf() . $LableStr;
     }else{
         $isTrue= true;
     }
-    if( instr($action, $LalbeName . '=' . $typeStr) > 0 && instr($action, $endTypeStr) > 0 ){
-        $s= strCut($action, $LalbeName . '=' . $typeStr, $endTypeStr, 2);
+    if( inStr($action, $LalbeName . '=' . $typeStr) > 0 && inStr($action, $endTypeStr) > 0 ){
+        $s= StrCut($action, $LalbeName . '=' . $typeStr, $endTypeStr, 2);
         $s= handleInModule($s, 'end'); //处理里面参数 追加于20141031            还原内容值
 
         if( $s== '' ){
@@ -254,7 +255,7 @@ function handleRParam( $action, $LableStr, $typeStr){
         }
 
         //判断是否对参数进行动作制作
-        if( instr($s, '{$') > 0 && instr($s, '$}') > 0 ){
+        if( inStr($s, '{$') > 0 && inStr($s, '$}') > 0 ){
 
             //handleRParam=HandleTemplateAction(handleRParam,true)        '处理动作
             //handleRParam = handleModuleReplaceArray(handleRParam)'给AddSqL处理一下动作 这是处理替换，不需要，因为在 HandleTemplateAction有替换了(20151021)
@@ -291,20 +292,20 @@ function getCutConfigBlock($ConfigContent, $BlockName, $StartLable, $EndLable){
     $startStr= $StartLable . $BlockName . $EndLable;
     $endStr= $StartLable . $BlockName . $EndLable;
     //开始标签处理
-    if( instr($ConfigContent, $startStr . ' start') > 0 ){
+    if( inStr($ConfigContent, $startStr . ' start') > 0 ){
         $startStr= $startStr . ' start';
     }else{
         $startStr= $startStr . ' Start';
     }
     //结束标签处理
-    if( instr($ConfigContent, $endStr . ' end') > 0 ){
+    if( inStr($ConfigContent, $endStr . ' end') > 0 ){
         $endStr= $endStr . ' end';
     }else{
         $endStr= $endStr . ' End';
     }
 
-    if( instr($ConfigContent, $startStr) > 0 && instr($ConfigContent, $endStr) > 0 ){
-        $getCutConfigBlock= strCut($ConfigContent, $startStr, $endStr, 2);
+    if( inStr($ConfigContent, $startStr) > 0 && inStr($ConfigContent, $endStr) > 0 ){
+        $getCutConfigBlock= StrCut($ConfigContent, $startStr, $endStr, 2);
     }
     return @$getCutConfigBlock;
 }
@@ -321,11 +322,11 @@ function getConfigFileBlock( $ConfigFile, $BlockName){
     $startStr= $BlockName . ' start';
     $endStr= $BlockName . ' end';
     $replaceStr= $startStr . '' . $endStr;
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $FindStr= strCut($content, $startStr, $endStr, 2);
+    if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+        $FindStr= StrCut($content, $startStr, $endStr, 2);
         $getConfigFileBlock= $FindStr;
     }else{
-        CreateFile($ConfigFile, $content . $replaceStr);
+        createFile($ConfigFile, $content . $replaceStr);
     }
     return @$getConfigFileBlock;
 }
@@ -336,13 +337,13 @@ function setConfigFileBlock( $ConfigFile, $WriteContent, $BlockName){
     $startStr= $BlockName . ' start';
     $endStr= $BlockName . ' end';
     $replaceStr= $startStr . $WriteContent . $endStr;
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $FindStr= strCut($content, $startStr, $endStr, 1);
-        $content= Replace($content, $FindStr, $replaceStr);
+    if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+        $FindStr= StrCut($content, $startStr, $endStr, 1);
+        $content= replace($content, $FindStr, $replaceStr);
     }else{
         $content= $content . $replaceStr;
     }
-    CreateFile($ConfigFile, $content);
+    createFile($ConfigFile, $content);
     $setConfigFileBlock= $content;
     return @$setConfigFileBlock;
 }
@@ -367,9 +368,9 @@ function delCutConfigBlock($Config, $BlockName, $StartLable, $EndLable){
     $startStr=''; $endStr=''; $s ='';
     $startStr= $StartLable . $BlockName . $EndLable . ' start';
     $endStr= $StartLable . $BlockName . $EndLable . ' end';
-    if( instr($Config, $startStr) > 0 && instr($Config, $endStr) > 0 ){
-        $s= strCut($Config, $startStr, $endStr, 1);
-        $Config= Replace($Config, $s, '');
+    if( inStr($Config, $startStr) > 0 && inStr($Config, $endStr) > 0 ){
+        $s= StrCut($Config, $startStr, $endStr, 1);
+        $Config= replace($Config, $s, '');
     }
     $delCutConfigBlock= $Config;
     return @$delCutConfigBlock;
@@ -392,25 +393,25 @@ function setFileParamValue($ConfigPath, $paramName, $valueStr){
 function handleGetSetFileParameValue($ConfigPath, $paramName, $valueStr, $sType){
     $content=''; $startStr=''; $endStr=''; $YunStr=''; $replaceStr ='';
     //文件为假时，创建一个空文件看看，如果不能创建这个文件则说明这个文件地址有问题，则退出20150324
-    if( checkFile($ConfigPath)== false ){
-        CreateFile($ConfigPath, '');
+    if( CheckFile($ConfigPath)== false ){
+        createFile($ConfigPath, '');
     }
-    if( checkFile($ConfigPath)== false ){ return ''; }//文件不存在则退出
+    if( CheckFile($ConfigPath)== false ){ return ''; }//文件不存在则退出
 
-    $content= trimVbCrlf(getFText($ConfigPath));
+    $content= TrimVbCrlf(getFText($ConfigPath));
     $startStr= vbCrlf() . $paramName . '=' ; $endStr= vbCrlf();
     $replaceStr= vbCrlf() . $paramName . '=' . $valueStr . vbCrlf();
-    if( instr(vbCrlf() . $content, $startStr) > 0 && instr($content . vbCrlf(), $endStr) > 0 ){
-        $YunStr= strCut(vbCrlf() . $content . vbCrlf(), $startStr, $endStr, 2);
+    if( inStr(vbCrlf() . $content, $startStr) > 0 && inStr($content . vbCrlf(), $endStr) > 0 ){
+        $YunStr= StrCut(vbCrlf() . $content . vbCrlf(), $startStr, $endStr, 2);
         if( $sType== '获得' ){
             $handleGetSetFileParameValue= $YunStr;
             return @$handleGetSetFileParameValue;
         }
         $YunStr= $startStr . $YunStr . $endStr;
-        $content= Replace(vbCrlf() . $content . vbCrlf(), $YunStr, $replaceStr);
-        CreateFile($ConfigPath, $content);
+        $content= replace(vbCrlf() . $content . vbCrlf(), $YunStr, $replaceStr);
+        createFile($ConfigPath, $content);
     }else{
-        CreateFile($ConfigPath, $content . vbCrlf() . trimVbCrlf($replaceStr));
+        createFile($ConfigPath, $content . vbCrlf() . TrimVbCrlf($replaceStr));
     }
     return @$handleGetSetFileParameValue;
 }
@@ -420,13 +421,13 @@ function setRParam($ConfigPath, $paramName, $paramValue, $isNoAdd){
     $content=''; $startStr=''; $endStr=''; $s ='';
     $content= PHPTrim(getFText($ConfigPath));
     $startStr= $paramName . '=\'' ; $endStr= '\'';
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $s= strCut($content, $startStr, $endStr, 2);
-        $content= Replace($content, $startStr . $s . $endStr, $startStr . $paramValue . $endStr);
-        CreateFile($ConfigPath, $content);
+    if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+        $s= StrCut($content, $startStr, $endStr, 2);
+        $content= replace($content, $startStr . $s . $endStr, $startStr . $paramValue . $endStr);
+        createFile($ConfigPath, $content);
 
     }else if( aspTrim($isNoAdd)== '1' ){
-        createAddFile($ConfigPath, $startStr . $paramValue . $endStr);
+        CreateAddFile($ConfigPath, $startStr . $paramValue . $endStr);
     }
 }
 
@@ -434,9 +435,9 @@ function setRParam($ConfigPath, $paramName, $paramValue, $isNoAdd){
 function addReplaceRParam( $content, $startStr, $endStr, $valueStr){
     $s ='';
     $valueStr= $startStr . $valueStr . $endStr;
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $s= strCut($content, $startStr, $endStr, 1);
-        $content= Replace($content, $s, $valueStr);
+    if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+        $s= StrCut($content, $startStr, $endStr, 1);
+        $content= replace($content, $s, $valueStr);
     }else{
         $content= $content . vbCrlf() . $valueStr;
     }
@@ -452,7 +453,7 @@ function deleteStrCut( $content, $startStr, $endStr, $cutType, $nDelCount){
     for( $i= 0 ; $i<= $nDelCount; $i++){
         $s= getStrCut($content, $startStr, $endStr, 1);
         if( $s <> '' ){
-            $content= Replace($content, $s, '');
+            $content= replace($content, $s, '');
         }else{
             break;
         }
@@ -472,24 +473,24 @@ function deleteStrCut( $content, $startStr, $endStr, $cutType, $nDelCount){
 //替换内容里模块   ReplaceType(空为替换，追加在前，追加在后(追加)，外部追加在前，外部追加在后(外部追加))
 function replaceContentModule( $content, $startStr, $endStr, $ReplaceValue, $ReplaceType){
     $splStr=''; $splxx=''; $s=''; $i=''; $splType=''; $valueList=''; $newStartStr=''; $newEndStr=''; $sourceValueList=''; $sourceValue=''; $tempS=''; $newReplaceValue ='';
-    if( instr($content, $startStr)== false && instr($content, $endStr)== false ){
+    if( inStr($content, $startStr)== false && inStr($content, $endStr)== false ){
         $replaceContentModule= $content;
         return @$replaceContentModule;
     }
     $splType= '$Array$';
     for( $i= 1 ; $i<= 99; $i++){
-        if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-            $s= strCut($content, $startStr, $endStr, 1) ; $tempS= $s;
-            $s= mid($s, Len($startStr) + 1, Len($s) - Len($startStr) - Len($endStr));
+        if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+            $s= StrCut($content, $startStr, $endStr, 1) ; $tempS= $s;
+            $s= mid($s, len($startStr) + 1, len($s) - len($startStr) - len($endStr));
             $newStartStr= getEachStrAddValue($startStr, '|*|');
-            if( instr($splType . $valueList . $splType, $splType . $newStartStr . $splType)== false ){
+            if( inStr($splType . $valueList . $splType, $splType . $newStartStr . $splType)== false ){
                 if( $valueList <> '' ){ $valueList= $valueList . $splType ;}
                 $valueList= $valueList . $newStartStr;
                 if( $sourceValueList <> '' ){ $sourceValueList= $sourceValueList . $splType ;}
                 $sourceValueList= $sourceValueList . $startStr;
             }
             $newEndStr= getEachStrAddValue($endStr, '|*|');
-            if( instr($splType . $valueList . $splType, $splType . $newEndStr . $splType)== false ){
+            if( inStr($splType . $valueList . $splType, $splType . $newEndStr . $splType)== false ){
                 if( $valueList <> '' ){ $valueList= $valueList . $splType ;}
                 $valueList= $valueList . $newEndStr;
                 if( $sourceValueList <> '' ){ $sourceValueList= $sourceValueList . $splType ;}
@@ -509,7 +510,7 @@ function replaceContentModule( $content, $startStr, $endStr, $ReplaceValue, $Rep
                 $newReplaceValue= $ReplaceValue;
             }
 
-            $content= Replace($content, $tempS, $newReplaceValue);
+            $content= replace($content, $tempS, $newReplaceValue);
         }else{
             break;
         }
@@ -517,10 +518,10 @@ function replaceContentModule( $content, $startStr, $endStr, $ReplaceValue, $Rep
     //call rwend(content)
     $splStr= aspSplit($valueList, $splType);
     $splxx= aspSplit($sourceValueList, $splType);
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
         $sourceValue= $splStr[$i];
         $ReplaceValue= $splxx[$i];
-        $content= Replace($content, $sourceValue, $ReplaceValue);
+        $content= replace($content, $sourceValue, $ReplaceValue);
     }
     $replaceContentModule= $content;
     return @$replaceContentModule;
@@ -534,9 +535,9 @@ function replaceContentRowModule($content, $searchValue, $ReplaceValue, $Replace
     $splStr=''; $splxx=''; $i=''; $splType=''; $valueList=''; $sourceValueList=''; $sourceValue=''; $newReplaceValue=''; $newSearchValue ='';
     $splType= '$Array$';
     for( $i= 1 ; $i<= 99; $i++){
-        if( instr($content, $searchValue) > 0 ){
+        if( inStr($content, $searchValue) > 0 ){
             $newSearchValue= getEachStrAddValue($searchValue, '|*|');
-            if( instr($splType . $valueList . $splType, $splType . $newSearchValue . $splType)== false ){
+            if( inStr($splType . $valueList . $splType, $splType . $newSearchValue . $splType)== false ){
                 if( $valueList <> '' ){ $valueList= $valueList . $splType ;}
                 $valueList= $valueList . $newSearchValue;
                 if( $sourceValueList <> '' ){ $sourceValueList= $sourceValueList . $splType ;}
@@ -549,7 +550,7 @@ function replaceContentRowModule($content, $searchValue, $ReplaceValue, $Replace
             }else{
                 $newReplaceValue= $ReplaceValue;
             }
-            $content= Replace($content, $searchValue, $newReplaceValue);
+            $content= replace($content, $searchValue, $newReplaceValue);
         }else{
             break;
         }
@@ -558,10 +559,10 @@ function replaceContentRowModule($content, $searchValue, $ReplaceValue, $Replace
     //call rwend(content)
     $splStr= aspSplit($valueList, $splType);
     $splxx= aspSplit($sourceValueList, $splType);
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
         $sourceValue= $splStr[$i];
         $ReplaceValue= $splxx[$i];
-        $content= Replace($content, $sourceValue, $ReplaceValue);
+        $content= replace($content, $sourceValue, $ReplaceValue);
     }
     $replaceContentRowModule= $content;
 
@@ -570,9 +571,9 @@ function replaceContentRowModule($content, $searchValue, $ReplaceValue, $Replace
 //处理配置文档(20150804)
 function handleConfigFile($ConfigPath){
     $c ='';
-    if( checkFile($ConfigPath)== false ){
+    if( CheckFile($ConfigPath)== false ){
         $c= '#Help帮助# start' . vbCrlf() . '默认帮助内容' . vbCrlf() . '#Help帮助# end';
-        CreateFile($ConfigPath, $c);
+        createFile($ConfigPath, $c);
     }
 }
 
@@ -580,13 +581,13 @@ function handleConfigFile($ConfigPath){
 function getRParam( $content, $lableStr){
     $contentLCase=''; $endS=''; $i=''; $s=''; $c=''; $isStart=''; $startStr=''; $isValue ='';
     $content= ' ' . $content . ' '; //避免更精准获得值
-    $contentLCase= strtolower($content);
-    $lableStr= strtolower($lableStr);
-    $endS= mid($content, instr($contentLCase, $lableStr) + Len($lableStr),-1);
+    $contentLCase= lCase($content);
+    $lableStr= lCase($lableStr);
+    $endS= mid($content, inStr($contentLCase, $lableStr) + len($lableStr),-1);
     //call echo("ends",ends)
     $isStart= false; //是否有开始类型值
     $isValue= false; //是否有值
-    for( $i= 1 ; $i<= Len($endS); $i++){
+    for( $i= 1 ; $i<= len($endS); $i++){
         $s= mid($endS, $i, 1);
         if( $isStart== true ){
             if( $s <> '' ){
@@ -632,7 +633,7 @@ function getDefaultValue($action){
 //添加模块替换数组
 function addModuleReplaceArray($title, $content){
     $i ='';
-    for( $i= 1 ; $i<= UBound($GLOBALS['ModuleReplaceArray']) - 1; $i++){
+    for( $i= 1 ; $i<= uBound($GLOBALS['ModuleReplaceArray']) - 1; $i++){
         if( $GLOBALS['ModuleReplaceArray'][$i][ 0]== '' ){
             $GLOBALS['ModuleReplaceArray'][$i][ 0]= $title;
             $GLOBALS['ModuleReplaceArray'][0][ $i]= $content;
@@ -651,12 +652,12 @@ function moduleFindContent($action, $ModuleName){
     //[_18年独家一次性祛斑第一品牌2014年10月21日 10时59分]
     //Call Echo("Default",Default)
     //判断是否存在
-    if( instr($GLOBALS['code'], $startStr) > 0 && instr($GLOBALS['code'], $endStr) > 0 ){
+    if( inStr($GLOBALS['code'], $startStr) > 0 && inStr($GLOBALS['code'], $endStr) > 0 ){
         $defaultStr= getStrCut($GLOBALS['code'], $startStr, $endStr, 2);
     }else if( $defaultStr <> '' ){
         $startStr= '<!--#' . $defaultStr;
         $endStr= '#-->';
-        if( instr($GLOBALS['code'], $startStr) > 0 && instr($GLOBALS['code'], $endStr) > 0 ){
+        if( inStr($GLOBALS['code'], $startStr) > 0 && inStr($GLOBALS['code'], $endStr) > 0 ){
             $defaultStr= getStrCut($GLOBALS['code'], $startStr, $endStr, 2);
         }
     }

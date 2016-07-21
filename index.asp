@@ -24,6 +24,7 @@ Dim glb_aritcleRelatedTags                                                      
 Dim glb_aritcleSmallImage, glb_aritcleBigImage                                  '文章小图与文章大图
 Dim glb_searchKeyWord                                                           '搜索关键词
 dim cacheHtmlFilePath															'缓冲html文件路径
+dim positionEndStr																'面包线尾部追加内容 
 
 Dim isMakeHtml                                                                  '是否生成网页
 '处理动作   ReplaceValueParam为控制字符显示方式
@@ -127,7 +128,11 @@ Function handleAction(content)
             ElseIf checkFunValue(action, "ColumnMenu ") = True Then
                 action = XY_AP_ColumnMenu(action) 
 				
-
+			'------------------- 循环处理 -----------------------
+			'For循环处理
+			ElseIf CheckFunValue(action, "ForArray ")=True Then
+				action = XY_ForArray(action)
+				
             '------------------- 待分区 -----------------------
             '网站底部  
             ElseIf checkFunValue(action, "WebSiteBottom ") = True Or checkFunValue(action, "WebBottom ") = True Then
@@ -217,6 +222,7 @@ Function XY_DisplayWebColumn(action)
         Else
             s = copyStr(" ", 8) & "<li><a href=""" & url & """>" & rs("columnname") & "</a>" 
         End If 
+		'网站栏目没有page位置处理
         url = WEB_ADMINURL & "?act=addEditHandle&actionType=WebColumn&lableTitle=网站栏目&nPageSize=10&page=&id=" & rs("id") & "&n=" & getRnd(11) 
         s = handleDisplayOnlineEditDialog(url, s, "", "div|li|span")                    '处理是否添加在线修改管理器
 
@@ -303,7 +309,7 @@ Function handleRGV(ByVal content, findStr, replaceStr)
     handleRGV = content 
 End Function 
 
-'加载网址配置
+'加载网站配置信息
 Sub loadWebConfig()
     Dim templatedir 
     Call openconn() 
@@ -349,8 +355,11 @@ Function thisPosition(content)
     End If 
     '20160330
     If glb_locationType = "detail" Then
-        c = c & " >> 查看内容" 
-    End If 
+        c = c & " >> 查看内容"  
+    End If
+    '尾部追加内容
+	c = c &   positionEndStr
+	
     'call echo("glb_locationType",glb_locationType)
 
     content = Replace(content, "[$detailPosition$]", c) 
@@ -379,7 +388,7 @@ Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameL
     Dim atitleStr                                                                   'A链接的title20160407
     Dim anofollowStr                                                                'A链接的nofollow
 
-    Dim id 
+    Dim id,idPage
     id = rq("id") 
     Call checkIDSQL(Request("id")) 
 
@@ -432,6 +441,7 @@ Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameL
         rs.Open sql, conn, 1, 1 
         x = rs.RecordCount 
     End If 
+	'call echo("sql",sql)
     For i = 1 To x
         '【PHP】$rs=mysql_fetch_array($rsObj);                                            //给PHP用，因为在 asptophp转换不完善
 
@@ -523,13 +533,15 @@ Function getDetailList(action, content, actionName, lableTitle, ByVal fieldNameL
 	
 			Next 
 		end if
-		'call echo("actionName",actionName)
-		if actionName="GuestBook" then			
-			'留言 
-			url = WEB_ADMINURL & "?act=addEditHandle&actionType=GuestBook&lableTitle=留言&nPageSize=10&parentid=&searchfield=bodycontent&keyword=&addsql=&page=&id=" & rs("id") & "&n=" & getRnd(11)  
+		'call echo("tableName",tableName)
+		idPage=getThisIdPage(db_PREFIX & tableName ,rs("id"),10)
+		'【留言】
+		if tableName="guestbook" then			 
+			url = WEB_ADMINURL & "?act=addEditHandle&actionType=GuestBook&lableTitle=留言&nPageSize=10&parentid=&searchfield=bodycontent&keyword=&addsql=&page="& idPage &"&id=" & rs("id") & "&n=" & getRnd(11)
+		
+		'【默认显示文章】 
 		else
-			'文章列表加在线编辑
-			url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page=&parentid=&id=" & rs("id") & "&n=" & getRnd(11) 
+			url = WEB_ADMINURL & "?act=addEditHandle&actionType=ArticleDetail&lableTitle=分类信息&nPageSize=10&page="& idPage &"&parentid="& rs("parentid") &"&id=" & rs("id") & "&n=" & getRnd(11) 
 		end if
         s = handleDisplayOnlineEditDialog(url, s, "", "div|li|span") 
 
@@ -645,7 +657,7 @@ If Request("act") = "makehtml" Then
 
 '复制Html到网站
 ElseIf Request("act") = "copyHtmlToWeb" Then
-    Call copyHtmlToWeb() 
+    Call copyHtmlToWeb()
 '全部生成
 ElseIf Request("act") = "makeallhtml" Then
     Call makeAllHtml("", "", Request("id")) 
@@ -709,16 +721,13 @@ Function checkIDSQL(id)
     If checkNumber(id) = False And id <> "" Then
         Call eerr("提示", "id中有非法字符") 
     End If 
-End Function 
-
-
-
-
+End Function
 'http://127.0.0.1/aspweb.asp?act=nav&columnName=ASP
 'http://127.0.0.1/aspweb.asp?act=detail&id=75
 '生成html静态页
 Function makeWebHtml(action)
     Dim actionType, npagesize, npage, url, addSql, sortSql ,sortFieldName,ascOrDesc
+	dim serchKeyWordName,parentid			'追加于20160716 home
     actionType = RParam(action, "actionType") 
     npage = RParam(action, "npage") 
     npage = getnumber(npage) 
@@ -909,12 +918,21 @@ Function makeWebHtml(action)
     '搜索
     ElseIf actionType = "Search" Then
         templateName = "Main_Model.html" 
-        glb_searchKeyWord = Request("wd") 
-        addSql = " where title like '%" & glb_searchKeyWord & "%'" 
+		serchKeyWordName=request("keywordname")
+		parentid=request("parentid")
+		if serchKeyWordName="" then
+			serchKeyWordName="wd"
+		end if
+        glb_searchKeyWord = replace(Request(serchKeyWordName),"<","&lt;")
+		addSql=""
+		if parentid<>"" then
+			addSql=" where parentid=" & parentid
+		end if
+        addSql =getWhereAnd(addSql, " where title like '%" & glb_searchKeyWord & "%'")
         npagesize = 20 
         'call echo(npagesize, npage)
         glb_bodyContent = getDetailList(action, defaultListTemplate(glb_columnType,glb_columnName), "ArticleDetail", "网站栏目", "*", npagesize, npage, addSql) 
-
+		positionEndStr=" >> 搜索内容”"& glb_searchKeyWord &"“"
     '加载等待
     ElseIf actionType = "loading" Then
         Call rwend("页面正在加载中。。。") 
@@ -928,6 +946,9 @@ Function makeWebHtml(action)
         templateName = cfg_webTemplate & "/" & templateName 
     End If 
     'call echo("templateName",templateName)
+	if checkFile(templateName)=false then
+		call eerr("未找到模板文件",templateName)
+	end if
     code = getftext(templateName) 
 
 
@@ -1154,15 +1175,13 @@ Sub makeAllHtml(columnType, columnName, columnId)
             templateName = ""                                                               '清空模板文件名称
         rss.MoveNext : Wend : rss.Close 
 
-    End If 
-
-
+    End If
 End Sub 
 
 '复制html到网站
 Sub copyHtmlToWeb()
     Dim webDir,toWebDir, toFilePath, filePath, fileName, fileList, splStr, content, s, s1, c, webImages, webCss, webJs, splJs 
-    Dim webFolderName, jsFileList, setFileCode, nErrLevel, jsFilePath
+    Dim webFolderName, jsFileList, setFileCode, nErrLevel, jsFilePath, url
 
     setFileCode = Request("setcode")                                                '设置文件保存编码
 
@@ -1221,12 +1240,13 @@ Sub copyHtmlToWeb()
             Call writeToFile(filePath, content, setFileCode) 
             Call echo("css", cfg_webImages) 
         End If 
-    Next 
+    Next  
     '复制栏目HTML
     isMakeHtml = True 
     rss.Open "select * from " & db_PREFIX & "webcolumn where isonhtml=true", conn, 1, 1 
     While Not rss.EOF
         glb_filePath = Replace(getColumnUrl(rss("columnname"), "name"), cfg_webSiteUrl, "") 
+		
         If Right(glb_filePath, 1) = "/" Or Right(glb_filePath, 1) = "" Then
             glb_filePath = glb_filePath & "index.html" 
         End If 
@@ -1235,7 +1255,7 @@ Sub copyHtmlToWeb()
                 fileList = fileList & glb_filePath & vbCrLf 
             Else
                 fileList = glb_filePath & vbCrLf & fileList 
-            End If 
+            End If
             fileName = Replace(glb_filePath, "/", "_") 
             toFilePath = webDir & fileName 
             Call copyfile(glb_filePath, toFilePath) 
@@ -1292,7 +1312,6 @@ Sub copyHtmlToWeb()
             filePath = webDir & Replace(filePath, "/", "_") 
             Call echo("filePath", filePath) 
             content = getftext(filePath) 
-
             For Each s In splStr
                 s1 = s 
                 If Right(s1, 11) = "/index.html" Then
@@ -1304,7 +1323,8 @@ Sub copyHtmlToWeb()
                 content = Replace(content, sourceUrl, replaceUrl) 
             Next 
             content = Replace(content, cfg_webSiteUrl, "")                                  '删除网址
-            content = Replace(content, cfg_webTemplate, "")                                 '删除模板路径
+            content = Replace(content, cfg_webTemplate & "/", "")                                 '删除模板路径 记
+
             'content=nullLinkAddDefaultName(content)
             For Each s In splJs
                 If s <> "" Then
@@ -1317,6 +1337,7 @@ Sub copyHtmlToWeb()
                 Call copyfile("/Jquery/Jquery.Min.js", webJs & "/Jquery.Min.js") 
             End If 
             content = Replace(content, "<a href="""" ", "<a href=""index.html"" ")    '让首页加index.html
+		 
             Call createFileGBK(filePath, content) 
         End If 
     Next 
@@ -1338,7 +1359,7 @@ Sub copyHtmlToWeb()
         content = handleCloseHtml(content, True, "")                                    '闭合标签
         nErrLevel = checkHtmlFormatting(content) 
         If checkHtmlFormatting(content) = False Then
-            Call eerr(htmlFilePath & "(格式化错误)", nErrLevel) 		'注意
+            Call echored(htmlFilePath & "(格式化错误)", nErrLevel) 		'注意
         End If 
 		'设置为utf-8编码
 		if lcase(setFileCode)="utf-8" then
@@ -1365,8 +1386,10 @@ Sub copyHtmlToWeb()
 	if request("isMakeXml")="1" then
 		call makeHtmlWebToXmlZip("/htmladmin/", webFolderName)
 	end if
+	'浏览地址
+	url="http://10.10.10.57/" & toWebDir
+	call echo("浏览","<a href='"& url &"' target='_blank'>"& url &"</a>")
 End Sub 
-
 '使htmlWeb文件夹用php压缩
 Function makeHtmlWebToZip(webDir)
     Dim content, splStr, filePath, c, fileArray, fileName, fileType, isTrue 
@@ -1415,7 +1438,7 @@ function makeHtmlWebToXmlZip(newWebDir,rootDir)
 		'rootDir="\sharembweb\"
 	
         Dim objXmlZIP : Set objXmlZIP = new xmlZIP
-            Call objXmlZIP.run(handlePath(newWebDir), handlePath(newWebDir & rootDir), False, xmlFileName)  
+            Call objXmlZIP.callRun(handlePath(newWebDir), handlePath(newWebDir & rootDir), False, xmlFileName)  
 			call echo(handlePath(newWebDir), handlePath(newWebDir & rootDir))
         Set objXmlZIP = Nothing 
 		doevents

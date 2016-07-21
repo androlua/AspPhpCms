@@ -7,7 +7,7 @@
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2016-03-01 01:10:01
 ¡¾filename¡¿/mobandown/copy-cncn.html
-¡¾smallimage¡¿[$cfg_webimages$]mfwebcncn.jpg
+¡¾smallimage¡¿[$cfg_webimages$]/mfwebcncn.jpg
 ¡¾flags¡¿|
 ¡¾relatedtags¡¿Ä£°åÏÂÔØ
 ¡¾bodycontent¡¿

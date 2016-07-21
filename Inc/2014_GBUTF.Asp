@@ -319,13 +319,13 @@ Function URLDecode(ByRef strUrl)
 End Function 
 
 'GB2312到UTF-8
-Function GBtoUTF8(szInput)
+Function toUTFChar(szInput)
     Dim wch, uch, szRet 
     Dim x 
     Dim nAsc 
     '如果输入参数为空，则退出函数
     If szInput = "" Then
-        GBtoUTF8 = szInput 
+        toUTFChar = szInput 
         Exit Function 
     End If 
     '开始转换
@@ -347,7 +347,7 @@ Function GBtoUTF8(szInput)
             End If 
         End If 
     Next 
-    GBtoUTF8 = szRet 
+    toUTFChar = szRet 
 End Function 
 
 '加密解密URL

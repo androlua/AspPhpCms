@@ -1,8 +1,5 @@
- 
-loadJs("/Jquery/lhgdialog.min.js"); 			//面板
- 
-
-
+ //不用担心jquery重复加载，因为js里有判断了
+loadJs("/Jquery/lhgdialog.min.js"); 			//加载面板
 //加载Js
 function loadJs(name) {    
 	document.write('<script src="'+name+'" type="text/javascript"></script>');

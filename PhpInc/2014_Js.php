@@ -20,7 +20,7 @@ function jsCodeConfusion($content){
     //循环分行
     foreach( $splStr as $key=>$s){
         //循环每个字符
-        for( $i= 1 ; $i<= Len($s); $i++){
+        for( $i= 1 ; $i<= len($s); $i++){
             $Sx= mid($s, $i, 1);
             //Asp开始
             if( $Sx== '<' && $Wc== '' ){ //输出文本必需为空 Wc为输出内容 如"<%" 排除 修改于20140412
@@ -39,8 +39,8 @@ function jsCodeConfusion($content){
             }
             if( $yesJs== true ){
 
-                $beforeStr= Right(Replace(mid($s, 1, $i - 1), ' ', ''), 1); //上一个字符
-                $afterStr= Left(Replace(mid($s, $i + 1,-1), ' ', ''), 1); //下一个字符
+                $beforeStr= right(replace(mid($s, 1, $i - 1), ' ', ''), 1); //上一个字符
+                $afterStr= left(replace(mid($s, $i + 1,-1), ' ', ''), 1); //下一个字符
                 $endCode= mid($s, $i + 1,-1); //当前字符往后面代码 一行
                 //输入文本
                 if(($sx== '"' || $sx== '\'' && $wcType== '') || $sx== $wcType || $wc <> '' ){
@@ -48,7 +48,7 @@ function jsCodeConfusion($content){
                     //这是一种简单的方法，等完善(20150914)
                     if( $isAddToSYH== true && $beforeStr== '\\' ){
 
-                        if( Len($wc) >=1 ){
+                        if( len($wc) >=1 ){
                             if( isStrTransferred($wc)==true ){		//为转义字符为真
                                 //call echo(wc,isStrTransferred(wc))
                                 $isAddToSYH= false;
@@ -87,20 +87,20 @@ function jsCodeConfusion($content){
                     //字母
                 }else if( checkABC($Sx)== true ||($Sx== '_' && $Zc <> '') || $Zc <> '' ){
                     $Zc= $Zc . $Sx;
-                    $s1= strtolower(mid($s . ' ', $i + 1, 1));
-                    if( instr('abcdefghijklmnopqrstuvwxyz0123456789', $s1)== 0 && ($s1== '_' && $Zc <> '') ){//最简单判断
+                    $s1= lCase(mid($s . ' ', $i + 1, 1));
+                    if( inStr('abcdefghijklmnopqrstuvwxyz0123456789', $s1)== 0 && ($s1== '_' && $Zc <> '') ){//最简单判断
                         $tempS= mid($s, $i + 1,-1);
 
-                        if( instr('|function|sub|', '|' . strtolower($Zc) . '|') ){
+                        if( inStr('|function|sub|', '|' . lCase($Zc) . '|') ){
                             //函数开始
-                            if( $YesFunction== false && strtolower($UpWord) <> 'end' ){
+                            if( $YesFunction== false && lCase($UpWord) <> 'end' ){
                                 $YesFunction= true;
                                 $DimList= getFunDimName($tempS);
                                 $StartFunction= true;
-                            }else if( $YesFunction== true && strtolower($UpWord)== 'end' ){ //获得上一个单词
+                            }else if( $YesFunction== true && lCase($UpWord)== 'end' ){ //获得上一个单词
                                 $YesFunction= false;
                             }
-                        }else if( $YesFunction== true && strtolower($Zc)== 'var' ){
+                        }else if( $YesFunction== true && lCase($Zc)== 'var' ){
                             $DimList= $DimList . ',' . getVarName($tempS);
                         }else if( $YesFunction== true ){
                             //排除函数后面每一个名称
@@ -136,7 +136,7 @@ function delJsNote($content){
     $isMultiLineNote=false;			//多行注释默认为假
     $splstr=aspSplit($content,vbCrlf());
     foreach( $splstr as $key=>$s){
-        $s2=phptrim($s);
+        $s2=PHPTrim($s);
         if( $isMultiLineNote==true ){
             if( len($s2)>=2 ){
                 if( right($s2,2)=='*/' ){
@@ -167,10 +167,10 @@ function JsEncode__( $s){
     $arr1=''; $arr2=''; $i=''; $j=''; $c=''; $p=''; $t='';
     $arr1= array(chr(34),chr(92),chr(47),chr(8),chr(12),chr(10),chr(13),chr(9)); 		//34|",92|\,47|/,8|,12|,10| ,13| ,9|	,
     $arr2= array(chr(34),chr(92),chr(47),chr(98),chr(102),chr(110),chr(114)); 		//34|",92|\,47|/,98|b,102|f,110|n,114|r,1865|,
-    for( $i= 1 ; $i<= Len($s); $i++){
+    for( $i= 1 ; $i<= len($s); $i++){
         $p= true;
         $c= mid($s, $i, 1);
-        for( $j= 0 ; $j<= Ubound($arr1); $j++){
+        for( $j= 0 ; $j<= uBound($arr1); $j++){
             if( $c== $arr1[$j] ){
                 $t= $t . '\\' . $arr2[$j];
                 $p= false;

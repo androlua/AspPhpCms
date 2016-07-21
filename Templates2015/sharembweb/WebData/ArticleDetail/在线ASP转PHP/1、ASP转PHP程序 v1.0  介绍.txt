@@ -18,7 +18,7 @@ ASP转PHP源程序已经放到Github上，并且不断的在更新当中，如果你有需要的话，可以去Gi
 作者：云端
 首发：<a href="http://sharembweb.com/" target="_blank" class="ablue">http://sharembweb.com</a>
 
-<img src="[$cfg_webimages$]asptophp.jpg" title="ASP转PHP程序 v1.0" alt="ASP转PHP程序 v1.0" width="100%">
+<img src="[$cfg_webimages$]/asptophp.jpg" title="ASP转PHP程序 v1.0" alt="ASP转PHP程序 v1.0" width="100%">
 ASP转PHP程序 v1.0
 1、非常方便的就可以把asp代码转成php代码，操作及其简单。
 2、Public\ASP.php 为asp函数转换文件，集成了大量asp里的内置函数。

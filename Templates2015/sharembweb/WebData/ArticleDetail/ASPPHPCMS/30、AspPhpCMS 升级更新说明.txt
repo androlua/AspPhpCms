@@ -3,7 +3,7 @@
 【webtitle】ASPPHPCMS升级更新说明 - 分享模板网站
 【webkeywords】ASPPHPCMS升级更新说明 - 分享模板网站
 【webdescription】ASPPHPCMS升级更新说明 - 分享模板网站
-【sortrank】5
+【sortrank】30
 【author】sharembweb
 【adddatetime】2015-05-22 22:23:11
 【filename】/ASPPHPCMS/update.html

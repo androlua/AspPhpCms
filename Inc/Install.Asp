@@ -88,7 +88,7 @@ Class ClassAccess
 
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "customAUrl VarChar Default """","                            '自定义链接网址
@@ -114,6 +114,8 @@ Class ClassAccess
             sql = sql & "noteBody Text Default """","                                 '笔记信息
 
             sql = sql & "aboutcontent Text Default """","                             '简单介绍
+            sql = sql & "tempTXT1 Text Default """","                              '暂存文本1
+            sql = sql & "tempTXT2 Text Default """","                              '暂存文件2
             sql = sql & "bodycontent Text Default """")"                              '备注
             If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
             conn.Execute sql 
@@ -171,7 +173,7 @@ Class ClassAccess
             sql = sql & "recordUrl VarChar Default """","                             '远程网址
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "templatePath VarChar Default """","                          '模板路径
@@ -199,6 +201,9 @@ Class ClassAccess
 
             sql = sql & "noteBody Text Default """","                                 '笔记信息
             sql = sql & "aboutcontent Text Default """","                             '简单介绍
+			
+            sql = sql & "tempTXT1 Text Default """","                              '暂存文本1
+            sql = sql & "tempTXT2 Text Default """","                              '暂存文件2
             sql = sql & "bodycontent Text Default """")"                              '备注
             If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
             conn.Execute sql 
@@ -214,7 +219,7 @@ Class ClassAccess
 
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "customAUrl VarChar Default """","                            '自定义链接网址
@@ -299,7 +304,7 @@ Class ClassAccess
             '2013,12,18
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
 
             sql = sql & "WebTemplate VarChar Default '\Templates',"                   '网站模板路径
             sql = sql & "WebSkins VarChar Default '\Skins\Default\',"                 '网站样式路径'暂时不要用
@@ -357,7 +362,7 @@ Class ClassAccess
             sql = sql & "adminLevel VarChar Default """","                            '级别
             sql = sql & "channel VarChar Default """","                               '频道
             sql = sql & "mtest YesNo Default No,"                                     '修改后更新HTML
-            sql = sql & "flags VarChar Default """","                                 '旗        只有这个后台做了处理
+            sql = sql & "flags Text Default """","                                 '旗        只有这个后台做了处理 因为权限特别多
 
 
             sql = sql & "bodycontent Text Default """")"                              '备注
@@ -372,7 +377,7 @@ Class ClassAccess
             sql = sql & "isThrough YesNo Default No,"                                 '通过
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "customAUrl VarChar Default """","                            '自定义链接网址
@@ -419,7 +424,7 @@ Class ClassAccess
 
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "templatePath VarChar Default """","                          '模板路径
@@ -454,7 +459,7 @@ Class ClassAccess
             sql = sql & "endDateTime VarChar Default """","                           '截止日期
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "templatePath VarChar Default """","                          '模板路径
@@ -500,7 +505,7 @@ Class ClassAccess
             sql = sql & "ip VarChar Default """","                                    'IP地址
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "customAUrl VarChar Default """","                            '自定义链接网址
@@ -543,7 +548,7 @@ Class ClassAccess
             sql = sql & "ip VarChar Default """","                                    'IP地址
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "customAUrl VarChar Default """","                            '自定义链接网址
@@ -619,7 +624,7 @@ Class ClassAccess
             sql = sql & "isDisplay YesNo Default Yes,"                                '投票显示关闭
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
             sql = sql & "folderName VarChar Default """","                            'HTMl文件夹名称
             sql = sql & "fileName VarChar Default """","                              'HTML文件名称
             sql = sql & "banner VarChar Default """","                                '当前Banner图片
@@ -682,7 +687,22 @@ Class ClassAccess
             sql = sql & "bodycontent Text Default """")"                              '备注
             If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
             conn.Execute sql 
-        End If 
+        End If
+        '会员日志表-------------------------------
+        tableName = DB_PREFIX & "MemberLog" 
+        If showIsTable(tableName) = False Then
+            sql = "Create Table " & tableName & " (Id int Identity(0,1) Primary Key," 
+            sql = sql & "userid Int Default -1,"                          	  '会员id
+            sql = sql & "title VarChar Default """","                          	  '标题			
+
+            sql = sql & "ip VarChar Default """","                                    'IP
+            sql = sql & "addDateTime DateTime Default Now(),"                         '创建时间
+            sql = sql & "upDateTime DateTime Default Date(),"                         '修改时间
+            sql = sql & "isThrough Int Default 0,"                                    '是否通过
+            sql = sql & "bodycontent Text Default """")"                              '备注
+            If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
+            conn.Execute sql 
+        End If
         '付款信息表-------------------------------
         tableName = DB_PREFIX & "Payment" 
         If showIsTable(tableName) = False Then
@@ -786,6 +806,57 @@ Class ClassAccess
             If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
             conn.Execute sql 
         End If 
+
+		
+        '布局表 20151228-------------------------------
+        tableName = DB_PREFIX & "webLayout" 
+        If showIsTable(tableName) = False Then
+            sql = "Create Table " & tableName & " (Id int Identity(0,1) Primary Key," 
+            sql = sql & "layoutName VarChar Default """","                            '布局名称
+            sql = sql & "layoutList VarChar Default """","                            '布局列表
+			
+            sql = sql & "sourceStr VarChar Default """","                          '被替换内容
+            sql = sql & "replaceStr VarChar Default """","                          '统一替换内容
+			
+            sql = sql & "actionContent Text Default """","                            '动作内容
+
+            sql = sql & "sortRank int Default 0,"                                     '排序编号
+            sql = sql & "isDisplay YesNo,"                                            '是否显示
+            sql = sql & "author VarChar Default """","                                '作者
+            sql = sql & "views int Default 0,"                                        '点击次数
+            sql = sql & "adminId int Default 0,"                                      '管理员id
+
+
+            sql = sql & "addDateTime DateTime Default Now(),"                         '创建时间
+            sql = sql & "upDateTime DateTime Default Date(),"                         '修改时间
+
+            sql = sql & "aboutcontent Text Default """","                             '简单介绍
+            sql = sql & "bodycontent Text Default """")"                              '备注
+            If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
+            conn.Execute sql 
+        End If 
+        '模块表 20151228-------------------------------
+        tableName = DB_PREFIX & "webModule" 
+        If showIsTable(tableName) = False Then
+            sql = "Create Table " & tableName & " (Id int Identity(0,1) Primary Key," 
+            sql = sql & "moduleType VarChar Default """","                            '模块类型
+            sql = sql & "moduleName VarChar Default """","                            '模块名称
+            sql = sql & "title VarChar Default """","                                 '标题
+            sql = sql & "sortRank int Default 0,"                                     '排序编号
+            sql = sql & "isDisplay YesNo,"                                            '是否显示
+            sql = sql & "author VarChar Default """","                                '作者
+            sql = sql & "views int Default 0,"                                        '点击次数
+            sql = sql & "adminId int Default 0,"                                      '管理员id
+
+
+            sql = sql & "addDateTime DateTime Default Now(),"                         '创建时间
+            sql = sql & "upDateTime DateTime Default Date(),"                         '修改时间
+
+            sql = sql & "aboutcontent Text Default """","                             '简单介绍
+            sql = sql & "bodycontent Text Default """")"                              '备注
+            If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
+            conn.Execute sql 
+        End If 
 		'采集网站表-------------------------------
         tableName = DB_PREFIX & "CaiWeb" 
         If showIsTable(tableName) = False Then
@@ -871,56 +942,6 @@ Class ClassAccess
             If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
             conn.Execute sql 
         End If
-		
-        '布局表 20151228-------------------------------
-        tableName = DB_PREFIX & "webLayout" 
-        If showIsTable(tableName) = False Then
-            sql = "Create Table " & tableName & " (Id int Identity(0,1) Primary Key," 
-            sql = sql & "layoutName VarChar Default """","                            '布局名称
-            sql = sql & "layoutList VarChar Default """","                            '布局列表
-			
-            sql = sql & "sourceStr VarChar Default """","                          '被替换内容
-            sql = sql & "replaceStr VarChar Default """","                          '统一替换内容
-			
-            sql = sql & "actionContent Text Default """","                            '动作内容
-
-            sql = sql & "sortRank int Default 0,"                                     '排序编号
-            sql = sql & "isDisplay YesNo,"                                            '是否显示
-            sql = sql & "author VarChar Default """","                                '作者
-            sql = sql & "views int Default 0,"                                        '点击次数
-            sql = sql & "adminId int Default 0,"                                      '管理员id
-
-
-            sql = sql & "addDateTime DateTime Default Now(),"                         '创建时间
-            sql = sql & "upDateTime DateTime Default Date(),"                         '修改时间
-
-            sql = sql & "aboutcontent Text Default """","                             '简单介绍
-            sql = sql & "bodycontent Text Default """")"                              '备注
-            If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
-            conn.Execute sql 
-        End If 
-        '模块表 20151228-------------------------------
-        tableName = DB_PREFIX & "webModule" 
-        If showIsTable(tableName) = False Then
-            sql = "Create Table " & tableName & " (Id int Identity(0,1) Primary Key," 
-            sql = sql & "moduleType VarChar Default """","                            '模块类型
-            sql = sql & "moduleName VarChar Default """","                            '模块名称
-            sql = sql & "title VarChar Default """","                                 '标题
-            sql = sql & "sortRank int Default 0,"                                     '排序编号
-            sql = sql & "isDisplay YesNo,"                                            '是否显示
-            sql = sql & "author VarChar Default """","                                '作者
-            sql = sql & "views int Default 0,"                                        '点击次数
-            sql = sql & "adminId int Default 0,"                                      '管理员id
-
-
-            sql = sql & "addDateTime DateTime Default Now(),"                         '创建时间
-            sql = sql & "upDateTime DateTime Default Date(),"                         '修改时间
-
-            sql = sql & "aboutcontent Text Default """","                             '简单介绍
-            sql = sql & "bodycontent Text Default """")"                              '备注
-            If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
-            conn.Execute sql 
-        End If 
         '竞价表(百度竞价) 20151228-------------------------------
         tableName = DB_PREFIX & "Bidding" 
         If showIsTable(tableName) = False Then
@@ -977,7 +998,7 @@ Class ClassAccess
             sql = sql & "website VarChar Default """","                           '域名
             sql = sql & "webTitle VarChar Default """","                              '网站自定标题
             sql = sql & "webKeywords VarChar Default """","                           '网站关键词
-            sql = sql & "webDescription VarChar Default """","                        '网站描述
+            sql = sql & "webDescription Text Default """","                        '网站描述
 			
             sql = sql & "webState int Default 0,"                                   '状态
             sql = sql & "openSpeed int Default 0,"                                   '打开时间
@@ -1009,6 +1030,7 @@ Class ClassAccess
             If MDBPath = "" Then sql = handleSqlServer(sql)                           '把Access数据库类型转成SqlServer数据库类型
             conn.Execute sql
         End If
+		
 
         addData = True 
         If addData = True Then
@@ -1023,7 +1045,7 @@ Class ClassAccess
                     If s = "admin" Then
                         rs("flags") = "|*|" 
                     Else
-                        rs("flags") = "|显示站点配置|显示网站栏目|显示分类信息|显示评论|显示单页管理|显示后台管理员|显示搜索统计|显示网站统计|显示生成HTML|显示生成SiteMap|显示生成Robots|显示模板管理|" 
+                        rs("flags") = "|显示站点配置|显示网站统计|显示生成SiteMap|显示生成Robots|显示后台操作日志|显示后台管理员|显示网站栏目|显示分类信息|显示评论|显示搜索统计|显示单页|显示友情链接|显示招聘|显示反馈|显示留言|显示会员|显示模板|显示备份恢复数据|显示生成HTML|显示采集网站|显示采集配置|显示采集数据|显示竞价词|显示网址扫描|显示网站域名|显示网站布局|显示网站模块|显示后台菜单|显示执行SQL|显示仿站|显示后台地图|启用模板|恢复模板数据|" 
                     End If 
                     rs.Update 
                 End If : rs.Close 

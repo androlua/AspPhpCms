@@ -58,10 +58,10 @@ function checkDel()
 <?PHP
 
 if( @$_SESSION['adminusername']== '' ){
-    eerr('提示', '未登录，请先登录');
+    Eerr('提示', '未登录，请先登录');
 }
 
-
+$conn=OpenConn();
 switch ( @$_REQUEST['act'] ){
     case 'templateFileList' ; displayTemplateDirDialog(@$_REQUEST['dir']) ; templateFileList(@$_REQUEST['dir']);break;//模板列表
     case 'delTemplateFile' ; delTemplateFile(@$_REQUEST['dir'], @$_REQUEST['fileName']) ; displayTemplateDirDialog(@$_REQUEST['dir']) ; templateFileList(@$_REQUEST['dir'])		;break;//删除模板文件
@@ -71,8 +71,15 @@ switch ( @$_REQUEST['act'] ){
 
 //模板文件列表
 function templateFileList($dir){
-    $content=''; $splStr=''; $fileName=''; $s ='';
+    $content=''; $splStr=''; $fileName=''; $s='';$fileType ='';$folderName='';$filePath='';
+
     if( @$_SESSION['adminusername']== 'ASPPHPCMS' ){
+        $content= getDirFolderNameList($dir,'');
+        $splStr= aspSplit($content, vbCrlf());
+        foreach( $splStr as $key=>$folderName){
+            $s='<a href=\'?act=templateFileList&dir='. $dir . '/' . $folderName .'\'>'. $folderName .'</a>';
+            aspEcho('<img src=\'../admin/Images/file/folder.gif\'>',$s);
+        }
         $content= getDirFileNameList($dir,'');
     }else{
         $content= getDirHtmlNameList($dir);
@@ -80,10 +87,19 @@ function templateFileList($dir){
     $splStr= aspSplit($content, vbCrlf());
     foreach( $splStr as $key=>$fileName){
         if( $fileName<>'' ){
+            $fileType=lCase(getFileAttr($fileName,4));
+            $filePath=$dir . '/' . $filename;
+            if( inStr('|asa|asp|aspx|bat|bmp|cfm|cmd|com|css|db|default|dll|doc|exe|fla|folder|gif|h|htm|html|inc|ini|jpg|js|jtbc|log|mdb|mid|mp3|php|png|rar|real|rm|swf|txt|wav|xls|xml|zip|','|'. $fileType .'|')==false ){
+                $fileType='default';
+            }
+
             $s= '<a href="../index.php?templatedir=' . escape($dir) . '&templateName=' . $fileName . '" target=\'_blank\'>预览</a> ';
-            ASPEcho('<img src=\'../admin/Images/Icon/2/htm.gif\'>' . $fileName, $s . '| <a href=\'?act=addEditFile&dir=' . $dir . '&fileName=' . $fileName . '\'>修改</a> | <a href=\'?act=delTemplateFile&dir=' . @$_REQUEST['dir'] . '&fileName=' . $fileName . '\' onclick=\'return checkDel()\'>删除</a>');
+            aspEcho('<img src=\'../admin/Images/file/'. $fileType .'.gif\'>' . $fileName . '（'. printSpaceValue(getFSize($filePath)) .'）', $s . '| <a href=\'?act=addEditFile&dir=' . $dir . '&fileName=' . $fileName . '\'>修改</a> | <a href=\'?act=delTemplateFile&dir=' . @$_REQUEST['dir'] . '&fileName=' . $fileName . '\' onclick=\'return checkDel()\'>删除</a>');
         }
     }
+
+
+
 }
 
 //删除模板文件
@@ -93,8 +109,8 @@ function delTemplateFile($dir, $fileName){
     handlePower('删除模板文件');						//管理权限处理
 
     $filePath= $dir . '/' . $fileName;
-    deleteFile($filePath);
-    ASPEcho('删除文件', $filePath);
+    DeleteFile($filePath);
+    aspEcho('删除文件', $filePath);
 }
 
 //显示面板样式列表
@@ -116,12 +132,12 @@ function displayPanelList($dir){
 function addEditFile($dir, $fileName){
     $filePath='';$promptMsg='';
 
-    if( Right(strtolower($fileName), 5) <> '.html' && @$_SESSION['adminusername'] <> 'ASPPHPCMS' ){
+    if( right(lCase($fileName), 5) <> '.html' && @$_SESSION['adminusername'] <> 'ASPPHPCMS' ){
         $fileName= $fileName . '.html';
     }
     $filePath= $dir . '/' . $fileName;
 
-    if( checkFile($filePath)==false ){
+    if( CheckFile($filePath)==false ){
         handlePower('添加模板文件');						//管理权限处理
     }else{
         handlePower('修改模板文件');						//管理权限处理
@@ -129,7 +145,7 @@ function addEditFile($dir, $fileName){
 
     //保存内容
     if( @$_REQUEST['issave']== 'true' ){
-        createfile($filePath, @$_REQUEST['content']);
+        createFile($filePath, @$_REQUEST['content']);
         $promptMsg='保存成功';
     }
     ?>
@@ -141,12 +157,9 @@ function addEditFile($dir, $fileName){
     </tr>
     <tr>
     <td>文件名称
-    <input name="fileName" type="text" id="fileName" value="<?=$fileName?>" size="40"><?=$promptMsg?>
+    <input name="fileName" type="text" id="fileName" value="<?=$fileName?>" size="40">&nbsp;<input type="submit" name="button" id="button" value=" 保存 " /><?=$promptMsg?>
     <br>
-    <textarea name="content" style="width:99%;height:480px;"id="content"><? rw(getFText($filePath))?></textarea></td>
-    </tr>
-    <tr>
-    <td height="40" align="center"><input type="submit" name="button" id="button" value=" 保存 " /></td>
+    <textarea name="content" style="width:99%;height:480px;"id="content"><?PHP Rw(getFText($filePath))?></textarea></td>
     </tr>
     </table>
     </form>
@@ -161,18 +174,18 @@ function addEditFile($dir, $fileName){
         <td height="30"><input name="dir" type="text" id="dir" value="<?=$dir?>" size="60" />
         <input type="submit" name="button2" id="button2" value=" 进入 " /><?PHP
         $folderPath=$dir . '/images/column/';
-        if( checkFolder($folderPath) ){
-            rw('面板样式' . displayPanelList($folderPath));
+        if( CheckFolder($folderPath) ){
+            Rw('面板样式' . displayPanelList($folderPath));
         }
         $folderPath=$dir . '/images/nav/';
-        if( checkFolder($folderPath) ){
-            rw('导航样式' . displayPanelList($folderPath));
+        if( CheckFolder($folderPath) ){
+            Rw('导航样式' . displayPanelList($folderPath));
         }
         ?></td>
         </tr>
         </table>
         </form>
-        <? }?>
+        <?PHP }?>
 
 
 

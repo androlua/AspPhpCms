@@ -25,10 +25,10 @@ function XY_ReadTemplateModule($action){
     if( $sourceList <> '' && $replaceList <> '' ){
         $splSource= aspSplit($sourceList, '[Array]');
         $splReplace= aspSplit($replaceList, '[Array]');
-        for( $i= 0 ; $i<= UBound($splSource); $i++){
+        for( $i= 0 ; $i<= uBound($splSource); $i++){
             $sourceStr= $splSource[$i];
             $replaceStr= $splReplace[$i];
-            $c= Replace($c, $sourceStr, $replaceStr);
+            $c= replace($c, $sourceStr, $replaceStr);
         }
     }
     $XY_ReadTemplateModule= $c;
@@ -43,7 +43,7 @@ function readTemplateModuleStr($filePath, $defaultContent, $moduleId){
     //FilePath = ReplaceGlobleLable(FilePath)                '替换全部标签        '添加于2014 12 11
 
     //文件不存在，则追加模板路径 20150616 给VB软件里用
-    if( checkFile($filePath)== false ){
+    if( CheckFile($filePath)== false ){
         $filePath= $GLOBALS['webTemplate'] . $filePath;
     }
 
@@ -51,20 +51,20 @@ function readTemplateModuleStr($filePath, $defaultContent, $moduleId){
 
     if( $defaultContent <> '' ){
         $content= $defaultContent;
-    }else if( checkFile($filePath)== true ){
+    }else if( CheckFile($filePath)== true ){
         $content= getFText($filePath);
     }else{
         $content= $GLOBALS['code']; //默认用内容指定内容
     }
 
-    if( instr($content, $startStr)==false ){
+    if( inStr($content, $startStr)==false ){
         $startStr= '<!--#Module ' . $moduleId . ' Start#-->';
     }
-    if( instr($content, $endStr)==false ){
+    if( inStr($content, $endStr)==false ){
         $endStr= '<!--#Module ' . $moduleId . ' End#-->';
     }
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $readTemplateModuleStr= strCut($content, $startStr, $endStr, 2);
+    if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+        $readTemplateModuleStr= StrCut($content, $startStr, $endStr, 2);
     }else{
         $readTemplateModuleStr= '模块[' . $moduleId . ']不存在,路径=' . $filePath;
         $GLOBALS['PHPDie']( $readTemplateModuleStr . $content);
@@ -76,11 +76,11 @@ function findModuleStr($content, $valueStr){
     $startStr=''; $endStr=''; $YuanStr=''; $replaceStr=''; $i=''; $Block=''; $BlockFile=''; $action ='';
     for( $i= 1 ; $i<= 9; $i++){
         $startStr= '[$读出内容 ' ; $endStr= '$]';
-        if( instr($valueStr, $startStr) > 0 && instr($valueStr, $endStr) > 0 ){
-            $action= strCut($valueStr, $startStr, $endStr, 2);
+        if( inStr($valueStr, $startStr) > 0 && inStr($valueStr, $endStr) > 0 ){
+            $action= StrCut($valueStr, $startStr, $endStr, 2);
             $Block= RParam($action, 'Block');
             $BlockFile= RParam($action, 'File');
-            if( instr(vbCrlf() . $GLOBALS['ReadBlockList'] . vbCrlf(), vbCrlf() . $Block . vbCrlf())== false ){
+            if( inStr(vbCrlf() . $GLOBALS['ReadBlockList'] . vbCrlf(), vbCrlf() . $Block . vbCrlf())== false ){
                 $GLOBALS['ReadBlockList']= $GLOBALS['ReadBlockList'] . $Block . vbCrlf();
             }
             //块文件存在 则读出内容
@@ -91,16 +91,16 @@ function findModuleStr($content, $valueStr){
             $replaceStr= '';
 
             $startStr= '<R#读出内容' . $Block . ' start#>' ; $endStr= '<R#读出内容' . $Block . ' end#>';
-            if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-                $replaceStr= strCut($content, $startStr, $endStr, 2);
+            if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+                $replaceStr= StrCut($content, $startStr, $endStr, 2);
             }else{
                 $startStr= '<!--#读出内容' . $Block ; $endStr= '#-->';
-                if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-                    $replaceStr= strCut($content, $startStr, $endStr, 2);
+                if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+                    $replaceStr= StrCut($content, $startStr, $endStr, 2);
                 }
             }
             //Call Eerr(YuanStr,ReplaceStr)
-            $valueStr= Replace($valueStr, $YuanStr, $replaceStr);
+            $valueStr= replace($valueStr, $YuanStr, $replaceStr);
             //Call Echo("ValueStr",ValueStr)
         }else{
             //没有模块要处理了 则退出
@@ -114,7 +114,7 @@ function findModuleStr($content, $valueStr){
 //读出Left模板样式        这里面字符 ' 来回复制会出错，所以我们用 \|*|\ 代替处理
 function XY_ReadColumeSetTitle($action){
     $startStr=''; $endStr=''; $Style=''; $title=''; $valueStr=''; $MoreClass=''; $MoreUrl=''; $MoreStr=''; $aStr='';$c='';
-    $action= handleInModule($action, 'start');
+    $action= HandleInModule($action, 'start');
     $Style= RParam($action, 'style');
     $title= RParam($action, 'Title');
     //Call Echo("ContentHeight",ContentHeight)
@@ -127,7 +127,7 @@ function XY_ReadColumeSetTitle($action){
     $MoreClass= RParam($action, 'MoreClass');
     $MoreUrl= PHPTrim(RParam($action, 'MoreUrl'));
     $MoreStr= RParam($action, 'MoreStr');
-    $valueStr= handleInModule($valueStr, 'end');
+    $valueStr= HandleInModule($valueStr, 'end');
     $c= readColumeSetTitle($action, $Style, $title, $valueStr);
 
     if( $MoreClass== '' ){ $MoreClass= 'more' ;}//More链接为空 则用默认代替
@@ -135,8 +135,8 @@ function XY_ReadColumeSetTitle($action){
     //More链接样式不能为空，因为没有样式它就不能让More在最近边
     if( $MoreUrl <> '' && $MoreStr <> '' ){
         //AStr = "<a href='"& MoreUrl &"' class='"& MoreClass &"'>"& MoreStr &"</a>"
-        $aStr= '<a ' . AHref($MoreUrl, $title, '') . ' class=\'' . $MoreClass . '\'>' . $MoreStr . '</a>';
-        $c= Replace($c, '<!--#AMore#-->', $aStr);
+        $aStr= '<a ' . aHref($MoreUrl, $title, '') . ' class=\'' . $MoreClass . '\'>' . $MoreStr . '</a>';
+        $c= replace($c, '<!--#AMore#-->', $aStr);
     }
     $XY_ReadColumeSetTitle=$c;
     return @$XY_ReadColumeSetTitle;
@@ -158,22 +158,22 @@ function readColumeSetTitle($action, $id, $ColumeTitle, $ColumeContent){
     //标题宽
     $TitleWidth= aspTrim($TitleWidth);
     //自动加px单位，不加会无效果 20150115
-    if( Right($TitleHeight, 1) <> '%' && Right($TitleHeight, 2) <> 'px' && $TitleHeight <> '' && $TitleHeight <> 'auto' ){
+    if( right($TitleHeight, 1) <> '%' && right($TitleHeight, 2) <> 'px' && $TitleHeight <> '' && $TitleHeight <> 'auto' ){
         $TitleHeight= $TitleHeight . 'px';
     }
-    if( Right($TitleWidth, 1) <> '%' && Right($TitleWidth, 2) <> 'px' && $TitleWidth <> '' && $TitleWidth <> 'auto' ){
+    if( right($TitleWidth, 1) <> '%' && right($TitleWidth, 2) <> 'px' && $TitleWidth <> '' && $TitleWidth <> 'auto' ){
         $TitleWidth= $TitleWidth . 'px';
     }
     //内容高
     $ContentHeight= aspTrim($ContentHeight);
     //自动加px单位，不加会无效果 20150115
-    if( Right($ContentHeight, 1) <> '%' && Right($ContentHeight, 2) <> 'px' && $ContentHeight <> '' && $ContentHeight <> 'auto' ){
+    if( right($ContentHeight, 1) <> '%' && right($ContentHeight, 2) <> 'px' && $ContentHeight <> '' && $ContentHeight <> 'auto' ){
         $ContentHeight= $ContentHeight . 'px';
     }
     //内容宽
     $ContentWidth= aspTrim($ContentWidth);
     //自动加px单位，不加会无效果 20150115
-    if( Right($ContentWidth, 1) <> '%' && Right($ContentWidth, 2) <> 'px' && $ContentWidth <> '' && $ContentWidth <> 'auto' ){
+    if( right($ContentWidth, 1) <> '%' && right($ContentWidth, 2) <> 'px' && $ContentWidth <> '' && $ContentWidth <> 'auto' ){
         $ContentWidth= $ContentWidth . 'px';
     }
 
@@ -188,16 +188,16 @@ function readColumeSetTitle($action, $id, $ColumeTitle, $ColumeContent){
     $content= readColumn($id);
     //标题宽
     if( $TitleWidth <> '' ){
-        $content= Replace($content, '<div class="tvalue">', '<div class="tvalue" style=\'width:' . $TitleWidth . ';\'>');
+        $content= replace($content, '<div class="tvalue">', '<div class="tvalue" style=\'width:' . $TitleWidth . ';\'>');
     }
     //内容高
     if( $ContentCss <> '' ){
-        $content= Replace($content, '<div class="ccontent">', '<div class="ccontent" style=\'' . $ContentCss . '\'>');
+        $content= replace($content, '<div class="ccontent">', '<div class="ccontent" style=\'' . $ContentCss . '\'>');
     }
     //call echo(ContentWidth,ContentCss)
 
-    $content= Replace($content, '栏目标题', $ColumeTitle);
-    $content= Replace($content, '栏目内容', $ColumeContent);
+    $content= replace($content, '栏目标题', $ColumeTitle);
+    $content= replace($content, '栏目内容', $ColumeContent);
     $readColumeSetTitle= $content;
     return @$readColumeSetTitle;
 }
@@ -239,8 +239,8 @@ function readTemplateFileModular($templateFilePath, $startStr, $endStr){
     $content ='';
     $readTemplateFileModular= '';
     $content= getFText($templateFilePath);
-    if( instr($content, $startStr) > 0 && instr($content, $endStr) > 0 ){
-        $readTemplateFileModular= strCut($content, $startStr, $endStr, 2);
+    if( inStr($content, $startStr) > 0 && inStr($content, $endStr) > 0 ){
+        $readTemplateFileModular= StrCut($content, $startStr, $endStr, 2);
     }else{
         $readTemplateFileModular= '[$NO$]';
     }
@@ -250,8 +250,8 @@ function readTemplateFileModular($templateFilePath, $startStr, $endStr){
 //读文件模板素材
 function readTemplateFileSource($templateFilePath, $id){
     $startStr=''; $endStr=''; $s=''; $c ='';
-    $startStr= '<!--#sourceHtml' . Replace($id, '.html', '') . 'Start#-->';
-    $endStr= '<!--#sourceHtml' . Replace($id, '.html', '') . 'End#-->';
+    $startStr= '<!--#sourceHtml' . replace($id, '.html', '') . 'Start#-->';
+    $endStr= '<!--#sourceHtml' . replace($id, '.html', '') . 'End#-->';
     $s= readTemplateFileModular($templateFilePath, $startStr, $endStr);
     if( $s== '[$NO$]' ){
         //加一个读取本文本里配置列表(20150815)
@@ -261,14 +261,14 @@ function readTemplateFileSource($templateFilePath, $id){
             //call rwend(c)
             return @$readTemplateFileSource;
         }
-        $c= getftext($templateFilePath);
+        $c= getFText($templateFilePath);
         //存在 <!--#TemplateSplitStart#-->  就返回当前全部内容
-        if( instr($c, '<!--#DialogStart#-->') > 0 ){
+        if( inStr($c, '<!--#DialogStart#-->') > 0 ){
             $readTemplateFileSource= $c;
             return @$readTemplateFileSource;
         }
 
-        $s= '模板资源ID[' . $id . ']不存在,路径TemplateFilePath=' . handlePath($templateFilePath);
+        $s= '模板资源ID[' . $id . ']不存在,路径TemplateFilePath=' . HandlePath($templateFilePath);
     }
     $readTemplateFileSource= $s;
     return @$readTemplateFileSource;
@@ -277,7 +277,7 @@ function readTemplateFileSource($templateFilePath, $id){
 function readArticleListStyleSource($id){
     $filePath ='';
     $filePath= getWebImages() . '\\文章展示样式\\' . $id;
-    if( checkFile($filePath)== false ){
+    if( CheckFile($filePath)== false ){
         $filePath= $GLOBALS['webTemplate'] . '\\Resources\\' . $id;
     }
     //call echo(checkfile(filePath),filePath)
@@ -289,7 +289,7 @@ function readArticleListStyleSource($id){
 function readArticleInfoStyleSource($id){
     $filePath ='';
     $filePath= getWebImages() . '\\文章信息展示样式\\' . $id;
-    if( checkFile($filePath)== false ){
+    if( CheckFile($filePath)== false ){
         $filePath= $GLOBALS['webTemplate'] . '\\Resources\\' . $id;
     }
     $readArticleInfoStyleSource= readTemplateFileSource($filePath, $id);

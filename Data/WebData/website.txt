@@ -1,16 +1,16 @@
-¡¾webtitle¡¿²âÊÔÍøÕ¾±êÌâ
-¡¾webkeywords¡¿²âÊÔÍøÕ¾¹Ø¼ü´Ê
-¡¾webdescription¡¿²âÊÔÍøÕ¾ÃèÊö
+¡¾webtitle¡¿zsjujia±êÌâ
+¡¾webkeywords¡¿zsjujia¹Ø¼ü´Ê
+¡¾webdescription¡¿zsjujiaÃèÊö
 ¡¾websitebottom¡¿
 
-foot
+[$aoutadd$]
 
 ¡¾/websitebottom¡¿
 
-¡¾webtemplate¡¿/Templates2015/test/
-¡¾webimages¡¿/Templates2015/test/Images/
-¡¾webcss¡¿/Templates2015/test/Css/
-¡¾webjs¡¿/Templates2015/test/Js/
+¡¾webtemplate¡¿/Templates/aaaaaa/
+¡¾webimages¡¿/Templates/bbbb/Images/
+¡¾webcss¡¿/Templates/ccccc/Css/
+¡¾webjs¡¿/Templates/ddddd/Js/
 ¡¾flags¡¿
 ¡¾websiteurl¡¿http://test.com/
 

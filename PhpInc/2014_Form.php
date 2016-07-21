@@ -11,21 +11,21 @@ function FormSubmit(){
 
     if( $YZM<>'' ){
         if( @$_SESSION['YZM'] <>$YZM ){
-            Javascript('返回', '验证码不正确', '');
+            javascript('返回', '验证码不正确', '');
             die();
         }
     }
 
-    $FieldList= strtolower(GetFieldList($TableName));
+    $FieldList= lCase(getFieldList($TableName));
     //Call Echo("FieldList",FieldList)
     //Call Echo("TableName", TableName)
     $RsObj=$GLOBALS['conn']->query('Select * From ['. $TableName .']');
 
     foreach( $SplStr as $key=>$S){
-        $FieldName= strtolower(mid($S,1,instr($S,'=')-1));
+        $FieldName= lCase(mid($S,1,inStr($S,'=')-1));
         //FieldContent = Mid(S,InStr(S,"=")+1)
         $FieldContent= Rf($FieldName);
-        if( instr(','. $FieldList .',', ','. $FieldName .',')>0 ){
+        if( inStr(','. $FieldList .',', ','. $FieldName .',')>0 ){
             $Rs[$FieldName]=$FieldContent;
         }
         //Call Echo(FieldName,FieldContent & "," & unescape(FieldContent))
@@ -34,7 +34,7 @@ function FormSubmit(){
     //	Call Echo("DialogTitle",Rf("DialogTitle"))
     //Call Die("留言内容")
 
-    Javascript('返回', '提交'. Rf('DialogTitle') .'成功', '');
+    javascript('返回', '提交'. Rf('DialogTitle') .'成功', '');
 }
 
 //获得POST字段名称列表 20160226
@@ -42,7 +42,7 @@ function getFormFieldList(){
     $s='';$c='';$splstr='';$fieldName='';
     $splstr=aspSplit(@$_POST,'&');
     foreach( $splstr as $key=>$s){
-        $fieldName= strtolower(mid($s, 1, instr($s, '=') - 1));
+        $fieldName= lCase(mid($s, 1, inStr($s, '=') - 1));
         if( $c<>'' ){ $c=$c . '|';}
         $c=$c . $fieldName;
     }

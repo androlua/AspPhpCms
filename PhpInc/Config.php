@@ -11,7 +11,7 @@ $webDir='';				//网站目录
 
 $ReadBlockList='';
 
-$SysStyle=array(9);
+$SysStyle=aspArray(9);
 $SysStyle[0]= '#999999';
 $makeHtmlFileToLCase	 =''; $makeHtmlFileToLCase=true;		//生成HTML文件转小写
 $isWebLabelClose =''; $isWebLabelClose=true;					//闭合标签(20150831)
@@ -32,12 +32,13 @@ $WEB_CACHEContent =''; $WEB_CACHEContent='';								//缓冲文件内容
 $isCacheTip =''; $isCacheTip=false;			//是否开启缓冲提示
 
 $language =''; $language='#en-us';			//en-us  | zh-cn | zh-tw
+$moduleReplaceArray='';$moduleReplaceArray=array('','');				//替换数组20160630
 
 //批量替换语言
 function batchReplaceL($content,$str){
     $splstr='';$s='';$i='';
     $splstr=aspSplit($str,'|*|');
-    for( $i= 0 ; $i<= ubound($splstr); $i++){
+    for( $i= 0 ; $i<= uBound($splstr); $i++){
         $s=$splstr[$i];
         if( $s <>'' ){
             $content=replaceL($content,$s);
@@ -79,10 +80,10 @@ function handleDisplayLanguage($c,$sType){
         $c= batchReplaceL($c, '后台地图|*|清除缓冲|*|超级管理员|*|当前位置|*|管理员信息|*|修改密码|*|最新访客信息|*|开发团队|*|版权所有|*|开发与支持团队');
         $c= batchReplaceL($c, '进入在线修改模式|*|系统信息|*|免费开源版|*|授权信息|*|服务器名称|*|服务器版本|*|交流群|*|相关链接|*|登录后台');
         $c= batchReplaceL($c, '用户名|*|表前缀|*|帮助|*|退出|*|您好|*|首页|*|权限|*|端口|*|邮箱|*|官网|*|版|*|云端');
-        $c= batchReplaceL($c, '系统管理|*|我的面板|*|栏目管理|*|模板管理|*|会员管理|*|生成管理|*|更多设置');
+        $c= batchReplaceL($c, '系统管理|*|我的面板|*|栏目|*|模板|*|会员|*|生成|*|更多设置');
 
-        $c= batchReplaceL($c, '站点配置|*|网站统计|*|生成|*|后台操作日志|*|后台管理员|*|网站栏目|*|分类信息|*|评论|*|搜索统计|*|单页管理|*|友情链接|*|招聘管理');
-        $c= batchReplaceL($c, '反馈管理|*|留言管理|*|会员配置|*|竞价词|*|网站布局|*|网站模块|*|后台菜单|*|执行|*|仿站');
+        $c= batchReplaceL($c, '站点配置|*|网站统计|*|生成|*|后台操作日志|*|后台管理员|*|网站栏目|*|分类信息|*|评论|*|搜索统计|*|单页|*|友情链接|*|招聘管理');
+        $c= batchReplaceL($c, '反馈|*|留言|*|会员配置|*|竞价词|*|网站布局|*|网站模块|*|后台菜单|*|执行|*|仿站');
 
 
     }
@@ -155,13 +156,13 @@ function languageEN($str){
         $c='System';
     }else if( $str=='我的面板'	 ){
         $c='My panel';
-    }else if( $str=='栏目管理'	 ){
+    }else if( $str=='栏目'	 ){
         $c='Column';
-    }else if( $str=='模板管理'	 ){
+    }else if( $str=='模板'	 ){
         $c='Template';
-    }else if( $str=='会员管理'	 ){
+    }else if( $str=='会员'	 ){
         $c='Member';
-    }else if( $str=='生成管理'	 ){
+    }else if( $str=='生成'	 ){
         $c='Generation';
     }else if( $str=='更多设置'	 ){
         $c='More settings';
@@ -209,15 +210,15 @@ function languageEN($str){
         $c='Classified information';
     }else if( $str=='搜索统计'	 ){
         $c='Search statistics';
-    }else if( $str=='单页管理'	 ){
+    }else if( $str=='单页'	 ){
         $c='Single page';
     }else if( $str=='友情链接'	 ){
         $c='Friendship link';
     }else if( $str=='招聘管理'	 ){
         $c='Recruitment management';
-    }else if( $str=='反馈管理'	 ){
+    }else if( $str=='反馈'	 ){
         $c='Feedback management';
-    }else if( $str=='留言管理'	 ){
+    }else if( $str=='留言'	 ){
         $c='message management';
     }else if( $str=='会员配置'	 ){
         $c='Member allocation';

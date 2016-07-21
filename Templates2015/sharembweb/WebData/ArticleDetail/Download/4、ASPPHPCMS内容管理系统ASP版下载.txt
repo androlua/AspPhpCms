@@ -1,0 +1,25 @@
+【parentid】Download
+【title】ASPPHPCMS内容管理系统ASP版下载
+【webtitle】ASPPHPCMS内容管理系统ASP版下载
+【webkeywords】ASPPHPCMS内容管理系统ASP版下载
+【webdescription】ASPPHPCMS内容管理系统ASP版下载 QQ313801120
+【sortrank】4
+【author】sharembweb
+【adddatetime】2016-07-12 15:48:08
+【filename】/Download/aspcms-Download.html
+【customaurl】
+【flags】|c|
+【temptxt1】APAJ(ASP)版
+【temptxt2】最新版本: 1.0 Final<br><span style="font-size:10px">ASP(3.0)+ACCESS/SQL SERVER</span>
+【relatedtags】Download
+【labletitle】<span class="recommended"></span>
+【bodycontent】[&全部换行&]下载地址：
+<a class="href1" href="https://github.com/313801120/ASPPHPCMS">本地下载</a>
+
+
+{$TitleInSearchEngineList divclass='article_lable'  title='ASPPHPCMS内容管理系统ASP版下载'$}
+
+【/bodycontent】
+ 
+ 
+

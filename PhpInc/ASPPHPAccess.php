@@ -6,23 +6,23 @@ function getWhereAnd( $sql, $addSql){
     $LCaseAddSql=''; $AddType='';$s='';
     //追加SQl为空则退出
     if( aspTrim($addSql)== '' ){ $getWhereAnd= $sql ; return @$getWhereAnd; }
-    if( instr(strtolower($sql), ' where ') > 0 ){
+    if( inStr(lCase($sql), ' where ') > 0 ){
         $AddType= ' And ';
     }else{
         $AddType= ' Where ';
     }
     if( $addSql <> '' ){
         $addSql= aspTrim($addSql);
-        $LCaseAddSql= strtolower($addSql);
-        if( Left($LCaseAddSql, 6)== 'order ' || Left($LCaseAddSql, 6)== 'group ' ){
+        $LCaseAddSql= lCase($addSql);
+        if( left($LCaseAddSql, 6)== 'order ' || left($LCaseAddSql, 6)== 'group ' ){
             $getWhereAnd= $sql . ' ' . $addSql ; return @$getWhereAnd; 								//改进必需加空格，因为前面已经删除了20160115
-        }else if( Left($LCaseAddSql, 6)== 'where ' ){
+        }else if( left($LCaseAddSql, 6)== 'where ' ){
             $addSql= mid($addSql, 7,-1);
-        }else if( Left($LCaseAddSql, 4)== 'and ' ){
+        }else if( left($LCaseAddSql, 4)== 'and ' ){
             $addSql= mid($addSql, 5,-1);
         }
         //对where 改进   20160623
-        $s=strtolower($addSql);
+        $s=lCase($addSql);
         if( $s<>'and' && $s<>'or' && $s<>'where' ){
             $sql= $sql . $AddType . $addSql;
         }
@@ -33,9 +33,9 @@ function getWhereAnd( $sql, $addSql){
 //多个查询 Or 与 And        二次修改于20140703
 function orAndSearch($addSql, $SeectField, $SearchValue){
     $splStr=''; $s=''; $c ='';
-    $SearchValue= RegExp_Replace($SearchValue, ' or ', ' Or ');
-    $SearchValue= RegExp_Replace($SearchValue, ' and ', ' And ');
-    if( instr($SearchValue, ' Or ') > 0 ){
+    $SearchValue= regExp_Replace($SearchValue, ' or ', ' Or ');
+    $SearchValue= regExp_Replace($SearchValue, ' and ', ' And ');
+    if( inStr($SearchValue, ' Or ') > 0 ){
         $splStr= aspSplit($SearchValue, ' Or ');
         foreach( $splStr as $key=>$s){
             if( $s <> '' ){
@@ -43,7 +43,7 @@ function orAndSearch($addSql, $SeectField, $SearchValue){
                 $c= $c . ' ' . $SeectField . ' Like \'%' . $s . '%\'';
             }
         }
-    }else if( instr($SearchValue, ' And ') > 0 ){
+    }else if( inStr($SearchValue, ' And ') > 0 ){
         $splStr= aspSplit($SearchValue, ' And ');
         foreach( $splStr as $key=>$s){
             if( $s <> '' ){
@@ -61,7 +61,7 @@ function orAndSearch($addSql, $SeectField, $SearchValue){
         }
     }
     if( $c <> '' ){
-        if( instr(strtolower($addSql), ' where ')== 0 ){
+        if( inStr(lCase($addSql), ' where ')== 0 ){
             $c= ' Where ' . $c;
         }else{
             $c= ' And ' . $c;
@@ -73,4 +73,19 @@ function orAndSearch($addSql, $SeectField, $SearchValue){
 }
 
 
+
+//获得当前id当前页数 默认每页显示10条 20160716
+function getThisIdPage($tableName,$id,$nPageSize){
+	if($id==''){
+		return 1;
+	}
+    $nCount='';
+    if( $nPageSize=='' ){
+        $nPageSize=10;
+    }
+    $nCount=connexecute('select count(*) from ' . $tableName . ' where id<=' . $id)[0];
+    $getThisIdPage=GetCountPage(cint($nCount), $nPageSize);
+    //call echo("tableName=" & tableName & "id=" & id &",ncount=" & ncount,npagesize & "               ," & getThisIdPage)
+    return @$getThisIdPage;
+}
 ?>

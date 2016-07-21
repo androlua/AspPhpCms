@@ -3,7 +3,7 @@
 【webtitle】ASPPHPCMS帮助手册 - 分享模板网站
 【webkeywords】ASPPHPCMS帮助手册 - 分享模板网站
 【webdescription】ASPPHPCMS帮助手册 - 分享模板网站
-【sortrank】3
+【sortrank】70
 【author】sharembweb
 【adddatetime】2015-03-18 08:51:11
 【filename】/ASPPHPCMS/help.html

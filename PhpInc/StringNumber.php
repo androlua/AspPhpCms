@@ -18,7 +18,7 @@ function isStrTransferred($content){
 
 //计算比率，游戏开发中用到 20150601
 function getBL($setWidth, $setHeight, $nDanFuXianZhi){
-    $splStr=array(3);
+    $splStr=aspArray(3);
     $nWidthZheFu =''; $nWidthZheFu= 1; //宽正负
     $nHeightZheFu =''; $nHeightZheFu= 1; //高正负
     $nBFB ='';//百分比
@@ -50,7 +50,7 @@ function getBL($setWidth, $setHeight, $nDanFuXianZhi){
     $splStr[0]= $splStr[0] * $nWidthZheFu;
     $splStr[1]= $splStr[1] * $nHeightZheFu;
     $splStr[2]= $nBFB;
-    $splStr[3]= GetCountPage($setWidth, $splStr[0]);
+    $splStr[3]= getCountPage($setWidth, $splStr[0]);
     //Call echo("page count 页数", splStr(3))
     $splStr[3]= getCountStep($setWidth, $setHeight, $splStr[0], $splStr[1], $splStr[3]);
 
@@ -88,8 +88,8 @@ function getCountStep($nWidthStep, $nHeightStep, $nWidthBL, $nHeightBL, $nCountP
 //获得中文汉字内容
 function getChina($content){
     $i=''; $c=''; $j=''; $s ='';
-    for( $i= 1 ; $i<= Len($content); $i++){
-        $j= ord(mid($content, $i, 1));
+    for( $i= 1 ; $i<= len($content); $i++){
+        $j= asc(mid($content, $i, 1));
         $s= mid($content, $i, 1);
         //是汉字累加
         if( $j < 0 ){
@@ -104,8 +104,8 @@ function getChina($content){
 //判断是否有中文
 function isChina($content){
     $i=''; $j=''; $s ='';
-    for( $i= 1 ; $i<= Len($content); $i++){
-        $j= ord(mid($content, $i, 1));
+    for( $i= 1 ; $i<= len($content); $i++){
+        $j= asc(mid($content, $i, 1));
         $s= mid($content, $i, 1);
         //是汉字累加
         if( $j < 0 ){
@@ -138,12 +138,12 @@ function deleteRepeatStr($content, $SplType){
     $splStr= aspSplit($content, $SplType);
     foreach( $splStr as $key=>$s){
         if( $s <> '' ){
-            if( instr($SplType . $c . $SplType, $SplType . $s . $SplType)== false ){
+            if( inStr($SplType . $c . $SplType, $SplType . $s . $SplType)== false ){
                 $c= $c . $s . $SplType;
             }
         }
     }
-    if( $c <> '' ){ $c= Left($c, Len($c) - Len($SplType)); }
+    if( $c <> '' ){ $c= left($c, len($c) - len($SplType)); }
     $deleteRepeatStr= $c;
     return @$deleteRepeatStr;
 }
@@ -151,14 +151,14 @@ function deleteRepeatStr($content, $SplType){
 //替换内容N次 20141220
 function replaceN($content, $YunStr, $ReplaceStr, $nNumb){
     $i ='';
-    $nNumb= HandleNumber($nNumb);
+    $nNumb= handleNumber($nNumb);
     if( $nNumb== '' ){
         $nNumb= 1;
     }else{
-        $nNumb= intval($nNumb);
+        $nNumb= CInt($nNumb);
     }
     for( $i= 1 ; $i<= $nNumb; $i++){
-        $content= Replace($content, $YunStr, $ReplaceStr);
+        $content= replace($content, $YunStr, $ReplaceStr);
     }
 
     $replaceN= $content;
@@ -167,7 +167,7 @@ function replaceN($content, $YunStr, $ReplaceStr, $nNumb){
 
 //asp日期补0函数   引用别人20141216
 function fillZero($content){
-    if( Len($content)== 1 ){
+    if( len($content)== 1 ){
         $fillZero= '0' . $content;
     }else{
         $fillZero= $content;
@@ -179,21 +179,21 @@ function fillZero($content){
 function caseInsensitiveReplace($content, $Check_Str, $Replace_Str){
     $StartLen=''; $EndLen=''; $LowerCase=''; $startStr=''; $endStr=''; $c=''; $i ='';
     $c= '';
-    if( strtolower($Check_Str)== strtolower($Replace_Str) ){
+    if( lCase($Check_Str)== lCase($Replace_Str) ){
         $caseInsensitiveReplace= $content;
     }
-    $LowerCase= strtolower($content);
+    $LowerCase= lCase($content);
     for( $i= 1 ; $i<= 99; $i++){
-        if( instr($LowerCase, $Check_Str) > 0 ){
-            $StartLen= instr($LowerCase, $Check_Str) - 1;
-            $startStr= Left($content, $StartLen);
-            $EndLen= $StartLen + Len($Check_Str) + 1;
+        if( inStr($LowerCase, $Check_Str) > 0 ){
+            $StartLen= inStr($LowerCase, $Check_Str) - 1;
+            $startStr= left($content, $StartLen);
+            $EndLen= $StartLen + len($Check_Str) + 1;
             $endStr= mid($content, $EndLen,-1);
             $content= $startStr . $Replace_Str . $endStr;
             //Call Echo(StartLen,EndLen)
             //Call Echo(StartStr,EndStr)
             //Call Echo("Content",Content)
-            $LowerCase= strtolower($content);
+            $LowerCase= lCase($content);
         }else{
             break;
         }
@@ -205,7 +205,7 @@ function caseInsensitiveReplace($content, $Check_Str, $Replace_Str){
 //数组数字排序 (2013,10,1)
 function array_Sort($sArray){
     $i=''; $j=''; $MinmaxSlot=''; $Minmax=''; $temp ='';
-    for( $i= UBound($sArray) ; $i>= 0 ; $i--){
+    for( $i= uBound($sArray) ; $i>= 0 ; $i--){
         $Minmax= $sArray[$i];
         $MinmaxSlot= 0;
         for( $j= 1 ; $j<= $i; $j++){
@@ -228,13 +228,13 @@ function array_Sort($sArray){
 function handleZipSize( $ZipSize){
 
     $nSize ='';
-    $ZipSize= strtolower($ZipSize);
-    $nSize= GetDianNumb($ZipSize);
-    if( instr($ZipSize, 'g') ){
+    $ZipSize= lCase($ZipSize);
+    $nSize= getDianNumb($ZipSize);
+    if( inStr($ZipSize, 'g') ){
         $nSize= $nSize * 1073741824;
-    }else if( instr($ZipSize, 'm') ){
+    }else if( inStr($ZipSize, 'm') ){
         $nSize= $nSize * 1048576;
-    }else if( instr($ZipSize, 'k') ){
+    }else if( inStr($ZipSize, 'k') ){
         $nSize= $nSize * 1024;
     }
     $handleZipSize= $nSize;
@@ -266,7 +266,7 @@ function mathRandom(){
     $c= '';
 
     for( $i= 1 ; $i<= 16; $i++){
-        $c= $c . Int(rnd() * 9);
+        $c= $c . int(rnd() * 9);
     }
     $mathRandom= '0.' . $c;
     return @$mathRandom;
@@ -278,9 +278,9 @@ function getRndAZ($nCount){
     $zd=''; $i=''; $s=''; $c ='';
     $c= '' ; $zd= '';
 
-    $zd= 'abcdefghijklmnopqrstuvwxyz' . strtoupper($zd);
+    $zd= 'abcdefghijklmnopqrstuvwxyz' . uCase($zd);
     for( $i= 1 ; $i<= $nCount; $i++){
-        $s= mid($zd, pHPRnd(1, Len($zd)), 1);
+        $s= mid($zd, pHPRnd(1, len($zd)), 1);
         $c= $c . $s;
     }
     $getRndAZ= $c;
@@ -323,13 +323,13 @@ function copyStr($InputStr, $Multiplier){
 
 //内容加Tab
 function contentAddTab( $content, $nNumb){
-    $contentAddTab= copyStr('    ', $nNumb) . Join(aspSplit($content, vbCrlf()), vbCrlf() . copyStr('    ', $nNumb));
+    $contentAddTab= copyStr('    ', $nNumb) . join(aspSplit($content, vbCrlf()), vbCrlf() . copyStr('    ', $nNumb));
     return @$contentAddTab;
 }
 
 //删除最后指定字符20150228 Content=DeleteEndStr(Content,2)
 function deleteEndStr($content, $nLen){
-    if( $content <> '' ){ $content= Left($content, Len($content) - $nLen); }
+    if( $content <> '' ){ $content= left($content, len($content) - $nLen); }
     $deleteEndStr= $content;
     return @$deleteEndStr;
 }
@@ -345,9 +345,9 @@ function toNumber( $n, $d){
 function handleNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('0123456789', $s) > 0 ){
+        if( inStr('0123456789', $s) > 0 ){
             $c= $c . $s;
         }
     }
@@ -366,11 +366,11 @@ function getFirstNegativeNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
     $content= aspTrim($content);
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
         if( $s== '-' && $c== '' ){
             $c= $c . $s;
-        }else if( instr('0123456789', $s) > 0 ){
+        }else if( inStr('0123456789', $s) > 0 ){
             $c= $c . $s;
         }
     }
@@ -389,9 +389,9 @@ function checkNumberType( $content){
 function checkStrIsNumberType( $content){
     $i=''; $s ='';
     $checkStrIsNumberType= true;
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('0123456789', $s)== false ){
+        if( inStr('0123456789', $s)== false ){
             $checkStrIsNumberType= false;
             return @$checkStrIsNumberType;
         }
@@ -404,13 +404,13 @@ function handleNumberType( $content){
     $i=''; $s=''; $c ='';
     $c= '';
     $content= aspTrim($content);
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( $i== 1 && instr('+-*/', Left($content, 1)) > 0 ){
+        if( $i== 1 && inStr('+-*/', left($content, 1)) > 0 ){
             $c= $c . $s;
         }else if( $i > 1 && $s== '.' ){
             $c= $c . $s;
-        }else if( instr('0123456789', $s) > 0 ){
+        }else if( inStr('0123456789', $s) > 0 ){
             $c= $c . $s;
         }
     }
@@ -423,9 +423,9 @@ function getNumber( $content){
     $i=''; $s=''; $c ='';
     $c= '';
     $content= aspTrim($content);
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('0123456789', $s) > 0 ){
+        if( inStr('0123456789', $s) > 0 ){
             if( $c== '' && $s== '0' ){ //待改进，因为现在脑子不够用了，就这么定敢20150322
             }else{
                 $c= $c . $s;
@@ -434,14 +434,14 @@ function getNumber( $content){
     }
     $getNumber= '';
     if( $c <> '' ){
-        $getNumber= Int($c);
+        $getNumber= int($c);
     }
     return @$getNumber;
 }
 
 //检测是否为数字
 function checkNumb($s){
-    if( instr('0123456789.', $s) > 0 ){
+    if( inStr('0123456789.', $s) > 0 ){
         $checkNumb= true;
     }else{
         $checkNumb= false;
@@ -453,9 +453,9 @@ function checkNumb($s){
 function getDianNumb( $content){
     $i=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('0123456789.', $s) > 0 ){
+        if( inStr('0123456789.', $s) > 0 ){
             $c= $c . $s;
         }
     }
@@ -473,8 +473,8 @@ function getCountPage($nCount, $nPageSize){
     if( $nPageSize < 0 ){
         $nPageSize= $nPageSize * - 1;
     }
-    $nCountPage= Fix($nCount / $nPageSize);
-    if( instr($nCount / $nPageSize, '.') > 0 ){ $nCountPage= $nCountPage + 1 ;}
+    $nCountPage= fix($nCount / $nPageSize);
+    if( inStr($nCount / $nPageSize, '.') > 0 ){ $nCountPage= $nCountPage + 1 ;}
     $getCountPage=$nCountPage;
     return @$getCountPage;
 }
@@ -482,7 +482,7 @@ function getCountPage($nCount, $nPageSize){
 //获得处理后页数
 function getPageNumb($nRecordCount, $nPageSize){
     $n='';
-    $n= Int($nRecordCount / $nPageSize);
+    $n= int($nRecordCount / $nPageSize);
     if( $nRecordCount % $nPageSize > 0 ){
         $n=$n + 1;
     }
@@ -492,13 +492,13 @@ function getPageNumb($nRecordCount, $nPageSize){
 
 //处理获得采集总页数
 function getCaiHandleCountPage($content){
-    $content= DelHtml($content);
+    $content= delHtml($content);
     $content= handleNumber($content);
     $getCaiHandleCountPage= '';
-    if( Len($content) < 10 ){
-        $getCaiHandleCountPage= Right($content, 1);
-    }else if( Len($content) < 200 ){
-        $getCaiHandleCountPage= Right($content, 2);
+    if( len($content) < 10 ){
+        $getCaiHandleCountPage= right($content, 1);
+    }else if( len($content) < 200 ){
+        $getCaiHandleCountPage= right($content, 2);
     }
     return @$getCaiHandleCountPage;
 }
@@ -507,14 +507,14 @@ function getCaiHandleCountPage($content){
 function getCaiSortCountPage( $content){
     $i=''; $s ='';
     $getCaiSortCountPage= '';
-    $content= DelHtml($content);
+    $content= delHtml($content);
     $content= handleNumber($content);
     for( $i= 1 ; $i<= 30; $i++){
-        $s= mid($content, 1, Len($i));
-        if( $s== CStr($i) ){
+        $s= mid($content, 1, len($i));
+        if( $s== cStr($i) ){
             $getCaiSortCountPage= $i;
             //Call Echo(i,s)
-            $content= Right($content, Len($content) - Len($i));
+            $content= right($content, len($content) - len($i));
         }
     }
     return @$getCaiSortCountPage;
@@ -522,9 +522,9 @@ function getCaiSortCountPage( $content){
 
 //最大与最小之间 Between the minimum and maximum
 function minMaxBetween($Minimum, $Maximum, $ValueNumb){
-    $Minimum= intval($Minimum); //最小数
-    $Maximum= intval($Maximum); //最大数
-    $ValueNumb= intval($ValueNumb); //当前数
+    $Minimum= CInt($Minimum); //最小数
+    $Maximum= CInt($Maximum); //最大数
+    $ValueNumb= CInt($ValueNumb); //当前数
     if( $Minimum > $Maximum ){
         $minMaxBetween= $Maximum;
     }else if( $ValueNumb > $Minimum ){
@@ -542,10 +542,10 @@ function minMaxBetween($Minimum, $Maximum, $ValueNumb){
 function getStrFileType($fileName){
     $c ='';
     $c= '';
-    if( instr($fileName, '.') > 0 ){
-        $c= strtolower(mid($fileName, strrpos($fileName, '.') + 1,-1));
-        if( instr($c, '?') > 0 ){
-            $c= mid($c, 1, instr($c, '?') - 1);
+    if( inStr($fileName, '.') > 0 ){
+        $c= lCase(mid($fileName, inStrRev($fileName, '.') + 1,-1));
+        if( inStr($c, '?') > 0 ){
+            $c= mid($c, 1, inStr($c, '?') - 1);
         }
     }
     $getStrFileType= $c;
@@ -557,7 +557,7 @@ function val( $s){
     if( $s . ''== '' || is_numeric($s) ){
         $val= 0;
     }else{
-        $val= intval($s);
+        $val= cLng($s);
     }
     return @$val;
 }
@@ -565,12 +565,12 @@ function val( $s){
 //返回字符串左边N个byte
 function PHPStrLen($str){
 
-    if( IsNull($str) || $str== '' ){
+    if( isNull($str) || $str== '' ){
         $PHPStrLen= 0;
     }else{
         $i=''; $n=''; $k=''; $chrA ='';
         $k= 0;
-        $n= Len($str);
+        $n= len($str);
         for( $i= 1 ; $i<= $n; $i++){
 
 
@@ -608,9 +608,9 @@ function addIndent($content, $IndentStr){
 function getNumberBeforeStr($content){
     $i=''; $s=''; $c ='';
     $c= '';
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('0123456789', $s) > 0 ){ break; }
+        if( inStr('0123456789', $s) > 0 ){ break; }
         $c= $c . $s;
     }
     $getNumberBeforeStr= $c;
@@ -625,7 +625,7 @@ function makePassword( $maxLen){
 
     $strNewPass= '';
     for( $intCounter= 1 ; $intCounter<= $maxLen; $intCounter++){
-        $whatsNext= Int((1 - 0 + 1) * rnd() + 0);
+        $whatsNext= int((1 - 0 + 1) * rnd() + 0);
         if( $whatsNext== 0 ){
             $upper= 90;
             $lower= 65;
@@ -633,7 +633,7 @@ function makePassword( $maxLen){
             $upper= 57;
             $lower= 48;
         }
-        $strNewPass= $strNewPass . Chr(Int(($upper - $lower + 1) * rnd() + $lower));
+        $strNewPass= $strNewPass . chr(int(($upper - $lower + 1) * rnd() + $lower));
     }
     $makePassword= $strNewPass;
     return @$makePassword;
@@ -646,10 +646,10 @@ function rndcode( $stars, $ends){
     $rndlen=''; $i ='';
 
     $rndcode= '';
-    $rndlen= Int($stars * rnd() + $ends - $stars);
+    $rndlen= int($stars * rnd() + $ends - $stars);
     for( $i= 1 ; $i<= $rndlen; $i++){
 
-        $rndcode= $rndcode . Chr(Int(127 * rnd() + 1));
+        $rndcode= $rndcode . chr(int(127 * rnd() + 1));
     }
     return @$rndcode;
 }
@@ -662,15 +662,15 @@ function getRandomPhoneNumber($nCount){
     $j= 1;
     while( $j < $nCount){
 
-        while( Len($rndnum) < 9 ){//产生随机数的个数
-            $num1= CStr(Chr((57 - 48) * rnd() + 48));
+        while( len($rndnum) < 9 ){//产生随机数的个数
+            $num1= cStr(chr((57 - 48) * rnd() + 48));
             $rndnum= $rndnum . $num1;
         }
         $c= $c . 13 . $rndnum . vbCrlf();
         $rndnum= '';
         $j= $j + 1;
     }
-    if( $c <> '' ){ $c= Left($c, Len($c) - 2); }
+    if( $c <> '' ){ $c= left($c, len($c) - 2); }
     $getRandomPhoneNumber= $c;
     return @$getRandomPhoneNumber;
 }
@@ -680,10 +680,10 @@ function lenStr($content){
     $l=''; $t=''; $c ='';
     $c= '';
     $i ='';
-    $l= Len($content);
+    $l= len($content);
     $t= 0;
     for( $i= 1 ; $i<= $l; $i++){
-        $c= ord(mid($content, $i, 1));
+        $c= asc(mid($content, $i, 1));
         if( $c < 0 ){ $c= $c + 65536 ;}
         if( $c < 255 ){ $t= $t + 1 ;}
         if( $c > 255 ){ $t= $t + 2 ;}
@@ -696,7 +696,7 @@ function lenStr($content){
 function toString( $arr){
     if( is_array($arr) ){
         $tmp ='';
-        $tmp= Join($arr, ',');
+        $tmp= join($arr, ',');
         $toString= $tmp;
         $GLOBALS['Else'];
         $toString= $arr;
@@ -706,9 +706,9 @@ function toString( $arr){
 //移除数字(20151022)
 function remoteNumber($content){
     $i=''; $s=''; $c ='';
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
-        if( instr('0123456789.', $s)== false ){
+        if( inStr('0123456789.', $s)== false ){
             $c= $c . $s;
         }
     }
@@ -722,9 +722,9 @@ function remoteNumber($content){
 function handleHaveStr($content, $zd){
     $s=''; $i ='';
     $handleHaveStr= false;
-    for( $i= 1 ; $i<= Len($zd); $i++){
+    for( $i= 1 ; $i<= len($zd); $i++){
         $s= mid($zd, $i, 1);
-        if( instr($content, $s) > 0 ){
+        if( inStr($content, $s) > 0 ){
             $handleHaveStr= true;
             return @$handleHaveStr;
         }
@@ -750,8 +750,8 @@ function haveNumber($content){
 function haveChina($content){
     $i=''; $j ='';
     $haveChina= false;
-    for( $i= 1 ; $i<= Len($content); $i++){
-        $j= ord(mid($content, $i, 1));
+    for( $i= 1 ; $i<= len($content); $i++){
+        $j= asc(mid($content, $i, 1));
         //是汉字累加
         if( $j < 0 ){
             if(($j <= -22033 && $j >= -24158)== false ){
@@ -773,34 +773,34 @@ function haveChina($content){
 //*************************************************
 function EncodeJP($Str){
     if( $Str=='' ){
-        $Str=Replace($Str,'ガ','&#12460;');
-        $Str=Replace($Str,'ギ','&#12462;');
-        $Str=Replace($Str,'グ','&#12464;');
-        $Str=Replace($Str,'ア','&#12450;');
-        $Str=Replace($Str,'ゲ','&#12466;');
-        $Str=Replace($Str,'ゴ','&#12468;');
-        $Str=Replace($Str,'ザ','&#12470;');
-        $Str=Replace($Str,'ジ','&#12472;');
-        $Str=Replace($Str,'ズ','&#12474;');
-        $Str=Replace($Str,'ゼ','&#12476;');
-        $Str=Replace($Str,'ゾ','&#12478;');
-        $Str=Replace($Str,'ダ','&#12480;');
-        $Str=Replace($Str,'ヂ','&#12482;');
-        $Str=Replace($Str,'ヅ','&#12485;');
-        $Str=Replace($Str,'デ','&#12487;');
-        $Str=Replace($Str,'ド','&#12489;');
-        $Str=Replace($Str,'バ','&#12496;');
-        $Str=Replace($Str,'パ','&#12497;');
-        $Str=Replace($Str,'ビ','&#12499;');
-        $Str=Replace($Str,'ピ','&#12500;');
-        $Str=Replace($Str,'ブ','&#12502;');
-        $Str=Replace($Str,'ブ','&#12502;');
-        $Str=Replace($Str,'プ','&#12503;');
-        $Str=Replace($Str,'ベ','&#12505;');
-        $Str=Replace($Str,'ペ','&#12506;');
-        $Str=Replace($Str,'ボ','&#12508;');
-        $Str=Replace($Str,'ポ','&#12509;');
-        $Str=Replace($Str,'ヴ','&#12532;');
+        $Str=replace($Str,'ガ','&#12460;');
+        $Str=replace($Str,'ギ','&#12462;');
+        $Str=replace($Str,'グ','&#12464;');
+        $Str=replace($Str,'ア','&#12450;');
+        $Str=replace($Str,'ゲ','&#12466;');
+        $Str=replace($Str,'ゴ','&#12468;');
+        $Str=replace($Str,'ザ','&#12470;');
+        $Str=replace($Str,'ジ','&#12472;');
+        $Str=replace($Str,'ズ','&#12474;');
+        $Str=replace($Str,'ゼ','&#12476;');
+        $Str=replace($Str,'ゾ','&#12478;');
+        $Str=replace($Str,'ダ','&#12480;');
+        $Str=replace($Str,'ヂ','&#12482;');
+        $Str=replace($Str,'ヅ','&#12485;');
+        $Str=replace($Str,'デ','&#12487;');
+        $Str=replace($Str,'ド','&#12489;');
+        $Str=replace($Str,'バ','&#12496;');
+        $Str=replace($Str,'パ','&#12497;');
+        $Str=replace($Str,'ビ','&#12499;');
+        $Str=replace($Str,'ピ','&#12500;');
+        $Str=replace($Str,'ブ','&#12502;');
+        $Str=replace($Str,'ブ','&#12502;');
+        $Str=replace($Str,'プ','&#12503;');
+        $Str=replace($Str,'ベ','&#12505;');
+        $Str=replace($Str,'ペ','&#12506;');
+        $Str=replace($Str,'ボ','&#12508;');
+        $Str=replace($Str,'ポ','&#12509;');
+        $Str=replace($Str,'ヴ','&#12532;');
     }
     $EncodeJP=$Str;
     return @$EncodeJP;

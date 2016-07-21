@@ -38,7 +38,7 @@
 
 </div>
 
-<form name="form1" method="post" action="[$cfg_websiteurl$]asptophp/asptophp.asp?act=handlecontent" target="_blank">
+<form name="form1" method="post" action="[$cfg_websiteurl$]/asptophp/asptophp.asp?act=handlecontent" target="_blank">
   <textarea name="content" id="content" class="inputstyle" style="width:99%;height:380px;">
 [&html转码&]<% 
 '作者：云端 QQ313801120  http://sharembweb.com/
@@ -251,7 +251,9 @@ End Sub
 【webdescription】仿站是指借鉴和参考别人网站的优点,对喜欢的网站进行风格仿制或者功能仿制,在最短的时间内达到预期的效果,是一个快速并且省钱的选择 QQ313801120
 【bodycontent】 
 
-<form id="form1" name="form1" method="post" action="/url.asp?act=fangzhan" onSubmit="formFangZhanSubmit()" target="_blank">
+在线仿站程序已升级到v2.0，本地版将在近期上线。
+<div class="clear4"></div>
+<form id="form1" name="form1" method="post" target="_blank" action="###" onSubmit="return formFangZhanSubmit(this)">
 
 <div class="clear4"></div>
 网址：<input name="httpurl" type="text" id="httpurl" value="http://www.codesky.net/vb/" class="inputstyle" style="width:88%;" />
@@ -261,22 +263,47 @@ End Sub
 <option value="gb2312" selected="selected">gb2312</option>
 <option value="utf-8">utf-8</option>
 </select>
-
-<div class="clear4"></div>
-选择：<select name="selectServer" id="selectServer" class="inputstyle">
-<option value="http://www.shluzheng.com/Admin/WebEditor/dieFangWeb.asp">服务器1</option>
-<option value="http://www.ylkj11.com/admin/KEditor/lang/I/dieFangWeb.asp">服务器2</option>
-</select>
 <div class="clear10"></div>
 
-<input type="submit" name="button" class="mybtn" id="button" value="提交" />
+<input name="templateName" type="hidden" value="sharembweb" />
+<input name="isMakeWeb" type="hidden" value="1" />
+<input name="isPackWeb" type="hidden" value="1" />
+
+<label for="isFormatting"><input name="isFormatting" type="checkbox" id="isFormatting" value="1" class="inputstyle">
+格式化HTML</label>      
+<label for="isUniformCoding" title="保存时以下载编码一致"><input name="isUniformCoding" type="checkbox" id="isUniformCoding" value="1" class="inputstyle">
+统一编码</label>     
+<label for="isAddWebTitleKeyword"><input name="isAddWebTitleKeyword" type="checkbox" id="isAddWebTitleKeyword" value="1" class="inputstyle">追加网站标题描关键词</label>     
+
+<div class="clear10"></div>
+
+<input type="submit" name="button" class="mybtn" value="申请仿站" id="fzsubmit" /><div id="fzmsg"></div>
 <input name="verificationTime" type="hidden" id="verificationTime" value="aabbccddeeffgg" />
 </form>
 
+
 <script language="javascript">
-function formFangZhanSubmit(){
-	var url = document.form1.selectServer.value + "?act=downweb&n="+Math.random();
-	document.form1.action = url;
+function formFangZhanSubmit(This){
+	if(document.form1.action.indexOf("###")!=-1){
+		$("#fzmsg").html("正在获取仿站服务器地址");
+		$("#fzsubmit").attr("disabled","disabled");
+
+		$.post("/ajax.asp?a=fz&n="+Math.random(),{width:100,httpurl:$("#httpurl").val()},function(result){
+			if(result.indexOf("verificationTime")==-1){
+				$("#fzmsg").html(result);
+				if(result.indexOf("网址不正确")!=-1){				
+					$("#fzsubmit").removeAttr("disabled");
+				}
+			}else{		
+				var url = result + "&n="+Math.random();
+				document.form1.action = url;
+				$("#fzmsg").html("获取仿站服务器地址 成功，现在可以点击仿站了，刷新将被扣一次。");
+				$("#fzsubmit").removeAttr("disabled").val("开始仿站");	                
+				$("#fzsubmit").removeAttr("disabled");
+			}			
+		});		
+		return false;
+	}
 }
 </script>
  
@@ -306,6 +333,7 @@ function formFangZhanSubmit(){
 【labletitle】模板下载
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】php网站模板_asp网站模板_手机模板_网站模板下载_免费模板下载
 【webkeywords】php网站模板_asp网站模板_手机模板_网站模板下载_免费模板下载
 【webdescription】php网站模板_asp网站模板_手机模板_网站模板下载_免费模板下载，分享模板网站提供海量免费ASP/PHP网站源码下载 QQ313801120
@@ -323,6 +351,7 @@ function formFangZhanSubmit(){
 【labletitle】SEO
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】SEO_SEO优化_SEO整站优化_seo关键词优化_网站的优化
 【webkeywords】SEO_SEO优化_SEO整站优化_seo关键词优化_网站的优化
 【webdescription】SEO是指通过对网站内部调整优化及站外优化，使网站满足搜索引擎收录排名需求，在搜索引擎中提高关键词排名，从而把精准用户带到网站，获得免费流量，产生直接销售或品牌推广 QQ313801120
@@ -339,6 +368,7 @@ function formFangZhanSubmit(){
 【labletitle】ASPPHPCMS通用双系统CMS
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】CMS_CMS系统_企业CMS系统_ASPPHPCMS_ASPPHPCMS内容管理系统
 【webkeywords】CMS_CMS系统_企业CMS系统_ASPPHPCMS_ASPPHPCMS内容管理系统
 【webdescription】提供免费开源的ASP/PHP通用双版本CMS，提供大量模板可供下载 QQ313801120
@@ -484,6 +514,7 @@ end if
 【labletitle】ASP
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】ASP_ASP教程_ASP学习_ASP代码_ASP帮助
 【webkeywords】ASP_ASP教程_ASP学习_ASP代码_ASP帮助
 【webdescription】提供ASP网站开发中用到得实用代码与教程 QQ313801120
@@ -500,6 +531,7 @@ end if
 【labletitle】PHP
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】PHP_PHP教程_PHP学习_PHP代码_PHP帮助
 【webkeywords】PHP_PHP教程_PHP学习_PHP代码_PHP帮助
 【webdescription】提供PHP网站开发中用到得实用代码与教程 QQ313801120
@@ -516,6 +548,7 @@ end if
 【labletitle】JSP
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】JSP_JSP教程_JSP学习_JSP代码_JSP帮助
 【webkeywords】JSP_JSP教程_JSP学习_JSP代码_JSP帮助
 【webdescription】提供JSP网站开发中用到得实用代码与教程 QQ313801120
@@ -532,6 +565,7 @@ end if
 【labletitle】JS
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】JS_JS教程_JS学习_JS代码_JS帮助
 【webkeywords】JS_JS教程_JS学习_JS代码_JS帮助
 【webdescription】提供JS网站开发中用到得实用代码与教程 QQ313801120
@@ -548,6 +582,7 @@ end if
 【labletitle】HTML5
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】HTML5_HTML5教程_HTML5学习_HTML5代码_HTML5帮助
 【webkeywords】HTML5_HTML5教程_HTML5学习_HTML5代码_HTML5帮助
 【webdescription】提供HTML5网站开发中用到得实用代码与教程 QQ313801120
@@ -564,6 +599,7 @@ end if
 【labletitle】CSS3
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】CSS3_CSS3教程_CSS3学习_CSS3代码_CSS3帮助
 【webkeywords】CSS3_CSS3教程_CSS3学习_CSS3代码_CSS3帮助
 【webdescription】提供CSS3网站开发中用到得实用代码与教程 QQ313801120
@@ -580,6 +616,7 @@ end if
 【labletitle】问答Q&A
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】问答_在线问答_你问我答_我要提问_快速问答
 【webkeywords】问答_在线问答_你问我答_我要提问_快速问答
 【webdescription】在线回答大家遇到的技术类问题，有问必答 QQ313801120
@@ -602,6 +639,7 @@ end if
 【labletitle】常用工具
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】常用工具_ASP转JS_格式化HTML_格式化ASP_格式化CSS
 【webkeywords】常用工具_ASP转JS_格式化HTML_格式化ASP_格式化CSS
 【webdescription】提供大全原创工具 QQ313801120
@@ -617,6 +655,7 @@ end if
 【labletitle】网站作品
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】网站作品_网站作品_网站制作作品_小云网站作品_网站建设作品
 【webkeywords】网站作品_网站作品_网站制作作品_小云网站作品_网站建设作品
 【webdescription】这些年来小云开发制作过的网站 QQ313801120
@@ -703,6 +742,7 @@ function formcommentSubmit(){
 【labletitle】网络文摘
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】网络文摘精选
 【webkeywords】网络文摘_网络文章_网络文摘精选
 【webdescription】网络文摘_网络文章_网络文摘精选 QQ313801120
@@ -718,7 +758,8 @@ function formcommentSubmit(){
 【parentid】-1
 【labletitle】程序员
 【target】
-【npagesize】10
+【npagesize】20
+【sortsql】order by sortrank
 【webtitle】程序员
 【webkeywords】程序员_ASP程序员_PHP程序员
 【webdescription】程序员_ASP程序员_PHP程序员 QQ313801120
@@ -735,6 +776,7 @@ function formcommentSubmit(){
 【labletitle】作品展示
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】作品展示
 【webkeywords】作品展示
 【webdescription】作品展示 QQ313801120
@@ -751,9 +793,27 @@ function formcommentSubmit(){
 【labletitle】wordpress
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】wordpress
 【webkeywords】wordpress
 【webdescription】wordpress QQ313801120
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】Download
+【columntype】新闻
+【sortrank】241
+【filename】/Download/
+【templatepath】
+【flags】||
+【parentid】-1
+【labletitle】Download
+【target】
+【npagesize】20
+【sortsql】order by sortrank
+【webtitle】Download
+【webkeywords】Download
+【webdescription】提供最新网站管理系统，以及相关帮助文档下载 QQ313801120
 【bodycontent】
 【/bodycontent】
 -------------------------------
@@ -767,9 +827,78 @@ function formcommentSubmit(){
 【labletitle】
 【target】
 【npagesize】20
+【sortsql】order by sortrank
 【webtitle】其它更多技术文章如canvas/android/flash/editplus  - 分享模板网站
 【webkeywords】更多文章，canvas文章 - 分享模板网站
 【webdescription】更多文章，canvas文章 - 分享模板网站
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】android
+【columntype】新闻
+【sortrank】250
+【filename】/html/
+【templatepath】
+【flags】||
+【parentid】其它
+【labletitle】
+【target】
+【npagesize】20
+【webtitle】android
+【webkeywords】android
+【webdescription】android
+【isonhtml】0
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】nodejs
+【columntype】新闻
+【sortrank】250
+【filename】/html/
+【templatepath】
+【flags】||
+【parentid】其它
+【labletitle】
+【target】
+【npagesize】20
+【webtitle】nodejs
+【webkeywords】nodejs
+【webdescription】nodejs
+【isonhtml】0
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】nodejs用法
+【columntype】新闻
+【sortrank】250
+【filename】/html/
+【templatepath】
+【flags】||
+【parentid】nodejs
+【labletitle】
+【target】
+【npagesize】20
+【webtitle】nodejs用法
+【webkeywords】nodejs用法
+【webdescription】nodejs用法
+【isonhtml】0
+【bodycontent】
+【/bodycontent】
+-------------------------------
+【columnname】nodejs案例
+【columntype】新闻
+【sortrank】250
+【filename】/html/
+【templatepath】
+【flags】||
+【parentid】nodejs
+【labletitle】
+【target】
+【npagesize】20
+【webtitle】nodejs案例
+【webkeywords】nodejs案例
+【webdescription】nodejs案例
+【isonhtml】0
 【bodycontent】
 【/bodycontent】
 

@@ -1,7 +1,18 @@
 <% 
 'Version1.0 20150902
 
-
+'php里插入数据库时用到
+'call rw(implode(",",array("aa","bb","cc")))    显示aa,bb,cc
+function implode(splType,arrayList)
+	dim s,c
+	for each s in arrayList
+		if c<>"" then
+			c=c & splType
+		end if
+		c=c & s
+	next
+	implode=c
+end function
 
 
 '格式化JS或PHP程序
@@ -72,6 +83,7 @@ Function formattingJSPHP(ByVal content)
                 If nSYHCount Mod 2 = 0 And beforeStr <> "\" Then
                     If Mid(s, i + 1, 1) <> wcType Then
                         wc = wc & sx 
+						'call echo("wc",wc)
                         rowC = rowC & wc                      '行代码累加
 						'call echo("wc",wc)
                         nSYHCount = 0 : wc = ""               '清除
@@ -208,10 +220,7 @@ Function formattingJSPHP(ByVal content)
     formattingJSPHP = c 
 End Function 
 
-
-
-
-
+ 
 '生成 Install.php 文件
 function printAccessToPHPInstallFile()
     Dim content, splTableName, tableName, splFieldName, fieldName, fieldType, c ,tempTableName
@@ -273,10 +282,7 @@ function printAccessToPHPInstallFile()
     Call createfile(installFilePath, content) 
     Call echo("操作完成，打印数据库到php能生成文件", "<a href=""http://127.0.0.1/PHP2/ImageWaterMark/Include/Install.php?db_PREFIX=xy_"">http://127.0.0.1/PHP2/ImageWaterMark/Include/Install.php?db_PREFIX=xy_</a>") 
 End function 
-
-
-
-
+ 
  'php代码混淆处理 20160624 只能对函数定义的变量处理  从混淆js代码里复制过来改的，等完善
 Function phpCodeConfusion(content)
     Dim splStr, i, isCode, YesWord, Sx, s, Wc, Zc, s1, AspCode, SYHCount, UpWord 

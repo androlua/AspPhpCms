@@ -94,7 +94,7 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
         $c= $c . '[sTailPage]' . vbCrlf() . $sTailPage . '[/sTailPage]' . vbCrlf() . vbCrlf();
         $c= $c . '[sTailPageFocus]' . vbCrlf() . $sTailPageFocus . '[/sTailPageFocus]' . vbCrlf() . vbCrlf();
         $c= $c . '[sPageEnd]' . vbCrlf() . $sPageEnd . '[/sPageEnd]' . vbCrlf();
-        rwend('[page]' . vbCrlf() . vbCrlf() . $c . vbCrlf() . '[/page]');
+        rwEnd('[page]' . vbCrlf() . vbCrlf() . $c . vbCrlf() . '[/page]');
     }
     //配置页为空则
     if( $configPageUrl== '' ){
@@ -107,10 +107,10 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     if( $nPage== '' ){
         $nPage= 1;
     }else{
-        $nPage= intval($nPage);
+        $nPage= CInt($nPage);
     }
     //获得总页数
-    $nCountPage= getCountPage($nRecrodCount, $nPageSize);
+    $nCountPage= GetCountPage($nRecrodCount, $nPageSize);
 
 
 
@@ -130,7 +130,7 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     $c= $sPageStart;
     //首页
     if( $nPage > 1 ){
-        $c= $c . Replace($sHomePage, '[$url$]', Replace($configPageUrl, '[id]', ''));
+        $c= $c . replace($sHomePage, '[$url$]', replace($configPageUrl, '[id]', ''));
     }else if( $isDisplayTip== true ){
         $c= $c . $sHomePageFocus;
     }
@@ -140,7 +140,7 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
         if( $previousPage <= 1 ){
             $nTemp= '';
         }
-        $c= $c . Replace($sUpPage, '[$url$]', Replace($configPageUrl, '[id]', $nTemp));
+        $c= $c . replace($sUpPage, '[$url$]', replace($configPageUrl, '[id]', $nTemp));
     }else if( $isDisplayTip== true ){
         $c= $c . $sUpPageFocus;
     }
@@ -157,13 +157,13 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
             $nDispalyOK= $nDispalyOK + 1;
             //call echo(i,nPage)
             if( $i== $nPage ){
-                $c= $c . Replace($sForPage, '[$i$]', $i);
+                $c= $c . replace($sForPage, '[$i$]', $i);
             }else{
                 $nTemp= $i;
                 if( $i <= 1 ){
                     $nTemp= '';
                 }
-                $c= $c . Replace(Replace($sForPageFocus, '[$url$]', Replace($configPageUrl, '[id]', $nTemp)), '[$i$]', $i);
+                $c= $c . replace(replace($sForPageFocus, '[$url$]', replace($configPageUrl, '[id]', $nTemp)), '[$i$]', $i);
             }
             if( $nDispalyOK > $nDisplay ){
                 break;
@@ -172,13 +172,13 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     }
     //下一页
     if( $nCountPage > $nPage ){
-        $c= $c . Replace($sNextPage, '[$url$]', Replace($configPageUrl, '[id]', $nextPage));
+        $c= $c . replace($sNextPage, '[$url$]', replace($configPageUrl, '[id]', $nextPage));
     }else if( $isDisplayTip== true ){
         $c= $c . $sNextPageFocus;
     }
     //末页
     if( $nCountPage > $nPage ){
-        $c= $c . Replace($sTailPage, '[$url$]', Replace($configPageUrl, '[id]', $nCountPage));
+        $c= $c . replace($sTailPage, '[$url$]', replace($configPageUrl, '[id]', $nCountPage));
     }else if( $isDisplayTip== true ){
         $c= $c . $sTailPageFocus;
     }
@@ -193,16 +193,16 @@ function webPageControl($nRecrodCount, $nPageSize, $nPage, $configPageUrl, $acti
     }
     $c= replaceValueParam($c, 'nCountPage', $nCountPage);
 
-    if( instr($c, '[$page-select-openlist$]') > 0 ){
+    if( inStr($c, '[$page-select-openlist$]') > 0 ){
         for( $i= 1 ; $i<= $nCountPage; $i++){
-            $url= Replace($configPageUrl, '[id]', $i);
+            $url= replace($configPageUrl, '[id]', $i);
             $selStr='';
             if( $i==$nPage ){
                 $selStr=' selected';
             }
             $cPages= $cPages . '<option value="' . $url . '"'. $selStr .'>' . $i . '</option>' . vbCrlf();
         }
-        $c= Replace($c, '[$page-select-openlist$]', $cPages);
+        $c= replace($c, '[$page-select-openlist$]', $cPages);
     }
 
     $webPageControl= $c . vbCrlf();

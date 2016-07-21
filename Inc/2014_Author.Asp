@@ -11,7 +11,7 @@ Sub aboutAuthor()
     c = c & "交流群35915100(群里已有几百人)" & vbCrLf 
     c = c & "" & vbCrLf 
     c = c & "业务及特长" & vbCrLf 
-    c = c & "精通ASP,VB程序开发，独立开发出一套ASP网站后台和VB辅助软件。" & vbCrLf 
+    c = c & "精通ASP,PHP,VB程序开发，独立开发出一套ASP网站后台和VB辅助软件。" & vbCrLf 
     c = c & "熟练掌握HTML、DIV、CSS、JS" & vbCrLf 
     c = c & "熟练使用Dreamweaver、Fireworks、 Flash、Photoshop等软件" & vbCrLf 
     c = c & "自觉PHP、Android等编程语言" & vbCrLf 

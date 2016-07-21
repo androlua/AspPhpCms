@@ -7,7 +7,7 @@
 ¡¾author¡¿sharembweb
 ¡¾adddatetime¡¿2016-01-20 11:10:05
 ¡¾filename¡¿/mobandown/copy-ufoer.html
-¡¾smallimage¡¿[$cfg_webimages$]mfwebufoer.jpg
+¡¾smallimage¡¿[$cfg_webimages$]/mfwebufoer.jpg
 ¡¾flags¡¿|
 ¡¾relatedtags¡¿Ä£°åÏÂÔØ
 ¡¾bodycontent¡¿

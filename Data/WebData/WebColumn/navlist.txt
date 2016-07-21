@@ -1,3 +1,18 @@
+【#sub#】
+Home【|】columntype='首页' parentid='-1' flags='|top|'
+About Us【|】columntype='文本' flags='|top|foot|'
+	Company profile 
+	Enterprise culture 
+	Organizational 
+	Honorary certificate 
+	Production capacity 
+	General Terms & Conditions
+What's Hot【|】columntype='新闻' flags='|top|foot|'
+	New Items 
+	Trends 
+	Best Sellers 
+	Closeout Sale
+-------------------------------
 【columnname】首页
 【columntype】首页
 【sortrank】0
@@ -59,6 +74,57 @@
 【webtitle】产品展示 标题
 【webkeywords】产品展示 关键词
 【webdescription】产品展示 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】花
+【columntype】产品
+【sortrank】30
+【filename】/asptophp/
+【templatepath】
+【flags】
+【parentid】产品展示
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】花 标题
+【webkeywords】花 关键词
+【webdescription】花 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】草
+【columntype】产品
+【sortrank】30
+【filename】/asptophp/
+【templatepath】
+【flags】
+【parentid】产品展示
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】草 标题
+【webkeywords】草 关键词
+【webdescription】草 描述
+【bodycontent】
+
+【/bodycontent】
+-------------------------------
+【columnname】树
+【columntype】产品
+【sortrank】30
+【filename】/asptophp/
+【templatepath】
+【flags】
+【parentid】产品展示
+【labletitle】
+【target】
+【npagesize】6
+【webtitle】树 标题
+【webkeywords】树 关键词
+【webdescription】树 描述
 【bodycontent】
 
 【/bodycontent】

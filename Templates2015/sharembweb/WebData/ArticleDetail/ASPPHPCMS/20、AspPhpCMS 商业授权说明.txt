@@ -3,7 +3,7 @@
 【webtitle】ASPPHPCMS商业授权说明 - 分享模板网站
 【webkeywords】ASPPHPCMS商业授权说明 - 分享模板网站
 【webdescription】ASPPHPCMS商业授权说明 - 分享模板网站
-【sortrank】6
+【sortrank】20
 【author】sharembweb
 【adddatetime】2015-06-22 22:23:11
 【filename】/ASPPHPCMS/authorization.html

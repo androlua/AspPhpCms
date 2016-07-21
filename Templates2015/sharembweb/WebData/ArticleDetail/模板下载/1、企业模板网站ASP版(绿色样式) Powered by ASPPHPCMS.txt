@@ -7,7 +7,7 @@
 【author】sharembweb
 【adddatetime】2016-03-06 10:33:32
 【filename】/mobandown/company-green-template.html
-【smallimage】[$cfg_webimages$]greentemplateweb.jpg
+【smallimage】[$cfg_webimages$]/greentemplateweb.jpg
 【flags】|
 【relatedtags】模板下载
 【bodycontent】<strong>企业模板网站ASP版(绿色样式) Powered by ASPPHPCMS</strong>【article_lable】

@@ -16,37 +16,39 @@ function callfile_setAccess(){
 function recoveryDatabase(){
     $backupDir=''; $backupFilePath ='';
     $content=''; $s=''; $splStr=''; $tableName ='';
+    handlePower('恢复数据库');
     $backupDir= $GLOBALS['adminDir'] . '/Data/BackUpDateBases/';
     $backupFilePath= $backupDir . '/' . @$_REQUEST['databaseName'];
-    if( checkFile($backupFilePath)== false ){
+    if( CheckFile($backupFilePath)== false ){
         eerr('数据库文件不存在', $backupFilePath);
     }
-    $content= getftext($backupFilePath);
+    $content= GetFText($backupFilePath);
     $splStr= aspSplit($content, '===============================' . vbCrlf());
     foreach( $splStr as $key=>$s){
         $tableName= newGetStrCut($s, 'table');
         if( $tableName <> '' ){
             connexecute('delete from ' . $GLOBALS['db_PREFIX'] . $tableName);
-            ASPEcho($tableName, importTXTData($s, $tableName, '添加'));
+            aspEcho($tableName, importTXTData($s, $tableName, '添加'));
         }
     }
-    ASPEcho('恢复数据库完成', '');
+    aspEcho('恢复数据库完成', '');
 }
 
 //备份数据库
 function backupDatabase(){
     $isUnifyToFile=''; $tableNameList=''; $databaseTableNameList=''; $fieldConfig=''; $fieldName=''; $fieldType=''; $splField=''; $fieldValue='';$nLen='';$isOK='';
     $splStr=''; $splxx=''; $tableName=''; $s=''; $c=''; $backupDir=''; $backupFilePath ='';
-    $tableNameList= strtolower(@$_REQUEST['tableNameList']); //自定义备份数据表列表
+    handlePower('备份数据库');
+    $tableNameList= lCase(@$_REQUEST['tableNameList']); //自定义备份数据表列表
     $isUnifyToFile= @$_REQUEST['isUnifyToFile']; //统一放到一个文件里
-    $databaseTableNameList= strtolower($GLOBALS['db_PREFIX'] . 'webcolumn'. vbCrlf() . getTableList());		 //让db_PREFIX在最前面，因为文章类型要从这里读取
+    $databaseTableNameList= lCase($GLOBALS['db_PREFIX'] . 'webcolumn'. vbCrlf() . getTableList());		 //让db_PREFIX在最前面，因为文章类型要从这里读取
     $nLen=len($GLOBALS['db_PREFIX']);
 
     //处理自定义表列表
     if( $tableNameList <> '' ){
         $splStr= aspSplit($tableNameList, '|');
         foreach( $splStr as $key=>$tableName){
-            if( instr(vbCrlf() . $databaseTableNameList . vbCrlf(), vbCrlf() . $GLOBALS['db_PREFIX'] . $tableName . vbCrlf()) > 0 ){
+            if( inStr(vbCrlf() . $databaseTableNameList . vbCrlf(), vbCrlf() . $GLOBALS['db_PREFIX'] . $tableName . vbCrlf()) > 0 ){
                 if( $c <> '' ){
                     $c= $c . vbCrlf();
                 }
@@ -70,14 +72,14 @@ function backupDatabase(){
             }
         }
         if( $isOK==true ){
-            $fieldConfig= strtolower(getFieldConfigList($tableName));
-            ASPEcho($tableName, $fieldConfig);
+            $fieldConfig= lCase(getFieldConfigList($tableName));
+            aspEcho($tableName, $fieldConfig);
             $rsObj=$GLOBALS['conn']->query( 'select * from ' . $tableName);
             $c= $c . '【table】' . mid($tableName, len($GLOBALS['db_PREFIX']) + 1,-1) . vbCrlf();
             while( $rs= $GLOBALS['conn']->fetch_array($rsObj)){
                 $splField= aspSplit($fieldConfig, ',');
                 foreach( $splField as $key=>$s){
-                    if( instr($s, '|') > 0 ){
+                    if( inStr($s, '|') > 0 ){
                         $splxx= aspSplit($s, '|');
                         $fieldName= $splxx[0];
                         $fieldType= $splxx[1];
@@ -93,7 +95,7 @@ function backupDatabase(){
                             $fieldValue= getColumnName($fieldValue);
                         }
                         if( $fieldValue <> '' ){
-                            if( instr($fieldValue, vbCrlf()) > 0 ){
+                            if( inStr($fieldValue, vbCrlf()) > 0 ){
                                 $fieldValue= $fieldValue . '【/' . $fieldName . '】';
                             }
                             $c= $c . '【' . $fieldName . '】' . $fieldValue . vbCrlf();
@@ -106,13 +108,13 @@ function backupDatabase(){
         }
     }
     $backupDir= $GLOBALS['adminDir'] . '/Data/BackUpDateBases/';
-    $backupFilePath= $backupDir . '/' . format_Time(now(), 4) . '.txt';
+    $backupFilePath= $backupDir . '/' . Format_Time(now(), 4) . '.txt';
     createDirFolder($backupDir);
     deleteFile($backupFilePath); //删除旧备份文件
-    createfile($backupFilePath, $c); //创建备份文件
-    hr();
-    ASPEcho('backupDir', $backupDir);
-    ASPEcho('backupFilePath', $backupFilePath);
+    createFile($backupFilePath, $c); //创建备份文件
+    HR();
+    aspEcho('backupDir', $backupDir);
+    aspEcho('backupFilePath', $backupFilePath);
     eerr('操作完成','<a href=\'?act=displayLayout&templateFile=layout_manageDatabases.html&lableTitle=数据库\'>点击返回 备份恢复数据</a>');
 }
 
@@ -131,10 +133,10 @@ function resetAccessData(){
     }
 
     //修改网站配置
-    importTXTData(getftext($webdataDir . '/website.txt'), 'website', '修改');
+    importTXTData(GetFText($webdataDir . '/website.txt'), 'website', '修改');
     batchImportDirTXTData($webdataDir, $GLOBALS['db_PREFIX'] . 'WebColumn' . vbCrlf() . getTableList());		 //加webcolumn是因为webcolumn必需新导入数据，因为后台文章类型要从里获得20160711
 
-    ASPEcho('提示', '恢复数据完成');
+    aspEcho('提示', '恢复数据完成');
     rw('<hr><a href=\'../index.php\' target=\'_blank\'>进入首页</a> | <a href="?" target=\'_blank\'>进入后台</a>');
 
 
@@ -151,23 +153,23 @@ function batchImportDirTXTData($webdataDir, $tableNameList){
             if( $GLOBALS['db_PREFIX'] <> '' ){
                 $tableName= mid($tableName, len($GLOBALS['db_PREFIX']) + 1,-1);
             }
-            $tableName= aspTrim(strtolower($tableName));
+            $tableName= aspTrim(lCase($tableName));
             //判断表 不重复操作
-            if( instr('|' . $handleTableNameList . '|', '|' . $tableName . '|')== false ){
+            if( inStr('|' . $handleTableNameList . '|', '|' . $tableName . '|')== false ){
                 $handleTableNameList= $handleTableNameList . $tableName . '|';
 
-                $folderPath= handlePath($webdataDir . '/' . $tableName);
+                $folderPath= HandlePath($webdataDir . '/' . $tableName);
                 if( checkFolder($folderPath)== true ){
                     connexecute('delete from ' . $GLOBALS['db_PREFIX'] . $tableName); //删除当前表全部数据
-                    ASPEcho('tableName', $tableName);
+                    aspEcho('tableName', $tableName);
                     $content= getDirAllFileList($folderPath, 'txt');
                     $splxx= aspSplit($content, vbCrlf());
                     foreach( $splxx as $key=>$filePath){
                         $fileName= getFileName($filePath);
-                        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-                            ASPEcho($tableName, $filePath);
-                            importTXTData(getftext($filePath), $tableName, '添加');
-                            doevents( );
+                        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+                            aspEcho($tableName, $filePath);
+                            importTXTData(GetFText($filePath), $tableName, '添加');
+                            doEvents( );
                         }
                     }
                 }
@@ -181,12 +183,12 @@ function importTXTData($content, $tableName, $sType){
     $fieldConfigList=''; $splList=''; $listStr=''; $splStr=''; $splxx=''; $s=''; $sql=''; $nOK ='';
     $fieldName=''; $fieldType=''; $fieldValue=''; $addFieldList=''; $addValueList=''; $updateValueList ='';
     $fieldStr ='';
-    $tableName= aspTrim(strtolower($tableName)); //表
+    $tableName= aspTrim(lCase($tableName)); //表
     //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-    if( instr($content, vbCrlf())== false ){
+    if( inStr($content, vbCrlf())== false ){
         $content= replace($content, chr(10), vbCrlf());
     }
-    $fieldConfigList= strtolower(getFieldConfigList($GLOBALS['db_PREFIX'] . $tableName));
+    $fieldConfigList= lCase(getFieldConfigList($GLOBALS['db_PREFIX'] . $tableName));
     $splStr= aspSplit($fieldConfigList, ',');
     $splList= aspSplit($content, vbCrlf() . '-------------------------------');
     $nOK= 0;
@@ -195,15 +197,14 @@ function importTXTData($content, $tableName, $sType){
         $addValueList= ''; //添加字段列表值
         $updateValueList= ''; //修改字段列表
 
-        $s= strtolower(newGetStrCut($listStr, '#stop#'));
+        $s= lCase(newGetStrCut($listStr, '#stop#'));
         if( $s<>'1' && $s<>'true' ){
-
             foreach( $splStr as $key=>$fieldStr){
                 if( $fieldStr <> '' ){
                     $splxx= aspSplit($fieldStr, '|');
                     $fieldName= $splxx[0];
                     $fieldType= $splxx[1];
-                    if( instr($listStr, '【' . $fieldName . '】') > 0 ){
+                    if( inStr($listStr, '【' . $fieldName . '】') > 0 ){
                         $listStr= $listStr . vbCrlf(); //加个换行是为了让最后一个参数能添加进去 20160629
                         if( $addFieldList <> '' ){
                             $addFieldList= $addFieldList . ',';
@@ -228,7 +229,7 @@ function importTXTData($content, $tableName, $sType){
                             $fieldValue= getListMenuId($fieldValue);
                         }
                         if( $fieldType== 'date' && $fieldValue== '' ){
-                            $fieldValue= ASPDate();
+                            $fieldValue= aspDate();
                         }else if(($fieldType== 'time' || $fieldType== 'now') && $fieldValue== '' ){
                             $fieldValue= now();
                         }
@@ -244,22 +245,22 @@ function importTXTData($content, $tableName, $sType){
                     }
                 }
             }
-            //字段列表为空 则退出
-            if( $addFieldList== '' ){
-                $importTXTData= $nOK;
-                return @$importTXTData;
-            }
-
-            if( $sType== '修改' ){
-                $sql= 'update ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' set ' . $updateValueList;
+            //字段列表不为空
+            if( $addFieldList <> '' ){
+                if( $sType== '修改' ){
+                    $sql= 'update ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' set ' . $updateValueList;
+                }else{
+                    $sql= 'insert into ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' (' . $addFieldList . ') values(' . $addValueList . ')';
+                }
+                //检测SQL
+                if( checkSql($sql)== false ){
+                    eerr('出错提示', '<hr>sql=' . $sql . '<br>');
+                }
+                $nOK= $nOK + 1;
             }else{
-                $sql= 'insert into ' . $GLOBALS['db_PREFIX'] . '' . $tableName . ' (' . $addFieldList . ') values(' . $addValueList . ')';
+                $nOK=batchImportColumnList($splStr,$listStr,$nOK,$tableName);
+
             }
-            //检测SQL
-            if( checksql($sql)== false ){
-                eerr('出错提示', '<hr>sql=' . $sql . '<br>');
-            }
-            $nOK= $nOK + 1;
         }
 
     }
@@ -269,17 +270,74 @@ function importTXTData($content, $tableName, $sType){
     //call echo("updateValueList",updateValueList)
     return @$importTXTData;
 }
+//批量导入栏目列表 20160716
+function batchImportColumnList($splField, $listStr,$nOK,$tableName){
+    $splstr='';$splxx='';$isColumn='';$columnName='';$s='';$c='';$nLen='';$id='';$parentIdArray=aspArray(99);$columntypeArray=aspArray(99);$flagsArray=aspArray(99);$nIndex='';$fieldStr='';$fieldName='';$valueStr='';$nCount='';
+    $isColumn=false;
+    $nCount=0;
+    $listStr=replace($listStr,vbTab(),'    ');
+    $splstr=aspSplit($listStr,vbCrlf());
+    foreach( $splstr as $key=>$s){
+        if( $s=='【#sub#】' ){
+            $isColumn=true;
+        }else if( $isColumn==true ){
+            $columnName=$s;
+            if( inStr($columnName,'【|】')>0 ){
+                $columnName=mid($columnName,1,inStr($columnName,'【|】')-1);
+            }
+            $columnName=aspRTrim($columnName);
+            $nLen=len($columnName);
+            $columnName=aspLTrim($columnName);
+            $nlen=$nLen-len($columnName);
+            $nIndex=cint($nLen/4);
+            if( $columnName<>'' ){
+                $parentIdArray[$nIndex]=$columnName;
+                $c=$c . '【columnname】' . $columnName . vbCrlf();
+                foreach( $splField as $key=>$fieldStr){
+                    $splxx=aspSplit($fieldStr . '|','|');
+                    $fieldName=$splxx[0];
+                    if( $fieldName<>'' && $fieldName<>'columnname' && inStr($s,$fieldName . '=\'')>0 ){
+                        $valueStr=getStrCut($s, $fieldName . '=\'', '\'',2);
+                        $c=$c . '【'. $fieldName .'】' . $valueStr . vbCrlf();
+
+                        if( $fieldName=='columntype' ){
+                            $columntypeArray[$nIndex]=$valueStr;
+                        }else if( $fieldName=='flags' ){
+                            $flagsArray[$nIndex]=$valueStr;
+                        }
+                    }
+                }
+                if( $nIndex<>0 ){
+                    $c=$c . '【parentid】' . $parentIdArray[$nIndex-1] . vbCrlf();
+                    $c=$c . '【columntype】' . $columntypeArray[$nIndex-1] . vbCrlf();
+                    $c=$c . '【flags】' . $flagsArray[$nIndex-1] . vbCrlf();
+                }else{
+                    $c=$c . '【parentid】-1' . vbCrlf();
+                }
+                $c=$c . '【sortrank】' . $nCount . vbCrlf();
+                $nCount=$nCount+1;
+                $c=$c . '-------------------------------' . vbCrlf();
+            }
+        }
+    }
+    //call die(createfile("1.txt",c))
+    //继续导入
+    if( $c<>'' ){
+        importTXTData($c, $tableName, '添加');
+    }
+}
+
 //新的截取字符20160216
 function newGetStrCut($content, $title){
     $s ='';
     //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-    if( instr($content, vbCrlf())== false ){
+    if( inStr($content, vbCrlf())== false ){
         $content= replace($content, chr(10), vbCrlf());
     }
-    if( instr($content, '【/' . $title . '】') > 0 ){
-        $s= aDSql(phptrim(getStrCut($content, '【' . $title . '】', '【/' . $title . '】', 0)));
+    if( inStr($content, '【/' . $title . '】') > 0 ){
+        $s= aDSql(phpTrim(getStrCut($content, '【' . $title . '】', '【/' . $title . '】', 0)));
     }else{
-        $s= aDSql(phptrim(getStrCut($content, '【' . $title . '】', vbCrlf(), 0)));
+        $s= aDSql(phpTrim(getStrCut($content, '【' . $title . '】', vbCrlf(), 0)));
     }
     $newGetStrCut= $s;
     return @$newGetStrCut;
@@ -295,16 +353,16 @@ function contentTranscoding( $content){
     $isBR= false;
     $splStr= aspSplit($content, vbCrlf());
     foreach( $splStr as $key=>$s){
-        if( instr($s, '[&html转码&]') > 0 ){
+        if( inStr($s, '[&html转码&]') > 0 ){
             $isTranscoding= true;
         }
-        if( instr($s, '[&html转码end&]') > 0 ){
+        if( inStr($s, '[&html转码end&]') > 0 ){
             $isTranscoding= false;
         }
-        if( instr($s, '[&全部换行&]') > 0 ){
+        if( inStr($s, '[&全部换行&]') > 0 ){
             $isBR= true;
         }
-        if( instr($s, '[&全部换行end&]') > 0 ){
+        if( inStr($s, '[&全部换行end&]') > 0 ){
             $isBR= false;
         }
 
@@ -322,10 +380,10 @@ function contentTranscoding( $content){
             $s= replace($s, '[&全部换行end&]', '');
         }
         //标签样式超简单添加 20160628
-        if( instr($s, '【article_lable】') > 0 ){
+        if( inStr($s, '【article_lable】') > 0 ){
             $s= replace($s, '【article_lable】', '');
             $s= '<div class="article_lable">' . $s . '</div>';
-        }else if( instr($s, '【article_blockquote】') > 0 ){
+        }else if( inStr($s, '【article_blockquote】') > 0 ){
             $s= replace($s, '【article_blockquote】', '');
             $s= '<div class="article_blockquote">' . $s . '</div>';
         }
@@ -362,7 +420,7 @@ function resetAccessData_temp(){
         $webdataDir= '/Data/WebData/';
     }
 
-    ASPEcho('提示', '恢复数据完成');
+    aspEcho('提示', '恢复数据完成');
     rw('<hr><a href=\'../index.php\' target=\'_blank\'>进入首页</a> | <a href="?" target=\'_blank\'>进入后台</a>');
 
     $content=''; $filePath=''; $parentid=''; $author=''; $adddatetime=''; $fileName=''; $bodycontent=''; $webtitle=''; $webkeywords=''; $webdescription=''; $sortrank=''; $labletitle=''; $target ='';
@@ -375,9 +433,9 @@ function resetAccessData_temp(){
     $httpurl=''; $price=''; $morepageurl=''; $charset=''; $thispage=''; $countpage=''; $bigClassName=''; $startStr=''; $endStr=''; $startaddstr=''; $endaddstr=''; $sType=''; $saction=''; $fieldName=''; $fieldcheck ='';
 
     //网站配置
-    $content= getftext($webdataDir . '/website.txt');
+    $content= GetFText($webdataDir . '/website.txt');
     //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-    if( instr($content, vbCrlf())== false ){
+    if( inStr($content, vbCrlf())== false ){
         $content= replace($content, chr(10), vbCrlf());
     }
     if( $content <> '' ){
@@ -404,19 +462,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/webcolumn/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('导航', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('导航', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【webtitle】') > 0 ){
+                if( inStr($s, '【webtitle】') > 0 ){
                     $s= $s . vbCrlf();
                     $webtitle= newGetStrCut($s, 'webtitle');
                     $webkeywords= newGetStrCut($s, 'webkeywords');
@@ -432,7 +490,7 @@ function resetAccessData_temp(){
                     $flags= newGetStrCut($s, 'flags');
                     $parentid= newGetStrCut($s, 'parentid');
 
-                    $parentid= phptrim(getColumnId($parentid)); //可根据栏目名称找到对应ID   不存在为-1
+                    $parentid= phpTrim(getColumnId($parentid)); //可根据栏目名称找到对应ID   不存在为-1
                     //call echo("parentid",parentid)
                     $labletitle= newGetStrCut($s, 'labletitle');
                     //每页显示条数
@@ -452,14 +510,14 @@ function resetAccessData_temp(){
                     $bodycontent= contentTranscoding($bodycontent);
                     //是否启用生成html
                     $isonhtml= newGetStrCut($s, 'isonhtml');
-                    if( $isonhtml== '0' || strtolower($isonhtml)== 'false' ){
+                    if( $isonhtml== '0' || lCase($isonhtml)== 'false' ){
                         $isonhtml= 0;
                     }else{
                         $isonhtml= 1;
                     }
                     //是否为nofollow
                     $nofollow= newGetStrCut($s, 'nofollow');
-                    if( $nofollow== '1' || strtolower($nofollow)== 'true' ){
+                    if( $nofollow== '1' || lCase($nofollow)== 'true' ){
                         $nofollow= 1;
                     }else{
                         $nofollow= 0;
@@ -484,19 +542,19 @@ function resetAccessData_temp(){
     $content= getDirAllFileList($webdataDir . '/articledetail/', 'txt');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('文章', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('文章', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【title】') > 0 ){
+                if( inStr($s, '【title】') > 0 ){
                     $s= $s . vbCrlf();
                     $parentid= newGetStrCut($s, 'parentid');
                     $parentid= getColumnId($parentid);
@@ -532,14 +590,14 @@ function resetAccessData_temp(){
                     $bodycontent= contentTranscoding($bodycontent);
                     //是否启用生成html
                     $isonhtml= newGetStrCut($s, 'isonhtml');
-                    if( $isonhtml== '0' || strtolower($isonhtml)== 'false' ){
+                    if( $isonhtml== '0' || lCase($isonhtml)== 'false' ){
                         $isonhtml= 0;
                     }else{
                         $isonhtml= 1;
                     }
                     //是否为nofollow
                     $nofollow= newGetStrCut($s, 'nofollow');
-                    if( $nofollow== '1' || strtolower($nofollow)== 'true' ){
+                    if( $nofollow== '1' || lCase($nofollow)== 'true' ){
                         $nofollow= 1;
                     }else{
                         $nofollow= 0;
@@ -561,19 +619,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/OnePage/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('单页', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('单页', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【webkeywords】') > 0 ){
+                if( inStr($s, '【webkeywords】') > 0 ){
                     $s= $s . vbCrlf();
                     $title= newGetStrCut($s, 'title');
                     $displaytitle= newGetStrCut($s, 'displaytitle');
@@ -596,14 +654,14 @@ function resetAccessData_temp(){
                     $bodycontent= contentTranscoding($bodycontent);
                     //是否启用生成html
                     $isonhtml= newGetStrCut($s, 'isonhtml');
-                    if( $isonhtml== '0' || strtolower($isonhtml)== 'false' ){
+                    if( $isonhtml== '0' || lCase($isonhtml)== 'false' ){
                         $isonhtml= 0;
                     }else{
                         $isonhtml= 1;
                     }
                     //是否为nofollow
                     $nofollow= newGetStrCut($s, 'nofollow');
-                    if( $nofollow== '1' || strtolower($nofollow)== 'true' ){
+                    if( $nofollow== '1' || lCase($nofollow)== 'true' ){
                         $nofollow= 1;
                     }else{
                         $nofollow= 0;
@@ -621,19 +679,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/Bidding/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('竞价', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('竞价', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【webkeywords】') > 0 ){
+                if( inStr($s, '【webkeywords】') > 0 ){
                     $s= $s . vbCrlf();
                     $webkeywords= newGetStrCut($s, 'webkeywords');
                     $showreason= newGetStrCut($s, 'showreason');
@@ -641,7 +699,7 @@ function resetAccessData_temp(){
                     $nmobliesearch= newGetStrCut($s, 'nmobliesearch');
                     $ncountsearch= newGetStrCut($s, 'ncountsearch');
                     $ndegree= newGetStrCut($s, 'ndegree');
-                    $ndegree= getnumber($ndegree);
+                    $ndegree= getNumber($ndegree);
                     if( $ndegree== '' ){
                         $ndegree= 0;
                     }
@@ -656,19 +714,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/SearchStat/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('搜索统计', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('搜索统计', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【title】') > 0 ){
+                if( inStr($s, '【title】') > 0 ){
                     $s= $s . vbCrlf();
                     $title= newGetStrCut($s, 'title');
                     $webtitle= newGetStrCut($s, 'webtitle');
@@ -678,7 +736,7 @@ function resetAccessData_temp(){
                     $customaurl= newGetStrCut($s, 'customaurl');
                     $target= newGetStrCut($s, 'target');
                     $isthrough= newGetStrCut($s, 'isthrough');
-                    if( $isthrough== '0' || strtolower($isthrough)== 'false' ){
+                    if( $isthrough== '0' || lCase($isthrough)== 'false' ){
                         $isthrough= 0;
                     }else{
                         $isthrough= 1;
@@ -687,14 +745,14 @@ function resetAccessData_temp(){
                     if( $sortrank== '' ){ $sortrank= 0 ;}
                     //是否启用生成html
                     $isonhtml= newGetStrCut($s, 'isonhtml');
-                    if( $isonhtml== '0' || strtolower($isonhtml)== 'false' ){
+                    if( $isonhtml== '0' || lCase($isonhtml)== 'false' ){
                         $isonhtml= 0;
                     }else{
                         $isonhtml= 1;
                     }
                     //是否为nofollow
                     $nofollow= newGetStrCut($s, 'nofollow');
-                    if( $nofollow== '1' || strtolower($nofollow)== 'true' ){
+                    if( $nofollow== '1' || lCase($nofollow)== 'true' ){
                         $nofollow= 1;
                     }else{
                         $nofollow= 0;
@@ -712,19 +770,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/TableComment/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('评论', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('评论', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【title】') > 0 ){
+                if( inStr($s, '【title】') > 0 ){
                     $s= $s . vbCrlf();
 
                     $tableName= newGetStrCut($s, 'tablename');
@@ -741,7 +799,7 @@ function resetAccessData_temp(){
 
 
                     $isthrough= newGetStrCut($s, 'isthrough');
-                    if( $isthrough== '0' || strtolower($isthrough)== 'false' ){
+                    if( $isthrough== '0' || lCase($isthrough)== 'false' ){
                         $isthrough= 0;
                     }else{
                         $isthrough= 1;
@@ -760,19 +818,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/FriendLink/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('评论', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('评论', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【title】') > 0 ){
+                if( inStr($s, '【title】') > 0 ){
                     $s= $s . vbCrlf();
 
                     $title= newGetStrCut($s, 'title');
@@ -783,13 +841,13 @@ function resetAccessData_temp(){
 
 
                     $sortrank= newGetStrCut($s, 'sortrank');
-                    if( $sortrank== '0' || strtolower($sortrank)== 'false' ){
+                    if( $sortrank== '0' || lCase($sortrank)== 'false' ){
                         $sortrank= 0;
                     }else{
                         $sortrank= 1;
                     }
                     $isthrough= newGetStrCut($s, 'isthrough');
-                    if( $isthrough== '0' || strtolower($isthrough)== 'false' ){
+                    if( $isthrough== '0' || lCase($isthrough)== 'false' ){
                         $isthrough= 0;
                     }else{
                         $isthrough= 1;
@@ -807,26 +865,26 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/GuestBook/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('留言', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('留言', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【adddatetime】') > 0 ){
+                if( inStr($s, '【adddatetime】') > 0 ){
                     $s= $s . vbCrlf();
 
                     $adddatetime= newGetStrCut($s, 'adddatetime');
                     $bodycontent= newGetStrCut($s, 'bodycontent');
                     $reply= newGetStrCut($s, 'reply');
                     $isthrough= newGetStrCut($s, 'isthrough');
-                    if( $isthrough== '0' || strtolower($isthrough)== 'false' ){
+                    if( $isthrough== '0' || lCase($isthrough)== 'false' ){
                         $isthrough= 0;
                     }else{
                         $isthrough= 1;
@@ -844,19 +902,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/CaiWeb/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('采集网站', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('采集网站', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【bigclassname】') > 0 ){
+                if( inStr($s, '【bigclassname】') > 0 ){
                     $s= $s . vbCrlf();
 
 
@@ -894,19 +952,19 @@ function resetAccessData_temp(){
     $content= getDirTxtList($webdataDir . '/CaiConfig/');
     $content= contentNameSort($content, '');
     $splStr= aspSplit($content, vbCrlf());
-    hr();
+    HR();
     foreach( $splStr as $key=>$filePath){
-        $fileName= getfilename($filePath);
-        if( $filePath <> '' && instr('_#', left($fileName, 1))== false ){
-            ASPEcho('采集配置', $filePath);
-            $content= getftext($filePath);
+        $fileName= getFileName($filePath);
+        if( $filePath <> '' && inStr('_#', left($fileName, 1))== false ){
+            aspEcho('采集配置', $filePath);
+            $content= GetFText($filePath);
             //这样做是为了从GitHub下载时它把vbcrlf转成 chr(10)  20160409
-            if( instr($content, vbCrlf())== false ){
+            if( inStr($content, vbCrlf())== false ){
                 $content= replace($content, chr(10), vbCrlf());
             }
             $splxx= aspSplit($content, vbCrlf() . '-------------------------------');
             foreach( $splxx as $key=>$s){
-                if( instr($s, '【bigclassname】') > 0 ){
+                if( inStr($s, '【bigclassname】') > 0 ){
                     $s= $s . vbCrlf();
 
 
@@ -922,7 +980,7 @@ function resetAccessData_temp(){
                     if( $sortrank== '' ){ $sortrank= 0 ;}
                     $saction= newGetStrCut($s, 'saction');
                     $isthrough= newGetStrCut($s, 'isthrough');
-                    $isthrough= IIF($isthrough== '0' || strtolower($isthrough)== 'false', 0, 1);
+                    $isthrough= IIF($isthrough== '0' || lCase($isthrough)== 'false', 0, 1);
 
                     $fieldName= newGetStrCut($s, 'fieldname');
                     $fieldcheck= newGetStrCut($s, 'fieldcheck');

@@ -20,7 +20,7 @@ function openConn() {
 		exit('<a href="'.$GLOBALS['webDir'].'/phpinc/startInstall.php" target="_blank">连接数据库失败，点击配置2</a>');	
 	}
 	
-	mysql_query("set names 'gb2312'"); //数据库输出编码
+	mysql_query("set names 'utf-8'"); //数据库输出编码
 	
 	$conn->connect($GLOBALS['dbhost'],$GLOBALS['dbuser'],$GLOBALS['dbpwd']);
 	$conn->select_db($GLOBALS['dbname']);

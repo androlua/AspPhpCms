@@ -122,7 +122,7 @@ Function printTimeValue(vv)
     If v > 0 Then
         c = c & v & "秒" 
     End If 
-    If Err.Number <> 0 Then MsgBox(vv) 
+    if err then call doError(err.description, "printTimeValue 时间计算，vv=" & vv) 
     printTimeValue = c 
 End Function 
 '计算整时  (问答以小时或分钟显示)

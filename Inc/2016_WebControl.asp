@@ -225,7 +225,7 @@ Function replaceValueParam(content, paramName, replaceStr)
 	tempReplaceStr=replaceStr
 	
 	'最多处理99个  20160225
-	for i =1 to 99 
+	for i =1 to 999 
 		replaceStr=tempReplaceStr													'恢复
 		startStr = "[$" & paramName : endStr = "$]" 
 		'字段名称严格判断 20160226
@@ -247,7 +247,7 @@ Function replaceValueParam(content, paramName, replaceStr)
 			'删除两边空格
 			trimYes = RParam(labelStr, "trim")                                              '是否删除两边空格
 			If trimYes = "true" Then replaceStr = TrimVbCrlf(replaceStr) 
-	
+	 
 			'截取字符处理
 			nLen = RParam(labelStr, "len")                                                  '字符长度值
 			nLen = HandleNumber(nLen) 
@@ -275,6 +275,13 @@ Function replaceValueParam(content, paramName, replaceStr)
 					s = replaceStr 
 				End If 
 				replaceStr = getcolumnurl(s, "id") 
+			End If 
+			'是否为密码类型
+			s = RParam(labelStr, "password") 
+			If s <> "" Then 
+				if s<>"" then
+					replaceStr = s
+				end if
 			End If 
 	
 			ifStr = RParam(labelStr, "if") 
@@ -416,7 +423,7 @@ End Function
 '获得控制内容
 Function getControlStr(url)
     If Request("gl") = "edit" Then
-        getControlStr = " onMouseMove=""onColor(this,'#FDFAC6','red')"" onMouseOut=""offColor(this,'','')"" onDblClick=""window1('" & url & "','信息修改')"" title='双击或右键在线修改' oncontextmenu=""CommonMenu(event,this,'')" '删除网址为空
+        getControlStr = " onMouseMove=""onColor(this,'#FDFAC6','red')"" onMouseOut=""offColor(this,'','')"" onDblClick=""window1('" & url & "','信息修改')"" title='双击或右键选在线修改' oncontextmenu=""CommonMenu(event,this,'')" '删除网址为空
     End If 
 End Function 
 

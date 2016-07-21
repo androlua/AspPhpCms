@@ -44,7 +44,7 @@ $(function() {
 		})
 
 	})
-	//显示输入框架
+//显示输入框架
 function displayLayoutframe(content,helpStr) {
 	var splstr, splxx, s, c = '';
 	var inputName, inputValue, inputType, selStr, findStr,lableTitle;
@@ -176,7 +176,9 @@ function createLableStr() {
 
 
 			}
-			c = c + a[i].name + '=\'' + value + '\' '
+			if(value!=''){
+				c = c + a[i].name + '=\'' + value + '\' ';
+			}
 		}
 	}
 	c += "$}";
@@ -193,8 +195,18 @@ function createLableStr() {
 	 
 	//内容模块
 	document.all.txtEchoInfo.value = helpStr + labelStartStr + c + labelEndStr + "\n\n" + infoStr
-}
+	
+	//显示帮助信息
+	var sid = $.trim(document.all.sidlist.value);
+	sid=sid.substr(0, sid.indexOf(" "));	
+	var s=getStrCut(getConfig(),"[#显示"+sid+"帮助信息#] start","[#显示"+sid+"帮助信息#] end",2);
+	if(s==""){
+		s=getStrCut(getConfig(),"[#显示默认帮助信息#] start","[#显示默认帮助信息#] end",2);
+	}
+	document.all.txtHelpInfo.value=s;
 
+}
+//格式化时间
 function format_Time(timeStr, nType) {
 	var timeObj = new Date()
 		//2015-10-28 13:19:18 不行  Tue Jul 16 01:07:00 CST 2013才行

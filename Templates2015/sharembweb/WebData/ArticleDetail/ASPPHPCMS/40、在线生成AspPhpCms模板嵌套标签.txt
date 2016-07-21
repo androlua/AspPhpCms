@@ -3,7 +3,7 @@
 【webtitle】在线生成ASPPHPCMS模板嵌套标签 - 分享模板网站
 【webkeywords】在线生成ASPPHPCMS模板嵌套标签 - 分享模板网站
 【webdescription】在线生成ASPPHPCMS模板嵌套标签 - 分享模板网站
-【sortrank】7
+【sortrank】40
 【author】sharembweb
 【adddatetime】2015-07-14 22:38:35
 【filename】/ASPPHPCMS/online-make-Tags.html
@@ -14,8 +14,8 @@
 【bodycontent】 
 
 	<script type="text/javascript" src="/Jquery/jquery.Min.js"></script>
-	<script type="text/javascript" src="[$cfg_webimages$]tagsApp.js"></script>
-	<script type="text/javascript" src="[$cfg_webimages$]database.js"></script>
+	<script type="text/javascript" src="[$cfg_webimages$]/tagsApp.js"></script>
+	<script type="text/javascript" src="[$cfg_webimages$]/database.js"></script>
 	<form action="" method="post" name="control">
 		<select name="didlist" id="didlist" class="inputstyle"></select>
 		<select name="sidlist" id="sidlist" class="inputstyle"></select>
@@ -25,6 +25,15 @@
 	<div>
 		<textarea name="txtEchoInfo" style="width:98%" rows="6" id="txtEchoInfo" class="inputstyle">显示标签生成后代码</textarea>
 	</div>
+	
+	
+ 	<br /><br /><br />
+	<div style="margin:20px 0 0 0;font-weight:bold">显示标签对应帮助信息</div>
+	<div>
+		<textarea name="txtHelpInfo" style="width:98%" rows="6" id="txtHelpInfo" class="inputstyle">显示标签对应帮助信息</textarea>
+	</div>
+
+	
 
 <br><br> 
  

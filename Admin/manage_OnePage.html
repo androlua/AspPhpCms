@@ -39,7 +39,7 @@
 		  <td>²Ù×÷</td>
 		</tr> 
         [list]
-		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+		<tr align="center" height="26"   [$focusid if='[$id$]' value='style="background:#F5F9CE;font-weight:bold;"' default='bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor=\'#FCFDEE\';" onMouseOut="javascript:this.bgColor=\'#FFFFFF\';"'$]>
 			<td>
 				[$id$]			</td>
 		  <td>
@@ -85,7 +85,8 @@
 		<tr align="right" bgcolor="#F9FCEF">
 			<td height="36" colspan="10" align="center">
 				[$pageInfo$]			
-                <input name="nPageSize" type="hidden" id="nPageSize" value="[$nPageSize$]">
+                <input name="nPageSize" type="hidden" id="nPageSize" value="[$nPageSize$]"> 
+                <input name="focusid" type="hidden" id="focusid" value="[$focusid$]"> 
                 </td>
 		</tr>
 		</table>

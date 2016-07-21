@@ -5,7 +5,7 @@ Sub setApp(AppName, AppData)
     Application.Unlock 
 End Sub
 Function getApp(AppName)
-    If IsN(AppName) Then getApp = "" : Exit Function 
+    If AppName="" Then getApp = "" : Exit Function 
     getApp = Application.Contents.Item(AppName) 
 End Function 
 Sub removeApp(AppName)
@@ -32,4 +32,4 @@ function clearCookie(ByVal cookieName)
 	removeCookie(cookieName)
 end function
 %>
-
+ 

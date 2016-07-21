@@ -8,10 +8,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="format-detection" content="telephone=no" />
-<link rel="Shortcut Icon" href="[$cfg_webimages$]favicon.ico" />
+<link rel="Shortcut Icon" href="[$cfg_webimages$]/favicon.ico" />
 <script src="/Jquery/Jquery.Min.js" type="text/javascript"></script>
-<script src="[$WebImages$]runAction.js" type="text/javascript"></script><!--#JS#-->
-<link href="[$WebCss$]style.css" rel="stylesheet" type="text/css" /><!--#Css#-->
+<script src="[$WebImages$]/runAction.js" type="text/javascript"></script><!--#JS#-->
+<link href="[$WebCss$]/style.css" rel="stylesheet" type="text/css" /><!--#Css#-->
 </head>
 <body>
 {$Include file='head.html' block='top'$} 
@@ -19,6 +19,91 @@
 
 
 <div class="mainwrap">
+
+
+ 
+ 
+ 
+ 
+<div class="home_download">
+    <div class="container clear_float">
+    
+
+
+<!--#细节列表 ASPPHP通用#-->
+<sPAn class="testspan">{$ArticleList columnname='Download' addsql='where flags like \'%c%\' order by sortrank' topnumb='4' default='2016年07月14日 16时00分' $}</sPAn>
+
+ 
+<!--#2016年07月14日 16时00分[list]
+
+      <div class="item java">
+        <h3>[$temptxt1$]</h3>
+        <div class="logo"><a href="[$url$]"></a></div>
+        <div class="tips">[$temptxt2$]</div>
+        [$labletitle$]
+      </div>    
+[/list]
+[list-2]
+
+      <div class="item dotnet">
+        <h3>[$temptxt1$]</h3>
+        <div class="logo"><a href="[$url$]"></a></div>
+        <div class="tips">[$temptxt2$]</div>
+        [$labletitle$]
+      </div>
+[/list-2]
+[list-3]
+
+      <div class="item php">
+        <h3>[$temptxt1$]</h3>
+        <div class="logo"><a href="[$url$]"></a></div>
+        <div class="tips">[$temptxt2$]</div>
+        [$labletitle$]
+      </div>
+[/list-3]
+[list-4]
+
+      <div class="item asp">
+        <h3>[$temptxt1$]</h3>
+        <div class="logo"><a href="[$url$]"></a></div>
+        <div class="tips">[$temptxt2$]</div>
+        [$labletitle$]
+      </div>
+      
+[/list-4]
+
+#-->
+
+<!--#test start#--> 
+      <div class="item java">
+        <h3>APAJ(JSP)版</h3>
+        <div class="logo"><a href="download/detail-4.html"></a></div>
+        <div class="tips">最新版本: 1.0 Final<br><span style="font-size:10px">JDK(1.6)+JSP(2.0)+MYSQL/SQLITE</span></div>
+      </div>
+      
+      <div class="item dotnet">
+        <h3>APAJ(.NET)版</h3>
+        <div class="logo"><a href="download/detail-3.html"></a></div>
+        <div class="tips">最新版本: 1.0 Final<br><span style="font-size:10px">ASP.NET(2.0)+ACCESS/SQL SERVER</span></div>
+      </div>
+      
+      <div class="item php">
+        <h3>APAJ(PHP)版</h3>
+        <div class="logo"><a href="download/detail-2.html"></a></div>
+        <div class="tips">最新版本: 1.0 Final<br><span style="font-size:10px">PHP(5.0)+MYSQL</span></div>
+        <span class="recommended"></span>
+      </div>
+      
+      <div class="item asp">
+        <h3>APAJ(ASP)版</h3>
+        <div class="logo"><a href="download/detail-1.html"></a></div>
+        <div class="tips">最新版本: 1.0 Final<br><span style="font-size:10px">ASP(3.0)+ACCESS/SQL SERVER</span></div>
+      </div>      
+    </div>
+<!--#test end#-->
+  </div> 
+<div class="clear10"></div>
+  
 
     <div class="mainwrap">
         <div class="toolswrap noselect" style="height:auto">
@@ -264,7 +349,36 @@
             }
             </script>
         </div>
-    
+        
+       <ul class="columnbox">
+            <li class="title" id="userlogintitle">站内搜索</li>
+            <li class="content"> 
+
+<form id="form1" name="form1" method="post" action="[$WEB_VIEWURL$]?act=Search&keywordname=keyword">
+
+类别<select name="parentid" id="parentid"><option value="">≡ 选择栏目 ≡</option>
+<!--#栏目菜单#-->
+<sPAn class="testspan">{$ColumnMenu default='2016年07月16日 06时50分' $}</sPAn>
+<!--#2016年07月16日 06时50分[list]<option value="[$id$]"[$selected$]>[$selectcolumnname$]</option>[/list]
+
+[subheader] 
+[/subheader]
+[subfooter] 
+[/subfooter]
+#--> 
+</select> 
+<div class="clear10"></div>
+<!--#
+默认是 wd为搜索关键词  不过也可以通过keywordname 来设定
+#-->
+搜索<input name="keyword" type="text" id="keyword" size="11" />
+<input type="submit" name="button" id="button" value="提交" />
+</form>
+
+ 
+            </li>
+        </ul>
+        
        <ul class="columnbox">
             <li class="title" id="userlogintitle">会员登录</li>
             <li class="content">

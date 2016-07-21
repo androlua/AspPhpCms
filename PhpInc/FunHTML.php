@@ -100,7 +100,7 @@ function fontColorFontB($title, $FontB, $FontColor){
 }
 //获得默认文章信息文件名称
 function getDefaultFileName(){
-    $getDefaultFileName= format_Time(Now(), 6);
+    $getDefaultFileName= Format_Time(now(), 6);
     return @$getDefaultFileName;
 }
 //获得链接  例：'"<a " & AHref(Url, TempRs("BigClassName"), TempRs("Target")) & ">" & TempRs("BigClassName") & "</a>"
@@ -213,14 +213,14 @@ function handleArticleListStyleOrInfoStyle($folderName, $InputName, $ThisValue){
 
     $content= getFileFolderList($ResourceDir, true, 'html', '名称', '', '', '');
 
-    $ThisValue= strtolower($ThisValue); //转成小写 好对比
+    $ThisValue= lCase($ThisValue); //转成小写 好对比
 
     $c= $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . vbCrlf();
     $c= $c . '    <option value=""></option>' . vbCrlf();
     $splStr= aspSplit($content, vbCrlf());
     foreach( $splStr as $key=>$fileName){
         if( $fileName <> '' ){
-            $sel= IIF(strtolower($fileName)== $ThisValue, ' selected', '');
+            $sel= IIF(lCase($fileName)== $ThisValue, ' selected', '');
             $c= $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . vbCrlf();
         }
     }
@@ -238,14 +238,14 @@ function showWebModuleSkins($InputName, $ThisValue){
     $content= getDirFolderNameList($ResourceDir);
     //Call Echo("Content",Content)
 
-    $ThisValue= strtolower($ThisValue); //转成小写 好对比
+    $ThisValue= lCase($ThisValue); //转成小写 好对比
 
     $c= $c . '  <select name="' . $InputName . '" id="' . $InputName . '">' . vbCrlf();
     $c= $c . '    <option value=""></option>' . vbCrlf();
     $splStr= aspSplit($content, vbCrlf());
     foreach( $splStr as $key=>$fileName){
         if( $fileName <> '' ){
-            $sel= IIF(strtolower($fileName)== $ThisValue, ' selected', '');
+            $sel= IIF(lCase($fileName)== $ThisValue, ' selected', '');
             $c= $c . '    <option value="' . $fileName . '"' . $sel . '>' . $fileName . '</option>' . vbCrlf();
         }
     }
@@ -287,11 +287,11 @@ function inputCheckBox3($textName, $checked, $valueStr, $helpStr){
 }
 function handleInputCheckBox($textName, $checked, $valueStr, $helpStr, $sType){
     $s=''; $sel=''; $idName ='';
-    if( CStr($valueStr)== 'True' || CStr($checked)== '1' ){ $sel= ' checked' ;}else{ $sel== '' ;}
+    if( cStr($valueStr)== 'True' || cStr($checked)== '1' ){ $sel= ' checked' ;}else{ $sel== '' ;}
     $idName= $textName; //id名等于文件名称
     $sType= '|' . $sType . '|';
-    if( instr($sType, '|newidname|') > 0 ){
-        $idName= $textName . phprand(1, 9999);
+    if( inStr($sType, '|newidname|') > 0 ){
+        $idName= $textName . pHPRand(1, 9999);
     }
     $s= '<input type=\'checkbox\' name=\'' . $textName . '\' id=\'' . $idName . '\'' . $sel . ' value=\'' . $valueStr . '\'>';
     if( $helpStr <> '' ){ $s= '<label for=\'' . $idName . '\'>' . $s . $helpStr . '</label> ' ;}
@@ -303,9 +303,9 @@ function handleInputCheckBox($textName, $checked, $valueStr, $helpStr, $sType){
 function inputText($textName, $valueStr, $width, $helpStr){
     $Css ='';
 
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -321,9 +321,9 @@ function inputText2($textName, $valueStr, $width, $className, $helpStr){
 
         $className= ' class="' . $className . '"';
     }
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -334,9 +334,9 @@ function inputText2($textName, $valueStr, $width, $className, $helpStr){
 //显示Input文本在左边  InputLeftText(TextName, ValueStr, "98%", "")
 function inputLeftText($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -347,9 +347,9 @@ function inputLeftText($textName, $valueStr, $width, $helpStr){
 //显示Input文本在左边 帮助文字在右边
 function inputLeftTextHelpTextRight($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -370,9 +370,9 @@ function inputRightTextContent($textName, $valueStr, $width, $helpStr){
 //显示Input文本在中边 提示文本在左边 或 提示文本在右边 20150114
 function handleInputLeftRightTextContent($sType, $textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -380,7 +380,7 @@ function handleInputLeftRightTextContent($sType, $textName, $valueStr, $width, $
     if( $Css== '' ){
         $Css= ' style=\'text-align:center;\'';
     }else{
-        $Css= Replace($Css, ';\'', ';text-align:center;\'');
+        $Css= replace($Css, ';\'', ';text-align:center;\'');
     }
     $handleInputLeftRightTextContent= '<input name="' . $textName . '" type="text" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />';
 
@@ -396,9 +396,9 @@ function handleInputLeftRightTextContent($sType, $textName, $valueStr, $width, $
 //显示Input文本在左边密码
 function inputLeftPassText($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -409,9 +409,9 @@ function inputLeftPassText($textName, $valueStr, $width, $helpStr){
 //显示Input文本在左边密码类型
 function inputLeftPassTextContent($textName, $valueStr, $width, $helpStr){
     $Css ='';
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -419,7 +419,7 @@ function inputLeftPassTextContent($textName, $valueStr, $width, $helpStr){
     if( $Css== '' ){
         $Css= ' style=\'text-align:center;\'';
     }else{
-        $Css= Replace($Css, ';\'', ';text-align:center;\'');
+        $Css= replace($Css, ';\'', ';text-align:center;\'');
     }
     $inputLeftPassTextContent= $helpStr . '<input name="' . $textName . '" type="password" id="' . $textName . '" value="' . $valueStr . '"' . $Css . ' />' . vbCrlf();
     return @$inputLeftPassTextContent;
@@ -432,9 +432,9 @@ function inputHiddenText($textName, $valueStr){
 //显示Input文本域 InputTextArea("FindTpl", FindTpl, "60%" , "120px", "")
 function inputTextArea($textName, $valueStr, $width, $height, $helpStr){
     $Css=''; $HeightStr ='';
-    $width= aspTrim(strtolower($width));
+    $width= aspTrim(lCase($width));
     if( $width <> '' ){
-        if( Right($width, 1) <> '%' && Right($width, 2) <> 'px' ){
+        if( right($width, 1) <> '%' && right($width, 2) <> 'px' ){
             $width= $width . 'px';
         }
         $Css= ' style=\'width:' . $width . ';\'';
@@ -445,12 +445,12 @@ function inputTextArea($textName, $valueStr, $width, $height, $helpStr){
         }
         $HeightStr= 'height:' . $height . ';';
         if( $Css <> '' ){
-            $Css= Replace($Css, ';\'', ';' . $HeightStr . ';\'');
+            $Css= replace($Css, ';\'', ';' . $HeightStr . ';\'');
         }else{
             $Css= ' style=\'height:' . $height . ';\'';
         }
     }
-    $Css= Replace($Css, ';;', ';'); //去掉多余的值
+    $Css= replace($Css, ';;', ';'); //去掉多余的值
     $inputTextArea= '<textarea name="' . $textName . '" type="text" id="' . $textName . '"' . $Css . '>' . $valueStr . '</textarea>' . $helpStr;
     return @$inputTextArea;
 }
@@ -469,7 +469,7 @@ function handleInputHiddenTextArea($textName, $valueStr, $width, $height, $class
     if( $height <> '' ){
         $HeightStr= 'height:' . $height . ';';
         if( $Css <> '' ){
-            $Css= Replace($Css, ';\'', ';' . $HeightStr . ';\'');
+            $Css= replace($Css, ';\'', ';' . $HeightStr . ';\'');
         }else{
             $Css= ' style=\'height:' . $height . ';display:none;\'';
         }
@@ -492,7 +492,7 @@ function showSelectDirList($folderPath, $valueStr){
 }
 //给Input加个Disabled不可操作
 function inputDisabled( $content){
-    $inputDisabled= Replace($content, '<input ', '<input disabled="disabled" ');
+    $inputDisabled= replace($content, '<input ', '<input disabled="disabled" ');
     return @$inputDisabled;
 }
 
@@ -501,13 +501,13 @@ function inputAddAlt( $content, $AltStr){
     $SearchStr=''; $replaceStr ='';
     $SearchStr= '<input ';
     $replaceStr= $SearchStr . 'alt="' . $AltStr . '" ';
-    if( instr($content, $SearchStr) > 0 ){
-        $content= Replace($content, $SearchStr, $replaceStr);
+    if( inStr($content, $SearchStr) > 0 ){
+        $content= replace($content, $SearchStr, $replaceStr);
     }else{
         $SearchStr= '<textarea ';
         $replaceStr= $SearchStr . 'alt="' . $AltStr . '" ';
-        if( instr($content, $SearchStr) > 0 ){
-            $content= Replace($content, $SearchStr, $replaceStr);
+        if( inStr($content, $SearchStr) > 0 ){
+            $content= replace($content, $SearchStr, $replaceStr);
         }
     }
     $inputAddAlt= $content;
@@ -562,7 +562,7 @@ function showFontColorFontB($FontColor, $FontB){
 //显示文本TEXT排序
 function showSort($sort){
     $showSort= inputText('Sort', $sort, '30px', '');
-    $showSort= Replace(showSort, ';\'', ';text-align:center;\'');
+    $showSort= replace(showSort, ';\'', ';text-align:center;\'');
     return @$showSort;
 }
 //网站导航类型顶部底部等
@@ -656,11 +656,11 @@ function controlDialogCss(){
 function batchDeleteTempStr($content, $startStr, $endStr){
     $i=''; $s ='';
     for( $i= 1 ; $i<= 9; $i++){
-        if( instr($content, $startStr)== false ){
+        if( inStr($content, $startStr)== false ){
             break;
         }
         $s= getStrCut($content, $startStr, $endStr, 1);
-        $content= Replace($content, $s, '');
+        $content= replace($content, $s, '');
     }
     $batchDeleteTempStr= $content;
     return @$batchDeleteTempStr;

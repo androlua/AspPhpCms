@@ -67,16 +67,7 @@ Sub login()
     Dim nLogin 
     Call openconn() 
     rs.Open "Select * From " & db_PREFIX & "admin Where username='" & userName & "' And pwd='" & passWord & "'", conn, 1, 1 
-    If rs.EOF Then
-        If Request.Cookies("nLogin") = "" Then
-            Call setCookie("nLogin", "1", Time() + 3600) 
-            nLogin = Request.Cookies("nLogin") 
-        Else
-            nLogin = Request.Cookies("nLogin") 
-            Call setCookie("nLogin", CInt(nLogin) + 1, Time() + 3600) 
-        End If 
-        Call rw(getMsg1(setL("账号密码错误<br>登录次数为 ") & nLogin, "?act=displayAdminLogin")) 
-    Else
+    If not rs.EOF Then
         Session("adminusername") = userName 
         Session("adminId") = rs("Id")                                                   '当前登录管理员ID
         Session("DB_PREFIX") = db_PREFIX                                                '保存前缀
@@ -85,6 +76,15 @@ Sub login()
         conn.Execute("update " & db_PREFIX & "admin set " & valueStr & " where id=" & rs("id")) 
         Call rw(getMsg1(setL("登录成功，正在进入后台..."), "?act=adminIndex")) 
         Call writeSystemLog("admin", "登录成功")                                        '系统日志
+	else
+        If Request.Cookies("nLogin") = "" Then
+            Call setCookie("nLogin", "1", Time() + 3600) 
+            nLogin = Request.Cookies("nLogin") 
+        Else
+            nLogin = Request.Cookies("nLogin") 
+            Call setCookie("nLogin", CInt(nLogin) + 1, Time() + 3600) 
+        End If 
+        Call rw(getMsg1(setL("账号密码错误<br>登录次数为 ") & nLogin, "?act=displayAdminLogin")) 
     End If : rs.Close 
 
 End Sub 

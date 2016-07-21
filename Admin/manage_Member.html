@@ -47,7 +47,7 @@
 		  <td>²Ù×÷</td>
 		  </tr> 
         [list]
-		<tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+		<tr align="center" height="26"   [$focusid if='[$id$]' value='style="background:#F5F9CE;font-weight:bold;"' default='bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor=\'#FCFDEE\';" onMouseOut="javascript:this.bgColor=\'#FFFFFF\';"'$]>
 		  <td> [$id$] </td>
 		  <td align="left">
 				<input name="idcheck" type="checkbox" class="np" value="[$id$]">
@@ -57,7 +57,8 @@
 		  <td>[$adddatetime$]</td>
 		  <td>[$logincount$]</td>
 		  <td>
-			 <a href="javascript:addEditHandle('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');"><img src="images/icon/gtk-edit.png" title="±à¼­" alt="±à¼­" border="0" width="16" height="16"></a><a href="javascript:delHandle('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');" title="É¾³ý" onClick="return new xyClass().myConfirm('ÄãÈ·¶¨ÒªÉ¾³ýÂð£¿\nÉ¾³ýºó½«²»¿É»Ö¸´')"><img src="images/icon/gtk-del.png" title="É¾³ý" /></a>             </td>
+			 <a href="javascript:addEditHandle('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');"><img src="images/icon/gtk-edit.png" title="±à¼­" alt="±à¼­" border="0" width="16" height="16"></a>
+             <a href="javascript:delHandle('[$actionType$]','[$lableTitle$]','[$page$]','[$id$]');" title="É¾³ý" onClick="return new xyClass().myConfirm('ÄãÈ·¶¨ÒªÉ¾³ýÂð£¿\nÉ¾³ýºó½«²»¿É»Ö¸´')"><img src="images/icon/gtk-del.png" title="É¾³ý" /></a>             </td>
 		  </tr>
         [/list] 
 		<tr bgcolor="#ffffff">
@@ -86,6 +87,7 @@
 			<td height="36" colspan="7" align="center">
 				[$pageInfo$]			
                 <input name="nPageSize" type="hidden" id="nPageSize" value="[$nPageSize$]"> 
+                <input name="focusid" type="hidden" id="focusid" value="[$focusid$]">  
                 <input name="mdbpath" type="hidden" id="mdbpath" value="[$mdbpath$]">                </td>
 		</tr>
 		</table>

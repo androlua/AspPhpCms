@@ -3,7 +3,7 @@
 【webtitle】ASPPHPCMS网站内容管理系统视频教程
 【webkeywords】ASPPHPCMS网站内容管理系统视频教程
 【webdescription】ASPPHPCMS网站内容管理系统视频教程，简单介绍ASPPHPCMS使用教程，从下载到安装，从ASP版演示到PHP演示 QQ313801120
-【sortrank】8
+【sortrank】80
 【author】sharembweb
 【adddatetime】2015-08-30 06:25:11
 【filename】/ASPPHPCMS/video-demo.html

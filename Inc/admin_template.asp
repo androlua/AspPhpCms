@@ -1,4 +1,4 @@
-<!--#Include File = "../Inc/Config.Asp"--> 
+<!--#Include File = "../Inc/_Config.Asp"--> 
 <!--#Include File = "../Inc/admin_function.asp"--> 
 <!DOCTYPE html> 
 <html xmlns="http://www.w3.org/1999/xhtml"> 
@@ -48,8 +48,8 @@ function checkDel()
 If Session("adminusername") = "" Then
     Call eerr("提示", "未登录，请先登录") 
 End If 
-
-
+ 
+call openconn()
 Select Case Request("act")
     Case "templateFileList" : displayTemplateDirDialog(Request("dir")) : templateFileList(Request("dir"))'模板列表
     Case "delTemplateFile" : Call delTemplateFile(Request("dir"), Request("fileName")) : displayTemplateDirDialog(Request("dir")) : templateFileList(Request("dir"))		'删除模板文件
@@ -59,8 +59,15 @@ End Select
 
 '模板文件列表
 Sub templateFileList(dir)
-    Dim content, splStr, fileName, s,fileType
-	if  Session("adminusername") = "ASPPHPCMS"  then
+    Dim content, splStr, fileName, s,fileType ,folderName,filePath
+	
+	if  Session("adminusername") = "ASPPHPCMS"  then 
+		content = getDirFolderNameList(dir,"")
+    	splStr = Split(content, vbCrLf) 	
+		For Each folderName In splStr
+			s="<a href='?act=templateFileList&dir="& dir & "/" & folderName &"'>"& folderName &"</a>" 
+			Call echo("<img src='../admin/Images/file/folder.gif'>",s)
+		next
 		content = getDirFileNameList(dir,"")
 	else
 	    content = getDirHtmlNameList(dir)
@@ -69,15 +76,18 @@ Sub templateFileList(dir)
     For Each fileName In splStr
 		if fileName<>"" then
 			fileType=lcase(getFileAttr(fileName,4))
-			'call echo("fileType",fileType)
+			filePath=dir & "/" & filename
 			if instr("|asa|asp|aspx|bat|bmp|cfm|cmd|com|css|db|default|dll|doc|exe|fla|folder|gif|h|htm|html|inc|ini|jpg|js|jtbc|log|mdb|mid|mp3|php|png|rar|real|rm|swf|txt|wav|xls|xml|zip|","|"& fileType &"|")=false then
 				fileType="default"			
 			end if
-			
+			 
 			s = "<a href=""../index.asp?templatedir=" & escape(dir) & "&templateName=" & fileName & """ target='_blank'>预览</a> " 
-			Call echo("<img src='../admin/Images/file/"& fileType &".gif'>" & fileName, s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>修改</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>删除</a>") 
+			Call echo("<img src='../admin/Images/file/"& fileType &".gif'>" & fileName & "（"& printSpaceValue(getFSize(filePath)) &"）", s & "| <a href='?act=addEditFile&dir=" & dir & "&fileName=" & fileName & "'>修改</a> | <a href='?act=delTemplateFile&dir=" & Request("dir") & "&fileName=" & fileName & "' onclick='return checkDel()'>删除</a>") 
 		end if
     Next 
+	
+	
+	
 End Sub
  
 '删除模板文件
@@ -134,13 +144,10 @@ Function addEditFile(dir, fileName)
     </tr> 
     <tr> 
       <td>文件名称 
-      <input name="fileName" type="text" id="fileName" value="<% =fileName%>" size="40"><%=promptMsg%>
+      <input name="fileName" type="text" id="fileName" value="<% =fileName%>" size="40">&nbsp;<input type="submit" name="button" id="button" value=" 保存 " /><%=promptMsg%>
       <br> 
       <textarea name="content"  style="width:99%;height:480px;"id="content"><%call rw(getFText(filePath))%></textarea></td> 
-    </tr> 
-    <tr> 
-      <td height="40" align="center"><input type="submit" name="button" id="button" value=" 保存 " /></td> 
-    </tr> 
+    </tr>  
   </table> 
 </form>
 <% End Function

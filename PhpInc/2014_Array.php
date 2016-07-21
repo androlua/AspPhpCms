@@ -4,27 +4,27 @@
 
 //内容名称排序
 function contentNameSort($content, $sType){
-    $splStr=''; $arrayStr=array(99); $fileName=''; $isOther='';$otherStr=''; $id=''; $c='';$s='';$i='';$left1='';
+    $splStr=''; $arrayStr=aspArray(99); $fileName=''; $isOther='';$otherStr=''; $id=''; $c='';$s='';$i='';$left1='';
     $splStr= aspSplit($content, vbCrlf());
     foreach( $splStr as $key=>$s){
         if( $s <>'' ){
             $fileName= getStrFileName($s);
             $isOther=true;
             $left1=left($fileName,1);
-            if( instr($fileName, '、') > 0 ){
-                $id= Replace(Left($fileName, 2), '、', '');
+            if( inStr($fileName, '、') > 0 ){
+                $id= replace(left($fileName, 2), '、', '');
                 if( isNumber($id) ){
                     $arrayStr[$id]= $arrayStr[$id] . $s . vbCrlf();
                     $isOther=false;
                 }
             }
 
-            if( instr($sType, $left1)== false && $isOther==true ){
+            if( inStr($sType, $left1)== false && $isOther==true ){
                 $otherStr= $otherStr . $s . vbCrlf();
             }
         }
     }
-    for( $i= 0 ; $i<= UBound($arrayStr); $i++){
+    for( $i= 0 ; $i<= uBound($arrayStr); $i++){
         $c= $c . $arrayStr[$i];
     }
     $contentNameSort= $c . $otherStr;
@@ -37,7 +37,7 @@ function remoteContentJingHao($content, $splType){
     $splStr=''; $s=''; $c ='';
     $splStr= aspSplit($content, $splType);
     foreach( $splStr as $key=>$s){
-        if( Left(phpTrim($s), 1) <> '#' && Left(phpTrim($s), 1) <> '_' ){
+        if( left(PHPTrim($s), 1) <> '#' && left(PHPTrim($s), 1) <> '_' ){
             if( $c <> '' ){ $c= $c . $splType ;}
             $c= $c . $s;
         }
@@ -50,7 +50,7 @@ function remoteArrayJingHao($splStr){
     $s=''; $c=''; $splType ='';
     $splType= '[|-|_]';
     foreach( $splStr as $key=>$s){
-        if( Left(phpTrim($s), 1) <> '#' && Left(phpTrim($s), 1) <> '_' ){
+        if( left(PHPTrim($s), 1) <> '#' && left(PHPTrim($s), 1) <> '_' ){
             if( $c <> '' ){ $c= $c . $splType ;}
             $c= $c . $s;
         }
@@ -63,7 +63,7 @@ function remoteArrayJingHao($splStr){
 //每个字符加指定值
 function getEachStrAddValue($content, $valueStr){
     $i=''; $s=''; $c ='';
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
         $c= $c . $s . $valueStr;
     }
@@ -74,7 +74,7 @@ function getEachStrAddValue($content, $valueStr){
 function getValueInArrayID($splStr, $valueStr){
     $i ='';
     $getValueInArrayID= -1;
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
         if( $splStr[$i]== $valueStr ){
             $getValueInArrayID= $i;
             break;
@@ -86,7 +86,7 @@ function getValueInArrayID($splStr, $valueStr){
 function checkValueInArray($splStr, $valueStr){
     $i ='';
     $checkValueInArray= false;
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
         if( $splStr[$i]== $valueStr ){
             $checkValueInArray= true;
             break;
@@ -101,12 +101,12 @@ function deleteRepeatArray($splStr){
     $SplType= '[|-|_]';
     foreach( $splStr as $key=>$s){
         if( $s <> '' ){
-            if( instr($SplType . $c . $SplType, $SplType . $s . $SplType)== false ){
+            if( inStr($SplType . $c . $SplType, $SplType . $s . $SplType)== false ){
                 $c= $c . $s . $SplType;
             }
         }
     }
-    if( $c <> '' ){ $c= Left($c, Len($c) - Len($SplType)); }
+    if( $c <> '' ){ $c= left($c, len($c) - len($SplType)); }
     $splStr= aspSplit($c, $SplType);
     $deleteRepeatArray= $splStr;
     return @$deleteRepeatArray;
@@ -117,7 +117,7 @@ function deleteRepeatContent($content, $splType){
     $splStr= aspSplit($content, $splType);
     foreach( $splStr as $key=>$s){
         if( $s <> '' ){
-            if( instr($splType . $c . $splType, $splType . $s . $splType)== false ){
+            if( inStr($splType . $c . $splType, $splType . $s . $splType)== false ){
                 if( $c <> '' ){ $c= $c . $splType ;}
                 $c= $c . $s;
             }
@@ -130,9 +130,9 @@ function deleteRepeatContent($content, $splType){
 //获得数据总数
 function getArrayCount($content, $SplC){
     $splStr ='';
-    if( instr($content, $SplC) > 0 ){
+    if( inStr($content, $SplC) > 0 ){
         $splStr= aspSplit($content, $SplC);
-        $getArrayCount= UBound($splStr) + 1;
+        $getArrayCount= uBound($splStr) + 1;
     }else{
         $getArrayCount= 0;
     }
@@ -145,14 +145,14 @@ function randomShow($content, $SplType,$NSwitch){
     for( $i= 1 ; $i<= $NSwitch; $i++){
         $splStr= aspSplit($content, $SplType);
         foreach( $splStr as $key=>$s){
-            $n= intval(rnd() * 100);
+            $n= CInt(rnd() * 100);
             if( $n > 50 ){
                 $c= $c . $s . $SplType;
             }else{
                 $c= $s . $SplType . $c;
             }
         }
-        if( $c <> '' ){ $c= Left($c, Len($c) - Len($SplType)); }
+        if( $c <> '' ){ $c= left($c, len($c) - len($SplType)); }
         $content= $c;
         $c= '';
     }
@@ -167,7 +167,7 @@ function arrayRandomShow( $splStr, $NSwitch){
 
     for( $i= 1 ; $i<= $NSwitch; $i++){
         foreach( $splStr as $key=>$s){
-            $n= intval(rnd() * 100);
+            $n= CInt(rnd() * 100);
             if( $n > 50 ){
                 $c= $c . $s . $SplType;
             }else{
@@ -175,7 +175,7 @@ function arrayRandomShow( $splStr, $NSwitch){
             }
             //Call Echo(S,N)
         }
-        if( $c <> '' ){ $c= Left($c, Len($c) - Len($SplType)); }
+        if( $c <> '' ){ $c= left($c, len($c) - len($SplType)); }
         $splStr= aspSplit($c, $SplType) ; $c= '';
     }
     $arrayRandomShow= $splStr;
@@ -184,32 +184,32 @@ function arrayRandomShow( $splStr, $NSwitch){
 //打印数组内容
 function printArray($splStr){
     $i=''; $s ='';
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
         $s= $splStr[$i];
-        ASPEcho($i, $s);
+        aspEcho($i, $s);
     }
 }
 //显示数组内容  (辅助上面)
 function echoArray($splStr){
-    PrintArray($splStr);
+    printArray($splStr);
 }
 //返回打乱后的字符串。Shuffle=洗牌  2014 12 02
 function PHPStr_Shuffle($content){
     $i=''; $s=''; $c=''; $n ='';
 
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
         if( $c== '' ){
             $c= $s;
-        }else if( Len($c)== 1 ){
-            $n= intval(rnd() * 100);
+        }else if( len($c)== 1 ){
+            $n= CInt(rnd() * 100);
             if( $n > 50 ){
                 $c= $c . $s;
             }else{
                 $c= $s . $c;
             }
         }else{
-            $n= intval(rnd() * Len($c)) + 1;
+            $n= CInt(rnd() * len($c)) + 1;
             $c= mid($c, 1, $n) . $s . mid($c, $n + 1,-1);
         }
     }
@@ -223,10 +223,10 @@ function characterUpset($content){
 }
 //将字符串转换为数组   PHP里用到，暂时留着   把内容与几个字符分割成数组  如  abcefg,2     0=ab 1=ce 2=fg
 function PHPStr_Split($content, $Split_Length){
-    $i=''; $s=''; $c=''; $n=''; $ArrStr=array(99); $nArray ='';
+    $i=''; $s=''; $c=''; $n=''; $ArrStr=aspArray(99); $nArray ='';
     if( $Split_Length <= 0 ){ $Split_Length= 1 ;}
     $n= 0 ; $nArray= 0;
-    for( $i= 1 ; $i<= Len($content); $i++){
+    for( $i= 1 ; $i<= len($content); $i++){
         $s= mid($content, $i, 1);
         $c= $c . $s;
         $n= $n + 1;
@@ -241,30 +241,30 @@ function PHPStr_Split($content, $Split_Length){
 }
 //移除空值数组
 function removeNullValueArray($content, $SplType){
-    $removeNullValueArray= HandleArray($content, $SplType, 'nonull');
+    $removeNullValueArray= handleArray($content, $SplType, 'nonull');
     return @$removeNullValueArray;
 }
 //移除重复数组
 function removeRepeatValueArray($content, $SplType){
-    $removeRepeatValueArray= HandleArray($content, $SplType, 'norepeat');
+    $removeRepeatValueArray= handleArray($content, $SplType, 'norepeat');
     return @$removeRepeatValueArray;
 }
 //处理数组
 function handleArray($content, $SplType, $SType){
     $splStr=''; $s=''; $c=''; $OKYes ='';
-    $SType= '|' . strtolower($SType) . '|';
+    $SType= '|' . lCase($SType) . '|';
     $splStr= aspSplit($content, $SplType);
     foreach( $splStr as $key=>$s){
         $OKYes= true;
-        if( instr($SType, '|nonull|') > 0 && $OKYes== true ){
+        if( inStr($SType, '|nonull|') > 0 && $OKYes== true ){
             if( $s== '' ){ $OKYes= false ;}
         }
-        if( instr($SType, '|norepeat|') > 0 && $OKYes== true ){
-            if( instr($SplType . $c . $SplType, $SplType . $s . $SplType) > 0 ){ $OKYes= false ;}
+        if( inStr($SType, '|norepeat|') > 0 && $OKYes== true ){
+            if( inStr($SplType . $c . $SplType, $SplType . $s . $SplType) > 0 ){ $OKYes= false ;}
         }
         if( $OKYes== true ){ $c= $c . $s . $SplType ;}
     }
-    if( $c <> '' ){ $c= Left($c, Len($c) - Len($SplType)); }
+    if( $c <> '' ){ $c= left($c, len($c) - len($SplType)); }
     $handleArray= $c;
     return @$handleArray;
 }
@@ -283,12 +283,12 @@ function arrayToString($splStr, $addtoStr){
 function testArrayData(){
     $aData ='';
     $aData= array(3, 2, 4, 1, 6, 0);
-    ResponseArray($aData, '原来顺序');
-    ResponseArray(SelectSort($aData), '选择排序');
-    ResponseArray(QuickSort($aData), '快速排序');
-    ResponseArray(InsertSort($aData), '插入排序');
-    ResponseArray(BubbleSort($aData), '冒泡排序');
-    ResponseArray(ReQuickSort($aData), '反序排序');
+    responseArray($aData, '原来顺序');
+    responseArray(selectSort($aData), '选择排序');
+    responseArray(quickSort($aData), '快速排序');
+    responseArray(insertSort($aData), '插入排序');
+    responseArray(bubbleSort($aData), '冒泡排序');
+    responseArray(reQuickSort($aData), '反序排序');
     echo '<b>最 大 值：</b>' . $GLOBALS['PHPMax']($aData) . '<hr>';
     echo '<b>最 小 值：</b>' . $GLOBALS['PHPMin']($aData) . '<hr>';
 }
@@ -298,7 +298,7 @@ function testArrayData(){
 function selectSort($a_Data){
     $i=''; $j=''; $k ='';
     $bound=''; $t ='';
-    $bound= UBound($a_Data);
+    $bound= uBound($a_Data);
 
     for( $i= 0 ; $i<= $bound - 1; $i++){
         $k= $i;
@@ -320,7 +320,7 @@ function selectSort($a_Data){
 function quickSort($a_Data){
     $i=''; $j ='';
     $bound=''; $t ='';
-    $bound= UBound($a_Data);
+    $bound= uBound($a_Data);
     for( $i= 0 ; $i<= $bound - 1; $i++){
         for( $j= $i + 1 ; $j<= $bound; $j++){
             if( $a_Data[$i] > $a_Data[$j] ){
@@ -338,7 +338,7 @@ function quickSort($a_Data){
 //===================================
 function bubbleSort($a_Data){
     $bound ='';
-    $bound= UBound($a_Data);
+    $bound= uBound($a_Data);
     $bSorted=''; $i=''; $t ='';
     $bSorted= false;
     while( $bound > 0 && $bSorted= false){
@@ -362,7 +362,7 @@ function bubbleSort($a_Data){
 //===================================
 function insertSort($a_Data){
     $bound ='';
-    $bound= UBound($a_Data);
+    $bound= uBound($a_Data);
     $i=''; $j=''; $t ='';
 
     for( $i= 1 ; $i<= $bound; $i++){
@@ -384,7 +384,7 @@ function reQuickSort($a_Data){
     $i=''; $Bound=''; $TempArr ='';
     $a_Data= quickSort($a_Data);
     $TempArr= quickSort($a_Data);
-    $Bound= UBound($a_Data);
+    $Bound= uBound($a_Data);
     for( $i= 0 ; $i<= $Bound; $i++){
         $a_Data[$i]= $TempArr[$Bound - $i];
     }
@@ -403,10 +403,10 @@ function responseArray($a_Data, $str){
     $s=''; $i ='';
     $s= '';
     echo '<b>' . $str . '：</b>';
-    for( $i= 0 ; $i<= UBound($a_Data); $i++){
+    for( $i= 0 ; $i<= uBound($a_Data); $i++){
         $s= $s . $a_Data[$i] . ',';
     }
-    $s= Left($s, Len($s) - 1);
+    $s= left($s, len($s) - 1);
     echo $s;
     echo '<hr>';
 }
@@ -416,7 +416,7 @@ function responseArray($a_Data, $str){
 function PHPMax($a_Data){
     $i=''; $j=''; $Bound=''; $temp ='';
     $a_Data= quickSort($a_Data);
-    $Bound= UBound($a_Data);
+    $Bound= uBound($a_Data);
     for( $i= 0 ; $i<= $Bound; $i++){
         for( $j= $i + 1 ; $j<= $Bound; $j++){
             if( $a_Data[$j] > $a_Data[$i] ){
@@ -435,7 +435,7 @@ function PHPMax($a_Data){
 function PHPMin($a_Data){
     $i=''; $j=''; $Bound=''; $temp ='';
     $a_Data= quickSort($a_Data);
-    $Bound= UBound($a_Data);
+    $Bound= uBound($a_Data);
     for( $i= 0 ; $i<= $Bound; $i++){
         for( $j= $i + 1 ; $j<= $Bound; $j++){
             if( $a_Data[$j] > $a_Data[$i] ){
@@ -455,19 +455,19 @@ function PHPMin($a_Data){
 //测试二维数组显示
 function testTwoDimensionalArray(){
     $splStr=''; $i ='';
-    $splStr= HandleSplitArray('9-g|2-b|3-a|1-中', '|', '-');
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
-        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents( );
+    $splStr= handleSplitArray('9-g|2-b|3-a|1-中', '|', '-');
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
+        aspEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; doEvents( );
     }
-    ASPEcho('', 'Ａｄｃ');
-    TwoDimensionalArrayAsc($splStr); //二维数组正排序
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
-        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents( );
+    aspEcho('', 'Ａｄｃ');
+    twoDimensionalArrayAsc($splStr); //二维数组正排序
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
+        aspEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; doEvents( );
     }
-    ASPEcho('', 'Desc');
-    TwoDimensionalArrayDesc($splStr); //二维数组倒排序
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
-        ASPEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; Doevents( );
+    aspEcho('', 'Desc');
+    twoDimensionalArrayDesc($splStr); //二维数组倒排序
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
+        aspEcho($splStr[$i][ 1], $splStr[$i][ 0]) ; doEvents( );
     }
 }
 
@@ -476,20 +476,20 @@ function handleSplitArray($content, $SplOneType, $SplTowType){
     $SplA=''; $SplB=''; $splStr=''; $splxx=''; $i=''; $s=''; $c=''; $j=''; $t=''; $SplType ='';
     $SplType= '[|Array|]';
     $splStr= aspSplit($content, $SplOneType);
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
         if( $splStr[$i] <> '' ){
             $splxx= aspSplit($splStr[$i], $SplTowType);
             $SplA= $SplA . $splxx[0] . $SplType;
             $SplB= $SplB . $splxx[1] . $SplType;
         }
     }
-    if( $SplA <> '' ){ $SplA= Left($SplA, Len($SplA) - Len($SplType)); }
-    if( $SplB <> '' ){ $SplB= Left($SplB, Len($SplB) - Len($SplType)); }
+    if( $SplA <> '' ){ $SplA= left($SplA, len($SplA) - len($SplType)); }
+    if( $SplB <> '' ){ $SplB= left($SplB, len($SplB) - len($SplType)); }
     $SplA= aspSplit($SplA, $SplType);
     $SplB= aspSplit($SplB, $SplType);
 
-    $splStr[UBound($SplA)][ UBound($SplB)];
-    for( $i= 0 ; $i<= UBound($SplA); $i++){
+    $splStr[uBound($SplA)][ uBound($SplB)];
+    for( $i= 0 ; $i<= uBound($SplA); $i++){
         $splStr[$i][ 0]= $SplA[$i];
         $splStr[$i][ 1]= $SplB[$i];
     }
@@ -499,9 +499,9 @@ function handleSplitArray($content, $SplOneType, $SplTowType){
 //二维数组正排序 20150313
 function twoDimensionalArrayAsc($splStr){
     $i=''; $j=''; $t ='';
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
-        if( IsNul($splStr[$i][ 0])== false ){
-            for( $j= $i ; $j<= UBound($splStr); $j++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
+        if( isNul($splStr[$i][ 0])== false ){
+            for( $j= $i ; $j<= uBound($splStr); $j++){
                 if( $splStr[$i][ 0] > $splStr[$j][ 0] ){
                     $t= $splStr[$i][ 0];
                     $splStr[$i][ 0]= $splStr[$j][ 0];
@@ -519,9 +519,9 @@ function twoDimensionalArrayAsc($splStr){
 //二维数组倒排序 20150313
 function twoDimensionalArrayDesc($splStr){
     $i=''; $j=''; $t ='';
-    for( $i= 0 ; $i<= UBound($splStr); $i++){
-        if( IsNul($splStr[$i][ 0])== false ){
-            for( $j= $i ; $j<= UBound($splStr); $j++){
+    for( $i= 0 ; $i<= uBound($splStr); $i++){
+        if( isNul($splStr[$i][ 0])== false ){
+            for( $j= $i ; $j<= uBound($splStr); $j++){
                 if( $splStr[$i][ 0] < $splStr[$j][ 0] ){
                     $t= $splStr[$i][ 0];
                     $splStr[$i][ 0]= $splStr[$j][ 0];

@@ -33,10 +33,10 @@ var _hmt = _hmt || [];
 
 ¡¾/websitebottom¡¿
 
-¡¾webtemplate¡¿/Templates2015/web_default/
-¡¾webimages¡¿/Templates2015/web_default/Images/
-¡¾webcss¡¿/Templates2015/web_default/Css/
-¡¾webjs¡¿/Templates2015/web_default/Js/
+¡¾webtemplate¡¿/Templates2015/web_default
+¡¾webimages¡¿/Templates2015/web_default/Images
+¡¾webcss¡¿/Templates2015/web_default/Css
+¡¾webjs¡¿/Templates2015/web_default/Js
 ¡¾flags¡¿|addwebsite|iscloseeditor|htmlrun||
 ¡¾websiteurl¡¿http://sharembweb.com/
 

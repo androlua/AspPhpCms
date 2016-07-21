@@ -278,6 +278,10 @@ function deleteFolder($dir) {
 // 《文件文件夹》
 function getFileFolderList($folderPath,$c='',$action='|处理文件#|处理文件夹|文件名称|文件夹名称|循环文件夹|',$fileTypeList='|*|') {
     $folderPath = handlePath ( $folderPath );
+	//文件夹为假退出 加了这个判断尽然把HTTP 错误 500.0 - Internal Server Error  报错给解决了 小云你牛 20160719home
+	if(checkFolder($folderPath)==false){
+		return $c;
+	}
     $fso = @opendir ( $folderPath );
     if ($fso) {
         while (($file = readdir($fso)) !== false) {
